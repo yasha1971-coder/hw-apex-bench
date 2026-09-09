@@ -1,6 +1,6 @@
 """Generate the review table only from one complete, verified three-codec run."""
 import json,pathlib,sys
-CODECS=("bgzip+htslib","zstd-seekable","aceapex")
+from configurations import CODECS, configuration, ACE_SHA
 METRICS=("ratio","region_p50","region_p99","amplification")
 ROOT=pathlib.Path(__file__).resolve().parents[1]
 def validate(rows):
@@ -25,12 +25,18 @@ def validate(rows):
         for m in ("ratio","region_p50","region_p99"):
             r=index[(c,m+"_relative_to_bgzip")]
             if r["status"] not in ("pass","fail"): raise ValueError("Missing comparison verdict")
+    if set(index)!={(c,m) for c in CODECS for m in (*METRICS,"ratio_relative_to_bgzip","region_p50_relative_to_bgzip","region_p99_relative_to_bgzip")}:
+        raise ValueError("Unexpected or missing row")
+    for r in rows:
+        if r["configuration"]!=configuration(r["codec"]): raise ValueError("Configuration mismatch")
+        if r["versions"]["aceapex_sha"]!=ACE_SHA: raise ValueError("Wrong ACEAPEX revision")
+        if r["metric"].startswith("region_") and r["protocol"]["protocol_version"]!="api-bytes-v2": raise ValueError("Wrong timer protocol")
     return index
 def render(rows):
     ix=validate(rows)
     meta=rows[0]; v=meta["versions"]
     text=["# hw-apex-bench — Compressed Access Benchmark","",
-          "Stage 1: first three-codec table, ready for review. Later axes remain deferred.",
+          "Stage 1: three codecs, four configurations, API-only byte-region table for review. Later axes remain deferred.",
           "",f"Run: {meta['run_id']}. Benchmark commit: {meta['benchmark_commit']}.",
           "",f"Corpus: chr1 hg38 FASTA, MD5 {meta['corpus']['md5']}.",
           "",f"libzstd: {v['libzstd']}; htslib: {v['htslib']}; bgzip: {v['bgzip']}.",
@@ -39,11 +45,19 @@ def render(rows):
           "",f"Machine: {meta['hardware']['platform']}; logical CPUs: {meta['hardware']['logical_cpus']}.",
           "Hardware details, parameters and commands accompany every measurement in results.jsonl.",
           "",
-          "| Codec | Ratio incl. indexes | Region p50 ms | Region p99 ms | Output amplification | GPU |",
+          "| Configuration | Level | Encoder threads | Block/frame bytes | LIT bytes | FSE bytes |",
+          "|---|---:|---:|---:|---:|---:|",
+          "| bgzip+htslib | 6 | 1 | BGZF variable (<=65536 uncompressed) | n/a | n/a |",
+          "| zstd-seekable | 3 | 1 | 16384 | n/a | n/a |",
+          "| aceapex-interactive | 2 | 1 | 16384 | 65536 | 4096 |",
+          "| aceapex-dense | 2 | 1 | 262144 | 1048576 | 32768 |",
+          "",
+          "| Codec / profile | Ratio incl. indexes | Region p50 ms | Region p99 ms | Output amplification | GPU |",
           "|---|---:|---:|---:|---:|---|"]
     for c in CODECS:
         text.append("| "+c+" | "+" | ".join(f"{ix[c,m]['value']:.6f}" for m in METRICS)+" | n/a |")
-    text+=["","Amplification is reconstructed **FASTA output bytes / requested sequence bytes**.",
+    text+=["","Every timed operation reads the same 16,384 original-file bytes. No FASTA parsing is timed.",
+           "Amplification is reconstructed **output bytes / requested bytes**.",
            "It excludes intermediate entropy buffers and is not total memory traffic.",
            "BGZF and zstd use decoder-output counters in a separate pass; ACEAPEX uses the exact block span derived from its pinned source and archive header.",
            "", "| Codec | Ratio / bgzip >= 0.99 | p50 / bgzip <= 1 | p99 / bgzip <= 1 |",

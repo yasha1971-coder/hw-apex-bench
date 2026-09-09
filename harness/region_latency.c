@@ -7,13 +7,12 @@
 #include <unistd.h>
 #include <sys/mman.h>
 #include <dlfcn.h>
-#include <htslib/faidx.h>
+#include <htslib/bgzf.h>
 #include "zstd_seekable.h"
 #include "aceapex.h"
 
 #define LENGTH 16384
 #define QUERIES 200
-#define BASES UINT64_C(248956422)
 
 static void die(const char *s) { fprintf(stderr,"STOP: %s\n",s); exit(1); }
 static void *alloc(size_t n) { void *p=malloc(n?n:1); if(!p) die("allocation"); return p; }
@@ -29,7 +28,6 @@ static uint64_t rng(uint64_t *s) {
     *s=*s*UINT64_C(6364136223846793005)+UINT64_C(1442695040888963407);
     return *s;
 }
-static uint64_t byteoff(uint64_t base) { return 6+(base/50)*51+base%50; }
 static double now(void) {
     struct timespec t; if(clock_gettime(CLOCK_MONOTONIC,&t)) die("clock");
     return (double)t.tv_sec+(double)t.tv_nsec*1e-9;
@@ -53,22 +51,19 @@ int main(int argc,char **argv) {
     size_t an,fn;
     unsigned char *arc=readall(argv[2],&an),*fasta=readall(argv[3],&fn);
     if(fn!=253935557 || memcmp(fasta,">chr1\n",6)) die("unexpected FASTA layout");
-    faidx_t *fai=NULL; ZSTD_seekable *seek=NULL;
+    BGZF *bgzf=NULL; ZSTD_seekable *seek=NULL;
     int fd=-1; uint32_t block=0; uint64_t original=0;
     void (*reset_counts)(void)=NULL;
     uint64_t (*get_counts)(void)=NULL;
     if(bg) {
-        /* Anonymous memory-backed file: no physical disk reads inside faidx.
-           Existing FAI/GZI files are loaded during setup, outside the timer. */
+        /* Copy archive to anonymous RAM-backed storage before any timed call.
+           Keep one htslib handle and the .gzi index for the entire query trace. */
         fd=memfd_create("cabench-bgzf",MFD_CLOEXEC); if(fd<0) die("memfd_create");
         size_t done=0;
         while(done<an) { ssize_t n=write(fd,arc+done,an-done); if(n<=0) die("memfd write"); done+=(size_t)n; }
         if(lseek(fd,0,SEEK_SET)<0) die("memfd rewind");
-        char name[64]; snprintf(name,sizeof(name),"/proc/self/fd/%d",fd);
-        char *fai_path=alloc(strlen(argv[2])+5),*gzi_path=alloc(strlen(argv[2])+5);
-        sprintf(fai_path,"%s.fai",argv[2]); sprintf(gzi_path,"%s.gzi",argv[2]);
-        fai=fai_load3(name,fai_path,gzi_path,0); if(!fai) die("fai_load3");
-        free(fai_path); free(gzi_path);
+        bgzf=bgzf_dopen(dup(fd),"r"); if(!bgzf) die("bgzf_dopen");
+        if(bgzf_index_load(bgzf,argv[2],".gzi")) die("bgzf_index_load");
         if(counts) {
             reset_counts=(void(*)(void))dlsym(RTLD_DEFAULT,"cabench_reset");
             get_counts=(uint64_t(*)(void))dlsym(RTLD_DEFAULT,"cabench_bytes");
@@ -88,42 +83,38 @@ int main(int argc,char **argv) {
         memcpy(&original,arc+12,8); memcpy(&block,arc+20,4);
         if(!block||original!=fn) die("ACEPX2 geometry");
     }
-    unsigned char *raw=alloc(LENGTH+1024),*out=alloc(LENGTH);
+    unsigned char *raw=alloc(LENGTH);
     uint64_t seed=20260909;
     for(int q=-12;q<QUERIES;q++) {
-        uint64_t pos=q==-12 ? 0 : q==-11 ? BASES-LENGTH : rng(&seed)%(BASES-LENGTH+1);
-        uint64_t start=byteoff(pos),end=byteoff(pos+LENGTH-1)+1,span=end-start;
-        if(end>fn || span>LENGTH+1024) die("query bounds");
+        uint64_t start=q==-12 ? 0 : q==-11 ? fn-LENGTH : rng(&seed)%(fn-LENGTH+1);
+        uint64_t end=start+LENGTH,span=LENGTH;
+        if(end>fn) die("query bounds");
         uint64_t decoded=0;
         if(counts&&bg) reset_counts();
 #ifdef COUNT_ZSTD
         zstd_output=0;
 #endif
-        double t0=now();
-        char *fai_result=NULL; hts_pos_t length=0;
+        double elapsed;
         if(bg) {
-            fai_result=faidx_fetch_seq64(fai,"chr1",(hts_pos_t)pos,(hts_pos_t)(pos+LENGTH-1),&length);
-            if(!fai_result||length!=LENGTH) die("faidx query");
+            double t0=now();
+            int seek_rc=bgzf_useek(bgzf,(off_t)start,SEEK_SET);
+            ssize_t r=bgzf_read(bgzf,raw,LENGTH);
+            elapsed=(now()-t0)*1000;
+            if(seek_rc!=0 || r!=LENGTH) die("BGZF region");
+        } else if(zs) {
+            double t0=now();
+            size_t r=ZSTD_seekable_decompress(seek,raw,LENGTH,start);
+            elapsed=(now()-t0)*1000;
+            if(ZSTD_isError(r)||r!=LENGTH) die("zstd region");
         } else {
-            if(zs) {
-                size_t r=ZSTD_seekable_decompress(seek,raw,(size_t)span,start);
-                if(ZSTD_isError(r)||r!=span) die("zstd region");
-            } else {
-                int64_t r=aceapex_decompress_region(arc,an,raw,LENGTH+1024,start,span);
-                if(r!=(int64_t)span) die("ACEAPEX region");
-            }
-            size_t k=0;
-            for(size_t j=0;j<span;j++) if(raw[j]!='\n') {
-                if(k>=LENGTH) die("too many bases");
-                out[k++]=raw[j];
-            }
-            if(k!=LENGTH) die("too few bases");
+            double t0=now();
+            int64_t r=aceapex_decompress_region(arc,an,raw,LENGTH,start,span);
+            elapsed=(now()-t0)*1000;
+            if(r!=LENGTH) die("ACEAPEX region");
         }
-        double elapsed=(now()-t0)*1000;
-        /* Oracle comparison and output serialization are outside the timer. */
-        const unsigned char *answer=bg?(const unsigned char*)fai_result:out;
-        for(size_t j=0;j<LENGTH;j++)
-            if(answer[j]!=fasta[byteoff(pos+j)]) die("region differs from original");
+        /* Return checks, byte comparison and serialization are outside the timer.
+           No FASTA parsing or newline removal occurs for any codec. */
+        if(memcmp(raw,fasta+start,LENGTH)) die("region differs from original");
         if(counts) {
             if(bg) decoded=get_counts();
 #ifdef COUNT_ZSTD
@@ -135,18 +126,16 @@ int main(int argc,char **argv) {
                 decoded=hi-lo;
             }
         }
-        free(fai_result);
         if(q>=0) {
-            printf("{\"query\":%d,\"base_offset\":%llu,\"requested_bytes\":%d,"
-                   "\"fasta_byte_offset\":%llu,\"fasta_span_bytes\":%llu,\"verified\":true,",
-                   q,(unsigned long long)pos,LENGTH,(unsigned long long)start,(unsigned long long)span);
+            printf("{\"query\":%d,\"byte_offset\":%llu,\"requested_bytes\":%d,\"verified\":true,",
+                   q,(unsigned long long)start,LENGTH);
             if(counts) printf("\"decoded_output_bytes\":%llu}\n",(unsigned long long)decoded);
             else printf("\"latency_ms\":%.9f}\n",elapsed);
         }
     }
-    if(fai) fai_destroy(fai);
+    if(bgzf && bgzf_close(bgzf)) die("bgzf_close");
     if(seek) ZSTD_seekable_free(seek);
     if(fd>=0) close(fd);
-    free(arc); free(fasta); free(raw); free(out);
+    free(arc); free(fasta); free(raw);
     return 0;
 }

@@ -1,9 +1,11 @@
 """Stage-1 region benchmark. All performance comparisons are declared in protocol.json."""
 import hashlib,json,math,os,pathlib,shlex,subprocess,sys
+from configurations import CODECS, configuration, clean_environment
 ROOT=pathlib.Path(__file__).resolve().parents[1]
 D=ROOT/".work"
 meta=json.loads((D/"metadata.json").read_text())
 archives=json.loads((D/"archives.json").read_text())
+assert tuple(archives)==CODECS
 protocol=json.loads((ROOT/"protocol.json").read_text())
 z=D/"zstd"; a=D/"aceapex"
 def run(args,**kw):
@@ -31,15 +33,18 @@ meta["region_build_commands"]=build
 meta["protocol"]=protocol
 rows=[json.loads(s) for s in (D/"results.pending.jsonl").read_text().splitlines()]
 for codec,archive in archives.items():
+    config=configuration(codec)
+    api_codec=config["implementation"]
     samples={}
     source=[]
     sample_hashes={}
     for phase in ("latency","amplification"):
-        args=[D/("region_"+phase),codec,archive,D/"chr1.fa",phase]
-        env=os.environ.copy()
+        args=[D/("region_"+phase),api_codec,archive,D/"chr1.fa",phase]
+        env=clean_environment(os.environ)
+        env.update(config.get("reader_environment",{}))
         # Only the separate counter pass preloads instrumentation.
         env.pop("LD_PRELOAD",None)
-        prefix=""
+        prefix=("env "+shlex.join(k+"="+v for k,v in config["reader_environment"].items())+" ") if config.get("reader_environment") else ""
         if phase=="amplification" and codec=="bgzip+htslib":
             env["LD_PRELOAD"]=str(D/"bgzip_counters.so")
             prefix="LD_PRELOAD="+shlex.quote(env["LD_PRELOAD"])+" "
@@ -51,19 +56,19 @@ for codec,archive in archives.items():
         samples[phase]=sample
         source.append(prefix+shlex.join(map(str,args)))
         sample_hashes[target.name]=sha(target)
-    assert [s["base_offset"] for s in samples["latency"]]==[s["base_offset"] for s in samples["amplification"]]
+    assert [s["byte_offset"] for s in samples["latency"]]==[s["byte_offset"] for s in samples["amplification"]]
     times=sorted(s["latency_ms"] for s in samples["latency"])
     assert times[0]>0
     reconstructed=sum(s["decoded_output_bytes"] for s in samples["amplification"])
     assert reconstructed>0, "No decoder output counted: instrumentation is not working"
     archive_record=next(r for r in rows if r["codec"]==codec and r["metric"]=="ratio")
-    common=dict(meta,codec=codec,commands=source,sample_sha256=sample_hashes,
+    common=dict(meta,codec=codec,configuration=config,commands=source,sample_sha256=sample_hashes,
                 archive_sha256=archive_record["archive_sha256"],correctness="pass")
     for metric,value,unit,status in (
         ("region_p50",times[math.ceil(.50*len(times))-1],"ms","declared"),
         ("region_p99",times[math.ceil(.99*len(times))-1],"ms","declared"),
-        ("amplification",reconstructed/(200*16384),"decoded_output_bytes/requested_sequence_bytes",
-         "derived" if codec=="aceapex" else "measured")):
+        ("amplification",reconstructed/(200*16384),"decoded_output_bytes/requested_bytes",
+         "derived" if api_codec=="aceapex" else "measured")):
         rows.append(dict(common,metric=metric,value=value,unit=unit,status=status))
 # Relative predicates are the same for every codec; FAIL does not become SKIP.
 for metric in ("ratio","region_p50","region_p99"):
@@ -72,11 +77,11 @@ for metric in ("ratio","region_p50","region_p99"):
         value=next(r["value"] for r in rows if r["codec"]==codec and r["metric"]==metric)
         relative=value/base
         passed=relative>=0.99 if metric=="ratio" else relative<=1.0
-        rows.append(dict(meta,codec=codec,metric=metric+"_relative_to_bgzip",
+        rows.append(dict(meta,codec=codec,configuration=configuration(codec),metric=metric+"_relative_to_bgzip",
                     value=relative,unit="dimensionless",status="pass" if passed else "fail",
                     predicate=">=0.99" if metric=="ratio" else "<=1.0",
                     commands=["python3 harness/driver.py"],baseline_codec="bgzip+htslib"))
-# Publish only after all three codecs have passed the exactness checks.
+# Publish only after all four configurations have passed the exactness checks.
 final=ROOT/"results.jsonl"
 temp=D/"results.complete.jsonl"
 temp.write_text("".join(json.dumps(r,sort_keys=True)+"\n" for r in rows))

@@ -1,4 +1,4 @@
-name: Stage 1 three-codec verification
+name: Stage 1 API-only four-configuration verification
 on:
   pull_request:
     paths:
@@ -31,7 +31,7 @@ jobs:
           cat benchmark.log
           python3 - <<'PY'
           from pathlib import Path
-          paths=[Path("results.jsonl"),Path("README.md"),*sorted(Path(".work").glob("samples-*.jsonl"))]
+          paths=[Path("results.jsonl"),Path("README.md"),Path(".work/metadata.json"),Path(".work/archives.json"),*sorted(Path(".work").glob("samples-*.jsonl"))]
           for p in paths:
               if p.is_file():
                   print("CABENCH_EVIDENCE_BEGIN "+str(p))
