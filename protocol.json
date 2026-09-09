@@ -1,0 +1,33 @@
+{
+  "stage": 1,
+  "queries": 200,
+  "requested_sequence_bytes": 16384,
+  "seed": 20260909,
+  "warmup_random_queries": 10,
+  "untimed_boundary_checks": 2,
+  "query_coordinates": "0-based chr1 bases; every codec returns the same 16384 sequence bytes; original FASTA preserved in archives",
+  "percentiles": "nearest-rank: sorted[ceil(p*N)-1]",
+  "latency": "library call plus FASTA newline removal; excludes initialization, file loading, oracle verification, output serialization and caller buffer allocation",
+  "archives": "bgzip anonymous Linux memfd; ACEAPEX and zstd malloc buffers; all populated before timing",
+  "decoder_state": "one initialized handle per codec, reused across warmup and all 200 queries",
+  "amplification": "final-output-layer reconstructed FASTA bytes / requested sequence bytes; excludes intermediate ACEAPEX entropy-stream buffers; not a measure of total memory traffic",
+  "amplification_evidence": {
+    "bgzip": "separate pass counts inflate/libdeflate output",
+    "zstd": "separate pass counts ZSTD_decompressStream output",
+    "aceapex": "derived exact reconstructed block span from pinned decoder and actual archive header"
+  },
+  "relative_predicates": {
+    "ratio": "codec / bgzip >= 0.99",
+    "region_p50": "codec / bgzip <= 1.0",
+    "region_p99": "codec / bgzip <= 1.0"
+  },
+  "deferred": [
+    "encode throughput plateau",
+    "full decode throughput plateau",
+    "independence cost c(g)",
+    "batch profiles",
+    "H_alpha",
+    "break-even N"
+  ],
+  "gpu": "n/a: no GPU adapter in stage 1"
+}
