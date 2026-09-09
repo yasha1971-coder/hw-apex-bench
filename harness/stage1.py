@@ -88,7 +88,8 @@ for codec in ("bgzip+htslib","zstd-seekable","aceapex"):
     if codec=="aceapex": run(dec)
     else:
         with open(restored,"wb") as f: run(dec,stdout=f)
-    if digest(restored)!=CORPUS["md5"]: raise RuntimeError(codec+" full restore mismatch")
+    if digest(restored)!=CORPUS["md5"]: raise RuntimeError(codec+" full restore MD5 mismatch")
+    if not __import__("filecmp").cmp(fa,restored,shallow=False): raise RuntimeError(codec+" full restore byte mismatch")
     restored.unlink()
     # Total storage includes every required on-disk sidecar.
     total=arc.stat().st_size+sum(p.stat().st_size for p in sidecars)
@@ -96,7 +97,7 @@ for codec in ("bgzip+htslib","zstd-seekable","aceapex"):
     rows.append(dict(meta,codec=codec,metric="ratio",value=fa.stat().st_size/total,unit="input_bytes/archive_bytes",
         status="declared",archive_bytes=arc.stat().st_size,index_bytes=total-arc.stat().st_size,
         archive_sha256=digest(arc,"sha256"),input_bytes=fa.stat().st_size,
-        full_restore_md5=CORPUS["md5"],full_restore="pass",commands=commands[start:]))
+        full_restore_md5=CORPUS["md5"],full_restore_byte_equal=True,full_restore="pass",commands=commands[start:]))
 meta["build_commands"]=commands.copy()
 (D/"metadata.json").write_text(json.dumps(meta,indent=2)+"\n")
 (D/"archives.json").write_text(json.dumps(archives,indent=2)+"\n")
