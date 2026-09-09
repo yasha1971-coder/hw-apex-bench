@@ -1,0 +1,51 @@
+name: Matched ACEAPEX harness audit
+on:
+  pull_request:
+    paths:
+      - 'harness/audit.py'
+      - '.github/workflows/audit.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  audit:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+      - name: Dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y build-essential git python3 pkg-config libhts-dev tabix zlib1g-dev libzstd-dev
+      - name: Build original three-codec experiment
+        run: bash run.sh > stage1-build.log 2>&1
+      - name: Matched-harness audit and original reproduction
+        run: python3 harness/audit.py > audit.log 2>&1
+      - name: Audit evidence in log
+        if: always()
+        run: |
+          tail -60 stage1-build.log || true
+          tail -100 audit.log || true
+          python3 - <<'PY'
+          from pathlib import Path
+          for name in ("AUDIT_RESULTS.md","audit-results.json","audit-metadata.json","reproduce.log","reproduce-claims.jsonl"):
+              p=Path(".work/audit")/name
+              if p.exists():
+                  print("AUDIT_EVIDENCE_BEGIN "+name)
+                  print(p.read_text(),end="")
+                  print("AUDIT_EVIDENCE_END "+name)
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: matched-harness-audit
+          include-hidden-files: true
+          path: |
+            audit.log
+            stage1-build.log
+            .work/audit/*.json
+            .work/audit/*.jsonl
+            .work/audit/*.md
+            .work/audit/*.log
