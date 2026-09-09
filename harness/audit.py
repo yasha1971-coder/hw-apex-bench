@@ -49,7 +49,7 @@ for name,text in sources.items():
     p=A/(name+".c"); p.write_text(text)
     run(["gcc","-O3",*inc,*ht,"-c",p,"-o",A/(name+".o")])
 # Original libseek is used unchanged, including its quantile indices and one warmup.
-run(["gcc","-O2","-I"+str(source/"src"),"-c",source/"scripts/libseek.c","-o",A/"libseek.o"])
+run(["gcc","-O2","-I"+str(source/"src"),"-c",current/"scripts/libseek.c","-o",A/"libseek.o"])
 objects={}
 for label,src,opt in (("old_O3",source,"-O3"),("old_O2",source,"-O2"),("current_O2",current,"-O2")):
     obj=A/(label+".o")
@@ -136,7 +136,7 @@ claim_lines=[s for s in log.splitlines() if "lowlat_region_p50_ms" in s]
 record=pathlib.Path("/tmp/_p5_records")
 if record.exists(): (A/"reproduce-claims.jsonl").write_bytes(record.read_bytes())
 meta={"benchmark_commit":output(["git","rev-parse","HEAD"]),"original_sha":OLD,"reference_sha":REF,
-      "zstd_sha":output(["git","-C",Z,"rev-parse","HEAD"]),"commands":commands,
+      "zstd_sha":output(["git","-C",Z,"rev-parse","HEAD"]),"libseek_source_sha256":sha(current/"scripts/libseek.c"),"commands":commands,
       "hardware":output(["lscpu"]),"cpu_affinity":[cpu],
       "reproduction_command":"bash ./reproduce_paper5.sh","reproduction_cwd":str(current),
       "reproduction_environment":{k:re[k] for k in ("CHR1","NO_DOWNLOAD","BIN","OUT","ZSTD_INC","LIBRARY_PATH","LD_LIBRARY_PATH")},
