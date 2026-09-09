@@ -1,10 +1,36 @@
 # hw-apex-bench — Compressed Access Benchmark
 
-Stage-1 implementation prepared; **no benchmark results have been measured yet**.
+Stage 1: first three-codec table, ready for review. Later axes remain deferred.
 
-Three codecs: bgzip+htslib, zstd-seekable reference implementation, ACEAPEX at `b1bee4df9c1c0a18d979df2a43947ef1b7adeb57`.
+Run: 2026-09-09T22:37:19.296268+00:00. Benchmark commit: 4f3e3994ce7b10ffbe43ccb7fd1be8b8dd25f2a5.
 
-Run `bash run.sh`. A verified three-codec run generates the first table here.
+Corpus: chr1 hg38 FASTA, MD5 9465e0f0df6e2c6eb39729c39cee5465.
+
+libzstd: *** Zstandard CLI (64-bit) v1.5.7, by Yann Collet ***; htslib: 1.19; bgzip: bgzip (htslib) 1.19.
+C: gcc (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0; C++: g++ (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0.
+ACEAPEX: b1bee4df9c1c0a18d979df2a43947ef1b7adeb57; zstd reference implementation: f8745da6ff1ad1e7bab384bd1f9d742439278e99.
+
+Machine: Linux-6.17.0-1022-azure-x86_64-with-glibc2.39; logical CPUs: 4.
+Hardware details, parameters and commands accompany every measurement in results.jsonl.
+
+| Codec | Ratio incl. indexes | Region p50 ms | Region p99 ms | Output amplification | GPU |
+|---|---:|---:|---:|---:|---|
+| bgzip+htslib | 3.382557 | 0.192881 | 0.321631 | 5.020313 | n/a |
+| zstd-seekable | 3.025774 | 0.080781 | 0.096069 | 1.540146 | n/a |
+| aceapex | 3.674123 | 0.281506 | 0.438469 | 2.005000 | n/a |
+
+Amplification is reconstructed **FASTA output bytes / requested sequence bytes**.
+It excludes intermediate entropy buffers and is not total memory traffic.
+BGZF and zstd use decoder-output counters in a separate pass; ACEAPEX uses the exact block span derived from its pinned source and archive header.
+
+| Codec | Ratio / bgzip >= 0.99 | p50 / bgzip <= 1 | p99 / bgzip <= 1 |
+|---|---|---|---|
+| bgzip+htslib | 1.0000 — PASS | 1.0000 — PASS | 1.0000 — PASS |
+| zstd-seekable | 0.8945 — FAIL | 0.4188 — PASS | 0.2987 — PASS |
+| aceapex | 1.0862 — PASS | 1.4595 — FAIL | 1.3633 — FAIL |
+
+These are descriptive comparisons against the same-machine baseline, not promises that any codec must win.
+A slower codec remains FAIL in this table; correctness failures abort report generation.
 
 ## Reproduce
 
@@ -66,3 +92,4 @@ manifests when their stages are introduced. No URLs or checksums are invented.
 
 `harness/batch.c` and `harness/breakeven.c` will be added after the first table
 is reviewed.
+

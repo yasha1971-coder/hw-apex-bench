@@ -1,0 +1,31 @@
+{
+  "schema": "stage1-truth-receipt-v1",
+  "benchmark_commit": "4f3e3994ce7b10ffbe43ccb7fd1be8b8dd25f2a5",
+  "source_tree": "4375a2fa29010ae980f8a9d0ae9f8db736486c2a",
+  "workflow_run_id": 34413040295,
+  "workflow_url": "https://github.com/yasha1971-coder/hw-apex-bench/actions/runs/34413040295",
+  "workflow_conclusion": "success",
+  "artifact_id": 10128014926,
+  "artifact_zip_sha256": "d6e14692df95e17f9cce9ad1b9909c0c453d03917a0c3463f968c7b21a18a94b",
+  "earlier_verification_run": "https://github.com/yasha1971-coder/hw-apex-bench/actions/runs/34412725187",
+  "corpus_md5": "9465e0f0df6e2c6eb39729c39cee5465",
+  "verification": {
+    "full_byte_identical_restores": 3,
+    "timed_queries_per_codec": 200,
+    "counter_queries_per_codec": 200,
+    "raw_sample_files_sha256_checked": 6,
+    "summary_statistics_recomputed": true,
+    "readme_matches_generator": true
+  },
+  "files": {
+    "results.jsonl": "ce7b088bc321792b7c6bf7d3c45a545e6fbf646a6a7855120923c9f2d08d9b78",
+    "README.md": "9a8e06ae174d1fc1c1e9c1a46bf6c2363ef1bd9cb2bce94588e73798d7402ece",
+    "evidence/stage1-20260909/samples-aceapex-amplification.jsonl": "d69471b8bc29816fe6eababde5273fbdd3d96be76cbe86083847c05e825fb3b8",
+    "evidence/stage1-20260909/samples-aceapex-latency.jsonl": "47d2b3833855c3b1dc53a49a0eff93e62c63983c63f340f95878ea38d141a7d6",
+    "evidence/stage1-20260909/samples-bgzip-htslib-amplification.jsonl": "9e8fe1d89906061c29aa3774aa1ad2e549b9de648d2382a643e5680f249feca5",
+    "evidence/stage1-20260909/samples-bgzip-htslib-latency.jsonl": "8df12b7e8a0aa096a7ec60a6fc82c0cf26fe76c27764f64e14195cd7829a2838",
+    "evidence/stage1-20260909/samples-zstd-seekable-amplification.jsonl": "40bf929f833ff42c74639a6c6ae22493de849bee91be76d953a5ad9ff3ccaecd",
+    "evidence/stage1-20260909/samples-zstd-seekable-latency.jsonl": "8cbd1325dc0e579f936b5c13b84cdf9285624edacc1cb98b56cfe2fc4f2447c2"
+  },
+  "note": "Output-layer amplification excludes intermediate entropy buffers. Comparison FAIL values are retained. This completes stage 1 only."
+}
