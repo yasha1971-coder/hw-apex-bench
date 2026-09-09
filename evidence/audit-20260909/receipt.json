@@ -1,0 +1,23 @@
+{
+  "run_id": 34417102681,
+  "benchmark_commit": "baede64fd37bd087eecf9a94333d8fbf33e23c33",
+  "audit_workflow": "success",
+  "reference_script_exit": 1,
+  "reference_lowlat_ms": 0.151,
+  "recomputed_groups": 39,
+  "repetitions": 3,
+  "verified_timed_samples": 19200,
+  "original_libseek_runs": 21,
+  "evidence_retrieval": "GitHub job logs; timestamps and UTF-8 log-chunk markers removed",
+  "source_reproduction_log_sha256_verified": true,
+  "artifact_id": 10129587124,
+  "artifact_zip_sha256": "3e9444cc14038db166b61ca233edec46e4a2eb9070190e623024bba5945a0011",
+  "files": {
+    "AUDIT_RESULTS.md": "adbcda482d0f19ecde7f2054da67aba6bd05c110666629d00160c8e977ed71d3",
+    "audit-results.json": "cc9d56006166bce042416eabffcb421e56e427e3d786adc5474758e36748d246",
+    "reproduce.log": "ed4fa1340ec1de1ae93515acd215f31931cb8ad62c564af39023d28c76725bcb",
+    "audit-results.json.gz": "0e3f1b9062054b9629ed682941c7f8c80a3fc37f41ca5622303d929094cbcf6e",
+    "reproduce-claims.jsonl": "1cd2cb4be0b261e06ea352a96e702794f609f6cf0ac62d4ebaa81ba2414061bc",
+    "audit-metadata.json": "f7912ded8b5ef4ebbe8657d70b385813f4aac02952fba9e8e82d7843926c9fbf"
+  }
+}
