@@ -1,0 +1,8 @@
+{
+  "chr1_hg38": {
+    "id": "chr1-hg38-fasta",
+    "url": "https://hgdownload.soe.ucsc.edu/goldenPath/hg38/chromosomes/chr1.fa.gz",
+    "md5": "9465e0f0df6e2c6eb39729c39cee5465",
+    "md5_scope": "uncompressed FASTA"
+  }
+}

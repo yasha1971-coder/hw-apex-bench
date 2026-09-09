@@ -1,0 +1,54 @@
+name: Stage 1 three-codec verification
+on:
+  pull_request:
+    paths:
+      - 'run.sh'
+      - 'codecs/**'
+      - 'harness/**'
+      - 'corpora.json'
+      - 'protocol.json'
+      - '.github/workflows/stage1.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  benchmark:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+      - name: Install build and htslib dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y build-essential git python3 pkg-config libhts-dev tabix zlib1g-dev
+      - name: Run the first-table stage
+        run: bash run.sh > benchmark.log 2>&1
+      - name: Show complete log
+        if: always()
+        run: |
+          cat benchmark.log
+          python3 - <<'PY'
+          from pathlib import Path
+          paths=[Path("results.jsonl"),Path("README.md"),*sorted(Path(".work").glob("samples-*.jsonl"))]
+          for p in paths:
+              if p.is_file():
+                  print("CABENCH_EVIDENCE_BEGIN "+str(p))
+                  print(p.read_text(),end="")
+                  print("CABENCH_EVIDENCE_END "+str(p))
+          PY
+      - name: Preserve evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: stage1-evidence
+          if-no-files-found: error
+          include-hidden-files: true
+          path: |
+            results.jsonl
+            README.md
+            benchmark.log
+            .work/metadata.json
+            .work/archives.json
+            .work/samples-*.jsonl
