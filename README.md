@@ -118,30 +118,35 @@ See [batch protocol and upstream attribution](BATCH_METHOD.md).
 
 ## Independence cost c(g): strict baseline contract
 
-Only the independent block size may change. Corpus bytes, encoder revision, level, effective search/entropy parameters, threads and algorithmic modes must otherwise be fixed. A CLI flag match alone is insufficient if another algorithmic mode changes with block size.
-`c(g) = 100 × (1 − ratio_g / ratio_whole)`. Below, the two ratios and their operational loss are measured; strict c(g) is n/a until the one-parameter contract is demonstrated. Historical JSONL metric independence_cost_percent means the operational comparison, not a retrospectively certified strict c(g).
+Only the independent block size may change. Corpus bytes, encoder revision, level, effective search/entropy parameters and threads must otherwise be fixed. Deterministic encoder behavior caused by the changed boundary is part of the treatment.
+`c(g) = 100 × (1 − ratio_g / ratio_whole)`. Every ratio uses input bytes divided by complete output-file bytes. Historical JSONL metric independence_cost_percent means the operational comparison; strict claims are explicit rows with their own provenance.
 
 | Codec/profile | block bytes | ratio g | ratio whole | Operational loss % | Strict c(g) | Encoder threads requested |
 |---|---:|---:|---:|---:|---|---:|
 | bgzip+htslib | 65536 | 3.382558 | 3.395854 | 0.391536 | n/a | 1 |
-| zstd-seekable | 16384 | 3.025774 | 3.259852 | 7.180634 | n/a | 1 |
+| zstd-seekable | 16384 | 3.025774 | 3.259852 | 7.180634 | 7.180634 | 1 |
 | aceapex-interactive | 16384 | 3.658493 | 3.722310 | 1.714456 | n/a | 1 |
 | aceapex-dense | 262144 | 3.780646 | 3.793413 | 0.336554 | n/a | 1 |
+| ACEAPEX default @ 7216280 (ace-core, declared) | 16384 | 3.141615 | 3.193722 | — | 1.631528 | 8 |
 
 bgzip+htslib: n/a: gzip and bgzip use different encoder implementations; no same-encoder block-size-only baseline measured.
 
-zstd-seekable: n/a: level -3 is matched, but equal effective compression parameters beyond frame size have not been verified.
+aceapex-interactive: n/a for this profile/SHA: the strict supplied pair uses the default configuration at 7216280, not `--profile interactive` at 1b13df3.
 
-aceapex-interactive: n/a: per-block first-MiB flattening eligibility changes; its separate effect has not been isolated.
+aceapex-dense: n/a for this profile/SHA: no block-size-only dense pair has been supplied.
 
-aceapex-dense: n/a: per-block first-MiB flattening eligibility changes; its separate effect has not been isolated.
+ACEAPEX default @ 7216280 uses supplied ace-core file sizes: 80829622 bytes at 16 KiB and 79510864 bytes for one whole-input block. It is marked declared because compiler/libzstd versions, archive hashes and a byte-equal restore receipt were not supplied. The GitHub runner reproduction is a separate machine result and currently fails on the one-block encode; see [the strict reproduction contract](STRICT_CG.md).
+
+Address table component: 15499 blocks × 64 bytes = **991936 bytes**, or
+**1.227%** of the complete 80829622-byte 16 KiB archive. This is shown
+separately from payload compression and is included in archive c(g).
 
 zstd bases are explicitly zstd 1.5.7 level -3, one continuous frame versus independent 16384-byte frames. The user-reported historical version is 1.4.8 with 6.68%; version change is a hypothesis for the difference, not an attribution established by a matched rerun.
-Neither 0.41% nor 6.68% is a target. Any new strict c(g) must come from its own verified pair and keep that pair’s ratios and commands; a historical value cannot replace a different pair’s measured loss.
+The historical 0.410% is payload-only: it excludes the AET header and 64-byte `BlockOffsets` entry per block. The cross-codec archive ratio includes both. Neither 0.410% nor 6.68% is an acceptance target.
 
 Whole-file means one continuous member/frame/output block, not an unlimited match window. gzip retains its 32 KiB backward-distance limit; this does not make its blocks independent. bgzip adds independent member boundaries, index/headers and implementation differences.
 ACEAPEX uses the same pinned binary on both sides. ACEAPEX_BS changes from 16384 or 262144 to 253935557. MIN_MATCH was cleared and defaults to 0. LIT_CHUNK/FSE_CHUNK remain 65536/4096 (interactive) or 1048576/32768 (dense).
-Important correction: flattening is not disabled for the entire large block. The actual guard is local_pos < (1u<<20), with c_off <= local_pos. Eligible non-rep matches in its first MiB may be flattened; later matches are not. Each small block resets local_pos. The separate size impact of this difference is unmeasured; isolated c(g) is n/a for these ACEAPEX pairs.
+Important source-layout correction: at 7216280 the guarded root `aceapex_depth.cpp` is not the source compiled by `make`; the Makefile builds `src/aceapex_main.cpp`, whose corresponding read lacks the `local_pos < ORIGIN_CAP` guard. At 1b13df3 the measured profile pairs use the guarded source. The two revisions and configurations are not interchangeable.
 The old JSONL baseline caveat used the inaccurate shorthand “skips chain flattening above 1 MiB”. Raw historical evidence is preserved; this report and INDEPENDENCE_AUDIT.md correct that interpretation. No observed archive size or ratio has changed.
 
 ### Both compression commands for every row
@@ -308,4 +313,3 @@ subsequent three-machine experiment. Those remain deferred.
 The previous controlled audit is reproduced at benchmark commit
 `baede64fd37bd087eecf9a94333d8fbf33e23c33`; its script depends on that historical
 harness and original ACEAPEX pin.
-

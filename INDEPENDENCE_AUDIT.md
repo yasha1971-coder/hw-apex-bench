@@ -4,23 +4,25 @@
 
 For strict c(g), only the independent block size may change. Encoder revision,
 corpus, effective search and entropy settings, threads and algorithmic modes
-must otherwise be fixed. Current percentages below remain measured operational
-losses, not certified strict c(g). The report shows strict c(g) as n/a, with a
-reason for every configuration. Historical raw JSONL is not rewritten.
+must otherwise be fixed. Deterministic behavior caused by moving the block
+boundary belongs to the treatment. Current profile percentages below remain
+measured operational losses. zstd 1.5.7 has a matched strict pair; the supplied
+ACEAPEX default pair at 7216280 is recorded separately from the 1b13df3 profiles.
+Historical raw JSONL is not rewritten.
 
 New runs distinguish `configuration_ratio_loss_percent` (measured number) from
 `independence_cost_strict_percent` (null / n/a until a matched baseline exists).
 
-For zstd the current pair is explicitly **zstd 1.5.7 -3, one continuous frame**
-versus **zstd 1.5.7 -3, independent 16 KiB frames**. Equal effective parameters
-beyond the frame size still need verification; a shared level alone is not that
-verification. The user identifies the historical 6.68% version as **1.4.8**.
-The version difference is a possible cause, not a measured explanation. A
-matched version comparison is needed before attributing the 0.50 percentage-point delta.
+For zstd the strict pair is explicitly **zstd 1.5.7 -3, one continuous frame**
+versus **zstd 1.5.7 -3, independent 16 KiB frames**. Complete output files are
+counted, including the seek table. Its measured strict c(g) is 7.180634%. The
+historical 6.68% used 1.4.8; that is a separate point, not a replacement.
 
-The historical 0.41% must be recomputed from its verified pair. If a new matched
-experiment produces it, it belongs to that new pair and provenance, not as a
-replacement for the existing 1.714456% operational observation.
+The historical ACEAPEX 0.410% is payload-only. It excludes the 68-byte header
+and the 64-byte `BlockOffsets` record per block, so it is not the cross-codec
+archive ratio. Supplied complete-file sizes yield 1.631528% for ACEAPEX default
+at 7216280 on ace-core. It does not replace the 1.714456% operational observation
+for `--profile interactive` at 1b13df3.
 
 Measured source: `1a406213bb4d46b3cfbf26b10f11ce5bd1986be8`.
 ACEAPEX: `1b13df34ac8e839dd3232b59bc59560d689a435a`.
@@ -32,11 +34,47 @@ Corpus: chr1 hg38, 253935557 bytes, MD5 `9465e0f0df6e2c6eb39729c39cee5465`.
 | zstd seekable / one frame | 3.025773934700 | 3.259851962595 | 83924167 | 77897880 | 7.180634 |
 | ACEAPEX interactive | 3.658493060599 | 3.722310445126 | 69409878 | 68219876 | 1.714456 |
 | ACEAPEX dense | 3.780646221619 | 3.793413104059 | 67167236 | 66941182 | 0.336554 |
+| ACEAPEX default @ 7216280 (ace-core, declared) | 3.141615050482 | 3.193721514584 | 80829622 | 79510864 | 1.631528 |
 
 `loss = 100 * (1 - ratio_blocked / ratio_continuous)`.
 All four additional continuous-baseline restores passed exact byte comparison.
 Full recorded commands, including restores, are in results.jsonl and
 [the measured raw records](evidence/independence-20260910/independence-raw.json).
+
+The added ace-core point was supplied with exact file sizes and commands, but
+without compiler/libzstd versions, archive hashes or a byte-equal restore
+receipt. It is therefore displayed as declared provenance, not as independently
+reproduced by this repository's runner.
+
+## Supplied strict ACEAPEX pair
+
+```bash
+git checkout 7216280298baa976152f6978ea1ac9c7b65fc4ad
+make
+ACEAPEX_BS=16384     ./aceapex c --in chr1.fa --out /tmp/g16.aet  --threads 8
+ACEAPEX_BS=253935557 ./aceapex c --in chr1.fa --out /tmp/gall.aet --threads 8
+stat -c%s /tmp/g16.aet /tmp/gall.aet
+```
+
+Only `ACEAPEX_BS` changes. “Whole” means one block spanning all 253935557 input
+bytes; block logic remains active. The 16 KiB file contains 15499 table records,
+991936 bytes in total, which is 1.227% of the complete 80829622-byte archive.
+
+The source tree at this SHA contains two divergent encoder files. Root
+`aceapex_depth.cpp` has the `local_pos < ORIGIN_CAP` guard, but the Makefile sets
+`SRCS = src/aceapex_main.cpp`; the compiled source lacks that guard at the
+corresponding `origin[src_local]` read. The GitHub runner's one-block command
+exits with signal 11. PR #9 records stack limit, memory, compiler and an ASan
+rerun rather than treating the guarded, unbuilt root file as proof about the
+Makefile binary.
+
+The ASan rerun used GCC 13.3.0, libzstd 1.5.5, a 16 MiB stack limit, 15 GiB RAM
+and 3 GiB swap. It reports a read fault in worker T3 at
+`src/aceapex_main.cpp:243`, the unguarded `origin[src_local]` read, called by
+`worker_func -> encode_file -> do_compress`. The stack-size hypothesis is
+therefore falsified on this runner. The ace-core archive sizes remain useful as
+a declared machine observation, but the runner cannot certify this revision's
+one-block pair as reproducible.
 
 ## Expanded compression commands
 
