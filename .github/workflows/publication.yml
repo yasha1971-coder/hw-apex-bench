@@ -1,0 +1,27 @@
+name: Committed publication integrity
+on:
+  pull_request:
+    paths:
+      - 'results.jsonl'
+      - 'README.md'
+      - 'BATCH_RESULTS.md'
+      - 'METHOD.md'
+      - 'web/**'
+      - 'harness/**'
+      - 'evidence/published-results.json'
+      - 'evidence/stage5-20260910/**'
+      - '.github/workflows/publication.yml'
+      - '.github/workflows/pages.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - name: Reject corrupted evidence
+        run: python3 -m unittest discover -s web -p test_publication.py -v
+      - name: Verify committed snapshot and generate homepage
+        run: python3 web/build.py .pages/index.html
