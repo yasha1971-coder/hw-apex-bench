@@ -1,5 +1,5 @@
 {
-  "stage": 3,
+  "stage": 4,
   "queries": 200,
   "seed": 20260909,
   "warmup_random_queries": 10,
@@ -21,10 +21,10 @@
     "region_p99": "codec / bgzip <= 1.0"
   },
   "deferred": [
-    "encode throughput plateau",
-    "full decode throughput plateau"
+    "three-machine comparison",
+    "GPU path"
   ],
-  "gpu": "n/a: no GPU adapter in stage 1",
+  "gpu": "n/a in CPU run: GPU results require a separate measured path with card, driver, CUDA, code SHA, corpus/stream hashes, block size and exactness receipt",
   "protocol_version": "api-bytes-v3",
   "requested_bytes": 16384,
   "configurations": [
