@@ -6,9 +6,10 @@ ROOT=pathlib.Path(__file__).resolve().parents[1]
 def validate(rows):
     index={}
     if not rows: raise ValueError("No measurements")
-    if len({r["run_id"] for r in rows})!=1 or len({r["benchmark_commit"] for r in rows})!=1:
+    core=[r for r in rows if r["codec"] in CODECS]
+    if len({r["run_id"] for r in core})!=1 or len({r["benchmark_commit"] for r in core})!=1:
         raise ValueError("Mixed runs or benchmark commits")
-    for r in rows:
+    for r in core:
         if r["metric"] not in (*METRICS,"ratio_relative_to_bgzip","region_p50_relative_to_bgzip","region_p99_relative_to_bgzip"): continue
         k=(r["codec"],r["metric"])
         if k in index: raise ValueError("Duplicate metric")
@@ -32,9 +33,9 @@ def validate(rows):
         # Separate strict c(g) claims may intentionally use another pinned
         # revision/configuration. Their validator lives in independence.py.
         if r["codec"] not in CODECS:
-            if r["metric"] != "independence_cost_strict_percent":
-                raise ValueError("Unexpected external codec row")
-            continue
+            if r["metric"] == "independence_cost_strict_percent" or r.get("evidence_group") in ("zstd-frame-frontier","gpu-declared"):
+                continue
+            raise ValueError("Unexpected external codec row")
         if r["configuration"]!=configuration(r["codec"]): raise ValueError("Configuration mismatch")
         if r["versions"]["aceapex_sha"]!=ACE_SHA: raise ValueError("Wrong ACEAPEX revision")
         if r["metric"].startswith("region_") and r["protocol"]["protocol_version"]!="api-bytes-v3": raise ValueError("Wrong timer protocol")
@@ -92,6 +93,10 @@ def render(rows):
     if meta.get("stage",1)>=4:
         from throughput import render_throughput
         text += ["",render_throughput(rows)]
+    if meta.get("stage",1)>=5:
+        from zstd_frontier import render_zstd_frontier
+        from gpu import render_gpu
+        text += ["",render_zstd_frontier(rows),"",render_gpu(rows)]
     text+=["","These are descriptive comparisons against the same-machine baseline, not promises that any codec must win.",
            "A slower codec remains FAIL in this table; correctness failures abort report generation.",
            "",(ROOT/"METHOD.md").read_text()]

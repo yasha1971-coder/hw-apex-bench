@@ -30,11 +30,11 @@ def checkout(url, ref, target):
         raise RuntimeError("dependency has modified tracked sources")
     return sha
 if sys.argv[1:]==["--help"]:
-    print("bash run.sh : build three codecs (four configurations), verify chr1 MD5/full restore, API regions, batch/H_alpha/break-even, c(g), and plateau throughput. --stage N stops after stage N; N=1..4.")
+    print("bash run.sh : build three codecs (four configurations), verify chr1 MD5/full restore, API regions, batch/H_alpha/break-even, c(g), plateau throughput, zstd frame frontier, and declared GPU evidence. --stage N stops after stage N; N=1..5.")
     sys.exit(0)
 args=sys.argv[1:]
-if args not in ([], ["--stage","1"], ["--stage","2"], ["--stage","3"], ["--stage","4"]): raise SystemExit("Usage: ./run.sh [--stage 1|2|3|4]")
-stage=int(args[1]) if args else 4
+if args not in ([], ["--stage","1"], ["--stage","2"], ["--stage","3"], ["--stage","4"], ["--stage","5"]): raise SystemExit("Usage: ./run.sh [--stage 1|2|3|4|5]")
+stage=int(args[1]) if args else 5
 for tool in ("git","make","gcc","g++","pkg-config","bgzip"):
     if not shutil.which(tool): raise SystemExit("Missing dependency: "+tool+"; see README prerequisites")
 run(["pkg-config","--exists","htslib"])
