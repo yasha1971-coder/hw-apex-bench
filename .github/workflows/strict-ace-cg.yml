@@ -23,7 +23,29 @@ jobs:
       - name: Run block-size-only pair
         run: |
           set -o pipefail
+          ulimit -s
+          free -h
+          g++ --version
+          pkg-config --modversion libzstd
           python3 harness/aceapex_strict_cg.py | tee strict-ace-cg.log
+      - name: Diagnose one-block encoder with ASan
+        if: failure()
+        continue-on-error: true
+        run: |
+          set -o pipefail
+          cd .work/strict-ace-cg/aceapex
+          make clean
+          make -j2 \
+            CXXFLAGS='-std=c++17 -O1 -g -fsanitize=address -fno-omit-frame-pointer' \
+            LD='g++ -fsanitize=address'
+          env \
+            -u LIT_CHUNK -u FSE_CHUNK -u MIN_MATCH -u HASH_LOG \
+            -u LIT_LEVEL -u LIT_LANES -u NO_REP -u DIRECT8 \
+            -u FORCED_BIN -u ACEAPEX_DUMP -u LD_PRELOAD \
+            ASAN_OPTIONS=abort_on_error=1:detect_leaks=0 \
+            ACEAPEX_BS=253935557 \
+            ./aceapex c --in ../chr1.fa --out ../gall-asan.aet --threads 8 \
+            2>&1 | tee ../asan.log
       - name: Show exact archive accounting
         if: always()
         run: |
@@ -31,6 +53,7 @@ jobs:
           test -f .work/strict-ace-cg/failure.json && cat .work/strict-ace-cg/failure.json || true
           test -f .work/strict-ace-cg/g16-compress.log && cat .work/strict-ace-cg/g16-compress.log || true
           test -f .work/strict-ace-cg/gall-compress.log && cat .work/strict-ace-cg/gall-compress.log || true
+          test -f .work/strict-ace-cg/asan.log && cat .work/strict-ace-cg/asan.log || true
       - name: Preserve strict claim evidence
         if: always()
         uses: actions/upload-artifact@v4
@@ -46,3 +69,4 @@ jobs:
             .work/strict-ace-cg/*-compress.log
             .work/strict-ace-cg/*-decompress.log
             .work/strict-ace-cg/build.log
+            .work/strict-ace-cg/asan.log
