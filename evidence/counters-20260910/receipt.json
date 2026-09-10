@@ -7,7 +7,6 @@
   "checks": "sample hashes, exact README regeneration, ratio/quantiles/amplification recomputation and shared trace verified; four-stream chunk counts additionally checked against archive geometry on runner",
   "transport": "workflow timestamp prefixes and BOM chunk markers removed",
   "sha256": {
-    "README.md": "826e75864de2bc8f78741274b7e9c88ac268f512348141c067ce23d23d1cd6af",
     "results.jsonl": "7b198e5ef4f8a42053f8d56b14439df3ab000f13bdf5b338be03246317fb1f53",
     "evidence/counters-20260910/archives.json": "2957fa8f48fb21cfaacf512277446f0d8443ae4fe2785e7e67fb3b2299a84144",
     "evidence/counters-20260910/counter-sources.json": "c28bb20e5351c2c2478b66db420400bc23a4fae82b16e64320e79fbd03d05903",
@@ -19,6 +18,8 @@
     "evidence/counters-20260910/samples-bgzip-htslib-amplification.jsonl": "a4f41293531e8f764ac98d62ff73a7868ce3811ad9c100ca0eed5bd9f454215c",
     "evidence/counters-20260910/samples-bgzip-htslib-latency.jsonl": "3ae4246fa41164a7aba72ebf47e904263603034398c16ed598c0263536863f65",
     "evidence/counters-20260910/samples-zstd-seekable-amplification.jsonl": "f49ee56288843244ba91e4fc64e2956e92221047f504fdfd456f0fd1873c79a2",
-    "evidence/counters-20260910/samples-zstd-seekable-latency.jsonl": "a0e74f1e6fc242eb585e578f6efc1e0477f064108a0bed684ea2496e75448ae3"
-  }
+    "evidence/counters-20260910/samples-zstd-seekable-latency.jsonl": "a0e74f1e6fc242eb585e578f6efc1e0477f064108a0bed684ea2496e75448ae3",
+    "evidence/counters-20260910/README.runner.md": "826e75864de2bc8f78741274b7e9c88ac268f512348141c067ce23d23d1cd6af"
+  },
+  "report_note": "The runner README is preserved by hash as README.runner.md. Current README differs only by the missing block header/delimiter added to the relative-comparison table; all numbers unchanged."
 }

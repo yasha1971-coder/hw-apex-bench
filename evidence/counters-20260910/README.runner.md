@@ -32,8 +32,8 @@ Amplification is **actual decoded chunk bytes / requested bytes** in a separate 
 BGZF counts decompressed blocks, zstd counts reconstructed blocks within frames (including buffered output), and ACEAPEX counts the decoded chunks of all four streams. Raw per-stream totals are retained.
 BGZF block=65536 is its size ceiling; actual blocks may be shorter. Different block limits are explicit, not normalized away.
 
-| Codec | block (bytes) | Ratio / bgzip >= 0.99 | p50 / bgzip <= 1 | p99 / bgzip <= 1 |
-|---|---:|---|---|---|
+| Codec | Ratio / bgzip >= 0.99 | p50 / bgzip <= 1 | p99 / bgzip <= 1 |
+|---|---|---|---|
 | bgzip+htslib | 65536 | 1.0000 — PASS | 1.0000 — PASS | 1.0000 — PASS |
 | zstd-seekable | 16384 | 0.8945 — FAIL | 0.6020 — PASS | 0.3877 — PASS |
 | aceapex-interactive | 16384 | 1.0816 — PASS | 1.3329 — FAIL | 1.1772 — FAIL |

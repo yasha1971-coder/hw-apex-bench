@@ -60,8 +60,8 @@ def render(rows):
            "Amplification is **actual decoded chunk bytes / requested bytes** in a separate counted pass.",
            "BGZF counts decompressed blocks, zstd counts reconstructed blocks within frames (including buffered output), and ACEAPEX counts the decoded chunks of all four streams. Raw per-stream totals are retained.",
            "BGZF block=65536 is its size ceiling; actual blocks may be shorter. Different block limits are explicit, not normalized away.",
-           "", "| Codec | Ratio / bgzip >= 0.99 | p50 / bgzip <= 1 | p99 / bgzip <= 1 |",
-           "|---|---|---|---|"]
+           "", "| Codec | block (bytes) | Ratio / bgzip >= 0.99 | p50 / bgzip <= 1 | p99 / bgzip <= 1 |",
+           "|---|---:|---|---|---|"]
     for c in CODECS:
         cols=[]
         for m in ("ratio","region_p50","region_p99"):
