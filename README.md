@@ -1,8 +1,8 @@
 # hw-apex-bench — Compressed Access Benchmark
 
-Stage 1: three codecs, four configurations, API-only byte-region table for review. Later axes remain deferred.
+Three codecs, four configurations. API-only byte regions; implemented axes and review boundary are below.
 
-Run: 2026-09-10T00:46:30.324481+00:00. Benchmark commit: a271700bf22e84224d1a1b300bb817a2f3634fb3.
+Run: 2026-09-10T01:04:32.803016+00:00. Benchmark commit: bc8e5a99fe6878e3a7e0f70cc432cb12e193f9e0.
 
 Corpus: chr1 hg38 FASTA, MD5 9465e0f0df6e2c6eb39729c39cee5465.
 
@@ -11,6 +11,7 @@ C: gcc (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0; C++: g++ (Ubuntu 13.3.0-6ubuntu2
 ACEAPEX: 1b13df34ac8e839dd3232b59bc59560d689a435a; zstd reference implementation: f8745da6ff1ad1e7bab384bd1f9d742439278e99.
 
 Machine: Linux-6.17.0-1022-azure-x86_64-with-glibc2.39; logical CPUs: 4.
+Model name:                              AMD EPYC 7763 64-Core Processor
 Hardware details, parameters and commands accompany every measurement in results.jsonl.
 
 | Configuration | Level | Encoder threads | Block/frame bytes | LIT bytes | FSE bytes |
@@ -22,10 +23,10 @@ Hardware details, parameters and commands accompany every measurement in results
 
 | Codec / profile | block (bytes) | Ratio incl. indexes | Region p50 ms | Region p99 ms | Output amplification | GPU |
 |---|---:|---:|---:|---:|---:|---|
-| bgzip+htslib | 65536 | 3.382558 | 0.116708 | 0.243865 | 4.821094 | n/a |
-| zstd-seekable | 16384 | 3.025774 | 0.070261 | 0.094537 | 2.000000 | n/a |
-| aceapex-interactive | 16384 | 3.658493 | 0.155560 | 0.287075 | 6.216250 | n/a |
-| aceapex-dense | 262144 | 3.780646 | 1.355178 | 2.536542 | 83.431872 | n/a |
+| bgzip+htslib | 65536 | 3.382558 | 0.117187 | 0.244023 | 4.821094 | n/a |
+| zstd-seekable | 16384 | 3.025774 | 0.070370 | 0.104574 | 2.000000 | n/a |
+| aceapex-interactive | 16384 | 3.658493 | 0.158624 | 0.289628 | 6.216250 | n/a |
+| aceapex-dense | 262144 | 3.780646 | 1.353232 | 2.535737 | 83.431872 | n/a |
 
 Every timed operation reads the same 16,384 original-file bytes. No FASTA parsing is timed.
 Amplification is **actual decoded chunk bytes / requested bytes** in a separate counted pass.
@@ -35,9 +36,78 @@ BGZF block=65536 is its size ceiling; actual blocks may be shorter. Different bl
 | Codec | block (bytes) | Ratio / bgzip >= 0.99 | p50 / bgzip <= 1 | p99 / bgzip <= 1 |
 |---|---:|---|---|---|
 | bgzip+htslib | 65536 | 1.0000 — PASS | 1.0000 — PASS | 1.0000 — PASS |
-| zstd-seekable | 16384 | 0.8945 — FAIL | 0.6020 — PASS | 0.3877 — PASS |
-| aceapex-interactive | 16384 | 1.0816 — PASS | 1.3329 — FAIL | 1.1772 — FAIL |
-| aceapex-dense | 262144 | 1.1177 — PASS | 11.6117 — FAIL | 10.4014 — FAIL |
+| zstd-seekable | 16384 | 0.8945 — FAIL | 0.6005 — PASS | 0.4285 — PASS |
+| aceapex-interactive | 16384 | 1.0816 — PASS | 1.3536 — FAIL | 1.1869 — FAIL |
+| aceapex-dense | 262144 | 1.1177 — PASS | 11.5476 — FAIL | 10.3914 — FAIL |
+
+## Break-even
+
+Model: independent 16 KiB reads at their measured p50 versus one full library decode.
+Smallest integer N with N × p50 > full decode time; full time is the median of five verified decodes after one warmup.
+This is a derived intersection, not an observed batch crossover or a plateau-throughput measurement.
+
+| Codec/profile | block bytes | Full decode ms | Region p50 ms | Break-even N | Full decoder threads |
+|---|---:|---:|---:|---:|---|
+| bgzip+htslib | 65536 | 433.359050 | 0.117187 | 3699 | single decoder thread |
+| zstd-seekable | 16384 | 523.952488 | 0.070370 | 7446 | single decoder thread |
+| aceapex-interactive | 16384 | 219.723264 | 0.158624 | 1386 | 8 reconstruction workers; literal workers up to 8; API has no thread argument |
+| aceapex-dense | 262144 | 176.135476 | 1.353232 | 131 | 8 reconstruction workers; literal workers up to 8; API has no thread argument |
+
+## Batch
+
+Identical raw-byte requests across codecs; every native batch answer matches the single-call result and original bytes.
+Three repetitions, median duration; loop/native order alternates. Native batch threads are requested explicitly.
+H_alpha counts request-start blocks (actual GZI boundaries for BGZF, declared frame/block boundaries otherwise). H_alpha_16k is also recorded.
+bgzip and zstd-seekable native batch: n/a (no native batch API in these adapters); their measured method is loop.
+All N=100/600/2000/5000 points are in [BATCH_RESULTS.md](BATCH_RESULTS.md). The fixed N=5000 view follows.
+
+| Codec/profile | block bytes | Access profile | method | N | H_alpha bits | Threads requested | ranges/s | / bgzip loop |
+|---|---:|---|---|---:|---:|---:|---:|---|
+| bgzip+htslib | 65536 | uniform | loop | 5000 | 11.285997 | 1 | 7274.140 | 1.000 PASS |
+| zstd-seekable | 16384 | uniform | loop | 5000 | 11.993736 | 1 | 14913.914 | 2.050 PASS |
+| aceapex-interactive | 16384 | uniform | loop | 5000 | 11.993736 | 1 | 5785.304 | 0.795 FAIL |
+| aceapex-interactive | 16384 | uniform | batch | 5000 | 11.993736 | 4 | 26950.322 | 3.705 PASS |
+| aceapex-dense | 262144 | uniform | loop | 5000 | 9.774765 | 1 | 628.045 | 0.086 FAIL |
+| aceapex-dense | 262144 | uniform | batch | 5000 | 9.774765 | 4 | 32190.077 | 4.425 PASS |
+| bgzip+htslib | 65536 | sorted | loop | 5000 | 11.285997 | 1 | 12858.892 | 1.000 PASS |
+| zstd-seekable | 16384 | sorted | loop | 5000 | 11.993736 | 1 | 15980.975 | 1.243 PASS |
+| aceapex-interactive | 16384 | sorted | loop | 5000 | 11.993736 | 1 | 6102.199 | 0.475 FAIL |
+| aceapex-interactive | 16384 | sorted | batch | 5000 | 11.993736 | 4 | 27111.508 | 2.108 PASS |
+| aceapex-dense | 262144 | sorted | loop | 5000 | 9.774765 | 1 | 634.640 | 0.049 FAIL |
+| aceapex-dense | 262144 | sorted | batch | 5000 | 9.774765 | 4 | 31989.789 | 2.488 PASS |
+| bgzip+htslib | 65536 | clustered | loop | 5000 | 10.387857 | 1 | 7610.407 | 1.000 PASS |
+| zstd-seekable | 16384 | clustered | loop | 5000 | 11.574142 | 1 | 14718.325 | 1.934 PASS |
+| aceapex-interactive | 16384 | clustered | loop | 5000 | 11.574142 | 1 | 6065.674 | 0.797 FAIL |
+| aceapex-interactive | 16384 | clustered | batch | 5000 | 11.574142 | 4 | 50999.866 | 6.701 PASS |
+| aceapex-dense | 262144 | clustered | loop | 5000 | 8.688593 | 1 | 630.455 | 0.083 FAIL |
+| aceapex-dense | 262144 | clustered | batch | 5000 | 8.688593 | 4 | 44265.070 | 5.816 PASS |
+| bgzip+htslib | 65536 | hot-set | loop | 5000 | 6.155796 | 1 | 7030.084 | 1.000 PASS |
+| zstd-seekable | 16384 | hot-set | loop | 5000 | 5.987822 | 1 | 15468.923 | 2.200 PASS |
+| aceapex-interactive | 16384 | hot-set | loop | 5000 | 5.987822 | 1 | 6063.478 | 0.863 FAIL |
+| aceapex-interactive | 16384 | hot-set | batch | 5000 | 5.987822 | 4 | 545627.023 | 77.613 PASS |
+| aceapex-dense | 262144 | hot-set | loop | 5000 | 5.951825 | 1 | 692.639 | 0.099 FAIL |
+| aceapex-dense | 262144 | hot-set | batch | 5000 | 5.951825 | 4 | 124686.858 | 17.736 PASS |
+| bgzip+htslib | 65536 | zipf1.2 | loop | 5000 | 5.244881 | 1 | 9091.640 | 1.000 PASS |
+| zstd-seekable | 16384 | zipf1.2 | loop | 5000 | 6.808726 | 1 | 15954.848 | 1.755 PASS |
+| aceapex-interactive | 16384 | zipf1.2 | loop | 5000 | 6.808726 | 1 | 6768.610 | 0.744 FAIL |
+| aceapex-interactive | 16384 | zipf1.2 | batch | 5000 | 6.808726 | 4 | 103419.838 | 11.375 PASS |
+| aceapex-dense | 262144 | zipf1.2 | loop | 5000 | 3.787940 | 1 | 756.903 | 0.083 FAIL |
+| aceapex-dense | 262144 | zipf1.2 | batch | 5000 | 3.787940 | 4 | 33727.583 | 3.710 PASS |
+
+The full matrix keeps native batch and loop visible separately; a failed speed relation remains FAIL.
+The prior EPYC 9V74 4.78× result remains unchanged in [historical evidence](evidence/audit-20260909/FAILS.md).
+
+| Historical machine | Reported batch/loop | Evidence status |
+|---|---:|---|
+| EPYC 9V74 | 4.78× | measured, preserved original log; below its upstream 5× predicate |
+| EPYC 4344P | 13.3× | declared by user; matching command/configuration/receipt unavailable here |
+
+These historical points use another protocol and are not inputs to current pass/fail.
+The old parse checks without numpy are interpreted as skipped (missing dependency); the original FAIL text is preserved.
+
+Stop for review here. c(g), plateau throughput and the subsequent three-machine run remain deferred.
+See [batch protocol and upstream attribution](BATCH_METHOD.md).
+
 
 These are descriptive comparisons against the same-machine baseline, not promises that any codec must win.
 A slower codec remains FAIL in this table; correctness failures abort report generation.
@@ -51,7 +121,8 @@ Only dependency clones inside this benchmark are used.
 
 `run.sh` builds three codec adapters, compresses four configurations, verifies
 all four full restores by MD5 and direct byte comparison, then measures and
-verifies every region. `results.jsonl` has one row per measurement or relation,
+verifies every region, followed by batch/H_alpha and break-even by default.
+Use `./run.sh --stage 1` to stop after regions. `results.jsonl` has one row per measurement or relation,
 with configuration, commands, library/compiler versions, hardware, archive SHA-256
 and corpus provenance. `python3 harness/report.py` regenerates this README.
 Raw latency and amplification samples are retained separately with SHA-256 hashes.
@@ -126,9 +197,10 @@ another machine. The former results and matched-harness investigation remain in
 [AUDIT.md](AUDIT.md) and [historical evidence](evidence/).
 [Exact FAIL output from EPYC 9V74](evidence/audit-20260909/FAILS.md) is preserved.
 
-Stop after this first-table review. Encode/full-decode plateau sweeps, independence
-cost c(g), batch profiles, H_alpha and break-even remain deferred. The previous
-controlled audit is reproduced at benchmark commit
+Batch, H_alpha and break-even are implemented as specified in [BATCH_METHOD.md](BATCH_METHOD.md).
+The review stop now precedes independence cost c(g), encode/full-decode plateau
+throughput, and the subsequent three-machine experiment. Those remain deferred.
+The previous controlled audit is reproduced at benchmark commit
 `baede64fd37bd087eecf9a94333d8fbf33e23c33`; its script depends on that historical
 harness and original ACEAPEX pin.
 
