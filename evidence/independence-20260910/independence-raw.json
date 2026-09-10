@@ -1,0 +1,761 @@
+[
+  {
+    "stage": 3,
+    "run_id": "2026-09-10T06:29:06.811389+00:00",
+    "corpus": {
+      "id": "chr1-hg38-fasta",
+      "url": "https://hgdownload.soe.ucsc.edu/goldenPath/hg38/chromosomes/chr1.fa.gz",
+      "md5": "9465e0f0df6e2c6eb39729c39cee5465",
+      "md5_scope": "uncompressed FASTA"
+    },
+    "versions": {
+      "aceapex_sha": "1b13df34ac8e839dd3232b59bc59560d689a435a",
+      "zstd_sha": "f8745da6ff1ad1e7bab384bd1f9d742439278e99",
+      "zstd_ref": "v1.5.7",
+      "libzstd": "*** Zstandard CLI (64-bit) v1.5.7, by Yann Collet ***",
+      "htslib": "1.19",
+      "bgzip": "bgzip (htslib) 1.19",
+      "compiler_c": "gcc (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0",
+      "compiler_cxx": "g++ (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0"
+    },
+    "hardware": {
+      "platform": "Linux-6.17.0-1022-azure-x86_64-with-glibc2.39",
+      "machine": "x86_64",
+      "logical_cpus": 4,
+      "lscpu": "Architecture:                            x86_64\nCPU op-mode(s):                          32-bit, 64-bit\nAddress sizes:                           48 bits physical, 57 bits virtual\nByte Order:                              Little Endian\nCPU(s):                                  4\nOn-line CPU(s) list:                     0-3\nVendor ID:                               GenuineIntel\nModel name:                              INTEL(R) XEON(R) PLATINUM 8573C\nCPU family:                              6\nModel:                                   207\nThread(s) per core:                      2\nCore(s) per socket:                      2\nSocket(s):                               1\nStepping:                                2\nCPU(s) scaling MHz:                      139%\nCPU max MHz:                             2300.0000\nCPU min MHz:                             800.0000\nBogoMIPS:                                4600.00\nFlags:                                   fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush mmx fxsr sse sse2 ss ht syscall nx pdpe1gb rdtscp lm constant_tsc rep_good nopl xtopology tsc_reliable nonstop_tsc cpuid aperfmperf tsc_known_freq pni pclmulqdq vmx ssse3 fma cx16 pcid sse4_1 sse4_2 x2apic movbe popcnt tsc_deadline_timer aes xsave avx f16c rdrand hypervisor lahf_lm abm 3dnowprefetch tpr_shadow ept vpid ept_ad fsgsbase tsc_adjust bmi1 hle avx2 smep bmi2 erms invpcid rtm avx512f avx512dq rdseed adx smap avx512ifma clflushopt clwb avx512cd sha_ni avx512bw avx512vl xsaveopt xsavec xgetbv1 xsaves user_shstk avx_vnni avx512_bf16 vnmi avx512vbmi umip waitpkg avx512_vbmi2 gfni vaes vpclmulqdq avx512_vnni avx512_bitalg avx512_vpopcntdq la57 rdpid cldemote movdiri movdir64b fsrm serialize tsxldtrk ibt amx_bf16 avx512_fp16 amx_tile amx_int8 arch_capabilities\nVirtualization:                          VT-x\nHypervisor vendor:                       Microsoft\nVirtualization type:                     full\nL1d cache:                               96 KiB (2 instances)\nL1i cache:                               64 KiB (2 instances)\nL2 cache:                                4 MiB (2 instances)\nL3 cache:                                260 MiB (1 instance)\nNUMA node(s):                            1\nNUMA node0 CPU(s):                       0-3\nVulnerability Gather data sampling:      Not affected\nVulnerability Ghostwrite:                Not affected\nVulnerability Indirect target selection: Mitigation; Aligned branch/return thunks\nVulnerability Itlb multihit:             Not affected\nVulnerability L1tf:                      Not affected\nVulnerability Mds:                       Not affected\nVulnerability Meltdown:                  Not affected\nVulnerability Mmio stale data:           Not affected\nVulnerability Old microcode:             Not affected\nVulnerability Reg file data sampling:    Not affected\nVulnerability Retbleed:                  Vulnerable\nVulnerability Spec rstack overflow:      Not affected\nVulnerability Spec store bypass:         Vulnerable\nVulnerability Spectre v1:                Mitigation; usercopy/swapgs barriers and __user pointer sanitization\nVulnerability Spectre v2:                Mitigation; Retpolines; STIBP disabled; RSB filling; PBRSB-eIBRS Not affected; BHI Retpoline\nVulnerability Srbds:                     Not affected\nVulnerability Tsa:                       Not affected\nVulnerability Tsx async abort:           Not affected\nVulnerability Vmscape:                   Not affected"
+    },
+    "environment": {
+      "codec_overrides": "cleared; CLI --profile selects encode settings; per-row reader_environment selects API settings"
+    },
+    "benchmark_commit": "1a406213bb4d46b3cfbf26b10f11ce5bd1986be8",
+    "ratio_tolerance": 0.01,
+    "encode_requested_threads": 1,
+    "note": "Negative cost is retained if measured. No threshold is fitted to expected 0.41% or 6.68%.",
+    "build_commands": [
+      "pkg-config --exists htslib",
+      "git clone --no-checkout https://github.com/facebook/zstd.git /home/runner/work/hw-apex-bench/hw-apex-bench/.work/zstd",
+      "git -C /home/runner/work/hw-apex-bench/hw-apex-bench/.work/zstd fetch --depth=1 origin v1.5.7",
+      "git -C /home/runner/work/hw-apex-bench/hw-apex-bench/.work/zstd checkout --detach FETCH_HEAD",
+      "git clone --no-checkout https://github.com/yasha1971-coder/aceapex.git /home/runner/work/hw-apex-bench/hw-apex-bench/.work/aceapex",
+      "git -C /home/runner/work/hw-apex-bench/hw-apex-bench/.work/aceapex fetch --depth=1 origin 1b13df34ac8e839dd3232b59bc59560d689a435a",
+      "git -C /home/runner/work/hw-apex-bench/hw-apex-bench/.work/aceapex checkout --detach FETCH_HEAD",
+      "bash codecs/zstd_seekable.sh build /home/runner/work/hw-apex-bench/hw-apex-bench/.work 4",
+      "bash codecs/aceapex.sh build /home/runner/work/hw-apex-bench/hw-apex-bench/.work",
+      "bash codecs/bgzip.sh compress /home/runner/work/hw-apex-bench/hw-apex-bench/.work/chr1.fa /home/runner/work/hw-apex-bench/hw-apex-bench/.work/chr1.fa.gz",
+      "bash codecs/bgzip.sh restore /home/runner/work/hw-apex-bench/hw-apex-bench/.work/chr1.fa.gz",
+      "bash codecs/zstd_seekable.sh compress /home/runner/work/hw-apex-bench/hw-apex-bench/.work /home/runner/work/hw-apex-bench/hw-apex-bench/.work/chr1.fa",
+      "bash codecs/zstd_seekable.sh restore /home/runner/work/hw-apex-bench/hw-apex-bench/.work /home/runner/work/hw-apex-bench/hw-apex-bench/.work/chr1.fa.zst",
+      "bash codecs/aceapex.sh compress /home/runner/work/hw-apex-bench/hw-apex-bench/.work /home/runner/work/hw-apex-bench/hw-apex-bench/.work/chr1.fa /home/runner/work/hw-apex-bench/hw-apex-bench/.work/chr1-interactive.aet interactive",
+      "bash codecs/aceapex.sh restore /home/runner/work/hw-apex-bench/hw-apex-bench/.work /home/runner/work/hw-apex-bench/hw-apex-bench/.work/chr1-interactive.aet /home/runner/work/hw-apex-bench/hw-apex-bench/.work/restore.fa interactive",
+      "bash codecs/aceapex.sh compress /home/runner/work/hw-apex-bench/hw-apex-bench/.work /home/runner/work/hw-apex-bench/hw-apex-bench/.work/chr1.fa /home/runner/work/hw-apex-bench/hw-apex-bench/.work/chr1-dense.aet dense",
+      "bash codecs/aceapex.sh restore /home/runner/work/hw-apex-bench/hw-apex-bench/.work /home/runner/work/hw-apex-bench/hw-apex-bench/.work/chr1-dense.aet /home/runner/work/hw-apex-bench/hw-apex-bench/.work/restore.fa dense"
+    ],
+    "counter_source_sha256": {
+      "aceapex/src/aceapex_main.cpp": "e650c2ce8b4644c12ba48e7efa639dc78816bfd05bbb3dca9963cc22373bef39",
+      "aceapex/src/aceapex_api.cpp": "ec0f459bb93f51dd34fe2ee3153de5b98f3f7c981c6dad07cc7534bf95fde4b6",
+      "counter-aceapex/aceapex_main.cpp": "0b09a062d6128867499a3cc06fd097a3da0654dfe0f84cc83d67b0fcc6fa4a79",
+      "counter-aceapex/aceapex_api.cpp": "b18240ca928d5c7bd9964c1d297a94a1a3dc0dc2d6ab7325d98c0180c4e5d976",
+      "zstd/lib/decompress/zstd_decompress.c": "029580818b7e9cd38d9d07c63516b00ceaa943ffcfbd099fc5ccbe3628fa362f",
+      "counter-zstd/lib/decompress/zstd_decompress.c": "cd4545ba036d8002b7e72844d026e38338a3eba6628b7a037f1aa3ad3469a680"
+    },
+    "region_build_commands": [
+      "g++ -O3 -std=c++17 -pthread -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/aceapex/src -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/zstd/lib -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/zstd/lib/common -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/zstd/contrib/seekable_format -DXXH_NAMESPACE=ZSTD_ -c /home/runner/work/hw-apex-bench/hw-apex-bench/.work/aceapex/src/aceapex_api.cpp -o /home/runner/work/hw-apex-bench/hw-apex-bench/.work/aceapex_api.o",
+      "gcc -O3 -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/aceapex/src -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/zstd/lib -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/zstd/lib/common -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/zstd/contrib/seekable_format -DXXH_NAMESPACE=ZSTD_ -c /home/runner/work/hw-apex-bench/hw-apex-bench/.work/zstd/contrib/seekable_format/zstdseek_decompress.c -o /home/runner/work/hw-apex-bench/hw-apex-bench/.work/seek.o",
+      "gcc -O2 -shared -fPIC /home/runner/work/hw-apex-bench/hw-apex-bench/harness/bgzip_counters.c -ldl -o /home/runner/work/hw-apex-bench/hw-apex-bench/.work/bgzip_counters.so",
+      "g++ -O3 -std=c++17 -pthread -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/aceapex/src -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/zstd/lib -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/zstd/lib/common -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/zstd/contrib/seekable_format -DXXH_NAMESPACE=ZSTD_ -c /home/runner/work/hw-apex-bench/hw-apex-bench/.work/counter-aceapex/aceapex_api.cpp -o /home/runner/work/hw-apex-bench/hw-apex-bench/.work/aceapex_count.o",
+      "make -C /home/runner/work/hw-apex-bench/hw-apex-bench/.work/counter-zstd/lib -j4 libzstd.a",
+      "gcc -O3 -Wall -Wextra -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/aceapex/src -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/zstd/lib -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/zstd/lib/common -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/zstd/contrib/seekable_format -DXXH_NAMESPACE=ZSTD_ -lhts -c /home/runner/work/hw-apex-bench/hw-apex-bench/harness/region_latency.c -o /home/runner/work/hw-apex-bench/hw-apex-bench/.work/latency.o",
+      "g++ /home/runner/work/hw-apex-bench/hw-apex-bench/.work/latency.o /home/runner/work/hw-apex-bench/hw-apex-bench/.work/aceapex_api.o /home/runner/work/hw-apex-bench/hw-apex-bench/.work/seek.o /home/runner/work/hw-apex-bench/hw-apex-bench/.work/zstd/lib/libzstd.a -pthread -ldl -lhts -o /home/runner/work/hw-apex-bench/hw-apex-bench/.work/region_latency",
+      "gcc -O3 -Wall -Wextra -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/aceapex/src -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/zstd/lib -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/zstd/lib/common -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/zstd/contrib/seekable_format -DXXH_NAMESPACE=ZSTD_ -DCOUNT_DECODER -lhts -c /home/runner/work/hw-apex-bench/hw-apex-bench/harness/region_latency.c -o /home/runner/work/hw-apex-bench/hw-apex-bench/.work/amplification.o",
+      "g++ /home/runner/work/hw-apex-bench/hw-apex-bench/.work/amplification.o /home/runner/work/hw-apex-bench/hw-apex-bench/.work/aceapex_count.o /home/runner/work/hw-apex-bench/hw-apex-bench/.work/seek.o /home/runner/work/hw-apex-bench/hw-apex-bench/.work/counter-zstd/lib/libzstd.a -pthread -ldl -lhts -o /home/runner/work/hw-apex-bench/hw-apex-bench/.work/region_amplification",
+      "gcc -O3 -Wall -Wextra -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/aceapex/src -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/zstd/lib -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/zstd/lib/common -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/zstd/contrib/seekable_format -DXXH_NAMESPACE=ZSTD_ -lhts -c /home/runner/work/hw-apex-bench/hw-apex-bench/harness/batch.c -o /home/runner/work/hw-apex-bench/hw-apex-bench/.work/batch.o",
+      "g++ /home/runner/work/hw-apex-bench/hw-apex-bench/.work/batch.o /home/runner/work/hw-apex-bench/hw-apex-bench/.work/aceapex_api.o /home/runner/work/hw-apex-bench/hw-apex-bench/.work/seek.o /home/runner/work/hw-apex-bench/hw-apex-bench/.work/zstd/lib/libzstd.a -pthread -lhts -o /home/runner/work/hw-apex-bench/hw-apex-bench/.work/batch",
+      "gcc -O3 -Wall -Wextra -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/aceapex/src -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/zstd/lib -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/zstd/lib/common -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/zstd/contrib/seekable_format -DXXH_NAMESPACE=ZSTD_ -lhts -c /home/runner/work/hw-apex-bench/hw-apex-bench/harness/breakeven.c -o /home/runner/work/hw-apex-bench/hw-apex-bench/.work/breakeven.o",
+      "g++ /home/runner/work/hw-apex-bench/hw-apex-bench/.work/breakeven.o /home/runner/work/hw-apex-bench/hw-apex-bench/.work/aceapex_api.o /home/runner/work/hw-apex-bench/hw-apex-bench/.work/seek.o /home/runner/work/hw-apex-bench/hw-apex-bench/.work/zstd/lib/libzstd.a -pthread -lhts -o /home/runner/work/hw-apex-bench/hw-apex-bench/.work/breakeven"
+    ],
+    "protocol": {
+      "stage": 2,
+      "queries": 200,
+      "seed": 20260909,
+      "warmup_random_queries": 10,
+      "untimed_boundary_checks": 2,
+      "query_coordinates": "0-based original-file byte offsets; identical 16384-byte requests for every row",
+      "percentiles": "nearest-rank: sorted[ceil(p*N)-1]",
+      "latency": "API-only: bgzf_useek + bgzf_read, ZSTD_seekable_decompress, or aceapex_decompress_region; excludes FASTA processing, return checks, verification, initialization, loading, caller allocation and serialization",
+      "archives": "bgzip anonymous Linux memfd, .gzi loaded once; ACEAPEX and zstd malloc buffers",
+      "decoder_state": "one initialized handle per codec, reused across warmup and all 200 queries",
+      "amplification": "actual decoded chunk bytes / requested bytes; count BGZF block expansion, zstd block expansion inside frames including buffered output, and ACEAPEX chunks in all four streams",
+      "amplification_evidence": {
+        "bgzip": "inflate/libdeflate output counters in separate pass",
+        "zstd": "actual decompressed block sizes at streaming and one-shot decode sites in a pinned-source counting copy",
+        "aceapex": "actual selected raw chunk sizes, separately for literals/offsets/lengths/commands, in a pinned-source counting copy"
+      },
+      "relative_predicates": {
+        "ratio": "codec / bgzip >= 0.99",
+        "region_p50": "codec / bgzip <= 1.0",
+        "region_p99": "codec / bgzip <= 1.0"
+      },
+      "deferred": [
+        "encode throughput plateau",
+        "full decode throughput plateau",
+        "independence cost c(g)"
+      ],
+      "gpu": "n/a: no GPU adapter in stage 1",
+      "protocol_version": "api-bytes-v3",
+      "requested_bytes": 16384,
+      "configurations": [
+        "bgzip+htslib",
+        "zstd-seekable",
+        "aceapex-interactive",
+        "aceapex-dense"
+      ],
+      "batch": {
+        "sizes": [
+          100,
+          600,
+          2000,
+          5000
+        ],
+        "profiles": [
+          "uniform",
+          "sorted",
+          "clustered",
+          "hot-set",
+          "zipf1.2"
+        ],
+        "repeats": 3,
+        "native_threads_requested": 1,
+        "H_alpha": "Shannon entropy of request-start blocks using row block size",
+        "hot_set": "64 unique canonical 16 KiB blocks selected once per run; identical raw-byte traces across codecs",
+        "method": "loop for all codecs; native batch additionally measured for both ACEAPEX profiles",
+        "loop_threads": 1,
+        "comparison_contract": "loop1-vs-batch1"
+      },
+      "break_even": {
+        "full_decode_warmups": 1,
+        "full_decode_samples": 5,
+        "full_decode_statistic": "median",
+        "formula": "floor(full_decode_ms / region_p50_ms) + 1",
+        "meaning": "derived independent-read intersection; not batch crossover; no plateau throughput claim"
+      }
+    },
+    "codec": "bgzip+htslib",
+    "configuration": {
+      "implementation": "bgzip+htslib",
+      "block": 65536,
+      "block_note": "BGZF uncompressed size ceiling; actual blocks may be shorter",
+      "level": 6,
+      "encoder_requested_threads": 1,
+      "api": "bgzf_useek + bgzf_read",
+      "required_indexes": [
+        ".gzi"
+      ]
+    },
+    "metric": "independence_cost_percent",
+    "value": 0.39153590626986867,
+    "unit": "percent",
+    "status": "measured",
+    "formula": "100 * (1 - ratio_g / ratio_whole)",
+    "ratio_g": 3.3825582764886026,
+    "ratio_whole": 3.395854265261699,
+    "independent_archive_bytes": 75072042,
+    "whole_archive_bytes": 74778108,
+    "input_bytes": 253935557,
+    "retained_ratio_fraction": 0.9960846409373013,
+    "baseline_configuration": {
+      "format": "gzip, one member",
+      "level": 6,
+      "threads_requested": 1,
+      "version": "gzip 1.12",
+      "caveat": "Operational bgzip/gzip comparison: implementations and match search differ; not a pure block-reset ablation."
+    },
+    "whole_archive_sha256": "3a25bffbc90fecd0a99a0ae2bb8e7b19419f2dba2ec8306af9fd980e5594eec0",
+    "archive_sha256": "c41f38ce60f54fc0560e53c60a7ba645a6946d5827cdc0d21f6a2acf96bb4784",
+    "correctness": "pass",
+    "full_restore_byte_equal": true,
+    "commands": [
+      "bash codecs/bgzip.sh compress /home/runner/work/hw-apex-bench/hw-apex-bench/.work/chr1.fa /home/runner/work/hw-apex-bench/hw-apex-bench/.work/chr1.fa.gz",
+      "bash codecs/bgzip.sh restore /home/runner/work/hw-apex-bench/hw-apex-bench/.work/chr1.fa.gz",
+      "gzip -n -6 -c /home/runner/work/hw-apex-bench/hw-apex-bench/.work/chr1.fa > /home/runner/work/hw-apex-bench/hw-apex-bench/.work/whole-bgzip-htslib.archive",
+      "gzip -d -c /home/runner/work/hw-apex-bench/hw-apex-bench/.work/whole-bgzip-htslib.archive > /home/runner/work/hw-apex-bench/hw-apex-bench/.work/whole-restored.fa"
+    ]
+  },
+  {
+    "stage": 3,
+    "run_id": "2026-09-10T06:29:06.811389+00:00",
+    "corpus": {
+      "id": "chr1-hg38-fasta",
+      "url": "https://hgdownload.soe.ucsc.edu/goldenPath/hg38/chromosomes/chr1.fa.gz",
+      "md5": "9465e0f0df6e2c6eb39729c39cee5465",
+      "md5_scope": "uncompressed FASTA"
+    },
+    "versions": {
+      "aceapex_sha": "1b13df34ac8e839dd3232b59bc59560d689a435a",
+      "zstd_sha": "f8745da6ff1ad1e7bab384bd1f9d742439278e99",
+      "zstd_ref": "v1.5.7",
+      "libzstd": "*** Zstandard CLI (64-bit) v1.5.7, by Yann Collet ***",
+      "htslib": "1.19",
+      "bgzip": "bgzip (htslib) 1.19",
+      "compiler_c": "gcc (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0",
+      "compiler_cxx": "g++ (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0"
+    },
+    "hardware": {
+      "platform": "Linux-6.17.0-1022-azure-x86_64-with-glibc2.39",
+      "machine": "x86_64",
+      "logical_cpus": 4,
+      "lscpu": "Architecture:                            x86_64\nCPU op-mode(s):                          32-bit, 64-bit\nAddress sizes:                           48 bits physical, 57 bits virtual\nByte Order:                              Little Endian\nCPU(s):                                  4\nOn-line CPU(s) list:                     0-3\nVendor ID:                               GenuineIntel\nModel name:                              INTEL(R) XEON(R) PLATINUM 8573C\nCPU family:                              6\nModel:                                   207\nThread(s) per core:                      2\nCore(s) per socket:                      2\nSocket(s):                               1\nStepping:                                2\nCPU(s) scaling MHz:                      139%\nCPU max MHz:                             2300.0000\nCPU min MHz:                             800.0000\nBogoMIPS:                                4600.00\nFlags:                                   fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush mmx fxsr sse sse2 ss ht syscall nx pdpe1gb rdtscp lm constant_tsc rep_good nopl xtopology tsc_reliable nonstop_tsc cpuid aperfmperf tsc_known_freq pni pclmulqdq vmx ssse3 fma cx16 pcid sse4_1 sse4_2 x2apic movbe popcnt tsc_deadline_timer aes xsave avx f16c rdrand hypervisor lahf_lm abm 3dnowprefetch tpr_shadow ept vpid ept_ad fsgsbase tsc_adjust bmi1 hle avx2 smep bmi2 erms invpcid rtm avx512f avx512dq rdseed adx smap avx512ifma clflushopt clwb avx512cd sha_ni avx512bw avx512vl xsaveopt xsavec xgetbv1 xsaves user_shstk avx_vnni avx512_bf16 vnmi avx512vbmi umip waitpkg avx512_vbmi2 gfni vaes vpclmulqdq avx512_vnni avx512_bitalg avx512_vpopcntdq la57 rdpid cldemote movdiri movdir64b fsrm serialize tsxldtrk ibt amx_bf16 avx512_fp16 amx_tile amx_int8 arch_capabilities\nVirtualization:                          VT-x\nHypervisor vendor:                       Microsoft\nVirtualization type:                     full\nL1d cache:                               96 KiB (2 instances)\nL1i cache:                               64 KiB (2 instances)\nL2 cache:                                4 MiB (2 instances)\nL3 cache:                                260 MiB (1 instance)\nNUMA node(s):                            1\nNUMA node0 CPU(s):                       0-3\nVulnerability Gather data sampling:      Not affected\nVulnerability Ghostwrite:                Not affected\nVulnerability Indirect target selection: Mitigation; Aligned branch/return thunks\nVulnerability Itlb multihit:             Not affected\nVulnerability L1tf:                      Not affected\nVulnerability Mds:                       Not affected\nVulnerability Meltdown:                  Not affected\nVulnerability Mmio stale data:           Not affected\nVulnerability Old microcode:             Not affected\nVulnerability Reg file data sampling:    Not affected\nVulnerability Retbleed:                  Vulnerable\nVulnerability Spec rstack overflow:      Not affected\nVulnerability Spec store bypass:         Vulnerable\nVulnerability Spectre v1:                Mitigation; usercopy/swapgs barriers and __user pointer sanitization\nVulnerability Spectre v2:                Mitigation; Retpolines; STIBP disabled; RSB filling; PBRSB-eIBRS Not affected; BHI Retpoline\nVulnerability Srbds:                     Not affected\nVulnerability Tsa:                       Not affected\nVulnerability Tsx async abort:           Not affected\nVulnerability Vmscape:                   Not affected"
+    },
+    "environment": {
+      "codec_overrides": "cleared; CLI --profile selects encode settings; per-row reader_environment selects API settings"
+    },
+    "benchmark_commit": "1a406213bb4d46b3cfbf26b10f11ce5bd1986be8",
+    "ratio_tolerance": 0.01,
+    "encode_requested_threads": 1,
+    "note": "Negative cost is retained if measured. No threshold is fitted to expected 0.41% or 6.68%.",
+    "build_commands": [
+      "pkg-config --exists htslib",
+      "git clone --no-checkout https://github.com/facebook/zstd.git /home/runner/work/hw-apex-bench/hw-apex-bench/.work/zstd",
+      "git -C /home/runner/work/hw-apex-bench/hw-apex-bench/.work/zstd fetch --depth=1 origin v1.5.7",
+      "git -C /home/runner/work/hw-apex-bench/hw-apex-bench/.work/zstd checkout --detach FETCH_HEAD",
+      "git clone --no-checkout https://github.com/yasha1971-coder/aceapex.git /home/runner/work/hw-apex-bench/hw-apex-bench/.work/aceapex",
+      "git -C /home/runner/work/hw-apex-bench/hw-apex-bench/.work/aceapex fetch --depth=1 origin 1b13df34ac8e839dd3232b59bc59560d689a435a",
+      "git -C /home/runner/work/hw-apex-bench/hw-apex-bench/.work/aceapex checkout --detach FETCH_HEAD",
+      "bash codecs/zstd_seekable.sh build /home/runner/work/hw-apex-bench/hw-apex-bench/.work 4",
+      "bash codecs/aceapex.sh build /home/runner/work/hw-apex-bench/hw-apex-bench/.work",
+      "bash codecs/bgzip.sh compress /home/runner/work/hw-apex-bench/hw-apex-bench/.work/chr1.fa /home/runner/work/hw-apex-bench/hw-apex-bench/.work/chr1.fa.gz",
+      "bash codecs/bgzip.sh restore /home/runner/work/hw-apex-bench/hw-apex-bench/.work/chr1.fa.gz",
+      "bash codecs/zstd_seekable.sh compress /home/runner/work/hw-apex-bench/hw-apex-bench/.work /home/runner/work/hw-apex-bench/hw-apex-bench/.work/chr1.fa",
+      "bash codecs/zstd_seekable.sh restore /home/runner/work/hw-apex-bench/hw-apex-bench/.work /home/runner/work/hw-apex-bench/hw-apex-bench/.work/chr1.fa.zst",
+      "bash codecs/aceapex.sh compress /home/runner/work/hw-apex-bench/hw-apex-bench/.work /home/runner/work/hw-apex-bench/hw-apex-bench/.work/chr1.fa /home/runner/work/hw-apex-bench/hw-apex-bench/.work/chr1-interactive.aet interactive",
+      "bash codecs/aceapex.sh restore /home/runner/work/hw-apex-bench/hw-apex-bench/.work /home/runner/work/hw-apex-bench/hw-apex-bench/.work/chr1-interactive.aet /home/runner/work/hw-apex-bench/hw-apex-bench/.work/restore.fa interactive",
+      "bash codecs/aceapex.sh compress /home/runner/work/hw-apex-bench/hw-apex-bench/.work /home/runner/work/hw-apex-bench/hw-apex-bench/.work/chr1.fa /home/runner/work/hw-apex-bench/hw-apex-bench/.work/chr1-dense.aet dense",
+      "bash codecs/aceapex.sh restore /home/runner/work/hw-apex-bench/hw-apex-bench/.work /home/runner/work/hw-apex-bench/hw-apex-bench/.work/chr1-dense.aet /home/runner/work/hw-apex-bench/hw-apex-bench/.work/restore.fa dense"
+    ],
+    "counter_source_sha256": {
+      "aceapex/src/aceapex_main.cpp": "e650c2ce8b4644c12ba48e7efa639dc78816bfd05bbb3dca9963cc22373bef39",
+      "aceapex/src/aceapex_api.cpp": "ec0f459bb93f51dd34fe2ee3153de5b98f3f7c981c6dad07cc7534bf95fde4b6",
+      "counter-aceapex/aceapex_main.cpp": "0b09a062d6128867499a3cc06fd097a3da0654dfe0f84cc83d67b0fcc6fa4a79",
+      "counter-aceapex/aceapex_api.cpp": "b18240ca928d5c7bd9964c1d297a94a1a3dc0dc2d6ab7325d98c0180c4e5d976",
+      "zstd/lib/decompress/zstd_decompress.c": "029580818b7e9cd38d9d07c63516b00ceaa943ffcfbd099fc5ccbe3628fa362f",
+      "counter-zstd/lib/decompress/zstd_decompress.c": "cd4545ba036d8002b7e72844d026e38338a3eba6628b7a037f1aa3ad3469a680"
+    },
+    "region_build_commands": [
+      "g++ -O3 -std=c++17 -pthread -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/aceapex/src -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/zstd/lib -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/zstd/lib/common -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/zstd/contrib/seekable_format -DXXH_NAMESPACE=ZSTD_ -c /home/runner/work/hw-apex-bench/hw-apex-bench/.work/aceapex/src/aceapex_api.cpp -o /home/runner/work/hw-apex-bench/hw-apex-bench/.work/aceapex_api.o",
+      "gcc -O3 -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/aceapex/src -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/zstd/lib -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/zstd/lib/common -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/zstd/contrib/seekable_format -DXXH_NAMESPACE=ZSTD_ -c /home/runner/work/hw-apex-bench/hw-apex-bench/.work/zstd/contrib/seekable_format/zstdseek_decompress.c -o /home/runner/work/hw-apex-bench/hw-apex-bench/.work/seek.o",
+      "gcc -O2 -shared -fPIC /home/runner/work/hw-apex-bench/hw-apex-bench/harness/bgzip_counters.c -ldl -o /home/runner/work/hw-apex-bench/hw-apex-bench/.work/bgzip_counters.so",
+      "g++ -O3 -std=c++17 -pthread -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/aceapex/src -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/zstd/lib -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/zstd/lib/common -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/zstd/contrib/seekable_format -DXXH_NAMESPACE=ZSTD_ -c /home/runner/work/hw-apex-bench/hw-apex-bench/.work/counter-aceapex/aceapex_api.cpp -o /home/runner/work/hw-apex-bench/hw-apex-bench/.work/aceapex_count.o",
+      "make -C /home/runner/work/hw-apex-bench/hw-apex-bench/.work/counter-zstd/lib -j4 libzstd.a",
+      "gcc -O3 -Wall -Wextra -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/aceapex/src -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/zstd/lib -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/zstd/lib/common -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/zstd/contrib/seekable_format -DXXH_NAMESPACE=ZSTD_ -lhts -c /home/runner/work/hw-apex-bench/hw-apex-bench/harness/region_latency.c -o /home/runner/work/hw-apex-bench/hw-apex-bench/.work/latency.o",
+      "g++ /home/runner/work/hw-apex-bench/hw-apex-bench/.work/latency.o /home/runner/work/hw-apex-bench/hw-apex-bench/.work/aceapex_api.o /home/runner/work/hw-apex-bench/hw-apex-bench/.work/seek.o /home/runner/work/hw-apex-bench/hw-apex-bench/.work/zstd/lib/libzstd.a -pthread -ldl -lhts -o /home/runner/work/hw-apex-bench/hw-apex-bench/.work/region_latency",
+      "gcc -O3 -Wall -Wextra -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/aceapex/src -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/zstd/lib -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/zstd/lib/common -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/zstd/contrib/seekable_format -DXXH_NAMESPACE=ZSTD_ -DCOUNT_DECODER -lhts -c /home/runner/work/hw-apex-bench/hw-apex-bench/harness/region_latency.c -o /home/runner/work/hw-apex-bench/hw-apex-bench/.work/amplification.o",
+      "g++ /home/runner/work/hw-apex-bench/hw-apex-bench/.work/amplification.o /home/runner/work/hw-apex-bench/hw-apex-bench/.work/aceapex_count.o /home/runner/work/hw-apex-bench/hw-apex-bench/.work/seek.o /home/runner/work/hw-apex-bench/hw-apex-bench/.work/counter-zstd/lib/libzstd.a -pthread -ldl -lhts -o /home/runner/work/hw-apex-bench/hw-apex-bench/.work/region_amplification",
+      "gcc -O3 -Wall -Wextra -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/aceapex/src -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/zstd/lib -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/zstd/lib/common -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/zstd/contrib/seekable_format -DXXH_NAMESPACE=ZSTD_ -lhts -c /home/runner/work/hw-apex-bench/hw-apex-bench/harness/batch.c -o /home/runner/work/hw-apex-bench/hw-apex-bench/.work/batch.o",
+      "g++ /home/runner/work/hw-apex-bench/hw-apex-bench/.work/batch.o /home/runner/work/hw-apex-bench/hw-apex-bench/.work/aceapex_api.o /home/runner/work/hw-apex-bench/hw-apex-bench/.work/seek.o /home/runner/work/hw-apex-bench/hw-apex-bench/.work/zstd/lib/libzstd.a -pthread -lhts -o /home/runner/work/hw-apex-bench/hw-apex-bench/.work/batch",
+      "gcc -O3 -Wall -Wextra -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/aceapex/src -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/zstd/lib -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/zstd/lib/common -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/zstd/contrib/seekable_format -DXXH_NAMESPACE=ZSTD_ -lhts -c /home/runner/work/hw-apex-bench/hw-apex-bench/harness/breakeven.c -o /home/runner/work/hw-apex-bench/hw-apex-bench/.work/breakeven.o",
+      "g++ /home/runner/work/hw-apex-bench/hw-apex-bench/.work/breakeven.o /home/runner/work/hw-apex-bench/hw-apex-bench/.work/aceapex_api.o /home/runner/work/hw-apex-bench/hw-apex-bench/.work/seek.o /home/runner/work/hw-apex-bench/hw-apex-bench/.work/zstd/lib/libzstd.a -pthread -lhts -o /home/runner/work/hw-apex-bench/hw-apex-bench/.work/breakeven"
+    ],
+    "protocol": {
+      "stage": 2,
+      "queries": 200,
+      "seed": 20260909,
+      "warmup_random_queries": 10,
+      "untimed_boundary_checks": 2,
+      "query_coordinates": "0-based original-file byte offsets; identical 16384-byte requests for every row",
+      "percentiles": "nearest-rank: sorted[ceil(p*N)-1]",
+      "latency": "API-only: bgzf_useek + bgzf_read, ZSTD_seekable_decompress, or aceapex_decompress_region; excludes FASTA processing, return checks, verification, initialization, loading, caller allocation and serialization",
+      "archives": "bgzip anonymous Linux memfd, .gzi loaded once; ACEAPEX and zstd malloc buffers",
+      "decoder_state": "one initialized handle per codec, reused across warmup and all 200 queries",
+      "amplification": "actual decoded chunk bytes / requested bytes; count BGZF block expansion, zstd block expansion inside frames including buffered output, and ACEAPEX chunks in all four streams",
+      "amplification_evidence": {
+        "bgzip": "inflate/libdeflate output counters in separate pass",
+        "zstd": "actual decompressed block sizes at streaming and one-shot decode sites in a pinned-source counting copy",
+        "aceapex": "actual selected raw chunk sizes, separately for literals/offsets/lengths/commands, in a pinned-source counting copy"
+      },
+      "relative_predicates": {
+        "ratio": "codec / bgzip >= 0.99",
+        "region_p50": "codec / bgzip <= 1.0",
+        "region_p99": "codec / bgzip <= 1.0"
+      },
+      "deferred": [
+        "encode throughput plateau",
+        "full decode throughput plateau",
+        "independence cost c(g)"
+      ],
+      "gpu": "n/a: no GPU adapter in stage 1",
+      "protocol_version": "api-bytes-v3",
+      "requested_bytes": 16384,
+      "configurations": [
+        "bgzip+htslib",
+        "zstd-seekable",
+        "aceapex-interactive",
+        "aceapex-dense"
+      ],
+      "batch": {
+        "sizes": [
+          100,
+          600,
+          2000,
+          5000
+        ],
+        "profiles": [
+          "uniform",
+          "sorted",
+          "clustered",
+          "hot-set",
+          "zipf1.2"
+        ],
+        "repeats": 3,
+        "native_threads_requested": 1,
+        "H_alpha": "Shannon entropy of request-start blocks using row block size",
+        "hot_set": "64 unique canonical 16 KiB blocks selected once per run; identical raw-byte traces across codecs",
+        "method": "loop for all codecs; native batch additionally measured for both ACEAPEX profiles",
+        "loop_threads": 1,
+        "comparison_contract": "loop1-vs-batch1"
+      },
+      "break_even": {
+        "full_decode_warmups": 1,
+        "full_decode_samples": 5,
+        "full_decode_statistic": "median",
+        "formula": "floor(full_decode_ms / region_p50_ms) + 1",
+        "meaning": "derived independent-read intersection; not batch crossover; no plateau throughput claim"
+      }
+    },
+    "codec": "zstd-seekable",
+    "configuration": {
+      "implementation": "zstd-seekable",
+      "block": 16384,
+      "level": 3,
+      "frame_bytes": 16384,
+      "encoder_requested_threads": 1,
+      "api": "ZSTD_seekable_decompress"
+    },
+    "metric": "independence_cost_percent",
+    "value": 7.180633678496928,
+    "unit": "percent",
+    "status": "measured",
+    "formula": "100 * (1 - ratio_g / ratio_whole)",
+    "ratio_g": 3.025773934699882,
+    "ratio_whole": 3.259851962595131,
+    "independent_archive_bytes": 83924167,
+    "whole_archive_bytes": 77897880,
+    "input_bytes": 253935557,
+    "retained_ratio_fraction": 0.9281936632150307,
+    "baseline_configuration": {
+      "format": "zstd, one frame",
+      "level": 3,
+      "threads_requested": 1,
+      "checksum": false,
+      "caveat": "Same pinned zstd and level; whole-file frame permits its normal level-3 window, while seekable frames restart. Frame and seek-table overhead included."
+    },
+    "whole_archive_sha256": "4a78ab393049754da7d6a53569e82e5026707ccab15bb41cab840b405eee6940",
+    "archive_sha256": "0abc3a0d4db3f48b8c4d594350bd6d3ae4782cc3bb74909c06757b13082846d5",
+    "correctness": "pass",
+    "full_restore_byte_equal": true,
+    "commands": [
+      "bash codecs/zstd_seekable.sh compress /home/runner/work/hw-apex-bench/hw-apex-bench/.work /home/runner/work/hw-apex-bench/hw-apex-bench/.work/chr1.fa",
+      "bash codecs/zstd_seekable.sh restore /home/runner/work/hw-apex-bench/hw-apex-bench/.work /home/runner/work/hw-apex-bench/hw-apex-bench/.work/chr1.fa.zst",
+      "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/zstd/programs/zstd -3 -T1 --no-check -f /home/runner/work/hw-apex-bench/hw-apex-bench/.work/chr1.fa -o /home/runner/work/hw-apex-bench/hw-apex-bench/.work/whole-zstd-seekable.archive",
+      "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/zstd/programs/zstd -d -c /home/runner/work/hw-apex-bench/hw-apex-bench/.work/whole-zstd-seekable.archive > /home/runner/work/hw-apex-bench/hw-apex-bench/.work/whole-restored.fa"
+    ]
+  },
+  {
+    "stage": 3,
+    "run_id": "2026-09-10T06:29:06.811389+00:00",
+    "corpus": {
+      "id": "chr1-hg38-fasta",
+      "url": "https://hgdownload.soe.ucsc.edu/goldenPath/hg38/chromosomes/chr1.fa.gz",
+      "md5": "9465e0f0df6e2c6eb39729c39cee5465",
+      "md5_scope": "uncompressed FASTA"
+    },
+    "versions": {
+      "aceapex_sha": "1b13df34ac8e839dd3232b59bc59560d689a435a",
+      "zstd_sha": "f8745da6ff1ad1e7bab384bd1f9d742439278e99",
+      "zstd_ref": "v1.5.7",
+      "libzstd": "*** Zstandard CLI (64-bit) v1.5.7, by Yann Collet ***",
+      "htslib": "1.19",
+      "bgzip": "bgzip (htslib) 1.19",
+      "compiler_c": "gcc (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0",
+      "compiler_cxx": "g++ (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0"
+    },
+    "hardware": {
+      "platform": "Linux-6.17.0-1022-azure-x86_64-with-glibc2.39",
+      "machine": "x86_64",
+      "logical_cpus": 4,
+      "lscpu": "Architecture:                            x86_64\nCPU op-mode(s):                          32-bit, 64-bit\nAddress sizes:                           48 bits physical, 57 bits virtual\nByte Order:                              Little Endian\nCPU(s):                                  4\nOn-line CPU(s) list:                     0-3\nVendor ID:                               GenuineIntel\nModel name:                              INTEL(R) XEON(R) PLATINUM 8573C\nCPU family:                              6\nModel:                                   207\nThread(s) per core:                      2\nCore(s) per socket:                      2\nSocket(s):                               1\nStepping:                                2\nCPU(s) scaling MHz:                      139%\nCPU max MHz:                             2300.0000\nCPU min MHz:                             800.0000\nBogoMIPS:                                4600.00\nFlags:                                   fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush mmx fxsr sse sse2 ss ht syscall nx pdpe1gb rdtscp lm constant_tsc rep_good nopl xtopology tsc_reliable nonstop_tsc cpuid aperfmperf tsc_known_freq pni pclmulqdq vmx ssse3 fma cx16 pcid sse4_1 sse4_2 x2apic movbe popcnt tsc_deadline_timer aes xsave avx f16c rdrand hypervisor lahf_lm abm 3dnowprefetch tpr_shadow ept vpid ept_ad fsgsbase tsc_adjust bmi1 hle avx2 smep bmi2 erms invpcid rtm avx512f avx512dq rdseed adx smap avx512ifma clflushopt clwb avx512cd sha_ni avx512bw avx512vl xsaveopt xsavec xgetbv1 xsaves user_shstk avx_vnni avx512_bf16 vnmi avx512vbmi umip waitpkg avx512_vbmi2 gfni vaes vpclmulqdq avx512_vnni avx512_bitalg avx512_vpopcntdq la57 rdpid cldemote movdiri movdir64b fsrm serialize tsxldtrk ibt amx_bf16 avx512_fp16 amx_tile amx_int8 arch_capabilities\nVirtualization:                          VT-x\nHypervisor vendor:                       Microsoft\nVirtualization type:                     full\nL1d cache:                               96 KiB (2 instances)\nL1i cache:                               64 KiB (2 instances)\nL2 cache:                                4 MiB (2 instances)\nL3 cache:                                260 MiB (1 instance)\nNUMA node(s):                            1\nNUMA node0 CPU(s):                       0-3\nVulnerability Gather data sampling:      Not affected\nVulnerability Ghostwrite:                Not affected\nVulnerability Indirect target selection: Mitigation; Aligned branch/return thunks\nVulnerability Itlb multihit:             Not affected\nVulnerability L1tf:                      Not affected\nVulnerability Mds:                       Not affected\nVulnerability Meltdown:                  Not affected\nVulnerability Mmio stale data:           Not affected\nVulnerability Old microcode:             Not affected\nVulnerability Reg file data sampling:    Not affected\nVulnerability Retbleed:                  Vulnerable\nVulnerability Spec rstack overflow:      Not affected\nVulnerability Spec store bypass:         Vulnerable\nVulnerability Spectre v1:                Mitigation; usercopy/swapgs barriers and __user pointer sanitization\nVulnerability Spectre v2:                Mitigation; Retpolines; STIBP disabled; RSB filling; PBRSB-eIBRS Not affected; BHI Retpoline\nVulnerability Srbds:                     Not affected\nVulnerability Tsa:                       Not affected\nVulnerability Tsx async abort:           Not affected\nVulnerability Vmscape:                   Not affected"
+    },
+    "environment": {
+      "codec_overrides": "cleared; CLI --profile selects encode settings; per-row reader_environment selects API settings"
+    },
+    "benchmark_commit": "1a406213bb4d46b3cfbf26b10f11ce5bd1986be8",
+    "ratio_tolerance": 0.01,
+    "encode_requested_threads": 1,
+    "note": "Negative cost is retained if measured. No threshold is fitted to expected 0.41% or 6.68%.",
+    "build_commands": [
+      "pkg-config --exists htslib",
+      "git clone --no-checkout https://github.com/facebook/zstd.git /home/runner/work/hw-apex-bench/hw-apex-bench/.work/zstd",
+      "git -C /home/runner/work/hw-apex-bench/hw-apex-bench/.work/zstd fetch --depth=1 origin v1.5.7",
+      "git -C /home/runner/work/hw-apex-bench/hw-apex-bench/.work/zstd checkout --detach FETCH_HEAD",
+      "git clone --no-checkout https://github.com/yasha1971-coder/aceapex.git /home/runner/work/hw-apex-bench/hw-apex-bench/.work/aceapex",
+      "git -C /home/runner/work/hw-apex-bench/hw-apex-bench/.work/aceapex fetch --depth=1 origin 1b13df34ac8e839dd3232b59bc59560d689a435a",
+      "git -C /home/runner/work/hw-apex-bench/hw-apex-bench/.work/aceapex checkout --detach FETCH_HEAD",
+      "bash codecs/zstd_seekable.sh build /home/runner/work/hw-apex-bench/hw-apex-bench/.work 4",
+      "bash codecs/aceapex.sh build /home/runner/work/hw-apex-bench/hw-apex-bench/.work",
+      "bash codecs/bgzip.sh compress /home/runner/work/hw-apex-bench/hw-apex-bench/.work/chr1.fa /home/runner/work/hw-apex-bench/hw-apex-bench/.work/chr1.fa.gz",
+      "bash codecs/bgzip.sh restore /home/runner/work/hw-apex-bench/hw-apex-bench/.work/chr1.fa.gz",
+      "bash codecs/zstd_seekable.sh compress /home/runner/work/hw-apex-bench/hw-apex-bench/.work /home/runner/work/hw-apex-bench/hw-apex-bench/.work/chr1.fa",
+      "bash codecs/zstd_seekable.sh restore /home/runner/work/hw-apex-bench/hw-apex-bench/.work /home/runner/work/hw-apex-bench/hw-apex-bench/.work/chr1.fa.zst",
+      "bash codecs/aceapex.sh compress /home/runner/work/hw-apex-bench/hw-apex-bench/.work /home/runner/work/hw-apex-bench/hw-apex-bench/.work/chr1.fa /home/runner/work/hw-apex-bench/hw-apex-bench/.work/chr1-interactive.aet interactive",
+      "bash codecs/aceapex.sh restore /home/runner/work/hw-apex-bench/hw-apex-bench/.work /home/runner/work/hw-apex-bench/hw-apex-bench/.work/chr1-interactive.aet /home/runner/work/hw-apex-bench/hw-apex-bench/.work/restore.fa interactive",
+      "bash codecs/aceapex.sh compress /home/runner/work/hw-apex-bench/hw-apex-bench/.work /home/runner/work/hw-apex-bench/hw-apex-bench/.work/chr1.fa /home/runner/work/hw-apex-bench/hw-apex-bench/.work/chr1-dense.aet dense",
+      "bash codecs/aceapex.sh restore /home/runner/work/hw-apex-bench/hw-apex-bench/.work /home/runner/work/hw-apex-bench/hw-apex-bench/.work/chr1-dense.aet /home/runner/work/hw-apex-bench/hw-apex-bench/.work/restore.fa dense"
+    ],
+    "counter_source_sha256": {
+      "aceapex/src/aceapex_main.cpp": "e650c2ce8b4644c12ba48e7efa639dc78816bfd05bbb3dca9963cc22373bef39",
+      "aceapex/src/aceapex_api.cpp": "ec0f459bb93f51dd34fe2ee3153de5b98f3f7c981c6dad07cc7534bf95fde4b6",
+      "counter-aceapex/aceapex_main.cpp": "0b09a062d6128867499a3cc06fd097a3da0654dfe0f84cc83d67b0fcc6fa4a79",
+      "counter-aceapex/aceapex_api.cpp": "b18240ca928d5c7bd9964c1d297a94a1a3dc0dc2d6ab7325d98c0180c4e5d976",
+      "zstd/lib/decompress/zstd_decompress.c": "029580818b7e9cd38d9d07c63516b00ceaa943ffcfbd099fc5ccbe3628fa362f",
+      "counter-zstd/lib/decompress/zstd_decompress.c": "cd4545ba036d8002b7e72844d026e38338a3eba6628b7a037f1aa3ad3469a680"
+    },
+    "region_build_commands": [
+      "g++ -O3 -std=c++17 -pthread -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/aceapex/src -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/zstd/lib -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/zstd/lib/common -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/zstd/contrib/seekable_format -DXXH_NAMESPACE=ZSTD_ -c /home/runner/work/hw-apex-bench/hw-apex-bench/.work/aceapex/src/aceapex_api.cpp -o /home/runner/work/hw-apex-bench/hw-apex-bench/.work/aceapex_api.o",
+      "gcc -O3 -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/aceapex/src -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/zstd/lib -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/zstd/lib/common -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/zstd/contrib/seekable_format -DXXH_NAMESPACE=ZSTD_ -c /home/runner/work/hw-apex-bench/hw-apex-bench/.work/zstd/contrib/seekable_format/zstdseek_decompress.c -o /home/runner/work/hw-apex-bench/hw-apex-bench/.work/seek.o",
+      "gcc -O2 -shared -fPIC /home/runner/work/hw-apex-bench/hw-apex-bench/harness/bgzip_counters.c -ldl -o /home/runner/work/hw-apex-bench/hw-apex-bench/.work/bgzip_counters.so",
+      "g++ -O3 -std=c++17 -pthread -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/aceapex/src -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/zstd/lib -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/zstd/lib/common -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/zstd/contrib/seekable_format -DXXH_NAMESPACE=ZSTD_ -c /home/runner/work/hw-apex-bench/hw-apex-bench/.work/counter-aceapex/aceapex_api.cpp -o /home/runner/work/hw-apex-bench/hw-apex-bench/.work/aceapex_count.o",
+      "make -C /home/runner/work/hw-apex-bench/hw-apex-bench/.work/counter-zstd/lib -j4 libzstd.a",
+      "gcc -O3 -Wall -Wextra -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/aceapex/src -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/zstd/lib -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/zstd/lib/common -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/zstd/contrib/seekable_format -DXXH_NAMESPACE=ZSTD_ -lhts -c /home/runner/work/hw-apex-bench/hw-apex-bench/harness/region_latency.c -o /home/runner/work/hw-apex-bench/hw-apex-bench/.work/latency.o",
+      "g++ /home/runner/work/hw-apex-bench/hw-apex-bench/.work/latency.o /home/runner/work/hw-apex-bench/hw-apex-bench/.work/aceapex_api.o /home/runner/work/hw-apex-bench/hw-apex-bench/.work/seek.o /home/runner/work/hw-apex-bench/hw-apex-bench/.work/zstd/lib/libzstd.a -pthread -ldl -lhts -o /home/runner/work/hw-apex-bench/hw-apex-bench/.work/region_latency",
+      "gcc -O3 -Wall -Wextra -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/aceapex/src -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/zstd/lib -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/zstd/lib/common -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/zstd/contrib/seekable_format -DXXH_NAMESPACE=ZSTD_ -DCOUNT_DECODER -lhts -c /home/runner/work/hw-apex-bench/hw-apex-bench/harness/region_latency.c -o /home/runner/work/hw-apex-bench/hw-apex-bench/.work/amplification.o",
+      "g++ /home/runner/work/hw-apex-bench/hw-apex-bench/.work/amplification.o /home/runner/work/hw-apex-bench/hw-apex-bench/.work/aceapex_count.o /home/runner/work/hw-apex-bench/hw-apex-bench/.work/seek.o /home/runner/work/hw-apex-bench/hw-apex-bench/.work/counter-zstd/lib/libzstd.a -pthread -ldl -lhts -o /home/runner/work/hw-apex-bench/hw-apex-bench/.work/region_amplification",
+      "gcc -O3 -Wall -Wextra -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/aceapex/src -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/zstd/lib -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/zstd/lib/common -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/zstd/contrib/seekable_format -DXXH_NAMESPACE=ZSTD_ -lhts -c /home/runner/work/hw-apex-bench/hw-apex-bench/harness/batch.c -o /home/runner/work/hw-apex-bench/hw-apex-bench/.work/batch.o",
+      "g++ /home/runner/work/hw-apex-bench/hw-apex-bench/.work/batch.o /home/runner/work/hw-apex-bench/hw-apex-bench/.work/aceapex_api.o /home/runner/work/hw-apex-bench/hw-apex-bench/.work/seek.o /home/runner/work/hw-apex-bench/hw-apex-bench/.work/zstd/lib/libzstd.a -pthread -lhts -o /home/runner/work/hw-apex-bench/hw-apex-bench/.work/batch",
+      "gcc -O3 -Wall -Wextra -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/aceapex/src -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/zstd/lib -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/zstd/lib/common -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/zstd/contrib/seekable_format -DXXH_NAMESPACE=ZSTD_ -lhts -c /home/runner/work/hw-apex-bench/hw-apex-bench/harness/breakeven.c -o /home/runner/work/hw-apex-bench/hw-apex-bench/.work/breakeven.o",
+      "g++ /home/runner/work/hw-apex-bench/hw-apex-bench/.work/breakeven.o /home/runner/work/hw-apex-bench/hw-apex-bench/.work/aceapex_api.o /home/runner/work/hw-apex-bench/hw-apex-bench/.work/seek.o /home/runner/work/hw-apex-bench/hw-apex-bench/.work/zstd/lib/libzstd.a -pthread -lhts -o /home/runner/work/hw-apex-bench/hw-apex-bench/.work/breakeven"
+    ],
+    "protocol": {
+      "stage": 2,
+      "queries": 200,
+      "seed": 20260909,
+      "warmup_random_queries": 10,
+      "untimed_boundary_checks": 2,
+      "query_coordinates": "0-based original-file byte offsets; identical 16384-byte requests for every row",
+      "percentiles": "nearest-rank: sorted[ceil(p*N)-1]",
+      "latency": "API-only: bgzf_useek + bgzf_read, ZSTD_seekable_decompress, or aceapex_decompress_region; excludes FASTA processing, return checks, verification, initialization, loading, caller allocation and serialization",
+      "archives": "bgzip anonymous Linux memfd, .gzi loaded once; ACEAPEX and zstd malloc buffers",
+      "decoder_state": "one initialized handle per codec, reused across warmup and all 200 queries",
+      "amplification": "actual decoded chunk bytes / requested bytes; count BGZF block expansion, zstd block expansion inside frames including buffered output, and ACEAPEX chunks in all four streams",
+      "amplification_evidence": {
+        "bgzip": "inflate/libdeflate output counters in separate pass",
+        "zstd": "actual decompressed block sizes at streaming and one-shot decode sites in a pinned-source counting copy",
+        "aceapex": "actual selected raw chunk sizes, separately for literals/offsets/lengths/commands, in a pinned-source counting copy"
+      },
+      "relative_predicates": {
+        "ratio": "codec / bgzip >= 0.99",
+        "region_p50": "codec / bgzip <= 1.0",
+        "region_p99": "codec / bgzip <= 1.0"
+      },
+      "deferred": [
+        "encode throughput plateau",
+        "full decode throughput plateau",
+        "independence cost c(g)"
+      ],
+      "gpu": "n/a: no GPU adapter in stage 1",
+      "protocol_version": "api-bytes-v3",
+      "requested_bytes": 16384,
+      "configurations": [
+        "bgzip+htslib",
+        "zstd-seekable",
+        "aceapex-interactive",
+        "aceapex-dense"
+      ],
+      "batch": {
+        "sizes": [
+          100,
+          600,
+          2000,
+          5000
+        ],
+        "profiles": [
+          "uniform",
+          "sorted",
+          "clustered",
+          "hot-set",
+          "zipf1.2"
+        ],
+        "repeats": 3,
+        "native_threads_requested": 1,
+        "H_alpha": "Shannon entropy of request-start blocks using row block size",
+        "hot_set": "64 unique canonical 16 KiB blocks selected once per run; identical raw-byte traces across codecs",
+        "method": "loop for all codecs; native batch additionally measured for both ACEAPEX profiles",
+        "loop_threads": 1,
+        "comparison_contract": "loop1-vs-batch1"
+      },
+      "break_even": {
+        "full_decode_warmups": 1,
+        "full_decode_samples": 5,
+        "full_decode_statistic": "median",
+        "formula": "floor(full_decode_ms / region_p50_ms) + 1",
+        "meaning": "derived independent-read intersection; not batch crossover; no plateau throughput claim"
+      }
+    },
+    "codec": "aceapex-interactive",
+    "configuration": {
+      "implementation": "aceapex",
+      "profile": "interactive",
+      "block": 16384,
+      "level": 2,
+      "encoder_requested_threads": 1,
+      "encoder_source": "aceapex_depth.cpp",
+      "encoder_profile_flag": "--profile interactive",
+      "encoder_environment_overrides": {},
+      "effective_environment": {
+        "ACEAPEX_BS": "16384",
+        "LIT_CHUNK": "65536",
+        "FSE_CHUNK": "4096",
+        "MIN_MATCH": "0"
+      },
+      "reader_environment": {
+        "ACEAPEX_BS": "16384",
+        "LIT_CHUNK": "65536",
+        "FSE_CHUNK": "4096",
+        "MIN_MATCH": "0"
+      },
+      "api": "aceapex_decompress_region"
+    },
+    "metric": "independence_cost_percent",
+    "value": 1.7144562622628423,
+    "unit": "percent",
+    "status": "measured",
+    "formula": "100 * (1 - ratio_g / ratio_whole)",
+    "ratio_g": 3.6584930605986656,
+    "ratio_whole": 3.7223104451259923,
+    "independent_archive_bytes": 69409878,
+    "whole_archive_bytes": 68219876,
+    "input_bytes": 253935557,
+    "retained_ratio_fraction": 0.9828554373773716,
+    "baseline_configuration": {
+      "format": "ACEPX2",
+      "block": 253935557,
+      "num_blocks": 1,
+      "profile": "interactive",
+      "level": 2,
+      "threads_requested": 1,
+      "environment_overrides": {
+        "ACEAPEX_BS": "253935557"
+      },
+      "literal_chunk_bytes": 65536,
+      "fse_chunk_bytes": 4096,
+      "caveat": "Only ACEAPEX_BS is overridden. Entropy chunking and source search limits remain fixed; upstream skips chain flattening above 1 MiB, so this is a whole-block configuration comparison, not a pure dependency-reset ablation."
+    },
+    "whole_archive_sha256": "5b6e02ca67c1422c3da502f7907cb309410d9b1b1579c6e3e84299fcafaec043",
+    "archive_sha256": "b2e3098b6492a21b25bc8cc2e1c8f55aba340d6820845320477025395afccc46",
+    "correctness": "pass",
+    "full_restore_byte_equal": true,
+    "commands": [
+      "bash codecs/aceapex.sh compress /home/runner/work/hw-apex-bench/hw-apex-bench/.work /home/runner/work/hw-apex-bench/hw-apex-bench/.work/chr1.fa /home/runner/work/hw-apex-bench/hw-apex-bench/.work/chr1-interactive.aet interactive",
+      "bash codecs/aceapex.sh restore /home/runner/work/hw-apex-bench/hw-apex-bench/.work /home/runner/work/hw-apex-bench/hw-apex-bench/.work/chr1-interactive.aet /home/runner/work/hw-apex-bench/hw-apex-bench/.work/restore.fa interactive",
+      "env ACEAPEX_BS=253935557 /home/runner/work/hw-apex-bench/hw-apex-bench/.work/aceapex-cli c --in /home/runner/work/hw-apex-bench/hw-apex-bench/.work/chr1.fa --out /home/runner/work/hw-apex-bench/hw-apex-bench/.work/whole-aceapex-interactive.archive --threads 1 --level 2 --profile interactive",
+      "env ACEAPEX_BS=253935557 /home/runner/work/hw-apex-bench/hw-apex-bench/.work/aceapex-cli d --in /home/runner/work/hw-apex-bench/hw-apex-bench/.work/whole-aceapex-interactive.archive --out /home/runner/work/hw-apex-bench/hw-apex-bench/.work/whole-restored.fa --profile interactive"
+    ]
+  },
+  {
+    "stage": 3,
+    "run_id": "2026-09-10T06:29:06.811389+00:00",
+    "corpus": {
+      "id": "chr1-hg38-fasta",
+      "url": "https://hgdownload.soe.ucsc.edu/goldenPath/hg38/chromosomes/chr1.fa.gz",
+      "md5": "9465e0f0df6e2c6eb39729c39cee5465",
+      "md5_scope": "uncompressed FASTA"
+    },
+    "versions": {
+      "aceapex_sha": "1b13df34ac8e839dd3232b59bc59560d689a435a",
+      "zstd_sha": "f8745da6ff1ad1e7bab384bd1f9d742439278e99",
+      "zstd_ref": "v1.5.7",
+      "libzstd": "*** Zstandard CLI (64-bit) v1.5.7, by Yann Collet ***",
+      "htslib": "1.19",
+      "bgzip": "bgzip (htslib) 1.19",
+      "compiler_c": "gcc (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0",
+      "compiler_cxx": "g++ (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0"
+    },
+    "hardware": {
+      "platform": "Linux-6.17.0-1022-azure-x86_64-with-glibc2.39",
+      "machine": "x86_64",
+      "logical_cpus": 4,
+      "lscpu": "Architecture:                            x86_64\nCPU op-mode(s):                          32-bit, 64-bit\nAddress sizes:                           48 bits physical, 57 bits virtual\nByte Order:                              Little Endian\nCPU(s):                                  4\nOn-line CPU(s) list:                     0-3\nVendor ID:                               GenuineIntel\nModel name:                              INTEL(R) XEON(R) PLATINUM 8573C\nCPU family:                              6\nModel:                                   207\nThread(s) per core:                      2\nCore(s) per socket:                      2\nSocket(s):                               1\nStepping:                                2\nCPU(s) scaling MHz:                      139%\nCPU max MHz:                             2300.0000\nCPU min MHz:                             800.0000\nBogoMIPS:                                4600.00\nFlags:                                   fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush mmx fxsr sse sse2 ss ht syscall nx pdpe1gb rdtscp lm constant_tsc rep_good nopl xtopology tsc_reliable nonstop_tsc cpuid aperfmperf tsc_known_freq pni pclmulqdq vmx ssse3 fma cx16 pcid sse4_1 sse4_2 x2apic movbe popcnt tsc_deadline_timer aes xsave avx f16c rdrand hypervisor lahf_lm abm 3dnowprefetch tpr_shadow ept vpid ept_ad fsgsbase tsc_adjust bmi1 hle avx2 smep bmi2 erms invpcid rtm avx512f avx512dq rdseed adx smap avx512ifma clflushopt clwb avx512cd sha_ni avx512bw avx512vl xsaveopt xsavec xgetbv1 xsaves user_shstk avx_vnni avx512_bf16 vnmi avx512vbmi umip waitpkg avx512_vbmi2 gfni vaes vpclmulqdq avx512_vnni avx512_bitalg avx512_vpopcntdq la57 rdpid cldemote movdiri movdir64b fsrm serialize tsxldtrk ibt amx_bf16 avx512_fp16 amx_tile amx_int8 arch_capabilities\nVirtualization:                          VT-x\nHypervisor vendor:                       Microsoft\nVirtualization type:                     full\nL1d cache:                               96 KiB (2 instances)\nL1i cache:                               64 KiB (2 instances)\nL2 cache:                                4 MiB (2 instances)\nL3 cache:                                260 MiB (1 instance)\nNUMA node(s):                            1\nNUMA node0 CPU(s):                       0-3\nVulnerability Gather data sampling:      Not affected\nVulnerability Ghostwrite:                Not affected\nVulnerability Indirect target selection: Mitigation; Aligned branch/return thunks\nVulnerability Itlb multihit:             Not affected\nVulnerability L1tf:                      Not affected\nVulnerability Mds:                       Not affected\nVulnerability Meltdown:                  Not affected\nVulnerability Mmio stale data:           Not affected\nVulnerability Old microcode:             Not affected\nVulnerability Reg file data sampling:    Not affected\nVulnerability Retbleed:                  Vulnerable\nVulnerability Spec rstack overflow:      Not affected\nVulnerability Spec store bypass:         Vulnerable\nVulnerability Spectre v1:                Mitigation; usercopy/swapgs barriers and __user pointer sanitization\nVulnerability Spectre v2:                Mitigation; Retpolines; STIBP disabled; RSB filling; PBRSB-eIBRS Not affected; BHI Retpoline\nVulnerability Srbds:                     Not affected\nVulnerability Tsa:                       Not affected\nVulnerability Tsx async abort:           Not affected\nVulnerability Vmscape:                   Not affected"
+    },
+    "environment": {
+      "codec_overrides": "cleared; CLI --profile selects encode settings; per-row reader_environment selects API settings"
+    },
+    "benchmark_commit": "1a406213bb4d46b3cfbf26b10f11ce5bd1986be8",
+    "ratio_tolerance": 0.01,
+    "encode_requested_threads": 1,
+    "note": "Negative cost is retained if measured. No threshold is fitted to expected 0.41% or 6.68%.",
+    "build_commands": [
+      "pkg-config --exists htslib",
+      "git clone --no-checkout https://github.com/facebook/zstd.git /home/runner/work/hw-apex-bench/hw-apex-bench/.work/zstd",
+      "git -C /home/runner/work/hw-apex-bench/hw-apex-bench/.work/zstd fetch --depth=1 origin v1.5.7",
+      "git -C /home/runner/work/hw-apex-bench/hw-apex-bench/.work/zstd checkout --detach FETCH_HEAD",
+      "git clone --no-checkout https://github.com/yasha1971-coder/aceapex.git /home/runner/work/hw-apex-bench/hw-apex-bench/.work/aceapex",
+      "git -C /home/runner/work/hw-apex-bench/hw-apex-bench/.work/aceapex fetch --depth=1 origin 1b13df34ac8e839dd3232b59bc59560d689a435a",
+      "git -C /home/runner/work/hw-apex-bench/hw-apex-bench/.work/aceapex checkout --detach FETCH_HEAD",
+      "bash codecs/zstd_seekable.sh build /home/runner/work/hw-apex-bench/hw-apex-bench/.work 4",
+      "bash codecs/aceapex.sh build /home/runner/work/hw-apex-bench/hw-apex-bench/.work",
+      "bash codecs/bgzip.sh compress /home/runner/work/hw-apex-bench/hw-apex-bench/.work/chr1.fa /home/runner/work/hw-apex-bench/hw-apex-bench/.work/chr1.fa.gz",
+      "bash codecs/bgzip.sh restore /home/runner/work/hw-apex-bench/hw-apex-bench/.work/chr1.fa.gz",
+      "bash codecs/zstd_seekable.sh compress /home/runner/work/hw-apex-bench/hw-apex-bench/.work /home/runner/work/hw-apex-bench/hw-apex-bench/.work/chr1.fa",
+      "bash codecs/zstd_seekable.sh restore /home/runner/work/hw-apex-bench/hw-apex-bench/.work /home/runner/work/hw-apex-bench/hw-apex-bench/.work/chr1.fa.zst",
+      "bash codecs/aceapex.sh compress /home/runner/work/hw-apex-bench/hw-apex-bench/.work /home/runner/work/hw-apex-bench/hw-apex-bench/.work/chr1.fa /home/runner/work/hw-apex-bench/hw-apex-bench/.work/chr1-interactive.aet interactive",
+      "bash codecs/aceapex.sh restore /home/runner/work/hw-apex-bench/hw-apex-bench/.work /home/runner/work/hw-apex-bench/hw-apex-bench/.work/chr1-interactive.aet /home/runner/work/hw-apex-bench/hw-apex-bench/.work/restore.fa interactive",
+      "bash codecs/aceapex.sh compress /home/runner/work/hw-apex-bench/hw-apex-bench/.work /home/runner/work/hw-apex-bench/hw-apex-bench/.work/chr1.fa /home/runner/work/hw-apex-bench/hw-apex-bench/.work/chr1-dense.aet dense",
+      "bash codecs/aceapex.sh restore /home/runner/work/hw-apex-bench/hw-apex-bench/.work /home/runner/work/hw-apex-bench/hw-apex-bench/.work/chr1-dense.aet /home/runner/work/hw-apex-bench/hw-apex-bench/.work/restore.fa dense"
+    ],
+    "counter_source_sha256": {
+      "aceapex/src/aceapex_main.cpp": "e650c2ce8b4644c12ba48e7efa639dc78816bfd05bbb3dca9963cc22373bef39",
+      "aceapex/src/aceapex_api.cpp": "ec0f459bb93f51dd34fe2ee3153de5b98f3f7c981c6dad07cc7534bf95fde4b6",
+      "counter-aceapex/aceapex_main.cpp": "0b09a062d6128867499a3cc06fd097a3da0654dfe0f84cc83d67b0fcc6fa4a79",
+      "counter-aceapex/aceapex_api.cpp": "b18240ca928d5c7bd9964c1d297a94a1a3dc0dc2d6ab7325d98c0180c4e5d976",
+      "zstd/lib/decompress/zstd_decompress.c": "029580818b7e9cd38d9d07c63516b00ceaa943ffcfbd099fc5ccbe3628fa362f",
+      "counter-zstd/lib/decompress/zstd_decompress.c": "cd4545ba036d8002b7e72844d026e38338a3eba6628b7a037f1aa3ad3469a680"
+    },
+    "region_build_commands": [
+      "g++ -O3 -std=c++17 -pthread -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/aceapex/src -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/zstd/lib -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/zstd/lib/common -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/zstd/contrib/seekable_format -DXXH_NAMESPACE=ZSTD_ -c /home/runner/work/hw-apex-bench/hw-apex-bench/.work/aceapex/src/aceapex_api.cpp -o /home/runner/work/hw-apex-bench/hw-apex-bench/.work/aceapex_api.o",
+      "gcc -O3 -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/aceapex/src -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/zstd/lib -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/zstd/lib/common -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/zstd/contrib/seekable_format -DXXH_NAMESPACE=ZSTD_ -c /home/runner/work/hw-apex-bench/hw-apex-bench/.work/zstd/contrib/seekable_format/zstdseek_decompress.c -o /home/runner/work/hw-apex-bench/hw-apex-bench/.work/seek.o",
+      "gcc -O2 -shared -fPIC /home/runner/work/hw-apex-bench/hw-apex-bench/harness/bgzip_counters.c -ldl -o /home/runner/work/hw-apex-bench/hw-apex-bench/.work/bgzip_counters.so",
+      "g++ -O3 -std=c++17 -pthread -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/aceapex/src -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/zstd/lib -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/zstd/lib/common -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/zstd/contrib/seekable_format -DXXH_NAMESPACE=ZSTD_ -c /home/runner/work/hw-apex-bench/hw-apex-bench/.work/counter-aceapex/aceapex_api.cpp -o /home/runner/work/hw-apex-bench/hw-apex-bench/.work/aceapex_count.o",
+      "make -C /home/runner/work/hw-apex-bench/hw-apex-bench/.work/counter-zstd/lib -j4 libzstd.a",
+      "gcc -O3 -Wall -Wextra -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/aceapex/src -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/zstd/lib -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/zstd/lib/common -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/zstd/contrib/seekable_format -DXXH_NAMESPACE=ZSTD_ -lhts -c /home/runner/work/hw-apex-bench/hw-apex-bench/harness/region_latency.c -o /home/runner/work/hw-apex-bench/hw-apex-bench/.work/latency.o",
+      "g++ /home/runner/work/hw-apex-bench/hw-apex-bench/.work/latency.o /home/runner/work/hw-apex-bench/hw-apex-bench/.work/aceapex_api.o /home/runner/work/hw-apex-bench/hw-apex-bench/.work/seek.o /home/runner/work/hw-apex-bench/hw-apex-bench/.work/zstd/lib/libzstd.a -pthread -ldl -lhts -o /home/runner/work/hw-apex-bench/hw-apex-bench/.work/region_latency",
+      "gcc -O3 -Wall -Wextra -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/aceapex/src -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/zstd/lib -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/zstd/lib/common -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/zstd/contrib/seekable_format -DXXH_NAMESPACE=ZSTD_ -DCOUNT_DECODER -lhts -c /home/runner/work/hw-apex-bench/hw-apex-bench/harness/region_latency.c -o /home/runner/work/hw-apex-bench/hw-apex-bench/.work/amplification.o",
+      "g++ /home/runner/work/hw-apex-bench/hw-apex-bench/.work/amplification.o /home/runner/work/hw-apex-bench/hw-apex-bench/.work/aceapex_count.o /home/runner/work/hw-apex-bench/hw-apex-bench/.work/seek.o /home/runner/work/hw-apex-bench/hw-apex-bench/.work/counter-zstd/lib/libzstd.a -pthread -ldl -lhts -o /home/runner/work/hw-apex-bench/hw-apex-bench/.work/region_amplification",
+      "gcc -O3 -Wall -Wextra -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/aceapex/src -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/zstd/lib -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/zstd/lib/common -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/zstd/contrib/seekable_format -DXXH_NAMESPACE=ZSTD_ -lhts -c /home/runner/work/hw-apex-bench/hw-apex-bench/harness/batch.c -o /home/runner/work/hw-apex-bench/hw-apex-bench/.work/batch.o",
+      "g++ /home/runner/work/hw-apex-bench/hw-apex-bench/.work/batch.o /home/runner/work/hw-apex-bench/hw-apex-bench/.work/aceapex_api.o /home/runner/work/hw-apex-bench/hw-apex-bench/.work/seek.o /home/runner/work/hw-apex-bench/hw-apex-bench/.work/zstd/lib/libzstd.a -pthread -lhts -o /home/runner/work/hw-apex-bench/hw-apex-bench/.work/batch",
+      "gcc -O3 -Wall -Wextra -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/aceapex/src -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/zstd/lib -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/zstd/lib/common -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/zstd/contrib/seekable_format -DXXH_NAMESPACE=ZSTD_ -lhts -c /home/runner/work/hw-apex-bench/hw-apex-bench/harness/breakeven.c -o /home/runner/work/hw-apex-bench/hw-apex-bench/.work/breakeven.o",
+      "g++ /home/runner/work/hw-apex-bench/hw-apex-bench/.work/breakeven.o /home/runner/work/hw-apex-bench/hw-apex-bench/.work/aceapex_api.o /home/runner/work/hw-apex-bench/hw-apex-bench/.work/seek.o /home/runner/work/hw-apex-bench/hw-apex-bench/.work/zstd/lib/libzstd.a -pthread -lhts -o /home/runner/work/hw-apex-bench/hw-apex-bench/.work/breakeven"
+    ],
+    "protocol": {
+      "stage": 2,
+      "queries": 200,
+      "seed": 20260909,
+      "warmup_random_queries": 10,
+      "untimed_boundary_checks": 2,
+      "query_coordinates": "0-based original-file byte offsets; identical 16384-byte requests for every row",
+      "percentiles": "nearest-rank: sorted[ceil(p*N)-1]",
+      "latency": "API-only: bgzf_useek + bgzf_read, ZSTD_seekable_decompress, or aceapex_decompress_region; excludes FASTA processing, return checks, verification, initialization, loading, caller allocation and serialization",
+      "archives": "bgzip anonymous Linux memfd, .gzi loaded once; ACEAPEX and zstd malloc buffers",
+      "decoder_state": "one initialized handle per codec, reused across warmup and all 200 queries",
+      "amplification": "actual decoded chunk bytes / requested bytes; count BGZF block expansion, zstd block expansion inside frames including buffered output, and ACEAPEX chunks in all four streams",
+      "amplification_evidence": {
+        "bgzip": "inflate/libdeflate output counters in separate pass",
+        "zstd": "actual decompressed block sizes at streaming and one-shot decode sites in a pinned-source counting copy",
+        "aceapex": "actual selected raw chunk sizes, separately for literals/offsets/lengths/commands, in a pinned-source counting copy"
+      },
+      "relative_predicates": {
+        "ratio": "codec / bgzip >= 0.99",
+        "region_p50": "codec / bgzip <= 1.0",
+        "region_p99": "codec / bgzip <= 1.0"
+      },
+      "deferred": [
+        "encode throughput plateau",
+        "full decode throughput plateau",
+        "independence cost c(g)"
+      ],
+      "gpu": "n/a: no GPU adapter in stage 1",
+      "protocol_version": "api-bytes-v3",
+      "requested_bytes": 16384,
+      "configurations": [
+        "bgzip+htslib",
+        "zstd-seekable",
+        "aceapex-interactive",
+        "aceapex-dense"
+      ],
+      "batch": {
+        "sizes": [
+          100,
+          600,
+          2000,
+          5000
+        ],
+        "profiles": [
+          "uniform",
+          "sorted",
+          "clustered",
+          "hot-set",
+          "zipf1.2"
+        ],
+        "repeats": 3,
+        "native_threads_requested": 1,
+        "H_alpha": "Shannon entropy of request-start blocks using row block size",
+        "hot_set": "64 unique canonical 16 KiB blocks selected once per run; identical raw-byte traces across codecs",
+        "method": "loop for all codecs; native batch additionally measured for both ACEAPEX profiles",
+        "loop_threads": 1,
+        "comparison_contract": "loop1-vs-batch1"
+      },
+      "break_even": {
+        "full_decode_warmups": 1,
+        "full_decode_samples": 5,
+        "full_decode_statistic": "median",
+        "formula": "floor(full_decode_ms / region_p50_ms) + 1",
+        "meaning": "derived independent-read intersection; not batch crossover; no plateau throughput claim"
+      }
+    },
+    "codec": "aceapex-dense",
+    "configuration": {
+      "implementation": "aceapex",
+      "profile": "dense",
+      "block": 262144,
+      "level": 2,
+      "encoder_requested_threads": 1,
+      "encoder_source": "aceapex_depth.cpp",
+      "encoder_profile_flag": "--profile dense",
+      "encoder_environment_overrides": {},
+      "effective_environment": {
+        "ACEAPEX_BS": "262144",
+        "LIT_CHUNK": "1048576",
+        "FSE_CHUNK": "32768",
+        "MIN_MATCH": "0"
+      },
+      "reader_environment": {
+        "ACEAPEX_BS": "262144",
+        "LIT_CHUNK": "1048576",
+        "FSE_CHUNK": "32768",
+        "MIN_MATCH": "0"
+      },
+      "api": "aceapex_decompress_region"
+    },
+    "metric": "independence_cost_percent",
+    "value": 0.3365539710462384,
+    "unit": "percent",
+    "status": "measured",
+    "formula": "100 * (1 - ratio_g / ratio_whole)",
+    "ratio_g": 3.780646221619124,
+    "ratio_whole": 3.793413104059023,
+    "independent_archive_bytes": 67167236,
+    "whole_archive_bytes": 66941182,
+    "input_bytes": 253935557,
+    "retained_ratio_fraction": 0.9966344602895376,
+    "baseline_configuration": {
+      "format": "ACEPX2",
+      "block": 253935557,
+      "num_blocks": 1,
+      "profile": "dense",
+      "level": 2,
+      "threads_requested": 1,
+      "environment_overrides": {
+        "ACEAPEX_BS": "253935557"
+      },
+      "literal_chunk_bytes": 1048576,
+      "fse_chunk_bytes": 32768,
+      "caveat": "Only ACEAPEX_BS is overridden. Entropy chunking and source search limits remain fixed; upstream skips chain flattening above 1 MiB, so this is a whole-block configuration comparison, not a pure dependency-reset ablation."
+    },
+    "whole_archive_sha256": "7d6cb5f698463a75e8dc5a6021af2b7a35670b8e423966ad46100dd484b0bd5f",
+    "archive_sha256": "429d85b995eca2dc5922734b78f4f56f96eb1278fab3776a61455b9b39347d74",
+    "correctness": "pass",
+    "full_restore_byte_equal": true,
+    "commands": [
+      "bash codecs/aceapex.sh compress /home/runner/work/hw-apex-bench/hw-apex-bench/.work /home/runner/work/hw-apex-bench/hw-apex-bench/.work/chr1.fa /home/runner/work/hw-apex-bench/hw-apex-bench/.work/chr1-dense.aet dense",
+      "bash codecs/aceapex.sh restore /home/runner/work/hw-apex-bench/hw-apex-bench/.work /home/runner/work/hw-apex-bench/hw-apex-bench/.work/chr1-dense.aet /home/runner/work/hw-apex-bench/hw-apex-bench/.work/restore.fa dense",
+      "env ACEAPEX_BS=253935557 /home/runner/work/hw-apex-bench/hw-apex-bench/.work/aceapex-cli c --in /home/runner/work/hw-apex-bench/hw-apex-bench/.work/chr1.fa --out /home/runner/work/hw-apex-bench/hw-apex-bench/.work/whole-aceapex-dense.archive --threads 1 --level 2 --profile dense",
+      "env ACEAPEX_BS=253935557 /home/runner/work/hw-apex-bench/hw-apex-bench/.work/aceapex-cli d --in /home/runner/work/hw-apex-bench/hw-apex-bench/.work/whole-aceapex-dense.archive --out /home/runner/work/hw-apex-bench/hw-apex-bench/.work/whole-restored.fa --profile dense"
+    ]
+  }
+]

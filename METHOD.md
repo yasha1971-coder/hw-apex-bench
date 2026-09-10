@@ -84,8 +84,9 @@ another machine. The former results and matched-harness investigation remain in
 [Exact FAIL output from EPYC 9V74](evidence/audit-20260909/FAILS.md) is preserved.
 
 Batch, H_alpha and break-even are implemented as specified in [BATCH_METHOD.md](BATCH_METHOD.md).
-The review stop now precedes independence cost c(g), encode/full-decode plateau
-throughput, and the subsequent three-machine experiment. Those remain deferred.
+`./run.sh` also measures independence cost c(g); `--stage 2` stops before it.
+The next review stop precedes encode/full-decode plateau throughput and the
+subsequent three-machine experiment. Those remain deferred.
 The previous controlled audit is reproduced at benchmark commit
 `baede64fd37bd087eecf9a94333d8fbf33e23c33`; its script depends on that historical
 harness and original ACEAPEX pin.
