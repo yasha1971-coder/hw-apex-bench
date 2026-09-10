@@ -7,7 +7,8 @@ Only dependency clones inside this benchmark are used.
 
 `run.sh` builds three codec adapters, compresses four configurations, verifies
 all four full restores by MD5 and direct byte comparison, then measures and
-verifies every region. `results.jsonl` has one row per measurement or relation,
+verifies every region, followed by batch/H_alpha and break-even by default.
+Use `./run.sh --stage 1` to stop after regions. `results.jsonl` has one row per measurement or relation,
 with configuration, commands, library/compiler versions, hardware, archive SHA-256
 and corpus provenance. `python3 harness/report.py` regenerates this README.
 Raw latency and amplification samples are retained separately with SHA-256 hashes.
@@ -82,8 +83,9 @@ another machine. The former results and matched-harness investigation remain in
 [AUDIT.md](AUDIT.md) and [historical evidence](evidence/).
 [Exact FAIL output from EPYC 9V74](evidence/audit-20260909/FAILS.md) is preserved.
 
-Stop after this first-table review. Encode/full-decode plateau sweeps, independence
-cost c(g), batch profiles, H_alpha and break-even remain deferred. The previous
-controlled audit is reproduced at benchmark commit
+Batch, H_alpha and break-even are implemented as specified in [BATCH_METHOD.md](BATCH_METHOD.md).
+The review stop now precedes independence cost c(g), encode/full-decode plateau
+throughput, and the subsequent three-machine experiment. Those remain deferred.
+The previous controlled audit is reproduced at benchmark commit
 `baede64fd37bd087eecf9a94333d8fbf33e23c33`; its script depends on that historical
 harness and original ACEAPEX pin.

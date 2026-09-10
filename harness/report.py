@@ -9,6 +9,7 @@ def validate(rows):
     if len({r["run_id"] for r in rows})!=1 or len({r["benchmark_commit"] for r in rows})!=1:
         raise ValueError("Mixed runs or benchmark commits")
     for r in rows:
+        if r["metric"] not in (*METRICS,"ratio_relative_to_bgzip","region_p50_relative_to_bgzip","region_p99_relative_to_bgzip"): continue
         k=(r["codec"],r["metric"])
         if k in index: raise ValueError("Duplicate metric")
         index[k]=r
@@ -36,13 +37,14 @@ def render(rows):
     ix=validate(rows)
     meta=rows[0]; v=meta["versions"]
     text=["# hw-apex-bench — Compressed Access Benchmark","",
-          "Stage 1: three codecs, four configurations, API-only byte-region table for review. Later axes remain deferred.",
+          "Three codecs, four configurations. API-only byte regions; implemented axes and review boundary are below.",
           "",f"Run: {meta['run_id']}. Benchmark commit: {meta['benchmark_commit']}.",
           "",f"Corpus: chr1 hg38 FASTA, MD5 {meta['corpus']['md5']}.",
           "",f"libzstd: {v['libzstd']}; htslib: {v['htslib']}; bgzip: {v['bgzip']}.",
           f"C: {v['compiler_c']}; C++: {v['compiler_cxx']}.",
           f"ACEAPEX: {v['aceapex_sha']}; zstd reference implementation: {v['zstd_sha']}.",
           "",f"Machine: {meta['hardware']['platform']}; logical CPUs: {meta['hardware']['logical_cpus']}.",
+          next((line.strip() for line in meta["hardware"].get("lscpu", "").splitlines() if line.startswith("Model name:")), "CPU model unavailable"),
           "Hardware details, parameters and commands accompany every measurement in results.jsonl.",
           "",
           "| Configuration | Level | Encoder threads | Block/frame bytes | LIT bytes | FSE bytes |",
@@ -67,6 +69,10 @@ def render(rows):
         for m in ("ratio","region_p50","region_p99"):
             r=ix[c,m+"_relative_to_bgzip"]; cols.append(f"{r['value']:.4f} — {r['status'].upper()}")
         text.append("| "+c+" | "+str(ix[c,"ratio"]["configuration"]["block"])+" | "+" | ".join(cols)+" |")
+    if meta.get("stage",1)==2:
+        from stage2_report import render_stage2
+        extra, matrix=render_stage2(rows)
+        text += ["",extra]
     text+=["","These are descriptive comparisons against the same-machine baseline, not promises that any codec must win.",
            "A slower codec remains FAIL in this table; correctness failures abort report generation.",
            "",(ROOT/"METHOD.md").read_text()]
@@ -74,5 +80,9 @@ def render(rows):
 if __name__=="__main__":
     rows=[json.loads(s) for s in (ROOT/"results.jsonl").read_text().splitlines() if s.strip()]
     result=render(rows)
+    if rows[0].get("stage",1)==2:
+        from stage2_report import render_stage2
+        _,matrix=render_stage2(rows)
+        (ROOT/"BATCH_RESULTS.md").write_text(matrix)
     temp=ROOT/".work/README.pending.md"; temp.write_text(result); temp.replace(ROOT/"README.md")
     print(result)

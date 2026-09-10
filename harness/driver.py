@@ -87,10 +87,13 @@ for metric in ("ratio","region_p50","region_p99"):
                     value=relative,unit="dimensionless",status="pass" if passed else "fail",
                     predicate=">=0.99" if metric=="ratio" else "<=1.0",
                     commands=["python3 harness/driver.py"],baseline_codec="bgzip+htslib"))
+if meta.get("stage",1)==2:
+    from stage2 import add_stage2
+    rows=add_stage2(rows,meta,archives,D,inc,htflags,compile,run)
 # Publish only after all four configurations have passed the exactness checks.
 final=ROOT/"results.jsonl"
 temp=D/"results.complete.jsonl"
 temp.write_text("".join(json.dumps(r,sort_keys=True)+"\n" for r in rows))
 os.replace(temp,final)
 run([sys.executable,ROOT/"harness/report.py"])
-print("STOP: stage-1 table ready for review. Batch, H_alpha and break-even are not run.")
+print("STOP: requested stage complete; review before c(g), plateau throughput and three-machine runs.")
