@@ -137,6 +137,10 @@ aceapex-dense: n/a for this profile/SHA: no block-size-only dense pair has been 
 
 ACEAPEX default @ 7216280 uses supplied ace-core file sizes: 80829622 bytes at 16 KiB and 79510864 bytes for one whole-input block. It is marked declared because compiler/libzstd versions, archive hashes and a byte-equal restore receipt were not supplied. The GitHub runner reproduction is a separate machine result and currently fails on the one-block encode; see [the strict reproduction contract](STRICT_CG.md).
 
+Address table component: 15499 blocks × 64 bytes = **991936 bytes**, or
+**1.227%** of the complete 80829622-byte 16 KiB archive. This is shown
+separately from payload compression and is included in archive c(g).
+
 zstd bases are explicitly zstd 1.5.7 level -3, one continuous frame versus independent 16384-byte frames. The user-reported historical version is 1.4.8 with 6.68%; version change is a hypothesis for the difference, not an attribution established by a matched rerun.
 The historical 0.410% is payload-only: it excludes the AET header and 64-byte `BlockOffsets` entry per block. The cross-codec archive ratio includes both. Neither 0.410% nor 6.68% is an acceptance target.
 
