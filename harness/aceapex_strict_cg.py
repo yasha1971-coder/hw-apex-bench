@@ -15,11 +15,12 @@ import shlex
 import shutil
 import struct
 import subprocess
+import sys
 import urllib.request
 
 
-ACEAPEX_SHA = "7216280298baa976152f6978ea1ac9c7b65fc4ad"
-ACEAPEX_MAIN_BLOB = "569db626591daa6169f530bc3d3079b627558878"
+ACEAPEX_SHA = "ee5a37eda18b81c1300a1ee44a7e06b6be925bd2"
+ACEAPEX_MAIN_BLOB = "ac345a5849dd53d696cd31bfc9bbcbeb6cfe37b0"
 CORPUS_SIZE = 253_935_557
 BLOCKED_BS = 16_384
 THREADS = 8
@@ -111,7 +112,23 @@ def main() -> int:
     if actual_sha != ACEAPEX_SHA:
         raise RuntimeError(f"ACEAPEX SHA mismatch: {actual_sha}")
     run(["make", "clean"], cwd=source)
-    build = run(["make", "-j2"], cwd=source, log=work / "build.log")
+    trace = work / "compile-trace.jsonl"
+    trace.unlink(missing_ok=True)
+    traced_cxx = f"{shlex.quote(sys.executable)} {shlex.quote(str(root / 'harness/compiler_trace.py'))} --real g++"
+    build_env = os.environ.copy()
+    build_env["CABENCH_COMPILE_TRACE"] = str(trace)
+    build = run(["make", "-j2", f"CXX={traced_cxx}"], cwd=source, env=build_env,
+                log=work / "build.log")
+    spec = work / "source-spec.json"
+    spec.write_text(json.dumps({"codecs": [{
+        "codec": "aceapex",
+        "repository_root": str(source),
+        "expected_commit": ACEAPEX_SHA,
+        "required_translation_units": ["src/aceapex_main.cpp"],
+    }]}, indent=2) + "\n")
+    provenance = work / "source-provenance.json"
+    run([sys.executable, str(root / "harness/source_provenance.py"),
+         "--trace", str(trace), "--spec", str(spec), "--out", str(provenance)])
     binary = source / "aceapex"
 
     base_env = os.environ.copy()
@@ -210,6 +227,7 @@ def main() -> int:
         "machine": {"platform": platform.platform(), "machine": platform.machine(), "lscpu_json": json.loads(cpu) if cpu.startswith("{") else cpu},
         "versions": {"compiler": compiler, "libzstd": libzstd},
         "build": {"command": f"git checkout {ACEAPEX_SHA} && make -j2", "log": "build.log", "stdout_tail": (build.stdout or "")[-1000:]},
+        "source_provenance": json.loads(provenance.read_text()),
     }
     (work / "claim.json").write_text(json.dumps(claim, indent=2, sort_keys=True) + "\n")
     (work / "commands.txt").write_text("\n".join(command_lines) + "\n")
