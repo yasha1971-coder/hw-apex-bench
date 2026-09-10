@@ -35,11 +35,12 @@ BLOCK_OFFSETS_BYTES = 64
 def run(args: list[str], *, cwd: Path | None = None, env: dict[str, str] | None = None,
         stdout=None, log: Path | None = None) -> subprocess.CompletedProcess[str]:
     p = subprocess.run(args, cwd=cwd, env=env, stdout=stdout or subprocess.PIPE,
-                       stderr=subprocess.PIPE, text=stdout is None, check=True)
+                       stderr=subprocess.PIPE, text=stdout is None, check=False)
     if log is not None:
         text = "" if stdout is not None else (p.stdout or "")
         text += p.stderr or ""
         log.write_text(text)
+    p.check_returncode()
     return p
 
 
@@ -125,7 +126,28 @@ def main() -> int:
         env["ACEAPEX_BS"] = str(bs)
         enc = [str(binary), "c", "--in", str(fa), "--out", str(archive), "--threads", str(THREADS)]
         dec = [str(binary), "d", "--in", str(archive), "--out", str(restored), "--threads", str(THREADS)]
-        run(enc, cwd=source, env=env, log=work / f"{label}-compress.log")
+        try:
+            run(enc, cwd=source, env=env, log=work / f"{label}-compress.log")
+        except subprocess.CalledProcessError as exc:
+            failure = {
+                "claim": "aceapex_independence_cost_block_size_only",
+                "status": "failed",
+                "reason": "compression command did not complete; no strict c(g) can be reported",
+                "failed_label": label,
+                "failed_returncode": exc.returncode,
+                "failed_signal": -exc.returncode if exc.returncode < 0 else None,
+                "failed_command": command_text(enc, bs, source),
+                "aceapex_sha": ACEAPEX_SHA,
+                "corpus": {**corpus, "bytes": CORPUS_SIZE, "md5_verified": True},
+                "completed_configurations": configurations,
+                "only_changed_environment": "ACEAPEX_BS",
+                "cleared_environment": list(CLEARED_ENV),
+            }
+            (work / "failure.json").write_text(json.dumps(failure, indent=2, sort_keys=True) + "\n")
+            print("STRICT_CG_EVIDENCE_BEGIN failure.json")
+            print(json.dumps(failure, indent=2, sort_keys=True))
+            print("STRICT_CG_EVIDENCE_END failure.json")
+            raise
         rec = archive_record(archive)
         expected_blocks = (CORPUS_SIZE + bs - 1) // bs
         if rec["block_size"] != bs or rec["num_blocks"] != expected_blocks:
