@@ -21,11 +21,14 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y build-essential git python3 pkg-config libzstd-dev
       - name: Run block-size-only pair
-        run: python3 harness/aceapex_strict_cg.py | tee strict-ace-cg.log
+        run: |
+          set -o pipefail
+          python3 harness/aceapex_strict_cg.py | tee strict-ace-cg.log
       - name: Show exact archive accounting
         if: always()
         run: |
           test -f .work/strict-ace-cg/claim.json && cat .work/strict-ace-cg/claim.json || true
+          test -f .work/strict-ace-cg/failure.json && cat .work/strict-ace-cg/failure.json || true
           test -f .work/strict-ace-cg/g16-compress.log && cat .work/strict-ace-cg/g16-compress.log || true
           test -f .work/strict-ace-cg/gall-compress.log && cat .work/strict-ace-cg/gall-compress.log || true
       - name: Preserve strict claim evidence
@@ -38,6 +41,7 @@ jobs:
           path: |
             strict-ace-cg.log
             .work/strict-ace-cg/claim.json
+            .work/strict-ace-cg/failure.json
             .work/strict-ace-cg/commands.txt
             .work/strict-ace-cg/*-compress.log
             .work/strict-ace-cg/*-decompress.log
