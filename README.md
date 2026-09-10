@@ -135,7 +135,7 @@ aceapex-interactive: n/a for this profile/SHA: the strict supplied pair uses the
 
 aceapex-dense: n/a for this profile/SHA: no block-size-only dense pair has been supplied.
 
-ACEAPEX default @ 7216280 uses supplied ace-core file sizes: 80829622 bytes at 16 KiB and 79510864 bytes for one whole-input block. It is marked declared because compiler/libzstd versions, archive hashes and a byte-equal restore receipt were not supplied. The GitHub runner reproduction is a separate machine result and currently fails on the one-block encode; see [the strict reproduction contract](STRICT_CG.md).
+ACEAPEX default @ 7216280 uses supplied ace-core file sizes: 80829622 bytes at 16 KiB and 79510864 bytes for one whole-input block. It is marked declared because compiler/libzstd versions, archive hashes and a byte-equal restore receipt were not supplied. The defect is fixed at `ee5a37e`; an independent strict rerun of that new SHA is defined in [the strict reproduction contract](STRICT_CG.md).
 
 Address table component: 15499 blocks × 64 bytes = **991936 bytes**, or
 **1.227%** of the complete 80829622-byte 16 KiB archive. This is shown
@@ -147,6 +147,12 @@ The historical 0.410% is payload-only: it excludes the AET header and 64-byte `B
 Whole-file means one continuous member/frame/output block, not an unlimited match window. gzip retains its 32 KiB backward-distance limit; this does not make its blocks independent. bgzip adds independent member boundaries, index/headers and implementation differences.
 ACEAPEX uses the same pinned binary on both sides. ACEAPEX_BS changes from 16384 or 262144 to 253935557. MIN_MATCH was cleared and defaults to 0. LIT_CHUNK/FSE_CHUNK remain 65536/4096 (interactive) or 1048576/32768 (dense).
 Important source-layout correction: at 7216280 the guarded root `aceapex_depth.cpp` is not the source compiled by `make`; the Makefile builds `src/aceapex_main.cpp`, whose corresponding read lacks the `local_pos < ORIGIN_CAP` guard. At 1b13df3 the measured profile pairs use the guarded source. The two revisions and configurations are not interchangeable.
+
+The defect is closed upstream at `ee5a37eda18b81c1300a1ee44a7e06b6be925bd2`.
+New benchmark builds use a compiler trace: every actually compiled translation
+unit is hashed and checked against the source named by claim provenance before
+measurements run. System bgzip/htslib is explicitly `n/a` for source matching,
+with the installed binary hash and version recorded instead.
 The old JSONL baseline caveat used the inaccurate shorthand “skips chain flattening above 1 MiB”. Raw historical evidence is preserved; this report and INDEPENDENCE_AUDIT.md correct that interpretation. No observed archive size or ratio has changed.
 
 ### Both compression commands for every row
