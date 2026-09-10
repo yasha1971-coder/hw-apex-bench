@@ -98,13 +98,13 @@ output reuse. Its status is derived, and absolute durations are declared.
 ACEAPEX's full API has no thread argument: this source uses eight reconstruction
 workers and up to eight literal workers. BGZF/zstd full adapters use one thread.
 Those policies are explicit; no equal-thread full-decode speed claim is implied.
-These durations support break-even only. Encode/full-decode MB/s or GB/s require
-the later plateau experiment and are not published here.
+These durations support break-even only. Encode/full-decode MB/s are produced
+only by the separate contract in [THROUGHPUT.md](THROUGHPUT.md).
 
 ## Review boundary
 
 `--stage 2` stops after batch, H_alpha and break-even. The separate c(g) stage
-is selected by `--stage 3` and by the default invocation; its report states the
-whole-file baseline and implementation caveats. Plateau throughput follows separately. Only then run the complete protocol on
+is selected by `--stage 3`; its report states the whole-file baseline and
+implementation caveats. Plateau throughput is stage 4 and the default invocation. Only then run the complete protocol on
 ace-core EPYC 4344P and WSL. No claim that cross-codec ratios are machine-invariant
 is accepted without those measurements.
