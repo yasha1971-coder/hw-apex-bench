@@ -24,7 +24,7 @@ def render_stage2(rows):
         text.append(f"| {c} | {f['configuration']['block']} | {f['value']:.6f} | {p['value']:.6f} | {b['value']} | {f['thread_policy']} |")
     text += ["", "## Batch", "", "Identical raw-byte requests across codecs; every native batch answer matches the single-call result and original bytes.",
              "Three repetitions, median duration; loop/native order alternates. Native batch threads are requested explicitly.",
-             "H_alpha counts request-start blocks at the row's block size. The same trace also records H_alpha_16k for comparison.",
+             "H_alpha counts request-start blocks (actual GZI boundaries for BGZF, declared frame/block boundaries otherwise). H_alpha_16k is also recorded.",
              "bgzip and zstd-seekable native batch: n/a (no native batch API in these adapters); their measured method is loop.",
              "All N=100/600/2000/5000 points are in [BATCH_RESULTS.md](BATCH_RESULTS.md). The fixed N=5000 view follows.", ""]
     header = ["| Codec/profile | block bytes | Access profile | method | N | H_alpha bits | Threads requested | ranges/s | / bgzip loop |",

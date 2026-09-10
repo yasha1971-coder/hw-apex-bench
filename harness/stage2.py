@@ -1,5 +1,5 @@
 """Batch/H_alpha and modelled break-even; later axes intentionally remain deferred."""
-import hashlib, json, math, os, pathlib, shlex, statistics, subprocess, sys
+import bisect, collections, hashlib, json, math, os, pathlib, shlex, statistics, struct, subprocess, sys
 from configurations import CODECS, configuration, clean_environment
 from access_profiles import SIZES, PROFILES, LENGTH, SEED, traces, entropy
 
@@ -28,6 +28,23 @@ def add_stage2(rows, meta, archives, D, inc, htflags, compile, run):
         trace_meta[profile, n] = {"query_trace_sha256": hashlib.sha256(text.encode()).hexdigest(), "trace_file": str(p), "H_alpha_16k": entropy(offsets, LENGTH)}
     (D / "batch-traces.json").write_text(json.dumps({"seed": SEED, "hot_blocks_16k": hot,
         "traces": [{"profile": p, "n": n, "offsets": q, **trace_meta[p, n]} for (p, n), q in queries.items()]}, separators=(",", ":")) + "\n")
+    # BGZF's declared block=65536 is a ceiling; its actual access blocks come
+    # from the GZI index, not a uniform 64 KiB grid.
+    gzi = pathlib.Path(archives["bgzip+htslib"] + ".gzi").read_bytes()
+    entries = struct.unpack_from("<Q", gzi)[0]
+    assert len(gzi) == 8 + 16 * entries
+    bgzf_starts = [0] + [struct.unpack_from("<Q", gzi, 16 + 16 * i)[0] for i in range(entries)]
+    assert bgzf_starts == sorted(set(bgzf_starts))
+    def access_entropy(codec, offsets):
+        if codec != "bgzip+htslib": return entropy(offsets, configuration(codec)["block"])
+        counts = collections.Counter(bisect.bisect_right(bgzf_starts, off) - 1 for off in offsets)
+        return -math.fsum((v / len(offsets)) * math.log2(v / len(offsets)) for v in counts.values())
+    meta["bgzf_entropy_index"] = {"gzi_sha256": hashlib.sha256(gzi).hexdigest(), "mapping": "actual GZI uncompressed block starts; 65536 is only the size ceiling"}
+    traces_path = D / "batch-traces.json"
+    saved_traces = json.loads(traces_path.read_text())
+    saved_traces["bgzf_uncompressed_block_starts"] = bgzf_starts
+    saved_traces["bgzf_gzi_sha256"] = hashlib.sha256(gzi).hexdigest()
+    traces_path.write_text(json.dumps(saved_traces, separators=(",", ":")) + "\n")
     raw = []
     def execute(codec, args, output_name):
         config = configuration(codec)
@@ -72,8 +89,8 @@ def add_stage2(rows, meta, archives, D, inc, htflags, compile, run):
                 samples, common = execute(codec, args, f"batch-{codec.replace('+','-')}-{profile}-{n}.jsonl")
                 native = api == "aceapex"
                 assert len(samples) == (6 if native else 3)
-                common.update(access_profile=profile, n=n, requested_bytes=LENGTH, H_alpha=entropy(queries[profile, n], config["block"]),
-                    entropy_block_bytes=config["block"], **trace_meta[profile, n])
+                common.update(access_profile=profile, n=n, requested_bytes=LENGTH, H_alpha=access_entropy(codec,queries[profile,n]),
+                    entropy_block_bytes=config["block"], entropy_mapping="GZI indexed blocks" if codec=="bgzip+htslib" else "fixed independent blocks/frames", **trace_meta[profile, n])
                 for method in (("loop", "batch") if native else ("loop",)):
                     ss = [s for s in samples if s["method"] == method]
                     assert [s["repeat"] for s in ss] == list(range(3))

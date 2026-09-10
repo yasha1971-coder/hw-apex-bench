@@ -40,7 +40,9 @@ are retained, allowing replay independent of Python versions.
   This replaces the upstream power approximation and avoids its zero-input cast.
 
 H_alpha is Shannon entropy of request-start blocks, `-sum(p * log2(p))`. Each row
-uses its declared `block` size. H_alpha_16k is also retained to compare the same
+uses its declared `block` size for fixed-size units. BGZF uses actual GZI-indexed
+block boundaries because 65536 is only its ceiling. The GZI hash and raw
+uncompressed block starts are retained with the trace evidence. H_alpha_16k is also retained to compare the same
 access distribution at a fixed scale. A 64-block hot set on the canonical grid
 may map to fewer dense blocks; its per-codec entropy is not forced to six bits.
 H_alpha describes the starting-block distribution, not all intersected blocks.
