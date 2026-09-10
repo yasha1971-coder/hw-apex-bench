@@ -1,7 +1,8 @@
 """Export the instrument-style homepage from one verified JSONL run."""
 import hashlib,json,pathlib,sys
+from validate_publication import validate
 R=pathlib.Path(__file__).resolve().parents[1]
-rows=[json.loads(s) for s in (R/'results.jsonl').read_text().splitlines()]
+rows=validate(R)
 cs=['bgzip+htslib','zstd-seekable','aceapex-interactive','aceapex-dense']
 core_rows=[r for r in rows if r['codec'] in cs]
 assert len({r['run_id'] for r in core_rows})==1
