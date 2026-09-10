@@ -99,9 +99,12 @@ for metric in ("ratio","region_p50","region_p99"):
                     value=relative,unit="dimensionless",status="pass" if passed else "fail",
                     predicate=">=0.99" if metric=="ratio" else "<=1.0",
                     commands=["python3 harness/driver.py"],baseline_codec="bgzip+htslib"))
-if meta.get("stage",1)==2:
+if meta.get("stage",1)>=2:
     from stage2 import add_stage2
     rows=add_stage2(rows,meta,archives,D,inc,htflags,compile,run)
+if meta.get("stage",1)>=3:
+    from independence import add_independence
+    rows=add_independence(rows,meta,D)
 # Publish only after all four configurations have passed the exactness checks.
 final=ROOT/"results.jsonl"
 temp=D/"results.complete.jsonl"

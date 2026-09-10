@@ -103,7 +103,8 @@ the later plateau experiment and are not published here.
 
 ## Review boundary
 
-Stop after batch, H_alpha and break-even. c(g) needs a separate reviewed PR;
-plateau throughput follows separately. Only then run the complete protocol on
+`--stage 2` stops after batch, H_alpha and break-even. The separate c(g) stage
+is selected by `--stage 3` and by the default invocation; its report states the
+whole-file baseline and implementation caveats. Plateau throughput follows separately. Only then run the complete protocol on
 ace-core EPYC 4344P and WSL. No claim that cross-codec ratios are machine-invariant
 is accepted without those measurements.

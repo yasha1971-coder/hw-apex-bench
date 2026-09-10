@@ -76,10 +76,13 @@ def render(rows):
         streams=r.get("stream_decoded_bytes_total")
         if streams is not None and sum(streams)!=r["decoded_bytes_total"]: raise ValueError("Stream totals mismatch")
         text.append(f"| {c} | {r['decoded_bytes_total']} | {r['requested_bytes_total']} | {str(streams) if streams is not None else 'n/a'} |")
-    if meta.get("stage",1)==2:
+    if meta.get("stage",1)>=2:
         from stage2_report import render_stage2
         extra, matrix=render_stage2(rows)
         text += ["",extra]
+    if meta.get("stage",1)>=3:
+        from independence import render_independence
+        text += ["",render_independence(rows)]
     text+=["","These are descriptive comparisons against the same-machine baseline, not promises that any codec must win.",
            "A slower codec remains FAIL in this table; correctness failures abort report generation.",
            "",(ROOT/"METHOD.md").read_text()]
@@ -87,7 +90,7 @@ def render(rows):
 if __name__=="__main__":
     rows=[json.loads(s) for s in (ROOT/"results.jsonl").read_text().splitlines() if s.strip()]
     result=render(rows)
-    if rows[0].get("stage",1)==2:
+    if rows[0].get("stage",1)>=2:
         from stage2_report import render_stage2
         _,matrix=render_stage2(rows)
         (ROOT/"BATCH_RESULTS.md").write_text(matrix)

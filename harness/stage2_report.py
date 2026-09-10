@@ -57,6 +57,6 @@ def render_stage2(rows):
              "| EPYC 4344P | 13.3× | declared by user; matching command/configuration/receipt unavailable here |",
              "", "These historical points use another protocol and are not inputs to current pass/fail.",
              "The old parse checks without numpy are interpreted as skipped (missing dependency); the original FAIL text is preserved.",
-             "", "Stop for review here. c(g), plateau throughput and the subsequent three-machine run remain deferred.",
+             "", ("Batch review is complete; measured c(g) follows below." if rows[0].get("stage",1)>=3 else "Stop for review here. c(g), plateau throughput and the subsequent three-machine run remain deferred."),
              "See [batch protocol and upstream attribution](BATCH_METHOD.md).", ""]
     return "\n".join(text), "\n".join(full) + "\n"
