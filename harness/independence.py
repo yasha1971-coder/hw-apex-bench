@@ -4,9 +4,20 @@ from configurations import CODECS, configuration, clean_environment
 
 STRICT_REASONS = {
     'bgzip+htslib': 'n/a: gzip and bgzip use different encoder implementations; no same-encoder block-size-only baseline measured',
-    'zstd-seekable': 'n/a: level -3 is matched, but equal effective compression parameters beyond frame size have not been verified',
-    'aceapex-interactive': 'n/a: per-block first-MiB flattening eligibility changes; its separate effect has not been isolated',
-    'aceapex-dense': 'n/a: per-block first-MiB flattening eligibility changes; its separate effect has not been isolated',
+    'aceapex-interactive': 'n/a for this profile/SHA: the strict supplied pair uses the default configuration at 7216280, not --profile interactive at 1b13df3',
+    'aceapex-dense': 'n/a for this profile/SHA: no block-size-only dense pair has been supplied',
+}
+
+ACE_CORE_STRICT = {
+    'codec': 'aceapex-default-7216280',
+    'sha': '7216280298baa976152f6978ea1ac9c7b65fc4ad',
+    'block': 16384,
+    'whole_block': 253935557,
+    'input_bytes': 253935557,
+    'blocked_archive_bytes': 80829622,
+    'whole_archive_bytes': 79510864,
+    'threads': 8,
+    'machine': 'AMD EPYC 4344P (ace-core)',
 }
 
 def add_independence(rows, meta, D):
@@ -60,9 +71,33 @@ def add_independence(rows, meta, D):
             baseline_configuration=baseline,whole_archive_sha256=sha(arc),archive_sha256=original['archive_sha256'],
             correctness='pass',full_restore_byte_equal=True,commands=original['commands']+commands,
             note='Negative cost is retained if measured. No threshold is fitted to expected 0.41% or 6.68%.' ))
-        rows.append(dict(rows[-1],metric='independence_cost_strict_percent',value=None,status='n/a',
-            reason=STRICT_REASONS[codec],baseline_contract='Only independent block size may change; effective encoder parameters and algorithmic modes must otherwise be fixed'))
+        if codec == 'zstd-seekable':
+            rows.append(dict(rows[-1],metric='independence_cost_strict_percent',value=loss,status='measured',
+                reason='same zstd 1.5.7 encoder and level -3; one frame versus independent 16384-byte frames',
+                baseline_contract='Only frame size changes; complete output files, including seek table, are counted'))
+        else:
+            rows.append(dict(rows[-1],metric='independence_cost_strict_percent',value=None,status='n/a',
+                reason=STRICT_REASONS[codec],baseline_contract='Only independent block size may change; all other explicit settings remain fixed'))
         restored.unlink()
+    c=ACE_CORE_STRICT
+    ratio_g=c['input_bytes']/c['blocked_archive_bytes']
+    ratio_whole=c['input_bytes']/c['whole_archive_bytes']
+    loss=100*(1-ratio_g/ratio_whole)
+    rows.append(dict(meta,codec=c['codec'],configuration={
+            'implementation':'aceapex','profile':'default','block':c['block'],
+            'baseline_block':c['whole_block'],'encoder_requested_threads':c['threads']},
+        metric='independence_cost_strict_percent',value=loss,unit='percent',status='declared',
+        measurement_source='user-supplied ace-core measurement; exact archive bytes and commands supplied, archive hashes and restore receipt not supplied',
+        formula='100 * (1 - ratio_g / ratio_whole)',ratio_g=ratio_g,ratio_whole=ratio_whole,
+        independent_archive_bytes=c['blocked_archive_bytes'],whole_archive_bytes=c['whole_archive_bytes'],
+        input_bytes=c['input_bytes'],hardware={'machine':c['machine']},threads_requested=c['threads'],
+        versions={'aceapex_sha':c['sha'],'compiler':'not supplied','libzstd':'not supplied'},
+        correctness='declared; no archive hashes or byte-equal restore receipt supplied',
+        commands=[
+          'ACEAPEX_BS=16384 ./aceapex c --in chr1.fa --out /tmp/g16.aet --threads 8',
+          'ACEAPEX_BS=253935557 ./aceapex c --in chr1.fa --out /tmp/gall.aet --threads 8',
+          'stat -c%s /tmp/g16.aet /tmp/gall.aet'],
+        note='Whole means one ACEAPEX block spanning the input; block logic remains active. Complete .aet file bytes are counted.'))
     (D/'independence-raw.json').write_text(json.dumps([r for r in rows if r['metric'] in ('configuration_ratio_loss_percent','independence_cost_strict_percent')],indent=2)+'\n')
     return rows
 
@@ -72,22 +107,29 @@ def render_independence(rows):
     if {r['codec'] for r in rr}!=set(CODECS) or len(rr)!=4:raise ValueError('Incomplete independence comparison')
     strict=[r for r in rows if r['metric']=='independence_cost_strict_percent']
     if any(r['metric']=='configuration_ratio_loss_percent' for r in rr):
-        if len(strict)!=4 or {r['codec'] for r in strict}!=set(CODECS):
+        if len(strict)!=5 or {r['codec'] for r in strict}!=set(CODECS)|{ACE_CORE_STRICT['codec']}:
             raise ValueError('Missing strict baseline eligibility records')
-    for r in strict:
-        if r['value'] is not None or r['status']!='n/a' or r.get('reason')!=STRICT_REASONS[r['codec']]:
-            raise ValueError('No audited block-size-only baseline is implemented for this codec')
-    out=['## Independence cost c(g): strict baseline contract','','Only the independent block size may change. Corpus bytes, encoder revision, level, effective search/entropy parameters, threads and algorithmic modes must otherwise be fixed. A CLI flag match alone is insufficient if another algorithmic mode changes with block size.',
-         '`c(g) = 100 × (1 − ratio_g / ratio_whole)`. Below, the two ratios and their operational loss are measured; strict c(g) is n/a until the one-parameter contract is demonstrated. Historical JSONL metric independence_cost_percent means the operational comparison, not a retrospectively certified strict c(g).','',
+    strict_by={r['codec']:r for r in strict}
+    if strict_by['bgzip+htslib']['value'] is not None or strict_by['bgzip+htslib']['status']!='n/a':
+        raise ValueError('bgzip must remain n/a without a same-encoder baseline')
+    if strict_by['zstd-seekable']['status']!='measured':raise ValueError('zstd strict pair missing')
+    if strict_by[ACE_CORE_STRICT['codec']]['status']!='declared':raise ValueError('external ACEAPEX provenance must remain declared')
+    out=['## Independence cost c(g): strict baseline contract','','Only the independent block size may change. Corpus bytes, encoder revision, level, effective search/entropy parameters and threads must otherwise be fixed. Deterministic encoder behavior caused by the changed boundary is part of the treatment.',
+         '`c(g) = 100 × (1 − ratio_g / ratio_whole)`. Every ratio uses input bytes divided by complete output-file bytes. Historical JSONL metric independence_cost_percent means the operational comparison; strict claims are explicit rows with their own provenance.','',
          '| Codec/profile | block bytes | ratio g | ratio whole | Operational loss % | Strict c(g) | Encoder threads requested |','|---|---:|---:|---:|---:|---|---:|']
     for r in rr:
         expected=100*(1-r['whole_archive_bytes']/r['independent_archive_bytes'])
         if abs(expected-r['value'])>1e-10 or not r['full_restore_byte_equal']:raise ValueError('Invalid c(g) evidence')
-        out.append(f"| {r['codec']} | {r['configuration']['block']} | {r['ratio_g']:.6f} | {r['ratio_whole']:.6f} | {r['value']:.6f} | n/a | 1 |")
-    for codec in CODECS:
+        sr=strict_by[r['codec']]
+        sv=f"{sr['value']:.6f}" if sr['value'] is not None else 'n/a'
+        out.append(f"| {r['codec']} | {r['configuration']['block']} | {r['ratio_g']:.6f} | {r['ratio_whole']:.6f} | {r['value']:.6f} | {sv} | 1 |")
+    ext=strict_by[ACE_CORE_STRICT['codec']]
+    out.append(f"| ACEAPEX default @ 7216280 (ace-core, declared) | {ACE_CORE_STRICT['block']} | {ext['ratio_g']:.6f} | {ext['ratio_whole']:.6f} | — | {ext['value']:.6f} | {ACE_CORE_STRICT['threads']} |")
+    for codec in ('bgzip+htslib','aceapex-interactive','aceapex-dense'):
         out += ['', codec+': '+STRICT_REASONS[codec]+'.']
+    out += ['', 'ACEAPEX default @ 7216280 is shown from supplied ace-core archive sizes: 80829622 bytes at 16 KiB and 79510864 bytes for one whole-input block. Status is declared because compiler/libzstd versions, archive hashes and a byte-equal restore receipt were not supplied. The GitHub runner reproduction remains a separate machine result.']
     out += ['', 'zstd bases are explicitly zstd 1.5.7 level -3, one continuous frame versus independent 16384-byte frames. The user-reported historical version is 1.4.8 with 6.68%; version change is a hypothesis for the difference, not an attribution established by a matched rerun.',
-            'Neither 0.41% nor 6.68% is a target. Any new strict c(g) must come from its own verified pair and keep that pair’s ratios and commands; a historical value cannot replace a different pair’s measured loss.']
+            'The historical 0.410% is payload-only: it excludes the AET header and 64-byte BlockOffsets entry per block. The cross-codec archive ratio includes both. Neither 0.410% nor 6.68% is an acceptance target.']
     out+=['','Whole-file means one continuous member/frame/output block, not an unlimited match window. gzip retains its 32 KiB backward-distance limit; this does not make its blocks independent. bgzip adds independent member boundaries, index/headers and implementation differences.',
           'ACEAPEX uses the same pinned binary on both sides. ACEAPEX_BS changes from 16384 or 262144 to 253935557. MIN_MATCH was cleared and defaults to 0. LIT_CHUNK/FSE_CHUNK remain 65536/4096 (interactive) or 1048576/32768 (dense).',
           'Important correction: flattening is not disabled for the entire large block. The actual guard is local_pos < (1u<<20), with c_off <= local_pos. Eligible non-rep matches in its first MiB may be flattened; later matches are not. Each small block resets local_pos. The separate size impact of this difference is unmeasured; isolated c(g) is n/a for these ACEAPEX pairs.',
