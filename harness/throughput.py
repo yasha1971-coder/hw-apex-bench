@@ -163,7 +163,7 @@ def render_throughput(rows):
         out.append(f"| {codec} | {e['configuration']['block']} | {e['threads_requested']} | {value(e)} | {relation(er)} | {d['decoder_thread_policy']} | {value(d)} | {relation(dr)} | {e['input_bytes']} |")
     out += ["","Encode is process wall clock around the encoder. Full decode is timed only around the library call, with archive resident and output allocated and prefaulted. All decoded bytes are compared with the concatenated input outside the timer.",
       "The declared resource edge is eight copies (2,031,484,456 input bytes). Every curve point, repetition, command, archive hash, machine and library version is retained in `results.jsonl` and `.work/throughput-raw.json`.","",
-      "The ACEAPEX full-decode API has no thread-count argument. Its pinned implementation creates 8 reconstruction workers and up to 8 literal workers; the exact runner CPU count is printed in each row. Thus 1281 MB/s is not a one-thread result.","",
+      "The ACEAPEX full-decode API has no thread-count argument. Its pinned implementation creates 8 reconstruction workers and up to 8 literal workers; the exact runner CPU count is printed in each row. Therefore its reported full-decode rate is not a one-thread result.","",
       "GPU remains a separate path and is not inferred from these CPU measurements.","",
-      "Stop for review before the three-machine experiment and GPU publication."]
+      "GPU evidence follows as a separate provenance group. Stop for review before merge or the three-machine experiment."]
     return "\n".join(out)
