@@ -1,3 +1,47 @@
+# hw-apex-bench — Compressed Access Benchmark
+
+Stage 1: three codecs, four configurations, API-only byte-region table for review. Later axes remain deferred.
+
+Run: 2026-09-10T00:46:30.324481+00:00. Benchmark commit: a271700bf22e84224d1a1b300bb817a2f3634fb3.
+
+Corpus: chr1 hg38 FASTA, MD5 9465e0f0df6e2c6eb39729c39cee5465.
+
+libzstd: *** Zstandard CLI (64-bit) v1.5.7, by Yann Collet ***; htslib: 1.19; bgzip: bgzip (htslib) 1.19.
+C: gcc (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0; C++: g++ (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0.
+ACEAPEX: 1b13df34ac8e839dd3232b59bc59560d689a435a; zstd reference implementation: f8745da6ff1ad1e7bab384bd1f9d742439278e99.
+
+Machine: Linux-6.17.0-1022-azure-x86_64-with-glibc2.39; logical CPUs: 4.
+Hardware details, parameters and commands accompany every measurement in results.jsonl.
+
+| Configuration | Level | Encoder threads | Block/frame bytes | LIT bytes | FSE bytes |
+|---|---:|---:|---:|---:|---:|
+| bgzip+htslib | 6 | 1 | BGZF variable (<=65536 uncompressed) | n/a | n/a |
+| zstd-seekable | 3 | 1 | 16384 | n/a | n/a |
+| aceapex-interactive | 2 | 1 | 16384 | 65536 | 4096 |
+| aceapex-dense | 2 | 1 | 262144 | 1048576 | 32768 |
+
+| Codec / profile | block (bytes) | Ratio incl. indexes | Region p50 ms | Region p99 ms | Output amplification | GPU |
+|---|---:|---:|---:|---:|---:|---|
+| bgzip+htslib | 65536 | 3.382558 | 0.116708 | 0.243865 | 4.821094 | n/a |
+| zstd-seekable | 16384 | 3.025774 | 0.070261 | 0.094537 | 2.000000 | n/a |
+| aceapex-interactive | 16384 | 3.658493 | 0.155560 | 0.287075 | 6.216250 | n/a |
+| aceapex-dense | 262144 | 3.780646 | 1.355178 | 2.536542 | 83.431872 | n/a |
+
+Every timed operation reads the same 16,384 original-file bytes. No FASTA parsing is timed.
+Amplification is **actual decoded chunk bytes / requested bytes** in a separate counted pass.
+BGZF counts decompressed blocks, zstd counts reconstructed blocks within frames (including buffered output), and ACEAPEX counts the decoded chunks of all four streams. Raw per-stream totals are retained.
+BGZF block=65536 is its size ceiling; actual blocks may be shorter. Different block limits are explicit, not normalized away.
+
+| Codec | Ratio / bgzip >= 0.99 | p50 / bgzip <= 1 | p99 / bgzip <= 1 |
+|---|---|---|---|
+| bgzip+htslib | 65536 | 1.0000 — PASS | 1.0000 — PASS | 1.0000 — PASS |
+| zstd-seekable | 16384 | 0.8945 — FAIL | 0.6020 — PASS | 0.3877 — PASS |
+| aceapex-interactive | 16384 | 1.0816 — PASS | 1.3329 — FAIL | 1.1772 — FAIL |
+| aceapex-dense | 262144 | 1.1177 — PASS | 11.6117 — FAIL | 10.4014 — FAIL |
+
+These are descriptive comparisons against the same-machine baseline, not promises that any codec must win.
+A slower codec remains FAIL in this table; correctness failures abort report generation.
+
 ## Reproduce
 
 On Linux, install `build-essential git python3 pkg-config libhts-dev tabix zlib1g-dev`,
@@ -87,3 +131,4 @@ cost c(g), batch profiles, H_alpha and break-even remain deferred. The previous
 controlled audit is reproduced at benchmark commit
 `baede64fd37bd087eecf9a94333d8fbf33e23c33`; its script depends on that historical
 harness and original ACEAPEX pin.
+

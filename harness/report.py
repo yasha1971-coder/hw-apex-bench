@@ -30,7 +30,7 @@ def validate(rows):
     for r in rows:
         if r["configuration"]!=configuration(r["codec"]): raise ValueError("Configuration mismatch")
         if r["versions"]["aceapex_sha"]!=ACE_SHA: raise ValueError("Wrong ACEAPEX revision")
-        if r["metric"].startswith("region_") and r["protocol"]["protocol_version"]!="api-bytes-v2": raise ValueError("Wrong timer protocol")
+        if r["metric"].startswith("region_") and r["protocol"]["protocol_version"]!="api-bytes-v3": raise ValueError("Wrong timer protocol")
     return index
 def render(rows):
     ix=validate(rows)
@@ -52,21 +52,21 @@ def render(rows):
           "| aceapex-interactive | 2 | 1 | 16384 | 65536 | 4096 |",
           "| aceapex-dense | 2 | 1 | 262144 | 1048576 | 32768 |",
           "",
-          "| Codec / profile | Ratio incl. indexes | Region p50 ms | Region p99 ms | Output amplification | GPU |",
-          "|---|---:|---:|---:|---:|---|"]
+          "| Codec / profile | block (bytes) | Ratio incl. indexes | Region p50 ms | Region p99 ms | Output amplification | GPU |",
+          "|---|---:|---:|---:|---:|---:|---|"]
     for c in CODECS:
-        text.append("| "+c+" | "+" | ".join(f"{ix[c,m]['value']:.6f}" for m in METRICS)+" | n/a |")
+        text.append("| "+c+" | "+str(ix[c,"ratio"]["configuration"]["block"])+" | "+" | ".join(f"{ix[c,m]['value']:.6f}" for m in METRICS)+" | n/a |")
     text+=["","Every timed operation reads the same 16,384 original-file bytes. No FASTA parsing is timed.",
-           "Amplification is reconstructed **output bytes / requested bytes**.",
-           "It excludes intermediate entropy buffers and is not total memory traffic.",
-           "BGZF and zstd use decoder-output counters in a separate pass; ACEAPEX uses the exact block span derived from its pinned source and archive header.",
-           "", "| Codec | Ratio / bgzip >= 0.99 | p50 / bgzip <= 1 | p99 / bgzip <= 1 |",
-           "|---|---|---|---|"]
+           "Amplification is **actual decoded chunk bytes / requested bytes** in a separate counted pass.",
+           "BGZF counts decompressed blocks, zstd counts reconstructed blocks within frames (including buffered output), and ACEAPEX counts the decoded chunks of all four streams. Raw per-stream totals are retained.",
+           "BGZF block=65536 is its size ceiling; actual blocks may be shorter. Different block limits are explicit, not normalized away.",
+           "", "| Codec | block (bytes) | Ratio / bgzip >= 0.99 | p50 / bgzip <= 1 | p99 / bgzip <= 1 |",
+           "|---|---:|---|---|---|"]
     for c in CODECS:
         cols=[]
         for m in ("ratio","region_p50","region_p99"):
             r=ix[c,m+"_relative_to_bgzip"]; cols.append(f"{r['value']:.4f} — {r['status'].upper()}")
-        text.append("| "+c+" | "+" | ".join(cols)+" |")
+        text.append("| "+c+" | "+str(ix[c,"ratio"]["configuration"]["block"])+" | "+" | ".join(cols)+" |")
     text+=["","These are descriptive comparisons against the same-machine baseline, not promises that any codec must win.",
            "A slower codec remains FAIL in this table; correctness failures abort report generation.",
            "",(ROOT/"METHOD.md").read_text()]
