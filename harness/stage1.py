@@ -30,11 +30,11 @@ def checkout(url, ref, target):
         raise RuntimeError("dependency has modified tracked sources")
     return sha
 if sys.argv[1:]==["--help"]:
-    print("bash run.sh : build three codecs (four configurations), verify chr1 MD5 and full restore, then API regions and, by default, batch/H_alpha/break-even and c(g). --stage 1 stops after regions; --stage 2 stops before c(g).")
+    print("bash run.sh : build three codecs (four configurations), verify chr1 MD5/full restore, API regions, batch/H_alpha/break-even, c(g), and plateau throughput. --stage N stops after stage N; N=1..4.")
     sys.exit(0)
 args=sys.argv[1:]
-if args not in ([], ["--stage","1"], ["--stage","2"], ["--stage","3"]): raise SystemExit("Usage: ./run.sh [--stage 1|2|3]")
-stage=int(args[1]) if args else 3
+if args not in ([], ["--stage","1"], ["--stage","2"], ["--stage","3"], ["--stage","4"]): raise SystemExit("Usage: ./run.sh [--stage 1|2|3|4]")
+stage=int(args[1]) if args else 4
 for tool in ("git","make","gcc","g++","pkg-config","bgzip"):
     if not shutil.which(tool): raise SystemExit("Missing dependency: "+tool+"; see README prerequisites")
 run(["pkg-config","--exists","htslib"])
@@ -90,7 +90,7 @@ env={"codec_overrides": "cleared; CLI --profile selects encode settings; per-row
 meta={"stage":stage,"run_id":__import__("datetime").datetime.now(__import__("datetime").timezone.utc).isoformat(),"corpus":CORPUS,"versions":versions,"hardware":hardware,"environment":env,
       "benchmark_commit":output(["git","rev-parse","HEAD"]),"ratio_tolerance":0.01,"encode_requested_threads":1,
       "source_provenance":json.loads(source_provenance.read_text()),
-      "note":"ACEAPEX may internally use additional entropy/decode workers; no throughput claim in stage 1"}
+      "note":"ACEAPEX may internally use additional entropy/decode workers; every throughput row declares its encoder and decoder thread policy"}
 archives={}
 rows=[]
 for codec in CODECS:
