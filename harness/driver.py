@@ -23,11 +23,15 @@ def compile(args):
 compile(["g++","-O3","-std=c++17","-pthread",*inc,"-c",a/"src/aceapex_api.cpp","-o",D/"aceapex_api.o"])
 compile(["gcc","-O3",*inc,"-c",z/"contrib/seekable_format/zstdseek_decompress.c","-o",D/"seek.o"])
 compile(["gcc","-O2","-shared","-fPIC",ROOT/"harness/bgzip_counters.c","-ldl","-o",D/"bgzip_counters.so"])
+from build_counters import build_counters
+meta["counter_source_sha256"]=build_counters(D,compile,inc)
 for phase in ("latency","amplification"):
-    extra=["-DCOUNT_ZSTD"] if phase=="amplification" else []
+    extra=["-DCOUNT_DECODER"] if phase=="amplification" else []
     compile(["gcc","-O3","-Wall","-Wextra",*inc,*extra,*htflags,"-c",ROOT/"harness/region_latency.c","-o",D/(phase+".o")])
-    extra=["-Wl,--wrap=ZSTD_decompressStream"] if phase=="amplification" else []
-    compile(["g++",D/(phase+".o"),D/"aceapex_api.o",D/"seek.o",z/"lib/libzstd.a",
+    extra=[]
+    api=D/("aceapex_count.o" if phase=="amplification" else "aceapex_api.o")
+    lib=(D/"counter-zstd/lib/libzstd.a") if phase=="amplification" else z/"lib/libzstd.a"
+    compile(["g++",D/(phase+".o"),api,D/"seek.o",lib,
              "-pthread","-ldl",*htflags,*extra,"-o",D/("region_"+phase)])
 meta["region_build_commands"]=build
 meta["protocol"]=protocol
@@ -56,10 +60,13 @@ for codec,archive in archives.items():
         samples[phase]=sample
         source.append(prefix+shlex.join(map(str,args)))
         sample_hashes[target.name]=sha(target)
+    if api_codec=="aceapex":
+        from check_counts import check_ace_counts
+        check_ace_counts(pathlib.Path(archive),samples["amplification"],config)
     assert [s["byte_offset"] for s in samples["latency"]]==[s["byte_offset"] for s in samples["amplification"]]
     times=sorted(s["latency_ms"] for s in samples["latency"])
     assert times[0]>0
-    reconstructed=sum(s["decoded_output_bytes"] for s in samples["amplification"])
+    reconstructed=sum(s["decoded_bytes"] for s in samples["amplification"])
     assert reconstructed>0, "No decoder output counted: instrumentation is not working"
     archive_record=next(r for r in rows if r["codec"]==codec and r["metric"]=="ratio")
     common=dict(meta,codec=codec,configuration=config,commands=source,sample_sha256=sample_hashes,
@@ -67,8 +74,7 @@ for codec,archive in archives.items():
     for metric,value,unit,status in (
         ("region_p50",times[math.ceil(.50*len(times))-1],"ms","declared"),
         ("region_p99",times[math.ceil(.99*len(times))-1],"ms","declared"),
-        ("amplification",reconstructed/(200*16384),"decoded_output_bytes/requested_bytes",
-         "derived" if api_codec=="aceapex" else "measured")):
+        ("amplification",reconstructed/(200*16384),"decoded_bytes/requested_bytes", "measured")):
         rows.append(dict(common,metric=metric,value=value,unit=unit,status=status))
 # Relative predicates are the same for every codec; FAIL does not become SKIP.
 for metric in ("ratio","region_p50","region_p99"):

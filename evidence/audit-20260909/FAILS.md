@@ -31,3 +31,7 @@ The original script exits 1; its summary is 13 pass, 3 fail, 14 skipped.
 `ed4fa1340ec1de1ae93515acd215f31931cb8ad62c564af39023d28c76725bcb`.
 ACEAPEX SHA: `1b13df34ac8e839dd3232b59bc59560d689a435a`.
 [Workflow](https://github.com/yasha1971-coder/hw-apex-bench/actions/runs/34417102681).
+
+Benchmark interpretation: `parse_chained_percent` and `parse_run_median` are `skipped` with reason `missing numpy`; no numerical result was produced. The raw upstream log remains unchanged and still prints FAIL. Correcting that upstream contract is separate work.
+
+Historical comparison: EPYC 9V74 measured 4.78x (log and command linked above). The user reports 13.3x on EPYC 4344P; it is declared, not a matched benchmark measurement because an exact command/configuration/receipt for that point has not been supplied here. These points are not used for this benchmark's pass/fail.

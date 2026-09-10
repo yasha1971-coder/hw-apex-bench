@@ -12,13 +12,13 @@ def clean_environment(env):
 def configuration(codec):
     if codec.startswith("aceapex-"):
         profile = codec.removeprefix("aceapex-")
-        return {"implementation": "aceapex", "profile": profile, "level": 2,
+        return {"implementation": "aceapex", "profile": profile, "block": int(PROFILES[profile]["ACEAPEX_BS"]), "level": 2,
                 "encoder_requested_threads": 1, "encoder_source": "aceapex_depth.cpp",
                 "encoder_profile_flag": "--profile " + profile,
                 "encoder_environment_overrides": {}, "effective_environment": PROFILES[profile],
                 "reader_environment": PROFILES[profile], "api": "aceapex_decompress_region"}
     if codec == "bgzip+htslib":
-        return {"implementation": codec, "level": 6, "encoder_requested_threads": 1,
+        return {"implementation": codec, "block": 65536, "block_note": "BGZF uncompressed size ceiling; actual blocks may be shorter", "level": 6, "encoder_requested_threads": 1,
                 "api": "bgzf_useek + bgzf_read", "required_indexes": [".gzi"]}
-    return {"implementation": codec, "level": 3, "frame_bytes": 16384,
+    return {"implementation": codec, "block": 16384, "level": 3, "frame_bytes": 16384,
             "encoder_requested_threads": 1, "api": "ZSTD_seekable_decompress"}

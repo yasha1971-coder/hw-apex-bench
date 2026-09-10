@@ -32,14 +32,11 @@ static double now(void) {
     struct timespec t; if(clock_gettime(CLOCK_MONOTONIC,&t)) die("clock");
     return (double)t.tv_sec+(double)t.tv_nsec*1e-9;
 }
-#ifdef COUNT_ZSTD
-static uint64_t zstd_output;
-size_t __real_ZSTD_decompressStream(ZSTD_DStream*,ZSTD_outBuffer*,ZSTD_inBuffer*);
-size_t __wrap_ZSTD_decompressStream(ZSTD_DStream *s,ZSTD_outBuffer *o,ZSTD_inBuffer *i) {
-    size_t before=o->pos, r=__real_ZSTD_decompressStream(s,o,i);
-    if(!ZSTD_isError(r)) zstd_output += o->pos-before;
-    return r;
-}
+#ifdef COUNT_DECODER
+void cabench_ace_reset(void);
+uint64_t cabench_ace_bytes(unsigned);
+void cabench_zstd_reset(void);
+uint64_t cabench_zstd_bytes(void);
 #endif
 int main(int argc,char **argv) {
     if(argc!=5) die("usage: region_latency CODEC ARCHIVE FASTA latency|amplification");
@@ -73,7 +70,7 @@ int main(int argc,char **argv) {
         seek=ZSTD_seekable_create(); if(!seek) die("seekable create");
         size_t r=ZSTD_seekable_initBuff(seek,arc,an);
         if(ZSTD_isError(r)) die(ZSTD_getErrorName(r));
-#ifndef COUNT_ZSTD
+#ifndef COUNT_DECODER
         if(counts) die("amplification needs instrumented binary");
 #endif
     } else {
@@ -91,8 +88,8 @@ int main(int argc,char **argv) {
         if(end>fn) die("query bounds");
         uint64_t decoded=0;
         if(counts&&bg) reset_counts();
-#ifdef COUNT_ZSTD
-        zstd_output=0;
+#ifdef COUNT_DECODER
+        cabench_ace_reset(); cabench_zstd_reset();
 #endif
         double elapsed;
         if(bg) {
@@ -117,19 +114,24 @@ int main(int argc,char **argv) {
         if(memcmp(raw,fasta+start,LENGTH)) die("region differs from original");
         if(counts) {
             if(bg) decoded=get_counts();
-#ifdef COUNT_ZSTD
-            else if(zs) decoded=zstd_output;
+#ifdef COUNT_DECODER
+            else if(zs) decoded=cabench_zstd_bytes();
+            else for(unsigned i=0;i<4;i++) decoded+=cabench_ace_bytes(i);
 #endif
-            else {
-                uint64_t lo=(start/block)*block,hi=((end-1)/block+1)*block;
-                if(hi>original) hi=original;
-                decoded=hi-lo;
-            }
+
         }
         if(q>=0) {
             printf("{\"query\":%d,\"byte_offset\":%llu,\"requested_bytes\":%d,\"verified\":true,",
                    q,(unsigned long long)start,LENGTH);
-            if(counts) printf("\"decoded_output_bytes\":%llu}\n",(unsigned long long)decoded);
+            if(counts) {
+                printf("\"decoded_bytes\":%llu",(unsigned long long)decoded);
+#ifdef COUNT_DECODER
+                if(!bg&&!zs) printf(",\"stream_decoded_bytes\":[%llu,%llu,%llu,%llu]",
+                    (unsigned long long)cabench_ace_bytes(0),(unsigned long long)cabench_ace_bytes(1),
+                    (unsigned long long)cabench_ace_bytes(2),(unsigned long long)cabench_ace_bytes(3));
+#endif
+                printf("}\n");
+            }
             else printf("\"latency_ms\":%.9f}\n",elapsed);
         }
     }

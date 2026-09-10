@@ -31,7 +31,7 @@ jobs:
           cat benchmark.log
           python3 - <<'PY'
           from pathlib import Path
-          paths=[Path("results.jsonl"),Path("README.md"),Path(".work/metadata.json"),Path(".work/archives.json"),*sorted(Path(".work").glob("samples-*.jsonl"))]
+          paths=[Path("results.jsonl"),Path("README.md"),Path(".work/metadata.json"),Path(".work/archives.json"),Path(".work/counter-sources.json"),*sorted(Path(".work").glob("samples-*.jsonl"))]
           for p in paths:
               if p.is_file():
                   print("CABENCH_EVIDENCE_BEGIN "+str(p))
@@ -51,4 +51,5 @@ jobs:
             benchmark.log
             .work/metadata.json
             .work/archives.json
+            .work/counter-sources.json
             .work/samples-*.jsonl

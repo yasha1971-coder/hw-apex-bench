@@ -9,11 +9,11 @@
   "latency": "API-only: bgzf_useek + bgzf_read, ZSTD_seekable_decompress, or aceapex_decompress_region; excludes FASTA processing, return checks, verification, initialization, loading, caller allocation and serialization",
   "archives": "bgzip anonymous Linux memfd, .gzi loaded once; ACEAPEX and zstd malloc buffers",
   "decoder_state": "one initialized handle per codec, reused across warmup and all 200 queries",
-  "amplification": "final-output-layer reconstructed bytes / requested bytes; excludes intermediate ACEAPEX entropy buffers; not total memory traffic",
+  "amplification": "actual decoded chunk bytes / requested bytes; count BGZF block expansion, zstd block expansion inside frames including buffered output, and ACEAPEX chunks in all four streams",
   "amplification_evidence": {
-    "bgzip": "separate pass counts inflate/libdeflate output",
-    "zstd": "separate pass counts ZSTD_decompressStream output",
-    "aceapex": "derived exact reconstructed block span from pinned decoder and actual archive header"
+    "bgzip": "inflate/libdeflate output counters in separate pass",
+    "zstd": "actual decompressed block sizes at streaming and one-shot decode sites in a pinned-source counting copy",
+    "aceapex": "actual selected raw chunk sizes, separately for literals/offsets/lengths/commands, in a pinned-source counting copy"
   },
   "relative_predicates": {
     "ratio": "codec / bgzip >= 0.99",
@@ -29,7 +29,7 @@
     "break-even N"
   ],
   "gpu": "n/a: no GPU adapter in stage 1",
-  "protocol_version": "api-bytes-v2",
+  "protocol_version": "api-bytes-v3",
   "requested_bytes": 16384,
   "configurations": [
     "bgzip+htslib",

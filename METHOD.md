@@ -12,7 +12,7 @@ with configuration, commands, library/compiler versions, hardware, archive SHA-2
 and corpus provenance. `python3 harness/report.py` regenerates this README.
 Raw latency and amplification samples are retained separately with SHA-256 hashes.
 
-## API-only contract (api-bytes-v2)
+## API-only contract (api-bytes-v3)
 
 * All archives contain identical original FASTA bytes. Every request is exactly
   16,384 original-file bytes at the same zero-based byte offset for all four rows.
@@ -31,10 +31,15 @@ Raw latency and amplification samples are retained separately with SHA-256 hashe
 * Two untimed boundary checks plus ten random warmups precede 200 timed queries.
   Every result, including warmup and boundary results, is byte-verified. All rows
   use seed 20260909 and the same trace. Quantiles use nearest rank (indices 99/197).
-* Amplification is reconstructed final-output bytes / requested bytes. BGZF and
-  zstd are counted in a separate instrumented pass; ACEAPEX's exact reconstructed
-  block span is derived from the archive header and pinned decoder. Intermediate
-  literal/FSE buffers are excluded; this is not a memory-traffic metric.
+* Amplification counts decoded chunk bytes / requested bytes. BGZF counts the
+  bytes expanded by inflate/libdeflate. zstd counts actual block reconstruction,
+  including output still buffered inside the library. ACEAPEX counts every decoded
+  chunk in the literal, offset, length and command streams, with per-stream totals.
+  A separate counting executable is built from generated dependency copies, with
+  original/generated source hashes retained; latency uses untouched source objects.
+* `block` is the independent access unit in bytes. BGZF reports its 65536-byte
+  ceiling (actual blocks may be shorter); zstd reports the configured frame size;
+  ACEAPEX reports the profile block size. Rows with unequal block sizes are explicit.
 
 ## ACEAPEX configurations
 
