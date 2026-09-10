@@ -63,6 +63,10 @@
     "meaning": "derived independent-read intersection; not batch crossover; no plateau throughput claim"
   },
   "independence": {
+    "strict_contract": "Only independent block size changes; all effective encoder parameters and algorithmic modes remain fixed",
+    "missing_matched_baseline": "strict c(g) is null / n/a with a reason; retain measured operational loss separately",
+    "operational_metric": "configuration_ratio_loss_percent",
+    "strict_metric": "independence_cost_strict_percent",
     "formula": "100 * (1 - ratio_g / ratio_whole)",
     "whole_file_baseline": "one gzip member; one zstd frame; one ACEAPEX output block with profile entropy chunk sizes retained",
     "include_required_indexes": true,

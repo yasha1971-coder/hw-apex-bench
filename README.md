@@ -116,16 +116,28 @@ Batch review is complete; measured c(g) follows below.
 See [batch protocol and upstream attribution](BATCH_METHOD.md).
 
 
-## Independence cost c(g): operational comparison
+## Independence cost c(g): strict baseline contract
 
-`c(g) = 100 × (1 − ratio_g / ratio_whole)`; signed loss of compression ratio. All archive headers and required indexes count. This is not an isolated causal measurement of block independence.
+Only the independent block size may change. Corpus bytes, encoder revision, level, effective search/entropy parameters, threads and algorithmic modes must otherwise be fixed. A CLI flag match alone is insufficient if another algorithmic mode changes with block size.
+`c(g) = 100 × (1 − ratio_g / ratio_whole)`. Below, the two ratios and their operational loss are measured; strict c(g) is n/a until the one-parameter contract is demonstrated. Historical JSONL metric independence_cost_percent means the operational comparison, not a retrospectively certified strict c(g).
 
-| Codec/profile | block bytes | ratio g | ratio whole | c(g) loss % | Encoder threads requested |
-|---|---:|---:|---:|---:|---:|
-| bgzip+htslib | 65536 | 3.382558 | 3.395854 | 0.391536 | 1 |
-| zstd-seekable | 16384 | 3.025774 | 3.259852 | 7.180634 | 1 |
-| aceapex-interactive | 16384 | 3.658493 | 3.722310 | 1.714456 | 1 |
-| aceapex-dense | 262144 | 3.780646 | 3.793413 | 0.336554 | 1 |
+| Codec/profile | block bytes | ratio g | ratio whole | Operational loss % | Strict c(g) | Encoder threads requested |
+|---|---:|---:|---:|---:|---|---:|
+| bgzip+htslib | 65536 | 3.382558 | 3.395854 | 0.391536 | n/a | 1 |
+| zstd-seekable | 16384 | 3.025774 | 3.259852 | 7.180634 | n/a | 1 |
+| aceapex-interactive | 16384 | 3.658493 | 3.722310 | 1.714456 | n/a | 1 |
+| aceapex-dense | 262144 | 3.780646 | 3.793413 | 0.336554 | n/a | 1 |
+
+bgzip+htslib: n/a: gzip and bgzip use different encoder implementations; no same-encoder block-size-only baseline measured.
+
+zstd-seekable: n/a: level -3 is matched, but equal effective compression parameters beyond frame size have not been verified.
+
+aceapex-interactive: n/a: per-block first-MiB flattening eligibility changes; its separate effect has not been isolated.
+
+aceapex-dense: n/a: per-block first-MiB flattening eligibility changes; its separate effect has not been isolated.
+
+zstd bases are explicitly zstd 1.5.7 level -3, one continuous frame versus independent 16384-byte frames. The user-reported historical version is 1.4.8 with 6.68%; version change is a hypothesis for the difference, not an attribution established by a matched rerun.
+Neither 0.41% nor 6.68% is a target. Any new strict c(g) must come from its own verified pair and keep that pair’s ratios and commands; a historical value cannot replace a different pair’s measured loss.
 
 Whole-file means one continuous member/frame/output block, not an unlimited match window. gzip retains its 32 KiB backward-distance limit; this does not make its blocks independent. bgzip adds independent member boundaries, index/headers and implementation differences.
 ACEAPEX uses the same pinned binary on both sides. ACEAPEX_BS changes from 16384 or 262144 to 253935557. MIN_MATCH was cleared and defaults to 0. LIT_CHUNK/FSE_CHUNK remain 65536/4096 (interactive) or 1048576/32768 (dense).

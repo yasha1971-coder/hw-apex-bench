@@ -1,5 +1,27 @@
 # What the c(g) pairs actually measure
 
+## Strict baseline rule
+
+For strict c(g), only the independent block size may change. Encoder revision,
+corpus, effective search and entropy settings, threads and algorithmic modes
+must otherwise be fixed. Current percentages below remain measured operational
+losses, not certified strict c(g). The report shows strict c(g) as n/a, with a
+reason for every configuration. Historical raw JSONL is not rewritten.
+
+New runs distinguish `configuration_ratio_loss_percent` (measured number) from
+`independence_cost_strict_percent` (null / n/a until a matched baseline exists).
+
+For zstd the current pair is explicitly **zstd 1.5.7 -3, one continuous frame**
+versus **zstd 1.5.7 -3, independent 16 KiB frames**. Equal effective parameters
+beyond the frame size still need verification; a shared level alone is not that
+verification. The user identifies the historical 6.68% version as **1.4.8**.
+The version difference is a possible cause, not a measured explanation. A
+matched version comparison is needed before attributing the 0.50 percentage-point delta.
+
+The historical 0.41% must be recomputed from its verified pair. If a new matched
+experiment produces it, it belongs to that new pair and provenance, not as a
+replacement for the existing 1.714456% operational observation.
+
 Measured source: `1a406213bb4d46b3cfbf26b10f11ce5bd1986be8`.
 ACEAPEX: `1b13df34ac8e839dd3232b59bc59560d689a435a`.
 Corpus: chr1 hg38, 253935557 bytes, MD5 `9465e0f0df6e2c6eb39729c39cee5465`.
