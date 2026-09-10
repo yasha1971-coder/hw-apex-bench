@@ -39,3 +39,14 @@ If either compression command fails, the runner writes `failure.json` and exits
 nonzero. A failed one-block encode is evidence that this revision does not
 provide a reproducible strict pair on that machine; a ratio printed after
 undefined behavior is not accepted as a benchmark point.
+
+## Source-layout warning at the pinned SHA
+
+There are two diverging encoder sources in that revision. The root
+`aceapex_depth.cpp` contains the guard
+`c_off <= local_pos && local_pos < ORIGIN_CAP`. The committed `Makefile`, however,
+sets `SRCS = src/aceapex_main.cpp`; that compiled file only checks
+`c_off <= local_pos` before reading `origin[src_local]`. The CI diagnostic rebuilds
+the actual Makefile target with AddressSanitizer and records the resulting stack
+trace. A source argument based on the guarded root file does not establish the
+behavior of the binary produced by `make`.
