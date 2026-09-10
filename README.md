@@ -2,7 +2,7 @@
 
 Stage 1: three codecs, four configurations, API-only byte-region table for review. Later axes remain deferred.
 
-Run: 2026-09-09T23:59:49.469819+00:00. Benchmark commit: 17a9e4e16b3cec022ac50712f684870b41f6e93a.
+Run: 2026-09-10T00:46:30.324481+00:00. Benchmark commit: a271700bf22e84224d1a1b300bb817a2f3634fb3.
 
 Corpus: chr1 hg38 FASTA, MD5 9465e0f0df6e2c6eb39729c39cee5465.
 
@@ -20,24 +20,24 @@ Hardware details, parameters and commands accompany every measurement in results
 | aceapex-interactive | 2 | 1 | 16384 | 65536 | 4096 |
 | aceapex-dense | 2 | 1 | 262144 | 1048576 | 32768 |
 
-| Codec / profile | Ratio incl. indexes | Region p50 ms | Region p99 ms | Output amplification | GPU |
-|---|---:|---:|---:|---:|---|
-| bgzip+htslib | 3.382558 | 0.095509 | 0.204770 | 4.821094 | n/a |
-| zstd-seekable | 3.025774 | 0.046968 | 0.054502 | 1.497864 | n/a |
-| aceapex-interactive | 3.658493 | 0.130814 | 0.234024 | 2.000000 | n/a |
-| aceapex-dense | 3.780646 | 1.280461 | 2.465967 | 17.200000 | n/a |
+| Codec / profile | block (bytes) | Ratio incl. indexes | Region p50 ms | Region p99 ms | Output amplification | GPU |
+|---|---:|---:|---:|---:|---:|---|
+| bgzip+htslib | 65536 | 3.382558 | 0.116708 | 0.243865 | 4.821094 | n/a |
+| zstd-seekable | 16384 | 3.025774 | 0.070261 | 0.094537 | 2.000000 | n/a |
+| aceapex-interactive | 16384 | 3.658493 | 0.155560 | 0.287075 | 6.216250 | n/a |
+| aceapex-dense | 262144 | 3.780646 | 1.355178 | 2.536542 | 83.431872 | n/a |
 
 Every timed operation reads the same 16,384 original-file bytes. No FASTA parsing is timed.
-Amplification is reconstructed **output bytes / requested bytes**.
-It excludes intermediate entropy buffers and is not total memory traffic.
-BGZF and zstd use decoder-output counters in a separate pass; ACEAPEX uses the exact block span derived from its pinned source and archive header.
+Amplification is **actual decoded chunk bytes / requested bytes** in a separate counted pass.
+BGZF counts decompressed blocks, zstd counts reconstructed blocks within frames (including buffered output), and ACEAPEX counts the decoded chunks of all four streams. Raw per-stream totals are retained.
+BGZF block=65536 is its size ceiling; actual blocks may be shorter. Different block limits are explicit, not normalized away.
 
 | Codec | Ratio / bgzip >= 0.99 | p50 / bgzip <= 1 | p99 / bgzip <= 1 |
 |---|---|---|---|
-| bgzip+htslib | 1.0000 — PASS | 1.0000 — PASS | 1.0000 — PASS |
-| zstd-seekable | 0.8945 — FAIL | 0.4918 — PASS | 0.2662 — PASS |
-| aceapex-interactive | 1.0816 — PASS | 1.3697 — FAIL | 1.1429 — FAIL |
-| aceapex-dense | 1.1177 — PASS | 13.4067 — FAIL | 12.0426 — FAIL |
+| bgzip+htslib | 65536 | 1.0000 — PASS | 1.0000 — PASS | 1.0000 — PASS |
+| zstd-seekable | 16384 | 0.8945 — FAIL | 0.6020 — PASS | 0.3877 — PASS |
+| aceapex-interactive | 16384 | 1.0816 — PASS | 1.3329 — FAIL | 1.1772 — FAIL |
+| aceapex-dense | 262144 | 1.1177 — PASS | 11.6117 — FAIL | 10.4014 — FAIL |
 
 These are descriptive comparisons against the same-machine baseline, not promises that any codec must win.
 A slower codec remains FAIL in this table; correctness failures abort report generation.
@@ -56,7 +56,7 @@ with configuration, commands, library/compiler versions, hardware, archive SHA-2
 and corpus provenance. `python3 harness/report.py` regenerates this README.
 Raw latency and amplification samples are retained separately with SHA-256 hashes.
 
-## API-only contract (api-bytes-v2)
+## API-only contract (api-bytes-v3)
 
 * All archives contain identical original FASTA bytes. Every request is exactly
   16,384 original-file bytes at the same zero-based byte offset for all four rows.
@@ -75,10 +75,15 @@ Raw latency and amplification samples are retained separately with SHA-256 hashe
 * Two untimed boundary checks plus ten random warmups precede 200 timed queries.
   Every result, including warmup and boundary results, is byte-verified. All rows
   use seed 20260909 and the same trace. Quantiles use nearest rank (indices 99/197).
-* Amplification is reconstructed final-output bytes / requested bytes. BGZF and
-  zstd are counted in a separate instrumented pass; ACEAPEX's exact reconstructed
-  block span is derived from the archive header and pinned decoder. Intermediate
-  literal/FSE buffers are excluded; this is not a memory-traffic metric.
+* Amplification counts decoded chunk bytes / requested bytes. BGZF counts the
+  bytes expanded by inflate/libdeflate. zstd counts actual block reconstruction,
+  including output still buffered inside the library. ACEAPEX counts every decoded
+  chunk in the literal, offset, length and command streams, with per-stream totals.
+  A separate counting executable is built from generated dependency copies, with
+  original/generated source hashes retained; latency uses untouched source objects.
+* `block` is the independent access unit in bytes. BGZF reports its 65536-byte
+  ceiling (actual blocks may be shorter); zstd reports the configured frame size;
+  ACEAPEX reports the profile block size. Rows with unequal block sizes are explicit.
 
 ## ACEAPEX configurations
 

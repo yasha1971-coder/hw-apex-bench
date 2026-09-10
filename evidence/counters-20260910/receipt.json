@@ -1,0 +1,24 @@
+{
+  "source_commit": "a271700bf22e84224d1a1b300bb817a2f3634fb3",
+  "workflow_run_id": 34422608670,
+  "job_id": 102701092317,
+  "full_restore_byte_equal": 4,
+  "verified_responses": 1600,
+  "checks": "sample hashes, exact README regeneration, ratio/quantiles/amplification recomputation and shared trace verified; four-stream chunk counts additionally checked against archive geometry on runner",
+  "transport": "workflow timestamp prefixes and BOM chunk markers removed",
+  "sha256": {
+    "README.md": "826e75864de2bc8f78741274b7e9c88ac268f512348141c067ce23d23d1cd6af",
+    "results.jsonl": "7b198e5ef4f8a42053f8d56b14439df3ab000f13bdf5b338be03246317fb1f53",
+    "evidence/counters-20260910/archives.json": "2957fa8f48fb21cfaacf512277446f0d8443ae4fe2785e7e67fb3b2299a84144",
+    "evidence/counters-20260910/counter-sources.json": "c28bb20e5351c2c2478b66db420400bc23a4fae82b16e64320e79fbd03d05903",
+    "evidence/counters-20260910/metadata.json": "223c702c522db6ab9be947062ef67bcc6a115f6ada8f23cafcd195cd362573c2",
+    "evidence/counters-20260910/samples-aceapex-dense-amplification.jsonl": "1d68544c3828272ec33609190a310b68b6c28f10ecacd5366152a9f013f2fd9e",
+    "evidence/counters-20260910/samples-aceapex-dense-latency.jsonl": "7af9b2280d52940b5819be382169632db24a0352e55db9ab7073718963edf713",
+    "evidence/counters-20260910/samples-aceapex-interactive-amplification.jsonl": "31649c4f03800a823ae979902a0c4b7efc91580b7f2c2ea782c54e95d04928f2",
+    "evidence/counters-20260910/samples-aceapex-interactive-latency.jsonl": "d0594ece582f8b9648a8278f22e5bfc072a41a38571462a41b9f0b63ccd6a75b",
+    "evidence/counters-20260910/samples-bgzip-htslib-amplification.jsonl": "a4f41293531e8f764ac98d62ff73a7868ce3811ad9c100ca0eed5bd9f454215c",
+    "evidence/counters-20260910/samples-bgzip-htslib-latency.jsonl": "3ae4246fa41164a7aba72ebf47e904263603034398c16ed598c0263536863f65",
+    "evidence/counters-20260910/samples-zstd-seekable-amplification.jsonl": "f49ee56288843244ba91e4fc64e2956e92221047f504fdfd456f0fd1873c79a2",
+    "evidence/counters-20260910/samples-zstd-seekable-latency.jsonl": "a0e74f1e6fc242eb585e578f6efc1e0477f064108a0bed684ea2496e75448ae3"
+  }
+}
