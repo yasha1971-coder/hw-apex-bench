@@ -89,6 +89,9 @@ def render(rows):
     if meta.get("stage",1)>=3:
         from independence import render_independence
         text += ["",render_independence(rows)]
+    if meta.get("stage",1)>=4:
+        from throughput import render_throughput
+        text += ["",render_throughput(rows)]
     text+=["","These are descriptive comparisons against the same-machine baseline, not promises that any codec must win.",
            "A slower codec remains FAIL in this table; correctness failures abort report generation.",
            "",(ROOT/"METHOD.md").read_text()]

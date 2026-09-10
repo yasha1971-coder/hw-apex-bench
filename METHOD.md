@@ -73,7 +73,8 @@ Pareto frontier or imply other codecs have no tunable parameters.
 
 Absolute timings are declared. Same-run relations to BGZF have explicit pass/fail
 predicates in protocol.json, including a 1% ratio allowance. A slower row retains
-FAIL; byte mismatches abort publication. GPU is n/a for all current adapters.
+FAIL; byte mismatches abort publication. GPU is a separate measured path and is
+never inferred from CPU rows.
 
 ## Review boundary and history
 
@@ -84,9 +85,10 @@ another machine. The former results and matched-harness investigation remain in
 [Exact FAIL output from EPYC 9V74](evidence/audit-20260909/FAILS.md) is preserved.
 
 Batch, H_alpha and break-even are implemented as specified in [BATCH_METHOD.md](BATCH_METHOD.md).
-`./run.sh` also measures independence cost c(g); `--stage 2` stops before it.
-The next review stop precedes encode/full-decode plateau throughput and the
-subsequent three-machine experiment. Those remain deferred.
+`./run.sh` also measures independence cost c(g) and CPU plateau throughput;
+`--stage 2` stops before c(g), and `--stage 3` stops before throughput. The
+plateau contract is in [THROUGHPUT.md](THROUGHPUT.md). The next review stop
+precedes the three-machine experiment and separate GPU publication.
 The previous controlled audit is reproduced at benchmark commit
 `baede64fd37bd087eecf9a94333d8fbf33e23c33`; its script depends on that historical
 harness and original ACEAPEX pin.

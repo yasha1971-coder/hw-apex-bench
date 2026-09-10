@@ -105,10 +105,13 @@ if meta.get("stage",1)>=2:
 if meta.get("stage",1)>=3:
     from independence import add_independence
     rows=add_independence(rows,meta,D)
+if meta.get("stage",1)>=4:
+    from throughput import add_throughput
+    rows=add_throughput(rows,meta,D=D,archives=archives,inc=inc,htflags=htflags,compile=compile,run=run)
 # Publish only after all four configurations have passed the exactness checks.
 final=ROOT/"results.jsonl"
 temp=D/"results.complete.jsonl"
 temp.write_text("".join(json.dumps(r,sort_keys=True)+"\n" for r in rows))
 os.replace(temp,final)
 run([sys.executable,ROOT/"harness/report.py"])
-print("STOP: requested stage complete; review before c(g), plateau throughput and three-machine runs.")
+print("STOP: requested stage complete; review before the three-machine and GPU runs.")

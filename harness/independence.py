@@ -143,5 +143,6 @@ def render_independence(rows):
     for r in rr:
         commands=r['commands']; prefix='/home/runner/work/hw-apex-bench/hw-apex-bench/'
         out += ['', '#### '+r['codec'], '', f"Blocked: ratio **{r['ratio_g']:.12f}**, archive + required index **{r['independent_archive_bytes']} bytes**.", '', '```bash', commands[0].replace(prefix,'./'), '```', '', f"Continuous baseline: ratio **{r['ratio_whole']:.12f}**, archive **{r['whole_archive_bytes']} bytes**.", '', '```bash', commands[-2].replace(prefix,'./'), '```']
-    out+=['','[Expanded CLI commands, environment and flattening audit](INDEPENDENCE_AUDIT.md). Expected historical percentages are not acceptance thresholds.','','Stop for review before plateau throughput and the three-machine experiment.','']
+    out+=['','[Expanded CLI commands, environment and flattening audit](INDEPENDENCE_AUDIT.md). Expected historical percentages are not acceptance thresholds.','',
+          ('Plateau throughput follows below.' if rows[0].get('stage',1)>=4 else 'Stop for review before plateau throughput and the three-machine experiment.'),'']
     return '\n'.join(out)
