@@ -1,5 +1,7 @@
 # ACEAPEX latency audit — findings
 
+Update 2026-09-10: the user selected API-only timing and both named ACEAPEX profiles. The [current table](README.md) follows the new raw-byte contract with `interactive` and `dense` at SHA `1b13df34ac8e839dd3232b59bc59560d689a435a`. Its [evidence](evidence/profiles-20260910/) is separate from this historical audit. The [exact EPYC 9V74 FAIL output](evidence/audit-20260909/FAILS.md) remains preserved. Findings and withdrawn conclusions below refer to the original sequence-region experiment.
+
 The first-table performance conclusion remains withdrawn. The configuration mismatch is confirmed; the current reference library call is reproduced by the common harness after matching its trace and timing boundary.
 
 Audit source commit: baede64fd37bd087eecf9a94333d8fbf33e23c33.

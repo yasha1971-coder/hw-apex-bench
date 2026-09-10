@@ -1,0 +1,27 @@
+{
+  "benchmark_commit": "17a9e4e16b3cec022ac50712f684870b41f6e93a",
+  "workflow_run_id": 34419257484,
+  "job_id": 102690904508,
+  "workflow_url": "https://github.com/yasha1971-coder/hw-apex-bench/actions/runs/34419257484",
+  "artifact_id": 10130303917,
+  "artifact_zip_sha256_reported_by_github": "a7bbdc155738abf333c1362a526ce94ecaf797950d3224ccd8ff59280009d8ff",
+  "protocol": "api-bytes-v2",
+  "full_restore_byte_equal_configurations": 4,
+  "verified_timed_or_counted_responses": 1600,
+  "warmup_and_boundary_checks_per_configuration_per_phase": 12,
+  "transport": "Retrieved through workflow logs; transport timestamps and BOM chunk markers removed. All eight sample hashes independently matched runner-recorded results.jsonl hashes. README regenerated exactly; quantiles, ratio, amplification, shared trace and all relative verdicts recomputed. Archive bytes retained in Actions workspace only; SHA-256 recorded in results.",
+  "sha256": {
+    "results.jsonl": "3c61cb88cdbad96e4c26abbda87e899a25b3504d437fae9c4761a89a5769849f",
+    "README.md": "b0fec1385c1df9edf763ddb7e271e5ef211338f5eabc903ff83c80db2ed19702",
+    "evidence/profiles-20260910/archives.json": "2957fa8f48fb21cfaacf512277446f0d8443ae4fe2785e7e67fb3b2299a84144",
+    "evidence/profiles-20260910/metadata.json": "16b02fa91d5d749b6b1fd0fcbe510156e4b0d7d82a1220f4681bf4086bee7f07",
+    "evidence/profiles-20260910/samples-aceapex-dense-amplification.jsonl": "b0703f65848d48aa75a487d4766b9eb84d62868148393989bbd77c8ff876a712",
+    "evidence/profiles-20260910/samples-aceapex-dense-latency.jsonl": "e83cae3def39d1738d1dc04f4dbe7784e0dc3120268362ae3e6d33145e450123",
+    "evidence/profiles-20260910/samples-aceapex-interactive-amplification.jsonl": "3b6e934fbcc90de08b35b9637b366c2b824316b23f08cf28e6be2db6108cbd0c",
+    "evidence/profiles-20260910/samples-aceapex-interactive-latency.jsonl": "8595a4bb941ae185527b9903a33e22ab04089eed9aa27e71fafceeb0b20838f9",
+    "evidence/profiles-20260910/samples-bgzip-htslib-amplification.jsonl": "0508b967d161a8703020a94513d2b877aaba1f47bc90a2c53949450b3bebec3c",
+    "evidence/profiles-20260910/samples-bgzip-htslib-latency.jsonl": "f4a02c3e14981c16a97badeec087d7d73d0207c3513d6aab7e39571272ab0cbd",
+    "evidence/profiles-20260910/samples-zstd-seekable-amplification.jsonl": "b7e6bdf99b41c902d07e66ca9ca8387abfca47fdcae9c3744d6837db3ff21da1",
+    "evidence/profiles-20260910/samples-zstd-seekable-latency.jsonl": "11f68abdb6fffe2ab68eaca3f0adb428030279532e5f25e75d99dd468741477b"
+  }
+}

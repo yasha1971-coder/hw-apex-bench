@@ -1,16 +1,15 @@
 {
   "stage": 1,
   "queries": 200,
-  "requested_sequence_bytes": 16384,
   "seed": 20260909,
   "warmup_random_queries": 10,
   "untimed_boundary_checks": 2,
-  "query_coordinates": "0-based chr1 bases; every codec returns the same 16384 sequence bytes; original FASTA preserved in archives",
+  "query_coordinates": "0-based original-file byte offsets; identical 16384-byte requests for every row",
   "percentiles": "nearest-rank: sorted[ceil(p*N)-1]",
-  "latency": "library call plus FASTA newline removal; excludes initialization, file loading, oracle verification, output serialization and caller buffer allocation",
-  "archives": "bgzip anonymous Linux memfd; ACEAPEX and zstd malloc buffers; all populated before timing",
+  "latency": "API-only: bgzf_useek + bgzf_read, ZSTD_seekable_decompress, or aceapex_decompress_region; excludes FASTA processing, return checks, verification, initialization, loading, caller allocation and serialization",
+  "archives": "bgzip anonymous Linux memfd, .gzi loaded once; ACEAPEX and zstd malloc buffers",
   "decoder_state": "one initialized handle per codec, reused across warmup and all 200 queries",
-  "amplification": "final-output-layer reconstructed FASTA bytes / requested sequence bytes; excludes intermediate ACEAPEX entropy-stream buffers; not a measure of total memory traffic",
+  "amplification": "final-output-layer reconstructed bytes / requested bytes; excludes intermediate ACEAPEX entropy buffers; not total memory traffic",
   "amplification_evidence": {
     "bgzip": "separate pass counts inflate/libdeflate output",
     "zstd": "separate pass counts ZSTD_decompressStream output",
@@ -29,5 +28,13 @@
     "H_alpha",
     "break-even N"
   ],
-  "gpu": "n/a: no GPU adapter in stage 1"
+  "gpu": "n/a: no GPU adapter in stage 1",
+  "protocol_version": "api-bytes-v2",
+  "requested_bytes": 16384,
+  "configurations": [
+    "bgzip+htslib",
+    "zstd-seekable",
+    "aceapex-interactive",
+    "aceapex-dense"
+  ]
 }

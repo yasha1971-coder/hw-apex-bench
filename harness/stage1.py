@@ -2,7 +2,9 @@ import gzip, hashlib, json, os, pathlib, platform, shlex, shutil, subprocess, sy
 ROOT=pathlib.Path.cwd()
 D=ROOT/".work"
 D.mkdir(exist_ok=True)
-ACE_SHA="b1bee4df9c1c0a18d979df2a43947ef1b7adeb57"
+from configurations import ACE_SHA, CODECS, PROFILES, configuration, clean_environment
+clean_env=clean_environment(os.environ)
+os.environ.clear(); os.environ.update(clean_env)
 ZSTD_REF="v1.5.7"
 CORPUS=json.loads((ROOT/"corpora.json").read_text())["chr1_hg38"]
 commands=[]
@@ -28,7 +30,7 @@ def checkout(url, ref, target):
         raise RuntimeError("dependency has modified tracked sources")
     return sha
 if sys.argv[1:]==["--help"]:
-    print("bash run.sh : build three codecs, verify chr1 MD5 and full restore, then run stage-1 region harness when present. No batch stage.")
+    print("bash run.sh : build three codecs (four configurations), verify chr1 MD5 and full restore, then run stage-1 region harness when present. No batch stage.")
     sys.exit(0)
 for tool in ("git","make","gcc","g++","pkg-config","bgzip"):
     if not shutil.which(tool): raise SystemExit("Missing dependency: "+tool+"; see README prerequisites")
@@ -48,11 +50,13 @@ asha=checkout("https://github.com/yasha1971-coder/aceapex.git",ACE_SHA,a)
 jobs=str(min(os.cpu_count() or 1,4))
 run(["bash","codecs/zstd_seekable.sh","build",D,jobs])
 run(["bash","codecs/aceapex.sh","build",D])
-# Index construction is setup, never a latency sample.
-idx=D/"index.c"
-idx.write_text('#include <htslib/faidx.h>\nint main(int n,char**v){return n==2 ? fai_build(v[1]) : 2;}\n')
-htflags=shlex.split(output(["pkg-config","--cflags","--libs","htslib"]))
-run(["gcc","-O2",idx,"-o",D/"index"]+htflags)
+# Profiles are CLI-owned, and environment overrides must be absent at encode time.
+import re
+cli_source=(a/"aceapex_depth.cpp").read_text()
+for name, values in PROFILES.items():
+    match=re.search(r'\{"'+name+r'",\s*"(\d+)",\s*"(\d+)",\s*"(\d+)"', cli_source)
+    if not match or match.groups()!=tuple(values[k] for k in ("ACEAPEX_BS","LIT_CHUNK","FSE_CHUNK")):
+        raise RuntimeError("Pinned CLI profile differs from configuration: "+name)
 versions={"aceapex_sha":asha,"zstd_sha":zsha,"zstd_ref":ZSTD_REF,
           "libzstd":output([z/"programs/zstd","--version"]),
           "htslib":output(["pkg-config","--modversion","htslib"]),
@@ -61,40 +65,46 @@ versions={"aceapex_sha":asha,"zstd_sha":zsha,"zstd_ref":ZSTD_REF,
           "compiler_cxx":output(["g++","--version"]).splitlines()[0]}
 hardware={"platform":platform.platform(),"machine":platform.machine(),"logical_cpus":os.cpu_count()}
 if shutil.which("lscpu"): hardware["lscpu"]=output(["lscpu"])
-env={k:os.environ[k] for k in ("ACEAPEX_BS","LIT_CHUNK","FSE_CHUNK","MIN_MATCH")}
+env={"codec_overrides": "cleared; CLI --profile selects encode settings; per-row reader_environment selects API settings"}
 meta={"run_id":__import__("datetime").datetime.now(__import__("datetime").timezone.utc).isoformat(),"corpus":CORPUS,"versions":versions,"hardware":hardware,"environment":env,
       "benchmark_commit":output(["git","rev-parse","HEAD"]),"ratio_tolerance":0.01,"encode_requested_threads":1,"note":"ACEAPEX may internally use additional entropy/decode workers; no throughput claim in stage 1"}
 archives={}
 rows=[]
-for codec in ("bgzip+htslib","zstd-seekable","aceapex"):
+for codec in CODECS:
+    config=configuration(codec)
     start=len(commands)
     if codec=="bgzip+htslib":
         arc=D/"chr1.fa.gz"
         run(["bash","codecs/bgzip.sh","compress",fa,arc])
-        run([D/"index",arc])
         dec=["bash","codecs/bgzip.sh","restore",arc]
-        sidecars=[pathlib.Path(str(arc)+s) for s in (".fai",".gzi")]
+        sidecars=[pathlib.Path(str(arc)+s) for s in (".gzi",)]
     elif codec=="zstd-seekable":
         run(["bash","codecs/zstd_seekable.sh","compress",D,fa])
         arc=pathlib.Path(str(fa)+".zst")
         dec=["bash","codecs/zstd_seekable.sh","restore",D,arc]
         sidecars=[]
     else:
-        arc=D/"chr1.aet"
-        run(["bash","codecs/aceapex.sh","compress",D,fa,arc])
-        dec=["bash","codecs/aceapex.sh","restore",D,arc,D/"restore.fa"]
+        profile=config["profile"]
+        arc=D/("chr1-"+profile+".aet")
+        run(["bash","codecs/aceapex.sh","compress",D,fa,arc,profile])
+        dec=["bash","codecs/aceapex.sh","restore",D,arc,D/"restore.fa",profile]
         sidecars=[]
     restored=D/"restore.fa"
-    if codec=="aceapex": run(dec)
+    if codec.startswith("aceapex-"): run(dec)
     else:
         with open(restored,"wb") as f: run(dec,stdout=f)
     if digest(restored)!=CORPUS["md5"]: raise RuntimeError(codec+" full restore MD5 mismatch")
     if not __import__("filecmp").cmp(fa,restored,shallow=False): raise RuntimeError(codec+" full restore byte mismatch")
     restored.unlink()
+    if codec.startswith("aceapex-"):
+        import struct
+        with arc.open("rb") as f: header=f.read(24)
+        if struct.unpack_from("<I",header,20)[0]!=int(config["effective_environment"]["ACEAPEX_BS"]):
+            raise RuntimeError("Encoded block size differs from profile")
     # Total storage includes every required on-disk sidecar.
     total=arc.stat().st_size+sum(p.stat().st_size for p in sidecars)
     archives[codec]=str(arc)
-    rows.append(dict(meta,codec=codec,metric="ratio",value=fa.stat().st_size/total,unit="input_bytes/archive_bytes",
+    rows.append(dict(meta,codec=codec,configuration=config,metric="ratio",value=fa.stat().st_size/total,unit="input_bytes/archive_bytes",
         status="declared",archive_bytes=arc.stat().st_size,index_bytes=total-arc.stat().st_size,
         archive_sha256=digest(arc,"sha256"),input_bytes=fa.stat().st_size,
         full_restore_md5=CORPUS["md5"],full_restore_byte_equal=True,full_restore="pass",commands=commands[start:]))

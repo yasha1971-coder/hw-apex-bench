@@ -1,60 +1,84 @@
 ## Reproduce
 
-On Linux (Ubuntu/Debian prerequisites):
+On Linux, install `build-essential git python3 pkg-config libhts-dev tabix zlib1g-dev`,
+then run `./run.sh`. The script downloads chr1, checks its uncompressed MD5, and
+checks out ACEAPEX at `1b13df34ac8e839dd3232b59bc59560d689a435a` plus zstd v1.5.7.
+Only dependency clones inside this benchmark are used.
 
-`sudo apt-get install build-essential git python3 pkg-config libhts-dev tabix zlib1g-dev`
+`run.sh` builds three codec adapters, compresses four configurations, verifies
+all four full restores by MD5 and direct byte comparison, then measures and
+verifies every region. `results.jsonl` has one row per measurement or relation,
+with configuration, commands, library/compiler versions, hardware, archive SHA-256
+and corpus provenance. `python3 harness/report.py` regenerates this README.
+Raw latency and amplification samples are retained separately with SHA-256 hashes.
 
-Then run `bash run.sh`. A first run downloads chr1 and the two source dependencies.
-ACEAPEX is checked out at an exact 40-character SHA. No existing ACEAPEX,
-GLYPH or context working directory is opened or modified.
+## API-only contract (api-bytes-v2)
 
-`run.sh` is the sole benchmark entry point. It builds all three adapters,
-verifies the uncompressed UCSC MD5, compresses and fully restores the corpus,
-then executes the common library harness. The three-codec table is generated
-only when all three codecs pass the full-file and region checks.
+* All archives contain identical original FASTA bytes. Every request is exactly
+  16,384 original-file bytes at the same zero-based byte offset for all four rows.
+  No FASTA parsing, base-coordinate mapping or newline removal occurs in a timer.
+* BGZF uses htslib `bgzf_useek` followed by `bgzf_read`; both calls are timed
+  together, including any decompression performed by the seek. It uses the
+  required GZI index, which is included in ratio. FAI is not needed by this raw-byte
+  API. This replaces the earlier faidx sequence operation, which processed FASTA.
+* zstd uses `ZSTD_seekable_decompress`; ACEAPEX uses `aceapex_decompress_region`.
+  Return-code checks, byte validation and output serialization follow the timer.
+  Caller buffers, handles and archive loading are prepared before measurement;
+  allocation performed internally by a library is part of its API cost.
+* Archives remain resident: anonymous Linux memfd for BGZF and malloc buffers for
+  zstd/ACEAPEX. One BGZF handle/index and one zstd seekable handle are reused.
+  The ACEAPEX API takes the resident buffer directly. No per-query process or open.
+* Two untimed boundary checks plus ten random warmups precede 200 timed queries.
+  Every result, including warmup and boundary results, is byte-verified. All rows
+  use seed 20260909 and the same trace. Quantiles use nearest rank (indices 99/197).
+* Amplification is reconstructed final-output bytes / requested bytes. BGZF and
+  zstd are counted in a separate instrumented pass; ACEAPEX's exact reconstructed
+  block span is derived from the archive header and pinned decoder. Intermediate
+  literal/FSE buffers are excluded; this is not a memory-traffic metric.
 
-The raw query samples and build metadata live under `.work/` and are retained
-in the GitHub Actions artifact. Summary records include their SHA-256 digests.
-The report can be regenerated with `python3 harness/report.py`.
+## ACEAPEX configurations
 
-## Stage-1 contract
+The encoder is the unchanged `aceapex_depth.cpp` from the pinned commit, built
+with g++ `-O3 -std=c++17 -pthread`. The API uses unchanged `src/aceapex_api.cpp`
+with the same flags; no architecture-specific optimization is added.
+Both link the pinned static libzstd. The CLI's printed historical profile figures
+are labels from upstream source, not observations; only measured values enter
+this report. Ratio always uses complete archive bytes, including headers/tables.
 
-* All archives contain the identical original FASTA bytes. Ratio includes
-  FAI/GZI sidecars for BGZF. Both archive and index sizes are recorded.
-* A query returns 16,384 consecutive chr1 sequence bytes. The zero-based base
-  offset is mapped to its FASTA byte span for ACEAPEX/zstd; newline removal
-  is included in their timed path, as it is in faidx. This is a genomic
-  region workload, not a claim of arbitrary-byte faidx support.
-* Every library result is checked byte-for-byte against the original source
-  outside the timer. Two boundary probes and ten random warmups precede the
-  same 200 deterministic queries per codec. Percentiles use nearest rank.
-* Archives are populated before timing: anonymous Linux memfd for htslib and
-  heap buffers for ACEAPEX/zstd. FAI/GZI parsing is setup. Initialized decoder
-  handles are reused. No process is launched for an individual request.
-* Caller-owned buffer allocation, archive loading, initialization, verification
-  and serialization are outside the timer. Library-internal allocation remains
-  part of its call.
-* Uninstrumented latency and instrumented output-byte accounting run separately.
-  The output amplification definition excludes intermediate codec streams.
-  ACEAPEX's extra entropy work must not be inferred from this number.
-* Compression levels are declared: BGZF 6, zstd-seekable 3 with 16 KiB frames,
-  ACEAPEX CLI default level, 16 KiB blocks, LIT_CHUNK=65536, FSE_CHUNK=32768,
-  MIN_MATCH=0. One encoder thread is requested; ACEAPEX may create additional
-  internal entropy workers. The pinned old ACEAPEX decoder needs matching
-  FSE_CHUNK environment, so `run.sh` sets it for both encode and decode.
-* No encode/full-decode throughput is claimed from a single corpus invocation.
-  CLI restore is an untimed correctness check, not a decode benchmark.
-* Absolute performance is declared. Same-run relations to BGZF have explicit
-  pass/fail predicates in `protocol.json`, including the 1% ratio allowance.
-* No GPU code or GPU measurements are present: n/a.
+Compression explicitly uses `--profile interactive` or `--profile dense`,
+`--level 2 --threads 1`. Codec override environment variables are cleared before
+encoding because upstream environment takes precedence over `--profile`.
+The script checks preset values against the pinned source before running.
 
-## Review boundary and remaining axes
+| Profile | ACEAPEX_BS | LIT_CHUNK | FSE_CHUNK | MIN_MATCH |
+|---|---:|---:|---:|---:|
+| interactive | 16384 | 65536 | 4096 | 0 |
+| dense | 262144 | 1048576 | 32768 | 0 |
 
-Stop after this table. Throughput plateau sweeps (or an explicit data-edge
-result), independence cost c(g), the five batch profiles, H_alpha and break-even
-N are still required for the complete benchmark, and are not implemented or
-claimed in stage 1. enwik9, Silesia and FASTQ will receive verified corpus
-manifests when their stages are introduced. No URLs or checksums are invented.
+Untimed CLI restore uses the same profile flag. The C region API has no profile
+argument, so its child process receives the matching environment above. Each
+measurement records that environment and the command; no profile is inherited
+from another measurement. Thread count is the encoder request; internal entropy
+workers may differ. No throughput claim is made from these correctness runs.
 
-`harness/batch.c` and `harness/breakeven.c` will be added after the first table
-is reviewed.
+The two ACEAPEX rows expose its measured size/access tradeoff alongside BGZF
+level 6 and zstd-seekable level 3 (16 KiB frames). They do not establish a global
+Pareto frontier or imply other codecs have no tunable parameters.
+
+Absolute timings are declared. Same-run relations to BGZF have explicit pass/fail
+predicates in protocol.json, including a 1% ratio allowance. A slower row retains
+FAIL; byte mismatches abort publication. GPU is n/a for all current adapters.
+
+## Review boundary and history
+
+This is a new raw-byte operation contract. Do not compare its latency directly
+with historical faidx/sequence timings or the 0.082 ms declared reference on
+another machine. The former results and matched-harness investigation remain in
+[AUDIT.md](AUDIT.md) and [historical evidence](evidence/).
+[Exact FAIL output from EPYC 9V74](evidence/audit-20260909/FAILS.md) is preserved.
+
+Stop after this first-table review. Encode/full-decode plateau sweeps, independence
+cost c(g), batch profiles, H_alpha and break-even remain deferred. The previous
+controlled audit is reproduced at benchmark commit
+`baede64fd37bd087eecf9a94333d8fbf33e23c33`; its script depends on that historical
+harness and original ACEAPEX pin.
