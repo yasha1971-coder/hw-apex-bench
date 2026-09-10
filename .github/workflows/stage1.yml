@@ -31,7 +31,7 @@ jobs:
           cat benchmark.log
           python3 - <<'PY'
           from pathlib import Path
-          paths=[Path("results.jsonl"),Path("README.md"),Path("BATCH_RESULTS.md"),Path(".work/metadata.json"),Path(".work/archives.json"),Path(".work/counter-sources.json"),Path(".work/batch-traces.json"),Path(".work/stage2-raw.json"),Path(".work/independence-raw.json"),*sorted(Path(".work").glob("samples-*.jsonl")),*sorted(Path(".work").glob("batch-*.jsonl")),*sorted(Path(".work").glob("full-*.jsonl"))]
+          paths=[Path("results.jsonl"),Path("README.md"),Path("BATCH_RESULTS.md"),Path(".work/metadata.json"),Path(".work/archives.json"),Path(".work/source-provenance.json"),Path(".work/compile-trace.jsonl"),Path(".work/counter-sources.json"),Path(".work/batch-traces.json"),Path(".work/stage2-raw.json"),Path(".work/independence-raw.json"),*sorted(Path(".work").glob("samples-*.jsonl")),*sorted(Path(".work").glob("batch-*.jsonl")),*sorted(Path(".work").glob("full-*.jsonl"))]
           for p in paths:
               if p.is_file():
                   print("CABENCH_EVIDENCE_BEGIN "+str(p))
@@ -52,6 +52,8 @@ jobs:
             benchmark.log
             .work/metadata.json
             .work/archives.json
+            .work/source-provenance.json
+            .work/compile-trace.jsonl
             .work/counter-sources.json
             .work/samples-*.jsonl
             .work/batch-*.jsonl

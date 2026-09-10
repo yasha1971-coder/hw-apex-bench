@@ -69,4 +69,6 @@ jobs:
             .work/strict-ace-cg/*-compress.log
             .work/strict-ace-cg/*-decompress.log
             .work/strict-ace-cg/build.log
+            .work/strict-ace-cg/source-provenance.json
+            .work/strict-ace-cg/compile-trace.jsonl
             .work/strict-ace-cg/asan.log

@@ -127,18 +127,18 @@ Only the independent block size may change. Corpus bytes, encoder revision, leve
 | zstd-seekable | 16384 | 3.025774 | 3.259852 | 7.180634 | 7.180634 | 1 |
 | aceapex-interactive | 16384 | 3.658493 | 3.722310 | 1.714456 | n/a | 1 |
 | aceapex-dense | 262144 | 3.780646 | 3.793413 | 0.336554 | n/a | 1 |
-| ACEAPEX default @ 7216280 (ace-core, declared) | 16384 | 3.141615 | 3.193722 | — | 1.631528 | 8 |
+| ACEAPEX default @ ee5a37e (reproduced) | 16384 | 3.159784 | 3.212216 | — | 1.632267 | 8 |
 
 bgzip+htslib: n/a: gzip and bgzip use different encoder implementations; no same-encoder block-size-only baseline measured.
 
-aceapex-interactive: n/a for this profile/SHA: the strict supplied pair uses the default configuration at 7216280, not `--profile interactive` at 1b13df3.
+aceapex-interactive: n/a for this profile/SHA: the strict reproduced pair uses the default configuration at ee5a37e, not `--profile interactive` at 1b13df3.
 
 aceapex-dense: n/a for this profile/SHA: no block-size-only dense pair has been supplied.
 
-ACEAPEX default @ 7216280 uses supplied ace-core file sizes: 80829622 bytes at 16 KiB and 79510864 bytes for one whole-input block. It is marked declared because compiler/libzstd versions, archive hashes and a byte-equal restore receipt were not supplied. The GitHub runner reproduction is a separate machine result and currently fails on the one-block encode; see [the strict reproduction contract](STRICT_CG.md).
+ACEAPEX default @ ee5a37e was reproduced by GitHub Actions run 34488734677: 80364845 bytes at 16 KiB and 79053076 bytes for one whole-input block, both exact restores passing. GCC 13.3.0, libzstd 1.5.5. Archive SHA-256 values and compiled-source provenance are recorded by [the strict reproduction contract](STRICT_CG.md). Its 1.632267% differs from the ace-core 1.631528% by only 0.000740 percentage point.
 
 Address table component: 15499 blocks × 64 bytes = **991936 bytes**, or
-**1.227%** of the complete 80829622-byte 16 KiB archive. This is shown
+**1.234%** of the complete 80364845-byte 16 KiB archive. This is shown
 separately from payload compression and is included in archive c(g).
 
 zstd bases are explicitly zstd 1.5.7 level -3, one continuous frame versus independent 16384-byte frames. The user-reported historical version is 1.4.8 with 6.68%; version change is a hypothesis for the difference, not an attribution established by a matched rerun.
@@ -147,6 +147,12 @@ The historical 0.410% is payload-only: it excludes the AET header and 64-byte `B
 Whole-file means one continuous member/frame/output block, not an unlimited match window. gzip retains its 32 KiB backward-distance limit; this does not make its blocks independent. bgzip adds independent member boundaries, index/headers and implementation differences.
 ACEAPEX uses the same pinned binary on both sides. ACEAPEX_BS changes from 16384 or 262144 to 253935557. MIN_MATCH was cleared and defaults to 0. LIT_CHUNK/FSE_CHUNK remain 65536/4096 (interactive) or 1048576/32768 (dense).
 Important source-layout correction: at 7216280 the guarded root `aceapex_depth.cpp` is not the source compiled by `make`; the Makefile builds `src/aceapex_main.cpp`, whose corresponding read lacks the `local_pos < ORIGIN_CAP` guard. At 1b13df3 the measured profile pairs use the guarded source. The two revisions and configurations are not interchangeable.
+
+The defect is closed upstream at `ee5a37eda18b81c1300a1ee44a7e06b6be925bd2`.
+New benchmark builds use a compiler trace: every actually compiled translation
+unit is hashed and checked against the source named by claim provenance before
+measurements run. System bgzip/htslib is explicitly `n/a` for source matching,
+with the installed binary hash and version recorded instead.
 The old JSONL baseline caveat used the inaccurate shorthand “skips chain flattening above 1 MiB”. Raw historical evidence is preserved; this report and INDEPENDENCE_AUDIT.md correct that interpretation. No observed archive size or ratio has changed.
 
 ### Both compression commands for every row

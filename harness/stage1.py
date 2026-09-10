@@ -51,8 +51,26 @@ z=D/"zstd"; a=D/"aceapex"
 zsha=checkout("https://github.com/facebook/zstd.git",ZSTD_REF,z)
 asha=checkout("https://github.com/yasha1971-coder/aceapex.git",ACE_SHA,a)
 jobs=str(min(os.cpu_count() or 1,4))
-run(["bash","codecs/zstd_seekable.sh","build",D,jobs])
-run(["bash","codecs/aceapex.sh","build",D])
+compile_trace=D/"compile-trace.jsonl"
+compile_trace.unlink(missing_ok=True)
+tracer=shlex.join([sys.executable,str(ROOT/"harness/compiler_trace.py"),"--real"])
+build_env=os.environ.copy()
+build_env.update(CABENCH_COMPILE_TRACE=str(compile_trace),CC=tracer+" gcc",CXX=tracer+" g++")
+run(["bash","codecs/zstd_seekable.sh","build",D,jobs],env=build_env)
+run(["bash","codecs/aceapex.sh","build",D],env=build_env)
+source_spec=D/"source-spec.json"
+source_spec.write_text(json.dumps({"codecs":[
+    {"codec":"zstd-seekable","repository_root":str(z),"expected_commit":zsha,
+     "required_translation_units":["programs/zstdcli.c","contrib/seekable_format/examples/seekable_compression.c"]},
+    {"codec":"aceapex","repository_root":str(a),"expected_commit":asha,
+     "required_translation_units":["aceapex_depth.cpp"]},
+    {"codec":"bgzip+htslib","status":"n/a",
+     "reason":"system htslib/bgzip package is not compiled by this benchmark",
+     "binary":shutil.which("bgzip"),"binary_sha256":digest(shutil.which("bgzip"),"sha256")}
+]},indent=2)+"\n")
+source_provenance=D/"source-provenance.json"
+run([sys.executable,ROOT/"harness/source_provenance.py","--trace",compile_trace,
+     "--spec",source_spec,"--out",source_provenance])
 # Profiles are CLI-owned, and environment overrides must be absent at encode time.
 import re
 cli_source=(a/"aceapex_depth.cpp").read_text()
@@ -70,7 +88,9 @@ hardware={"platform":platform.platform(),"machine":platform.machine(),"logical_c
 if shutil.which("lscpu"): hardware["lscpu"]=output(["lscpu"])
 env={"codec_overrides": "cleared; CLI --profile selects encode settings; per-row reader_environment selects API settings"}
 meta={"stage":stage,"run_id":__import__("datetime").datetime.now(__import__("datetime").timezone.utc).isoformat(),"corpus":CORPUS,"versions":versions,"hardware":hardware,"environment":env,
-      "benchmark_commit":output(["git","rev-parse","HEAD"]),"ratio_tolerance":0.01,"encode_requested_threads":1,"note":"ACEAPEX may internally use additional entropy/decode workers; no throughput claim in stage 1"}
+      "benchmark_commit":output(["git","rev-parse","HEAD"]),"ratio_tolerance":0.01,"encode_requested_threads":1,
+      "source_provenance":json.loads(source_provenance.read_text()),
+      "note":"ACEAPEX may internally use additional entropy/decode workers; no throughput claim in stage 1"}
 archives={}
 rows=[]
 for codec in CODECS:
