@@ -69,9 +69,13 @@ order rotates across workloads. Published ranges/s uses N divided by median wall
 time, with no best-run selection. ACEAPEX batch/loop speedup is the median of the
 three paired duration ratios. The two statistics need not be ratios of medians.
 
-Loop requests one calling thread. Native batch explicitly requests min(4, logical
-CPUs); upstream uses one worker below 512 ranges, otherwise caps workers by the
-number of groups. Thread policies are recorded alongside every measurement.
+Loop uses one calling thread. Native batch explicitly requests one worker for
+every N. The report rejects unequal-thread rows. The resulting speedup measures
+the net batch algorithm, including grouping, reuse and its overhead, without
+adding decoder workers. Thread policies accompany every measurement.
+The earlier four-worker batch run at commit 8ceb527f56d6e34a358ea98849632bf6f6e164dd
+remains historical evidence; its speedups mix grouping and parallelism and do not
+establish the benefit of grouping alone.
 The absence of a native batch API for other adapters is `n/a` with a reason;
 it does not create zero-valued throughput rows. Cross-codec ratios always retain
 method labels, and failed ratios remain fail.

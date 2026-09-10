@@ -16,7 +16,7 @@ def add_stage2(rows, meta, archives, D, inc, htflags, compile, run):
         if blob != expected: raise RuntimeError("Upstream snapshot hash differs: " + name)
     meta["upstream_harness_blobs"] = originals
     meta["python"] = sys.version
-    meta["stage2_protocol"] = {"trace_seed": SEED, "queries": "identical original-file byte ranges across codecs", "batch_repeats": 3,
+    meta["stage2_protocol"] = {"trace_seed": SEED, "queries": "identical original-file byte ranges across codecs", "batch_repeats": 3, "comparison_contract": "loop1-vs-batch1",
         "aggregation": "median of 3 wall-clock runs; no best-run selection", "h_alpha": "Shannon entropy of request-start blocks, using each row's block bytes",
         "full_decode_repeats": 5, "full_decode_warmups": 1, "full_decode_purpose": "duration for break-even; not a plateau throughput claim"}
     queries, hot = traces((D / "chr1.fa").stat().st_size)
@@ -78,7 +78,7 @@ def add_stage2(rows, meta, archives, D, inc, htflags, compile, run):
             model="Independent reads with constant median cost, no reuse; batch amortization is not this model"))
         raw.append({"codec": codec, "kind": "full_decode", "samples": samples, "commands": common["commands"]})
 
-    threads = min(4, os.cpu_count() or 1)
+    threads = 1  # Equal worker count: isolate the net batch algorithm/reuse effect.
     for pi, profile in enumerate(PROFILES):
         for ni, n in enumerate(SIZES):
             # Rotate codec order across workloads; paired loop/native order rotates inside C.
@@ -89,7 +89,7 @@ def add_stage2(rows, meta, archives, D, inc, htflags, compile, run):
                 samples, common = execute(codec, args, f"batch-{codec.replace('+','-')}-{profile}-{n}.jsonl")
                 native = api == "aceapex"
                 assert len(samples) == (6 if native else 3)
-                common.update(access_profile=profile, n=n, requested_bytes=LENGTH, H_alpha=access_entropy(codec,queries[profile,n]),
+                common.update(comparison_contract="loop1-vs-batch1", access_profile=profile, n=n, requested_bytes=LENGTH, H_alpha=access_entropy(codec,queries[profile,n]),
                     entropy_block_bytes=config["block"], entropy_mapping="GZI indexed blocks" if codec=="bgzip+htslib" else "fixed independent blocks/frames", **trace_meta[profile, n])
                 for method in (("loop", "batch") if native else ("loop",)):
                     ss = [s for s in samples if s["method"] == method]

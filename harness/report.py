@@ -59,9 +59,9 @@ def render(rows):
     for c in CODECS:
         text.append("| "+c+" | "+str(ix[c,"ratio"]["configuration"]["block"])+" | "+" | ".join(f"{ix[c,m]['value']:.6f}" for m in METRICS)+" | n/a |")
     text+=["","Every timed operation reads the same 16,384 original-file bytes. No FASTA parsing is timed.",
-           "Amplification is **actual decoded chunk bytes / requested bytes** in a separate counted pass.",
-           "BGZF counts decompressed blocks, zstd counts reconstructed blocks within frames (including buffered output), and ACEAPEX counts the decoded chunks of all four streams. Raw per-stream totals are retained.",
-           "BGZF block=65536 is its size ceiling; actual blocks may be shorter. Different block limits are explicit, not normalized away.",
+           "Amplification A = sum_q(sum of bytes actually expanded by the decoder for query q) / sum_q(requested bytes) = decoded bytes / (200 × 16384).",
+           "BGZF counts decompressed blocks, zstd counts reconstructed blocks within frames (including buffered output), and ACEAPEX counts only touched chunks in the literal, offset, length and command streams, not the complete streams. Repeated expansions count each time.",
+           "BGZF block=65536 is its size ceiling; actual blocks may be shorter. An unaligned request can cross block and entropy-chunk boundaries. (64 + 3 × 4) / 16 = 4.75 describes exactly one chunk of each kind, not a constant for arbitrary offsets. See [the trace explanation](AMPLIFICATION.md).",
            "", "| Codec | block (bytes) | Ratio / bgzip >= 0.99 | p50 / bgzip <= 1 | p99 / bgzip <= 1 |",
            "|---|---:|---|---|---|"]
     for c in CODECS:
@@ -69,6 +69,13 @@ def render(rows):
         for m in ("ratio","region_p50","region_p99"):
             r=ix[c,m+"_relative_to_bgzip"]; cols.append(f"{r['value']:.4f} — {r['status'].upper()}")
         text.append("| "+c+" | "+str(ix[c,"ratio"]["configuration"]["block"])+" | "+" | ".join(cols)+" |")
+    text += ["", "| Codec | Decoded bytes (numerator) | Requested bytes (denominator) | LIT / offset / length / command decoded bytes |", "|---|---:|---:|---|"]
+    for c in CODECS:
+        r=ix[c,"amplification"]
+        if r["value"] != r["decoded_bytes_total"] / r["requested_bytes_total"]: raise ValueError("Amplification totals mismatch")
+        streams=r.get("stream_decoded_bytes_total")
+        if streams is not None and sum(streams)!=r["decoded_bytes_total"]: raise ValueError("Stream totals mismatch")
+        text.append(f"| {c} | {r['decoded_bytes_total']} | {r['requested_bytes_total']} | {str(streams) if streams is not None else 'n/a'} |")
     if meta.get("stage",1)==2:
         from stage2_report import render_stage2
         extra, matrix=render_stage2(rows)

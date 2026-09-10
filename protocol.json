@@ -49,10 +49,12 @@
       "zipf1.2"
     ],
     "repeats": 3,
-    "native_threads_requested": "min(4, logical CPUs)",
+    "native_threads_requested": 1,
     "H_alpha": "Shannon entropy of request-start blocks using row block size",
     "hot_set": "64 unique canonical 16 KiB blocks selected once per run; identical raw-byte traces across codecs",
-    "method": "loop for all codecs; native batch additionally measured for both ACEAPEX profiles"
+    "method": "loop for all codecs; native batch additionally measured for both ACEAPEX profiles",
+    "loop_threads": 1,
+    "comparison_contract": "loop1-vs-batch1"
   },
   "break_even": {
     "full_decode_warmups": 1,

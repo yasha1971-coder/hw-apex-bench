@@ -23,7 +23,7 @@ def render_stage2(rows):
         if b["value"] != math.floor(f["value"] / p["value"]) + 1: raise ValueError("Break-even mismatch")
         text.append(f"| {c} | {f['configuration']['block']} | {f['value']:.6f} | {p['value']:.6f} | {b['value']} | {f['thread_policy']} |")
     text += ["", "## Batch", "", "Identical raw-byte requests across codecs; every native batch answer matches the single-call result and original bytes.",
-             "Three repetitions, median duration; loop/native order alternates. Native batch threads are requested explicitly.",
+             "Three repetitions, median duration; loop/native order alternates. Both loop and batch use one worker (loop1-vs-batch1).",
              "H_alpha counts request-start blocks (actual GZI boundaries for BGZF, declared frame/block boundaries otherwise). H_alpha_16k is also recorded.",
              "bgzip and zstd-seekable native batch: n/a (no native batch API in these adapters); their measured method is loop.",
              "All N=100/600/2000/5000 points are in [BATCH_RESULTS.md](BATCH_RESULTS.md). The fixed N=5000 view follows.", ""]
@@ -36,6 +36,8 @@ def render_stage2(rows):
             for c in CODECS:
                 for method in (("loop", "batch") if c.startswith("aceapex") else ("loop",)):
                     r = one(c, "batch_throughput", profile, n, method)
+                    if r["threads_requested"] != 1 or r.get("comparison_contract") != "loop1-vs-batch1":
+                        raise ValueError("Unequal or undeclared batch/loop worker count")
                     rel = one(c, "batch_throughput_relative_to_bgzip", profile, n, method)
                     base = one("bgzip+htslib", "batch_throughput", profile, n, "loop")
                     if rel["value"] != r["value"] / base["value"]: raise ValueError("Batch relation mismatch")
