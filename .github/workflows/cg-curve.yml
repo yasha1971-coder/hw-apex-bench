@@ -1,0 +1,54 @@
+name: Five-point c(g) tradeoff curve
+on:
+  pull_request:
+    paths:
+      - 'harness/cg_*'
+      - 'harness/test_cg_curve.py'
+      - 'harness/region_latency.c'
+      - 'harness/source_provenance.py'
+      - 'harness/compiler_trace.py'
+      - 'harness/aceapex_strict_cg.py'
+      - 'run.sh'
+      - '.github/workflows/cg-curve.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  curve:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+      - name: Install build and htslib dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y build-essential git python3 pkg-config libhts-dev tabix zlib1g-dev
+      - name: Validate harness rejection cases
+        run: python3 -m unittest discover -s harness -p test_cg_curve.py -v
+      - name: Measure five-point curve, preserving previous evidence
+        run: bash run.sh --cg-curve > cg-curve.log 2>&1
+      - name: Show report or failure
+        if: always()
+        run: |
+          tail -100 cg-curve.log || true
+          test ! -f CG_CURVE_RESULTS.md || cat CG_CURVE_RESULTS.md
+          for p in .work/cg-curve/command-*.log; do
+            test ! -f "$p" || tail -20 "$p"
+          done
+      - name: Preserve raw evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: cg-curve-evidence
+          include-hidden-files: true
+          if-no-files-found: error
+          path: |
+            cg-curve.log
+            results.jsonl
+            README.md
+            CG_CURVE_RESULTS.md
+            .work/cg-curve/*.json
+            .work/cg-curve/*.jsonl
+            .work/cg-curve/*.log

@@ -7,8 +7,10 @@ GitHub». The user's screenshot stopped during recovery of the non-UTF-8
 `results.jsonl` after PR #12. That failure was reproduced against the live main
 branch and the exact original Actions artifact was recovered.
 
-Read `evidence/stage5-20260910/RECOVERY.md`, then check current GitHub PRs and
-workflow runs before deciding whether the recovery has already merged/deployed.
+Recovery PR #13 is merged as `e181868f307225bea7c4c3532e0dfb1130d2ae37`.
+Its publication-integrity workflow `34542759441` passed. Pages deployment
+`34542832629` passed on that merge. Read
+`evidence/stage5-20260910/RECOVERY.md` for artifact provenance.
 
 ## Repository identity and scope
 
@@ -77,20 +79,25 @@ do not discard the subsequent approved work or rerun stages 1–5 to fix encodin
 ## Saved next experiment
 
 The previous thread committed a five-point curve implementation locally as
-`c8436f6` (`cg-tradeoff-five-point`), based on the failed-publication main.
+`c8436f656002f20b16ebff9e9c96214533e3e22d` (`cg-tradeoff-five-point`), based on the failed-publication main.
+It is now restored on `experiment/cg-five-point-recovered`, based on recovery
+merge `e181868f307225bea7c4c3532e0dfb1130d2ae37`.
 Its files include `CG_CURVE.md`, `harness/cg_curve.py`, two codec adapters,
 `harness/test_cg_curve.py`, and `.github/workflows/cg-curve.yml`.
-The screenshot reported 17 passing tests. That is not evidence of a measured
-curve. Remote publication and CI status must be checked separately.
+All 17 tests were rerun successfully after recovery. The existing 420-record
+publication and exact report regeneration still pass. This is not evidence of
+a measured curve. Check the branch's dedicated workflow and its complete
+artifact before citing any new curve numbers or merging the experiment.
 
 Grid: 4, 16, 64, 256 KiB and 1 MiB. Same-container whole-file baselines for
 ACEAPEX and seekable zstd. BGZF points beyond its format limit and strict c(g)
 are n/a. Each numeric point needs archive accounting and exact restore, plus
 common 200-query resident-library p50/p99 measurements.
 
-Next bounded action: preserve that commit remotely, base the experiment on the
-publication repair, audit its harness, run the dedicated workflow, and show the
-complete curve for review before merging it or drawing new conclusions.
+Next bounded action: run the dedicated workflow and audit its complete curve
+before merging it or drawing new conclusions. A successful run creates reviewed
+candidates; it must not automatically replace the publication manifest or make
+unreviewed numbers live. Preserve the previous 420 rows byte-for-byte.
 Three-machine generalization and Paper 6 conclusions remain subsequent work.
 No Paper 6 manuscript was recovered as a committed deliverable in this step.
 

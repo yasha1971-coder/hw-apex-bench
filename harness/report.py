@@ -33,7 +33,7 @@ def validate(rows):
         # Separate strict c(g) claims may intentionally use another pinned
         # revision/configuration. Their validator lives in independence.py.
         if r["codec"] not in CODECS:
-            if r["metric"] == "independence_cost_strict_percent" or r.get("evidence_group") in ("zstd-frame-frontier","gpu-declared"):
+            if r["metric"] == "independence_cost_strict_percent" or r.get("evidence_group") in ("zstd-frame-frontier","gpu-declared","cg-five-point-v1"):
                 continue
             raise ValueError("Unexpected external codec row")
         if r["configuration"]!=configuration(r["codec"]): raise ValueError("Configuration mismatch")
@@ -97,6 +97,9 @@ def render(rows):
         from zstd_frontier import render_zstd_frontier
         from gpu import render_gpu
         text += ["",render_zstd_frontier(rows),"",render_gpu(rows)]
+    if any(r.get("evidence_group") == "cg-five-point-v1" for r in rows):
+        from cg_curve import render as render_cg
+        text += ["", render_cg([r for r in rows if r.get("evidence_group") == "cg-five-point-v1"]).replace("# Density", "## Density", 1)]
     text+=["","These are descriptive comparisons against the same-machine baseline, not promises that any codec must win.",
            "A slower codec remains FAIL in this table; correctness failures abort report generation.",
            "",(ROOT/"METHOD.md").read_text()]
