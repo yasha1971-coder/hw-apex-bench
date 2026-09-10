@@ -34,3 +34,8 @@ that block boundary is part of this one-parameter experiment.
 The measured claim is not copied into `results.jsonl` until the CI artifact has
 provided both exact archive sizes, both ratios, commands, versions and passing
 byte-for-byte restores.
+
+If either compression command fails, the runner writes `failure.json` and exits
+nonzero. A failed one-block encode is evidence that this revision does not
+provide a reproducible strict pair on that machine; a ratio printed after
+undefined behavior is not accepted as a benchmark point.
