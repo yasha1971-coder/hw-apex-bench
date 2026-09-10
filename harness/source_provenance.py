@@ -24,9 +24,13 @@ def verify(trace_path: Path, specifications: list[dict]) -> dict:
     for record in records:
         for source in record["sources"]:
             p = str(Path(source["path"]).resolve())
-            if sha256(Path(p)) != source["sha256"]:
+            # Configure probes may compile then delete a temporary TU. Its hash
+            # remains trustworthy because the wrapper captured it before exec.
+            # Persistent sources are re-hashed to detect post-compile mutation.
+            persistent = Path(p).is_file()
+            if persistent and sha256(Path(p)) != source["sha256"]:
                 raise RuntimeError("compiled source changed after trace: " + p)
-            compiled[p] = source["sha256"]
+            compiled[p] = {"sha256": source["sha256"], "persistent": persistent}
     results = []
     for spec in specifications:
         if spec.get("status") == "n/a":
@@ -44,14 +48,14 @@ def verify(trace_path: Path, specifications: list[dict]) -> dict:
                 text=True).strip():
             raise RuntimeError(f"{spec['codec']}: compiled repository has tracked modifications")
         required = [(root / rel).resolve() for rel in spec["required_translation_units"]]
-        missing = [str(p) for p in required if str(p) not in compiled]
+        missing = [str(p) for p in required if str(p) not in compiled or not p.is_file()]
         if missing:
             raise RuntimeError(
                 f"{spec['codec']}: provenance source was not compiled: " + ", ".join(missing)
             )
         actual = [
-            {"path": str(Path(p).relative_to(root)), "sha256": digest}
-            for p, digest in sorted(compiled.items()) if Path(p).is_relative_to(root)
+            {"path": str(Path(p).relative_to(root)), **evidence}
+            for p, evidence in sorted(compiled.items()) if Path(p).is_relative_to(root)
         ]
         if not actual:
             raise RuntimeError(f"{spec['codec']}: no compiled source under declared repository")
