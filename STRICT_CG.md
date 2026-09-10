@@ -31,9 +31,13 @@ Two quantities are deliberately reported:
 block logic remains active. Deterministic encoder behavior caused by changing
 that block boundary is part of this one-parameter experiment.
 
-The measured claim is not copied into `results.jsonl` until the CI artifact has
-provided both exact archive sizes, both ratios, commands, versions and passing
-byte-for-byte restores.
+The measured claim is included in `results.jsonl` only from the recorded CI
+artifact after it has provided both exact archive sizes, both ratios, commands,
+versions, compiled-source provenance and passing byte-for-byte restores.
+
+GitHub Actions run `34488734677` supplied that receipt. It measured 80364845
+bytes for the 16 KiB archive and 79053076 bytes for the one-block archive:
+strict archive c(g) is **1.632267193%**. Payload-only c(g) is **0.403030805%**.
 
 If either compression command fails, the runner writes `failure.json` and exits
 nonzero. A failed one-block encode is evidence that this revision does not
