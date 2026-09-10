@@ -68,6 +68,14 @@ exits with signal 11. PR #9 records stack limit, memory, compiler and an ASan
 rerun rather than treating the guarded, unbuilt root file as proof about the
 Makefile binary.
 
+The ASan rerun used GCC 13.3.0, libzstd 1.5.5, a 16 MiB stack limit, 15 GiB RAM
+and 3 GiB swap. It reports a read fault in worker T3 at
+`src/aceapex_main.cpp:243`, the unguarded `origin[src_local]` read, called by
+`worker_func -> encode_file -> do_compress`. The stack-size hypothesis is
+therefore falsified on this runner. The ace-core archive sizes remain useful as
+a declared machine observation, but the runner cannot certify this revision's
+one-block pair as reproducible.
+
 ## Expanded compression commands
 
 Run from the benchmark checkout after its dependency/corpus setup. These expand
