@@ -50,3 +50,11 @@ sets `SRCS = src/aceapex_main.cpp`; that compiled file only checks
 the actual Makefile target with AddressSanitizer and records the resulting stack
 trace. A source argument based on the guarded root file does not establish the
 behavior of the binary produced by `make`.
+
+On the GitHub Ubuntu 24.04 runner the diagnostic used GCC 13.3.0, libzstd 1.5.5,
+a 16 MiB stack limit, 15 GiB RAM and 3 GiB swap. ASan reports a read fault in
+worker T3 at `src/aceapex_main.cpp:243`, exactly the unguarded
+`origin[src_local]` read, reached through `worker_func`, `encode_file` and
+`do_compress`. This rules out the proposed small-stack explanation for this
+runner. A successful non-sanitized run on another machine does not remove the
+undefined behavior in the Makefile-built source.
