@@ -30,8 +30,11 @@ def checkout(url, ref, target):
         raise RuntimeError("dependency has modified tracked sources")
     return sha
 if sys.argv[1:]==["--help"]:
-    print("bash run.sh : build three codecs (four configurations), verify chr1 MD5 and full restore, then run stage-1 region harness when present. No batch stage.")
+    print("bash run.sh : build three codecs (four configurations), verify chr1 MD5 and full restore, then API regions and, by default, batch/H_alpha/break-even. --stage 1 stops after regions.")
     sys.exit(0)
+args=sys.argv[1:]
+if args not in ([], ["--stage","1"], ["--stage","2"]): raise SystemExit("Usage: ./run.sh [--stage 1|2]")
+stage=int(args[1]) if args else 2
 for tool in ("git","make","gcc","g++","pkg-config","bgzip"):
     if not shutil.which(tool): raise SystemExit("Missing dependency: "+tool+"; see README prerequisites")
 run(["pkg-config","--exists","htslib"])
@@ -66,7 +69,7 @@ versions={"aceapex_sha":asha,"zstd_sha":zsha,"zstd_ref":ZSTD_REF,
 hardware={"platform":platform.platform(),"machine":platform.machine(),"logical_cpus":os.cpu_count()}
 if shutil.which("lscpu"): hardware["lscpu"]=output(["lscpu"])
 env={"codec_overrides": "cleared; CLI --profile selects encode settings; per-row reader_environment selects API settings"}
-meta={"run_id":__import__("datetime").datetime.now(__import__("datetime").timezone.utc).isoformat(),"corpus":CORPUS,"versions":versions,"hardware":hardware,"environment":env,
+meta={"stage":stage,"run_id":__import__("datetime").datetime.now(__import__("datetime").timezone.utc).isoformat(),"corpus":CORPUS,"versions":versions,"hardware":hardware,"environment":env,
       "benchmark_commit":output(["git","rev-parse","HEAD"]),"ratio_tolerance":0.01,"encode_requested_threads":1,"note":"ACEAPEX may internally use additional entropy/decode workers; no throughput claim in stage 1"}
 archives={}
 rows=[]

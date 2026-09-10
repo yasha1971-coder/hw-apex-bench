@@ -1,0 +1,6 @@
+{
+  "bgzip+htslib": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/chr1.fa.gz",
+  "zstd-seekable": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/chr1.fa.zst",
+  "aceapex-interactive": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/chr1-interactive.aet",
+  "aceapex-dense": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/chr1-dense.aet"
+}

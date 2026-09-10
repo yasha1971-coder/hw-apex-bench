@@ -75,7 +75,19 @@ for codec,archive in archives.items():
         ("region_p50",times[math.ceil(.50*len(times))-1],"ms","declared"),
         ("region_p99",times[math.ceil(.99*len(times))-1],"ms","declared"),
         ("amplification",reconstructed/(200*16384),"decoded_bytes/requested_bytes", "measured")):
-        rows.append(dict(common,metric=metric,value=value,unit=unit,status=status))
+        record=dict(common,metric=metric,value=value,unit=unit,status=status)
+        if metric=="amplification":
+            import collections
+            ss=samples["amplification"]
+            record.update(decoded_bytes_total=reconstructed, requested_bytes_total=sum(x["requested_bytes"] for x in ss),
+                formula="sum(actual decoded unit bytes across queries) / sum(requested bytes across queries)",
+                decoded_bytes_histogram=dict(sorted(collections.Counter(x["decoded_bytes"] for x in ss).items())))
+            if api_codec=="aceapex":
+                record["stream_decoded_bytes_total"]=[sum(x["stream_decoded_bytes"][i] for x in ss) for i in range(4)]
+                record["stream_order"]=["literal","offset","length","command"]
+                block=config["block"]
+                record["output_blocks_touched_histogram"]=dict(sorted(collections.Counter((x["byte_offset"]+x["requested_bytes"]-1)//block-x["byte_offset"]//block+1 for x in ss).items()))
+        rows.append(record)
 # Relative predicates are the same for every codec; FAIL does not become SKIP.
 for metric in ("ratio","region_p50","region_p99"):
     base=next(r["value"] for r in rows if r["codec"]=="bgzip+htslib" and r["metric"]==metric)
@@ -87,10 +99,13 @@ for metric in ("ratio","region_p50","region_p99"):
                     value=relative,unit="dimensionless",status="pass" if passed else "fail",
                     predicate=">=0.99" if metric=="ratio" else "<=1.0",
                     commands=["python3 harness/driver.py"],baseline_codec="bgzip+htslib"))
+if meta.get("stage",1)==2:
+    from stage2 import add_stage2
+    rows=add_stage2(rows,meta,archives,D,inc,htflags,compile,run)
 # Publish only after all four configurations have passed the exactness checks.
 final=ROOT/"results.jsonl"
 temp=D/"results.complete.jsonl"
 temp.write_text("".join(json.dumps(r,sort_keys=True)+"\n" for r in rows))
 os.replace(temp,final)
 run([sys.executable,ROOT/"harness/report.py"])
-print("STOP: stage-1 table ready for review. Batch, H_alpha and break-even are not run.")
+print("STOP: requested stage complete; review before c(g), plateau throughput and three-machine runs.")

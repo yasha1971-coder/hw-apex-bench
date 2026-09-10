@@ -1,0 +1,8 @@
+{
+  "aceapex/src/aceapex_main.cpp": "e650c2ce8b4644c12ba48e7efa639dc78816bfd05bbb3dca9963cc22373bef39",
+  "aceapex/src/aceapex_api.cpp": "ec0f459bb93f51dd34fe2ee3153de5b98f3f7c981c6dad07cc7534bf95fde4b6",
+  "counter-aceapex/aceapex_main.cpp": "0b09a062d6128867499a3cc06fd097a3da0654dfe0f84cc83d67b0fcc6fa4a79",
+  "counter-aceapex/aceapex_api.cpp": "b18240ca928d5c7bd9964c1d297a94a1a3dc0dc2d6ab7325d98c0180c4e5d976",
+  "zstd/lib/decompress/zstd_decompress.c": "029580818b7e9cd38d9d07c63516b00ceaa943ffcfbd099fc5ccbe3628fa362f",
+  "counter-zstd/lib/decompress/zstd_decompress.c": "cd4545ba036d8002b7e72844d026e38338a3eba6628b7a037f1aa3ad3469a680"
+}

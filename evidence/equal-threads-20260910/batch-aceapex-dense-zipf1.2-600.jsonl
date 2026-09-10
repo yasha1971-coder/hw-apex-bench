@@ -1,0 +1,6 @@
+{"repeat":0,"method":"loop","n":600,"wall_ms":801.825878000,"verified_responses":600,"verified":true}
+{"repeat":0,"method":"batch","n":600,"wall_ms":117.899871000,"verified_responses":600,"matches_single_api":true,"verified":true}
+{"repeat":1,"method":"loop","n":600,"wall_ms":797.999707000,"verified_responses":600,"verified":true}
+{"repeat":1,"method":"batch","n":600,"wall_ms":115.574379000,"verified_responses":600,"matches_single_api":true,"verified":true}
+{"repeat":2,"method":"loop","n":600,"wall_ms":801.143585000,"verified_responses":600,"verified":true}
+{"repeat":2,"method":"batch","n":600,"wall_ms":114.101731000,"verified_responses":600,"matches_single_api":true,"verified":true}

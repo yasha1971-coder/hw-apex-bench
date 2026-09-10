@@ -1,4 +1,4 @@
-name: Stage 1 API-only four-configuration verification
+name: API regions, batch and break-even verification
 on:
   pull_request:
     paths:
@@ -31,7 +31,7 @@ jobs:
           cat benchmark.log
           python3 - <<'PY'
           from pathlib import Path
-          paths=[Path("results.jsonl"),Path("README.md"),Path(".work/metadata.json"),Path(".work/archives.json"),Path(".work/counter-sources.json"),*sorted(Path(".work").glob("samples-*.jsonl"))]
+          paths=[Path("results.jsonl"),Path("README.md"),Path("BATCH_RESULTS.md"),Path(".work/metadata.json"),Path(".work/archives.json"),Path(".work/counter-sources.json"),Path(".work/batch-traces.json"),Path(".work/stage2-raw.json"),*sorted(Path(".work").glob("samples-*.jsonl")),*sorted(Path(".work").glob("batch-*.jsonl")),*sorted(Path(".work").glob("full-*.jsonl"))]
           for p in paths:
               if p.is_file():
                   print("CABENCH_EVIDENCE_BEGIN "+str(p))
@@ -48,8 +48,14 @@ jobs:
           path: |
             results.jsonl
             README.md
+            BATCH_RESULTS.md
             benchmark.log
             .work/metadata.json
             .work/archives.json
             .work/counter-sources.json
             .work/samples-*.jsonl
+            .work/batch-*.jsonl
+            .work/full-*.jsonl
+            .work/batch-traces.json
+            .work/stage2-raw.json
+            .work/traces/
