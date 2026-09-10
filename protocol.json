@@ -1,5 +1,5 @@
 {
-  "stage": 2,
+  "stage": 3,
   "queries": 200,
   "seed": 20260909,
   "warmup_random_queries": 10,
@@ -22,8 +22,7 @@
   },
   "deferred": [
     "encode throughput plateau",
-    "full decode throughput plateau",
-    "independence cost c(g)"
+    "full decode throughput plateau"
   ],
   "gpu": "n/a: no GPU adapter in stage 1",
   "protocol_version": "api-bytes-v3",
@@ -62,5 +61,13 @@
     "full_decode_statistic": "median",
     "formula": "floor(full_decode_ms / region_p50_ms) + 1",
     "meaning": "derived independent-read intersection; not batch crossover; no plateau throughput claim"
+  },
+  "independence": {
+    "formula": "100 * (1 - ratio_g / ratio_whole)",
+    "whole_file_baseline": "one gzip member; one zstd frame; one ACEAPEX output block with profile entropy chunk sizes retained",
+    "include_required_indexes": true,
+    "whole_baseline_restore": "exact byte comparison",
+    "expected_historical_percentages": "not acceptance thresholds",
+    "implementation_caveats": "gzip vs bgzip implementation differs; ACEAPEX skips chain flattening above 1 MiB"
   }
 }
