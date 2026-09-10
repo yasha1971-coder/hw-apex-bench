@@ -116,9 +116,9 @@ Batch review is complete; measured c(g) follows below.
 See [batch protocol and upstream attribution](BATCH_METHOD.md).
 
 
-## Independence cost c(g)
+## Independence cost c(g): operational comparison
 
-`c(g) = 100 × (1 − ratio_g / ratio_whole)`; signed loss of compression ratio. All archive headers and required indexes count.
+`c(g) = 100 × (1 − ratio_g / ratio_whole)`; signed loss of compression ratio. All archive headers and required indexes count. This is not an isolated causal measurement of block independence.
 
 | Codec/profile | block bytes | ratio g | ratio whole | c(g) loss % | Encoder threads requested |
 |---|---:|---:|---:|---:|---:|
@@ -127,10 +127,76 @@ See [batch protocol and upstream attribution](BATCH_METHOD.md).
 | aceapex-interactive | 16384 | 3.658493 | 3.722310 | 1.714456 | 1 |
 | aceapex-dense | 262144 | 3.780646 | 3.793413 | 0.336554 | 1 |
 
-Whole-file baseline: one gzip member, one zstd frame, or one ACEAPEX output block covering the complete file.
-ACEAPEX retains the corresponding profile’s entropy chunk sizes; only ACEAPEX_BS changes. The pinned encoder skips chain flattening above 1 MiB, so the baseline also crosses that implementation branch.
-bgzip/gzip use different implementations. These are documented operational configuration comparisons; the differences are not attributed solely to independence.
-Complete commands, baseline settings, sizes, archive hashes and restore checks accompany every JSONL point. Expected historical percentages are not acceptance thresholds.
+Whole-file means one continuous member/frame/output block, not an unlimited match window. gzip retains its 32 KiB backward-distance limit; this does not make its blocks independent. bgzip adds independent member boundaries, index/headers and implementation differences.
+ACEAPEX uses the same pinned binary on both sides. ACEAPEX_BS changes from 16384 or 262144 to 253935557. MIN_MATCH was cleared and defaults to 0. LIT_CHUNK/FSE_CHUNK remain 65536/4096 (interactive) or 1048576/32768 (dense).
+Important correction: flattening is not disabled for the entire large block. The actual guard is local_pos < (1u<<20), with c_off <= local_pos. Eligible non-rep matches in its first MiB may be flattened; later matches are not. Each small block resets local_pos. The separate size impact of this difference is unmeasured; isolated c(g) is n/a for these ACEAPEX pairs.
+The old JSONL baseline caveat used the inaccurate shorthand “skips chain flattening above 1 MiB”. Raw historical evidence is preserved; this report and INDEPENDENCE_AUDIT.md correct that interpretation. No observed archive size or ratio has changed.
+
+### Both compression commands for every row
+
+Commands below are the recorded commands, with the runner checkout prefix replaced by `.` for local replay. Each compression command is paired with its own ratio and archive size. Codec wrappers are part of the pinned benchmark source. Before replay, clear overrides exactly as run.sh does:
+
+```bash
+unset ACEAPEX_BS LIT_CHUNK FSE_CHUNK MIN_MATCH LIT_LEVEL LIT_LANES NO_REP DIRECT8 FORCED_BIN ACEAPEX_DUMP LD_PRELOAD
+```
+
+#### bgzip+htslib
+
+Blocked: ratio **3.382558276489**, archive + required index **75072042 bytes**.
+
+```bash
+bash codecs/bgzip.sh compress ./.work/chr1.fa ./.work/chr1.fa.gz
+```
+
+Continuous baseline: ratio **3.395854265262**, archive **74778108 bytes**.
+
+```bash
+gzip -n -6 -c ./.work/chr1.fa > ./.work/whole-bgzip-htslib.archive
+```
+
+#### zstd-seekable
+
+Blocked: ratio **3.025773934700**, archive + required index **83924167 bytes**.
+
+```bash
+bash codecs/zstd_seekable.sh compress ./.work ./.work/chr1.fa
+```
+
+Continuous baseline: ratio **3.259851962595**, archive **77897880 bytes**.
+
+```bash
+./.work/zstd/programs/zstd -3 -T1 --no-check -f ./.work/chr1.fa -o ./.work/whole-zstd-seekable.archive
+```
+
+#### aceapex-interactive
+
+Blocked: ratio **3.658493060599**, archive + required index **69409878 bytes**.
+
+```bash
+bash codecs/aceapex.sh compress ./.work ./.work/chr1.fa ./.work/chr1-interactive.aet interactive
+```
+
+Continuous baseline: ratio **3.722310445126**, archive **68219876 bytes**.
+
+```bash
+env ACEAPEX_BS=253935557 ./.work/aceapex-cli c --in ./.work/chr1.fa --out ./.work/whole-aceapex-interactive.archive --threads 1 --level 2 --profile interactive
+```
+
+#### aceapex-dense
+
+Blocked: ratio **3.780646221619**, archive + required index **67167236 bytes**.
+
+```bash
+bash codecs/aceapex.sh compress ./.work ./.work/chr1.fa ./.work/chr1-dense.aet dense
+```
+
+Continuous baseline: ratio **3.793413104059**, archive **66941182 bytes**.
+
+```bash
+env ACEAPEX_BS=253935557 ./.work/aceapex-cli c --in ./.work/chr1.fa --out ./.work/whole-aceapex-dense.archive --threads 1 --level 2 --profile dense
+```
+
+[Expanded CLI commands, environment and flattening audit](INDEPENDENCE_AUDIT.md). Expected historical percentages are not acceptance thresholds.
 
 Stop for review before plateau throughput and the three-machine experiment.
 

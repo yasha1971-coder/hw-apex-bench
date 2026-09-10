@@ -1,0 +1,12 @@
+{
+  "measured_source": "1a406213bb4d46b3cfbf26b10f11ce5bd1986be8",
+  "measurement_change": false,
+  "note": "Report-only audit exposes both recorded compression commands and ratios, corrects flattening to first-MiB-per-block eligibility, and labels the unmeasured isolated effect. Original measurement receipt and results JSONL unchanged.",
+  "results_sha256": "677c4570dda91efd796047df82e64e9355053a21fb1f886dbaeb569b4aa71187",
+  "sha256": {
+    "README.md": "e5c628854ea641813348aca5bdfa07e735a7ae652e665031e22065194da730a2",
+    "INDEPENDENCE_AUDIT.md": "d9aaa6bf062e1714991a93657f20effb947e490be91ab809e391193335314e16",
+    "harness/independence.py": "fe4dce569fcc7cfa6814ebb04f6ca3b36da91a14bffef395fd6581497b0faa3c",
+    "protocol.json": "09edf51f32009045df073fd67e87c009c7af0755bf562a6976c38506cbb244b9"
+  }
+}

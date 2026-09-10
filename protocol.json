@@ -68,6 +68,6 @@
     "include_required_indexes": true,
     "whole_baseline_restore": "exact byte comparison",
     "expected_historical_percentages": "not acceptance thresholds",
-    "implementation_caveats": "gzip vs bgzip implementation differs; ACEAPEX skips chain flattening above 1 MiB"
+    "implementation_caveats": "gzip vs bgzip implementations differ; ACEAPEX flattening is eligible only within the first 1 MiB of each block, not disabled for an entire large block; isolated effect is unmeasured"
   }
 }
