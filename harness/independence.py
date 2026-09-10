@@ -4,20 +4,20 @@ from configurations import CODECS, configuration, clean_environment
 
 STRICT_REASONS = {
     'bgzip+htslib': 'n/a: gzip and bgzip use different encoder implementations; no same-encoder block-size-only baseline measured',
-    'aceapex-interactive': 'n/a for this profile/SHA: the strict supplied pair uses the default configuration at 7216280, not --profile interactive at 1b13df3',
+    'aceapex-interactive': 'n/a for this profile/SHA: the strict reproduced pair uses the default configuration at ee5a37e, not --profile interactive at 1b13df3',
     'aceapex-dense': 'n/a for this profile/SHA: no block-size-only dense pair has been supplied',
 }
 
 ACE_CORE_STRICT = {
-    'codec': 'aceapex-default-7216280',
-    'sha': '7216280298baa976152f6978ea1ac9c7b65fc4ad',
+    'codec': 'aceapex-default-ee5a37e',
+    'sha': 'ee5a37eda18b81c1300a1ee44a7e06b6be925bd2',
     'block': 16384,
     'whole_block': 253935557,
     'input_bytes': 253935557,
-    'blocked_archive_bytes': 80829622,
-    'whole_archive_bytes': 79510864,
+    'blocked_archive_bytes': 80364845,
+    'whole_archive_bytes': 79053076,
     'threads': 8,
-    'machine': 'AMD EPYC 4344P (ace-core)',
+    'machine': 'GitHub Ubuntu 24.04 runner, AMD EPYC 7763 (4 logical CPUs exposed)',
 }
 
 def add_independence(rows, meta, D):
@@ -86,13 +86,16 @@ def add_independence(rows, meta, D):
     rows.append(dict(meta,codec=c['codec'],configuration={
             'implementation':'aceapex','profile':'default','block':c['block'],
             'baseline_block':c['whole_block'],'encoder_requested_threads':c['threads']},
-        metric='independence_cost_strict_percent',value=loss,unit='percent',status='declared',
-        measurement_source='user-supplied ace-core measurement; exact archive bytes and commands supplied, archive hashes and restore receipt not supplied',
+        metric='independence_cost_strict_percent',value=loss,unit='percent',status='measured',
+        measurement_source='GitHub Actions strict-ace-cg run 34488734677; independently confirms ace-core 1.631528% within 0.000740 percentage point',
         formula='100 * (1 - ratio_g / ratio_whole)',ratio_g=ratio_g,ratio_whole=ratio_whole,
         independent_archive_bytes=c['blocked_archive_bytes'],whole_archive_bytes=c['whole_archive_bytes'],
         input_bytes=c['input_bytes'],hardware={'machine':c['machine']},threads_requested=c['threads'],
-        versions={'aceapex_sha':c['sha'],'compiler':'not supplied','libzstd':'not supplied'},
-        correctness='declared; no archive hashes or byte-equal restore receipt supplied',
+        versions={'aceapex_sha':c['sha'],'compiler':'g++ (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0','libzstd':'1.5.5'},
+        archive_sha256='ae9282a0e1ae5bb9fc3e52bc544ceacf5060ae2b81644dabb8c136348d47909f',
+        whole_archive_sha256='7ea68eb970053d10532f96f41c8c71b81858d745e6be95b2ae85ab330e0db1b0',
+        source_sha256='a1f5208e8381b6480380c3e1af3bf335693feb544bcc5b926989683b3c2338b1',
+        correctness='pass',full_restore_byte_equal=True,
         commands=[
           'ACEAPEX_BS=16384 ./aceapex c --in chr1.fa --out /tmp/g16.aet --threads 8',
           'ACEAPEX_BS=253935557 ./aceapex c --in chr1.fa --out /tmp/gall.aet --threads 8',
@@ -113,7 +116,7 @@ def render_independence(rows):
     if strict_by['bgzip+htslib']['value'] is not None or strict_by['bgzip+htslib']['status']!='n/a':
         raise ValueError('bgzip must remain n/a without a same-encoder baseline')
     if strict_by['zstd-seekable']['status']!='measured':raise ValueError('zstd strict pair missing')
-    if strict_by[ACE_CORE_STRICT['codec']]['status']!='declared':raise ValueError('external ACEAPEX provenance must remain declared')
+    if strict_by[ACE_CORE_STRICT['codec']]['status']!='measured':raise ValueError('reproduced ACEAPEX strict claim missing')
     out=['## Independence cost c(g): strict baseline contract','','Only the independent block size may change. Corpus bytes, encoder revision, level, effective search/entropy parameters and threads must otherwise be fixed. Deterministic encoder behavior caused by the changed boundary is part of the treatment.',
          '`c(g) = 100 × (1 − ratio_g / ratio_whole)`. Every ratio uses input bytes divided by complete output-file bytes. Historical JSONL metric independence_cost_percent means the operational comparison; strict claims are explicit rows with their own provenance.','',
          '| Codec/profile | block bytes | ratio g | ratio whole | Operational loss % | Strict c(g) | Encoder threads requested |','|---|---:|---:|---:|---:|---|---:|']
@@ -124,10 +127,10 @@ def render_independence(rows):
         sv=f"{sr['value']:.6f}" if sr['value'] is not None else 'n/a'
         out.append(f"| {r['codec']} | {r['configuration']['block']} | {r['ratio_g']:.6f} | {r['ratio_whole']:.6f} | {r['value']:.6f} | {sv} | 1 |")
     ext=strict_by[ACE_CORE_STRICT['codec']]
-    out.append(f"| ACEAPEX default @ 7216280 (ace-core, declared) | {ACE_CORE_STRICT['block']} | {ext['ratio_g']:.6f} | {ext['ratio_whole']:.6f} | — | {ext['value']:.6f} | {ACE_CORE_STRICT['threads']} |")
+    out.append(f"| ACEAPEX default @ ee5a37e (reproduced) | {ACE_CORE_STRICT['block']} | {ext['ratio_g']:.6f} | {ext['ratio_whole']:.6f} | — | {ext['value']:.6f} | {ACE_CORE_STRICT['threads']} |")
     for codec in ('bgzip+htslib','aceapex-interactive','aceapex-dense'):
         out += ['', codec+': '+STRICT_REASONS[codec]+'.']
-    out += ['', 'ACEAPEX default @ 7216280 is shown from supplied ace-core archive sizes: 80829622 bytes at 16 KiB and 79510864 bytes for one whole-input block. Status is declared because compiler/libzstd versions, archive hashes and a byte-equal restore receipt were not supplied. The GitHub runner reproduction remains a separate machine result.']
+    out += ['', 'ACEAPEX default @ ee5a37e was reproduced by GitHub Actions run 34488734677: 80364845 bytes at 16 KiB and 79053076 bytes for one whole-input block, both exact restores passing. GCC 13.3.0, libzstd 1.5.5. The compiled source `src/aceapex_main.cpp` was observed in the compiler trace and hashed. The result differs from the ace-core 1.631528% by 0.000740 percentage point.']
     out += ['', 'zstd bases are explicitly zstd 1.5.7 level -3, one continuous frame versus independent 16384-byte frames. The user-reported historical version is 1.4.8 with 6.68%; version change is a hypothesis for the difference, not an attribution established by a matched rerun.',
             'The historical 0.410% is payload-only: it excludes the AET header and 64-byte BlockOffsets entry per block. The cross-codec archive ratio includes both. Neither 0.410% nor 6.68% is an acceptance target.']
     out+=['','Whole-file means one continuous member/frame/output block, not an unlimited match window. gzip retains its 32 KiB backward-distance limit; this does not make its blocks independent. bgzip adds independent member boundaries, index/headers and implementation differences.',
