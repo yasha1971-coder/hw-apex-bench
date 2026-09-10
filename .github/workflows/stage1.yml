@@ -7,6 +7,8 @@ on:
       - 'harness/**'
       - 'corpora.json'
       - 'protocol.json'
+      - 'gpu-results.declared.json'
+      - 'GPU.md'
       - '.github/workflows/stage1.yml'
   workflow_dispatch:
 permissions:
@@ -14,7 +16,7 @@ permissions:
 jobs:
   benchmark:
     runs-on: ubuntu-24.04
-    timeout-minutes: 60
+    timeout-minutes: 90
     steps:
       - uses: actions/checkout@v4
         with:
@@ -23,15 +25,15 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y build-essential git python3 pkg-config libhts-dev tabix zlib1g-dev
-      - name: Run all current CPU axes
-        run: bash run.sh --stage 4 > benchmark.log 2>&1
+      - name: Run all current CPU axes and import declared GPU evidence
+        run: bash run.sh --stage 5 > benchmark.log 2>&1
       - name: Show complete log
         if: always()
         run: |
           cat benchmark.log
           python3 - <<'PY'
           from pathlib import Path
-          paths=[Path("results.jsonl"),Path("README.md"),Path("BATCH_RESULTS.md"),Path(".work/metadata.json"),Path(".work/archives.json"),Path(".work/source-provenance.json"),Path(".work/compile-trace.jsonl"),Path(".work/counter-sources.json"),Path(".work/batch-traces.json"),Path(".work/stage2-raw.json"),Path(".work/independence-raw.json"),Path(".work/throughput-raw.json"),*sorted(Path(".work").glob("samples-*.jsonl")),*sorted(Path(".work").glob("batch-*.jsonl")),*sorted(Path(".work").glob("full-*.jsonl"))]
+          paths=[Path("results.jsonl"),Path("README.md"),Path("BATCH_RESULTS.md"),Path(".work/metadata.json"),Path(".work/archives.json"),Path(".work/source-provenance.json"),Path(".work/compile-trace.jsonl"),Path(".work/counter-sources.json"),Path(".work/batch-traces.json"),Path(".work/stage2-raw.json"),Path(".work/independence-raw.json"),Path(".work/throughput-raw.json"),Path(".work/zstd-frontier-raw.json"),*sorted(Path(".work").glob("samples-*.jsonl")),*sorted(Path(".work").glob("batch-*.jsonl")),*sorted(Path(".work").glob("full-*.jsonl"))]
           for p in paths:
               if p.is_file():
                   print("CABENCH_EVIDENCE_BEGIN "+str(p))
@@ -62,4 +64,7 @@ jobs:
             .work/stage2-raw.json
             .work/independence-raw.json
             .work/throughput-raw.json
+            .work/zstd-frontier-raw.json
             .work/traces/
+            gpu-results.declared.json
+            GPU.md

@@ -108,10 +108,15 @@ if meta.get("stage",1)>=3:
 if meta.get("stage",1)>=4:
     from throughput import add_throughput
     rows=add_throughput(rows,meta,D=D,archives=archives,inc=inc,htflags=htflags,compile=compile,run=run)
+if meta.get("stage",1)>=5:
+    from zstd_frontier import add_zstd_frontier
+    rows=add_zstd_frontier(rows,meta,D=D,run=run)
+    from gpu import add_gpu_declarations
+    rows=add_gpu_declarations(rows,meta)
 # Publish only after all four configurations have passed the exactness checks.
 final=ROOT/"results.jsonl"
 temp=D/"results.complete.jsonl"
 temp.write_text("".join(json.dumps(r,sort_keys=True)+"\n" for r in rows))
 os.replace(temp,final)
 run([sys.executable,ROOT/"harness/report.py"])
-print("STOP: requested stage complete; review before the three-machine and GPU runs.")
+print("STOP: requested stage complete; review before merge or the three-machine run.")
