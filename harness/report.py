@@ -29,6 +29,12 @@ def validate(rows):
     if set(index)!={(c,m) for c in CODECS for m in (*METRICS,"ratio_relative_to_bgzip","region_p50_relative_to_bgzip","region_p99_relative_to_bgzip")}:
         raise ValueError("Unexpected or missing row")
     for r in rows:
+        # Separate strict c(g) claims may intentionally use another pinned
+        # revision/configuration. Their validator lives in independence.py.
+        if r["codec"] not in CODECS:
+            if r["metric"] != "independence_cost_strict_percent":
+                raise ValueError("Unexpected external codec row")
+            continue
         if r["configuration"]!=configuration(r["codec"]): raise ValueError("Configuration mismatch")
         if r["versions"]["aceapex_sha"]!=ACE_SHA: raise ValueError("Wrong ACEAPEX revision")
         if r["metric"].startswith("region_") and r["protocol"]["protocol_version"]!="api-bytes-v3": raise ValueError("Wrong timer protocol")
