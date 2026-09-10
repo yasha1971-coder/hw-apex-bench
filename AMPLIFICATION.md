@@ -15,7 +15,10 @@ The pinned chr1 trace explains the previously reviewed numbers exactly:
 * ACEAPEX interactive: all 200 unaligned 16,384-byte requests touch two output
   blocks. The four entropy streams have their own chunk boundaries. Their
   decoded totals are respectively 17,760,256; 933,888; 585,728; 1,089,536 bytes.
-  `20369408 / 3276800 = 6.21625`. Complete global streams are not decoded or counted.
+  `20369408 / 3276800 = 6.21625`. Equivalently, 271 literal chunks and
+  637 FSE chunks give `(271 × 65536 + 637 × 4096) / 3276800 = 6.21625`.
+  There are 129 requests with one literal chunk and 71 with two.
+  Complete global streams are not decoded or counted.
   `(65536 + 3 × 4096) / 16384 = 4.75` assumes exactly one chunk in each stream;
   actual requests can touch two literal chunks, multiple FSE chunks, or no length
   chunk. Output-block size alone cannot determine the numerator.
