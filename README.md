@@ -127,18 +127,18 @@ Only the independent block size may change. Corpus bytes, encoder revision, leve
 | zstd-seekable | 16384 | 3.025774 | 3.259852 | 7.180634 | 7.180634 | 1 |
 | aceapex-interactive | 16384 | 3.658493 | 3.722310 | 1.714456 | n/a | 1 |
 | aceapex-dense | 262144 | 3.780646 | 3.793413 | 0.336554 | n/a | 1 |
-| ACEAPEX default @ 7216280 (ace-core, declared) | 16384 | 3.141615 | 3.193722 | — | 1.631528 | 8 |
+| ACEAPEX default @ ee5a37e (reproduced) | 16384 | 3.159784 | 3.212216 | — | 1.632267 | 8 |
 
 bgzip+htslib: n/a: gzip and bgzip use different encoder implementations; no same-encoder block-size-only baseline measured.
 
-aceapex-interactive: n/a for this profile/SHA: the strict supplied pair uses the default configuration at 7216280, not `--profile interactive` at 1b13df3.
+aceapex-interactive: n/a for this profile/SHA: the strict reproduced pair uses the default configuration at ee5a37e, not `--profile interactive` at 1b13df3.
 
 aceapex-dense: n/a for this profile/SHA: no block-size-only dense pair has been supplied.
 
-ACEAPEX default @ 7216280 uses supplied ace-core file sizes: 80829622 bytes at 16 KiB and 79510864 bytes for one whole-input block. It is marked declared because compiler/libzstd versions, archive hashes and a byte-equal restore receipt were not supplied. The defect is fixed at `ee5a37e`; an independent strict rerun of that new SHA is defined in [the strict reproduction contract](STRICT_CG.md).
+ACEAPEX default @ ee5a37e was reproduced by GitHub Actions run 34488734677: 80364845 bytes at 16 KiB and 79053076 bytes for one whole-input block, both exact restores passing. GCC 13.3.0, libzstd 1.5.5. Archive SHA-256 values and compiled-source provenance are recorded by [the strict reproduction contract](STRICT_CG.md). Its 1.632267% differs from the ace-core 1.631528% by only 0.000740 percentage point.
 
 Address table component: 15499 blocks × 64 bytes = **991936 bytes**, or
-**1.227%** of the complete 80829622-byte 16 KiB archive. This is shown
+**1.234%** of the complete 80364845-byte 16 KiB archive. This is shown
 separately from payload compression and is included in archive c(g).
 
 zstd bases are explicitly zstd 1.5.7 level -3, one continuous frame versus independent 16384-byte frames. The user-reported historical version is 1.4.8 with 6.68%; version change is a hypothesis for the difference, not an attribution established by a matched rerun.
