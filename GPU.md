@@ -15,7 +15,7 @@ upstream commit:
 ```bash
 env ACEAPEX_BS=<block_bytes> ./aceapex_depth c --in chr1.fa --out /tmp/chr1-<block_bytes>.aet --threads 8
 env ACEAPEX_BS=<block_bytes> ./aceapex_depth d --in /tmp/chr1-<block_bytes>.aet --out /tmp/chr1-<block_bytes>.restore
-./e2e_pipe streams.bin chr1.fa 16 0 <block_count>
+./e2e_pipe streams.bin chr1.fa 16
 ./e2e_seek streams.bin chr1.fa 16 <start_block> <count>
 ./scan_bench streams.bin 0 <block_count>
 ```
@@ -24,6 +24,12 @@ The single supplied `streams.bin` MD5 is attached only to 16 KiB rows. It is not
 copied to 4 KiB or 8 KiB rows because their block counts prove that they use a
 different stream image. Those rows explicitly say that their per-point stream
 hash was not supplied.
+
+The supplied full-decode block counts are exactly one below
+`ceil(253935557 / block_bytes)` at 4, 8 and 16 KiB. Both reported and derived
+counts are retained. The full-decode command intentionally omits range arguments,
+which is the documented whole-archive invocation; raw logs are required before
+the count discrepancy can be resolved.
 
 The old 172 GB/s and 0.36 ms values are excluded because they refer to a different
 commit/configuration. Seek observations are not relabelled p50 or p99. FASTQ and

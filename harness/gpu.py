@@ -23,9 +23,12 @@ def add_gpu_declarations(rows,meta):
     for p in src["full_decode"]:
         if p["block_bytes"] not in (4096,8192,16384) or p["gb_s"]<=0: raise ValueError("invalid GPU full-decode point")
         d=src["devices"][p["device"]]
-        command=f"./e2e_pipe streams.bin chr1.fa {src['g']} 0 {p['blocks']}"
+        expected_blocks=math.ceil(src["corpus"]["bytes"]/p["block_bytes"])
+        command=f"./e2e_pipe streams.bin chr1.fa {src['g']}"
         row=dict(common,metric="gpu_full_decode_gb_s",value=p["gb_s"],unit="GB/s",
-          device=d,block_bytes=p["block_bytes"],blocks=p["blocks"],commands=_prepare(p["block_bytes"])+[command],
+          device=d,block_bytes=p["block_bytes"],reported_blocks=p["blocks"],expected_blocks=expected_blocks,
+          geometry_status="declared count differs from ceil(corpus_bytes/block_bytes)" if p["blocks"]!=expected_blocks else "consistent",
+          commands=_prepare(p["block_bytes"])+[command],
           stream_md5=src["stream_md5_16k"] if p["block_bytes"]==16384 else None,
           stream_md5_status="supplied" if p["block_bytes"]==16384 else "n/a: per-point stream hash not supplied")
         if "wall_ms" in p: row["wall_ms"]=p["wall_ms"]
@@ -65,14 +68,15 @@ def render_gpu(rows):
             if r["correctness"]!="pass": raise ValueError("GPU correctness missing")
     out=["## GPU — separately declared device-resident path","",
       "These points are owner-supplied declarations, not measurements made by this runner. They use ACEAPEX `606f6fc`, G=16, chr1 MD5 `9465e0f0df6e2c6eb39729c39cee5465`, driver 580.178.04 and CUDA 12.4.131; every published point names its block size and reports `MATCHES OK`. Exact raw pod logs were not supplied, so no row is promoted to `measured`.","",
-      "| Codec | GPU | VRAM | block bytes | blocks | Full decode GB/s | wall ms | streams.bin MD5 | status |",
+      "| Codec | GPU | VRAM | block bytes | reported / ceil blocks | Full decode GB/s | wall ms | streams.bin MD5 | status |",
       "|---|---|---:|---:|---:|---:|---:|---|---|"]
     for r in full:
         if r["value"] is None:
             out.append(f"| {r['codec'].removesuffix('-gpu')} | n/a | n/a | n/a | n/a | n/a | n/a | n/a | {r['reason']} |")
         else:
-            out.append(f"| ACEAPEX | {r['device']['name']} | {r['device']['vram_gb']} GB | {r['block_bytes']} | {r['blocks']} | {r['value']:.1f} | {r.get('wall_ms','n/a')} | {r.get('stream_md5') or r['stream_md5_status']} | declared |")
-    out += ["","The same GPU and corpus change materially with block size: H100 reports 179.8 GB/s at 4 KiB and 128.0 GB/s at 16 KiB; RTX reports 112.8 GB/s at 8 KiB and 99.2 GB/s at 16 KiB. These are supplied observations, not a universal optimum claim.","",
+            out.append(f"| ACEAPEX | {r['device']['name']} | {r['device']['vram_gb']} GB | {r['block_bytes']} | {r['reported_blocks']} / {r['expected_blocks']} | {r['value']:.1f} | {r.get('wall_ms','n/a')} | {r.get('stream_md5') or r['stream_md5_status']} | declared |")
+    out += ["","The supplied full-decode block counts are one below `ceil(253935557 / block_bytes)` at all three block sizes. They are printed as reported, beside the derived geometry, and remain declared pending the raw log. Full-decode commands omit start/count so the documented CLI selects the complete archive.","",
+      "The same GPU and corpus change materially with block size: H100 reports 179.8 GB/s at 4 KiB and 128.0 GB/s at 16 KiB; RTX reports 112.8 GB/s at 8 KiB and 99.2 GB/s at 16 KiB. These are supplied observations, not a universal optimum claim.","",
       "| GPU | block bytes | start block | count | seek observation | statistic |",
       "|---|---:|---:|---:|---|---|"]
     for r in rr:
