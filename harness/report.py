@@ -41,6 +41,12 @@ def validate(rows):
         if r["versions"]["aceapex_sha"]!=ACE_SHA: raise ValueError("Wrong ACEAPEX revision")
         if r["metric"].startswith("region_") and r["protocol"]["protocol_version"]!="api-bytes-v3": raise ValueError("Wrong timer protocol")
     return index
+def code_span(value):
+    # Tool output is literal text, including Ubuntu tildes and CLI asterisks.
+    text = str(value).replace("\n", " ").replace("\r", " ")
+    fence = "`" * (1 + max((len(run) for run in re.findall(r"`+", text)), default=0))
+    return fence + " " + text + " " + fence
+
 def method_for_readme():
     text = (ROOT/"docs/METHOD.md").read_text()
     def rebase(match):
@@ -59,8 +65,8 @@ def render(rows):
           "Three codecs, four configurations. API-only byte regions; implemented axes and review boundary are below.",
           "",f"Run: {meta['run_id']}. Benchmark commit: {meta['benchmark_commit']}.",
           "",f"Corpus: chr1 hg38 FASTA, MD5 {meta['corpus']['md5']}.",
-          "",f"libzstd: {v['libzstd']}; htslib: {v['htslib']}; bgzip: {v['bgzip']}.",
-          f"C: {v['compiler_c']}; C++: {v['compiler_cxx']}.",
+          "",f"libzstd: {code_span(v['libzstd'])}; htslib: {code_span(v['htslib'])}; bgzip: {code_span(v['bgzip'])}.",
+          f"C: {code_span(v['compiler_c'])}; C++: {code_span(v['compiler_cxx'])}.",
           f"ACEAPEX: {v['aceapex_sha']}; zstd reference implementation: {v['zstd_sha']}.",
           "",f"Machine: {meta['hardware']['platform']}; logical CPUs: {meta['hardware']['logical_cpus']}.",
           next((line.strip() for line in meta["hardware"].get("lscpu", "").splitlines() if line.startswith("Model name:")), "CPU model unavailable"),

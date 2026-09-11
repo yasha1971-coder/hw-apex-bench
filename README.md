@@ -8,8 +8,8 @@ Run: 2026-09-10T20:29:44.589718+00:00. Benchmark commit: 9cad83e8a5c9a5f3bafb7ef
 
 Corpus: chr1 hg38 FASTA, MD5 9465e0f0df6e2c6eb39729c39cee5465.
 
-libzstd: *** Zstandard CLI (64-bit) v1.5.7, by Yann Collet ***; htslib: 1.19; bgzip: bgzip (htslib) 1.19.
-C: gcc (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0; C++: g++ (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0.
+libzstd: ` *** Zstandard CLI (64-bit) v1.5.7, by Yann Collet *** `; htslib: ` 1.19 `; bgzip: ` bgzip (htslib) 1.19 `.
+C: ` gcc (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0 `; C++: ` g++ (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0 `.
 ACEAPEX: 1b13df34ac8e839dd3232b59bc59560d689a435a; zstd reference implementation: f8745da6ff1ad1e7bab384bd1f9d742439278e99.
 
 Machine: Linux-6.17.0-1022-azure-x86_64-with-glibc2.39; logical CPUs: 4.
