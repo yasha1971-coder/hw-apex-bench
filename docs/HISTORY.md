@@ -933,3 +933,11 @@ combinations and idempotent report regeneration passed. No browser/layout test
 was available in this validation flow; UI logic uses a minimal DOM, not a browser.
 Exact checks are in review/presentation-check.json. No benchmark was started.
 Zenodo public archive download verification remains a separate pending action.
+
+Presentation PR34 merged as3a4ec0c3be9561f7c94680059e7138e000833f9a.
+Integrity CI34643570591 and Pages deployment34643656045 succeeded.
+Final regression guard: report.render still invokes the full nine-axis validation
+before returning the short view. An intentionally corrupted break-even row was
+rejected; the generated publication remains identical. Direct public HTML fetch
+was unavailable (network approval cancelled), so deployment is confirmed from
+GitHub Actions, without claiming an independent CDN or browser inspection.
