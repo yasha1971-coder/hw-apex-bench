@@ -28,7 +28,7 @@ The pinned chr1 trace explains the previously reviewed numbers exactly:
 
 These explanations refer to the reproducible trace at benchmark commit
 `bc8e5a99fe6878e3a7e0f70cc432cb12e193f9e0`; raw per-query counters are in
-[evidence](evidence/stage2-20260910/). New reports derive their totals from their
+[evidence](../evidence/stage2-20260910). New reports derive their totals from their
 own counter pass and carry histograms and per-stream totals in results.jsonl.
 
 The earlier uniform N=5000 single-call loops measured zstd-seekable at 14,913.914

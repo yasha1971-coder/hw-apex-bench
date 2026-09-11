@@ -14,7 +14,7 @@ Copyright 2026 yasha1971-coder
 https://github.com/yasha1971-coder/aceapex
 Vendored snapshots: harness/upstream/batch_test_ci.c and
 harness/upstream/breakeven.c, from scripts/ at commit
-1b13df34ac8e839dd3232b59bc59560d689a435a. See BATCH_METHOD.md for exact
+1b13df34ac8e839dd3232b59bc59560d689a435a. See docs/BATCH_METHOD.md for exact
 source hashes and the benchmark adaptations. The ACEAPEX codec itself is
 fetched into the build directory, rather than vendored in this source tree.
 Its license and the MIT notices on the snapshots remain applicable.

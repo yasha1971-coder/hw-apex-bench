@@ -121,7 +121,7 @@ def render(rows):
         native = '20 verified workloads, one worker' if loop['native_batch_available'] else unavailable(loop['native_batch_reason'])
         out.append(f'| {codec} | byte-verified evidence | {plateau} | 20 verified workloads, one worker | {native} | derived, same run |')
     out += ['', '## Separate controlled c(g) run', '',
-            f"Run `{checked['curve_run']}`; exact configurations and complete 15-position table: [CG_CURVE_RESULTS.md](CG_CURVE_RESULTS.md).", '',
+            f"Run `{checked['curve_run']}`; exact configurations and complete 15-position table: [docs/CG_CURVE_RESULTS.md](CG_CURVE_RESULTS.md).", '',
             '| Configuration | Grid coverage | Strict c(g) availability |', '|---|---|---|']
     curves = [r for r in rows if r.get('evidence_group') == 'cg-five-point-v1']
     for codec in ('bgzip-cg', 'zstd-seekable-cg', 'aceapex-cg-default'):
@@ -131,7 +131,7 @@ def render(rows):
         geometry = f"{sum(r.get('point') is not None for r in rr)} measured geometries; {sum(r.get('point') is None for r in rr)} explicitly unsupported positions"
         out.append(f'| {codec} | {geometry} | {availability} |')
     out += ['', 'The curve uses ACEAPEX ee5a37e default; core profiles use 1b13df3. Neither is relabeled as adaptive default a194893.',
-            'The separate a194893 refresh retains its six byte-verified rows in DEFAULT_RESULTS.md; it supplies no unmeasured amplification, batch or plateau values.',
+            'The separate a194893 refresh retains its six byte-verified rows in docs/DEFAULT_RESULTS.md; it supplies no unmeasured amplification, batch or plateau values.',
             '', '## Interpretation', '',
             'All nine axes are accounted for as measured/derived evidence or an explicit unsupported result. This is coverage, not a claim that every configuration supports every axis.',
             'Absolute CPU performance is declared. A ratio to bgzip is computed only within its own run, corpus and operation; its predicate retains PASS and FAIL. Normalization does not establish machine invariance.',

@@ -14,7 +14,7 @@ fine-grained region metric. The API's existence and historical slow timings are
 not denied or rewritten as full-decode measurements.
 
 Candidate JSONL is `.work/default-refresh/results.jsonl`, with its generated
-`DEFAULT_RESULTS.md`. The reviewed root publication remains unchanged until
+`docs/DEFAULT_RESULTS.md`. The reviewed root publication remains unchanged until
 this separate evidence group is audited and integrated. Historical c(g) and
 62.379022 ms measurements remain bound to their old revision/configuration.
 
@@ -45,7 +45,7 @@ failure with correctly matched settings.
 
 Completed comparison: [DEFAULT_RESULTS.md](DEFAULT_RESULTS.md). Exact retained
 JSONL and receipt are in `evidence/default-a194893/`; replay with
-`python3 harness/audit_default.py evidence/default-a194893 DEFAULT_RESULTS.md`.
+`python3 harness/audit_default.py evidence/default-a194893 docs/DEFAULT_RESULTS.md`.
 Workflow 34574867600 passed. Default is 16.33% denser than explicit legacy by
 matched complete-file ratios; all ACEAPEX rows lose single-region latency to
 both baselines in this run. The owner's +17.1% uses a separately reported setup.

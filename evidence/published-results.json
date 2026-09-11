@@ -21,14 +21,14 @@
       "sha256": "cb52b8cb9fac484a6474d976681ea85ae2c052d80d820422b7f57c25ec938100"
     },
     "README.md": {
-      "bytes": 79713,
-      "sha256": "ecbed2f4d395330c91b3c1fbb63d508cc846de18cdbed7ed2b1de6ad688d26d6"
+      "bytes": 79941,
+      "sha256": "d180defd3f690ad8e4dba773a220ec5d74af6ae0583fe1638c38b3de34851c70"
     },
-    "BATCH_RESULTS.md": {
+    "docs/BATCH_RESULTS.md": {
       "bytes": 19250,
       "sha256": "d1aa51fee46758501e4f378bee48bae185b74d5db5ee3657a5741c70c49e46a2"
     },
-    "CG_CURVE_RESULTS.md": {
+    "docs/CG_CURVE_RESULTS.md": {
       "bytes": 44738,
       "sha256": "af6bfa17db628c1be68174239f8cefe4e1c51d5c16767faa4d3ad89633a483c4"
     },
@@ -36,9 +36,9 @@
       "bytes": 4143,
       "sha256": "4457dc4c1d76dd43a39c0467e3d5875738700f55e8f6b2ac188612d8f0a99c84"
     },
-    "AXES_RESULTS.md": {
-      "bytes": 4829,
-      "sha256": "662d19f2b371f1c9b1c8e72b037b3722ca60ad82878f1516a32ccd2e57418d03"
+    "docs/AXES_RESULTS.md": {
+      "bytes": 4839,
+      "sha256": "c33b0632d1a50844a28d51a77772eabaf6ff1f7508dbc57daa85b18e8648ae30"
     }
   },
   "publication_state": "candidate in draft PR #14; not deployed",
@@ -55,5 +55,9 @@
     "scope": "nine-axis coverage, explicit missing-value reasons, strict same-container eligibility, plateau evidence validation",
     "measurement_bytes_changed": false,
     "results_sha256": "cb52b8cb9fac484a6474d976681ea85ae2c052d80d820422b7f57c25ec938100"
+  },
+  "documentation_layout": {
+    "directory": "docs",
+    "change": "Paths, relative links and README navigation only; measurement bytes unchanged."
   }
 }

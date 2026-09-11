@@ -2,7 +2,7 @@
 
 Run `./run.sh --cg-curve` from a clean clone. This mode downloads and MD5-checks
 chr1 itself, measures only this sweep, retains earlier evidence verbatim in
-`results.jsonl`, and regenerates `README.md` plus `CG_CURVE_RESULTS.md` from the new
+`results.jsonl`, and regenerates `README.md` plus `docs/CG_CURVE_RESULTS.md` from the new
 evidence group. It does not rerun or silently replace the CPU/GPU results.
 
 The planned grid is **4, 16, 64, 256 KiB and 1 MiB**. This is a comparison of

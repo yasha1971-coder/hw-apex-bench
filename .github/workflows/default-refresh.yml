@@ -21,14 +21,14 @@ jobs:
         if: always()
         run: |
           tail -70 default-refresh.log || true
-          test ! -f DEFAULT_RESULTS.md || cat DEFAULT_RESULTS.md
+          test ! -f docs/DEFAULT_RESULTS.md || cat docs/DEFAULT_RESULTS.md
       - uses: actions/upload-artifact@v4
         if: always()
         with:
           name: default-a194893-evidence
           include-hidden-files: true
           path: |
-            DEFAULT_RESULTS.md
+            docs/DEFAULT_RESULTS.md
             default-refresh.log
             .work/default-refresh/*.json
             .work/default-refresh/*.jsonl

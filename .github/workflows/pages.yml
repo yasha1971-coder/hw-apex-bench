@@ -2,7 +2,7 @@ name: Publish benchmark homepage
 on:
   push:
     branches: [main]
-    paths: ['web/**', 'results.jsonl', 'README.md', 'BATCH_RESULTS.md', 'METHOD.md', 'harness/**', 'evidence/published-results.json', '.github/workflows/pages.yml']
+    paths: ['web/**', 'results.jsonl', 'README.md', 'docs/BATCH_RESULTS.md', 'docs/METHOD.md', 'harness/**', 'evidence/published-results.json', '.github/workflows/pages.yml']
   workflow_dispatch:
 permissions:
   contents: read
