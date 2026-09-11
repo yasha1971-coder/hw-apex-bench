@@ -686,3 +686,27 @@ ee5 default c(g), zstd frontier and declaredGPU/auxiliary rows; these are explic
 excluded from an unsupported complete row-replay claim, never copied as fresh data.
 Next action: verify CI; let the authorized full job run only if its small gates pass;
 inspect/audit artifacts and record actual outcome without claiming missing evidence.
+
+PR #26: https://github.com/yasha1971-coder/hw-apex-bench/pull/26
+Tested/running code4195a210c6a321315eebb84a36d564ac674aa18b,
+tree50918e86492dba7b31b92199e325b58e0091f5a6. All six small CI jobs are green.
+Publication34619124435 and resident-context34619124383 are green.
+Six smoke artifact ZIPs were downloaded, their GitHub SHA256 checked, check receipt
+links verified, and all nine axes/records independently audited. Summaries in
+review/nine-axes-ci.json:28 restores,16738 correctness regions across six configs.
+Artifacts:10272120950 ACEinteractive,10272066066 BGZF1.19,10272046039 zstd,
+10271576453 ACEdense,10271193971 XZ,10271029074 BGZF1.24.
+
+FULL RUN IS ALREADY IN PROGRESS in workflow34619124537,
+job103328777993 full-native-comparison, on code4195a210c6a321315eebb84a36d564ac674aa18b.
+Do not launch another run. Wait for this job and inspect its native-full-comparison
+artifact. It started only after all six small gates passed. The growth schedule is
+up to four scales; a codec may stop earlier if both curves reach the plateau rule.
+A read of job logs while running returned NOT_FOUND; this is not a run failure.
+The final raw logs/artifact will be retained even if the job fails.
+
+For deterministic comparison after success, review/compare_native_structures.py
+compares archive sizes/hashes/ratios, amplification,80 profile entropy/trace cases
+and five same-version zstd c(g) points against the frozen435. It refuses a different
+corpus. Do not infer equality until the real artifact has been downloaded and checked.
+This checkpoint records partial CI evidence only, not completion of the full run.
