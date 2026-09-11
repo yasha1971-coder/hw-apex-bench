@@ -126,3 +126,58 @@ This branch deliberately does not import the extra recovered records or adapter
 changes from the draft branches. On subsequent merges, regenerate README from the
 merged METHOD.md/results.jsonl and update its manifest digest, retaining this
 license footer. Finish the licensing PR before resuming any adapter work.
+
+## Owner's ordering restored — 2026-09-11
+
+Licensing PR #18 is merged: main commit
+`a5ab7e38bc1d995dc580c8f0e5e1b221f7bca8d7`.
+The authoritative next order is in BENCH_TO_TOOL.md:
+nine-axis acceptance, adapters, check, xz, CONTRIBUTING/citation, CRAM, tag/DOI.
+Do not continue adapter work in PR #17 or add codecs ahead of the evidence gate.
+
+The nine-axis audit of retained PR #16 content at
+`1160850bda8385cc18d8960989cad15ecacd8b43` passes: 9 axes, 3 formats,
+4 core configurations, 15 curve positions, 13 supported geometries.
+The 31 axis/curve tests and publication validation pass. The checked files and
+results are identical to those in the local PR #17 checkout; no measurements
+were rerun. BGZF/zstd plateaus already exist, native batch has explicit n/a,
+and BGZF's strict c(g) limitation is not fabricated into five measured points.
+Main still has 420 records; the prepared 435-record publication is in PR #16.
+
+Next bounded action: review/prepare PR #16's complete table for evidence acceptance
+and main integration, preserving the license footer and regeneration integrity.
+PR #18 merge authorization does not authorize merging PR #16 or PR #17. This
+checkpoint is documentation only and does not publish new measurements.
+
+## Focused c(g) baseline audit — 2026-09-11
+
+Documentation work continues in PR #19, branch docs/nine-axis-gate, from
+7499d65dfdfb54a220d4cce76132c2f1fafd43e7. The additional read-only audit and eleven
+tests verify all ten supported points' commands and whole-input geometry.
+ACEAPEX baseline: one LZ block covering 253935557 bytes. Zstd baseline: one
+nonempty whole-input frame PLUS an empty terminal frame, not literally one
+physical frame; both are included in the baseline file length. BGZF has no
+strict baseline. Source hashes matched retained compiler provenance.
+
+See review/CG_BASELINE_REVIEW.md and review/cg-baseline-check.json for the
+exact scope and commands. No archive was reopened or recompressed in this
+segment; existing restore receipts remain existing evidence. No changes to
+raw results, codec source, README or adapter code. Next bounded action remains
+preparing the reviewed PR #16 evidence for main with the license footer and
+publication validation. Do not erase the zstd empty-frame qualification.
+
+## Frame symmetry and LIT_CHUNK follow-up — 2026-09-11
+
+PR #19 follow-up to ee3dd40c6e0a46586558f5b20d3ec12b971a5666 verifies zstd
+indexed frame counts 61996/15499/3875/969/243 at 4/16/64/256/1024 KiB;
+all have zero empty data frames. Baseline: two indexed frames, one empty.
+Each file also has one seek-table skippable frame. Counts are retained parser
+evidence, not a new zstd -l run; original archives are absent locally.
+All ACEAPEX baseline/point commands unset LIT_CHUNK. In pinned ee5a37e this
+selects the legacy four-part zstd level-3 path, with DNA transform OFF for
+all six configurations; FSE policy remains 512 KiB. Newer changes do not
+apply retroactively. Source hash matches retained compiler provenance.
+Do not publish 6.57–7.18% as a c(g) interval: 6.569397% is matched seekable
+c(g), while 7.180634% is the historical CLI-versus-seekable comparison.
+See review/CG_BASELINE_REVIEW.md. No raw result bytes changed. Next: prepare
+PR #16 publication on licensed main, keeping these distinctions.
