@@ -181,3 +181,21 @@ Do not publish 6.57–7.18% as a c(g) interval: 6.569397% is matched seekable
 c(g), while 7.180634% is the historical CLI-versus-seekable comparison.
 See review/CG_BASELINE_REVIEW.md. No raw result bytes changed. Next: prepare
 PR #16 publication on licensed main, keeping these distinctions.
+
+## Negative c(g) publication note — 2026-09-11
+
+PR #19 merged into main as 278b04ba8aef62c5e2c147e69b1c0627159047c8.
+The owner's requested negative-c(g) note is prepared on docs/negative-cg-note.
+It is generated into README through METHOD.md, before the existing license
+footer. It reports the reviewed zstd 1 MiB value -0.509942% and the exact file
+lengths 78013034 vs 78410855 bytes. The original results remain unchanged.
+
+Local entropy adaptation is identified as a possible mechanism, not a causal
+finding: this run did not isolate it, and RFC 8878 section 3.1.1.3 permits
+new entropy tables inside a frame already. No claim of literature-wide novelty
+or universally costly splitting is made. The empty baseline frame is still
+counted. The README digest was refreshed after regeneration; publication
+validation and page export passed against the 420 rows currently in main.
+
+No codec or benchmark was run. The full 435-row evidence publication from
+PR #16 remains a separate next bounded step; adapter work stays paused.
