@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Five measured block sizes; descriptive tradeoffs, never a novelty/winner claim."""
+"""Remeasure adaptive default beside explicit profiles on one runner."""
 from __future__ import annotations
 
 import argparse
@@ -22,6 +22,7 @@ import urllib.request
 
 from aceapex_strict_cg import ACEAPEX_SHA, CORPUS_SIZE, CLEARED_ENV, archive_record
 from source_provenance import verify as verify_sources
+from configurations import PROFILES
 
 from cg_curve import digest, clean_env, seek_geometry, bgzf_geometry, CLEAR, ZSTD_SHA
 ROOT = Path(__file__).resolve().parents[1]
@@ -177,16 +178,17 @@ def main():
     rows=[]
     for i,(name,profile) in enumerate(configs):
         arc=work/f'archive-{i}'; restored=work/f'restore-{i}'; start=len(commands)
-        overrides={'LIT_CHUNK':'0'} if profile=='legacy' else None
+        overrides={'LIT_CHUNK':'0'} if profile=='legacy' else dict(PROFILES[profile]) if profile in PROFILES else None
         if name.startswith('ACEAPEX'):
             args=[a/'aceapex','c','--in',fa,'--out',arc,'--threads','1']
-            if profile not in (None,'legacy'): args += ['--profile',profile]
             run(args,overrides=overrides)
             g=literal_layout(arc);g['actual_max_block_bytes']=g['block_size']
             api='aceapex'
             # The legacy FSE container does not encode its chunk size; supply
             # the documented reader value for explicitly named profiles.
-            reader={'FSE_CHUNK':'4096' if profile=='interactive' else '32768'} if profile in ('interactive','dense') else overrides
+            reader=overrides
+            if profile in PROFILES and (g['block_size'] != int(overrides['ACEAPEX_BS']) or g['literal_chunk_bytes'] != int(overrides['LIT_CHUNK'])):
+                raise RuntimeError('Encoded geometry does not match explicit profile')
             run([a/'aceapex','d','--in',arc,'--out',restored,'--threads','1'],overrides=reader)
         elif name=='zstd-seekable':
             run([compressor,fa,'16384','3'])
@@ -203,7 +205,7 @@ def main():
         if digest(restored,'md5')!=c['corpus']['md5'] or not filecmp.cmp(fa,restored,shallow=False):
             raise RuntimeError(name+' full restore differs')
         index=Path(str(arc)+'.gzi');total=arc.stat().st_size+(index.stat().st_size if index.exists() else 0)
-        r=dict(meta,codec=name,geometry=g,total_bytes=total,archive_bytes=arc.stat().st_size,
+        r=dict(meta,codec=name,encoder_environment=overrides or {},reader_environment=reader or {},geometry=g,total_bytes=total,archive_bytes=arc.stat().st_size,
                index_bytes=index.stat().st_size if index.exists() else 0,
                archive_sha256=digest(arc),index_sha256=digest(index) if index.exists() else None,
                ratio=CORPUS_SIZE/total,full_restore_byte_equal=True,restore_md5=digest(restored,'md5'),

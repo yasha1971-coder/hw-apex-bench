@@ -34,3 +34,11 @@ existing ACEAPEX archive can change literal granularity without reconstruction.
 Do not call zstd's format choice 'irreversible' without specifying that changing
 frame boundaries generally needs decoding/re-encoding too. Seekable zstd uses
 standard zstd frames plus an index stored in a skippable frame.
+
+The Makefile CLI at this SHA silently ignores `--profile`. These rows therefore
+use explicit environment settings from `harness/configurations.py` for both
+encoding and reading, with archive geometry checked against those settings.
+Attempt 34574475551 completed default and baselines but failed at profile restore
+because the harness had mismatched writer/reader settings. It is not a complete
+comparison and is retained as an unsuccessful attempt, not evidence of a codec
+failure with correctly matched settings.
