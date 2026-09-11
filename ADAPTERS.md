@@ -70,8 +70,8 @@ corpora, verifies CLI and native full restoration byte-for-byte, checks native
 regions and reports supported axes with explicit n/a reasons. `./run.sh --check`
 checks every `codecs/*.sh`. It collects no timings and never writes results.jsonl.
 
-Prerequisites: Linux, Bash, Python 3, git, make, gcc/g++, CMake and zlib development
-headers. On Ubuntu: `sudo apt-get install build-essential cmake zlib1g-dev git
+Prerequisites: Linux, Bash, Python 3, git, make, gcc/g++, CMake, Autoconf, Automake and zlib development
+headers. On Ubuntu: `sudo apt-get install build-essential cmake autoconf automake zlib1g-dev git
 python3`. A normal `./run.sh` still invokes the historical full benchmark; use
 `--check` for the small correctness gate.
 
