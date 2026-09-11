@@ -383,3 +383,8 @@ The previous controlled audit is reproduced at benchmark commit
 `baede64fd37bd087eecf9a94333d8fbf33e23c33`; its script depends on that historical
 harness and original ACEAPEX pin.
 
+## License
+
+Code: [Apache-2.0](LICENSE). Measurements: [CC BY 4.0](evidence/LICENSE).
+Third-party code retains its own licenses; see [NOTICE](NOTICE).
+
