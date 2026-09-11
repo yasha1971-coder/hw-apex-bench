@@ -2,14 +2,25 @@
 #include "zstd_seekable.h"
 #include <stdlib.h>
 typedef struct { ZSTD_seekable *seek; uint64_t size; } State;
-unsigned hc_abi(void) { return 1; }
+unsigned hc_abi(void) { return 2; }
+uint64_t hc_size(void *ctx) { return ((State*)ctx)->size; }
 const char *hc_version(void) { return ZSTD_versionString(); }
 void hc_close(void *ctx) { State *s=ctx; if(s) { ZSTD_seekable_free(s->seek); free(s); } }
 void *hc_open(const void *arc, size_t bytes, const char *sidecar, uint64_t size) {
-    (void)sidecar; if(size>INT64_MAX) return NULL;
+    (void)sidecar;
     State *s=calloc(1,sizeof(*s)); if(!s) return NULL;
     s->size=size; s->seek=ZSTD_seekable_create();
     if(!s->seek || ZSTD_isError(ZSTD_seekable_initBuff(s->seek,arc,bytes))) {hc_close(s); return NULL;}
+    unsigned frames=ZSTD_seekable_getNumFrames(s->seek);
+    uint64_t actual=0;
+    if(frames) {
+        uint64_t off=ZSTD_seekable_getFrameDecompressedOffset(s->seek,frames-1);
+        size_t last=ZSTD_seekable_getFrameDecompressedSize(s->seek,frames-1);
+        if(ZSTD_isError(last) || off>INT64_MAX || last>INT64_MAX-off) {hc_close(s); return NULL;}
+        actual=off+last;
+    }
+    if(size!=UINT64_MAX && size!=actual) {hc_close(s); return NULL;}
+    s->size=actual;
     return s;
 }
 int64_t hc_region(void *ctx, uint64_t off, void *dst, size_t len) {

@@ -1,5 +1,10 @@
 # Resident archive context: correctness proof
 
+This document records the PR #22 proof. The subsequent runnable seven-function
+contract and all-four --check are documented in [ADAPTERS.md](ADAPTERS.md).
+That path uses ABI 2 with archive-derived size and builds pinned liblzma instead
+of linking the system library used in the original proof below.
+
 This follows the mechanical extraction in PR #21. It is an experimental native
 interface exercised on four codecs, not a replacement for the published timing
 runner or a completed seven-function shell adapter contract. Historical source

@@ -678,6 +678,14 @@ mechanism. Zstd already permits new entropy tables within a frame
 so the result does not establish that frame splitting alone enabled local adaptation.
 The baseline's empty terminal frame remains included; see the linked review.
 
+## Check a codec adapter
+
+Run `./run.sh --check codecs/xz.sh` for a small correctness check, or
+`./run.sh --check` for all four adapters. This builds pinned dependencies and
+checks byte-exact full and native regional restoration without collecting timings
+or modifying published results. See [ADAPTERS.md](ADAPTERS.md) for prerequisites,
+the seven-function contract, explicit unsupported axes and current integration limits.
+
 ## License
 
 Code: [Apache-2.0](LICENSE). Measurements: [CC BY 4.0](evidence/LICENSE).

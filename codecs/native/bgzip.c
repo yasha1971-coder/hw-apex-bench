@@ -6,11 +6,26 @@
 #include <htslib/bgzf.h>
 #include <htslib/hts.h>
 typedef struct { BGZF *bgzf; uint64_t size; } State;
-unsigned hc_abi(void) { return 1; }
+unsigned hc_abi(void) { return 2; }
+uint64_t hc_size(void *ctx) { return ((State*)ctx)->size; }
 const char *hc_version(void) { return hts_version(); }
 void hc_close(void *ctx) { State *s=ctx; if(s) { if(s->bgzf) bgzf_close(s->bgzf); free(s); } }
 void *hc_open(const void *arc, size_t bytes, const char *sidecar, uint64_t size) {
-    if(!sidecar || size>INT64_MAX) return NULL;
+    if(!sidecar) return NULL;
+    const unsigned char *a=arc; uint64_t actual=0;
+    for(size_t p=0;p<bytes;) {
+        if(bytes-p<26 || a[p]!=31 || a[p+1]!=139 || a[p+2]!=8 || a[p+3]!=4 ||
+           a[p+10]!=6 || a[p+11]!=0 || a[p+12]!='B' || a[p+13]!='C' ||
+           a[p+14]!=2 || a[p+15]!=0) return NULL;
+        size_t b=(size_t)a[p+16]+((size_t)a[p+17]<<8)+1;
+        if(b<26 || b>bytes-p) return NULL;
+        uint64_t u=0;
+        for(unsigned i=0;i<4;i++) u|=(uint64_t)a[p+b-4+i]<<(8*i);
+        if(u>65536 || u>INT64_MAX-actual) return NULL;
+        actual+=u; p+=b;
+    }
+    if(size!=UINT64_MAX && size!=actual) return NULL;
+    size=actual;
     State *s=calloc(1,sizeof(*s)); if(!s) return NULL; s->size=size;
     int fd=memfd_create("hwbench-context",MFD_CLOEXEC); if(fd<0) goto bad;
     for(size_t pos=0;pos<bytes;) {
