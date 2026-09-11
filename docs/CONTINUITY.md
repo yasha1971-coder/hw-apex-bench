@@ -907,3 +907,11 @@ Validated75 relative Markdown links excluding chronological continuity history;
 default report replay passed, every published table row unchanged and frozen435
 SHA still cb52b8cb9fac484a6474d976681ea85ae2c052d80d820422b7f57c25ec938100.
 Public Zenodo archive verification remains a separate pending read-only action.
+
+## README provenance formatting
+
+Ubuntu compiler version strings contain ~; two unescaped strings on one line
+were interpreted by GitHub as strikethrough. Render CLI/library/compiler
+version values as literal Markdown code spans (including embedded backticks).
+Regenerated README and refreshed only its publication digest. Table rows and
+435 measurement records are unchanged. No measurements or release changes.
