@@ -6,6 +6,7 @@ message: >-
   are not interchangeable. Code is Apache-2.0; measurements are CC BY 4.0.
 type: software
 version: "0.1"
+doi: "10.5281/zenodo.22713364"
 date-released: "2026-09-11"
 title: "hw-apex-bench: Compressed Access Benchmark"
 authors:

@@ -27,7 +27,7 @@
     }
   ],
   "commit": "9af8704116a915705fd2313eabc2459430e8551b",
-  "doi": null,
+  "doi": "10.5281/zenodo.22713364",
   "frozen_records": 435,
   "frozen_sha256": "cb52b8cb9fac484a6474d976681ea85ae2c052d80d820422b7f57c25ec938100",
   "merged_prs": [
@@ -49,5 +49,13 @@
   "version": "0.1",
   "workflow_conclusion": "success",
   "workflow_id": 34631369637,
-  "zenodo_status": "Pending authenticated archival; integration state unknown."
+  "zenodo_status": "Publication confirmed by owner; independent public download verification pending.",
+  "zenodo_record_url": "https://zenodo.org/records/22713364",
+  "zenodo_verification": {
+    "owner_confirmed_published": true,
+    "preview_filename": "hw-apex-bench-v0.1.zip",
+    "preview_md5": "e0a894db4e891a0b4dc05859aad48340",
+    "public_archive_download_verified": false,
+    "blocker": "Session network request cancelled before approval; web retrieval of record and DOI unavailable."
+  }
 }
