@@ -879,3 +879,16 @@ Actual next action: authenticate Zenodo / inspect repository integration and arc
 existing v0.1, obtain real DOI, then add DOI to citation metadata on main without
 moving the released tag. No available authenticated Zenodo/browser capability in
 this session. Do not create a second GitHub release merely to trigger a webhook.
+
+## Zenodo DOI checkpoint
+
+Owner manually uploaded hw-apex-bench-v0.1.zip, preview inspected, and confirmed
+publication of record22713364. Version DOI10.5281/zenodo.22713364 is now recorded
+in CITATION.cff and the release receipt. Preview showed both licenses, version0.1,
+release commit and source archive MD5e0a894db4e891a0b4dc05859aad48340.
+Independent public verification is still pending: terminal network request was
+cancelled before approval; web record/API/DOI retrieval failed. Do not claim the
+Zenodo download hash was checked. Next bounded action is read-only public record
+and archive verification against release source SHA256
+4b966c2b94be86b455affcbdde481ea289f6ba94ffc44e842bc07c3f9b23d9f3.
+No new measurements, release trigger, tag changes or upstream changes.
