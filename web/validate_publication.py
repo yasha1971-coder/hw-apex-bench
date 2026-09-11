@@ -50,13 +50,13 @@ def verify_files(root, files):
 
 
 def validate(root=ROOT):
-    from report import render
+    from report import render, render_full
     from stage2_report import render_stage2
 
     manifest = json.loads((root / "evidence/published-results.json").read_text(encoding="utf-8"))
     if manifest["schema"] != "cabench-publication-v1":
         raise ValueError("Unknown publication manifest schema")
-    for required in ("results.jsonl", "README.md", "docs/BATCH_RESULTS.md"):
+    for required in ("results.jsonl", "README.md", "docs/RESULTS/BATCH_RESULTS.md"):
         if required not in manifest["files"]:
             raise ValueError(f"Missing publication digest: {required}")
     verify_files(root, manifest["files"])
@@ -68,22 +68,30 @@ def validate(root=ROOT):
     # Existing validators enforce codec configuration, byte-restore evidence,
     # same-run comparisons, equal-worker batches and plateau qualification.
     for name, generated in (("README.md", render(rows)),
-                            ("docs/BATCH_RESULTS.md", render_stage2(rows)[1])):
+                            ("docs/RESULTS/BATCH_RESULTS.md", render_stage2(rows)[1])):
         if (root / name).read_bytes() != generated.encode("utf-8"):
             raise ValueError(f"Committed {name} differs from results.jsonl")
+    full_path = root / 'docs/RESULTS/FULL_REPORT.md'
+    if full_path.read_text(encoding='utf-8') != render_full(rows):
+        raise ValueError('Full report differs from retained results')
+    if not 120 <= len(render(rows).splitlines()) <= 150:
+        raise ValueError('README outside 120–150 line presentation contract')
+    from presentation import render_axes_intro
+    if (root/'docs/AXES.md').read_text() != render_axes_intro(rows):
+        raise ValueError('Axis examples differ from retained results')
     from table_cells import validate_tables
-    for name in ('README.md', 'docs/BATCH_RESULTS.md'):
+    for name in ('README.md', 'docs/RESULTS/FULL_REPORT.md', 'docs/RESULTS/BATCH_RESULTS.md'):
         validate_tables((root / name).read_text(encoding='utf-8'))
-    if 'docs/AXES_RESULTS.md' in manifest['files']:
+    if 'docs/RESULTS/AXES_RESULTS.md' in manifest['files']:
         from axes import render_coverage
-        if (root / 'docs/AXES_RESULTS.md').read_text(encoding='utf-8') != render_coverage(rows):
-            raise ValueError('Committed docs/AXES_RESULTS.md differs from results.jsonl')
-    if 'docs/CG_CURVE_RESULTS.md' in manifest['files']:
+        if (root / 'docs/RESULTS/AXES_RESULTS.md').read_text(encoding='utf-8') != render_coverage(rows):
+            raise ValueError('Committed docs/RESULTS/AXES_RESULTS.md differs from results.jsonl')
+    if 'docs/RESULTS/CG_CURVE_RESULTS.md' in manifest['files']:
         from cg_curve import render as render_cg
         curve = [r for r in rows if r.get('evidence_group') == 'cg-five-point-v1']
-        if (root / 'docs/CG_CURVE_RESULTS.md').read_text(encoding='utf-8') != render_cg(curve):
+        if (root / 'docs/RESULTS/CG_CURVE_RESULTS.md').read_text(encoding='utf-8') != render_cg(curve):
             raise ValueError('Committed curve report differs from results.jsonl')
-        validate_tables((root / 'docs/CG_CURVE_RESULTS.md').read_text(encoding='utf-8'))
+        validate_tables((root / 'docs/RESULTS/CG_CURVE_RESULTS.md').read_text(encoding='utf-8'))
     return rows
 
 

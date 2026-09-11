@@ -139,13 +139,13 @@ def render_independence(rows):
     out+=['','Whole-file means one continuous member/frame/output block, not an unlimited match window. gzip retains its 32 KiB backward-distance limit; this does not make its blocks independent. bgzip adds independent member boundaries, index/headers and implementation differences.',
           'ACEAPEX uses the same pinned binary on both sides. ACEAPEX_BS changes from 16384 or 262144 to 253935557. MIN_MATCH was cleared and defaults to 0. LIT_CHUNK/FSE_CHUNK remain 65536/4096 (interactive) or 1048576/32768 (dense).',
           'Important correction: flattening is not disabled for the entire large block. The actual guard is local_pos < (1u<<20), with c_off <= local_pos. Eligible non-rep matches in its first MiB may be flattened; later matches are not. Each small block resets local_pos. The separate size impact of this difference is unmeasured; isolated c(g) is n/a for these ACEAPEX pairs.',
-          'The old JSONL baseline caveat used the inaccurate shorthand “skips chain flattening above 1 MiB”. Raw historical evidence is preserved; this report and docs/INDEPENDENCE_AUDIT.md correct that interpretation. No observed archive size or ratio has changed.',
+          'The old JSONL baseline caveat used the inaccurate shorthand “skips chain flattening above 1 MiB”. Raw historical evidence is preserved; this report and docs/AUDITS/INDEPENDENCE_AUDIT.md correct that interpretation. No observed archive size or ratio has changed.',
           '', '### Both compression commands for every row', '',
           'Commands below are the recorded commands, with the runner checkout prefix replaced by `.` for local replay. Each compression command is paired with its own ratio and archive size. Codec wrappers are part of the pinned benchmark source. Before replay, clear overrides exactly as run.sh does:', '', '```bash',
           'unset ACEAPEX_BS LIT_CHUNK FSE_CHUNK MIN_MATCH LIT_LEVEL LIT_LANES NO_REP DIRECT8 FORCED_BIN ACEAPEX_DUMP LD_PRELOAD', '```']
     for r in rr:
         commands=r['commands']; prefix='/home/runner/work/hw-apex-bench/hw-apex-bench/'
         out += ['', '#### '+r['codec'], '', f"Blocked: ratio **{r['ratio_g']:.12f}**, archive + required index **{r['independent_archive_bytes']} bytes**.", '', '```bash', commands[0].replace(prefix,'./'), '```', '', f"Continuous baseline: ratio **{r['ratio_whole']:.12f}**, archive **{r['whole_archive_bytes']} bytes**.", '', '```bash', commands[-2].replace(prefix,'./'), '```']
-    out+=['','[Expanded CLI commands, environment and flattening audit](docs/INDEPENDENCE_AUDIT.md). Expected historical percentages are not acceptance thresholds.','',
+    out+=['','[Expanded CLI commands, environment and flattening audit](docs/AUDITS/INDEPENDENCE_AUDIT.md). Expected historical percentages are not acceptance thresholds.','',
           ('Plateau throughput follows below.' if rows[0].get('stage',1)>=4 else 'Stop for review before plateau throughput and the three-machine experiment.'),'']
     return '\n'.join(out)

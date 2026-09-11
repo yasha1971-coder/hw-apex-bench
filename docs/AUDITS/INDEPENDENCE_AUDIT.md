@@ -42,7 +42,7 @@ Corpus: chr1 hg38, 253935557 bytes, MD5 `9465e0f0df6e2c6eb39729c39cee5465`.
 `loss = 100 * (1 - ratio_blocked / ratio_continuous)`.
 All four additional continuous-baseline restores passed exact byte comparison.
 Full recorded commands, including restores, are in results.jsonl and
-[the measured raw records](../evidence/independence-20260910/independence-raw.json).
+[the measured raw records](../../evidence/independence-20260910/independence-raw.json).
 
 GitHub Actions run `34488734677` reproduced the fixed revision with GCC 13.3.0
 and libzstd 1.5.5. Both full restores passed byte comparison. The 16 KiB and

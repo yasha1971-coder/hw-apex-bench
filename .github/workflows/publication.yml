@@ -4,9 +4,9 @@ on:
     paths:
       - 'results.jsonl'
       - 'README.md'
-      - 'docs/BATCH_RESULTS.md'
-      - 'docs/AXES_RESULTS.md'
-      - 'docs/CG_CURVE_RESULTS.md'
+      - 'docs/RESULTS/BATCH_RESULTS.md'
+      - 'docs/RESULTS/AXES_RESULTS.md'
+      - 'docs/RESULTS/CG_CURVE_RESULTS.md'
       - 'docs/METHOD.md'
       - 'web/**'
       - 'harness/**'
@@ -37,6 +37,9 @@ jobs:
           ./run.sh --audit-axes
           python3 review/audit_cg_baseline.py --results results.jsonl
           python3 -m unittest discover -s review -p test_cg_baseline.py
-          python3 harness/audit_default.py evidence/default-a194893 docs/DEFAULT_RESULTS.md
+          python3 harness/audit_default.py evidence/default-a194893 docs/RESULTS/DEFAULT_RESULTS.md
       - name: Verify committed snapshot and generate homepage
-        run: python3 web/build.py .pages/index.html
+        run: |
+          python3 web/build.py .pages/index.html
+          python3 web/check_links.py
+          node web/check_explorer.cjs .pages/index.html

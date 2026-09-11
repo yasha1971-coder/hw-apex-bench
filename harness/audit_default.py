@@ -14,8 +14,10 @@ def audit(directory, report):
     raw = (directory / 'results.jsonl').read_bytes()
     assert hashlib.sha256(raw).hexdigest() == receipt['results_sha256']
     rows = [json.loads(line) for line in raw.decode('utf-8').splitlines()]
-    assert render(rows) == report.read_text()
-    assert hashlib.sha256(report.read_bytes()).hexdigest() == receipt['report_sha256']
+    from document_data import restore
+    original_report = restore(report.read_text())
+    assert render(rows) == original_report
+    assert hashlib.sha256(original_report.encode()).hexdigest() == receipt['report_sha256']
     for row in rows:
         assert row['benchmark_commit'] == receipt['benchmark_commit']
         assert row['versions']['aceapex_sha'] == ACEAPEX_SHA

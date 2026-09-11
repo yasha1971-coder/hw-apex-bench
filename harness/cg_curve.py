@@ -146,6 +146,10 @@ def validate(rows):
 
 
 def render(rows):
+    from document_data import externalize
+    return externalize(render_original(rows))
+
+def render_original(rows):
     from table_cells import unavailable
     validate(rows)
     first = rows[0]
@@ -329,6 +333,8 @@ def main():
             (work/'curve.pending.jsonl').write_text(''.join(json.dumps(r,sort_keys=True)+'\n' for r in rows))
             print(f'CG_POINT {codec} g={g}: '+(str(row['value']) if baseline else 'strict n/a'),file=sys.stderr,flush=True)
     validate(rows)
+    from document_data import externalize
+    externalize(render_original(rows),write=True)
     report=render(rows)
     # Preserve every pre-existing measurement byte for byte, replace only this group.
     dest=ROOT/'results.jsonl'
@@ -340,8 +346,9 @@ def main():
     pending.write_text(''.join(keep)+''.join(json.dumps(r,sort_keys=True)+'\n' for r in rows))
     pending.replace(dest)
     (work/'curve.jsonl').write_text(''.join(json.dumps(r,sort_keys=True)+'\n' for r in rows))
-    (ROOT/'docs/CG_CURVE_RESULTS.md').write_text(report)
-    (ROOT/'README.md').write_text(readme)
+    (ROOT/'docs/RESULTS/CG_CURVE_RESULTS.md').write_text(report)
+    from report import write_reports
+    write_reports([json.loads(l) for l in keep] + rows)
     print(report)
     print('STOP: five-point curve verified; review before merge.',file=sys.stderr)
 

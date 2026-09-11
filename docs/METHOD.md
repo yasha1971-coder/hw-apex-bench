@@ -1,3 +1,26 @@
+# Measurement method
+
+## Nine-axis measurement contract
+
+| Axis | Unit | Definition and procedure |
+|---|---|---|
+| ratio | dimensionless | Input bytes / complete archive file bytes plus all required sidecar/index bytes; stat the files and verify full byte-exact restore. |
+| encode | MB/s | Input bytes / encoder wall seconds / 10^6; report encoder threads and only promote a rate after the documented load-growth plateau. |
+| full decode | MB/s | Input bytes / full library-decode wall seconds / 10^6; resident archive, prefaulted output, explicit decoder workers, verified plateau. |
+| region p50/p99 | ms | Nearest-rank percentiles of 200 identical 16 KiB reads; resident archive and reusable handle, timer around the library API only, byte verification outside timing. |
+| amplification | decoded bytes / returned bytes | Sum actual bytes expanded by the decoder / sum bytes returned; count repeated expansions in a separate instrumented pass. |
+| c(g) | % | 100 × (ratio_whole − ratio_g) / ratio_whole; same corpus, codec, settings and container, changing only independent block size; test 4/16/64/256/1024 KiB. |
+| batch | ranges/s | N / median wall seconds for uniform, sorted, clustered, hot-set and Zipf(1.2); same trace and workers; show loop and native batch separately. |
+| H_alpha | bits | Shannon entropy −Σ p_b log2(p_b) of request-start blocks for each batch trace; use actual index boundaries, and retain the common 16 KiB-grid entropy. |
+| break-even N | requests | Intersection N* = median full-decode ms / region p50 ms; report floor(N*)+1 as the first integer where independent seeks cost more than full decode. |
+
+The disk-size denominator means file lengths, not allocator blocks or the sum of compressed streams. Required indexes always count.
+`H_alpha` is this protocol's historical name for Shannon entropy; alpha is not a fitted Rényi-entropy parameter.
+A native batch API can be unavailable while a measured single-call loop remains valid. Missing values require a reason in the same cell.
+A configuration-specific unsupported result does not transfer measurements from another profile or revision.
+
+<!-- legacy-method -->
+
 ## Reproduce
 
 On Linux, install `build-essential git python3 pkg-config libhts-dev tabix zlib1g-dev`,
@@ -103,7 +126,7 @@ never inferred from CPU rows.
 This is a new raw-byte operation contract. Do not compare its latency directly
 with historical faidx/sequence timings or the 0.082 ms declared reference on
 another machine. The former results and matched-harness investigation remain in
-[AUDIT.md](AUDIT.md) and [historical evidence](../evidence).
+[AUDIT.md](AUDITS/AUDIT.md) and [historical evidence](../evidence).
 [Exact FAIL output from EPYC 9V74](../evidence/audit-20260909/FAILS.md) is preserved.
 
 Batch, H_alpha and break-even are implemented as specified in [BATCH_METHOD.md](BATCH_METHOD.md).
@@ -117,7 +140,7 @@ harness and original ACEAPEX pin.
 
 ## Negative c(g)
 
-**Splitting can improve compression:** the [reviewed zstd-seekable 1 MiB point](../review/CG_BASELINE_REVIEW.md)
+**Splitting can improve compression:** the [reviewed zstd-seekable 1 MiB point](AUDITS/CG_BASELINE_REVIEW.md)
 has `c(g) = -0.509942%`: 78,013,034 bytes versus 78,410,855 bytes for the whole-input
 baseline, including container overhead. A negative sign is a valid outcome, not
 by itself an error. Local entropy adaptation can in principle outweigh lost

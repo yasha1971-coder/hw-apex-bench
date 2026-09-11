@@ -302,3 +302,15 @@ See review/BGZF_BACKEND_REVIEW.md and evidence/bgzf-libdeflate-20260911/ for the
 original ZIP, matched archive/index hashes, verified restoration and backend JSONL.
 This closes the three BGZF deterministic differences without changing historical
 timings or rerunning the full benchmark.
+
+## Function count and extension hooks
+
+The original core has seven functions: codec_name, codec_version, codec_build,
+codec_compress, codec_decompress, codec_region and codec_supports. The current
+`hb_entry` dispatcher exposes17 named operations, including optional/default
+hooks; it is not a fixed thirteen-function interface. Additional operations are
+codec_unavailable, codec_constraints, codec_library, codec_sidecar, codec_artifacts,
+codec_inputs, codec_build_artifacts, codec_configuration, codec_encode_command and
+codec_counter_library. Use check_common.sh defaults only where they describe your
+adapter correctly. codec_context_build is a codec-local helper, not a dispatched
+operation. Native ABI entry points are a separate C interface.

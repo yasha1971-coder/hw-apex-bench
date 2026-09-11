@@ -1,7 +1,7 @@
 # From measured tables to an extensible instrument
 
 The nine-axis gate is `./run.sh --audit-axes`. Its generated report is
-[AXES_RESULTS.md](AXES_RESULTS.md). The gate accounts for supported measurements
+[AXES_RESULTS.md](RESULTS/AXES_RESULTS.md). The gate accounts for supported measurements
 and explicit format limitations; it does not invent a BGZF whole-file block or a
 native batch API. The recovered five-point curve remains a review candidate.
 

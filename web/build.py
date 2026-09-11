@@ -14,6 +14,13 @@ F=[]
 for c in cs:
  core={m:one(c,m)['value'] for m in ['ratio','region_p50','region_p99','amplification','break_even_n']}
  core.update(codec=c,configuration=one(c,'ratio')['configuration'])
+ core['granularity']=core['configuration']['block']
+ core['reasons']={'c_g':'separate c(g) configuration; not measured for this row'}
+ core['c_g']=None
+ for key,metric in [('encode','encode_throughput_mb_s'),('decode','full_decode_throughput_mb_s')]:
+  row=one(c,metric)
+  core[key]=row['value'] if row.get('plateau_reached') else None
+  if core[key] is None:core['reasons'][key]='data edge — plateau not confirmed'
  F.append(core)
 batch=[r for r in rows if r['metric']=='batch_throughput' and r['n']==5000]
 assert len(batch)==30 and all(r['threads_requested']==1 and r['comparison_contract']=='loop1-vs-batch1' for r in batch)
@@ -25,7 +32,14 @@ for frame in [16384,65536,262144,2097152]:
    p99=z('zstd_frame_region_p99_ms')['value'],amplification=z('zstd_frame_amplification')['value'],
    full_decode=z('zstd_frame_full_decode_mb_s')['value'],full_status=z('zstd_frame_full_decode_mb_s')['status']))
 gpu=[r for r in rows if r.get('evidence_group')=='gpu-declared']
-data=dict(configs=F,batch=[{k:r[k] for k in keys} for r in batch],speedups=[{k:r[k] for k in ['codec','access_profile','value']} for r in rows if r['metric']=='batch_speedup_over_loop' and r['n']==5000],
+cg=[]
+for r in rows:
+ if r.get('evidence_group')=='cg-five-point-v1':
+  point=r.get('point') or {}
+  cg.append(dict(codec=r['codec'],granularity=r['g'],c_g=r['value'],ratio=point.get('ratio'),
+    region_p50=point.get('p50_ms'),region_p99=point.get('p99_ms'),
+    reason=r.get('reason'),run_id=r['run_id'],configuration=r['configuration']))
+data=dict(cg=cg,configs=F,batch=[{k:r[k] for k in keys} for r in batch],speedups=[{k:r[k] for k in ['codec','access_profile','value']} for r in rows if r['metric']=='batch_speedup_over_loop' and r['n']==5000],
  zstd_frontier=zfront,gpu=gpu,
  run_id=rows[0]['run_id'],commit=rows[0]['benchmark_commit'],versions=rows[0]['versions'],hardware=rows[0]['hardware'],results_sha256=hashlib.sha256((R/'results.jsonl').read_bytes()).hexdigest())
 text=(R/'web/index.template.html').read_text().replace('__BENCH_DATA__',json.dumps(data,separators=(',',':')).replace('</','<\\/'))
