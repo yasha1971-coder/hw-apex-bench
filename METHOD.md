@@ -93,6 +93,18 @@ The previous controlled audit is reproduced at benchmark commit
 `baede64fd37bd087eecf9a94333d8fbf33e23c33`; its script depends on that historical
 harness and original ACEAPEX pin.
 
+## Negative c(g)
+
+**Splitting can improve compression:** the [reviewed zstd-seekable 1 MiB point](review/CG_BASELINE_REVIEW.md)
+has `c(g) = -0.509942%`: 78,013,034 bytes versus 78,410,855 bytes for the whole-input
+baseline, including container overhead. A negative sign is a valid outcome, not
+by itself an error. Local entropy adaptation can in principle outweigh lost
+cross-boundary matches and added framing costs; this run does not isolate that
+mechanism. Zstd already permits new entropy tables within a frame
+([RFC 8878, section 3.1.1.3](https://www.rfc-editor.org/rfc/rfc8878.html#section-3.1.1.3)),
+so the result does not establish that frame splitting alone enabled local adaptation.
+The baseline's empty terminal frame remains included; see the linked review.
+
 ## License
 
 Code: [Apache-2.0](LICENSE). Measurements: [CC BY 4.0](evidence/LICENSE).
