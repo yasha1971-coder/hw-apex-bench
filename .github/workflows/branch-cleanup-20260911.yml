@@ -1,0 +1,79 @@
+name: Audited merged-branch cleanup 20260911
+on:
+  push:
+    branches: [main]
+    paths: [review/branch-cleanup-plan.json]
+permissions:
+  contents: write
+  pull-requests: read
+jobs:
+  cleanup:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Verify exact allowlist and delete only unchanged merged heads
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          python3 - <<'PY'
+          import json, os, subprocess, urllib.request
+          from pathlib import Path
+          plan=json.loads(Path('review/branch-cleanup-plan.json').read_text())
+          repo=os.environ['GITHUB_REPOSITORY']
+          assert repo==plan['repository']=='yasha1971-coder/hw-apex-bench'
+          def api(path):
+              req=urllib.request.Request('https://api.github.com/repos/'+repo+path,
+                  headers={'Authorization':'Bearer '+os.environ['GH_TOKEN'],'Accept':'application/vnd.github+json'})
+              with urllib.request.urlopen(req,timeout=30) as r:return json.load(r)
+          def paged(path):
+              out=[]
+              for page in range(1,100):
+                  part=api(path+('&' if '?' in path else '?')+'per_page=100&page='+str(page))
+                  out.extend(part)
+                  if len(part)<100:return out
+              raise RuntimeError('pagination limit')
+          metadata=api('')
+          protected={'main',metadata['default_branch']}
+          for pr in paged('/pulls?state=open'):
+              if pr['head']['repo'] and pr['head']['repo']['full_name']==repo:protected.add(pr['head']['ref'])
+              protected.add(pr['base']['ref'])
+          branches={b['name']:b for b in paged('/branches')}
+          main=branches['main']['commit']['sha']
+          assert main==os.environ['GITHUB_SHA'],'main advanced; inspect before retrying'
+          subprocess.run(['git','merge-base','--is-ancestor',plan['base'],main],check=True)
+          deletes=[];absent=[]
+          for item in plan['delete']:
+              name,sha=item['name'],item['sha']
+              assert name not in protected, 'branch now needed: '+name
+              if name not in branches:absent.append(name);continue
+              branch=branches[name]
+              assert not branch['protected'], 'protected branch: '+name
+              assert branch['commit']['sha']==sha, 'head changed: '+name
+              subprocess.run(['git','merge-base','--is-ancestor',sha,main],check=True)
+              deletes.append(item)
+          assert len({d['name'] for d in deletes})==len(deletes)
+          tags=subprocess.check_output(['git','ls-remote','--tags','origin'],text=True)
+          if deletes:
+              # Leases guard each exact head at the server; atomic means all or none.
+              command=['git','push','--atomic']
+              command+=['--force-with-lease=refs/heads/'+d['name']+':'+d['sha'] for d in deletes]
+              command+=['origin']+[':refs/heads/'+d['name'] for d in deletes]
+              subprocess.run(command[:2]+['--dry-run']+command[2:],check=True,capture_output=True,text=True)
+              subprocess.run(command,check=True,capture_output=True,text=True)
+          after={b['name']:b for b in paged('/branches')}
+          assert all(d['name'] not in after for d in deletes)
+          assert all(n in after for n in protected)
+          assert after['main']['commit']['sha']==main
+          assert tags==subprocess.check_output(['git','ls-remote','--tags','origin'],text=True)
+          receipt={'main':main,'deleted':deletes,'already_absent':absent,'retained':sorted(after),'tags_unchanged':True}
+          Path('branch-cleanup-receipt.json').write_text(json.dumps(receipt,indent=2)+'\n')
+          print('Deleted',len(deletes),'merged branches; retained',len(after),'; tags unchanged.')
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: branch-cleanup-receipt
+          path: branch-cleanup-receipt.json
+          if-no-files-found: error

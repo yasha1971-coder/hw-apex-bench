@@ -1,0 +1,165 @@
+{
+  "repository": "yasha1971-coder/hw-apex-bench",
+  "base": "5ff99376f111d6d88e6dc94646c291cc51637eb9",
+  "delete": [
+    {
+      "name": "api-only-interactive-dense",
+      "sha": "1385fdd54476ca6127bbeb1ed52c8c78fe23d304"
+    },
+    {
+      "name": "audit-aceapex-lowlat",
+      "sha": "baede64fd37bd087eecf9a94333d8fbf33e23c33"
+    },
+    {
+      "name": "block-and-decoded-amplification",
+      "sha": "52f8cc01bbc6b0ff241180c0f6bc5334ef9befa4"
+    },
+    {
+      "name": "docs/contributing-citation",
+      "sha": "f7288ff0b871efe99ae2a819a50275cdaef8c8d2"
+    },
+    {
+      "name": "docs/negative-cg-note",
+      "sha": "2772754cf483f65f635b5ebd27697f82711adeb2"
+    },
+    {
+      "name": "docs/nine-axis-gate",
+      "sha": "79559c189d62db17b3743d44c7161619219f842f"
+    },
+    {
+      "name": "docs/presentation-v01",
+      "sha": "124f571c35b773681a7d38d13e9e4b37ae9cfc92"
+    },
+    {
+      "name": "docs/repository-layout",
+      "sha": "04cf562760ae40dd624c8d0d9ee305e14ea9971a"
+    },
+    {
+      "name": "docs/v0.1-receipt",
+      "sha": "5b551f421dd34af38f9533526b030112b35b2e31"
+    },
+    {
+      "name": "docs/zenodo-v0.1-doi",
+      "sha": "4747cb1414e2bd5f7d1516082c39cd10a6bfef16"
+    },
+    {
+      "name": "fix/explorer-comparison",
+      "sha": "a1d47a972c77e17b4d653185c90bf2babfcea91e"
+    },
+    {
+      "name": "fix/readme-provenance-markdown",
+      "sha": "61a290dddc7b45b8105bc858090ed9fc3b056cf4"
+    },
+    {
+      "name": "fix/results-utf8-integrity",
+      "sha": "db4fb77962eb1de5f151d897a33422a248ddaf45"
+    },
+    {
+      "name": "fix/summary-validation",
+      "sha": "7c39599ece1eabc7509f1f405360a2be4aaa2429"
+    },
+    {
+      "name": "gpu-zstd-frontier",
+      "sha": "3a6f5077d7c636087db4093a0c2658e26ae50ad8"
+    },
+    {
+      "name": "homepage-measured-traces",
+      "sha": "bc936375c822baeacc6bb8e235636180a121bc51"
+    },
+    {
+      "name": "licensing/code-and-measurements",
+      "sha": "252358b345add5f25648fd97c37cd937fb27dce7"
+    },
+    {
+      "name": "plateau-throughput",
+      "sha": "c2bf98003b7dbf692a9c083710b2f86aea18f7c2"
+    },
+    {
+      "name": "refactor/native-codec-extraction",
+      "sha": "c82c96fcd9e9d60717ad601c991ec6f2251eff85"
+    },
+    {
+      "name": "release/v0.1",
+      "sha": "9b7b46bfe4168eab3757fa62194d2cd7d993cb43"
+    },
+    {
+      "name": "repair-results-jsonl",
+      "sha": "5c43e8633d00c520d46bf7e3460f7a4c4881c2e7"
+    },
+    {
+      "name": "source-provenance-ee5a37e",
+      "sha": "80e2ae55b1825e4f2aa81798ab1ba32db7bf527d"
+    },
+    {
+      "name": "stage1-three-codec-table",
+      "sha": "4f3e3994ce7b10ffbe43ccb7fd1be8b8dd25f2a5"
+    },
+    {
+      "name": "stage2-batch-breakeven",
+      "sha": "f3979e218c7024975c8ba849c5a229aaf9ec8eff"
+    },
+    {
+      "name": "stage3-independence-cost",
+      "sha": "c6e192ff23c425e2e4ff911a2c9c43c132f69395"
+    },
+    {
+      "name": "strict-ace-cg-7216280",
+      "sha": "df92e2b7aabeddd0ac365fddefa165ac09bbbc60"
+    },
+    {
+      "name": "strict-independence-baseline",
+      "sha": "38b074366e2122718c6246ae31e5c38093a9e3c8"
+    },
+    {
+      "name": "tooling/adapter-check",
+      "sha": "216f9ad47556c903227c9b1cff3b3e6ba2db1ea1"
+    },
+    {
+      "name": "tooling/axis-planner",
+      "sha": "cd8ffe070d80860872edbca1daa5536c0b76d21a"
+    },
+    {
+      "name": "tooling/bgzf-build-audit",
+      "sha": "3f2f221923a16df276ec31e939dc13bef17302dc"
+    },
+    {
+      "name": "tooling/native-axis-execution",
+      "sha": "0eb275ee39dc48609d6f859b2230a85276ecb1cb"
+    },
+    {
+      "name": "tooling/native-remaining-axes",
+      "sha": "cfb178f96b262229cd3bac2d4051e8f7292bd998"
+    },
+    {
+      "name": "tooling/resident-context-proof",
+      "sha": "c7e2bafa88185baee19e50290e9cf8b64323e38b"
+    }
+  ],
+  "keep": [
+    {
+      "name": "experiment/cg-five-point-recovered",
+      "sha": "d84f38af3b26d830fbc1cc654174f2bd673178ab",
+      "reason": "open PR or main"
+    },
+    {
+      "name": "experiment/default-a194893",
+      "sha": "2a80299c6daba988b449d61ff9cdad3dc59ad98f",
+      "reason": "open PR or main"
+    },
+    {
+      "name": "main",
+      "sha": "5ff99376f111d6d88e6dc94646c291cc51637eb9",
+      "reason": "open PR or main"
+    },
+    {
+      "name": "tooling/adapter-contract",
+      "sha": "9e58a8f7d02e100deb2047108fd8d6fcd3821ee9",
+      "reason": "open PR or main"
+    },
+    {
+      "name": "tooling/nine-axis-contract",
+      "sha": "42834db372d90946d06e7c457c2dbec57d960adf",
+      "reason": "open PR or main"
+    }
+  ]
+}
