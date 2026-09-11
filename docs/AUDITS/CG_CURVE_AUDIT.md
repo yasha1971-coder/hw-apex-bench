@@ -1,6 +1,6 @@
 # Five-point curve: audit and claim boundary
 
-The full candidate table is in [CG_CURVE_RESULTS.md](CG_CURVE_RESULTS.md).
+The full candidate table is in [CG_CURVE_RESULTS.md](../RESULTS/CG_CURVE_RESULTS.md).
 Draft PR #14 has not been merged. The public homepage remains the recovered
 stage-5 snapshot from PR #13.
 

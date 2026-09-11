@@ -1,4 +1,21 @@
-# hw-apex-bench — Compressed Access Benchmark
+"""Reader-facing summaries derived from the frozen publication rows."""
+from configurations import CODECS
+
+def one(rows, codec, metric):
+    found = [r for r in rows if r['codec'] == codec and r['metric'] == metric]
+    if len(found) != 1:
+        raise ValueError((codec, metric, len(found)))
+    return found[0]
+
+def render_readme(rows):
+    table = ['| Codec | Granularity | Ratio | p50 ms | p99 ms | Amplification |',
+             '|---|---:|---:|---:|---:|---:|']
+    for c in CODECS:
+        r = one(rows,c,'ratio')
+        block = ('≤ ' if c == 'bgzip+htslib' else '') + str(r['configuration']['block']//1024) + ' KiB'
+        vals = [one(rows,c,m)['value'] for m in ['ratio','region_p50','region_p99','amplification']]
+        table.append('| '+c+' | '+block+' | '+' | '.join(f'{v:.6f}' for v in vals)+' |')
+    text = '''# hw-apex-bench — Compressed Access Benchmark
 
 Measure access to a region of a compressed file without decoding the rest:
 nine measurement axes, with adapters for BGZF, zstd-seekable, ACEAPEX and blocked XZ.
@@ -9,12 +26,7 @@ When a genome, column store or cache stays compressed, a request reads only a pi
 hw-apex-bench adds region latency, decoded work and access-pattern measurements
 alongside full-file costs, with explicit reproduction and verification evidence.
 
-| Codec | Granularity | Ratio | p50 ms | p99 ms | Amplification |
-|---|---:|---:|---:|---:|---:|
-| bgzip+htslib | ≤ 64 KiB | 3.382558 | 0.102141 | 0.212103 | 4.821094 |
-| zstd-seekable | 16 KiB | 3.025774 | 0.046046 | 0.059425 | 2.000000 |
-| aceapex-interactive | 16 KiB | 3.658493 | 0.129720 | 0.240419 | 6.216250 |
-| aceapex-dense | 256 KiB | 3.780646 | 1.330098 | 2.523226 | 83.431872 |
+'''+ '\n'.join(table)+'''
 
 ACEAPEX dense has the highest ratio; zstd-seekable has the lowest p50, p99
 and amplification. Both ACEAPEX profiles trade slower regions for greater density.
@@ -123,3 +135,67 @@ Code: [Apache-2.0](LICENSE). Measurements: [CC BY 4.0](evidence/LICENSE).
 Third-party components retain their licenses; see [NOTICE](NOTICE).
 Cite version 0.1 using [CITATION.cff](CITATION.cff), and identify the measured run.
 DOI: [10.5281/zenodo.22713364](https://doi.org/10.5281/zenodo.22713364).
+'''
+    return text.replace('published 435 records', f'published {len(rows)} records')
+
+
+def render_axes_intro(rows):
+    amp=one(rows,'bgzip+htslib','amplification')['value']
+    be=next((r['value'] for r in rows if r['codec']=='bgzip+htslib' and r['metric']=='break_even_n'),None)
+    cg=next((r for r in rows if r['metric']=='cg_curve_ratio_loss_percent' and r['value'] is not None and r['value']<0),None)
+    h=next((r for r in rows if r['metric']=='batch_throughput' and r['codec']=='bgzip+htslib' and r['access_profile']=='uniform' and r['n']==5000),None)
+    be_example=f'The BGZF model reports {be} queries as the first integer exceeding full-decode time.' if be is not None else 'No break-even example has been measured in this run.'
+    cg_example=f"The separately audited zstd curve includes {cg['value']:.6f}%: a negative cost, meaning splitting improved density at that point." if cg else 'A negative cost means splitting improved density; this run has no measured negative example.'
+    h_example=f"The BGZF uniform profile at {h['n']} requests has {h['H_alpha']:.6f} bits." if h else 'No uniform-profile entropy example has been measured in this run.'
+    return f'''# Reading the axes
+
+## Amplification: how much work buys one answer?
+
+A decoder may expand more bytes than the caller receives.
+In the published BGZF row it expands {amp:.6f} times the requested output on average.
+One is attainable when the requested bytes match the decoded work; an unaligned
+request can instead touch several blocks. Smaller amplification does not alone
+predict faster reads, because codecs do different work per decoded byte.
+
+## Break-even: when might a full decode cost less?
+
+Compare repeated individual region reads with a single full decode.
+{be_example}
+It uses the measured median per-read cost, not a new experiment with that many reads.
+Overlapping ranges, caching and batch APIs can change the decision.
+
+## c(g): what does independent addressing cost?
+
+Compare density at a chosen granularity against a file compressed as one block,
+while holding the other settings fixed. {cg_example}
+Local entropy statistics can outweigh lost long matches; the number alone does
+not isolate that mechanism. BGZF has no comparable single-parameter baseline.
+
+## H_alpha: where do the requests land?
+
+Entropy describes how spread out request starts are across the codec's blocks.
+It is zero when every start lands in one block and is largest for a uniform
+block distribution; twice as many equally likely blocks adds one bit.
+{h_example}
+Uniform byte offsets need not be uniform over variable-size blocks.
+
+## Density and speed answer different questions
+
+Ratio measures original bytes per stored byte, including required indexes.
+Encoding and full decoding throughput measure how quickly a whole input is processed.
+A plateau separates a sustained rate from a small-input or data-edge observation.
+
+## Typical and slow region reads
+
+p50 describes the middle read; p99 describes the slow tail of the observed sample.
+Both use resident archives and a timer around the library API.
+Neither includes downloading the archive or starting a command-line process.
+
+## A workload, not just a codec
+
+Batch throughput depends on where requests land and whether native batching exists.
+The five profiles are discrete measured workloads; the explorer never invents an
+intermediate workload. Loop and native-batch results remain separately labelled.
+
+[Procedures](METHOD.md) · [Full results](RESULTS/README.md) · [Provenance](PROVENANCE.md)
+'''

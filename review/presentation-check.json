@@ -1,0 +1,29 @@
+{
+  "base_commit": "5a14ea0fdc5d43f90af58d830a36a9bbe5cb4579",
+  "results_records": 435,
+  "results_sha256": "cb52b8cb9fac484a6474d976681ea85ae2c052d80d820422b7f57c25ec938100",
+  "protected_files_byte_identical": 353,
+  "readme_lines": 125,
+  "original_table_lines_preserved": 144,
+  "local_markdown_links_checked": 134,
+  "existing_tests_passed": 48,
+  "ui_logic_combinations_checked": 1000,
+  "ui_validation": "real JavaScript in minimal DOM; no browser or visual layout test",
+  "readme_regeneration_idempotent": true,
+  "measurements_run": false,
+  "doi": "10.5281/zenodo.22713364",
+  "tag_changed": false,
+  "old_document_paths": {
+    "docs/BATCH_RESULTS.md": "docs/RESULTS/BATCH_RESULTS.md",
+    "docs/INDEPENDENCE_AUDIT.md": "docs/AUDITS/INDEPENDENCE_AUDIT.md",
+    "docs/CG_CURVE_AUDIT.md": "docs/AUDITS/CG_CURVE_AUDIT.md",
+    "docs/STRICT_CG.md": "docs/AUDITS/STRICT_CG.md",
+    "docs/AXES_RESULTS.md": "docs/RESULTS/AXES_RESULTS.md",
+    "docs/AUDIT.md": "docs/AUDITS/AUDIT.md",
+    "docs/CG_CURVE_RESULTS.md": "docs/RESULTS/CG_CURVE_RESULTS.md",
+    "docs/DEFAULT_RESULTS.md": "docs/RESULTS/DEFAULT_RESULTS.md",
+    "docs/CONTINUITY.md": "docs/HISTORY.md",
+    "review/BGZF_BACKEND_REVIEW.md": "docs/AUDITS/BGZF_BACKEND_REVIEW.md",
+    "review/CG_BASELINE_REVIEW.md": "docs/AUDITS/CG_BASELINE_REVIEW.md"
+  }
+}

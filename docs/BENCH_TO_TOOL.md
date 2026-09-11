@@ -105,7 +105,7 @@ action. Do not carry unfinished changes only in conversation memory.
 ## Focused baseline review
 
 The ten supported c(g) points passed command-level and geometry checks; see
-[review/CG_BASELINE_REVIEW.md](../review/CG_BASELINE_REVIEW.md). Eleven tests guard
+[review/CG_BASELINE_REVIEW.md](AUDITS/CG_BASELINE_REVIEW.md). Eleven tests guard
 against parameter substitutions. Zstd's baseline has one complete data frame
 and an empty terminal frame, both included in the archive size. Do not call it
 a file with exactly one physical frame. ACEAPEX has one LZ block; its entropy

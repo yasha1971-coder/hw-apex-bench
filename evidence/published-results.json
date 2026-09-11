@@ -21,24 +21,52 @@
       "sha256": "cb52b8cb9fac484a6474d976681ea85ae2c052d80d820422b7f57c25ec938100"
     },
     "README.md": {
-      "bytes": 79961,
-      "sha256": "34fb8785db6bdaf7ed161290ac2387fd6322ff322680896a0d564e6c7daeae76"
+      "bytes": 6809,
+      "sha256": "786da9dfa08423797f7f88c39847433e648f2384cc67dfa33fd15d6643fbad0d"
     },
-    "docs/BATCH_RESULTS.md": {
+    "docs/RESULTS/BATCH_RESULTS.md": {
       "bytes": 19250,
       "sha256": "d1aa51fee46758501e4f378bee48bae185b74d5db5ee3657a5741c70c49e46a2"
     },
-    "docs/CG_CURVE_RESULTS.md": {
-      "bytes": 44738,
-      "sha256": "af6bfa17db628c1be68174239f8cefe4e1c51d5c16767faa4d3ad89633a483c4"
+    "docs/RESULTS/CG_CURVE_RESULTS.md": {
+      "bytes": 33625,
+      "sha256": "ed0d62947dfbf4c61a50fd24722f81ad7999823248c894f5ac51bbe630266965"
     },
     "evidence/cg-curve-20260910/receipt.json": {
       "bytes": 4143,
       "sha256": "4457dc4c1d76dd43a39c0467e3d5875738700f55e8f6b2ac188612d8f0a99c84"
     },
-    "docs/AXES_RESULTS.md": {
-      "bytes": 4839,
-      "sha256": "c33b0632d1a50844a28d51a77772eabaf6ff1f7508dbc57daa85b18e8648ae30"
+    "docs/RESULTS/AXES_RESULTS.md": {
+      "bytes": 4855,
+      "sha256": "0eaa81c8130b0b74624853081944cb7ea9f78be1ed54a707514ae9514e3716fe"
+    },
+    "docs/RESULTS/FULL_REPORT.md": {
+      "bytes": 68900,
+      "sha256": "d4a6d4bea500553e7cb83273d2122be90e2477a780cccdea0d7862cfeafc3eda"
+    },
+    "docs/AXES.md": {
+      "bytes": 2575,
+      "sha256": "3701f572d56aadfb038ac30fba1bf3cab18b7afac3f70a5a577d3b47546e6316"
+    },
+    "docs/RESULTS/DEFAULT_RESULTS.md": {
+      "bytes": 11190,
+      "sha256": "868560571255bb400ed5b0bd833055312b2bef9dbda4031acb057f898c007d90"
+    },
+    "docs/RESULTS/details/3fc2d6b8cac42fe27a71553f275adb840af4db578bc5fea836381041effc5fe7.json": {
+      "bytes": 4041,
+      "sha256": "3fc2d6b8cac42fe27a71553f275adb840af4db578bc5fea836381041effc5fe7"
+    },
+    "docs/RESULTS/details/8779e641fb82c9775f6fa3f3e103db1825d68a798ccd65851b358e0c47731e29.json": {
+      "bytes": 3771,
+      "sha256": "8779e641fb82c9775f6fa3f3e103db1825d68a798ccd65851b358e0c47731e29"
+    },
+    "docs/RESULTS/details/fd003fa2ac116d0fabc41f4ede1401ae600df2f745fa9525c6b3da9a0e0e68eb.json": {
+      "bytes": 3818,
+      "sha256": "fd003fa2ac116d0fabc41f4ede1401ae600df2f745fa9525c6b3da9a0e0e68eb"
+    },
+    "docs/RESULTS/details/0f4016ddf92e89d0ca3325a9ed763ca459053ba73df81f5d328379d07b0c4a08.json": {
+      "bytes": 3779,
+      "sha256": "0f4016ddf92e89d0ca3325a9ed763ca459053ba73df81f5d328379d07b0c4a08"
     }
   },
   "publication_state": "candidate in draft PR #14; not deployed",
@@ -58,6 +86,6 @@
   },
   "documentation_layout": {
     "directory": "docs",
-    "change": "Paths, relative links and README navigation only; measurement bytes unchanged."
+    "change": "Short README; full report in docs/RESULTS; generated axis examples. Measurement bytes and provenance unchanged."
   }
 }

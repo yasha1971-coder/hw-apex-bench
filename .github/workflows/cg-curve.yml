@@ -23,7 +23,7 @@ jobs:
         if: always()
         run: |
           tail -100 cg-curve.log || true
-          test ! -f docs/CG_CURVE_RESULTS.md || cat docs/CG_CURVE_RESULTS.md
+          test ! -f docs/RESULTS/CG_CURVE_RESULTS.md || cat docs/RESULTS/CG_CURVE_RESULTS.md
           for p in .work/cg-curve/command-*.log; do
             test ! -f "$p" || tail -20 "$p"
           done
@@ -38,7 +38,7 @@ jobs:
             cg-curve.log
             results.jsonl
             README.md
-            docs/CG_CURVE_RESULTS.md
+            docs/RESULTS/CG_CURVE_RESULTS.md
             .work/cg-curve/*.json
             .work/cg-curve/*.jsonl
             .work/cg-curve/*.log

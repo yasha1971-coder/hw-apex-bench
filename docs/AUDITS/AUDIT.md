@@ -1,6 +1,6 @@
 # ACEAPEX latency audit — findings
 
-Update 2026-09-10: the user selected API-only timing and both named ACEAPEX profiles. The [current table](../README.md) follows the new raw-byte contract with `interactive` and `dense` at SHA `1b13df34ac8e839dd3232b59bc59560d689a435a`. Its [evidence](../evidence/profiles-20260910) is separate from this historical audit. The [exact EPYC 9V74 FAIL output](../evidence/audit-20260909/FAILS.md) remains preserved. Findings and withdrawn conclusions below refer to the original sequence-region experiment.
+Update 2026-09-10: the user selected API-only timing and both named ACEAPEX profiles. The [current table](../../README.md) follows the new raw-byte contract with `interactive` and `dense` at SHA `1b13df34ac8e839dd3232b59bc59560d689a435a`. Its [evidence](../../evidence/profiles-20260910) is separate from this historical audit. The [exact EPYC 9V74 FAIL output](../../evidence/audit-20260909/FAILS.md) remains preserved. Findings and withdrawn conclusions below refer to the original sequence-region experiment.
 
 The first-table performance conclusion remains withdrawn. The configuration mismatch is confirmed; the current reference library call is reproduced by the common harness after matching its trace and timing boundary.
 
@@ -38,11 +38,11 @@ profile and operation contract are selected consistently for all codecs.
 
 ## Evidence
 
-[Full measured matrix](../evidence/audit-20260909/AUDIT_RESULTS.md).
-[Raw measurements, gzip-compressed JSON](../evidence/audit-20260909/audit-results.json.gz).
-[Commands, versions and environment](../evidence/audit-20260909/audit-metadata.json).
-[Reference script log](../evidence/audit-20260909/reproduce.log).
-[Evidence receipt](../evidence/audit-20260909/receipt.json).
+[Full measured matrix](../../evidence/audit-20260909/AUDIT_RESULTS.md).
+[Raw measurements, gzip-compressed JSON](../../evidence/audit-20260909/audit-results.json.gz).
+[Commands, versions and environment](../../evidence/audit-20260909/audit-metadata.json).
+[Reference script log](../../evidence/audit-20260909/reproduce.log).
+[Evidence receipt](../../evidence/audit-20260909/receipt.json).
 
 The uncompressed raw JSON hash is cc9d56006166bce042416eabffcb421e56e427e3d786adc5474758e36748d246.
 The receipt lists both compressed and uncompressed hashes. Workflow log transport

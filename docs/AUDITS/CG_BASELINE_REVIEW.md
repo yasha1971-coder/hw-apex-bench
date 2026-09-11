@@ -3,7 +3,7 @@
 Reviewed input: the 435-row results.jsonl in PR #16 at
 `1160850bda8385cc18d8960989cad15ecacd8b43`.
 SHA-256: `cb52b8cb9fac484a6474d976681ea85ae2c052d80d820422b7f57c25ec938100`.
-Machine-readable findings: [cg-baseline-check.json](cg-baseline-check.json).
+Machine-readable findings: [cg-baseline-check.json](../../review/cg-baseline-check.json).
 No codec was run, no archive was recompressed and no fresh restore was claimed.
 
 ## Findings

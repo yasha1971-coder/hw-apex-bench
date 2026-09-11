@@ -48,7 +48,7 @@ def code_span(value):
     return fence + " " + text + " " + fence
 
 def method_for_readme():
-    text = (ROOT/"docs/METHOD.md").read_text()
+    text = (ROOT/"docs/METHOD.md").read_text().split("<!-- legacy-method -->", 1)[-1].lstrip()
     def rebase(match):
         target = match.group(1)
         if re.match(r"(?:[a-z]+:|#|/)", target):
@@ -56,7 +56,7 @@ def method_for_readme():
         return "](" + posixpath.normpath("docs/" + target) + ")"
     return re.sub(r"\]\(([^\s)]+)\)", rebase, text)
 
-def render(rows):
+def render_full(rows):
     ix=validate(rows)
     meta=rows[0]; v=meta["versions"]
     text=["# hw-apex-bench — Compressed Access Benchmark","",
@@ -74,7 +74,7 @@ def render(rows):
           "",
           __import__('axes').definitions(),
           "",
-          "Coverage audit: [docs/AXES_RESULTS.md](docs/AXES_RESULTS.md). Recheck without measurements: `./run.sh --audit-axes`.",
+          "Coverage audit: [docs/RESULTS/AXES_RESULTS.md](docs/RESULTS/AXES_RESULTS.md). Recheck without measurements: `./run.sh --audit-axes`.",
           "",
           "| Configuration | Level | Encoder threads | Block/frame bytes | LIT bytes | FSE bytes |",
           "|---|---:|---:|---:|---:|---:|",
@@ -121,21 +121,50 @@ def render(rows):
         text += ["",render_zstd_frontier(rows),"",render_gpu(rows)]
     if any(r.get("evidence_group") == "cg-five-point-v1" for r in rows):
         from cg_curve import render as render_cg
-        text += ["", render_cg([r for r in rows if r.get("evidence_group") == "cg-five-point-v1"]).replace("# Density", "## Density", 1)]
+        text += ["", render_cg([r for r in rows if r.get("evidence_group") == "cg-five-point-v1"]).replace("](details/", "](docs/RESULTS/details/").replace("# Density", "## Density", 1)]
     text+=["","These are descriptive comparisons against the same-machine baseline, not promises that any codec must win.",
            "A slower codec remains FAIL in this table; correctness failures abort report generation.",
            "",method_for_readme()]
     rendered = "\n".join(text)+"\n"
     validate_tables(rendered)
-    return rendered
-if __name__=="__main__":
-    rows=[json.loads(s) for s in (ROOT/"results.jsonl").read_text().splitlines() if s.strip()]
+    def relocate(match):
+        target = match.group(1)
+        if re.match(r"(?:[a-z]+:|#|/)", target):
+            return match.group(0)
+        return "](" + posixpath.relpath(target, "docs/RESULTS") + ")"
+    return re.sub(r"\]\(([^\s)]+)\)", relocate, rendered)
+
+from presentation import render_readme, render_axes_intro
+
+def render(rows):
+    validate(rows)
+    return render_readme(rows)
+
+def write_reports(rows):
+    from document_data import externalize
+    from cg_curve import render_original as cg_original
+    curve=[r for r in rows if r.get('evidence_group')=='cg-five-point-v1']
+    if curve:
+        externalize(cg_original(curve),write=True)
+        from cg_curve import render as cg_render
+        (ROOT/'docs/RESULTS/CG_CURVE_RESULTS.md').write_text(cg_render(curve))
+    default_path=ROOT/'evidence/default-a194893/results.jsonl'
+    if default_path.exists():
+        from default_refresh import render as default_render
+        defaults=[json.loads(l) for l in default_path.read_text().splitlines()]
+        (ROOT/'docs/RESULTS/DEFAULT_RESULTS.md').write_text(externalize(default_render(defaults),write=True))
     result=render(rows)
+    (ROOT/"docs/RESULTS/FULL_REPORT.md").write_text(render_full(rows))
+    (ROOT/"docs/AXES.md").write_text(render_axes_intro(rows))
     from axes import render_coverage as render_axes
-    (ROOT/"docs/AXES_RESULTS.md").write_text(render_axes(rows), encoding="utf-8")
+    (ROOT/"docs/RESULTS/AXES_RESULTS.md").write_text(render_axes(rows), encoding="utf-8")
     if rows[0].get("stage",1)>=2:
         from stage2_report import render_stage2
         _,matrix=render_stage2(rows)
-        (ROOT/"docs/BATCH_RESULTS.md").write_text(matrix)
+        (ROOT/"docs/RESULTS/BATCH_RESULTS.md").write_text(matrix)
     temp=ROOT/".work/README.pending.md"; temp.parent.mkdir(exist_ok=True); temp.write_text(result); temp.replace(ROOT/"README.md")
     print(f"Regenerated reports from {len(rows)} retained measurement rows.")
+
+if __name__=="__main__":
+    rows=[json.loads(s) for s in (ROOT/"results.jsonl").read_text().splitlines() if s.strip()]
+    write_reports(rows)
