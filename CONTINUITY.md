@@ -173,3 +173,47 @@ PR #14's verified remote head is still
 the separate local curve checkout at `419cfbe`; it is not part of this upload.
 Next bounded action: show DEFAULT_RESULTS.md for review, then recover and audit
 the existing curve report before any integration. Do not repeat measurements.
+
+## Instrument roadmap, first gate — 2026-09-11
+
+The owner supplied a seven-step instrument roadmap. Work is staged as requested;
+the current branch `tooling/nine-axis-contract` is the first gate, based on PR #15
+head `2a80299c6daba988b449d61ff9cdad3dc59ad98f`. PR #13 is merged; PR #14 and #15
+remain drafts. `TOOL_ROADMAP.md` preserves the remaining implementation sequence.
+
+Recovered the audited curve snapshot from local commit
+`419cfbe5ea63bdc4db68a9e28149e6deb5d57f93` into this review branch. Its full 435-row
+JSONL matches artifact `10178051601` exactly, including the original 420-row byte
+prefix. `harness/audit_curve.py` independently checks all 2,600 timed samples.
+The original core run already reached all eight encode/full-decode plateaus,
+including bgzip and zstd. No new benchmark or codec execution was needed.
+
+The generated README now defines nine axes; `AXES_RESULTS.md` and
+`./run.sh --audit-axes` validate their coverage. Reports generate native-batch
+unavailability from retained capability/reason fields. Blank/unexplained table
+cells fail publication. Plateau checks recompute sample CV, rates and summary
+evidence; same-run ratios reject mixed hardware or a fabricated PASS.
+
+The old zstd CLI-versus-seekable 7.180634% is still retained in raw JSONL and the
+operational comparison column, but no longer displayed as strict same-container
+c(g). The recovered matched series gives 6.569397% at 16 KiB. All raw values are
+unchanged. Historical ee5a37e default, 1b13df3 profiles and a194893 refresh remain
+separate; do not combine their axes into a fictitious configuration.
+
+Validation commands (no measurements):
+`python3 -m unittest discover -s harness -p test_axes.py`,
+`python3 -m unittest discover -s harness -p test_cg_curve.py`,
+`python3 -m unittest discover -s web -p test_publication.py`,
+`./run.sh --audit-axes`,
+`python3 harness/audit_default.py evidence/default-a194893 DEFAULT_RESULTS.md`,
+`python3 web/validate_publication.py`,
+`python3 web/build.py /tmp/cabench-pages/index.html`.
+
+Next bounded action: implement the adapter/native-callback contract and `--check`
+for the existing three formats, then replace automatic full PR benchmarks with
+small correctness CI. Shell process invocation cannot be the timed region path.
+No xz or CRAM adapter, licensing change, v0.1 tag or DOI has been claimed here.
+CRAM needs an alignment-specific lossless/operation contract; default quality
+quantization is not assumed. Same-run normalization is not machine invariance.
+Keep this first-gate report in draft for curve review; use `[skip ci]` on its
+evidence upload so existing full benchmark workflows are not re-executed.

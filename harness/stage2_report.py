@@ -1,5 +1,6 @@
 """Render only complete same-run batch and break-even measurements."""
 import math
+from table_cells import unavailable, validate_tables
 from configurations import CODECS
 from access_profiles import PROFILES, SIZES
 
@@ -34,7 +35,11 @@ def render_stage2(rows):
     for profile in PROFILES:
         for n in SIZES:
             for c in CODECS:
-                for method in (("loop", "batch") if c.startswith("aceapex") else ("loop",)):
+                loop = one(c, "batch_throughput", profile, n, "loop")
+                if not isinstance(loop.get("native_batch_available"), bool):
+                    raise ValueError("Missing native-batch capability")
+                native = loop["native_batch_available"]
+                for method in (("loop", "batch") if native else ("loop",)):
                     r = one(c, "batch_throughput", profile, n, method)
                     if r["threads_requested"] != 1 or r.get("comparison_contract") != "loop1-vs-batch1":
                         raise ValueError("Unequal or undeclared batch/loop worker count")
@@ -46,7 +51,12 @@ def render_stage2(rows):
                     line = f"| {c} | {r['configuration']['block']} | {profile} | {method} | {n} | {r['H_alpha']:.6f} | {r['threads_requested']} | {r['value']:.3f} | {rel['value']:.3f} {rel['status'].upper()} |"
                     full.append(line)
                     if n == 5000: summary.append(line)
-                if c.startswith("aceapex"):
+                if not native:
+                    missing = unavailable(loop.get("native_batch_reason"))
+                    line = f"| {c} | {loop['configuration']['block']} | {profile} | batch | {n} | {loop['H_alpha']:.6f} | {missing} | {missing} | {missing} |"
+                    full.append(line)
+                    if n == 5000: summary.append(line)
+                if native:
                     r = one(c, "batch_speedup_over_loop", profile, n, "batch/loop")
                     if r["status"] != ("pass" if r["value"] >= 1 else "fail"): raise ValueError("Paired speedup verdict mismatch")
     text += summary
@@ -59,4 +69,7 @@ def render_stage2(rows):
              "The old parse checks without numpy are interpreted as skipped (missing dependency); the original FAIL text is preserved.",
              "", ("Batch review is complete; measured c(g) follows below." if rows[0].get("stage",1)>=3 else "Stop for review here. c(g), plateau throughput and the subsequent three-machine run remain deferred."),
              "See [batch protocol and upstream attribution](BATCH_METHOD.md).", ""]
-    return "\n".join(text), "\n".join(full) + "\n"
+    rendered, matrix = "\n".join(text), "\n".join(full) + "\n"
+    validate_tables(rendered)
+    validate_tables(matrix)
+    return rendered, matrix

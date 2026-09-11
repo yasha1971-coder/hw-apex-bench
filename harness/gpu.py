@@ -56,6 +56,7 @@ def add_gpu_declarations(rows,meta):
 def _gpu_rows(rows): return [r for r in rows if r.get("evidence_group")=="gpu-declared"]
 
 def render_gpu(rows):
+    from table_cells import unavailable
     rr=_gpu_rows(rows)
     if not rr: raise ValueError("missing GPU evidence")
     full=[r for r in rr if r["metric"]=="gpu_full_decode_gb_s"]
@@ -72,9 +73,10 @@ def render_gpu(rows):
       "|---|---|---:|---:|---:|---:|---:|---|---|"]
     for r in full:
         if r["value"] is None:
-            out.append(f"| {r['codec'].removesuffix('-gpu')} | n/a | n/a | n/a | n/a | n/a | n/a | n/a | {r['reason']} |")
+            out.append(f"| {r['codec'].removesuffix('-gpu')} | " + " | ".join([unavailable(r['reason'])] * 7) + f" | {r['reason']} |")
         else:
-            out.append(f"| ACEAPEX | {r['device']['name']} | {r['device']['vram_gb']} GB | {r['block_bytes']} | {r['reported_blocks']} / {r['expected_blocks']} | {r['value']:.1f} | {r.get('wall_ms','n/a')} | {r.get('stream_md5') or r['stream_md5_status']} | declared |")
+            wall = r.get('wall_ms')
+            out.append(f"| ACEAPEX | {r['device']['name']} | {r['device']['vram_gb']} GB | {r['block_bytes']} | {r['reported_blocks']} / {r['expected_blocks']} | {r['value']:.1f} | {wall if wall is not None else unavailable('wall time not supplied')} | {r.get('stream_md5') or r['stream_md5_status']} | declared |")
     out += ["","The supplied full-decode block counts are one below `ceil(253935557 / block_bytes)` at all three block sizes. They are printed as reported, beside the derived geometry, and remain declared pending the raw log. Full-decode commands omit start/count so the documented CLI selects the complete archive.","",
       "The same GPU and corpus change materially with block size: H100 reports 179.8 GB/s at 4 KiB and 128.0 GB/s at 16 KiB; RTX reports 112.8 GB/s at 8 KiB and 99.2 GB/s at 16 KiB. These are supplied observations, not a universal optimum claim.","",
       "| GPU | block bytes | start block | count | seek observation | statistic |",
@@ -90,7 +92,7 @@ def render_gpu(rows):
         if r["metric"]=="gpu_composition_scan_speedup":
             out.append(f"| {r['device']['name']} | {r['block_bytes']} | {r['blocks']} | {r['value']:.2f}× | {r['status'].upper()} |")
     out += ["","The RTX 0.87× result is retained as FAIL: composition scan lost. H100 won at the matched 15,499-block point.","",
-      "The CPU table now supports a precise statement: ACEAPEX dense is the densest configuration, while ACEAPEX interactive has the fastest plateau-qualified full decode. Both ACEAPEX profiles lose encode throughput to zstd-seekable and lose the single-region p50 comparison. GPU rows are separate and do not establish a cross-codec GPU ranking.","",
+      "CPU density, throughput and latency comparisons are derived in their own tables, with decoder worker counts retained. GPU rows are separate and do not establish a cross-codec GPU ranking.","",
       "Not published as headline rows: the old 172 GB/s and 0.36 ms values; the FASTQ result without corpus URL/MD5; plateau samples without their concatenation commands; composition/capacity points without an unambiguous block/input mapping.","",
       "Stop for review before merge."]
     return "\n".join(out)

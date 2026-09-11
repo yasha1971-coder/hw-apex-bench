@@ -1,6 +1,7 @@
 """Grow repeated chr1 input until encode and API full-decode rates plateau."""
 import hashlib, json, math, os, pathlib, shlex, statistics, subprocess, time
 from configurations import CODECS, configuration, clean_environment
+from table_cells import unavailable
 
 COPIES=(1,2,4,8)
 ENCODE_REPEATS=3
@@ -142,6 +143,11 @@ def render_throughput(rows):
                 raise ValueError("Invalid throughput evidence: "+codec)
             expected=r["input_bytes"]/statistics.median(r["sample_wall_ms"])/1000
             if not math.isclose(expected,r["value"],rel_tol=1e-12):raise ValueError("Throughput formula mismatch")
+            rates = [r['input_bytes']/t/1000 for t in r['sample_wall_ms']]
+            if not math.isclose(_cv(rates), r['sample_cv'], rel_tol=1e-12, abs_tol=1e-15):
+                raise ValueError('Throughput sample CV mismatch')
+            if len(r['sample_rates_mb_s']) != len(rates) or any(not math.isclose(a,b,rel_tol=1e-12) for a,b in zip(rates,r['sample_rates_mb_s'])):
+                raise ValueError('Throughput sample-rate mismatch')
         e=next(r for r in rows if r["codec"]==codec and r["metric"]=="encode_throughput_mb_s")
         d=next(r for r in rows if r["codec"]==codec and r["metric"]=="full_decode_throughput_mb_s")
         er=next(r for r in rows if r["codec"]==codec and r["metric"]=="encode_throughput_relative_to_bgzip")
@@ -150,6 +156,13 @@ def render_throughput(rows):
             reached=_plateau(points)
             if summary["plateau_reached"]!=reached or (summary["value"] is None)==reached:
                 raise ValueError("Plateau decision mismatch: "+codec)
+            if reached and (summary['status'] != 'declared' or not math.isclose(summary['value'], points[-1]['value'], rel_tol=1e-12)):
+                raise ValueError('Plateau headline does not match its final measured point')
+            if not reached and (summary['status'] != 'data_edge' or not summary.get('reason')):
+                raise ValueError('Data edge requires a reason')
+            expected_evidence = [{'input_copies': p['input_copies'], 'value': p['value'], 'sample_cv': p['sample_cv']} for p in points[-PLATEAU_POINTS:]]
+            if summary['plateau_evidence'] != expected_evidence:
+                raise ValueError('Plateau evidence does not match the curve')
         for summary,rel in ((e,er),(d,dr)):
             base=next(r for r in rows if r["codec"]=="bgzip+htslib" and r["metric"]==summary["metric"])
             if summary["value"] is None or base["value"] is None:
@@ -158,8 +171,8 @@ def render_throughput(rows):
                 expected=summary["value"]/base["value"]
                 if not math.isclose(expected,rel["value"],rel_tol=1e-12) or rel["status"]!=("pass" if expected>=1 else "fail"):
                     raise ValueError("Invalid throughput relation")
-        def value(r):return f"{r['value']:.3f}" if r["value"] is not None else "data edge"
-        def relation(r):return f"{r['value']:.3f} {r['status'].upper()}" if r["value"] is not None else "n/a"
+        def value(r):return f"{r['value']:.3f}" if r["value"] is not None else "data edge — " + r['reason']
+        def relation(r):return f"{r['value']:.3f} {r['status'].upper()}" if r["value"] is not None else unavailable(r.get('reason'))
         out.append(f"| {codec} | {e['configuration']['block']} | {e['threads_requested']} | {value(e)} | {relation(er)} | {d['decoder_thread_policy']} | {value(d)} | {relation(dr)} | {e['input_bytes']} |")
     out += ["","Encode is process wall clock around the encoder. Full decode is timed only around the library call, with archive resident and output allocated and prefaulted. All decoded bytes are compared with the concatenated input outside the timer.",
       "The declared resource edge is eight copies (2,031,484,456 input bytes). Every curve point, repetition, command, archive hash, machine and library version is retained in `results.jsonl` and `.work/throughput-raw.json`.","",

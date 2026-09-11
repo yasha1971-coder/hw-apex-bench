@@ -94,6 +94,8 @@ def validate(rows):
     reference_trace = None
     if len({r["run_id"] for r in rows}) != 1: raise ValueError("mixed runs")
     if len({r["benchmark_commit"] for r in rows}) != 1: raise ValueError("mixed benchmark commits")
+    if len({json.dumps(r['hardware'], sort_keys=True) for r in rows}) != 1:
+        raise ValueError('mixed curve machines')
     for r in rows:
         key = r["codec"], r["g"]
         if key in seen or key[0] not in CODECS or key[1] not in GRID: raise ValueError("duplicate/unexpected point")
@@ -144,6 +146,7 @@ def validate(rows):
 
 
 def render(rows):
+    from table_cells import unavailable
     validate(rows)
     first = rows[0]
     out = ["# Density versus independent-access granularity", "",
@@ -158,11 +161,12 @@ def render(rows):
         for r in sorted((r for r in rows if r['codec'] == codec), key=lambda r: r['g']):
             p, b = r['point'], r['baseline']
             if p is None:
-                out.append(f"| {codec} | {r['g']} | n/a | n/a | n/a | n/a | n/a | n/a | n/a | n/a | 1 |")
+                missing = unavailable(r['reason'])
+                out.append(f"| {codec} | {r['g']} | " + " | ".join([missing] * 8) + f" | {r['configuration']['encoder_threads']} |")
                 continue
-            br = f"{b['ratio']:.6f}" if b else "n/a"
-            cost = f"{r['value']:.6f}" if r['value'] is not None else "n/a"
-            out.append(f"| {codec} | {r['g']} | {p['geometry']['actual_max_block_bytes']} | {p['ratio']:.6f} | {br} | {p['total_bytes']} | {b['total_bytes'] if b else 'n/a'} | {cost} | {p['p50_ms']:.6f} | {p['p99_ms']:.6f} | {r['configuration']['encoder_threads']} |")
+            br = f"{b['ratio']:.6f}" if b else unavailable(r['reason'])
+            cost = f"{r['value']:.6f}" if r['value'] is not None else unavailable(r['reason'])
+            out.append(f"| {codec} | {r['g']} | {p['geometry']['actual_max_block_bytes']} | {p['ratio']:.6f} | {br} | {p['total_bytes']} | {b['total_bytes'] if b else unavailable(r['reason'])} | {cost} | {p['p50_ms']:.6f} | {p['p99_ms']:.6f} | {r['configuration']['encoder_threads']} |")
     out += ["", "## Measured variation (not a monotone fit)", ""]
     for codec in CODECS[:2]:
         curve = sorted((r for r in rows if r['codec'] == codec), key=lambda r: r['g'])
@@ -176,7 +180,7 @@ def render(rows):
     for codec in CODECS:
         rr = [r for r in rows if r['codec'] == codec]
         r = rr[0]
-        out += ["### " + codec, "", "```json", json.dumps({'configuration':r['configuration'], 'versions':r['versions'], 'hardware':r['hardware']}, indent=2), "```"]
+        out += ["### " + codec, "", "```json", json.dumps({'configuration':r['configuration'], 'versions':r['versions'], 'hardware':r['hardware']}, indent=2, sort_keys=True), "```"]
         if r['baseline']:
             b = r['baseline']
             out += ["", f"Whole-input baseline: {b['total_bytes']} bytes; ratio {b['ratio']:.12f}.", "```bash", *b['commands'], "```"]

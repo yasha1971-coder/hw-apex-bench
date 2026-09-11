@@ -30,6 +30,14 @@ def fixture():
 
 
 class Contract(unittest.TestCase):
+    def test_report_survives_sorted_json_round_trip(self):
+        rows = fixture()
+        for row in rows:
+            row['hardware'] = {'platform': 'synthetic', 'logical_cpus': 4}
+            row['versions']['compiler'] = 'synthetic'
+        loaded = json.loads(json.dumps(rows, sort_keys=True))
+        self.assertEqual(cg.render(rows), cg.render(loaded))
+
     def test_valid(self):
         r = fixture()
         self.assertEqual(cg.validate(r),r)
