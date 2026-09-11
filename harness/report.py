@@ -137,7 +137,8 @@ def render_full(rows):
 from presentation import render_readme, render_axes_intro
 
 def render(rows):
-    validate(rows)
+    # A shorter view must retain every validation previously performed by render.
+    render_full(rows)
     return render_readme(rows)
 
 def write_reports(rows):
