@@ -105,3 +105,24 @@ python3 web/build.py /tmp/cabench-pages/index.html
 
 Record subsequent PR/run URLs and update this checkpoint whenever an open item
 changes. A SHA and preserved artifact are stronger continuity than chat memory.
+
+## Licensing priority — 2026-09-11
+
+The user's current priority supersedes adapter/codec work: publish project code
+under Apache-2.0 and original measurements under CC BY 4.0 first.
+Branch `licensing/code-and-measurements` is based directly on main commit
+`e181868f307225bea7c4c3532e0dfb1130d2ae37`, so this change can merge independently
+of draft PRs #14–#17. It adds LICENSE, evidence/LICENSE and NOTICE. LICENSE contains
+the complete canonical Apache 2.0 text, preceded by the requested copyright.
+NOTICE distinguishes the two vendored ACEAPEX test snapshots (MIT) from fetched
+or system dependencies, names htslib MIT with its cram/ BSD exception, and selects
+zstd BSD-3-Clause. Third-party source/corpus terms are preserved.
+
+The README license footer is generated from METHOD.md. Only its reviewed digest
+was updated in the publication manifest. Publication validation and page export
+passed against all 420 records on main; measurement bytes and upstream snapshots
+are unchanged. No builds, benchmark runs or upstream repository changes occurred.
+This branch deliberately does not import the extra recovered records or adapter
+changes from the draft branches. On subsequent merges, regenerate README from the
+merged METHOD.md/results.jsonl and update its manifest digest, retaining this
+license footer. Finish the licensing PR before resuming any adapter work.

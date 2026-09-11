@@ -1,0 +1,24 @@
+hw-apex-bench measurements and results
+Copyright 2026 yasha1971-coder
+SPDX-License-Identifier: CC-BY-4.0
+
+Original measurements and results published by this project are licensed under
+Creative Commons Attribution 4.0 International (CC BY 4.0):
+https://creativecommons.org/licenses/by/4.0/
+Full legal terms: https://creativecommons.org/licenses/by/4.0/legalcode
+
+This grant covers original measurement data, samples, result metadata and result
+tables in evidence/, results.jsonl, generated reports and README.md, wherever
+those results are published in this repository.
+
+Attribution: yasha1971-coder, hw-apex-bench,
+https://github.com/yasha1971-coder/hw-apex-bench
+Include the license link and indicate changes, as required by CC BY 4.0.
+Retain run identifiers and provenance when sharing results so their source can
+be traced; this is a reproducibility request, not an additional license term.
+
+Project code, including scripts or source code stored inside evidence/, is
+licensed under Apache-2.0; see ../LICENSE. Original non-result documentation is
+also covered by the root license. Third-party source code, input corpora and
+other third-party material retain their respective licenses and notices; this
+file does not relicense them. See ../NOTICE for third-party code attribution.
