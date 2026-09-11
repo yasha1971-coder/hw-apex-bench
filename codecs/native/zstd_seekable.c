@@ -32,3 +32,16 @@ int64_t hc_decode(void *ctx, void *dst, size_t cap) {
     State *s=ctx; if(cap<s->size) return -1;
     size_t r=ZSTD_seekable_decompress(s->seek,dst,s->size,0); return ZSTD_isError(r)?-1:(int64_t)r;
 }
+
+uint64_t hc_block_id(void *ctx,uint64_t off) {
+    State *s=ctx; return off<s->size?ZSTD_seekable_offsetToFrameIndex(s->seek,off):UINT64_MAX;
+}
+
+int hc_geometry(void *ctx,uint64_t *units,uint64_t *empty,uint64_t *raw,uint64_t *largest){
+    State *s=ctx;*units=ZSTD_seekable_getNumFrames(s->seek);*empty=0;*raw=0;*largest=0;
+    for(unsigned i=0;i<*units;i++){
+        size_t n=ZSTD_seekable_getFrameDecompressedSize(s->seek,i);if(ZSTD_isError(n))return -1;
+        *empty+=n==0;*raw+=n;if(n>*largest)*largest=n;
+    }
+    return *raw==s->size?0:-1;
+}

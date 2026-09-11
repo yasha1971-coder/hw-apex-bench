@@ -12,7 +12,7 @@ ROOT=Path(__file__).resolve().parents[1]
 PROTOCOL='cabench-check-v2'
 RUNTIME=('check_adapter.py','check_common.sh','check_region.py','resident_probe.py',
          'resident_context.h','resident_fixture.py','qualification.py',
-         'verify_context_sources.py','context-ace-sources.json')
+         'verify_context_sources.py','context-ace-sources.json','reader_environment.py')
 
 def digest(path):
     return hashlib.sha256(Path(path).read_bytes()).hexdigest()

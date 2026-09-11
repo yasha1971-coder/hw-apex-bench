@@ -4,7 +4,7 @@
 #include <string.h>
 typedef struct {
     const uint8_t *arc; size_t bytes, index_start;
-    uint64_t size; lzma_index *index; lzma_check check;
+    uint64_t size, decoded; lzma_index *index; lzma_check check;
 } State;
 unsigned hc_abi(void) { return 2; }
 uint64_t hc_size(void *ctx) { return ((State*)ctx)->size; }
@@ -68,6 +68,9 @@ int64_t hc_region(void *ctx, uint64_t off, void *dst, size_t len) {
                          compressed+it.block.total_size,buffer,&out_pos,raw);
         lzma_filters_free(filters,NULL);
         if(ret!=LZMA_OK || out_pos!=raw || in_pos!=compressed+it.block.total_size) {free(buffer); return -1;}
+        #ifdef HC_COUNTERS
+        s->decoded+=out_pos;
+        #endif
         size_t skip=(size_t)(off-start), take=raw-skip;
         if(take>len-done) take=len-done;
         memcpy((char*)dst+done,buffer+skip,take); free(buffer);
@@ -81,4 +84,23 @@ int64_t hc_decode(void *ctx, void *dst, size_t cap) {
     uint64_t limit=256*1024*1024; size_t in=0,out=0;
     lzma_ret r=lzma_stream_buffer_decode(&limit,0,NULL,s->arc,&in,s->bytes,dst,&out,cap);
     return r==LZMA_OK && in==s->bytes && out==s->size?(int64_t)out:-1;
+}
+
+uint64_t hc_block_id(void *ctx,uint64_t off) {
+    State *s=ctx;if(off>=s->size)return UINT64_MAX;
+    lzma_index_iter it;lzma_index_iter_init(&it,s->index);
+    return lzma_index_iter_locate(&it,off)?UINT64_MAX:it.block.number_in_file-1;
+}
+#ifdef HC_COUNTERS
+void hc_count_reset(void *ctx){((State*)ctx)->decoded=0;}
+uint64_t hc_count_bytes(void *ctx){return ((State*)ctx)->decoded;}
+#endif
+
+int hc_geometry(void *ctx,uint64_t *units,uint64_t *empty,uint64_t *raw,uint64_t *largest){
+    State *s=ctx;*units=0;*empty=0;*raw=0;*largest=0;
+    lzma_index_iter it;lzma_index_iter_init(&it,s->index);
+    while(!lzma_index_iter_next(&it,LZMA_INDEX_ITER_BLOCK)){
+        uint64_t n=it.block.uncompressed_size;(*units)++;*empty+=n==0;*raw+=n;if(n>*largest)*largest=n;
+    }
+    return *raw==s->size?0:-1;
 }

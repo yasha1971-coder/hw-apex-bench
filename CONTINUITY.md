@@ -618,3 +618,71 @@ current correctness adapter 1.24. This must be reconciled before a matched-versi
 full comparison. Do not silently treat those configurations as byte-identical.
 No full benchmark, publication rewrite or draft merge occurred. This checkpoint
 adds only evidence/audit documentation; it does not change tested measurement code.
+
+## All nine native axes wired; full comparison gate — 2026-09-11
+
+Branch tooling/native-remaining-axes starts at #25 checkpoint
+0eb275ee39dc48609d6f859b2230a85276ecb1cb (tree
+294ddec4a54f3d50296e0659d93c8149ac5a79c9). #25 verified live: draft/unmerged.
+The owner again explicitly authorized connecting all native meters and a full run
+at the end. No main merge or replacement of published evidence is authorized here.
+
+Implemented common throughput curves using adapter-returned CLI argv, preserving
+historical encode process wall-clock boundaries, 3 encode/5 native decode samples,
+1/2/4/8 scales, last-three median spread <=5% and sample CV <=5%. Single-size decode
+remains available but only --plateau is accepted by the complete nine-axis audit.
+Counting contexts are separate libraries: BGZF wraps inflate's actual output;
+zstd and ACE use strict matching hooks in isolated copied sources; XZ counts actual
+block-buffer reconstruction. Timed context binaries are not instrumented.
+
+Added native block-ID/geometry callbacks, shared historical five profiles at
+100/600/2000/5000 ranges, H_alpha over request-start blocks and native ACE batch.
+Batch preparation/reset/verification stay untimed; one worker, alternating order,
+3 repeats, comparisons against independent single calls. Other native batch axes
+remain adapter-owned no-API reasons. Strict c(g) uses five points, one nonempty
+whole-file baseline, fixed other profile parameters, checks every block boundary,
+counts empty terminal frames, full restores and cross-boundary reads. BGZF retains
+no-comparable-baseline n/a. There are no remaining migration-placeholder n/a axes.
+
+Important real regression found by increased load: 1b13 full decode depends on
+FSE_CHUNK supplied by the caller. The old published harness set it; the initial
+resident runner cleared it. 5.6 MB smoke failed byte verification; setting the
+published environment restored identical bytes. Fixed via fingerprinted
+configuration.reader_environment, explicit native process environment and scoped
+in-process parameters, also printed in reproduction commands. --check's mixed
+fixture now uses 16 copies to expose this boundary. No ACE upstream code was edited.
+
+New result serializer writes candidate results.jsonl with per-row provenance and
+same-run baseline ratios/reasons; README is generated from that JSONL. All candidate
+files live under the new run directory. The root 435 rows remain byte-identical.
+Verifier review/verify_nine_axes.py rejects incomplete axes, fake migration n/a,
+wrong plateau decisions, incomplete curves/profiles, raw/result digest mismatches.
+
+Historical comparison variants: bgzip_1_19.sh pins upstream release commit
+8f7231035d0409d525767c66d9f49f1f967ee1df; normal bgzip stays1.24.
+aceapex_dense.sh reads the ACTUAL published dense configuration: block262144,
+LIT1048576,FSE32768, level2, encoder1. Both are standalone configuration adapters;
+no codec-name dispatch was added to the runner. Matching versions still does not
+imply identical optional library build flags or hardware.
+
+Local checks and complete small nine-axis runs passed on the four primary formats
+(105 normalized records, 3 throughput scales, five profiles at100) and both historical
+variants (57 records). Data-edge throughput remains null, not a fabricated plateau.
+New counter/batch/environment tests pass; prior checker/planner/native and publication
+integrity/extraction gates pass. Full download in scratch returned HTTP502 from two
+UCSC hostnames; no alternate corpus was substituted and no full timing run started.
+
+CI matrix now checks/smoke-measures six configurations. An explicitly owner-authorized
+full job depends on all those checks and runs only for the opening event of this
+migration branch's PR. It will not repeat on documentation/synchronize updates.
+It uses chr1 URL+MD5, historical BGZF1.19/zstd1.5.7/ACE1b13 interactive+dense, all nine
+axes, all four scales and all four profile sizes, with a90-minute bound. Artifacts
+include raw evidence and comparison.json. The original full-stage workflow is untouched.
+
+Scope of comparison: exact preservation of the historical435 bytes; fresh matched
+CPU metric comparison with declared version/parameter/corpus checks. Fresh timing
+bytes cannot equal historical wall-clock bytes. Historical435 also include separate
+ee5 default c(g), zstd frontier and declaredGPU/auxiliary rows; these are explicitly
+excluded from an unsupported complete row-replay claim, never copied as fresh data.
+Next action: verify CI; let the authorized full job run only if its small gates pass;
+inspect/audit artifacts and record actual outcome without claiming missing evidence.

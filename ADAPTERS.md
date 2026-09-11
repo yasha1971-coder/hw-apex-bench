@@ -1,3 +1,68 @@
+# Current native execution status
+
+All nine axes now have dispatch backends. BGZF c(g) remains unsupported without a
+comparable whole-file baseline; BGZF/zstd/XZ have no native batch API. Those reasons
+come from adapters. No migration-placeholder n/a is accepted by the nine-axis audit.
+
+```sh
+./run.sh --check codecs/aceapex.sh
+./run.sh --measure --codec aceapex --axis ratio --axis encode --axis decode --axis region --axis amplification --axis batch --axis h_alpha --axis c_g --axis break_even --plateau --input YOUR_VERIFIED_INPUT --output-dir NEW_RUN_DIRECTORY
+```
+
+The profile corpus must be at least 1 MiB + 16 KiB. Defaults are four throughput
+scales (1,2,4,8 copies), three encode samples, five decode samples, 200 regions and
+five access profiles at 100/600/2000/5000 ranges. `--copies` and `--batch-sizes`
+allow explicit smaller smoke subsets. `--plateau` enables the decode curve;
+without it decode remains a clearly labelled single-size sample. Encode always
+uses the common curve runner. Encoding preserves historical CLI process timing;
+all timed decoding is native and resident.
+
+The run writes separate results.jsonl, a generated README.md, manifest.json and raw
+samples. It never overwrites the root publication. Each result records its command,
+configuration, same-run baseline ratio or explicit reason, and qualification hash.
+The sample schema has evolved; historical PR #25 ZIP audit applies to its four-axis
+artifacts. Use `python3 review/verify_nine_axes.py RUN/manifest.json` for full axes.
+
+ACEAPEX reader_environment is necessary sideband configuration at pinned 1b13.
+In particular full decode uses FSE_CHUNK: omitting the published 4096 value can
+silently appear correct below a chunk boundary, then fail on larger inputs.
+The correctness fixture now grows to 16 copies to cross that boundary. Environment
+parameters are fingerprinted, restored after in-process operations, passed to native
+workers and included in reproduction commands. No upstream decoder was changed.
+
+`codec_encode_command` returns JSON argv plus optional stdout_archive/produced
+fields, so the generic runner never times shell adapter setup or invents encoder
+commands. `codec_counter_library` supplies a separate instrumented context; timed
+libraries remain uninstrumented. Counts follow actual decoder work, including zero
+work for cached bytes. Counting builds record instrumented source hashes and leave
+pinned dependency trees clean.
+
+Optional native extensions are hc_block_id and hc_geometry, hc_count_reset/bytes
+on counting libraries, and hc_batch_open/reset/run/valid/close for native batches.
+Batch range preparation is untimed; the API call is timed, with one worker and
+alternating loop/batch order. H_alpha counts request-start blocks from actual archive
+geometry. Strict c(g) verifies every block boundary and accounts for empty frames.
+Only granularity varies, with one nonempty whole-file baseline and fixed other
+parameters. These profile curves do not replace historical ee5 default curves.
+
+Historical comparison configurations are standalone adapter files:
+`bgzip_1_19.sh` pins release 1.19 at 8f7231035d0409d525767c66d9f49f1f967ee1df;
+`aceapex_dense.sh` uses the published 256 KiB blocks, 1 MiB literals and 32 KiB FSE.
+The regular bgzip adapter remains pinned at 1.24. A matching release does not erase
+build-option or hardware differences. Source and binary qualification remains required.
+
+The owner-authorized full comparison is gated behind all small CI matrix checks,
+runs once on opening this migration PR, and does not repeat on documentation updates.
+Its comparison distinguishes unchanged historical 435 bytes from fresh host timings,
+and explicitly excludes GPU declarations/default c(g)/frontier scopes from an
+unsupported equality claim. Completing these backends does not itself establish
+byte-identical replay of every historical configuration or release readiness.
+
+---
+
+The following sections document earlier extraction/check milestones; where their
+execution scope differs, the current status above supersedes it.
+
 # Add and check a codec
 
 `./run.sh --check codecs/xz.sh` builds pinned sources, creates small deterministic

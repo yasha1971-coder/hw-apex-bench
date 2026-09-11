@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
 set -euo pipefail
 # Resident-context proof: capabilities describe this executable path only.
-codec_supports() { echo 'ratio decode region break_even'; }
+codec_supports() { echo 'ratio encode decode region amplification h_alpha c_g break_even'; }
 codec_unavailable() {
   cat <<'JSON'
-{"encode":"encode timer not connected to context proof","amplification":"decoder counters not ported to context proof","c_g":"controlled curve runner not connected to context proof","batch":"no batch API","h_alpha":"block mapping callback not ported to context proof"}
+{"batch":"no batch API"}
 JSON
 }
 codec_context_build() {
@@ -14,14 +14,16 @@ codec_context_build() {
   local x="${HB_XZ:?set HB_XZ to the XZ source tree providing headers}"
   local -a link=(-Wl,-l:liblzma.so.5)
   if [[ -n "${HB_XZ_BUILD:-}" ]]; then link=("$HB_XZ_BUILD/liblzma.a"); fi
-  gcc -O3 -std=gnu11 -Wall -Wextra -Werror -fPIC -shared -I"$root/harness" \
+  local -a count_flags=()
+  if [[ "${2:-}" == counters ]]; then count_flags=(-DHC_COUNTERS); fi
+  gcc "${count_flags[@]}" -O3 -std=gnu11 -Wall -Wextra -Werror -fPIC -shared -I"$root/harness" \
     -I"$x/src/liblzma/api" "$root/codecs/native/xz.c" "${link[@]}" -pthread -o "$out"
 }
 source "${HB_ROOT:-$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.." && pwd)}/harness/check_common.sh"
 
 codec_configuration() { echo '{"level": 6, "encoder_threads": 1, "decoder_threads": 1, "check": "CRC64", "granularity": 16384, "block_option": "--block-size"}'; }
 codec_inputs() { python3 -c 'import json,sys;print(json.dumps(sys.argv[1:]))' "$HB_ROOT/codecs/native/xz.c"; }
-codec_build_artifacts() { python3 -c 'import json,sys;print(json.dumps(sys.argv[1:]))' "$(codec_library)" "$HB_CHECK_WORK/xz-build/xz"; }
+codec_build_artifacts() { python3 -c 'import json,sys;print(json.dumps(sys.argv[1:]))' "$(codec_library)" "$(codec_counter_library)" "$HB_CHECK_WORK/xz-build/xz"; }
 codec_name() { echo 'xz-blocked'; }
 codec_version() { echo '5.4.5'; }
 codec_build() (
@@ -30,9 +32,14 @@ codec_build() (
   cmake -S "$HB_XZ" -B "$HB_XZ_BUILD" -DCMAKE_BUILD_TYPE=Release -DCMAKE_POSITION_INDEPENDENT_CODE=ON -DBUILD_SHARED_LIBS=OFF -DBUILD_TESTING=OFF
   cmake --build "$HB_XZ_BUILD" --target xz --parallel "$HB_JOBS"
   codec_context_build "$(codec_library)"
+  codec_context_build "$(codec_counter_library)" counters
 )
 codec_compress() { env -u XZ_DEFAULTS -u XZ_OPT "$HB_CHECK_WORK/xz-build/xz" --threads=1 -6 --check=crc64 --block-size="$3" -c -- "$1" > "$2"; }
 codec_decompress() { env -u XZ_DEFAULTS -u XZ_OPT "$HB_CHECK_WORK/xz-build/xz" -d -c -- "$1" > "$2"; }
+
+codec_encode_command() { python3 -c 'import json,sys; b,i,o,g=sys.argv[1:]; print(json.dumps({"argv":[b,"--threads=1","-6","--check=crc64","--block-size="+g,"-c","--",i],"stdout_archive":True}))' "$HB_CHECK_WORK/xz-build/xz" "$1" "$2" "$3"; }
+
+codec_counter_library() { echo "$HB_CHECK_WORK/counter-context.so"; }
 
 # Sourcing exposes functions without running the historical CLI dispatcher.
 if [[ "${BASH_SOURCE[0]}" != "$0" ]]; then return 0; fi

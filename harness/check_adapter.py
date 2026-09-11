@@ -34,10 +34,14 @@ def check_locked(adapter,work):
     receipt=work/'check.json'; receipt.unlink(missing_ok=True)
     commands=[]
     with (work/'check.log').open('w') as log:
-        def run(argv, capture=False, timeout=600):
+        def run(argv, capture=False, timeout=600, reader=False):
             argv=list(map(str,argv)); commands.append(shlex.join(argv))
             log.write('+ '+shlex.join(argv)+'\n'); log.flush()
-            proc=subprocess.Popen(argv,env=env,stdout=subprocess.PIPE if capture else log,
+            reader_env=env.copy()
+            if reader:
+                from reader_environment import parameters
+                reader_env.update(parameters(config))
+            proc=subprocess.Popen(argv,env=reader_env,stdout=subprocess.PIPE if capture else log,
                                   stderr=log,text=True,cwd=ROOT,start_new_session=True)
             try:
                 output,_=proc.communicate(timeout=timeout)
@@ -81,7 +85,7 @@ def check_locked(adapter,work):
             folder=Path(td)
             corpus=folder/'corpus'
             run([sys.executable,ROOT/'harness/resident_fixture.py',corpus])
-            payload=corpus.read_bytes()
+            payload=corpus.read_bytes()*16 # Cross the pinned ACE FSE chunk boundary.
             fixtures=[('mixed',payload),('one-byte',b'X'),('empty',b''),
                       ('exact-block',bytes(i%251 for i in range(g))),
                       ('cross-block',bytes(i%251 for i in range(3*g+17)))]
@@ -107,7 +111,7 @@ def check_locked(adapter,work):
                     argv=[sys.executable,ROOT/'harness/resident_probe.py','--adapter',adapter,'--library',library,
                           '--archive',archive,'--original',source,'--granularity',g]
                     if sidecar: argv+=['--sidecar',sidecar]
-                    native=json.loads(run(argv,True,120))
+                    native=json.loads(run(argv,True,120,reader=True))
                     if native['version']!=version: raise ValueError('native version differs from declared version')
                     item['native']=native
                     offset=min(max(0,g-1),len(raw)); length=min(2*g+11,len(raw)-offset)
