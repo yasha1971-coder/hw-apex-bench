@@ -26,7 +26,7 @@
 <p id="plot-note" class="note"></p>
 <p class="note">The slider selects five measured profiles; it never interpolates. Batch workers: 1; requests: 5,000. <span id="profile-note"></span></p>
 <h2 id="measurements">Values behind the plot</h2>
-<p class="note">Green marks a best observed value only where direction is meaningful and scope matches. Granularity, access entropy and break-even are descriptive properties, not rankings. Missing values are never plotted as zero.</p>
+<p class="note">Green marks a best observed value only where direction is meaningful and scope matches. Granularity, access break-even is descriptive; access entropy appears only in the batch table properties, not rankings. Missing values are never plotted as zero.</p>
 <div class="scroll"><table id="values"><caption>Absolute values belong to the measured host. Compare matching configurations and runs.</caption><thead></thead><tbody></tbody></table></div>
 <details open><summary>Historical CPU batch results for the selected profile (separate from c(g))</summary><div class="scroll"><table id="batch"><thead><tr><th>Configuration</th><th>Method</th><th>Workers</th><th>H_alpha · bits</th><th>ranges/s</th></tr></thead><tbody></tbody></table></div></details>
 <div class="links"><a href="https://github.com/yasha1971-coder/hw-apex-bench/blob/main/docs/AXES.md">New to the axes?</a><a href="https://github.com/yasha1971-coder/hw-apex-bench/blob/main/docs/RESULTS/FULL_REPORT.md">All historical tables & provenance</a><a href="https://github.com/yasha1971-coder/hw-apex-bench/blob/main/docs/ADAPTERS.md">Run and qualify an adapter</a></div>
@@ -39,38 +39,51 @@
 <script>
 'use strict';
 const D=JSON.parse(document.getElementById('data').textContent),NS='http://www.w3.org/2000/svg';
-const AXES=[['ratio','Ratio','×',1],['encode','Encode','MB/s',1],['decode','Full decode','MB/s',1],['region_p50','Region p50','ms',-1],['region_p99','Region p99','ms',-1],['amplification','Amplification','×',-1],['c_g','c(g)','%',-1],['batch','Batch','ranges/s',1],['h_alpha','H_alpha','bits',0],['break_even_n','Break-even','queries',0]];
+const AXES=[['ratio','Ratio','×',1],['encode','Encode','MB/s',1],['decode','Full decode','MB/s',1],['region_p50','Region p50','ms',-1],['region_p99','Region p99','ms',-1],['amplification','Amplification','×',-1],['c_g','c(g)','%',-1],['batch','Batch','ranges/s',1],['break_even_n','Break-even','queries',0]];
 const PROFILES=[['zipf1.2','Zipf 1.2','Skewed popularity.'],['hot-set','Hot set','Requests share a fixed hot set.'],['clustered','Clustered','Requests share local windows.'],['uniform','Uniform','Random valid byte offsets.'],['sorted','Sorted','Uniform requests, sorted by offset.']];
 const colors=['#a4461d','#176cc0','#178062','#8053b2'];
 const names=['bgzip + htslib','zstd-seekable','ACEAPEX interactive','ACEAPEX dense'];
-const $=id=>document.getElementById(id),fmt=v=>Number.isFinite(v)?v.toLocaleString('en-US',{maximumFractionDigits:6}):'n/a';
+const $=id=>document.getElementById(id),fmt=(v,key='')=>Number.isFinite(v)?v.toLocaleString('en-US',key==='granularity'||key==='break_even_n'?{maximumFractionDigits:0}:key==='ratio'?{maximumSignificantDigits:4}:{maximumSignificantDigits:3,minimumSignificantDigits:3}):'n/a';
 function node(tag,attrs={},text){const n=document.createElementNS(NS,tag);for(const [k,v]of Object.entries(attrs))n.setAttribute(k,v);if(text!==undefined)n.textContent=text;return n;}
 function cell(row,text,cls){const c=document.createElement('td');c.textContent=text;if(cls)c.className=cls;row.append(c);return c;}
 for(const a of AXES)for(const id of ['x-axis','y-axis']){const o=document.createElement('option');o.value=a[0];o.textContent=a[1]+' · '+a[2];$(id).append(o);}
-$('x-axis').value='ratio';$('y-axis').value='region_p50';
+$('view').value='parallel';$('x-axis').value='ratio';$('y-axis').value='region_p50';
 function selection(){const cg=$('view').value==='pair'&&[$('x-axis').value,$('y-axis').value].includes('c_g');const p=PROFILES[+$('profile').value][0],method=$('method').value;
  if(cg)return D.cg.map(r=>({...r,label:r.codec+' · '+r.granularity+' B',color:r.codec.startsWith('aceapex')?colors[3]:r.codec.startsWith('zstd')?colors[1]:colors[0],reasons:Object.fromEntries(AXES.map(a=>[a[0],a[0]==='c_g'?(r.reason||'no comparable baseline'):'not measured in this c(g) scope']))}));
  return D.configs.map((r,i)=>{const b=D.batch.find(b=>b.codec===r.codec&&b.access_profile===p&&b.method===method);const loop=D.batch.find(b=>b.codec===r.codec&&b.access_profile===p&&b.method==='loop');return {...r,label:names[i],color:colors[i],batch:b?.value??null,h_alpha:loop.H_alpha,reasons:{...r.reasons,batch:loop.native_batch_reason||'no batch API'}};});
 }
-function extent(rows,key){const vs=rows.map(r=>r[key]).filter(Number.isFinite);if(!vs.length)return[0,1];let lo=Math.min(...vs),hi=Math.max(...vs);const pad=(hi-lo||Math.abs(hi)||1)*.12;return[lo-pad,hi+pad];}
-function describe(r,axes){return r.label+' — '+axes.map(a=>a[1]+': '+(Number.isFinite(r[a[0]])?fmt(r[a[0]])+' '+a[2]:'n/a — '+r.reasons?.[a[0]])).join('; ');}
+function scale(rows,key){
+ const vs=rows.map(r=>r[key]).filter(Number.isFinite);if(!vs.length)return{lo:0,hi:1,ticks:[0,.5,1]};
+ let lo=Math.min(...vs),hi=Math.max(...vs);const pad=(hi-lo||Math.abs(hi)||1)*.12;
+ lo-=pad;hi+=pad;if(key!=='c_g')lo=Math.max(0,lo);
+ if(key==='region_p50'||key==='region_p99')lo=0;
+ const rough=(hi-lo)/5,power=10**Math.floor(Math.log10(rough));
+ const step=[1,2,2.5,5,10].find(n=>n*power>=rough)*power;
+ lo=Math.floor(lo/step)*step;hi=Math.ceil(hi/step)*step;
+ const ticks=Array.from({length:Math.round((hi-lo)/step)+1},(_,i)=>Number((lo+i*step).toPrecision(12)));
+ return{lo,hi,ticks};
+}
+function extent(rows,key){const s=scale(rows,key);return[s.lo,s.hi];}
+function reason(s){return 'n/a — '+String(s||'not measured in this scope').replace(/^n\/a\s*[:—-]?\s*/i,'');}
+function describe(r,axes){return r.label+' — '+axes.map(a=>a[1]+': '+(Number.isFinite(r[a[0]])?fmt(r[a[0]],a[0])+' '+a[2]:'n/a — '+r.reasons?.[a[0]])).join('; ');}
 function inspect(n,r,axes){const text=describe(r,axes);n.append(node('title',{},text));n.setAttribute('tabindex','0');n.setAttribute('aria-label',text);for(const event of ['mouseenter','focus','click'])n.addEventListener(event,()=>{$('readout').textContent=text;});}
 function draw(rows){const svg=$('plot');svg.querySelectorAll('g').forEach(n=>n.remove());const g=node('g');svg.append(g);const xkey=$('x-axis').value,ykey=$('y-axis').value;const pair=$('view').value==='pair';$('x-axis').disabled=!pair;$('y-axis').disabled=!pair;
  if(pair){const xa=AXES.find(a=>a[0]===xkey),ya=AXES.find(a=>a[0]===ykey),valid=rows.filter(r=>Number.isFinite(r[xkey])&&Number.isFinite(r[ykey]));const [xl,xh]=extent(valid,xkey),[yl,yh]=extent(valid,ykey);const x=v=>100+(v-xl)/(xh-xl)*920,y=v=>290-(v-yl)/(yh-yl)*245;
-  for(let i=0;i<=4;i++){const xx=100+i*230,yy=290-i*61.25;g.append(node('line',{x1:xx,x2:xx,y1:45,y2:290,class:'grid'}),node('line',{x1:100,x2:1020,y1:yy,y2:yy,class:'grid'}),node('text',{x:xx,y:313,'text-anchor':'middle'},fmt(xl+(xh-xl)*i/4)),node('text',{x:90,y:yy+5,'text-anchor':'end'},fmt(yl+(yh-yl)*i/4)));}
+  for(const v of scale(valid,xkey).ticks){const xx=x(v);g.append(node('line',{x1:xx,x2:xx,y1:45,y2:290,class:'grid'}),node('text',{x:xx,y:313,'text-anchor':'middle'},v.toLocaleString('en-US',{maximumSignificantDigits:12})));}
+  for(const v of scale(valid,ykey).ticks){const yy=y(v);g.append(node('line',{x1:100,x2:1020,y1:yy,y2:yy,class:'grid'}),node('text',{x:90,y:yy+5,'text-anchor':'end'},v.toLocaleString('en-US',{maximumSignificantDigits:12})));}
   g.append(node('text',{x:560,y:348,'text-anchor':'middle'},xa[1]+' · '+xa[2]+(xa[3]>0?' · higher is better':xa[3]<0?' · lower is better':' · descriptive')),node('text',{x:100,y:22},ya[1]+' · '+ya[2]+(ya[3]>0?' · higher is better':ya[3]<0?' · lower is better':' · descriptive')));
   for(const r of valid){const n=node('circle',{cx:x(r[xkey]),cy:y(r[ykey]),r:7,fill:r.color,class:'point'});inspect(n,r,[xa,ya]);g.append(n);}
   $('plot-note').textContent=valid.length+' measured points shown. '+(rows.length-valid.length)+' unavailable points remain in the table. Linear axes; no unmeasured frontier is inferred.';
- }else{const axes=AXES,xs=axes.map((_,i)=>75+i*105),ranges=axes.map(a=>extent(rows,a[0]));
+ }else{const axes=AXES,xs=axes.map((_,i)=>75+i*945/(axes.length-1)),ranges=axes.map(a=>extent(rows,a[0]));
   axes.forEach((a,i)=>{g.append(node('line',{x1:xs[i],x2:xs[i],y1:65,y2:285,class:'grid'}),node('text',{x:xs[i],y:24,'text-anchor':'middle'},a[1]),node('text',{x:xs[i],y:44,'text-anchor':'middle'},a[2]));});
   for(const r of rows){let part=[];const flush=()=>{if(part.length>1){const line=node('polyline',{points:part.join(' '),stroke:r.color,class:'trace'});inspect(line,r,axes);g.append(line);}part=[];};axes.forEach((a,i)=>{const v=r[a[0]];if(!Number.isFinite(v)){flush();return;}const [lo,hi]=ranges[i];let t=(v-lo)/(hi-lo);if(a[3]<0)t=1-t;const y=285-t*220;part.push(xs[i]+','+y);const n=node('circle',{cx:xs[i],cy:y,r:5,fill:r.color,class:'point'});inspect(n,r,[a]);g.append(n);});flush();}
-  $('plot-note').textContent='Each axis has its own linear range. Higher on directional axes means better; entropy and break-even are descriptive. Gaps are unavailable measurements. c(g) belongs to a separate run: select it in the two-axis view.';
+  $('plot-note').textContent='Each axis has its own linear range. Higher on directional axes means better; break-even is descriptive; access entropy appears only in the batch table. Gaps are unavailable measurements. c(g) belongs to a separate run: select it in the two-axis view.';
  }
 }
 function table(rows,cg){const axes=[['granularity','Granularity','bytes',0],...AXES];const head=$('values').querySelector('thead'),body=$('values').querySelector('tbody');head.replaceChildren();body.replaceChildren();const tr=document.createElement('tr');for(const label of ['Configuration',...axes.map(a=>a[1]+' · '+a[2])]){const th=document.createElement('th');th.scope='col';th.textContent=label;tr.append(th);}head.append(tr);
- for(const r of rows){const row=document.createElement('tr');cell(row,r.label);for(const a of axes){const v=r[a[0]],vs=rows.map(r=>r[a[0]]).filter(Number.isFinite);const best=!cg&&a[3]!==0&&Number.isFinite(v)&&v===(a[3]>0?Math.max(...vs):Math.min(...vs));const c=cell(row,Number.isFinite(v)?fmt(v):'n/a — '+(r.reasons?.[a[0]]||'not measured in this scope'),!Number.isFinite(v)?'missing':best?'best':'');if(best)c.title='Best measured value within this scope';}body.append(row);}
+ for(const r of rows){const row=document.createElement('tr');cell(row,r.label);for(const a of axes){const v=r[a[0]],vs=rows.map(r=>r[a[0]]).filter(Number.isFinite);const best=!cg&&a[3]!==0&&Number.isFinite(v)&&v===(a[3]>0?Math.max(...vs):Math.min(...vs));const c=cell(row,Number.isFinite(v)?fmt(v,a[0]):reason(r.reasons?.[a[0]]),!Number.isFinite(v)?'missing':best?'best':'');if(best)c.title='Best measured value within this scope';}body.append(row);}
 }
-function batchTable(p){const body=$('batch').querySelector('tbody');body.replaceChildren();D.configs.forEach((f,i)=>{const loop=D.batch.find(r=>r.codec===f.codec&&r.access_profile===p&&r.method==='loop');for(const method of ['loop','batch']){const r=D.batch.find(r=>r.codec===f.codec&&r.access_profile===p&&r.method===method);const tr=document.createElement('tr');for(const v of [names[i],method,'1',fmt(loop.H_alpha),r?fmt(r.value):'n/a — '+loop.native_batch_reason])cell(tr,v);body.append(tr);}});}
+function batchTable(p){const body=$('batch').querySelector('tbody');body.replaceChildren();D.configs.forEach((f,i)=>{const loop=D.batch.find(r=>r.codec===f.codec&&r.access_profile===p&&r.method==='loop');for(const method of ['loop','batch']){const r=D.batch.find(r=>r.codec===f.codec&&r.access_profile===p&&r.method===method);const tr=document.createElement('tr');for(const v of [names[i],method,'1',fmt(loop.H_alpha),r?fmt(r.value):reason(loop.native_batch_reason)])cell(tr,v);body.append(tr);}});}
 function paint(){const p=PROFILES[+$('profile').value];$('profile-label').textContent=p[1];$('profile').setAttribute('aria-valuetext',p[1]);$('profile-note').textContent=p[2];const rows=selection(),cg=$('view').value==='pair'&&[$('x-axis').value,$('y-axis').value].includes('c_g');$('scope').textContent=cg?'Separate five-point c(g) experiment: point-specific ratio/region values only; no primary CPU timings are spliced in.':'Historical chr1 CPU run · 200 resident 16 KiB reads · three formats / four configurations. XZ is qualified separately.';$('readout').textContent='Hover or focus a point for values.';$('legend').replaceChildren();const seen=new Set;for(const r of rows){const label=cg?r.codec:r.label;if(seen.has(label))continue;seen.add(label);const s=document.createElement('span');s.style.setProperty('--c',r.color);s.textContent=label;$('legend').append(s);}draw(rows);table(rows,cg);batchTable(p[0]);}
 for(const id of ['view','x-axis','y-axis','method'])$(id).addEventListener('change',paint);$('profile').addEventListener('input',paint);
 $('host').textContent=(D.hardware.lscpu||'').split('\n').find(l=>l.startsWith('Model name:'))||D.hardware.platform;

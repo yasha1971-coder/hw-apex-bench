@@ -11,10 +11,10 @@ alongside full-file costs, with explicit reproduction and verification evidence.
 
 | Codec | Granularity | Ratio | p50 ms | p99 ms | Amplification |
 |---|---:|---:|---:|---:|---:|
-| bgzip+htslib | ≤ 64 KiB | 3.382558 | 0.102141 | 0.212103 | 4.821094 |
-| zstd-seekable | 16 KiB | 3.025774 | 0.046046 | 0.059425 | 2.000000 |
-| aceapex-interactive | 16 KiB | 3.658493 | 0.129720 | 0.240419 | 6.216250 |
-| aceapex-dense | 256 KiB | 3.780646 | 1.330098 | 2.523226 | 83.431872 |
+| bgzip+htslib | ≤ 64 KiB | 3.383 | 0.102 | 0.212 | 4.82 |
+| zstd-seekable | 16 KiB | 3.026 | 0.046 | 0.0594 | 2 |
+| aceapex-interactive | 16 KiB | 3.658 | 0.13 | 0.24 | 6.22 |
+| aceapex-dense | 256 KiB | 3.781 | 1.33 | 2.52 | 83.4 |
 
 ACEAPEX dense has the highest ratio; zstd-seekable has the lowest p50, p99
 and amplification. Both ACEAPEX profiles trade slower regions for greater density.

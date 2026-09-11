@@ -941,3 +941,16 @@ before returning the short view. An intentionally corrupted break-even row was
 rejected; the generated publication remains identical. Direct public HTML fetch
 was unavailable (network approval cancelled), so deployment is confirmed from
 GitHub Actions, without claiming an independent CDN or browser inspection.
+
+## Explorer comparison and display correction
+
+Based on main 6d5476761a05ecb9f579f133cdd8ce471f062b9d. H_alpha is
+restricted to the batch table because it depends on the trace and partition.
+The initial view is parallel coordinates; the pair controls retain Ratio/p50.
+Latency domains start at zero with nice ticks; c(g) may remain negative and
+stays in its separate experiment scope. Overview numbers use 3–4 significant
+digits, while JSONL and detailed reports retain their original bytes.
+Validation: 435 rows, 364 protected files byte-identical, 134 links, 810 UI
+combinations. This is a logic test, not a browser/layout verification.
+No benchmark, release, tag or DOI was changed. Merged-branch cleanup follows
+as a separate bounded operation, after checking current heads and open PRs.
