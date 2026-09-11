@@ -217,3 +217,13 @@ CRAM needs an alignment-specific lossless/operation contract; default quality
 quantization is not assumed. Same-run normalization is not machine invariance.
 Keep this first-gate report in draft for curve review; use `[skip ci]` on its
 evidence upload so existing full benchmark workflows are not re-executed.
+
+Delivery checkpoint: draft PR #16
+`https://github.com/yasha1971-coder/hw-apex-bench/pull/16` contains the first-gate
+implementation at `14f052409066f072fe84546620b6bc4a76cb6c54` (validated Git tree
+`2bdc1d6b857f0bae7e8c86c059bacd5bc20f0983`), stacked on PR #15. All 37 local tests
+passed; executable homepage JavaScript syntax also passed. The small final
+handoff commit only adds this delivery checkpoint. PR #14's remote head remained
+`d84f38af3b26d830fbc1cc654174f2bd673178ab`; the recovered curve is delivered in
+PR #16, not falsely attributed to an update of PR #14. Adapter extraction is the
+next stage, not a completed feature.
