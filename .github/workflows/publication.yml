@@ -30,6 +30,8 @@ jobs:
           python3 -m unittest discover -s harness -p test_axes.py
           python3 -m unittest discover -s harness -p test_cg_curve.py
           ./run.sh --audit-axes
+          python3 review/audit_cg_baseline.py --results results.jsonl
+          python3 -m unittest discover -s review -p test_cg_baseline.py
           python3 harness/audit_default.py evidence/default-a194893 DEFAULT_RESULTS.md
       - name: Verify committed snapshot and generate homepage
         run: python3 web/build.py .pages/index.html

@@ -351,9 +351,9 @@ Ratio counts complete archives plus required indexes. This is ratio loss, not ar
 
 BGZF: the adapter flushes at 4 KiB, 16 KiB or htslib's safe BGZF_BLOCK_SIZE at the 64 KiB request. Actual geometry is parsed from every archive. 256 KiB and 1 MiB independent BGZF blocks are unsupported. Strict c(g) is n/a at every point: this format/adapter cannot supply a one-block whole-input baseline. A 32 KiB DEFLATE history window is NOT a set of independent blocks.
 
-ACEAPEX uses unchanged ee5a37e Makefile-built src/aceapex_main.cpp, default level 2 and 8 requested encoder threads. Only ACEAPEX_BS varies; this is NOT the interactive or dense profile. Its API includes the same src/aceapex_main.cpp, and both translation units are checked in the compiler trace.
+ACEAPEX uses unchanged ee5a37e Makefile-built src/aceapex_main.cpp, default level 2 and 8 requested encoder threads. Only ACEAPEX_BS varies; this is NOT the interactive or dense profile. LIT_CHUNK is explicitly unset on both sides: in ee5a37e this selects four legacy literal parts compressed with zstd level 3, without the DNA transform; FSE_CHUNK defaults to 512 KiB throughout. Later default-transform changes do not apply to this revision. Its API includes the same src/aceapex_main.cpp, and both translation units are checked in the compiler trace.
 
-zstd uses the unchanged reference seekable_compression program, level 3, 1 thread, seek-table checksums enabled, for BOTH sides. The baseline has one nonempty frame spanning the input and a seek table. This is a newly measured baseline, not the earlier CLI-versus-seekable pair. Internal behavior induced by frame size remains part of this operational comparison.
+zstd uses the unchanged reference seekable_compression program, level 3, 1 thread, seek-table checksums enabled, for BOTH sides. The baseline has one nonempty frame spanning the input PLUS an empty terminal frame and a seek table; all bytes are included. The five measured points have no empty data frames. Every file also contains one seek-table skippable frame. This is a one-data-frame baseline, not literally a one-physical-frame file. This is a newly measured baseline, not the earlier CLI-versus-seekable pair. Internal behavior induced by frame size remains part of this operational comparison.
 
 Region measurements reuse harness/region_latency.c: resident archive/handle, 10 random warmups plus 2 boundary checks, 200 byte-verified queries, nearest-rank percentiles, API-only timer. API worker policies are codec-owned; no equal-thread full-decode claim is made. No FASTA transformation, batch speed, amplification or plateau throughput is inferred from this sweep.
 
@@ -665,4 +665,21 @@ precedes the three-machine experiment and separate GPU publication.
 The previous controlled audit is reproduced at benchmark commit
 `baede64fd37bd087eecf9a94333d8fbf33e23c33`; its script depends on that historical
 harness and original ACEAPEX pin.
+
+## Negative c(g)
+
+**Splitting can improve compression:** the [reviewed zstd-seekable 1 MiB point](review/CG_BASELINE_REVIEW.md)
+has `c(g) = -0.509942%`: 78,013,034 bytes versus 78,410,855 bytes for the whole-input
+baseline, including container overhead. A negative sign is a valid outcome, not
+by itself an error. Local entropy adaptation can in principle outweigh lost
+cross-boundary matches and added framing costs; this run does not isolate that
+mechanism. Zstd already permits new entropy tables within a frame
+([RFC 8878, section 3.1.1.3](https://www.rfc-editor.org/rfc/rfc8878.html#section-3.1.1.3)),
+so the result does not establish that frame splitting alone enabled local adaptation.
+The baseline's empty terminal frame remains included; see the linked review.
+
+## License
+
+Code: [Apache-2.0](LICENSE). Measurements: [CC BY 4.0](evidence/LICENSE).
+Third-party code retains its own licenses; see [NOTICE](NOTICE).
 

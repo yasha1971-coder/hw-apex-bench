@@ -7,10 +7,8 @@ GitHub». The user's screenshot stopped during recovery of the non-UTF-8
 `results.jsonl` after PR #12. That failure was reproduced against the live main
 branch and the exact original Actions artifact was recovered.
 
-Recovery PR #13 is merged as `e181868f307225bea7c4c3532e0dfb1130d2ae37`.
-Its publication-integrity workflow `34542759441` passed. Pages deployment
-`34542832629` passed on that merge. Read
-`evidence/stage5-20260910/RECOVERY.md` for artifact provenance.
+Read `evidence/stage5-20260910/RECOVERY.md`, then check current GitHub PRs and
+workflow runs before deciding whether the recovery has already merged/deployed.
 
 ## Repository identity and scope
 
@@ -79,25 +77,20 @@ do not discard the subsequent approved work or rerun stages 1–5 to fix encodin
 ## Saved next experiment
 
 The previous thread committed a five-point curve implementation locally as
-`c8436f656002f20b16ebff9e9c96214533e3e22d` (`cg-tradeoff-five-point`), based on the failed-publication main.
-It is now restored on `experiment/cg-five-point-recovered`, based on recovery
-merge `e181868f307225bea7c4c3532e0dfb1130d2ae37`.
+`c8436f6` (`cg-tradeoff-five-point`), based on the failed-publication main.
 Its files include `CG_CURVE.md`, `harness/cg_curve.py`, two codec adapters,
 `harness/test_cg_curve.py`, and `.github/workflows/cg-curve.yml`.
-All 17 tests were rerun successfully after recovery. The existing 420-record
-publication and exact report regeneration still pass. This is not evidence of
-a measured curve. Check the branch's dedicated workflow and its complete
-artifact before citing any new curve numbers or merging the experiment.
+The screenshot reported 17 passing tests. That is not evidence of a measured
+curve. Remote publication and CI status must be checked separately.
 
 Grid: 4, 16, 64, 256 KiB and 1 MiB. Same-container whole-file baselines for
 ACEAPEX and seekable zstd. BGZF points beyond its format limit and strict c(g)
 are n/a. Each numeric point needs archive accounting and exact restore, plus
 common 200-query resident-library p50/p99 measurements.
 
-Next bounded action: run the dedicated workflow and audit its complete curve
-before merging it or drawing new conclusions. A successful run creates reviewed
-candidates; it must not automatically replace the publication manifest or make
-unreviewed numbers live. Preserve the previous 420 rows byte-for-byte.
+Next bounded action: preserve that commit remotely, base the experiment on the
+publication repair, audit its harness, run the dedicated workflow, and show the
+complete curve for review before merging it or drawing new conclusions.
 Three-machine generalization and Paper 6 conclusions remain subsequent work.
 No Paper 6 manuscript was recovered as a committed deliverable in this step.
 
@@ -112,6 +105,102 @@ python3 web/build.py /tmp/cabench-pages/index.html
 
 Record subsequent PR/run URLs and update this checkpoint whenever an open item
 changes. A SHA and preserved artifact are stronger continuity than chat memory.
+
+## Licensing priority — 2026-09-11
+
+The user's current priority supersedes adapter/codec work: publish project code
+under Apache-2.0 and original measurements under CC BY 4.0 first.
+Branch `licensing/code-and-measurements` is based directly on main commit
+`e181868f307225bea7c4c3532e0dfb1130d2ae37`, so this change can merge independently
+of draft PRs #14–#17. It adds LICENSE, evidence/LICENSE and NOTICE. LICENSE contains
+the complete canonical Apache 2.0 text, preceded by the requested copyright.
+NOTICE distinguishes the two vendored ACEAPEX test snapshots (MIT) from fetched
+or system dependencies, names htslib MIT with its cram/ BSD exception, and selects
+zstd BSD-3-Clause. Third-party source/corpus terms are preserved.
+
+The README license footer is generated from METHOD.md. Only its reviewed digest
+was updated in the publication manifest. Publication validation and page export
+passed against all 420 records on main; measurement bytes and upstream snapshots
+are unchanged. No builds, benchmark runs or upstream repository changes occurred.
+This branch deliberately does not import the extra recovered records or adapter
+changes from the draft branches. On subsequent merges, regenerate README from the
+merged METHOD.md/results.jsonl and update its manifest digest, retaining this
+license footer. Finish the licensing PR before resuming any adapter work.
+
+## Owner's ordering restored — 2026-09-11
+
+Licensing PR #18 is merged: main commit
+`a5ab7e38bc1d995dc580c8f0e5e1b221f7bca8d7`.
+The authoritative next order is in BENCH_TO_TOOL.md:
+nine-axis acceptance, adapters, check, xz, CONTRIBUTING/citation, CRAM, tag/DOI.
+Do not continue adapter work in PR #17 or add codecs ahead of the evidence gate.
+
+The nine-axis audit of retained PR #16 content at
+`1160850bda8385cc18d8960989cad15ecacd8b43` passes: 9 axes, 3 formats,
+4 core configurations, 15 curve positions, 13 supported geometries.
+The 31 axis/curve tests and publication validation pass. The checked files and
+results are identical to those in the local PR #17 checkout; no measurements
+were rerun. BGZF/zstd plateaus already exist, native batch has explicit n/a,
+and BGZF's strict c(g) limitation is not fabricated into five measured points.
+Main still has 420 records; the prepared 435-record publication is in PR #16.
+
+Next bounded action: review/prepare PR #16's complete table for evidence acceptance
+and main integration, preserving the license footer and regeneration integrity.
+PR #18 merge authorization does not authorize merging PR #16 or PR #17. This
+checkpoint is documentation only and does not publish new measurements.
+
+## Focused c(g) baseline audit — 2026-09-11
+
+Documentation work continues in PR #19, branch docs/nine-axis-gate, from
+7499d65dfdfb54a220d4cce76132c2f1fafd43e7. The additional read-only audit and eleven
+tests verify all ten supported points' commands and whole-input geometry.
+ACEAPEX baseline: one LZ block covering 253935557 bytes. Zstd baseline: one
+nonempty whole-input frame PLUS an empty terminal frame, not literally one
+physical frame; both are included in the baseline file length. BGZF has no
+strict baseline. Source hashes matched retained compiler provenance.
+
+See review/CG_BASELINE_REVIEW.md and review/cg-baseline-check.json for the
+exact scope and commands. No archive was reopened or recompressed in this
+segment; existing restore receipts remain existing evidence. No changes to
+raw results, codec source, README or adapter code. Next bounded action remains
+preparing the reviewed PR #16 evidence for main with the license footer and
+publication validation. Do not erase the zstd empty-frame qualification.
+
+## Frame symmetry and LIT_CHUNK follow-up — 2026-09-11
+
+PR #19 follow-up to ee3dd40c6e0a46586558f5b20d3ec12b971a5666 verifies zstd
+indexed frame counts 61996/15499/3875/969/243 at 4/16/64/256/1024 KiB;
+all have zero empty data frames. Baseline: two indexed frames, one empty.
+Each file also has one seek-table skippable frame. Counts are retained parser
+evidence, not a new zstd -l run; original archives are absent locally.
+All ACEAPEX baseline/point commands unset LIT_CHUNK. In pinned ee5a37e this
+selects the legacy four-part zstd level-3 path, with DNA transform OFF for
+all six configurations; FSE policy remains 512 KiB. Newer changes do not
+apply retroactively. Source hash matches retained compiler provenance.
+Do not publish 6.57–7.18% as a c(g) interval: 6.569397% is matched seekable
+c(g), while 7.180634% is the historical CLI-versus-seekable comparison.
+See review/CG_BASELINE_REVIEW.md. No raw result bytes changed. Next: prepare
+PR #16 publication on licensed main, keeping these distinctions.
+
+## Negative c(g) publication note — 2026-09-11
+
+PR #19 merged into main as 278b04ba8aef62c5e2c147e69b1c0627159047c8.
+The owner's requested negative-c(g) note is prepared on docs/negative-cg-note.
+It is generated into README through METHOD.md, before the existing license
+footer. It reports the reviewed zstd 1 MiB value -0.509942% and the exact file
+lengths 78013034 vs 78410855 bytes. The original results remain unchanged.
+
+Local entropy adaptation is identified as a possible mechanism, not a causal
+finding: this run did not isolate it, and RFC 8878 section 3.1.1.3 permits
+new entropy tables inside a frame already. No claim of literature-wide novelty
+or universally costly splitting is made. The empty baseline frame is still
+counted. The README digest was refreshed after regeneration; publication
+validation and page export passed against the 420 rows currently in main.
+
+No codec or benchmark was run. The full 435-row evidence publication from
+PR #16 remains a separate next bounded step; adapter work stays paused.
+
+## Retained PR #16 preparation history
 
 ## Adaptive default follow-up — 2026-09-11
 
@@ -227,3 +316,30 @@ handoff commit only adds this delivery checkpoint. PR #14's remote head remained
 `d84f38af3b26d830fbc1cc654174f2bd673178ab`; the recovered curve is delivered in
 PR #16, not falsely attributed to an update of PR #14. Adapter extraction is the
 next stage, not a completed feature.
+
+## Nine-axis publication integration — 2026-09-11
+
+The owner authorized merging PR #20 and publishing PR #16 on main before any
+adapter work. PR #20 merged as 3dab71573fad34a30a01734b85aa48c41359fa98.
+This integration joins that main revision with PR #16's reviewed head
+1160850bda8385cc18d8960989cad15ecacd8b43. README, METHOD and report generation
+retain Apache/CC BY licensing, the negative-c(g) note and both follow-up reviews.
+The c(g) renderer now explicitly preserves the empty zstd baseline frame and
+states that the pinned ACEAPEX legacy literal path has DNA transform OFF.
+
+All 435 original results remain byte-identical:
+cb52b8cb9fac484a6474d976681ea85ae2c052d80d820422b7f57c25ec938100.
+Publication validation/export, nine-axis audit, default replay (six rows and
+1000 samples), matched-baseline audit and all 48 tests passed locally. Only
+reviewed README/curve-report digests were changed; source evidence is untouched.
+Full stage1/audit/cg/default/strict-cg workflows are manual-only so this update
+cannot launch completed measurements again. Publication CI includes the eleven
+focused baseline-review tests. No adapter code is imported from PR #17.
+
+After the PR #16 integration commit passes CI and is merged to main, nine-axis
+publication is the completed gate: 3 formats, 4 core configurations, 15 curve
+positions with 13 supported geometries, and explicit n/a for unsupported axes.
+The next bounded step is reconciling the seven-function adapter interface in
+PR #17 with published main. Do not overwrite published reports or licenses with
+that older branch's files. No new measurements, xz, CRAM or release are part of
+this publication segment. Read current main/PR/Pages status at the next turn.

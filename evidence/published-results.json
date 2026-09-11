@@ -21,16 +21,16 @@
       "sha256": "cb52b8cb9fac484a6474d976681ea85ae2c052d80d820422b7f57c25ec938100"
     },
     "README.md": {
-      "bytes": 77869,
-      "sha256": "084d7d0b407d1eb5ead7fda1ab0f6d8b8c065f821075db668d392ded4582d009"
+      "bytes": 79287,
+      "sha256": "0df8b36ced5c034b410318e08ad7ff11d9c182387857494ab0b7168ea6257adc"
     },
     "BATCH_RESULTS.md": {
       "bytes": 19250,
       "sha256": "d1aa51fee46758501e4f378bee48bae185b74d5db5ee3657a5741c70c49e46a2"
     },
     "CG_CURVE_RESULTS.md": {
-      "bytes": 44243,
-      "sha256": "b69149c58e5d3e5c5d5013fa7676c6762c7f2b12b928e29ef3f4f6a871ab346d"
+      "bytes": 44738,
+      "sha256": "af6bfa17db628c1be68174239f8cefe4e1c51d5c16767faa4d3ad89633a483c4"
     },
     "evidence/cg-curve-20260910/receipt.json": {
       "bytes": 4143,

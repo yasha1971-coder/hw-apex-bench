@@ -63,3 +63,10 @@ Primary references:
 
 These are acceptance conditions for the next stages, not claims of completed
 adapter, xz, CRAM, CI or release work.
+
+## Publication gate
+
+PR #16 integrates the recovered evidence with licensed main and the reviewed
+negative-c(g) note. After merge and publication validation, resume the adapter
+interface as the next bounded step. PR #17 remains a draft requiring reconciliation
+with published data; its qualification work is not a completed timing migration.

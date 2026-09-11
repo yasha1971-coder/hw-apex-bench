@@ -1,10 +1,5 @@
 name: Strict ACEAPEX c(g) reproduction
 on:
-  pull_request:
-    paths:
-      - 'harness/aceapex_strict_cg.py'
-      - 'corpora.json'
-      - '.github/workflows/strict-ace-cg.yml'
   workflow_dispatch:
 permissions:
   contents: read
