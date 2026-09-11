@@ -480,3 +480,18 @@ Do not claim that seven shell functions finish migration of the nine axes: batch
 counters, block mapping, controlled c(g), other ACE configurations and the C timing
 runner are not connected to the new contract yet. Existing historical CLI paths
 are retained. No new performance numbers, main merges, CRAM or release in this step.
+
+PR #23 saved: https://github.com/yasha1971-coder/hw-apex-bench/pull/23
+Base tooling/resident-context-proof (#22); code head
+b6dfdaaccfc16617809a433f4d6cee2eacbb0d89. All GitHub CI passed on this head:
+34604937509 (four clean codec builds), 34604937464 (publication integrity),
+34604937426 (native XZ correctness). Downloaded all four matrix artifacts and
+verified their ZIP SHA-256 against GitHub metadata, then inspected each check.json.
+Live receipts confirm the same 19 restores / 2263 regions and actual versions:
+HTSlib 1.24, zstd 1.5.7, ACEAPEX 1b13, XZ 5.4.5. Persistent receipt summaries and
+artifact digests are in review/adapter-check-ci.json. Artifact IDs:
+10265269430 bgzip; 10265784165 zstd; 10265714129 ACE; 10265654129 XZ.
+This final checkpoint changes only documentation/receipt summaries, not tested
+code or publication. PR #21/#22/#23 are still draft; no merge was performed.
+The check gate is complete for these four adapters. Next is measurement planning
+and output integration, with no rerun of the completed published measurements.

@@ -1,0 +1,733 @@
+{
+  "code_commit": "b6dfdaaccfc16617809a433f4d6cee2eacbb0d89",
+  "pr": 23,
+  "workflow_run": 34604937509,
+  "scope": "correctness only; no timings",
+  "artifacts": [
+    {
+      "id": 10265784165,
+      "name": "adapter-check-zstd_seekable",
+      "digest": "sha256:c0a50a343957b770c408289a94c4479348220dc097c2ae8ac159709696624f93",
+      "receipt_sha256": "88d4efd739a6e60b109509211da07911a0e22cbda6a87808471646a29e464780",
+      "receipt": {
+        "status": "pass",
+        "codec": "zstd-seekable",
+        "version": "1.5.7",
+        "adapter_sha256": "7d074a8175727ce4631687ef127f57f7f2f78641688790a5e409b073b95245e2",
+        "command": "./run.sh --check codecs/zstd_seekable.sh",
+        "capabilities": {
+          "amplification": "n/a \u2014 decoder counters not ported to context proof",
+          "batch": "n/a \u2014 no batch API",
+          "break_even": "n/a \u2014 timing runner not connected to context proof",
+          "c_g": "n/a \u2014 controlled curve runner not connected to context proof",
+          "decode": "available",
+          "encode": "n/a \u2014 encode timer not connected to context proof",
+          "h_alpha": "n/a \u2014 block mapping callback not ported to context proof",
+          "ratio": "n/a \u2014 archive accounting not connected to context proof",
+          "region": "available"
+        },
+        "native_library_sha256": "f60effbbcd94df79474ed91b81610f8906f3f38f0c3b1a8d2e65882323befbd3",
+        "sources": [
+          {
+            "directory": "zstd",
+            "commit": "f8745da6ff1ad1e7bab384bd1f9d742439278e99",
+            "submodules": ""
+          }
+        ],
+        "cases": [
+          {
+            "fixture": "mixed",
+            "input_bytes": 349571,
+            "input_sha256": "defc2a4e60edcbaa2b49bef2d1509a2043871beec12f0455bdc1f0f5559966d2",
+            "archive_sha256": "840589a97cc03d476a3b9cdf4f926cc10ed016265352f399f71842730447dbc1",
+            "artifacts": {
+              "mixed.archive": "840589a97cc03d476a3b9cdf4f926cc10ed016265352f399f71842730447dbc1"
+            },
+            "full_restore": "byte-exact",
+            "status": "pass",
+            "native": {
+              "capabilities": {
+                "amplification": "n/a \u2014 decoder counters not ported to context proof",
+                "batch": "n/a \u2014 no batch API",
+                "break_even": "n/a \u2014 timing runner not connected to context proof",
+                "c_g": "n/a \u2014 controlled curve runner not connected to context proof",
+                "decode": "available",
+                "encode": "n/a \u2014 encode timer not connected to context proof",
+                "h_alpha": "n/a \u2014 block mapping callback not ported to context proof",
+                "ratio": "n/a \u2014 archive accounting not connected to context proof",
+                "region": "available"
+              },
+              "corpus_sha256": "defc2a4e60edcbaa2b49bef2d1509a2043871beec12f0455bdc1f0f5559966d2",
+              "full_restore": "byte-exact",
+              "invalid_ranges": 3,
+              "region_checks": 360,
+              "timings_collected": false,
+              "version": "1.5.7"
+            }
+          },
+          {
+            "fixture": "one-byte",
+            "input_bytes": 1,
+            "input_sha256": "4b68ab3847feda7d6c62c1fbcbeebfa35eab7351ed5e78f4ddadea5df64b8015",
+            "archive_sha256": "fa1b9e3101aae58b146a6c222d95755f9573630d958c2df51dff63663cca8bf6",
+            "artifacts": {
+              "one-byte.archive": "fa1b9e3101aae58b146a6c222d95755f9573630d958c2df51dff63663cca8bf6"
+            },
+            "full_restore": "byte-exact",
+            "status": "pass",
+            "native": {
+              "capabilities": {
+                "amplification": "n/a \u2014 decoder counters not ported to context proof",
+                "batch": "n/a \u2014 no batch API",
+                "break_even": "n/a \u2014 timing runner not connected to context proof",
+                "c_g": "n/a \u2014 controlled curve runner not connected to context proof",
+                "decode": "available",
+                "encode": "n/a \u2014 encode timer not connected to context proof",
+                "h_alpha": "n/a \u2014 block mapping callback not ported to context proof",
+                "ratio": "n/a \u2014 archive accounting not connected to context proof",
+                "region": "available"
+              },
+              "corpus_sha256": "4b68ab3847feda7d6c62c1fbcbeebfa35eab7351ed5e78f4ddadea5df64b8015",
+              "full_restore": "byte-exact",
+              "invalid_ranges": 3,
+              "region_checks": 3,
+              "timings_collected": false,
+              "version": "1.5.7"
+            }
+          },
+          {
+            "fixture": "empty",
+            "input_bytes": 0,
+            "input_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "archive_sha256": "0989764aadd3b9fddeb50570c7b987bdb9c774bc3392bb6be59c4f40817c4e10",
+            "artifacts": {
+              "empty.archive": "0989764aadd3b9fddeb50570c7b987bdb9c774bc3392bb6be59c4f40817c4e10"
+            },
+            "full_restore": "byte-exact",
+            "status": "pass",
+            "native": {
+              "capabilities": {
+                "amplification": "n/a \u2014 decoder counters not ported to context proof",
+                "batch": "n/a \u2014 no batch API",
+                "break_even": "n/a \u2014 timing runner not connected to context proof",
+                "c_g": "n/a \u2014 controlled curve runner not connected to context proof",
+                "decode": "available",
+                "encode": "n/a \u2014 encode timer not connected to context proof",
+                "h_alpha": "n/a \u2014 block mapping callback not ported to context proof",
+                "ratio": "n/a \u2014 archive accounting not connected to context proof",
+                "region": "available"
+              },
+              "corpus_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "full_restore": "byte-exact",
+              "invalid_ranges": 3,
+              "region_checks": 1,
+              "timings_collected": false,
+              "version": "1.5.7"
+            }
+          },
+          {
+            "fixture": "exact-block",
+            "input_bytes": 16384,
+            "input_sha256": "4348e3b98e8a327b34ced39c1da9e67cdb4cd5e48e4d7960607a3ae403d35f0c",
+            "archive_sha256": "1e9f1cfcacff83ae9f9676fd25f01af00bd3491d56ed4175dc2851fd23ab36b2",
+            "artifacts": {
+              "exact-block.archive": "1e9f1cfcacff83ae9f9676fd25f01af00bd3491d56ed4175dc2851fd23ab36b2"
+            },
+            "full_restore": "byte-exact",
+            "status": "pass",
+            "native": {
+              "capabilities": {
+                "amplification": "n/a \u2014 decoder counters not ported to context proof",
+                "batch": "n/a \u2014 no batch API",
+                "break_even": "n/a \u2014 timing runner not connected to context proof",
+                "c_g": "n/a \u2014 controlled curve runner not connected to context proof",
+                "decode": "available",
+                "encode": "n/a \u2014 encode timer not connected to context proof",
+                "h_alpha": "n/a \u2014 block mapping callback not ported to context proof",
+                "ratio": "n/a \u2014 archive accounting not connected to context proof",
+                "region": "available"
+              },
+              "corpus_sha256": "4348e3b98e8a327b34ced39c1da9e67cdb4cd5e48e4d7960607a3ae403d35f0c",
+              "full_restore": "byte-exact",
+              "invalid_ranges": 3,
+              "region_checks": 108,
+              "timings_collected": false,
+              "version": "1.5.7"
+            }
+          },
+          {
+            "fixture": "cross-block",
+            "input_bytes": 49169,
+            "input_sha256": "845cc9aa7bbecbc4a662afc37127d84cf53f41672ba8b2a6a7881e6a6c29b287",
+            "archive_sha256": "6c2e29c34c4dc178a0f270ce3e7a86765987e9e5b695058b92806e93184fdf00",
+            "artifacts": {
+              "cross-block.archive": "6c2e29c34c4dc178a0f270ce3e7a86765987e9e5b695058b92806e93184fdf00"
+            },
+            "full_restore": "byte-exact",
+            "status": "pass",
+            "native": {
+              "capabilities": {
+                "amplification": "n/a \u2014 decoder counters not ported to context proof",
+                "batch": "n/a \u2014 no batch API",
+                "break_even": "n/a \u2014 timing runner not connected to context proof",
+                "c_g": "n/a \u2014 controlled curve runner not connected to context proof",
+                "decode": "available",
+                "encode": "n/a \u2014 encode timer not connected to context proof",
+                "h_alpha": "n/a \u2014 block mapping callback not ported to context proof",
+                "ratio": "n/a \u2014 archive accounting not connected to context proof",
+                "region": "available"
+              },
+              "corpus_sha256": "845cc9aa7bbecbc4a662afc37127d84cf53f41672ba8b2a6a7881e6a6c29b287",
+              "full_restore": "byte-exact",
+              "invalid_ranges": 3,
+              "region_checks": 142,
+              "timings_collected": false,
+              "version": "1.5.7"
+            }
+          }
+        ],
+        "timings_collected": false
+      }
+    },
+    {
+      "id": 10265714129,
+      "name": "adapter-check-aceapex",
+      "digest": "sha256:59cc4947a3e105f14fd4a6b5b6958797108d2c7862c3dd275b2fe131f8f18aa1",
+      "receipt_sha256": "c434adb31d7e9b093f27c8e505152acd610a687818f549143117e6eeeb5c064d",
+      "receipt": {
+        "status": "pass",
+        "codec": "aceapex-interactive",
+        "version": "aceapex@1b13df34ac8e839dd3232b59bc59560d689a435a",
+        "adapter_sha256": "9725234646404c0072a6d458816bb4713a3024b56e2bc53bae37995c6a8d473a",
+        "command": "./run.sh --check codecs/aceapex.sh",
+        "capabilities": {
+          "amplification": "n/a \u2014 decoder counters not ported to context proof",
+          "batch": "n/a \u2014 native batch callback not ported in context proof",
+          "break_even": "n/a \u2014 timing runner not connected to context proof",
+          "c_g": "n/a \u2014 controlled curve runner not connected to context proof",
+          "decode": "available",
+          "encode": "n/a \u2014 encode timer not connected to context proof",
+          "h_alpha": "n/a \u2014 block mapping callback not ported to context proof",
+          "ratio": "n/a \u2014 archive accounting not connected to context proof",
+          "region": "available"
+        },
+        "native_library_sha256": "add539b85af2d5ec6d33f9b38599639850099fbe7d30bb02fefda1d2d955dde0",
+        "sources": [
+          {
+            "directory": "aceapex",
+            "commit": "1b13df34ac8e839dd3232b59bc59560d689a435a",
+            "submodules": ""
+          },
+          {
+            "directory": "zstd",
+            "commit": "f8745da6ff1ad1e7bab384bd1f9d742439278e99",
+            "submodules": ""
+          }
+        ],
+        "cases": [
+          {
+            "fixture": "mixed",
+            "input_bytes": 349571,
+            "input_sha256": "defc2a4e60edcbaa2b49bef2d1509a2043871beec12f0455bdc1f0f5559966d2",
+            "archive_sha256": "7edca39cfab1e6fa1128d1a2c8ec6c9bc518f0eaff08059bbc19c90c509b9eeb",
+            "artifacts": {
+              "mixed.archive": "7edca39cfab1e6fa1128d1a2c8ec6c9bc518f0eaff08059bbc19c90c509b9eeb"
+            },
+            "full_restore": "byte-exact",
+            "status": "pass",
+            "native": {
+              "capabilities": {
+                "amplification": "n/a \u2014 decoder counters not ported to context proof",
+                "batch": "n/a \u2014 native batch callback not ported in context proof",
+                "break_even": "n/a \u2014 timing runner not connected to context proof",
+                "c_g": "n/a \u2014 controlled curve runner not connected to context proof",
+                "decode": "available",
+                "encode": "n/a \u2014 encode timer not connected to context proof",
+                "h_alpha": "n/a \u2014 block mapping callback not ported to context proof",
+                "ratio": "n/a \u2014 archive accounting not connected to context proof",
+                "region": "available"
+              },
+              "corpus_sha256": "defc2a4e60edcbaa2b49bef2d1509a2043871beec12f0455bdc1f0f5559966d2",
+              "full_restore": "byte-exact",
+              "invalid_ranges": 3,
+              "region_checks": 360,
+              "timings_collected": false,
+              "version": "aceapex@1b13df34ac8e839dd3232b59bc59560d689a435a"
+            }
+          },
+          {
+            "fixture": "one-byte",
+            "input_bytes": 1,
+            "input_sha256": "4b68ab3847feda7d6c62c1fbcbeebfa35eab7351ed5e78f4ddadea5df64b8015",
+            "archive_sha256": "13e0aded41bec537f4ef7e529d21c2659712eb0ff89ac7ca722f81cf3ff10c10",
+            "artifacts": {
+              "one-byte.archive": "13e0aded41bec537f4ef7e529d21c2659712eb0ff89ac7ca722f81cf3ff10c10"
+            },
+            "full_restore": "byte-exact",
+            "status": "pass",
+            "native": {
+              "capabilities": {
+                "amplification": "n/a \u2014 decoder counters not ported to context proof",
+                "batch": "n/a \u2014 native batch callback not ported in context proof",
+                "break_even": "n/a \u2014 timing runner not connected to context proof",
+                "c_g": "n/a \u2014 controlled curve runner not connected to context proof",
+                "decode": "available",
+                "encode": "n/a \u2014 encode timer not connected to context proof",
+                "h_alpha": "n/a \u2014 block mapping callback not ported to context proof",
+                "ratio": "n/a \u2014 archive accounting not connected to context proof",
+                "region": "available"
+              },
+              "corpus_sha256": "4b68ab3847feda7d6c62c1fbcbeebfa35eab7351ed5e78f4ddadea5df64b8015",
+              "full_restore": "byte-exact",
+              "invalid_ranges": 3,
+              "region_checks": 3,
+              "timings_collected": false,
+              "version": "aceapex@1b13df34ac8e839dd3232b59bc59560d689a435a"
+            }
+          },
+          {
+            "fixture": "empty",
+            "status": "n/a",
+            "reason": "pinned ACE CLI does not support empty input"
+          },
+          {
+            "fixture": "exact-block",
+            "input_bytes": 16384,
+            "input_sha256": "4348e3b98e8a327b34ced39c1da9e67cdb4cd5e48e4d7960607a3ae403d35f0c",
+            "archive_sha256": "31cf027d7ae6bad1da82d40646964403ff9145c2bd3d7080999a712254a3bf59",
+            "artifacts": {
+              "exact-block.archive": "31cf027d7ae6bad1da82d40646964403ff9145c2bd3d7080999a712254a3bf59"
+            },
+            "full_restore": "byte-exact",
+            "status": "pass",
+            "native": {
+              "capabilities": {
+                "amplification": "n/a \u2014 decoder counters not ported to context proof",
+                "batch": "n/a \u2014 native batch callback not ported in context proof",
+                "break_even": "n/a \u2014 timing runner not connected to context proof",
+                "c_g": "n/a \u2014 controlled curve runner not connected to context proof",
+                "decode": "available",
+                "encode": "n/a \u2014 encode timer not connected to context proof",
+                "h_alpha": "n/a \u2014 block mapping callback not ported to context proof",
+                "ratio": "n/a \u2014 archive accounting not connected to context proof",
+                "region": "available"
+              },
+              "corpus_sha256": "4348e3b98e8a327b34ced39c1da9e67cdb4cd5e48e4d7960607a3ae403d35f0c",
+              "full_restore": "byte-exact",
+              "invalid_ranges": 3,
+              "region_checks": 108,
+              "timings_collected": false,
+              "version": "aceapex@1b13df34ac8e839dd3232b59bc59560d689a435a"
+            }
+          },
+          {
+            "fixture": "cross-block",
+            "input_bytes": 49169,
+            "input_sha256": "845cc9aa7bbecbc4a662afc37127d84cf53f41672ba8b2a6a7881e6a6c29b287",
+            "archive_sha256": "5d39e17cf60b82ed562148abb4f4a2fec5643b94486f46449e39a3db38494343",
+            "artifacts": {
+              "cross-block.archive": "5d39e17cf60b82ed562148abb4f4a2fec5643b94486f46449e39a3db38494343"
+            },
+            "full_restore": "byte-exact",
+            "status": "pass",
+            "native": {
+              "capabilities": {
+                "amplification": "n/a \u2014 decoder counters not ported to context proof",
+                "batch": "n/a \u2014 native batch callback not ported in context proof",
+                "break_even": "n/a \u2014 timing runner not connected to context proof",
+                "c_g": "n/a \u2014 controlled curve runner not connected to context proof",
+                "decode": "available",
+                "encode": "n/a \u2014 encode timer not connected to context proof",
+                "h_alpha": "n/a \u2014 block mapping callback not ported to context proof",
+                "ratio": "n/a \u2014 archive accounting not connected to context proof",
+                "region": "available"
+              },
+              "corpus_sha256": "845cc9aa7bbecbc4a662afc37127d84cf53f41672ba8b2a6a7881e6a6c29b287",
+              "full_restore": "byte-exact",
+              "invalid_ranges": 3,
+              "region_checks": 142,
+              "timings_collected": false,
+              "version": "aceapex@1b13df34ac8e839dd3232b59bc59560d689a435a"
+            }
+          }
+        ],
+        "timings_collected": false
+      }
+    },
+    {
+      "id": 10265654129,
+      "name": "adapter-check-xz",
+      "digest": "sha256:0562ca4ff0158283c73d37f488521c0ca9f0a5e117f2ae1a68fc7d7ab0abf5ea",
+      "receipt_sha256": "bdd53991f22d7691fa48c4dd310988d7c683ba51c3f71f991dfba2d7fbcfe292",
+      "receipt": {
+        "status": "pass",
+        "codec": "xz-blocked",
+        "version": "5.4.5",
+        "adapter_sha256": "777ea8903c01523119888b907d8d334c8bf63a4edc69731517a3fd6ca8376d68",
+        "command": "./run.sh --check codecs/xz.sh",
+        "capabilities": {
+          "amplification": "n/a \u2014 decoder counters not ported to context proof",
+          "batch": "n/a \u2014 no batch API",
+          "break_even": "n/a \u2014 timing runner not connected to context proof",
+          "c_g": "n/a \u2014 controlled curve runner not connected to context proof",
+          "decode": "available",
+          "encode": "n/a \u2014 encode timer not connected to context proof",
+          "h_alpha": "n/a \u2014 block mapping callback not ported to context proof",
+          "ratio": "n/a \u2014 archive accounting not connected to context proof",
+          "region": "available"
+        },
+        "native_library_sha256": "c236e805420660393469731cb5b36db0db096652e8463f903b27b3ec890d9d68",
+        "sources": [
+          {
+            "directory": "xz",
+            "commit": "49053c0a649f4c8bd2b8d97ce915f401fbc0f3d9",
+            "submodules": ""
+          }
+        ],
+        "cases": [
+          {
+            "fixture": "mixed",
+            "input_bytes": 349571,
+            "input_sha256": "defc2a4e60edcbaa2b49bef2d1509a2043871beec12f0455bdc1f0f5559966d2",
+            "archive_sha256": "e9f13b4e28280476f30d7212c3a70604d668b35c4be5fbd542c843b53e04b301",
+            "artifacts": {
+              "mixed.archive": "e9f13b4e28280476f30d7212c3a70604d668b35c4be5fbd542c843b53e04b301"
+            },
+            "full_restore": "byte-exact",
+            "status": "pass",
+            "native": {
+              "capabilities": {
+                "amplification": "n/a \u2014 decoder counters not ported to context proof",
+                "batch": "n/a \u2014 no batch API",
+                "break_even": "n/a \u2014 timing runner not connected to context proof",
+                "c_g": "n/a \u2014 controlled curve runner not connected to context proof",
+                "decode": "available",
+                "encode": "n/a \u2014 encode timer not connected to context proof",
+                "h_alpha": "n/a \u2014 block mapping callback not ported to context proof",
+                "ratio": "n/a \u2014 archive accounting not connected to context proof",
+                "region": "available"
+              },
+              "corpus_sha256": "defc2a4e60edcbaa2b49bef2d1509a2043871beec12f0455bdc1f0f5559966d2",
+              "full_restore": "byte-exact",
+              "invalid_ranges": 3,
+              "region_checks": 360,
+              "timings_collected": false,
+              "version": "5.4.5"
+            }
+          },
+          {
+            "fixture": "one-byte",
+            "input_bytes": 1,
+            "input_sha256": "4b68ab3847feda7d6c62c1fbcbeebfa35eab7351ed5e78f4ddadea5df64b8015",
+            "archive_sha256": "45dcac4fca743ae544c0c5229cfb6a0b0abe6450594f5d0e0e18d0a00145e36d",
+            "artifacts": {
+              "one-byte.archive": "45dcac4fca743ae544c0c5229cfb6a0b0abe6450594f5d0e0e18d0a00145e36d"
+            },
+            "full_restore": "byte-exact",
+            "status": "pass",
+            "native": {
+              "capabilities": {
+                "amplification": "n/a \u2014 decoder counters not ported to context proof",
+                "batch": "n/a \u2014 no batch API",
+                "break_even": "n/a \u2014 timing runner not connected to context proof",
+                "c_g": "n/a \u2014 controlled curve runner not connected to context proof",
+                "decode": "available",
+                "encode": "n/a \u2014 encode timer not connected to context proof",
+                "h_alpha": "n/a \u2014 block mapping callback not ported to context proof",
+                "ratio": "n/a \u2014 archive accounting not connected to context proof",
+                "region": "available"
+              },
+              "corpus_sha256": "4b68ab3847feda7d6c62c1fbcbeebfa35eab7351ed5e78f4ddadea5df64b8015",
+              "full_restore": "byte-exact",
+              "invalid_ranges": 3,
+              "region_checks": 3,
+              "timings_collected": false,
+              "version": "5.4.5"
+            }
+          },
+          {
+            "fixture": "empty",
+            "input_bytes": 0,
+            "input_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "archive_sha256": "0040f94d11d0039505328a90b2ff48968db873e9e7967307631bf40ef5679275",
+            "artifacts": {
+              "empty.archive": "0040f94d11d0039505328a90b2ff48968db873e9e7967307631bf40ef5679275"
+            },
+            "full_restore": "byte-exact",
+            "status": "pass",
+            "native": {
+              "capabilities": {
+                "amplification": "n/a \u2014 decoder counters not ported to context proof",
+                "batch": "n/a \u2014 no batch API",
+                "break_even": "n/a \u2014 timing runner not connected to context proof",
+                "c_g": "n/a \u2014 controlled curve runner not connected to context proof",
+                "decode": "available",
+                "encode": "n/a \u2014 encode timer not connected to context proof",
+                "h_alpha": "n/a \u2014 block mapping callback not ported to context proof",
+                "ratio": "n/a \u2014 archive accounting not connected to context proof",
+                "region": "available"
+              },
+              "corpus_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "full_restore": "byte-exact",
+              "invalid_ranges": 3,
+              "region_checks": 1,
+              "timings_collected": false,
+              "version": "5.4.5"
+            }
+          },
+          {
+            "fixture": "exact-block",
+            "input_bytes": 16384,
+            "input_sha256": "4348e3b98e8a327b34ced39c1da9e67cdb4cd5e48e4d7960607a3ae403d35f0c",
+            "archive_sha256": "9bcc05b1a516731d73895b2a18e36bb649225e6cc89bdc368b526ff6648fea35",
+            "artifacts": {
+              "exact-block.archive": "9bcc05b1a516731d73895b2a18e36bb649225e6cc89bdc368b526ff6648fea35"
+            },
+            "full_restore": "byte-exact",
+            "status": "pass",
+            "native": {
+              "capabilities": {
+                "amplification": "n/a \u2014 decoder counters not ported to context proof",
+                "batch": "n/a \u2014 no batch API",
+                "break_even": "n/a \u2014 timing runner not connected to context proof",
+                "c_g": "n/a \u2014 controlled curve runner not connected to context proof",
+                "decode": "available",
+                "encode": "n/a \u2014 encode timer not connected to context proof",
+                "h_alpha": "n/a \u2014 block mapping callback not ported to context proof",
+                "ratio": "n/a \u2014 archive accounting not connected to context proof",
+                "region": "available"
+              },
+              "corpus_sha256": "4348e3b98e8a327b34ced39c1da9e67cdb4cd5e48e4d7960607a3ae403d35f0c",
+              "full_restore": "byte-exact",
+              "invalid_ranges": 3,
+              "region_checks": 108,
+              "timings_collected": false,
+              "version": "5.4.5"
+            }
+          },
+          {
+            "fixture": "cross-block",
+            "input_bytes": 49169,
+            "input_sha256": "845cc9aa7bbecbc4a662afc37127d84cf53f41672ba8b2a6a7881e6a6c29b287",
+            "archive_sha256": "7e15146a1bbb7b92e70c2a3b76b4804492bca6da5ce3aa40a5476320f1bb71f9",
+            "artifacts": {
+              "cross-block.archive": "7e15146a1bbb7b92e70c2a3b76b4804492bca6da5ce3aa40a5476320f1bb71f9"
+            },
+            "full_restore": "byte-exact",
+            "status": "pass",
+            "native": {
+              "capabilities": {
+                "amplification": "n/a \u2014 decoder counters not ported to context proof",
+                "batch": "n/a \u2014 no batch API",
+                "break_even": "n/a \u2014 timing runner not connected to context proof",
+                "c_g": "n/a \u2014 controlled curve runner not connected to context proof",
+                "decode": "available",
+                "encode": "n/a \u2014 encode timer not connected to context proof",
+                "h_alpha": "n/a \u2014 block mapping callback not ported to context proof",
+                "ratio": "n/a \u2014 archive accounting not connected to context proof",
+                "region": "available"
+              },
+              "corpus_sha256": "845cc9aa7bbecbc4a662afc37127d84cf53f41672ba8b2a6a7881e6a6c29b287",
+              "full_restore": "byte-exact",
+              "invalid_ranges": 3,
+              "region_checks": 142,
+              "timings_collected": false,
+              "version": "5.4.5"
+            }
+          }
+        ],
+        "timings_collected": false
+      }
+    },
+    {
+      "id": 10265269430,
+      "name": "adapter-check-bgzip",
+      "digest": "sha256:2beaefa2816d73741d250766080be21d3bd09cc2cc1442d924e804056fd4bc8d",
+      "receipt_sha256": "c365208f49c458555d67dbf1dad50b7391a9337370641f56342cecad037dc824",
+      "receipt": {
+        "status": "pass",
+        "codec": "bgzip+htslib",
+        "version": "1.24",
+        "adapter_sha256": "af852215095a6e2ea3dcfbc2ead86c3e0c92fff6b687d028a10b49bf14d8530c",
+        "command": "./run.sh --check codecs/bgzip.sh",
+        "capabilities": {
+          "amplification": "n/a \u2014 decoder counters not ported to context proof",
+          "batch": "n/a \u2014 no batch API",
+          "break_even": "n/a \u2014 timing runner not connected to context proof",
+          "c_g": "n/a \u2014 no comparable single-parameter baseline",
+          "decode": "available",
+          "encode": "n/a \u2014 encode timer not connected to context proof",
+          "h_alpha": "n/a \u2014 block mapping callback not ported to context proof",
+          "ratio": "n/a \u2014 archive accounting not connected to context proof",
+          "region": "available"
+        },
+        "native_library_sha256": "0d40b300105e140111a771650fe144ac8fa73faa752616bd2f004ba048fc9023",
+        "sources": [
+          {
+            "directory": "htslib",
+            "commit": "4b705e4fada8ee2b6b15746f725ee8ac51631803",
+            "submodules": "b9fc194f772e45bb0a1f44b08cbf8697a1384bae htscodecs (b9fc194)"
+          }
+        ],
+        "cases": [
+          {
+            "fixture": "mixed",
+            "input_bytes": 349571,
+            "input_sha256": "defc2a4e60edcbaa2b49bef2d1509a2043871beec12f0455bdc1f0f5559966d2",
+            "archive_sha256": "4350affbbb1274779c0f089d5bdbdcfe4c6e7a43e139d07186c382ea8b886696",
+            "artifacts": {
+              "mixed.archive": "4350affbbb1274779c0f089d5bdbdcfe4c6e7a43e139d07186c382ea8b886696",
+              "mixed.archive.gzi": "637dd014b45a88193624662c32c8fc5dad54ee59f0cdc96ef696838778645a84"
+            },
+            "full_restore": "byte-exact",
+            "status": "pass",
+            "native": {
+              "capabilities": {
+                "amplification": "n/a \u2014 decoder counters not ported to context proof",
+                "batch": "n/a \u2014 no batch API",
+                "break_even": "n/a \u2014 timing runner not connected to context proof",
+                "c_g": "n/a \u2014 no comparable single-parameter baseline",
+                "decode": "available",
+                "encode": "n/a \u2014 encode timer not connected to context proof",
+                "h_alpha": "n/a \u2014 block mapping callback not ported to context proof",
+                "ratio": "n/a \u2014 archive accounting not connected to context proof",
+                "region": "available"
+              },
+              "corpus_sha256": "defc2a4e60edcbaa2b49bef2d1509a2043871beec12f0455bdc1f0f5559966d2",
+              "full_restore": "byte-exact",
+              "invalid_ranges": 3,
+              "region_checks": 168,
+              "timings_collected": false,
+              "version": "1.24"
+            }
+          },
+          {
+            "fixture": "one-byte",
+            "input_bytes": 1,
+            "input_sha256": "4b68ab3847feda7d6c62c1fbcbeebfa35eab7351ed5e78f4ddadea5df64b8015",
+            "archive_sha256": "0d5eecabd6d421cec3f25b1a10f6ad4f0bbec02c19b1baadebb099253d613d12",
+            "artifacts": {
+              "one-byte.archive": "0d5eecabd6d421cec3f25b1a10f6ad4f0bbec02c19b1baadebb099253d613d12",
+              "one-byte.archive.gzi": "af5570f5a1810b7af78caf4bc70a660f0df51e42baf91d4de5b2328de0e83dfc"
+            },
+            "full_restore": "byte-exact",
+            "status": "pass",
+            "native": {
+              "capabilities": {
+                "amplification": "n/a \u2014 decoder counters not ported to context proof",
+                "batch": "n/a \u2014 no batch API",
+                "break_even": "n/a \u2014 timing runner not connected to context proof",
+                "c_g": "n/a \u2014 no comparable single-parameter baseline",
+                "decode": "available",
+                "encode": "n/a \u2014 encode timer not connected to context proof",
+                "h_alpha": "n/a \u2014 block mapping callback not ported to context proof",
+                "ratio": "n/a \u2014 archive accounting not connected to context proof",
+                "region": "available"
+              },
+              "corpus_sha256": "4b68ab3847feda7d6c62c1fbcbeebfa35eab7351ed5e78f4ddadea5df64b8015",
+              "full_restore": "byte-exact",
+              "invalid_ranges": 3,
+              "region_checks": 3,
+              "timings_collected": false,
+              "version": "1.24"
+            }
+          },
+          {
+            "fixture": "empty",
+            "input_bytes": 0,
+            "input_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "archive_sha256": "d079906378251d29409f7f0f691113fd3b0049b5927b713e2704ca44ac743d48",
+            "artifacts": {
+              "empty.archive": "d079906378251d29409f7f0f691113fd3b0049b5927b713e2704ca44ac743d48",
+              "empty.archive.gzi": "af5570f5a1810b7af78caf4bc70a660f0df51e42baf91d4de5b2328de0e83dfc"
+            },
+            "full_restore": "byte-exact",
+            "status": "pass",
+            "native": {
+              "capabilities": {
+                "amplification": "n/a \u2014 decoder counters not ported to context proof",
+                "batch": "n/a \u2014 no batch API",
+                "break_even": "n/a \u2014 timing runner not connected to context proof",
+                "c_g": "n/a \u2014 no comparable single-parameter baseline",
+                "decode": "available",
+                "encode": "n/a \u2014 encode timer not connected to context proof",
+                "h_alpha": "n/a \u2014 block mapping callback not ported to context proof",
+                "ratio": "n/a \u2014 archive accounting not connected to context proof",
+                "region": "available"
+              },
+              "corpus_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "full_restore": "byte-exact",
+              "invalid_ranges": 3,
+              "region_checks": 1,
+              "timings_collected": false,
+              "version": "1.24"
+            }
+          },
+          {
+            "fixture": "exact-block",
+            "input_bytes": 65280,
+            "input_sha256": "218da22426f9259c2bd8bad291c6f70c5ca96a5f402c503f5700e2f7ba2a0ba7",
+            "archive_sha256": "381f6a2fb7e1e4d630377728af2eda3f0eb2ea5eaa548e6805e5307c16fc6d5f",
+            "artifacts": {
+              "exact-block.archive": "381f6a2fb7e1e4d630377728af2eda3f0eb2ea5eaa548e6805e5307c16fc6d5f",
+              "exact-block.archive.gzi": "af5570f5a1810b7af78caf4bc70a660f0df51e42baf91d4de5b2328de0e83dfc"
+            },
+            "full_restore": "byte-exact",
+            "status": "pass",
+            "native": {
+              "capabilities": {
+                "amplification": "n/a \u2014 decoder counters not ported to context proof",
+                "batch": "n/a \u2014 no batch API",
+                "break_even": "n/a \u2014 timing runner not connected to context proof",
+                "c_g": "n/a \u2014 no comparable single-parameter baseline",
+                "decode": "available",
+                "encode": "n/a \u2014 encode timer not connected to context proof",
+                "h_alpha": "n/a \u2014 block mapping callback not ported to context proof",
+                "ratio": "n/a \u2014 archive accounting not connected to context proof",
+                "region": "available"
+              },
+              "corpus_sha256": "218da22426f9259c2bd8bad291c6f70c5ca96a5f402c503f5700e2f7ba2a0ba7",
+              "full_restore": "byte-exact",
+              "invalid_ranges": 3,
+              "region_checks": 108,
+              "timings_collected": false,
+              "version": "1.24"
+            }
+          },
+          {
+            "fixture": "cross-block",
+            "input_bytes": 195857,
+            "input_sha256": "5ed815cb1b3d2dddf2b5303602a24f0d155f0b844ad820a3dcf37897f8aa427e",
+            "archive_sha256": "24e099489701573661287da464e131e10557e3f1c1eb5e78e413693680c848f8",
+            "artifacts": {
+              "cross-block.archive": "24e099489701573661287da464e131e10557e3f1c1eb5e78e413693680c848f8",
+              "cross-block.archive.gzi": "f358906dcf3fa31b6d06ac9ec08c7467e1e1ea67c213866a20af8edeebcac5a3"
+            },
+            "full_restore": "byte-exact",
+            "status": "pass",
+            "native": {
+              "capabilities": {
+                "amplification": "n/a \u2014 decoder counters not ported to context proof",
+                "batch": "n/a \u2014 no batch API",
+                "break_even": "n/a \u2014 timing runner not connected to context proof",
+                "c_g": "n/a \u2014 no comparable single-parameter baseline",
+                "decode": "available",
+                "encode": "n/a \u2014 encode timer not connected to context proof",
+                "h_alpha": "n/a \u2014 block mapping callback not ported to context proof",
+                "ratio": "n/a \u2014 archive accounting not connected to context proof",
+                "region": "available"
+              },
+              "corpus_sha256": "5ed815cb1b3d2dddf2b5303602a24f0d155f0b844ad820a3dcf37897f8aa427e",
+              "full_restore": "byte-exact",
+              "invalid_ranges": 3,
+              "region_checks": 142,
+              "timings_collected": false,
+              "version": "1.24"
+            }
+          }
+        ],
+        "timings_collected": false
+      }
+    }
+  ]
+}
