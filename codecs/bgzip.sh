@@ -21,7 +21,7 @@ codec_context_build() {
 source "${HB_ROOT:-$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.." && pwd)}/harness/check_common.sh"
 
 codec_configuration() { echo '{"level": 6, "compression_backend": {"name":"libdeflate","version":"1.19","commit":"dd12ff2b36d603dbb7fa8838fe7e7176fcbd4f6f","configure_option":"--with-libdeflate","effective_level":7}, "encoder_threads": 1, "decoder_threads": 1, "granularity": 65280, "granularity_note": "BGZF CLI ceiling; actual blocks may be shorter"}'; }
-codec_inputs() { python3 -c 'import json,sys;print(json.dumps(sys.argv[1:]))' "$HB_ROOT/codecs/native/bgzip.c" "$HB_ROOT/codecs/bgzip.sh" "$HB_ROOT/codecs/bgzip_build.sh" "$HB_ROOT/codecs/bgzip_provenance.py" "$HB_ROOT/codecs/counters.py" "$HB_ROOT/harness/build_counters.py"; }
+codec_inputs() { python3 -c 'import json,sys;print(json.dumps(sys.argv[1:]))' "$HB_ROOT/codecs/native/bgzip.c" "$HB_ROOT/codecs/bgzip.sh" "$HB_ROOT/codecs/native/bgzip_build.sh" "$HB_ROOT/codecs/bgzip_provenance.py" "$HB_ROOT/codecs/counters.py" "$HB_ROOT/harness/build_counters.py"; }
 codec_build_artifacts() { python3 -c 'import json,sys;print(json.dumps(sys.argv[1:]))' "$(codec_library)" "$(codec_counter_library)" "$HB_CHECK_WORK/counter-sources.json" "$HB_CHECK_WORK/deps/htslib/bgzip" "$HB_CHECK_WORK/bgzip-build.json" "$HB_CHECK_WORK/libdeflate-build/libdeflate.a"; }
 codec_name() { echo 'bgzip+htslib'; }
 codec_version() { echo "$HTS_RELEASE"; }
@@ -29,7 +29,7 @@ codec_constraints() { echo '{"granularity":65280,"min_input_bytes":0}'; }
 codec_sidecar() { echo "$1.gzi"; }
 codec_artifacts() { python3 -c 'import json,sys;print(json.dumps([sys.argv[1],sys.argv[1]+".gzi"]))' "$1"; }
 codec_build() {
-  bash "$HB_ROOT/codecs/bgzip_build.sh" "$HTS_PIN" "$HTS_RELEASE" "$LIBDEFLATE_PIN"
+  bash "$HB_ROOT/codecs/native/bgzip_build.sh" "$HTS_PIN" "$HTS_RELEASE" "$LIBDEFLATE_PIN"
 }
 
 codec_compress() {
