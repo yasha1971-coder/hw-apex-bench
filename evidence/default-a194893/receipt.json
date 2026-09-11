@@ -1,0 +1,15 @@
+{
+  "benchmark_commit": "d25d8d16f45a073f167bfb2082f663a909a48ea1",
+  "workflow_run": 34574867600,
+  "artifact_id": 10189247671,
+  "artifact_sha256": "144824df3134ca4fb5ff196ebd1cad95f46d6886161afd20d1ea8529457acb2e",
+  "artifact_bytes": 131349,
+  "results_sha256": "906cd2d7bf0bd310f710662e7fec15e51021d4b6d0dfcc60ebdf301dcb781d3f",
+  "report_sha256": "7dd5a48e3487b56436164563cae7be61352e3786efeee3fa3fd9a7c375f22ef1",
+  "rows": 6,
+  "full_restores_verified_by_runner": 6,
+  "timed_region_samples_verified": 1000,
+  "original_sample_hashes_checked": true,
+  "compiler_trace_hash_checked": true,
+  "prior_failed_attempt": 34574475551
+}

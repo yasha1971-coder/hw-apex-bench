@@ -42,3 +42,10 @@ Attempt 34574475551 completed default and baselines but failed at profile restor
 because the harness had mismatched writer/reader settings. It is not a complete
 comparison and is retained as an unsuccessful attempt, not evidence of a codec
 failure with correctly matched settings.
+
+Completed comparison: [DEFAULT_RESULTS.md](DEFAULT_RESULTS.md). Exact retained
+JSONL and receipt are in `evidence/default-a194893/`; replay with
+`python3 harness/audit_default.py evidence/default-a194893 DEFAULT_RESULTS.md`.
+Workflow 34574867600 passed. Default is 16.33% denser than explicit legacy by
+matched complete-file ratios; all ACEAPEX rows lose single-region latency to
+both baselines in this run. The owner's +17.1% uses a separately reported setup.
