@@ -4,5 +4,11 @@
     "url": "https://hgdownload.soe.ucsc.edu/goldenPath/hg38/chromosomes/chr1.fa.gz",
     "md5": "9465e0f0df6e2c6eb39729c39cee5465",
     "md5_scope": "uncompressed FASTA"
+  },
+  "adapter_smoke": {
+    "id": "zstd-format-1.5.7",
+    "url": "https://raw.githubusercontent.com/facebook/zstd/f8745da6ff1ad1e7bab384bd1f9d742439278e99/doc/zstd_compression_format.md",
+    "md5": "791af626204b939dcce42a09d770ad37",
+    "md5_scope": "downloaded bytes"
   }
 }

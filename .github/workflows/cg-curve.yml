@@ -1,15 +1,5 @@
 name: Five-point c(g) tradeoff curve
 on:
-  pull_request:
-    paths:
-      - 'harness/cg_*'
-      - 'harness/test_cg_curve.py'
-      - 'harness/region_latency.c'
-      - 'harness/source_provenance.py'
-      - 'harness/compiler_trace.py'
-      - 'harness/aceapex_strict_cg.py'
-      - 'run.sh'
-      - '.github/workflows/cg-curve.yml'
   workflow_dispatch:
 permissions:
   contents: read

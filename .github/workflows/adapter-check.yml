@@ -1,0 +1,36 @@
+name: Adapter correctness
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: adapter-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  check:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    strategy:
+      fail-fast: false
+      matrix:
+        codec: [bgzip, zstd_seekable, aceapex]
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install minimal build dependencies
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y build-essential git python3 zlib1g-dev
+      - name: Check contract rejection cases
+        run: python3 -m unittest discover -s harness -p test_adapters.py
+      - name: Build and verify small corpora (no performance measurements)
+        run: ./run.sh --check codecs/${{ matrix.codec }}.sh
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: adapter-${{ matrix.codec }}
+          include-hidden-files: true
+          path: |
+            .adapter-work/*-check.json
+            .adapter-work/*-check.log

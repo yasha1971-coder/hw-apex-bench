@@ -549,6 +549,14 @@ Stop for review. This curve does not establish a corpus-independent law, a novel
 These are descriptive comparisons against the same-machine baseline, not promises that any codec must win.
 A slower codec remains FAIL in this table; correctness failures abort report generation.
 
+## Check an adapter without benchmarking
+
+`./run.sh --check codecs/bgzip.sh` builds pinned sources, downloads an MD5-checked
+small corpus and verifies native full/region restores. See [ADAPTERS.md](ADAPTERS.md)
+for the one-file contract, supported axes, explicit limitations and receipts.
+Qualification is experimental and produces no performance measurements. The
+historical full-run instructions below remain separate from this new check path.
+
 ## Reproduce
 
 On Linux, install `build-essential git python3 pkg-config libhts-dev tabix zlib1g-dev`,

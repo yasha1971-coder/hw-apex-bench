@@ -63,3 +63,17 @@ Primary references:
 
 These are acceptance conditions for the next stages, not claims of completed
 adapter, xz, CRAM, CI or release work.
+
+## Adapter checkpoint, 2026-09-11
+
+The existing three codecs now expose a common shell/native ABI and pass small
+byte-exact qualification. `ADAPTERS.md` documents the contract. The core discovers
+capabilities without codec-name branches; a renamed adapter outside `codecs/` is
+also checked. Small automatic CI replaces automatic full measurements.
+
+This is the correctness part of steps 2–3. Performance scheduling and amplification
+counters still live in the historical harness. Move those onto the ABI, preserving
+plateau and equal-thread constraints, before claiming the full measurement harness
+is extensible. ACEAPEX a194893 native encode geometry also needs an upstream
+resolution or an explicitly qualified native encoding path; no upstream changes
+are made here. New codecs remain deferred until that gate is complete.
