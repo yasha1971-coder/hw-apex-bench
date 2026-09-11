@@ -954,3 +954,11 @@ Validation: 435 rows, 364 protected files byte-identical, 134 links, 810 UI
 combinations. This is a logic test, not a browser/layout verification.
 No benchmark, release, tag or DOI was changed. Merged-branch cleanup follows
 as a separate bounded operation, after checking current heads and open PRs.
+
+Explorer PR36 merged as 5ff99376f111d6d88e6dc94646c291cc51637eb9;
+publication CI34649001523 succeeded. Branch inventory found 33 merged heads
+eligible for deletion and four heads/bases required by open PR15 and PR17.
+The exact name/SHA allowlist is review/branch-cleanup-plan.json. A separate
+main-only workflow rechecks open PRs, protection, ancestry and unchanged SHA,
+then deletes atomically with per-ref leases and verifies tags/main unchanged.
+Its receipt is retained as a workflow artifact; no benchmark is involved.
