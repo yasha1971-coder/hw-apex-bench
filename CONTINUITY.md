@@ -365,3 +365,26 @@ adapter contract with draft PR #17. Do not blindly merge the draft: its README,
 workflow and provenance state precede the publication. Preserve raw result bytes,
 license footer and matched-baseline semantics. Do not add xz or CRAM yet. Do not
 repeat the completed full benchmarks or alter the three protected repositories.
+
+## Native extraction first — 2026-09-11
+
+The owner requires extracting working code before fixing the adapter contract.
+Branch refactor/native-codec-extraction starts at published main
+0e8246f8b14b74191b3bf8cc6f14b71be85779ce. Existing three codecs/*.sh already
+contain CLI operations and are unchanged. Sixteen native sections are copied
+from region_latency.c, codec_io.h and batch.c into three harness/native/*.inc
+files. This is a transitional mechanical layout, not an invented plugin ABI.
+
+The extraction verifier reconstructs all three original source files exactly
+and verifies all 435 result records unchanged. Five rejection/equivalence tests
+pass. Five before/after GCC -O3 assembly outputs are byte-identical, including
+COUNT_DECODER; no executable or performance measurement was run. See
+CODEC_EXTRACTION.md, the section manifest and assembly receipt for scope and
+header versions. Generated README/reports, licenses and manifest remain exact.
+Publication CI now checks the mechanical move against the pinned base commit.
+
+Next bounded action: review the moved implementations side by side and derive
+capabilities from existing n/a evidence; then choose the actual native interface.
+Dispatch, counter selection and shared state are still in core, so adapter
+extraction is not declared complete. Do not merge old PR #17 over published main,
+do not add xz before the real interface/check gate, and do not rerun full timings.

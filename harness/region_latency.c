@@ -53,32 +53,17 @@ int main(int argc,char **argv) {
     void (*reset_counts)(void)=NULL;
     uint64_t (*get_counts)(void)=NULL;
     if(bg) {
-        /* Copy archive to anonymous RAM-backed storage before any timed call.
-           Keep one htslib handle and the .gzi index for the entire query trace. */
-        fd=memfd_create("cabench-bgzf",MFD_CLOEXEC); if(fd<0) die("memfd_create");
-        size_t done=0;
-        while(done<an) { ssize_t n=write(fd,arc+done,an-done); if(n<=0) die("memfd write"); done+=(size_t)n; }
-        if(lseek(fd,0,SEEK_SET)<0) die("memfd rewind");
-        bgzf=bgzf_dopen(dup(fd),"r"); if(!bgzf) die("bgzf_dopen");
-        if(bgzf_index_load(bgzf,argv[2],".gzi")) die("bgzf_index_load");
-        if(counts) {
-            reset_counts=(void(*)(void))dlsym(RTLD_DEFAULT,"cabench_reset");
-            get_counts=(uint64_t(*)(void))dlsym(RTLD_DEFAULT,"cabench_bytes");
-            if(!reset_counts||!get_counts) die("missing BGZF counters");
-        }
+#define HWAPEX_EXTRACT_SECTION 1
+#include "native/bgzip.inc"
+#undef HWAPEX_EXTRACT_SECTION
     } else if(zs) {
-        seek=ZSTD_seekable_create(); if(!seek) die("seekable create");
-        size_t r=ZSTD_seekable_initBuff(seek,arc,an);
-        if(ZSTD_isError(r)) die(ZSTD_getErrorName(r));
-#ifndef COUNT_DECODER
-        if(counts) die("amplification needs instrumented binary");
-#endif
+#define HWAPEX_EXTRACT_SECTION 1
+#include "native/zstd_seekable.inc"
+#undef HWAPEX_EXTRACT_SECTION
     } else {
-        /* Pinned ACEPX2 header, little endian; source reconstruction span is
-           derived from the actual archive, not from the requested block setting. */
-        if(an<68 || memcmp(arc,"ACEPX2\0\0",8)) die("ACEPX2 header");
-        memcpy(&original,arc+12,8); memcpy(&block,arc+20,4);
-        if(!block||original!=fn) die("ACEPX2 geometry");
+#define HWAPEX_EXTRACT_SECTION 1
+#include "native/aceapex.inc"
+#undef HWAPEX_EXTRACT_SECTION
     }
     unsigned char *raw=alloc(LENGTH);
     uint64_t seed=20260909;
@@ -93,21 +78,17 @@ int main(int argc,char **argv) {
 #endif
         double elapsed;
         if(bg) {
-            double t0=now();
-            int seek_rc=bgzf_useek(bgzf,(off_t)start,SEEK_SET);
-            ssize_t r=bgzf_read(bgzf,raw,LENGTH);
-            elapsed=(now()-t0)*1000;
-            if(seek_rc!=0 || r!=LENGTH) die("BGZF region");
+#define HWAPEX_EXTRACT_SECTION 2
+#include "native/bgzip.inc"
+#undef HWAPEX_EXTRACT_SECTION
         } else if(zs) {
-            double t0=now();
-            size_t r=ZSTD_seekable_decompress(seek,raw,LENGTH,start);
-            elapsed=(now()-t0)*1000;
-            if(ZSTD_isError(r)||r!=LENGTH) die("zstd region");
+#define HWAPEX_EXTRACT_SECTION 2
+#include "native/zstd_seekable.inc"
+#undef HWAPEX_EXTRACT_SECTION
         } else {
-            double t0=now();
-            int64_t r=aceapex_decompress_region(arc,an,raw,LENGTH,start,span);
-            elapsed=(now()-t0)*1000;
-            if(r!=LENGTH) die("ACEAPEX region");
+#define HWAPEX_EXTRACT_SECTION 2
+#include "native/aceapex.inc"
+#undef HWAPEX_EXTRACT_SECTION
         }
         /* Return checks, byte comparison and serialization are outside the timer.
            No FASTA parsing or newline removal occurs for any codec. */
