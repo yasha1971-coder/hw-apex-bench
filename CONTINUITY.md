@@ -441,3 +441,42 @@ GitHub CI completed successfully on that head: publication integrity
 unittest methods on ubuntu-24.04 after fetching pinned API headers. This final
 checkpoint only records those live outcomes; it changes no tested code/data.
 Neither PR #21 nor PR #22 has been merged. Preserve the stacked review order.
+
+## Runnable seven-function contract and --check — 2026-09-11
+
+Branch tooling/adapter-check starts at PR #22 checkpoint
+c7e2bafa88185baee19e50290e9cf8b64323e38b. PR #21/#22 remain draft/unmerged;
+main was checked live and remains 0e8246f8b14b74191b3bf8cc6f14b71be85779ce.
+
+Four shell adapters implement name/version/build/compress/decompress/region/
+supports, plus adapter-owned unavailable reasons and constraints. The generic
+./run.sh --check [codecs/NAME.sh] builds pinned sources and checks small fixtures;
+without the adapter argument it discovers all codecs/*.sh. Native ABI 2 derives
+size from the archive; optional expected size is a validation input, not required
+for region access. ACEAPEX retains its original per-call API/header parsing.
+XZ CLI and static PIC liblzma now come from one pinned 5.4.5 source build in --check.
+No protected upstream repository was changed. Local CMake 3.31.6 was installed
+only into scratch build tools; user/CI prerequisites are documented in ADAPTERS.md.
+
+Local fresh builds passed: BGZF five restores/422 native regions; zstd five/614;
+ACEAPEX four/613 plus explicit empty-input exclusion; XZ five/614. Total 19
+full restores and 2263 valid native ranges, plus guarded out-of-bounds cases and
+shell native-region verification. Five checker tests cover an external CLI-only
+adapter without a native library, bad restoration, missing function, empty n/a
+reason and overlapping checks. Six XZ tests and the 53 existing tests also pass.
+The generic core contains no codec-name dispatch/dependency recipe. A check never
+writes results.jsonl or starts timing. Failed checks cannot leave a stale success
+receipt; a directory lock and subprocess-group timeout handle interrupted runs.
+
+README's short --check entry was generated from METHOD.md; only its corresponding
+publication digest was updated. All 435 records and other generated reports are
+byte-identical. Publication validation/export and original source reconstruction
+pass; the license remains the final generated README section. New matrix CI
+builds all four adapters on separate clean runners and retains receipts/logs.
+
+Next bounded action: verify matrix CI on the saved PR, then integrate successful
+check receipts and codec_supports into measurement scheduling/result formatting.
+Do not claim that seven shell functions finish migration of the nine axes: batch,
+counters, block mapping, controlled c(g), other ACE configurations and the C timing
+runner are not connected to the new contract yet. Existing historical CLI paths
+are retained. No new performance numbers, main merges, CRAM or release in this step.

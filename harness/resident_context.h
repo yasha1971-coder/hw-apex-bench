@@ -12,7 +12,9 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
+/* expected_size == UINT64_MAX requests size discovery from archive metadata. */
 unsigned hc_abi(void);
+uint64_t hc_size(void *context);
 const char *hc_version(void);
 void *hc_open(const void *archive, size_t bytes, const char *sidecar,
               uint64_t expected_size);

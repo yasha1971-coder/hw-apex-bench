@@ -6,12 +6,13 @@ typedef struct {
     const uint8_t *arc; size_t bytes, index_start;
     uint64_t size; lzma_index *index; lzma_check check;
 } State;
-unsigned hc_abi(void) { return 1; }
+unsigned hc_abi(void) { return 2; }
+uint64_t hc_size(void *ctx) { return ((State*)ctx)->size; }
 const char *hc_version(void) { return lzma_version_string(); }
 void hc_close(void *ctx) { State *s=ctx; if(s) {lzma_index_end(s->index,NULL); free(s);} }
 void *hc_open(const void *arc, size_t bytes, const char *sidecar, uint64_t size) {
     (void)sidecar;
-    if(bytes<2*LZMA_STREAM_HEADER_SIZE || size>INT64_MAX) return NULL;
+    if(bytes<2*LZMA_STREAM_HEADER_SIZE) return NULL;
     State *s=calloc(1,sizeof(*s)); if(!s) return NULL;
     s->arc=arc; s->bytes=bytes; s->size=size;
     lzma_stream_flags head, foot;
@@ -25,10 +26,12 @@ void *hc_open(const void *arc, size_t bytes, const char *sidecar, uint64_t size)
     if(lzma_index_buffer_decode(&s->index,&memlimit,NULL,s->arc,&pos,
                                bytes-LZMA_STREAM_HEADER_SIZE)!=LZMA_OK ||
        pos!=bytes-LZMA_STREAM_HEADER_SIZE ||
-       lzma_index_uncompressed_size(s->index)!=size ||
+       (size!=UINT64_MAX && lzma_index_uncompressed_size(s->index)!=size) ||
        lzma_index_stream_size(s->index)!=bytes) goto bad;
     /* First adapter supports one Stream without Stream Padding. Never silently
        treat a concatenated file's final Stream as the complete archive. */
+    s->size=lzma_index_uncompressed_size(s->index);
+    if(s->size>INT64_MAX) goto bad;
     s->check=foot.check; return s;
     bad: hc_close(s); return NULL;
 }

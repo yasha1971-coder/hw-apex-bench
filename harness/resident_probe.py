@@ -10,9 +10,9 @@ import subprocess
 
 AXES = {'ratio','encode','decode','region','amplification','c_g','batch','h_alpha','break_even'}
 
-def capabilities(adapter):
-    supported = subprocess.check_output(['bash', str(adapter), 'supports'], text=True).split()
-    missing = json.loads(subprocess.check_output(['bash', str(adapter), 'unavailable'], text=True))
+def capabilities(adapter, env=None):
+    supported = subprocess.check_output(['bash', str(adapter), 'supports'], text=True, env=env).split()
+    missing = json.loads(subprocess.check_output(['bash', str(adapter), 'unavailable'], text=True, env=env))
     if len(set(supported)) != len(supported) or set(supported) & missing.keys():
         raise ValueError('duplicate or conflicting capability')
     if set(supported) | missing.keys() != AXES:
@@ -22,11 +22,13 @@ def capabilities(adapter):
     return {a: 'available' if a in supported else 'n/a — '+missing[a] for a in sorted(AXES)}
 
 class Context:
-    def __init__(self, library, archive, expected_size, sidecar=None):
+    def __init__(self, library, archive, expected_size=None, sidecar=None):
         self.lib = C.CDLL(str(Path(library).resolve()))
         self.lib.hc_abi.restype = C.c_uint
-        if self.lib.hc_abi() != 1:
+        if self.lib.hc_abi() != 2:
             raise ValueError('unsupported context ABI')
+        self.lib.hc_size.argtypes = [C.c_void_p]
+        self.lib.hc_size.restype = C.c_uint64
         self.lib.hc_version.restype = C.c_char_p
         self.lib.hc_open.argtypes = [C.c_void_p,C.c_size_t,C.c_char_p,C.c_uint64]
         self.lib.hc_open.restype = C.c_void_p
@@ -37,9 +39,10 @@ class Context:
         self.lib.hc_close.argtypes = [C.c_void_p]
         self.lib.hc_close.restype = None
         self.data = C.create_string_buffer(archive)
-        self.ptr = self.lib.hc_open(self.data,len(archive),str(sidecar).encode() if sidecar else None,expected_size)
+        self.ptr = self.lib.hc_open(self.data,len(archive),str(sidecar).encode() if sidecar else None,(1<<64)-1 if expected_size is None else expected_size)
         if not self.ptr:
             raise ValueError('archive/index rejected')
+        self.size = self.lib.hc_size(self.ptr)
     def close(self):
         if self.ptr:
             self.lib.hc_close(self.ptr)
@@ -55,8 +58,10 @@ def probe(library, archive, original, granularity, sidecar=None):
     if granularity <= 0:
         raise ValueError('positive granularity required')
     raw = Path(original).read_bytes()
-    ctx = Context(library,Path(archive).read_bytes(),len(raw),sidecar)
+    ctx = Context(library,Path(archive).read_bytes(),sidecar=sidecar)
     try:
+        if ctx.size != len(raw):
+            raise AssertionError('archive-derived size differs from original')
         out = C.create_string_buffer(max(1,len(raw)))
         if ctx.lib.hc_decode(ctx.ptr,out,len(raw)) != len(raw) or out.raw[:len(raw)] != raw:
             raise AssertionError('full decode mismatch')

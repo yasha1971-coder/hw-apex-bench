@@ -17,8 +17,31 @@ codec_context_build() {
     "$root/codecs/native/zstd_seekable.c" "$z/contrib/seekable_format/zstdseek_decompress.c" \
     "$z/lib/libzstd.a" -pthread -o "$out"
 }
+source "${HB_ROOT:-$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.." && pwd)}/harness/check_common.sh"
+
+codec_name() { echo 'zstd-seekable'; }
+codec_version() { echo '1.5.7'; }
+codec_build() (
+  export HB_ZSTD="$HB_CHECK_WORK/deps/zstd"
+  hb_checkout https://github.com/facebook/zstd.git f8745da6ff1ad1e7bab384bd1f9d742439278e99 "$HB_ZSTD"
+  make -C "$HB_ZSTD/lib" -j"$HB_JOBS" libzstd.a CFLAGS='-O3 -fPIC'
+  make -C "$HB_ZSTD/contrib/seekable_format/examples" seekable_compression
+  make -C "$HB_ZSTD/programs" -j"$HB_JOBS" zstd
+  codec_context_build "$(codec_library)"
+)
+codec_compress() (
+  local tmp
+  tmp=$(mktemp -d "$HB_CHECK_WORK/compress.XXXXXX")
+  trap 'rm -rf -- "$tmp"' EXIT
+  cp -- "$1" "$tmp/input"
+  "$HB_CHECK_WORK/deps/zstd/contrib/seekable_format/examples/seekable_compression" "$tmp/input" "$3" 3
+  mv -- "$tmp/input.zst" "$2"
+)
+codec_decompress() { "$HB_CHECK_WORK/deps/zstd/programs/zstd" -d -c "$1" > "$2"; }
+
 # Sourcing exposes functions without running the historical CLI dispatcher.
 if [[ "${BASH_SOURCE[0]}" != "$0" ]]; then return 0; fi
+hb_entry "$@"
 if [[ "${1:-}" == context-build ]]; then codec_context_build "$2"; exit; fi
 if [[ "${1:-}" == supports ]]; then codec_supports; exit; fi
 if [[ "${1:-}" == unavailable ]]; then codec_unavailable; exit; fi

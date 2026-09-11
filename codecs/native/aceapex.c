@@ -3,11 +3,16 @@
 #include <stdlib.h>
 #include <string.h>
 typedef struct { const void *arc; size_t bytes; uint64_t size; } State;
-unsigned hc_abi(void) { return 1; }
+unsigned hc_abi(void) { return 2; }
+uint64_t hc_size(void *ctx) { return ((State*)ctx)->size; }
 const char *hc_version(void) { return "aceapex@1b13df34ac8e839dd3232b59bc59560d689a435a"; }
 void *hc_open(const void *arc, size_t bytes, const char *sidecar, uint64_t size) {
     (void)sidecar;
-    if(bytes < 68 || memcmp(arc,"ACEPX2\0\0",8) || size > INT64_MAX) return NULL;
+    if(bytes < 68 || memcmp(arc,"ACEPX2\0\0",8)) return NULL;
+    uint64_t actual=0;
+    for(unsigned i=0;i<8;i++) actual|=(uint64_t)((const unsigned char*)arc)[12+i]<<(8*i);
+    if(actual>INT64_MAX || (size!=UINT64_MAX && size!=actual)) return NULL;
+    size=actual;
     State *s=malloc(sizeof(*s)); if(s) *s=(State){arc,bytes,size}; return s;
 }
 int64_t hc_region(void *ctx, uint64_t off, void *dst, size_t len) {
