@@ -94,7 +94,7 @@
       "relocated": true
     }
   ],
-  "adapter_sha256": "caadf0c0a4e6fd3e4b56c94b56d463a7a7e102df28090567ea0593db5d26be35",
+  "adapter_sha256": "68f8ca068ec9a9d5abe667fd430be5ae61ba721e0270928a5aca18dc20ee34fd",
   "library_sha256": "75ee53f654dc2f4e5d3978f74197a2e6202880ceb410906e1af95a4658719f82",
   "worker_sha256": "ed11a6317008f1770cc1766f4d931391964e2383549b4b9b7e56f33d42369fe2",
   "compiler": "gcc (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0",

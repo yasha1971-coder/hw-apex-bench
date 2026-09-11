@@ -78,7 +78,7 @@ def check(adapter, work):
         compiler = shlex.split(env.get('CC', 'gcc'))
         run([*compiler, '-O2', ROOT/'harness/adapter_worker.c', '-ldl', '-o', work/'adapter_worker'])
         print(f'{name}: building pinned sources (log: {log_path})', flush=True)
-        call('codec_build', timeout=1200)
+        log.write(call('codec_build', timeout=1200) + '\n'); log.flush()
         library = Path(call('codec_library')).resolve(strict=True)
         native = json.loads(run([work/'adapter_worker', library, 'probe']))
         expected = sum(1 << AXES.index(a) for a in supported)

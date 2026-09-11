@@ -17,11 +17,11 @@ codec_build() {
   git -C "$h" submodule update --init --depth 1
   # Generated build configuration: zlib-only, no optional HTTP/CRAM codecs.
   # Tracked dependency sources remain unchanged.
-  if [[ ! -f "$h/.cabench-zlib-only" ]]; then
+  if [[ ! -f "$h/.cabench-zlib-only-v2" ]]; then
     make -C "$h" clean
     printf '%s\n' '#define _XOPEN_SOURCE 700' '#define HAVE_DRAND48 1' > "$h/config.h"
-    printf '%s\n' 'LIBS = -lz -lm -lpthread' 'HTS_LIBS = -lz -lm -lpthread' > "$h/config.mk"
-    touch "$h/.cabench-zlib-only"
+    printf '%s\n' 'LIBS = -lz -lm -lpthread' 'HTS_LIBS = -lz -lm -lpthread' 'NONCONFIGURE_OBJS =' > "$h/config.mk"
+    touch "$h/.cabench-zlib-only-v2"
   fi
   make -C "$h" -j"$CABENCH_JOBS" lib-static CFLAGS='-O2 -fPIC' PACKAGE_VERSION=1.24
   cat > "$b/plugin.c" <<'C'

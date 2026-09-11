@@ -263,3 +263,15 @@ gates. Historical measurement scheduling still contains codec-specific logic;
 therefore the full benchmark is not yet universally extensible. Do not add xz or
 CRAM before that integration, and do not describe qualification as measured axes.
 See ADAPTERS.md and TOOL_ROADMAP.md for explicit scope and limitations.
+
+Delivery is draft PR #17:
+https://github.com/yasha1971-coder/hw-apex-bench/pull/17
+Initial implementation commit: `8e9ac339d20940313f4482f17f55ed5ef81f9aa1`.
+Publication CI 34585250392 passed. Adapter CI 34585250321 passed zstd and ACEAPEX
+but exposed a BGZF clean-runner build failure: HTSlib Makefile still included
+`hfile_libcurl.o` via NONCONFIGURE_OBJS although our generated config disabled
+HTTP. Local curl headers had hidden this missing isolation. The follow-up
+explicitly clears NONCONFIGURE_OBJS in generated config.mk and versions the build
+marker so older caches are rebuilt. It also retains successful build stdout in
+the log and emits at most eight diagnostic lines for CI failures. Upstream sources
+remain unchanged. Confirm the latest PR checks, not the initial failed run.
