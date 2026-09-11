@@ -1,0 +1,102 @@
+{
+  "schema": "cabench-adapter-check-v1",
+  "qualified": true,
+  "timed": false,
+  "codec": "zstd-seekable",
+  "version": "1.5.7",
+  "capabilities": [
+    "ratio",
+    "encode",
+    "decode",
+    "region",
+    "c_g",
+    "h_alpha",
+    "break_even"
+  ],
+  "unavailable": {
+    "amplification": "native work counters not ported; historical counting harness remains separate",
+    "batch": "no native batch API"
+  },
+  "constraints": {
+    "min_input_bytes": 0,
+    "min_input_reason": null,
+    "granularity": 16384
+  },
+  "native": {
+    "abi": 1,
+    "capabilities": 431,
+    "name": "zstd-seekable",
+    "version": "1.5.7",
+    "thread_policy": "encode=1; decode=1; caller=1"
+  },
+  "sources": [
+    {
+      "url": "https://github.com/facebook/zstd.git",
+      "sha": "f8745da6ff1ad1e7bab384bd1f9d742439278e99",
+      "directory": "zstd",
+      "submodules": ""
+    }
+  ],
+  "checks": [
+    {
+      "verified": "byte-exact",
+      "input_bytes": 77279,
+      "region_checks": 208,
+      "batch_checks": 0,
+      "timed": false,
+      "corpus": "downloaded",
+      "corpus_md5": "791af626204b939dcce42a09d770ad37",
+      "archive_bytes": 26044,
+      "relocated": true
+    },
+    {
+      "verified": "byte-exact",
+      "input_bytes": 262403,
+      "region_checks": 208,
+      "batch_checks": 0,
+      "timed": false,
+      "corpus": "binary",
+      "corpus_md5": "bd092b0066e7f5b9ac2a62a7a430c5ad",
+      "archive_bytes": 4937,
+      "relocated": true
+    },
+    {
+      "verified": "byte-exact",
+      "input_bytes": 262155,
+      "region_checks": 208,
+      "batch_checks": 0,
+      "timed": false,
+      "corpus": "dna",
+      "corpus_md5": "44845ed8eb2315f1ba986ed121dfe0c1",
+      "archive_bytes": 650,
+      "relocated": true
+    },
+    {
+      "verified": "byte-exact",
+      "input_bytes": 1,
+      "region_checks": 208,
+      "batch_checks": 0,
+      "timed": false,
+      "corpus": "one-byte",
+      "corpus_md5": "00594fd4f42ba43fc1ca0427a0576295",
+      "archive_bytes": 39,
+      "relocated": true
+    },
+    {
+      "verified": "byte-exact",
+      "input_bytes": 0,
+      "region_checks": 208,
+      "batch_checks": 0,
+      "timed": false,
+      "corpus": "empty",
+      "corpus_md5": "d41d8cd98f00b204e9800998ecf8427e",
+      "archive_bytes": 38,
+      "relocated": true
+    }
+  ],
+  "adapter_sha256": "2cb398b51093934a145af4c8e34e361ba3633d7872d4b3b68630d4e00757ea2c",
+  "library_sha256": "bc8a59134f1cb61ed9adaab74692814e55c0810aff933d8d710f7c385a2dd797",
+  "worker_sha256": "ed11a6317008f1770cc1766f4d931391964e2383549b4b9b7e56f33d42369fe2",
+  "compiler": "gcc (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0",
+  "command": "./run.sh --check codecs/zstd_seekable.sh"
+}

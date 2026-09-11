@@ -1,0 +1,98 @@
+{
+  "schema": "cabench-adapter-check-v1",
+  "qualified": true,
+  "timed": false,
+  "codec": "aceapex",
+  "version": "2.0",
+  "capabilities": [
+    "ratio",
+    "decode",
+    "region",
+    "c_g",
+    "batch",
+    "h_alpha",
+    "break_even"
+  ],
+  "unavailable": {
+    "encode": "one-shot API writes compile-time block geometry; profile encoder not admitted; CLI compression is untimed",
+    "amplification": "native work counters not ported; historical counting harness remains separate"
+  },
+  "constraints": {
+    "min_input_bytes": 1,
+    "min_input_reason": "upstream empty input produces no archive",
+    "granularity": 16384,
+    "compression_path": "untimed Makefile translation-unit CLI"
+  },
+  "native": {
+    "abi": 1,
+    "capabilities": 493,
+    "name": "aceapex",
+    "version": "2.0",
+    "thread_policy": "CLI encode=1; full decode=8 internal workers; native batch=1 requested; caller=1"
+  },
+  "sources": [
+    {
+      "url": "https://github.com/yasha1971-coder/aceapex.git",
+      "sha": "a194893b676a089e5916063d62c45e77483d2c10",
+      "directory": "aceapex",
+      "submodules": ""
+    },
+    {
+      "url": "https://github.com/facebook/zstd.git",
+      "sha": "f8745da6ff1ad1e7bab384bd1f9d742439278e99",
+      "directory": "zstd",
+      "submodules": ""
+    }
+  ],
+  "checks": [
+    {
+      "verified": "byte-exact",
+      "input_bytes": 77279,
+      "region_checks": 208,
+      "batch_checks": 2,
+      "timed": false,
+      "corpus": "downloaded",
+      "corpus_md5": "791af626204b939dcce42a09d770ad37",
+      "archive_bytes": 25548,
+      "relocated": true
+    },
+    {
+      "verified": "byte-exact",
+      "input_bytes": 262403,
+      "region_checks": 208,
+      "batch_checks": 2,
+      "timed": false,
+      "corpus": "binary",
+      "corpus_md5": "bd092b0066e7f5b9ac2a62a7a430c5ad",
+      "archive_bytes": 1561,
+      "relocated": true
+    },
+    {
+      "verified": "byte-exact",
+      "input_bytes": 262155,
+      "region_checks": 208,
+      "batch_checks": 2,
+      "timed": false,
+      "corpus": "dna",
+      "corpus_md5": "44845ed8eb2315f1ba986ed121dfe0c1",
+      "archive_bytes": 1359,
+      "relocated": true
+    },
+    {
+      "verified": "byte-exact",
+      "input_bytes": 1,
+      "region_checks": 208,
+      "batch_checks": 2,
+      "timed": false,
+      "corpus": "one-byte",
+      "corpus_md5": "00594fd4f42ba43fc1ca0427a0576295",
+      "archive_bytes": 210,
+      "relocated": true
+    }
+  ],
+  "adapter_sha256": "95d6c9b1f45ae6e20a96c9516a1a4c9d8e539861b10d00a469baae2c0de2d019",
+  "library_sha256": "f7c9ab9d803df6be75d4c6d6594818836250e54ea663942c0bcbfc3973993327",
+  "worker_sha256": "ed11a6317008f1770cc1766f4d931391964e2383549b4b9b7e56f33d42369fe2",
+  "compiler": "gcc (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0",
+  "command": "./run.sh --check codecs/aceapex.sh"
+}

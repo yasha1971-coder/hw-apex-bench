@@ -1,9 +1,5 @@
 name: Re-measure adaptive ACEAPEX default
 on:
-  pull_request:
-    paths:
-      - 'harness/default_refresh.py'
-      - '.github/workflows/default-refresh.yml'
   workflow_dispatch:
 permissions:
   contents: read

@@ -227,3 +227,51 @@ handoff commit only adds this delivery checkpoint. PR #14's remote head remained
 `d84f38af3b26d830fbc1cc654174f2bd673178ab`; the recovered curve is delivered in
 PR #16, not falsely attributed to an update of PR #14. Adapter extraction is the
 next stage, not a completed feature.
+
+## Adapter qualification checkpoint — 2026-09-11
+
+Branch `tooling/adapter-contract` is based on PR #16 commit
+`1160850bda8385cc18d8960989cad15ecacd8b43`. It adds a single-file shell adapter
+contract plus a versioned native callback ABI and `./run.sh --check PATH`.
+Three existing codecs passed byte-exact qualification: BGZF and zstd each have
+five cases/1040 regional checks; ACEAPEX has four cases/832 regional checks and
+native batch checks. Qualification receipts are in `evidence/adapter-qualification`.
+An external renamed zstd adapter in `/tmp/external-adapter.sh` also passed without
+core edits. BGZF passed again from the initially empty `/tmp/cabench-clean-adapter`
+build directory, downloading all pinned dependencies and the MD5-checked corpus.
+Eight adapter tests and all previous 37 publication/curve/axes tests passed.
+README was regenerated from unchanged results.jsonl and METHOD.md; publication
+validation and site export passed. The measurement SHA256 remains
+`cb52b8cb9fac484a6474d976681ea85ae2c052d80d820422b7f57c25ec938100`.
+
+Runtime diagnosis `python3 harness/probe_aceapex_geometry.py` confirms that the
+pinned a194893 one-shot encoder puts block_size=1048576 into the header while
+ACEAPEX_BS=16384 creates 17 blocks for 262400 bytes. The adapter uses the original
+CLI only for untimed archive preparation; native encode has an explicit n/a reason.
+Empty input is explicitly unsupported by this upstream path. Native amplification
+counters remain unported and unavailable in all new adapters. Full ACEAPEX decode
+uses eight internal workers, native batch requests one; no equal-thread speed
+claim is made. HTSlib 1.24 is a new qualification dependency, not a replacement for
+historical measured versions. No upstream tracked sources were changed.
+
+Automatic full stage1, audit, curve and default-refresh PR triggers were removed.
+Only small adapter correctness and publication checks are automatic; no full
+measurements were dispatched. Keep changes in a draft PR stacked on PR #16.
+The next bounded action is integrating measurement scheduling and normalization
+with the native ABI while preserving plateau, instrumentation and thread-policy
+gates. Historical measurement scheduling still contains codec-specific logic;
+therefore the full benchmark is not yet universally extensible. Do not add xz or
+CRAM before that integration, and do not describe qualification as measured axes.
+See ADAPTERS.md and TOOL_ROADMAP.md for explicit scope and limitations.
+
+Delivery is draft PR #17:
+https://github.com/yasha1971-coder/hw-apex-bench/pull/17
+Initial implementation commit: `8e9ac339d20940313f4482f17f55ed5ef81f9aa1`.
+Publication CI 34585250392 passed. Adapter CI 34585250321 passed zstd and ACEAPEX
+but exposed a BGZF clean-runner build failure: HTSlib Makefile still included
+`hfile_libcurl.o` via NONCONFIGURE_OBJS although our generated config disabled
+HTTP. Local curl headers had hidden this missing isolation. The follow-up
+explicitly clears NONCONFIGURE_OBJS in generated config.mk and versions the build
+marker so older caches are rebuilt. It also retains successful build stdout in
+the log and emits at most eight diagnostic lines for CI failures. Upstream sources
+remain unchanged. Confirm the latest PR checks, not the initial failed run.
