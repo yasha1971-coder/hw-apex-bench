@@ -1,0 +1,39 @@
+name: Re-measure adaptive ACEAPEX default
+on:
+  pull_request:
+    paths:
+      - 'harness/default_refresh.py'
+      - '.github/workflows/default-refresh.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  refresh:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y build-essential git python3 pkg-config libhts-dev tabix zlib1g-dev
+      - name: Measure matched default and profiles
+        run: bash run.sh --default-refresh > default-refresh.log 2>&1
+      - name: Show result
+        if: always()
+        run: |
+          tail -70 default-refresh.log || true
+          test ! -f DEFAULT_RESULTS.md || cat DEFAULT_RESULTS.md
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: default-a194893-evidence
+          include-hidden-files: true
+          path: |
+            DEFAULT_RESULTS.md
+            default-refresh.log
+            .work/default-refresh/*.json
+            .work/default-refresh/*.jsonl
+            .work/default-refresh/*.log
