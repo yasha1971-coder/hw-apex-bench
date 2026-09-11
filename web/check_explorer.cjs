@@ -16,8 +16,17 @@ const els={};for(const m of html.matchAll(/<([a-z]+)[^>]*\bid="([^"]+)"[^>]*>/g)
 els.data.textContent=JSON.stringify(data);els.view.value='pair';els.profile.value='3';els.method.value='loop';
 for(const id of ['values','batch','frontier','gpu']){els[id].append(new Element('thead'),new Element('tbody'));}
 const context={document:{getElementById:id=>{assert(els[id],id);return els[id]},createElement:t=>new Element(t),createElementNS:(_,t)=>new Element(t)},navigator:{},console};vm.createContext(context);vm.runInContext(html.split('<script>')[1].split('</script>')[0],context);
+assert.equal(els.view.value,'parallel');
+assert.equal(els['x-axis'].value,'ratio');assert.equal(els['y-axis'].value,'region_p50');
+assert(!els['x-axis'].children.some(x=>x.value==='h_alpha'));
+assert.equal(vm.runInContext("fmt(3.382558,'ratio')",context),'3.383');
+assert.equal(vm.runInContext("fmt(29.025458)",context),'29.0');
+assert.equal(vm.runInContext("scale([{region_p99:.2},{region_p99:2.52}],'region_p99').lo",context),0);
+assert(vm.runInContext("scale([{c_g:-.51},{c_g:.1}],'c_g').lo",context)<0);
+assert.equal(vm.runInContext("reason('n/a: no native batch API')",context),'n/a — no native batch API');
+els.view.value='pair';
 let combinations=0;
-for(const profile of [0,1,2,3,4])for(const method of ['loop','batch'])for(const x of data.configs.length?['ratio','encode','decode','region_p50','region_p99','amplification','c_g','batch','h_alpha','break_even_n']:[])for(const y of ['ratio','encode','decode','region_p50','region_p99','amplification','c_g','batch','h_alpha','break_even_n']){
+for(const profile of [0,1,2,3,4])for(const method of ['loop','batch'])for(const x of data.configs.length?['ratio','encode','decode','region_p50','region_p99','amplification','c_g','batch','break_even_n']:[])for(const y of ['ratio','encode','decode','region_p50','region_p99','amplification','c_g','batch','break_even_n']){
  els.profile.value=String(profile);els.method.value=method;els['x-axis'].value=x;els['y-axis'].value=y;vm.runInContext('paint()',context);
  for(const point of els.plot.querySelectorAll('circle'))assert(Number.isFinite(+point.attrs.cx)&&Number.isFinite(+point.attrs.cy));
  const cg=x==='c_g'||y==='c_g';assert.equal(els.values.querySelector('tbody').children.length,cg?15:4);

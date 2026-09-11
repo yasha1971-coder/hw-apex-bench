@@ -14,7 +14,7 @@ def render_readme(rows):
         r = one(rows,c,'ratio')
         block = ('≤ ' if c == 'bgzip+htslib' else '') + str(r['configuration']['block']//1024) + ' KiB'
         vals = [one(rows,c,m)['value'] for m in ['ratio','region_p50','region_p99','amplification']]
-        table.append('| '+c+' | '+block+' | '+' | '.join(f'{v:.6f}' for v in vals)+' |')
+        table.append('| '+c+' | '+block+' | '+' | '.join(format(v, '.4g' if i == 0 else '.3g') for i,v in enumerate(vals))+' |')
     text = '''# hw-apex-bench — Compressed Access Benchmark
 
 Measure access to a region of a compressed file without decoding the rest:
