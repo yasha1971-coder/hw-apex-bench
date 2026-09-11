@@ -431,3 +431,13 @@ preparation and all-four CI. Then connect capability-driven measurement planning
 batch/counters/block mapping and results output. The Python ctypes probe must
 never be used as a performance timer. The final timing ABI is not frozen yet.
 Do not merge PR #17 or overwrite measured evidence; do not optimize ACE parsing.
+
+Resident-context proof saved as draft PR #22:
+https://github.com/yasha1971-coder/hw-apex-bench/pull/22
+Base refactor/native-codec-extraction (PR #21); code head
+6074adf7763794a75689f5a3c79ad682963c3762.
+GitHub CI completed successfully on that head: publication integrity
+34602915976; resident XZ correctness 34602916028. The latter ran all six new
+unittest methods on ubuntu-24.04 after fetching pinned API headers. This final
+checkpoint only records those live outcomes; it changes no tested code/data.
+Neither PR #21 nor PR #22 has been merged. Preserve the stacked review order.
