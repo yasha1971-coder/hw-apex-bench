@@ -1,0 +1,26 @@
+cff-version: 1.2.0
+message: >-
+  If you use hw-apex-bench, cite this software and identify the exact commit or
+  released version. When citing measurements, also identify their run and
+  artifact hashes, codec configuration and host; results from distinct scopes
+  are not interchangeable. Code is Apache-2.0; measurements are CC BY 4.0.
+type: software
+title: "hw-apex-bench: Compressed Access Benchmark"
+authors:
+  - name: "yasha1971-coder"
+    website: "https://github.com/yasha1971-coder"
+repository-code: "https://github.com/yasha1971-coder/hw-apex-bench"
+url: "https://yasha1971-coder.github.io/hw-apex-bench/"
+license: Apache-2.0
+abstract: >-
+  An adapter-based harness for measuring compression ratio, encoding and full
+  decoding throughput, regional access latency, decoding amplification,
+  granularity cost, batch access, access entropy and break-even request counts.
+  Results retain byte-exact verification, configuration, commands and provenance,
+  with explicit reasons for unsupported measurements.
+keywords:
+  - compression
+  - random access
+  - benchmarking
+  - reproducibility
+  - bioinformatics

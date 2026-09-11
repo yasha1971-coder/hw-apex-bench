@@ -825,3 +825,29 @@ The canonical accepted proof remains34626693337/artifact10273679252; the later
 run does not replace it. Dedicated BGZF audit is now workflow_dispatch ONLY, so
 further documentation pushes cannot automatically repeat the completed experiment.
 This supersedes earlier statements that path filters alone prevent docs reruns.
+
+## Contribution and citation stage
+
+User requested CONTRIBUTING.md and CITATION.cff as the next bounded stage before
+CRAM; v0.1+DOI follow later. New docs/contributing-citation branch is stacked on
+PR27 head3f2f221923a16df276ec31e939dc13bef17302dc; no current draft merged.
+CONTRIBUTING.md has exactly20 lines, reflects seven adapter functions, native
+companion ABI, codec_supports/reasons, pinned backend/levels, --check/--plan,
+qualification, raw provenance, declared timings and same-run baseline requirements.
+ADAPTERS.md prerequisites now include Autoconf/Automake needed by HTSlib configure.
+CITATION.cff is software metadata with public author yasha1971-coder, Apache-2.0
+code license and explicit CC BY4.0 measurement scope in its message. No invented
+name/ORCID, release date/version or DOI. Cite exact commit and measured run/artifact.
+Validated with jsonschema4.23.0 against official CFF1.2.0 schema at commit
+396f738fb025b1d8acdb02a56ffc923f95dc8999 (schema SHA
+0b8d22140da702d766df318dcff3a91af2f39521298dcf36d76315fd99cc169b).
+review/contribution-citation-check.json retains validation/file hashes. Frozen435
+SHA unchanged. No codec builds, --check or performance runs launched in this stage.
+
+Next stage: review/integrate stacked changes into the intended release branch,
+then prepare actual v0.1 metadata/tag/GitHub Release and Zenodo archive/DOI.
+Do not assert a DOI before obtaining it. A Git tag alone does not constitute a
+Zenodo archive; official integration requires enabling the repository and creating
+a GitHub release. Release scope must retain known historical435 exclusions and
+no-argument run.sh still being the historical runner (explicit --check/--measure
+are the new interface). Current task does not silently merge old drafts or addCRAM.

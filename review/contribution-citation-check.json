@@ -1,0 +1,21 @@
+{
+  "status": "pass",
+  "scope": "documentation and citation metadata only; no codec builds or measurements",
+  "files": {
+    "CONTRIBUTING.md": "24883686cb4ef6d9f4fbc4e9355ff4f88431f6486ba6b497548dbb27b0d50e2f",
+    "CITATION.cff": "2311415db6786990ac2c918926b7db30bcee7c4528abbd46400e20727d1fe319",
+    "ADAPTERS.md": "936e5379ab9d5d3b6cd7b38ffd73fbe70775743f651b5b8715cb3c21382d31fa"
+  },
+  "contributing_lines": 20,
+  "cff": {
+    "version": "1.2.0",
+    "schema_repository": "https://github.com/citation-file-format/citation-file-format",
+    "schema_commit": "396f738fb025b1d8acdb02a56ffc923f95dc8999",
+    "schema_sha256": "0b8d22140da702d766df318dcff3a91af2f39521298dcf36d76315fd99cc169b",
+    "validator": "jsonschema 4.23.0",
+    "yaml_parser": "PyYAML 6.0.3",
+    "validation": "jsonschema.validate(yaml.safe_load(CITATION.cff), schema, format_checker=jsonschema.FormatChecker())"
+  },
+  "release_metadata": "No release version, date or DOI asserted before release; public author handle used without invented personal identity.",
+  "historical_results_sha256": "cb52b8cb9fac484a6474d976681ea85ae2c052d80d820422b7f57c25ec938100"
+}
