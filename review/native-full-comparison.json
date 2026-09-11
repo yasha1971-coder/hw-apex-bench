@@ -1,0 +1,1484 @@
+{
+  "schema": "hw-apex-native-migration-review-v1",
+  "workflow_id": 34619124537,
+  "job_id": 103328777993,
+  "workflow_conclusion": "success",
+  "tested_commit": "4195a210c6a321315eebb84a36d564ac674aa18b",
+  "artifact": {
+    "id": 10273026378,
+    "name": "native-full-comparison",
+    "zip_sha256": "3fb9531d64518b0c5c1e61968eae80a374ae4da0285ce0178555ff7fa87dc390",
+    "zip_bytes": 1164165,
+    "digest_verified": true
+  },
+  "manifest_sha256": "4734d8337a5ab3429c9fc8f79ccd6a4bcf7e2752714b9a4bdd3291fa835b1343",
+  "results_sha256": "70e371851bb21a7d1bf1d04a7d8ce59523c42654320cc4d16be76f51cb66cb7b",
+  "source_verification": {
+    "measurement_sources_matching_tested_git_commit": 13,
+    "linked_passing_check_receipts": 4
+  },
+  "axes_audit": {
+    "status": "pass",
+    "records": 236,
+    "corpus_md5": "9465e0f0df6e2c6eb39729c39cee5465",
+    "adapters": [
+      {
+        "codec": "bgzip+htslib",
+        "version": "1.19",
+        "axes": 9,
+        "supported": 7,
+        "encode_status": "declared",
+        "decode_status": "declared",
+        "profile_counts": [
+          100,
+          600,
+          2000,
+          5000
+        ]
+      },
+      {
+        "codec": "zstd-seekable",
+        "version": "1.5.7",
+        "axes": 9,
+        "supported": 8,
+        "encode_status": "declared",
+        "decode_status": "declared",
+        "profile_counts": [
+          100,
+          600,
+          2000,
+          5000
+        ]
+      },
+      {
+        "codec": "aceapex-interactive",
+        "version": "aceapex@1b13df34ac8e839dd3232b59bc59560d689a435a",
+        "axes": 9,
+        "supported": 9,
+        "encode_status": "declared",
+        "decode_status": "declared",
+        "profile_counts": [
+          100,
+          600,
+          2000,
+          5000
+        ]
+      },
+      {
+        "codec": "aceapex-dense",
+        "version": "aceapex@1b13df34ac8e839dd3232b59bc59560d689a435a",
+        "axes": 9,
+        "supported": 9,
+        "encode_status": "declared",
+        "decode_status": "declared",
+        "profile_counts": [
+          100,
+          600,
+          2000,
+          5000
+        ]
+      }
+    ]
+  },
+  "raw_evidence_audit": {
+    "status": "pass",
+    "evidence_files": 145,
+    "adapters": 4,
+    "manifest_sha256": "4734d8337a5ab3429c9fc8f79ccd6a4bcf7e2752714b9a4bdd3291fa835b1343",
+    "scope": "raw region/counter/decode/batch samples, trace hashes and bounds, entropy and break-even arithmetic; no new measurements"
+  },
+  "deterministic_comparison": {
+    "historical_sha256": "cb52b8cb9fac484a6474d976681ea85ae2c052d80d820422b7f57c25ec938100",
+    "fresh_manifest_sha256": "4734d8337a5ab3429c9fc8f79ccd6a4bcf7e2752714b9a4bdd3291fa835b1343",
+    "scope": "deterministic comparable archives, counters, shared traces and zstd c(g); no timing equality claim",
+    "checks": [
+      {
+        "codec": "bgzip+htslib",
+        "field": "archive_bytes",
+        "old": 75009810,
+        "new": 76512773,
+        "equal": false
+      },
+      {
+        "codec": "bgzip+htslib",
+        "field": "archive_sha256",
+        "old": "c41f38ce60f54fc0560e53c60a7ba645a6946d5827cdc0d21f6a2acf96bb4784",
+        "new": "af90c826674ec7a2780f8dacb2ac1fd1e5e9086c923c41121770f07f6e2e7335",
+        "equal": false
+      },
+      {
+        "codec": "bgzip+htslib",
+        "field": "ratio",
+        "old": 3.3825582764886026,
+        "new": 3.316167684220197,
+        "equal": false
+      },
+      {
+        "codec": "bgzip+htslib",
+        "field": "amplification",
+        "old": 4.82109375,
+        "new": 4.82109375,
+        "equal": true
+      },
+      {
+        "codec": "bgzip+htslib",
+        "field": "H_alpha",
+        "profile": "uniform",
+        "n": 100,
+        "old": 6.643856189774724,
+        "new": 6.643856189774724,
+        "equal": true,
+        "absolute_difference": 0.0,
+        "trace_sha256_equal": true
+      },
+      {
+        "codec": "bgzip+htslib",
+        "field": "H_alpha",
+        "profile": "uniform",
+        "n": 600,
+        "old": 9.086302398822005,
+        "new": 9.086302398822005,
+        "equal": true,
+        "absolute_difference": 0.0,
+        "trace_sha256_equal": true
+      },
+      {
+        "codec": "bgzip+htslib",
+        "field": "H_alpha",
+        "profile": "uniform",
+        "n": 2000,
+        "old": 10.536799315863409,
+        "new": 10.536799315863409,
+        "equal": true,
+        "absolute_difference": 0.0,
+        "trace_sha256_equal": true
+      },
+      {
+        "codec": "bgzip+htslib",
+        "field": "H_alpha",
+        "profile": "uniform",
+        "n": 5000,
+        "old": 11.285997353352828,
+        "new": 11.285997353352828,
+        "equal": true,
+        "absolute_difference": 0.0,
+        "trace_sha256_equal": true
+      },
+      {
+        "codec": "bgzip+htslib",
+        "field": "H_alpha",
+        "profile": "sorted",
+        "n": 100,
+        "old": 6.643856189774724,
+        "new": 6.643856189774724,
+        "equal": true,
+        "absolute_difference": 0.0,
+        "trace_sha256_equal": true
+      },
+      {
+        "codec": "bgzip+htslib",
+        "field": "H_alpha",
+        "profile": "sorted",
+        "n": 600,
+        "old": 9.086302398822005,
+        "new": 9.086302398822005,
+        "equal": true,
+        "absolute_difference": 0.0,
+        "trace_sha256_equal": true
+      },
+      {
+        "codec": "bgzip+htslib",
+        "field": "H_alpha",
+        "profile": "sorted",
+        "n": 2000,
+        "old": 10.536799315863409,
+        "new": 10.536799315863409,
+        "equal": true,
+        "absolute_difference": 0.0,
+        "trace_sha256_equal": true
+      },
+      {
+        "codec": "bgzip+htslib",
+        "field": "H_alpha",
+        "profile": "sorted",
+        "n": 5000,
+        "old": 11.285997353352828,
+        "new": 11.285997353352828,
+        "equal": true,
+        "absolute_difference": 0.0,
+        "trace_sha256_equal": true
+      },
+      {
+        "codec": "bgzip+htslib",
+        "field": "H_alpha",
+        "profile": "clustered",
+        "n": 100,
+        "old": 5.344722159792375,
+        "new": 5.344722159792375,
+        "equal": true,
+        "absolute_difference": 0.0,
+        "trace_sha256_equal": true
+      },
+      {
+        "codec": "bgzip+htslib",
+        "field": "H_alpha",
+        "profile": "clustered",
+        "n": 600,
+        "old": 7.822019339145767,
+        "new": 7.822019339145767,
+        "equal": true,
+        "absolute_difference": 0.0,
+        "trace_sha256_equal": true
+      },
+      {
+        "codec": "bgzip+htslib",
+        "field": "H_alpha",
+        "profile": "clustered",
+        "n": 2000,
+        "old": 9.394448943148749,
+        "new": 9.394448943148749,
+        "equal": true,
+        "absolute_difference": 0.0,
+        "trace_sha256_equal": true
+      },
+      {
+        "codec": "bgzip+htslib",
+        "field": "H_alpha",
+        "profile": "clustered",
+        "n": 5000,
+        "old": 10.387856716202784,
+        "new": 10.387856716202784,
+        "equal": true,
+        "absolute_difference": 0.0,
+        "trace_sha256_equal": true
+      },
+      {
+        "codec": "bgzip+htslib",
+        "field": "H_alpha",
+        "profile": "hot-set",
+        "n": 100,
+        "old": 5.47227103481401,
+        "new": 5.47227103481401,
+        "equal": true,
+        "absolute_difference": 0.0,
+        "trace_sha256_equal": true
+      },
+      {
+        "codec": "bgzip+htslib",
+        "field": "H_alpha",
+        "profile": "hot-set",
+        "n": 600,
+        "old": 6.1235430517968785,
+        "new": 6.1235430517968785,
+        "equal": true,
+        "absolute_difference": 0.0,
+        "trace_sha256_equal": true
+      },
+      {
+        "codec": "bgzip+htslib",
+        "field": "H_alpha",
+        "profile": "hot-set",
+        "n": 2000,
+        "old": 6.142347070507828,
+        "new": 6.142347070507828,
+        "equal": true,
+        "absolute_difference": 0.0,
+        "trace_sha256_equal": true
+      },
+      {
+        "codec": "bgzip+htslib",
+        "field": "H_alpha",
+        "profile": "hot-set",
+        "n": 5000,
+        "old": 6.155795601220072,
+        "new": 6.155795601220072,
+        "equal": true,
+        "absolute_difference": 0.0,
+        "trace_sha256_equal": true
+      },
+      {
+        "codec": "bgzip+htslib",
+        "field": "H_alpha",
+        "profile": "zipf1.2",
+        "n": 100,
+        "old": 4.265106106088185,
+        "new": 4.265106106088185,
+        "equal": true,
+        "absolute_difference": 0.0,
+        "trace_sha256_equal": true
+      },
+      {
+        "codec": "bgzip+htslib",
+        "field": "H_alpha",
+        "profile": "zipf1.2",
+        "n": 600,
+        "old": 4.8358309908441734,
+        "new": 4.8358309908441734,
+        "equal": true,
+        "absolute_difference": 0.0,
+        "trace_sha256_equal": true
+      },
+      {
+        "codec": "bgzip+htslib",
+        "field": "H_alpha",
+        "profile": "zipf1.2",
+        "n": 2000,
+        "old": 5.135643341368839,
+        "new": 5.135643341368839,
+        "equal": true,
+        "absolute_difference": 0.0,
+        "trace_sha256_equal": true
+      },
+      {
+        "codec": "bgzip+htslib",
+        "field": "H_alpha",
+        "profile": "zipf1.2",
+        "n": 5000,
+        "old": 5.244881462331048,
+        "new": 5.244881462331048,
+        "equal": true,
+        "absolute_difference": 0.0,
+        "trace_sha256_equal": true
+      },
+      {
+        "codec": "zstd-seekable",
+        "field": "archive_bytes",
+        "old": 83924167,
+        "new": 83924167,
+        "equal": true
+      },
+      {
+        "codec": "zstd-seekable",
+        "field": "archive_sha256",
+        "old": "0abc3a0d4db3f48b8c4d594350bd6d3ae4782cc3bb74909c06757b13082846d5",
+        "new": "0abc3a0d4db3f48b8c4d594350bd6d3ae4782cc3bb74909c06757b13082846d5",
+        "equal": true
+      },
+      {
+        "codec": "zstd-seekable",
+        "field": "ratio",
+        "old": 3.025773934699882,
+        "new": 3.025773934699882,
+        "equal": true
+      },
+      {
+        "codec": "zstd-seekable",
+        "field": "amplification",
+        "old": 2.0,
+        "new": 2.0,
+        "equal": true
+      },
+      {
+        "codec": "zstd-seekable",
+        "field": "H_alpha",
+        "profile": "uniform",
+        "n": 100,
+        "old": 6.643856189774724,
+        "new": 6.643856189774724,
+        "equal": true,
+        "absolute_difference": 0.0,
+        "trace_sha256_equal": true
+      },
+      {
+        "codec": "zstd-seekable",
+        "field": "H_alpha",
+        "profile": "uniform",
+        "n": 600,
+        "old": 9.17422721132561,
+        "new": 9.17422721132561,
+        "equal": true,
+        "absolute_difference": 0.0,
+        "trace_sha256_equal": true
+      },
+      {
+        "codec": "zstd-seekable",
+        "field": "H_alpha",
+        "profile": "uniform",
+        "n": 2000,
+        "old": 10.846274509657759,
+        "new": 10.846274509657759,
+        "equal": true,
+        "absolute_difference": 0.0,
+        "trace_sha256_equal": true
+      },
+      {
+        "codec": "zstd-seekable",
+        "field": "H_alpha",
+        "profile": "uniform",
+        "n": 5000,
+        "old": 11.99373571143033,
+        "new": 11.99373571143033,
+        "equal": true,
+        "absolute_difference": 0.0,
+        "trace_sha256_equal": true
+      },
+      {
+        "codec": "zstd-seekable",
+        "field": "H_alpha",
+        "profile": "sorted",
+        "n": 100,
+        "old": 6.643856189774724,
+        "new": 6.643856189774724,
+        "equal": true,
+        "absolute_difference": 0.0,
+        "trace_sha256_equal": true
+      },
+      {
+        "codec": "zstd-seekable",
+        "field": "H_alpha",
+        "profile": "sorted",
+        "n": 600,
+        "old": 9.17422721132561,
+        "new": 9.17422721132561,
+        "equal": true,
+        "absolute_difference": 0.0,
+        "trace_sha256_equal": true
+      },
+      {
+        "codec": "zstd-seekable",
+        "field": "H_alpha",
+        "profile": "sorted",
+        "n": 2000,
+        "old": 10.846274509657759,
+        "new": 10.846274509657759,
+        "equal": true,
+        "absolute_difference": 0.0,
+        "trace_sha256_equal": true
+      },
+      {
+        "codec": "zstd-seekable",
+        "field": "H_alpha",
+        "profile": "sorted",
+        "n": 5000,
+        "old": 11.99373571143033,
+        "new": 11.99373571143033,
+        "equal": true,
+        "absolute_difference": 0.0,
+        "trace_sha256_equal": true
+      },
+      {
+        "codec": "zstd-seekable",
+        "field": "H_alpha",
+        "profile": "clustered",
+        "n": 100,
+        "old": 6.248758439731455,
+        "new": 6.248758439731455,
+        "equal": true,
+        "absolute_difference": 0.0,
+        "trace_sha256_equal": true
+      },
+      {
+        "codec": "zstd-seekable",
+        "field": "H_alpha",
+        "profile": "clustered",
+        "n": 600,
+        "old": 8.80038760711928,
+        "new": 8.80038760711928,
+        "equal": true,
+        "absolute_difference": 0.0,
+        "trace_sha256_equal": true
+      },
+      {
+        "codec": "zstd-seekable",
+        "field": "H_alpha",
+        "profile": "clustered",
+        "n": 2000,
+        "old": 10.439640800367338,
+        "new": 10.439640800367338,
+        "equal": true,
+        "absolute_difference": 0.0,
+        "trace_sha256_equal": true
+      },
+      {
+        "codec": "zstd-seekable",
+        "field": "H_alpha",
+        "profile": "clustered",
+        "n": 5000,
+        "old": 11.57414230314962,
+        "new": 11.57414230314962,
+        "equal": true,
+        "absolute_difference": 0.0,
+        "trace_sha256_equal": true
+      },
+      {
+        "codec": "zstd-seekable",
+        "field": "H_alpha",
+        "profile": "hot-set",
+        "n": 100,
+        "old": 5.416174630069642,
+        "new": 5.416174630069642,
+        "equal": true,
+        "absolute_difference": 0.0,
+        "trace_sha256_equal": true
+      },
+      {
+        "codec": "zstd-seekable",
+        "field": "H_alpha",
+        "profile": "hot-set",
+        "n": 600,
+        "old": 5.928245524009549,
+        "new": 5.928245524009549,
+        "equal": true,
+        "absolute_difference": 0.0,
+        "trace_sha256_equal": true
+      },
+      {
+        "codec": "zstd-seekable",
+        "field": "H_alpha",
+        "profile": "hot-set",
+        "n": 2000,
+        "old": 5.974814672319547,
+        "new": 5.974814672319547,
+        "equal": true,
+        "absolute_difference": 0.0,
+        "trace_sha256_equal": true
+      },
+      {
+        "codec": "zstd-seekable",
+        "field": "H_alpha",
+        "profile": "hot-set",
+        "n": 5000,
+        "old": 5.987821897787317,
+        "new": 5.987821897787317,
+        "equal": true,
+        "absolute_difference": 0.0,
+        "trace_sha256_equal": true
+      },
+      {
+        "codec": "zstd-seekable",
+        "field": "H_alpha",
+        "profile": "zipf1.2",
+        "n": 100,
+        "old": 5.282666341732934,
+        "new": 5.282666341732934,
+        "equal": true,
+        "absolute_difference": 0.0,
+        "trace_sha256_equal": true
+      },
+      {
+        "codec": "zstd-seekable",
+        "field": "H_alpha",
+        "profile": "zipf1.2",
+        "n": 600,
+        "old": 6.150155365812175,
+        "new": 6.150155365812175,
+        "equal": true,
+        "absolute_difference": 0.0,
+        "trace_sha256_equal": true
+      },
+      {
+        "codec": "zstd-seekable",
+        "field": "H_alpha",
+        "profile": "zipf1.2",
+        "n": 2000,
+        "old": 6.550517945265765,
+        "new": 6.550517945265765,
+        "equal": true,
+        "absolute_difference": 0.0,
+        "trace_sha256_equal": true
+      },
+      {
+        "codec": "zstd-seekable",
+        "field": "H_alpha",
+        "profile": "zipf1.2",
+        "n": 5000,
+        "old": 6.808725813580771,
+        "new": 6.808725813580771,
+        "equal": true,
+        "absolute_difference": 0.0,
+        "trace_sha256_equal": true
+      },
+      {
+        "codec": "zstd-seekable",
+        "field": "c_g_percent",
+        "granularity": 4096,
+        "old": 10.063390796858807,
+        "new": 10.063390796858807,
+        "equal": true,
+        "baseline_bytes_equal": true,
+        "point_bytes_equal": true
+      },
+      {
+        "codec": "zstd-seekable",
+        "field": "c_g_percent",
+        "granularity": 16384,
+        "old": 6.569397346535477,
+        "new": 6.569397346535477,
+        "equal": true,
+        "baseline_bytes_equal": true,
+        "point_bytes_equal": true
+      },
+      {
+        "codec": "zstd-seekable",
+        "field": "c_g_percent",
+        "granularity": 65536,
+        "old": 2.8293176849717216,
+        "new": 2.8293176849717216,
+        "equal": true,
+        "baseline_bytes_equal": true,
+        "point_bytes_equal": true
+      },
+      {
+        "codec": "zstd-seekable",
+        "field": "c_g_percent",
+        "granularity": 262144,
+        "old": 4.302064110327375,
+        "new": 4.302064110327375,
+        "equal": true,
+        "baseline_bytes_equal": true,
+        "point_bytes_equal": true
+      },
+      {
+        "codec": "zstd-seekable",
+        "field": "c_g_percent",
+        "granularity": 1048576,
+        "old": -0.5099417105095538,
+        "new": -0.5099417105095538,
+        "equal": true,
+        "baseline_bytes_equal": true,
+        "point_bytes_equal": true
+      },
+      {
+        "codec": "aceapex-interactive",
+        "field": "archive_bytes",
+        "old": 69409878,
+        "new": 69409878,
+        "equal": true
+      },
+      {
+        "codec": "aceapex-interactive",
+        "field": "archive_sha256",
+        "old": "b2e3098b6492a21b25bc8cc2e1c8f55aba340d6820845320477025395afccc46",
+        "new": "b2e3098b6492a21b25bc8cc2e1c8f55aba340d6820845320477025395afccc46",
+        "equal": true
+      },
+      {
+        "codec": "aceapex-interactive",
+        "field": "ratio",
+        "old": 3.6584930605986656,
+        "new": 3.6584930605986656,
+        "equal": true
+      },
+      {
+        "codec": "aceapex-interactive",
+        "field": "amplification",
+        "old": 6.21625,
+        "new": 6.21625,
+        "equal": true
+      },
+      {
+        "codec": "aceapex-interactive",
+        "field": "H_alpha",
+        "profile": "uniform",
+        "n": 100,
+        "old": 6.643856189774724,
+        "new": 6.643856189774724,
+        "equal": true,
+        "absolute_difference": 0.0,
+        "trace_sha256_equal": true
+      },
+      {
+        "codec": "aceapex-interactive",
+        "field": "H_alpha",
+        "profile": "uniform",
+        "n": 600,
+        "old": 9.17422721132561,
+        "new": 9.17422721132561,
+        "equal": true,
+        "absolute_difference": 0.0,
+        "trace_sha256_equal": true
+      },
+      {
+        "codec": "aceapex-interactive",
+        "field": "H_alpha",
+        "profile": "uniform",
+        "n": 2000,
+        "old": 10.846274509657759,
+        "new": 10.846274509657759,
+        "equal": true,
+        "absolute_difference": 0.0,
+        "trace_sha256_equal": true
+      },
+      {
+        "codec": "aceapex-interactive",
+        "field": "H_alpha",
+        "profile": "uniform",
+        "n": 5000,
+        "old": 11.99373571143033,
+        "new": 11.99373571143033,
+        "equal": true,
+        "absolute_difference": 0.0,
+        "trace_sha256_equal": true
+      },
+      {
+        "codec": "aceapex-interactive",
+        "field": "H_alpha",
+        "profile": "sorted",
+        "n": 100,
+        "old": 6.643856189774724,
+        "new": 6.643856189774724,
+        "equal": true,
+        "absolute_difference": 0.0,
+        "trace_sha256_equal": true
+      },
+      {
+        "codec": "aceapex-interactive",
+        "field": "H_alpha",
+        "profile": "sorted",
+        "n": 600,
+        "old": 9.17422721132561,
+        "new": 9.17422721132561,
+        "equal": true,
+        "absolute_difference": 0.0,
+        "trace_sha256_equal": true
+      },
+      {
+        "codec": "aceapex-interactive",
+        "field": "H_alpha",
+        "profile": "sorted",
+        "n": 2000,
+        "old": 10.846274509657759,
+        "new": 10.846274509657759,
+        "equal": true,
+        "absolute_difference": 0.0,
+        "trace_sha256_equal": true
+      },
+      {
+        "codec": "aceapex-interactive",
+        "field": "H_alpha",
+        "profile": "sorted",
+        "n": 5000,
+        "old": 11.99373571143033,
+        "new": 11.99373571143033,
+        "equal": true,
+        "absolute_difference": 0.0,
+        "trace_sha256_equal": true
+      },
+      {
+        "codec": "aceapex-interactive",
+        "field": "H_alpha",
+        "profile": "clustered",
+        "n": 100,
+        "old": 6.248758439731455,
+        "new": 6.248758439731455,
+        "equal": true,
+        "absolute_difference": 0.0,
+        "trace_sha256_equal": true
+      },
+      {
+        "codec": "aceapex-interactive",
+        "field": "H_alpha",
+        "profile": "clustered",
+        "n": 600,
+        "old": 8.80038760711928,
+        "new": 8.80038760711928,
+        "equal": true,
+        "absolute_difference": 0.0,
+        "trace_sha256_equal": true
+      },
+      {
+        "codec": "aceapex-interactive",
+        "field": "H_alpha",
+        "profile": "clustered",
+        "n": 2000,
+        "old": 10.439640800367338,
+        "new": 10.439640800367338,
+        "equal": true,
+        "absolute_difference": 0.0,
+        "trace_sha256_equal": true
+      },
+      {
+        "codec": "aceapex-interactive",
+        "field": "H_alpha",
+        "profile": "clustered",
+        "n": 5000,
+        "old": 11.57414230314962,
+        "new": 11.57414230314962,
+        "equal": true,
+        "absolute_difference": 0.0,
+        "trace_sha256_equal": true
+      },
+      {
+        "codec": "aceapex-interactive",
+        "field": "H_alpha",
+        "profile": "hot-set",
+        "n": 100,
+        "old": 5.416174630069642,
+        "new": 5.416174630069642,
+        "equal": true,
+        "absolute_difference": 0.0,
+        "trace_sha256_equal": true
+      },
+      {
+        "codec": "aceapex-interactive",
+        "field": "H_alpha",
+        "profile": "hot-set",
+        "n": 600,
+        "old": 5.928245524009549,
+        "new": 5.928245524009549,
+        "equal": true,
+        "absolute_difference": 0.0,
+        "trace_sha256_equal": true
+      },
+      {
+        "codec": "aceapex-interactive",
+        "field": "H_alpha",
+        "profile": "hot-set",
+        "n": 2000,
+        "old": 5.974814672319547,
+        "new": 5.974814672319547,
+        "equal": true,
+        "absolute_difference": 0.0,
+        "trace_sha256_equal": true
+      },
+      {
+        "codec": "aceapex-interactive",
+        "field": "H_alpha",
+        "profile": "hot-set",
+        "n": 5000,
+        "old": 5.987821897787317,
+        "new": 5.987821897787317,
+        "equal": true,
+        "absolute_difference": 0.0,
+        "trace_sha256_equal": true
+      },
+      {
+        "codec": "aceapex-interactive",
+        "field": "H_alpha",
+        "profile": "zipf1.2",
+        "n": 100,
+        "old": 5.282666341732934,
+        "new": 5.282666341732934,
+        "equal": true,
+        "absolute_difference": 0.0,
+        "trace_sha256_equal": true
+      },
+      {
+        "codec": "aceapex-interactive",
+        "field": "H_alpha",
+        "profile": "zipf1.2",
+        "n": 600,
+        "old": 6.150155365812175,
+        "new": 6.150155365812175,
+        "equal": true,
+        "absolute_difference": 0.0,
+        "trace_sha256_equal": true
+      },
+      {
+        "codec": "aceapex-interactive",
+        "field": "H_alpha",
+        "profile": "zipf1.2",
+        "n": 2000,
+        "old": 6.550517945265765,
+        "new": 6.550517945265765,
+        "equal": true,
+        "absolute_difference": 0.0,
+        "trace_sha256_equal": true
+      },
+      {
+        "codec": "aceapex-interactive",
+        "field": "H_alpha",
+        "profile": "zipf1.2",
+        "n": 5000,
+        "old": 6.808725813580771,
+        "new": 6.808725813580771,
+        "equal": true,
+        "absolute_difference": 0.0,
+        "trace_sha256_equal": true
+      },
+      {
+        "codec": "aceapex-dense",
+        "field": "archive_bytes",
+        "old": 67167236,
+        "new": 67167236,
+        "equal": true
+      },
+      {
+        "codec": "aceapex-dense",
+        "field": "archive_sha256",
+        "old": "429d85b995eca2dc5922734b78f4f56f96eb1278fab3776a61455b9b39347d74",
+        "new": "429d85b995eca2dc5922734b78f4f56f96eb1278fab3776a61455b9b39347d74",
+        "equal": true
+      },
+      {
+        "codec": "aceapex-dense",
+        "field": "ratio",
+        "old": 3.780646221619124,
+        "new": 3.780646221619124,
+        "equal": true
+      },
+      {
+        "codec": "aceapex-dense",
+        "field": "amplification",
+        "old": 83.4318716430664,
+        "new": 83.4318716430664,
+        "equal": true
+      },
+      {
+        "codec": "aceapex-dense",
+        "field": "H_alpha",
+        "profile": "uniform",
+        "n": 100,
+        "old": 6.583856189774725,
+        "new": 6.583856189774725,
+        "equal": true,
+        "absolute_difference": 0.0,
+        "trace_sha256_equal": true
+      },
+      {
+        "codec": "aceapex-dense",
+        "field": "H_alpha",
+        "profile": "uniform",
+        "n": 600,
+        "old": 8.695730961253494,
+        "new": 8.695730961253494,
+        "equal": true,
+        "absolute_difference": 0.0,
+        "trace_sha256_equal": true
+      },
+      {
+        "codec": "aceapex-dense",
+        "field": "H_alpha",
+        "profile": "uniform",
+        "n": 2000,
+        "old": 9.536387322536118,
+        "new": 9.536387322536118,
+        "equal": true,
+        "absolute_difference": 0.0,
+        "trace_sha256_equal": true
+      },
+      {
+        "codec": "aceapex-dense",
+        "field": "H_alpha",
+        "profile": "uniform",
+        "n": 5000,
+        "old": 9.774765178312139,
+        "new": 9.774765178312139,
+        "equal": true,
+        "absolute_difference": 0.0,
+        "trace_sha256_equal": true
+      },
+      {
+        "codec": "aceapex-dense",
+        "field": "H_alpha",
+        "profile": "sorted",
+        "n": 100,
+        "old": 6.583856189774725,
+        "new": 6.583856189774725,
+        "equal": true,
+        "absolute_difference": 0.0,
+        "trace_sha256_equal": true
+      },
+      {
+        "codec": "aceapex-dense",
+        "field": "H_alpha",
+        "profile": "sorted",
+        "n": 600,
+        "old": 8.695730961253494,
+        "new": 8.695730961253494,
+        "equal": true,
+        "absolute_difference": 0.0,
+        "trace_sha256_equal": true
+      },
+      {
+        "codec": "aceapex-dense",
+        "field": "H_alpha",
+        "profile": "sorted",
+        "n": 2000,
+        "old": 9.536387322536118,
+        "new": 9.536387322536118,
+        "equal": true,
+        "absolute_difference": 0.0,
+        "trace_sha256_equal": true
+      },
+      {
+        "codec": "aceapex-dense",
+        "field": "H_alpha",
+        "profile": "sorted",
+        "n": 5000,
+        "old": 9.774765178312139,
+        "new": 9.774765178312139,
+        "equal": true,
+        "absolute_difference": 0.0,
+        "trace_sha256_equal": true
+      },
+      {
+        "codec": "aceapex-dense",
+        "field": "H_alpha",
+        "profile": "clustered",
+        "n": 100,
+        "old": 3.762445687829704,
+        "new": 3.762445687829704,
+        "equal": true,
+        "absolute_difference": 0.0,
+        "trace_sha256_equal": true
+      },
+      {
+        "codec": "aceapex-dense",
+        "field": "H_alpha",
+        "profile": "clustered",
+        "n": 600,
+        "old": 6.18052381631697,
+        "new": 6.18052381631697,
+        "equal": true,
+        "absolute_difference": 0.0,
+        "trace_sha256_equal": true
+      },
+      {
+        "codec": "aceapex-dense",
+        "field": "H_alpha",
+        "profile": "clustered",
+        "n": 2000,
+        "old": 7.779614588826439,
+        "new": 7.779614588826439,
+        "equal": true,
+        "absolute_difference": 0.0,
+        "trace_sha256_equal": true
+      },
+      {
+        "codec": "aceapex-dense",
+        "field": "H_alpha",
+        "profile": "clustered",
+        "n": 5000,
+        "old": 8.688592670315096,
+        "new": 8.688592670315096,
+        "equal": true,
+        "absolute_difference": 0.0,
+        "trace_sha256_equal": true
+      },
+      {
+        "codec": "aceapex-dense",
+        "field": "H_alpha",
+        "profile": "hot-set",
+        "n": 100,
+        "old": 5.416174630069642,
+        "new": 5.416174630069642,
+        "equal": true,
+        "absolute_difference": 0.0,
+        "trace_sha256_equal": true
+      },
+      {
+        "codec": "aceapex-dense",
+        "field": "H_alpha",
+        "profile": "hot-set",
+        "n": 600,
+        "old": 5.901578857342883,
+        "new": 5.901578857342883,
+        "equal": true,
+        "absolute_difference": 0.0,
+        "trace_sha256_equal": true
+      },
+      {
+        "codec": "aceapex-dense",
+        "field": "H_alpha",
+        "profile": "hot-set",
+        "n": 2000,
+        "old": 5.935685281173108,
+        "new": 5.935685281173108,
+        "equal": true,
+        "absolute_difference": 0.0,
+        "trace_sha256_equal": true
+      },
+      {
+        "codec": "aceapex-dense",
+        "field": "H_alpha",
+        "profile": "hot-set",
+        "n": 5000,
+        "old": 5.951825103842267,
+        "new": 5.951825103842267,
+        "equal": true,
+        "absolute_difference": 0.0,
+        "trace_sha256_equal": true
+      },
+      {
+        "codec": "aceapex-dense",
+        "field": "H_alpha",
+        "profile": "zipf1.2",
+        "n": 100,
+        "old": 3.122791826237928,
+        "new": 3.122791826237928,
+        "equal": true,
+        "absolute_difference": 0.0,
+        "trace_sha256_equal": true
+      },
+      {
+        "codec": "aceapex-dense",
+        "field": "H_alpha",
+        "profile": "zipf1.2",
+        "n": 600,
+        "old": 3.5467869235291563,
+        "new": 3.5467869235291563,
+        "equal": true,
+        "absolute_difference": 0.0,
+        "trace_sha256_equal": true
+      },
+      {
+        "codec": "aceapex-dense",
+        "field": "H_alpha",
+        "profile": "zipf1.2",
+        "n": 2000,
+        "old": 3.754888156963342,
+        "new": 3.754888156963342,
+        "equal": true,
+        "absolute_difference": 0.0,
+        "trace_sha256_equal": true
+      },
+      {
+        "codec": "aceapex-dense",
+        "field": "H_alpha",
+        "profile": "zipf1.2",
+        "n": 5000,
+        "old": 3.78794024991051,
+        "new": 3.78794024991051,
+        "equal": true,
+        "absolute_difference": 0.0,
+        "trace_sha256_equal": true
+      }
+    ],
+    "exact_matches": 98,
+    "differences": 3
+  },
+  "metric_comparison": {
+    "historical_records": 435,
+    "historical_sha256": "cb52b8cb9fac484a6474d976681ea85ae2c052d80d820422b7f57c25ec938100",
+    "historical_bytes_preserved": true,
+    "new_records": 236,
+    "new_sha256": "70e371851bb21a7d1bf1d04a7d8ce59523c42654320cc4d16be76f51cb66cb7b",
+    "new_run_id": "2026-09-11T16:27:07.312376+00:00",
+    "fresh_bytes_equal_historical": false,
+    "comparisons": [
+      {
+        "codec": "bgzip+htslib",
+        "metric": "ratio",
+        "old": 3.3825582764886026,
+        "new": 3.316167684220197,
+        "same_codec_version": true,
+        "same_declared_parameters": true,
+        "same_corpus": true,
+        "new_over_old": 0.980372668601197,
+        "limitation": "new native callback boundary/build; absolute timings are host-specific"
+      },
+      {
+        "codec": "zstd-seekable",
+        "metric": "ratio",
+        "old": 3.025773934699882,
+        "new": 3.025773934699882,
+        "same_codec_version": true,
+        "same_declared_parameters": true,
+        "same_corpus": true,
+        "new_over_old": 1.0,
+        "limitation": "new native callback boundary/build; absolute timings are host-specific"
+      },
+      {
+        "codec": "aceapex-interactive",
+        "metric": "ratio",
+        "old": 3.6584930605986656,
+        "new": 3.6584930605986656,
+        "same_codec_version": true,
+        "same_declared_parameters": true,
+        "same_corpus": true,
+        "new_over_old": 1.0,
+        "limitation": "new native callback boundary/build; absolute timings are host-specific"
+      },
+      {
+        "codec": "aceapex-dense",
+        "metric": "ratio",
+        "old": 3.780646221619124,
+        "new": 3.780646221619124,
+        "same_codec_version": true,
+        "same_declared_parameters": true,
+        "same_corpus": true,
+        "new_over_old": 1.0,
+        "limitation": "new native callback boundary/build; absolute timings are host-specific"
+      },
+      {
+        "codec": "bgzip+htslib",
+        "metric": "region_p50",
+        "old": 0.102141,
+        "new": 0.184674,
+        "same_codec_version": true,
+        "same_declared_parameters": true,
+        "same_corpus": true,
+        "new_over_old": 1.8080300760713133,
+        "limitation": "new native callback boundary/build; absolute timings are host-specific"
+      },
+      {
+        "codec": "bgzip+htslib",
+        "metric": "region_p99",
+        "old": 0.212103,
+        "new": 0.381441,
+        "same_codec_version": true,
+        "same_declared_parameters": true,
+        "same_corpus": true,
+        "new_over_old": 1.7983762605903733,
+        "limitation": "new native callback boundary/build; absolute timings are host-specific"
+      },
+      {
+        "codec": "bgzip+htslib",
+        "metric": "amplification",
+        "old": 4.82109375,
+        "new": 4.82109375,
+        "same_codec_version": true,
+        "same_declared_parameters": true,
+        "same_corpus": true,
+        "new_over_old": 1.0,
+        "limitation": "new native callback boundary/build; absolute timings are host-specific"
+      },
+      {
+        "codec": "zstd-seekable",
+        "metric": "region_p50",
+        "old": 0.046046,
+        "new": 0.070983,
+        "same_codec_version": true,
+        "same_declared_parameters": true,
+        "same_corpus": true,
+        "new_over_old": 1.5415671285236505,
+        "limitation": "new native callback boundary/build; absolute timings are host-specific"
+      },
+      {
+        "codec": "zstd-seekable",
+        "metric": "region_p99",
+        "old": 0.059425,
+        "new": 0.088826,
+        "same_codec_version": true,
+        "same_declared_parameters": true,
+        "same_corpus": true,
+        "new_over_old": 1.4947580984434161,
+        "limitation": "new native callback boundary/build; absolute timings are host-specific"
+      },
+      {
+        "codec": "zstd-seekable",
+        "metric": "amplification",
+        "old": 2.0,
+        "new": 2.0,
+        "same_codec_version": true,
+        "same_declared_parameters": true,
+        "same_corpus": true,
+        "new_over_old": 1.0,
+        "limitation": "new native callback boundary/build; absolute timings are host-specific"
+      },
+      {
+        "codec": "aceapex-interactive",
+        "metric": "region_p50",
+        "old": 0.12972,
+        "new": 0.170067,
+        "same_codec_version": true,
+        "same_declared_parameters": true,
+        "same_corpus": true,
+        "new_over_old": 1.3110314523589268,
+        "limitation": "new native callback boundary/build; absolute timings are host-specific"
+      },
+      {
+        "codec": "aceapex-interactive",
+        "metric": "region_p99",
+        "old": 0.240419,
+        "new": 0.316299,
+        "same_codec_version": true,
+        "same_declared_parameters": true,
+        "same_corpus": true,
+        "new_over_old": 1.3156156543368036,
+        "limitation": "new native callback boundary/build; absolute timings are host-specific"
+      },
+      {
+        "codec": "aceapex-interactive",
+        "metric": "amplification",
+        "old": 6.21625,
+        "new": 6.21625,
+        "same_codec_version": true,
+        "same_declared_parameters": true,
+        "same_corpus": true,
+        "new_over_old": 1.0,
+        "limitation": "new native callback boundary/build; absolute timings are host-specific"
+      },
+      {
+        "codec": "aceapex-dense",
+        "metric": "region_p50",
+        "old": 1.330098,
+        "new": 1.527427,
+        "same_codec_version": true,
+        "same_declared_parameters": true,
+        "same_corpus": true,
+        "new_over_old": 1.1483567376238444,
+        "limitation": "new native callback boundary/build; absolute timings are host-specific"
+      },
+      {
+        "codec": "aceapex-dense",
+        "metric": "region_p99",
+        "old": 2.523226,
+        "new": 2.89104,
+        "same_codec_version": true,
+        "same_declared_parameters": true,
+        "same_corpus": true,
+        "new_over_old": 1.1457713260722582,
+        "limitation": "new native callback boundary/build; absolute timings are host-specific"
+      },
+      {
+        "codec": "aceapex-dense",
+        "metric": "amplification",
+        "old": 83.4318716430664,
+        "new": 83.4318716430664,
+        "same_codec_version": true,
+        "same_declared_parameters": true,
+        "same_corpus": true,
+        "new_over_old": 1.0,
+        "limitation": "new native callback boundary/build; absolute timings are host-specific"
+      },
+      {
+        "codec": "bgzip+htslib",
+        "metric": "break_even_n",
+        "old": 3435,
+        "new": 3730,
+        "same_codec_version": true,
+        "same_declared_parameters": true,
+        "same_corpus": true,
+        "new_over_old": 1.0858806404657932,
+        "limitation": "new native callback boundary/build; absolute timings are host-specific"
+      },
+      {
+        "codec": "zstd-seekable",
+        "metric": "break_even_n",
+        "old": 7719,
+        "new": 7433,
+        "same_codec_version": true,
+        "same_declared_parameters": true,
+        "same_corpus": true,
+        "new_over_old": 0.962948568467418,
+        "limitation": "new native callback boundary/build; absolute timings are host-specific"
+      },
+      {
+        "codec": "aceapex-interactive",
+        "metric": "break_even_n",
+        "old": 1593,
+        "new": 1338,
+        "same_codec_version": true,
+        "same_declared_parameters": true,
+        "same_corpus": true,
+        "new_over_old": 0.839924670433145,
+        "limitation": "new native callback boundary/build; absolute timings are host-specific"
+      },
+      {
+        "codec": "aceapex-dense",
+        "metric": "break_even_n",
+        "old": 133,
+        "new": 121,
+        "same_codec_version": true,
+        "same_declared_parameters": true,
+        "same_corpus": true,
+        "new_over_old": 0.9097744360902256,
+        "limitation": "new native callback boundary/build; absolute timings are host-specific"
+      },
+      {
+        "codec": "bgzip+htslib",
+        "metric": "encode_throughput_mb_s",
+        "old": 29.02545764874215,
+        "new": 10.080203907858285,
+        "same_codec_version": true,
+        "same_declared_parameters": true,
+        "same_corpus": true,
+        "new_over_old": 0.34728837112048505,
+        "limitation": "new native callback boundary/build; absolute timings are host-specific"
+      },
+      {
+        "codec": "bgzip+htslib",
+        "metric": "full_decode_throughput_mb_s",
+        "old": 711.9364515565414,
+        "new": 366.38011767334257,
+        "same_codec_version": true,
+        "same_declared_parameters": true,
+        "same_corpus": true,
+        "new_over_old": 0.5146247489818899,
+        "limitation": "new native callback boundary/build; absolute timings are host-specific"
+      },
+      {
+        "codec": "zstd-seekable",
+        "metric": "encode_throughput_mb_s",
+        "old": 227.3017120203371,
+        "new": 150.79460853458156,
+        "same_codec_version": true,
+        "same_declared_parameters": true,
+        "same_corpus": true,
+        "new_over_old": 0.6634116707448718,
+        "limitation": "new native callback boundary/build; absolute timings are host-specific"
+      },
+      {
+        "codec": "zstd-seekable",
+        "metric": "full_decode_throughput_mb_s",
+        "old": 709.1320824146522,
+        "new": 477.81000545532663,
+        "same_codec_version": true,
+        "same_declared_parameters": true,
+        "same_corpus": true,
+        "new_over_old": 0.6737954991802724,
+        "limitation": "new native callback boundary/build; absolute timings are host-specific"
+      },
+      {
+        "codec": "aceapex-interactive",
+        "metric": "encode_throughput_mb_s",
+        "old": 49.95282032270425,
+        "new": 39.0847343734872,
+        "same_codec_version": true,
+        "same_declared_parameters": true,
+        "same_corpus": true,
+        "new_over_old": 0.7824329861856198,
+        "limitation": "new native callback boundary/build; absolute timings are host-specific"
+      },
+      {
+        "codec": "aceapex-interactive",
+        "metric": "full_decode_throughput_mb_s",
+        "old": 1301.3652171237627,
+        "new": 1161.8907654008403,
+        "same_codec_version": true,
+        "same_declared_parameters": true,
+        "same_corpus": true,
+        "new_over_old": 0.8928245123754079,
+        "limitation": "new native callback boundary/build; absolute timings are host-specific"
+      },
+      {
+        "codec": "aceapex-dense",
+        "metric": "encode_throughput_mb_s",
+        "old": 49.05931968188805,
+        "new": 39.38173894929891,
+        "same_codec_version": true,
+        "same_declared_parameters": true,
+        "same_corpus": true,
+        "new_over_old": 0.8027371599251516,
+        "limitation": "new native callback boundary/build; absolute timings are host-specific"
+      },
+      {
+        "codec": "aceapex-dense",
+        "metric": "full_decode_throughput_mb_s",
+        "old": 1523.3246559827824,
+        "new": 1431.913050331956,
+        "same_codec_version": true,
+        "same_declared_parameters": true,
+        "same_corpus": true,
+        "new_over_old": 0.9399920395880078,
+        "limitation": "new native callback boundary/build; absolute timings are host-specific"
+      }
+    ],
+    "historical_scopes": {
+      "2026-09-10T20:29:44.589718+00:00": 409,
+      "owner-declared-2026-09-10": 11,
+      "2026-09-10T23:38:56.105858+00:00": 15
+    },
+    "excluded_from_equality_claim": [
+      "owner-declared GPU rows are not remeasured CPU results",
+      "historical default c(g) at ee5 differs from new checked profile curves at 1b13",
+      "historical zstd frontier configurations and auxiliary loop/relative rows have a different output layout",
+      "new timings cannot be expected to reproduce old wall-clock bytes"
+    ],
+    "conclusion": "native nine-axis execution checked; no claim of byte-identical fresh measurements or complete historical row replay"
+  },
+  "acceptance": {
+    "native_dispatch_all_nine_axes": "pass",
+    "complete_historical_equivalence": "not established",
+    "blocker": "BGZF archive bytes, SHA256 and ratio differ. Historical /usr/bin/bgzip came from a system package; the new pinned HTSlib1.19 build is explicitly zlib-only. A matching HTSlib version does not prove matching compression backends. The precise historical backend has not been recovered from retained provenance.",
+    "not_claimed": [
+      "435 fresh records: historical scopes and new serialized layout differ; this candidate has236 rows",
+      "byte-identical new wall-clock timings",
+      "same-build comparison for BGZF",
+      "release readiness or publication approval"
+    ],
+    "next_bounded_action": "Identify and pin the historical BGZF compression backend/build; verify archive equivalence in an isolated untimed check before considering any new timing run. Do not repeat the completed full workflow."
+  }
+}

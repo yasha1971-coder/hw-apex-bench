@@ -26,14 +26,14 @@ codec_sidecar() { :; }
 codec_constraints() { echo '{"granularity":16384,"min_input_bytes":0}'; }
 codec_artifacts() { python3 -c 'import json,sys; print(json.dumps([sys.argv[1]]))' "$1"; }
 codec_region() {
-  python3 "$HB_ROOT/harness/check_region.py" "$(codec_library)" "$1" "$2" "$3" "$4" "$(codec_sidecar "$1")"
+  python3 "$HB_ROOT/harness/check_region.py" "$(codec_library)" "$1" "$2" "$3" "$4" "$(codec_sidecar "$1")" "$(codec_configuration)"
 }
 hb_entry() {
   [[ "${1:-}" == _call ]] || return 0
   shift
   local op=${1:?missing operation}; shift
   case "$op" in
-    codec_name|codec_version|codec_supports|codec_unavailable|codec_build|codec_compress|codec_decompress|codec_region|codec_constraints|codec_library|codec_sidecar|codec_artifacts|codec_inputs|codec_build_artifacts|codec_configuration)
+    codec_name|codec_version|codec_supports|codec_unavailable|codec_build|codec_compress|codec_decompress|codec_region|codec_constraints|codec_library|codec_sidecar|codec_artifacts|codec_inputs|codec_build_artifacts|codec_configuration|codec_encode_command|codec_counter_library)
       declare -F "$op" >/dev/null || { echo "missing function: $op" >&2; exit 2; }
       "$op" "$@"; exit $?;;
     *) echo 'unknown adapter operation' >&2; exit 2;;

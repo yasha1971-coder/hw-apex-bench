@@ -8,6 +8,11 @@ on:
       - 'harness/axis_planner.py'
       - 'harness/native_measure.c'
       - 'harness/native_execution.py'
+      - 'harness/adapter_*.py'
+      - 'harness/native_*.py'
+      - 'harness/native_batch.c'
+      - 'harness/reader_environment.py'
+      - 'review/verify_nine_axes.py'
       - 'harness/test_native_execution.py'
       - 'harness/test_axis_planner.py'
       - 'harness/resident*'
@@ -22,11 +27,11 @@ permissions:
 jobs:
   check:
     runs-on: ubuntu-24.04
-    timeout-minutes: 15
+    timeout-minutes: 25
     strategy:
       fail-fast: false
       matrix:
-        codec: [bgzip, zstd_seekable, aceapex, xz]
+        codec: [bgzip, bgzip_1_19, zstd_seekable, aceapex, aceapex_dense, xz]
     steps:
       - uses: actions/checkout@v4
       - name: Install build prerequisites
@@ -37,6 +42,8 @@ jobs:
         run: python3 -m unittest discover -s harness -p test_axis_planner.py
       - name: Check native worker failure handling and workload
         run: python3 -m unittest discover -s harness -p test_native_execution.py
+      - name: Check counter, batch and reader parameter regression
+        run: python3 -m unittest discover -s harness -p test_native_methods.py
       - name: Build and check the adapter on small corpora
         run: ./run.sh --check "codecs/${{ matrix.codec }}.sh"
       - name: Plan axes from the fresh receipt without measuring
@@ -44,7 +51,10 @@ jobs:
       - name: Exercise native dispatch on the small corpus
         run: |
           python3 harness/resident_fixture.py .work/native-input
-          ./run.sh --measure --codec "${{ matrix.codec }}" --axis ratio --axis decode --axis region --axis break_even --input .work/native-input --output-dir ".work/native-${{ matrix.codec }}"
+          python3 -c 'from pathlib import Path; p=Path(".work/native-input");p.write_bytes(p.read_bytes()*4)'
+          ./run.sh --measure --codec "${{ matrix.codec }}" --axis ratio --axis encode --axis decode --axis region --axis amplification --axis batch --axis h_alpha --axis c_g --axis break_even --plateau --copies 1,2,4 --batch-sizes 100 --input .work/native-input --output-dir ".work/native-${{ matrix.codec }}"
+      - name: Audit all nine axes and generated records
+        run: python3 review/verify_nine_axes.py ".work/native-${{ matrix.codec }}/manifest.json"
       - name: Retain receipts and diagnostics
         if: always()
         uses: actions/upload-artifact@v4
@@ -55,6 +65,36 @@ jobs:
             .work/adapter-check/**/check.log
             .work/*.plan.json
             .work/native-*/manifest.json
+            .work/native-*/results.jsonl
+            .work/native-*/README.md
             .work/native-*/**/*.jsonl
             .work/native-*/**/*.log
           include-hidden-files: true
+
+  full-native-comparison:
+    # Owner authorized one full run after all small checks. Never repeat it on
+    # documentation updates, PR synchronize, or unrelated adapter PRs.
+    if: github.event_name == 'pull_request' && github.event.action == 'opened' && github.head_ref == 'tooling/native-remaining-axes'
+    needs: check
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install build prerequisites
+        run: sudo apt-get update -qq && sudo apt-get install -y -qq build-essential cmake zlib1g-dev
+      - name: Run the authorized full native comparison
+        run: python3 harness/full_native_run.py
+      - name: Preserve full candidate evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: native-full-comparison
+          include-hidden-files: true
+          path: |
+            .work/native-full/**/*.json
+            .work/native-full/**/*.md
+            .work/native-full/**/*.jsonl
+            .work/native-full/**/*.ranges
+            .work/native-full/**/*.log
+            .work/adapter-check/**/check.json
+            .work/adapter-check/**/check.log

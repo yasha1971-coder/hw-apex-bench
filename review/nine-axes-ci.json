@@ -1,0 +1,158 @@
+{
+  "code_commit": "4195a210c6a321315eebb84a36d564ac674aa18b",
+  "pr": 26,
+  "workflow_run": 34619124537,
+  "scope": "six small correctness and nine-axis integration checks; full job audited separately",
+  "artifacts": [
+    {
+      "id": 10272120950,
+      "name": "adapter-check-aceapex",
+      "digest": "sha256:1fa4226eaf763d90289e3d6cfd9c322fbe689477117a4f2bde44197e1b40c0ca",
+      "status": "pass",
+      "records": 33,
+      "corpus_md5": "7ee45df9fa60f392d0d8ef593a4dd123",
+      "adapters": [
+        {
+          "codec": "aceapex-interactive",
+          "version": "aceapex@1b13df34ac8e839dd3232b59bc59560d689a435a",
+          "axes": 9,
+          "supported": 9,
+          "encode_status": "data_edge",
+          "decode_status": "data_edge",
+          "profile_counts": [
+            100
+          ]
+        }
+      ],
+      "check_sha256": "eb9df6c883f39db92e265ea8db6f7f2c4e8dba42c96d362fc9167fc6179a7905",
+      "qualification_sha256": "ae029b1c8b029455eee9ab236c7400e50bbd74640fbf753ad94e14934fe6ea73",
+      "restores": 4,
+      "region_checks": 4453
+    },
+    {
+      "id": 10272066066,
+      "name": "adapter-check-bgzip_1_19",
+      "digest": "sha256:9af6c87d693f039d5e98087a3b5fbff1f06411824d633a0ac58f0fd9f3f6e921",
+      "status": "pass",
+      "records": 24,
+      "corpus_md5": "7ee45df9fa60f392d0d8ef593a4dd123",
+      "adapters": [
+        {
+          "codec": "bgzip+htslib",
+          "version": "1.19",
+          "axes": 9,
+          "supported": 7,
+          "encode_status": "declared",
+          "decode_status": "declared",
+          "profile_counts": [
+            100
+          ]
+        }
+      ],
+      "check_sha256": "a8f435ee86889621b5ab3bc19967d9de8816cde6e3920cbe7af6f65f0c36fc8e",
+      "qualification_sha256": "cd74ea277b5c783bbd70051507ff1981c6639ba249c293eb7b44a7600d5ee629",
+      "restores": 5,
+      "region_checks": 1382
+    },
+    {
+      "id": 10272046039,
+      "name": "adapter-check-zstd_seekable",
+      "digest": "sha256:933ee4f60df607c14f2eefa30496589d119b8817969e6cf9ae9dfc6670c56a90",
+      "status": "pass",
+      "records": 24,
+      "corpus_md5": "7ee45df9fa60f392d0d8ef593a4dd123",
+      "adapters": [
+        {
+          "codec": "zstd-seekable",
+          "version": "1.5.7",
+          "axes": 9,
+          "supported": 8,
+          "encode_status": "data_edge",
+          "decode_status": "declared",
+          "profile_counts": [
+            100
+          ]
+        }
+      ],
+      "check_sha256": "427c890ce3a9b28b6048c45ccca2eea31f32c3c615ce991ed906a1d10706e10e",
+      "qualification_sha256": "15fb1dee3848125013c9bbb52bf358fece63b794043a444910649f6a5e6a13b5",
+      "restores": 5,
+      "region_checks": 4454
+    },
+    {
+      "id": 10271576453,
+      "name": "adapter-check-aceapex_dense",
+      "digest": "sha256:452b27d7ab87c9f8ebe089e3ae16f4907461c07ef257bf88176cf0219b6b328a",
+      "status": "pass",
+      "records": 33,
+      "corpus_md5": "7ee45df9fa60f392d0d8ef593a4dd123",
+      "adapters": [
+        {
+          "codec": "aceapex-dense",
+          "version": "aceapex@1b13df34ac8e839dd3232b59bc59560d689a435a",
+          "axes": 9,
+          "supported": 9,
+          "encode_status": "data_edge",
+          "decode_status": "data_edge",
+          "profile_counts": [
+            100
+          ]
+        }
+      ],
+      "check_sha256": "30b422e81103fac42e9cbe4ce4ae44e4ac5711faf1c0bbd0082aa4e553455715",
+      "qualification_sha256": "ce2e16084cfb237a7fb7f9f50f824c95e22858c787dc61cc32763a999f4e18b6",
+      "restores": 4,
+      "region_checks": 613
+    },
+    {
+      "id": 10271193971,
+      "name": "adapter-check-xz",
+      "digest": "sha256:23c5df990c871b9611b877746378134a3df3ce36dfd433718477850e26a8c01f",
+      "status": "pass",
+      "records": 24,
+      "corpus_md5": "7ee45df9fa60f392d0d8ef593a4dd123",
+      "adapters": [
+        {
+          "codec": "xz-blocked",
+          "version": "5.4.5",
+          "axes": 9,
+          "supported": 8,
+          "encode_status": "data_edge",
+          "decode_status": "data_edge",
+          "profile_counts": [
+            100
+          ]
+        }
+      ],
+      "check_sha256": "a2cb435c8a2d77f03f1b73b5ed2ac9d58ce69e755c6fc18e1ade6ae9a3be234a",
+      "qualification_sha256": "c9fc58527342e47f29d8df0e15a68e76b8fa7b0398b8dca42423f1d0e65d4f87",
+      "restores": 5,
+      "region_checks": 4454
+    },
+    {
+      "id": 10271029074,
+      "name": "adapter-check-bgzip",
+      "digest": "sha256:93a52609724cbc881374b16027bac6e4740abd1da9553582e4fa55ae47d0b1d0",
+      "status": "pass",
+      "records": 24,
+      "corpus_md5": "7ee45df9fa60f392d0d8ef593a4dd123",
+      "adapters": [
+        {
+          "codec": "bgzip+htslib",
+          "version": "1.24",
+          "axes": 9,
+          "supported": 7,
+          "encode_status": "declared",
+          "decode_status": "declared",
+          "profile_counts": [
+            100
+          ]
+        }
+      ],
+      "check_sha256": "c1b434214d278e741085f9a73ca23e34e3d4f688e22d1a251d35f786ba35934e",
+      "qualification_sha256": "6cda883caff5da500ad9f288ec5a13b1b93f6fbbe2eee4728e8d1abfba933036",
+      "restores": 5,
+      "region_checks": 1382
+    }
+  ]
+}

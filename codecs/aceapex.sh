@@ -1,10 +1,11 @@
 #!/usr/bin/env bash
 set -euo pipefail
+ACE_PROFILE=interactive
 # Resident-context proof: capabilities describe this executable path only.
-codec_supports() { echo 'ratio decode region break_even'; }
+codec_supports() { echo 'ratio encode decode region amplification h_alpha batch c_g break_even'; }
 codec_unavailable() {
   cat <<'JSON'
-{"encode":"encode timer not connected to context proof","amplification":"decoder counters not ported to context proof","c_g":"controlled curve runner not connected to context proof","batch":"native batch callback not ported in context proof","h_alpha":"block mapping callback not ported to context proof"}
+{}
 JSON
 }
 codec_context_build() {
@@ -19,10 +20,10 @@ codec_context_build() {
 }
 source "${HB_ROOT:-$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.." && pwd)}/harness/check_common.sh"
 
-codec_configuration() { echo '{"profile": "interactive", "level": 2, "encoder_requested_threads": 1, "decoder_policy": "pinned native API defaults; no thread argument", "granularity": 16384, "lit_chunk": 65536, "fse_chunk": 4096, "min_match": 0}'; }
-codec_inputs() { python3 -c 'import json,sys;print(json.dumps(sys.argv[1:]))' "$HB_ROOT/codecs/native/aceapex.c"; }
-codec_build_artifacts() { python3 -c 'import json,sys;print(json.dumps(sys.argv[1:]))' "$(codec_library)" "$HB_CHECK_WORK/aceapex-cli"; }
-codec_name() { echo 'aceapex-interactive'; }
+codec_configuration() { echo '{"profile": "interactive", "level": 2, "encoder_requested_threads": 1, "decoder_policy": "pinned native API defaults; no thread argument", "granularity": 16384, "lit_chunk": 65536, "fse_chunk": 4096, "min_match": 0, "reader_environment":{"ACEAPEX_BS":"16384","LIT_CHUNK":"65536","FSE_CHUNK":"4096","MIN_MATCH":"0"}}'; }
+codec_inputs() { python3 -c 'import json,sys;print(json.dumps(sys.argv[1:]))' "$HB_ROOT/codecs/native/aceapex.c" "$HB_ROOT/codecs/aceapex.sh" "$HB_ROOT/codecs/counters.py" "$HB_ROOT/harness/build_counters.py"; }
+codec_build_artifacts() { python3 -c 'import json,sys;print(json.dumps(sys.argv[1:]))' "$(codec_library)" "$(codec_counter_library)" "$HB_CHECK_WORK/counter-sources.json" "$HB_CHECK_WORK/aceapex-cli"; }
+codec_name() { echo "aceapex-$ACE_PROFILE"; }
 codec_version() { echo 'aceapex@1b13df34ac8e839dd3232b59bc59560d689a435a'; }
 codec_constraints() { echo '{"granularity":16384,"min_input_bytes":1,"min_input_reason":"pinned ACE CLI does not support empty input"}'; }
 codec_build() (
@@ -33,12 +34,17 @@ codec_build() (
   hb_checkout https://github.com/yasha1971-coder/aceapex.git 1b13df34ac8e839dd3232b59bc59560d689a435a "$HB_ACEAPEX"
   codec_context_build "$(codec_library)"
   g++ -O3 -std=c++17 -pthread -I"$HB_ACEAPEX/src" -I"$HB_ZSTD/lib" "$HB_ACEAPEX/aceapex_depth.cpp" "$HB_ZSTD/lib/libzstd.a" -o "$HB_CHECK_WORK/aceapex-cli"
+  python3 "$HB_ROOT/codecs/counters.py" aceapex "$HB_CHECK_WORK"
 )
 codec_compress() {
-  [[ "$3" == 16384 && -s "$1" ]] || { echo 'pinned interactive preset requires nonempty input and granularity 16384' >&2; return 1; }
-  env -u ACEAPEX_BS -u LIT_CHUNK -u FSE_CHUNK -u MIN_MATCH "$HB_CHECK_WORK/aceapex-cli" c --in "$1" --out "$2" --threads 1 --level 2 --profile interactive
+  [[ "$3" =~ ^[0-9]+$ && "$3" -ge 4096 && "$3" -le 4294967295 && -s "$1" ]] || { echo 'pinned interactive preset requires nonempty input and granularity >=4096' >&2; return 1; }
+  env -u LIT_CHUNK -u FSE_CHUNK -u MIN_MATCH ACEAPEX_BS="$3" "$HB_CHECK_WORK/aceapex-cli" c --in "$1" --out "$2" --threads 1 --level 2 --profile "$ACE_PROFILE"
 }
-codec_decompress() { "$HB_CHECK_WORK/aceapex-cli" d --in "$1" --out "$2" --profile interactive; }
+codec_decompress() { "$HB_CHECK_WORK/aceapex-cli" d --in "$1" --out "$2" --profile "$ACE_PROFILE"; }
+
+codec_encode_command() { python3 -c 'import json,sys; b,i,o,g,profile=sys.argv[1:]; assert int(g)>=4096; print(json.dumps({"argv":[b,"c","--in",i,"--out",o,"--threads","1","--level","2","--profile",profile]}))' "$HB_CHECK_WORK/aceapex-cli" "$1" "$2" "$3" "$ACE_PROFILE"; }
+
+codec_counter_library() { echo "$HB_CHECK_WORK/counter-context.so"; }
 
 # Sourcing exposes functions without running the historical CLI dispatcher.
 if [[ "${BASH_SOURCE[0]}" != "$0" ]]; then return 0; fi

@@ -36,7 +36,8 @@ static uint64_t rng(uint64_t *s) {
 }
 int main(int argc,char **argv) {
     if(argc!=6 && argc!=7) die("usage: native_measure LIB ARCHIVE ORIGINAL region|decode SIDECAR [REPEATS]");
-    int region=!strcmp(argv[4],"region");
+    int counts=!strcmp(argv[4],"amplification");
+    int region=!strcmp(argv[4],"region") || counts;
     if(!region && strcmp(argv[4],"decode")) die("unknown phase");
     int repeats=5;
     if(argc==7) {
@@ -54,6 +55,8 @@ int main(int argc,char **argv) {
     int64_t (*read_region)(void*,uint64_t,void*,size_t)=symbol(lib,"hc_region");
     int64_t (*decode)(void*,void*,size_t)=symbol(lib,"hc_decode");
     void (*close_ctx)(void*)=symbol(lib,"hc_close");
+    void (*reset_counts)(void*)=counts?symbol(lib,"hc_count_reset"):NULL;
+    uint64_t (*count_bytes)(void*)=counts?symbol(lib,"hc_count_bytes"):NULL;
     if(abi()!=2) die("unsupported context ABI");
     void *ctx=open_ctx(arc,an,*argv[5]?argv[5]:NULL,UINT64_MAX);
     if(!ctx || size_ctx(ctx)!=fn) die("archive size mismatch");
@@ -65,7 +68,9 @@ int main(int argc,char **argv) {
     for(int q=region?-12:-1;q<(region?200:repeats);q++) {
         uint64_t start=region?(q==-12?0:q==-11?fn-length:rng(&seed)%(fn-length+1)):0;
         int64_t n; double elapsed;
-        if(region) {
+        if(counts) {
+            reset_counts(ctx); n=read_region(ctx,start,out,length); elapsed=0;
+        } else if(region) {
             double t0=now(); n=read_region(ctx,start,out,length); elapsed=(now()-t0)*1000.;
         } else {
             double t0=now(); n=decode(ctx,out,length); elapsed=(now()-t0)*1000.;
@@ -74,7 +79,8 @@ int main(int argc,char **argv) {
         for(unsigned i=0;i<16;i++)
             if(guard[i]!=0xa5 || guard[16+length+i]!=0xa5) die("destination guard overwritten");
         if(q<0) continue;
-        if(region) printf("{\"query\":%d,\"byte_offset\":%llu,\"requested_bytes\":16384,\"verified\":true,\"latency_ms\":%.9f}\n",q,(unsigned long long)start,elapsed);
+        if(counts) printf("{\"query\":%d,\"byte_offset\":%llu,\"requested_bytes\":16384,\"verified\":true,\"decoded_bytes\":%llu}\n",q,(unsigned long long)start,(unsigned long long)count_bytes(ctx));
+        else if(region) printf("{\"query\":%d,\"byte_offset\":%llu,\"requested_bytes\":16384,\"verified\":true,\"latency_ms\":%.9f}\n",q,(unsigned long long)start,elapsed);
         else printf("{\"repeat\":%d,\"wall_ms\":%.9f,\"verified_bytes\":%zu,\"verified\":true}\n",q,elapsed,fn);
     }
     close_ctx(ctx); dlclose(lib); free(guard); free(original); free(arc);
