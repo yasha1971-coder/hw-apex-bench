@@ -388,3 +388,46 @@ capabilities from existing n/a evidence; then choose the actual native interface
 Dispatch, counter selection and shared state are still in core, so adapter
 extraction is not declared complete. Do not merge old PR #17 over published main,
 do not add xz before the real interface/check gate, and do not rerun full timings.
+
+## Resident context / fourth-codec proof — 2026-09-11
+
+User changed the next-stage order: derive operations/capabilities from the three
+working codecs, exercise xz immediately, then generic --check. This supersedes
+the earlier prohibition on xz before --check. PR #21 remains draft/unmerged at
+c82c96fcd9e9d60717ad601c991ec6f2251eff85; live main remains 0e8246f8b14b74191b3bf8cc6f14b71be85779ce.
+New branch tooling/resident-context-proof is based on that exact PR #21 head.
+
+Common experimental C operations: open resident archive, region, full decode,
+close, ABI/version. No codec headers or name switches in the shared header/probe.
+Three existing API calls are wrapped in codecs/native/*.c; ACE retains per-call
+header parsing and the published 1b13 source. The old three shell CLI dispatchers
+and all historical measurement sources remain unchanged. codec_supports and
+codec_unavailable describe the NEW context proof path only; decode/region are
+implemented, all remaining axes carry explicit reasons. They do not replace the
+historical published capability/results state. See RESIDENT_CONTEXT.md.
+
+Fourth codec xz uses --block-size, a Footer-located resident Index, native block
+lookup/decode and cross-block assembly. One Stream/no padding is the initial
+supported scope; concatenation/padding are explicitly rejected. It required no
+codec-specific branch in the shared interface or generic probe. No ACE table
+caching, full timing runs, new c(g) values, CRAM, tag or main merge occurred.
+
+Local qualification: four byte-exact full restores, 1248 valid region queries,
+12 invalid ranges rejected, destination guards intact. Six additional unittest
+methods cover five XZ geometries plus one-block baseline, empty/one-byte/exact
+block data, corrupt metadata/blocks, resident lifetime and two independent
+contexts. An initial test parsed xz robot column 8 (ratio) instead of 7 (raw size);
+fixed against actual robot output; the complete suite then passed. All existing
+53 tests also pass; the 16-section reconstruction and 435-record byte comparison
+pass. Publication validator and Pages export pass. Proof receipt with commands,
+versions and hashes: review/resident-context-proof.json. XZ links system liblzma
+5.4.5 with pinned 5.4.5 API headers; HTSlib is 1.24, explicitly not a historical
+measurement-library qualification. New CI only tests XZ native correctness and
+all-four capability reasons; it does NOT claim an all-four clean dependency build.
+
+Next bounded action after reviewing this proof: finish the common shell build/
+compress/decompress/region contract and generic --check with pinned dependency
+preparation and all-four CI. Then connect capability-driven measurement planning,
+batch/counters/block mapping and results output. The Python ctypes probe must
+never be used as a performance timer. The final timing ABI is not frozen yet.
+Do not merge PR #17 or overwrite measured evidence; do not optimize ACE parsing.

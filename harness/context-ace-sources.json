@@ -1,0 +1,33 @@
+{
+  "commit": "1b13df34ac8e839dd3232b59bc59560d689a435a",
+  "files": {
+    "aceapex_depth.cpp": "f2ed4557cf2cc50f8538bc0d876491246b2606ab27815c1b28f2fdcdcd7e2e29",
+    "aceapex_depth_64.cpp": "f7174e56dd4f33bb4eab030694fb645363c8f4e43ebce4bd340a9a7c6d8c5640",
+    "examples/decode_example.cpp": "12bc7c858a9842af416829d1691d5f65c90ff7e71f9e3ae7605cb05789cedec6",
+    "gpu/aceapex_depth.cpp": "3367a2fdefad77279b0e5ed2d37f244061337c5a051fbe94e8e4613cb5fab115",
+    "include/aceapex_decode.h": "074683df1e5588b4bb7a95bd019fda5808a5b43cd270ff9a3d7b30db7264f620",
+    "include/acepx4_format.h": "7201104b254dadc31bc75bba4c5973e999dddaa17abed19d6c1aa2ac12d6b152",
+    "lzbench_pr/aceapex_cuda.h": "2b7b4d642fdabd6e66ccd73d75830edaf75e5d81e2e74964f71c005b3a07a5c1",
+    "lzbench_pr/v2/aceapex_cuda.h": "314514f8ee5bf03757d809b9f58abcca4f0812dfe10e21d62ef883ff2b30b659",
+    "research/decode-mechanism/match_histogram.cpp": "a84917c377e1d88692eaa16633e86af0463d0ade37e98a2ec3123600f5d56d9b",
+    "research/decode-mechanism/offset_entropy.cpp": "c4e18b0079584942bb36f6b7a4bae476324415f3525bfc7152f2088d7022a4f4",
+    "research/encode/aceapex_encode.cpp": "e7ff09f14a96cd235bf21135611ee0757b6134f282105cb750550a236a301855",
+    "research/encode-scaling-2026-07-07/aceapex_depth_baseline.cpp": "d9fe2a8364399d89bb2259f1407956d17162f1d612dca6c4f0fef913513d6cf6",
+    "scripts/batch_test.c": "05cfd4d8f1346057fa3dd3111abf734fb6a05bdc416df19922edc04b8225600d",
+    "scripts/batch_test_ci.c": "31a6a3884ba2d5d1d4674e037ce9f019b027cd0063cd51dd3b2a6051a8344e86",
+    "scripts/breakeven.c": "db9004ba33c6137d9cc8294ff2c6c6891d35f39d1f4f3438526da0b1768b3673",
+    "scripts/libseek.c": "9151721ca681e346e8d92d095f94017c4dea84c565d1f71b7268d6a9faaec37e",
+    "scripts/lzbench_aceapex_codecs.cpp": "ad71db5178370cc66631546331214357930b5934bf45be8d8fded3f033b61b46",
+    "src/aceapex.h": "df491bc3c892ef8ddfb1046f8e8fda62465f8810666e64bd7289da28162e0b7d",
+    "src/aceapex_api.cpp": "ec0f459bb93f51dd34fe2ee3153de5b98f3f7c981c6dad07cc7534bf95fde4b6",
+    "src/aceapex_main.cpp": "e650c2ce8b4644c12ba48e7efa639dc78816bfd05bbb3dca9963cc22373bef39",
+    "src/aceapex_main_depth.cpp": "656ef1276fdb6cd5796b53d16786670a5ece157f3beced9a2d361ef675085793",
+    "src/acepx3.cpp": "adbdebe391138d1afc4ec73f380fcad90607598ce5c12a7a3aa6389f2001233f",
+    "src/acepx4.cpp": "725583d9fc085719676240f87817664f0808f1afb6404c4e65dd9d547284bb18",
+    "src/encode_streaming.cpp": "96cfb7a1b820a73dacd234f7ca1da58342a38ef28ac17590126efbe20be1662c",
+    "src/lit_fse.cpp": "775d7f3a15b264a4b829f44afe3d9a3011dc4ad16149bd52609a91e4aa4194cb",
+    "src/xxhash.h": "17973c0dc49d9854ca26caa191f0e12f7a424b68858d9a78de3860d959d85e4b",
+    "src/zstd_xxhash.c": "7f346e5ee3ca0c98b9ab1c61a233e40941a2b7e67b9d19fa48d4070019f15b48",
+    "test_wavefront_cpu.cpp": "def76758bb9610a51517271e43fbee67af5ec4bcd79e8e0a51b73c2e0f5e5fa4"
+  }
+}
