@@ -547,3 +547,53 @@ Thirty-six plan positions verified (eight eligible, twenty-eight explicit n/a).
 This checkpoint only records CI evidence; tested source and publication are unchanged.
 PRs #21/#22/#23/#24 remain draft, unmerged. Next step is actual native backend
 integration; no claim that dispatch tests are real measurements or release readiness.
+
+## Native execution first connected axes — 2026-09-11
+
+Branch tooling/native-axis-execution starts at PR #24 checkpoint
+cd8ffe070d80860872edbca1daa5536c0b76d21a. PR #24 checked live: draft, unmerged.
+The latest owner instruction authorizes a full comparison run AFTER all nine axes
+are connected and small checks pass. This supersedes the older no-full-run rule
+only at that gate. Do not launch the historical workflow as a substitute: it
+rewrites results.jsonl and cannot prove the new dispatch path works.
+
+Implemented --measure with a codec-independent dlopen C worker. Region keeps the
+historical 12 warmups, LCG/seed, 200 x 16 KiB queries; decode one warmup/five samples.
+Archive/index setup, I/O, process startup, Python, verification and serialization
+are outside timing. ABI-2 callbacks retain per-call ACE header parsing. Callback
+bounds/dispatch overhead is included and explicitly distinguished from the older
+directly linked worker. No upstream source or existing native extraction changed.
+
+Connected ratio (archive plus every mandatory artifact, CLI byte-exact restore),
+native region/full-decode samples, and break-even (same-run cached samples,
+floor(full median / region p50)+1). Each adapter now advertises these four axes.
+One input size is data_edge, never a plateau headline. --measure requires a new
+output directory, a current check receipt, and writes manifest.json only after
+all selected handlers, bytes, hashes and state validate. Failed candidates retain
+logs without a success manifest. Timeouts/interruption kill the process group.
+The cabench-native-samples-v1 artifact is explicitly unpublished, not results.jsonl.
+
+All four fresh local --checks passed: 19 restores / 2263 native regions. A separate
+349571-byte native integration run passed four codecs x four connected axes:
+800 timed regions, 20 timed full decodes, four verified ratios; break-even reuses
+the same raw samples. These are small integration timings, not performance claims.
+Five new tests cover an independently compiled identity native codec, exact query
+sequence, corrupted bytes/guards, incomplete samples, repeat validation, and an
+external CLI-only ratio codec whose mandatory index is included without a library.
+Checker/planner tests and publication integrity/extraction checks pass. The existing
+435 rows remain byte-identical with SHA256
+cb52b8cb9fac484a6474d976681ea85ae2c052d80d820422b7f57c25ec938100.
+CI now exercises this small real dispatcher after clean builds of all four codecs,
+retaining manifest/raw samples/logs; it does not run the full performance suite.
+
+NOT COMPLETE: remaining throughput plateau/CLI encode backend, decoder counters,
+block mapping/H_alpha, native batch, controlled c(g), additional historical
+configurations and final publication serialization/same-run baseline comparison.
+The published 435 are 409 main-run rows +15 c(g) +11 owner-declared GPU rows across
+separate scopes. Core ACE is 1b13 interactive/dense; strict c(g) uses ee5 default;
+current check HTSlib1.24 differs from the historical build. Fresh timing bytes
+cannot equal old wall-clock values. Require exact historical artifact replay and
+matched-method/configuration comparison, without copying old values into a new run.
+Next bounded action: check this native integration CI/artifacts, then connect the
+plateau runner while preserving published encode CLI wall-clock boundaries (do not
+substitute the ACE compression API, whose old geometry differs from the CLI).

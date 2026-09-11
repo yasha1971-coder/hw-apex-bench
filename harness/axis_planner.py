@@ -38,7 +38,7 @@ def plan_adapter(adapter,work,axes):
                 'receipt_sha256':digest(Path(work)/'check.json'),'tasks':tasks}
 
 def dispatch_adapter(plan,handlers):
-    """Internal dispatch seam for future native backends, not a CLI timing path.
+    """Dispatch qualified axes to supplied backends; this function does not time calls.
 
     Validate the whole adapter before invoking any handler. Unsupported axes never
     reach a handler. Missing implementation is a blocking error, not codec n/a.

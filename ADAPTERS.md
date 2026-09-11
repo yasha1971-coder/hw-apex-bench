@@ -142,11 +142,54 @@ The internal `dispatch_adapter(plan, handlers)` seam revalidates a plan before
 calling handlers, never calls a handler for n/a, checks all required backends before
 starting, and rejects output if checked state changes during dispatch. A shared
 build lock excludes cooperative rebuilds for the complete call sequence. This is
-covered with test handlers; no performance handlers are connected or exposed on
-the CLI in this segment. Plans use their own schema, contain no measured values,
+covered with test handlers and the native execution path described below. Plans use their own schema, contain no measured values,
 and are never appended to the historical 435-row results file.
 
 Remaining work: connect actual native timing/counter/batch/curve implementations
 and validated result serialization to this seam, preserving their methodology and
 same-run baseline comparisons. The plan command itself does not finish migration
 of the nine axes or make the instrument release-ready.
+
+
+## Execute the first connected native axes
+
+```sh
+./run.sh --check codecs/xz.sh
+python3 harness/resident_fixture.py .work/native-input
+./run.sh --measure --codec xz --axis ratio --axis region --axis decode --axis break_even --input .work/native-input --output-dir .work/native-xz
+```
+
+Repeat `--codec` to measure other qualified adapters in this invocation. The output
+directory must be new. `manifest.json` is written only after all selected adapters
+and verification checks succeed. Raw candidate samples and failure diagnostics
+remain in the directory if a worker fails; they are not successful measurements.
+This experimental `cabench-native-samples-v1` format is not publication JSONL.
+
+The C worker loads the same ABI-2 context libraries checked by `--check`, without
+codec-name branches. Archive loading, index preparation and output allocation are
+outside timing. Region timing covers the native context callback, including its
+bounds checks and the existing decoder API; it excludes process launch, Python,
+verification and serialization. ACEAPEX still parses its header inside each API
+call. This callback boundary is recorded explicitly; no claim of instruction-level
+identity to the older directly linked timing calls is made.
+
+The region workload retains 12 warmups, seed 20260909, 200 reads of 16 KiB and the
+historical LCG sequence. Full decode retains one warmup and five samples. Every
+sample is verified outside the timer. Ratio counts all `codec_artifacts`, including
+BGZF's mandatory .gzi, and verifies a CLI restoration outside any timer. Break-even
+uses the same run's median full decode and region p50, with the historical rule
+floor(full_ms / region_p50_ms) + 1. Shared raw samples are reused, not remeasured.
+
+A single-size decode result is explicitly `data_edge`, not a plateau throughput
+headline. These small native runs prove executable integration and correctness;
+their timings are not performance claims. Capability changes require new small
+check receipts. Missing axes remain adapter-owned migration reasons and are not
+substituted into the published historical table.
+
+Migration remains incomplete: throughput plateaus/CLI encode timing, decoder
+counters, access-profile block mapping, native batch and controlled c(g) still need
+backends. Historical dense/default/frontier configurations and declared GPU rows
+must also keep their distinct provenance. The 435 published records are immutable:
+artifact replay can be byte-identical; fresh timings cannot be expected to be.
+The owner authorized a full comparison run after all axes are connected and small
+checks pass. It must write a separate artifact before any publication decision.
