@@ -159,7 +159,9 @@ python3 harness/resident_fixture.py .work/native-input
 ./run.sh --measure --codec xz --axis ratio --axis region --axis decode --axis break_even --input .work/native-input --output-dir .work/native-xz
 ```
 
-Repeat `--codec` to measure other qualified adapters in this invocation. The output
+Repeat `--codec` to measure other qualified adapters in this invocation. Any of
+the nine axis names may be selected; unsupported ones yield the adapter's n/a reason
+without invoking an encoder or decoder. The output
 directory must be new. `manifest.json` is written only after all selected adapters
 and verification checks succeed. Raw candidate samples and failure diagnostics
 remain in the directory if a worker fails; they are not successful measurements.

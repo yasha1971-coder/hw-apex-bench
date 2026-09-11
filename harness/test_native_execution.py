@@ -99,7 +99,10 @@ esac
             original=root/'input';original.write_bytes(b'hello')
             destination=root/'run';destination.mkdir()
             runner=NativeExecution(root/'unused-worker',original,destination)
-            result=dispatch_adapter(plan_adapter(adapter,work,['ratio']),runner.handlers())[0]['value']
+            rows=dispatch_adapter(plan_adapter(adapter,work,['batch','ratio']),runner.handlers())
+            self.assertEqual(rows[0]['value'],None)
+            self.assertEqual(rows[0]['reason'],'fixture has no such API')
+            result=rows[1]['value']
             self.assertEqual(result['archive_bytes'],8)
             self.assertEqual(result['ratio'],5/8)
             self.assertEqual(result['verified'],'byte-exact')

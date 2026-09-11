@@ -19,6 +19,7 @@ import subprocess
 import sys
 from datetime import datetime, timezone
 from axis_planner import dispatch_adapter, plan_adapter, resolve_adapter
+from resident_probe import AXES
 from qualification import ROOT, clean_environment, output, work_directory
 
 
@@ -164,18 +165,20 @@ class NativeExecution:
 def main():
     p=argparse.ArgumentParser(description=__doc__)
     p.add_argument('--codec',action='append',required=True)
-    p.add_argument('--axis',action='append',choices=('ratio','decode','region','break_even'),required=True)
+    p.add_argument('--axis',action='append',choices=sorted(AXES),required=True)
     p.add_argument('--input',type=Path,required=True)
     p.add_argument('--work',type=Path,default=ROOT/'.work/adapter-check')
     p.add_argument('--output-dir',type=Path,required=True,help='new directory; never overwrites a run')
     a=p.parse_args()
     try:
         if not a.input.is_file(): raise ValueError('input file missing')
-        if set(a.axis)&{'region','break_even'} and a.input.stat().st_size<16384:
-            raise ValueError('region requires at least 16384 input bytes')
         adapters=[resolve_adapter(c) for c in a.codec]
         if len(set(adapters))!=len(adapters): raise ValueError('duplicate adapter selection')
         plans=[plan_adapter(c,work_directory(c,a.work),a.axis) for c in adapters]
+        needs_region=any(t['action']=='schedule' and t['axis'] in {'region','break_even'}
+                         for plan in plans for t in plan['tasks'])
+        if needs_region and a.input.stat().st_size<16384:
+            raise ValueError('region requires at least 16384 input bytes')
         a.output_dir.mkdir(parents=True,exist_ok=False)
         directory=a.output_dir.resolve()
         worker=directory/'native-measure'
