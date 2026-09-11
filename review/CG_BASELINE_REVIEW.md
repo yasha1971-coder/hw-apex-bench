@@ -77,3 +77,47 @@ CABENCH_CG_RESULTS=/tmp/cabench-cg-results.jsonl python3 -m unittest discover -s
 The publication gate remains separate: integrate the reviewed evidence with the
 merged license footer, regenerate reports and validate the manifest before a
 main-branch merge. Adapter work remains paused.
+
+## Frame counts and literal-transform follow-up
+
+Counts below are from the retained seek-table parser output, not a fresh
+`zstd -l` invocation: the original .zst archives are not present in this checkout.
+The parser checked frame lengths and complete archive accounting when measured.
+The seek table itself is one additional skippable frame in every file.
+
+| Granularity | Indexed zstd frames | Nonempty | Empty | Seek-table skippable frames |
+|---|---|---|---|---|
+| Whole-file baseline | 2 | 1 | 1 | 1 |
+| 4 KiB | 61996 | 61996 | 0 | 1 |
+| 16 KiB | 15499 | 15499 | 0 | 1 |
+| 64 KiB | 3875 | 3875 | 0 | 1 |
+| 256 KiB | 969 | 969 | 0 | 1 |
+| 1024 KiB | 243 | 243 | 0 | 1 |
+
+The extra empty frame is asymmetric: it occurs only in the baseline. Its
+compressed length was not retained separately, so no exact byte correction is
+claimed here. With b extra baseline bytes and Sg point bytes, the published
+c(g) is smaller than the hypothetical empty-frame-free result by 100*b/Sg
+percentage points. At 16 KiB, even 100 bytes would change it by only
+0.000119155 percentage points. Do not alter measured sizes to apply that
+hypothetical correction.
+
+At 16 KiB the matched seekable/seekable c(g) is 6.569397%. The earlier
+7.180634% compared ordinary zstd CLI output with seekable output. These are
+different comparisons, not endpoints of one c(g) range. The prepared PR #16
+README already distinguishes them; preserve that distinction when publishing.
+
+For ACEAPEX, all baseline and point commands explicitly unset LIT_CHUNK.
+The compiler-verified source ee5a37eda18b81c1300a1ee44a7e06b6be925bd2 returns
+zero from lit_chunk_size() when unset and immediately selects
+lit_compress_legacy(). That function uses four parts with ZSTD_compress2 at
+level 3 and never calls dna_worth() or dna_compress(). The DNA transform is
+in the opt-in chunked path in this revision. Therefore it is OFF for the
+baseline and all five points. The four-part policy is constant; actual part
+lengths depend on the produced literal-stream length and are not fixed bytes.
+FSE chunk policy remains 512 KiB. Later default-transform changes are not
+retroactively applied to this pinned run.
+
+The source SHA-256 a1f5208e8381b6480380c3e1af3bf335693feb544bcc5b926989683b3c2338b1
+matches retained compiler provenance. Both follow-up checks used existing
+records and source only; no measurements or compression were rerun.

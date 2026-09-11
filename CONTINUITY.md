@@ -165,3 +165,19 @@ segment; existing restore receipts remain existing evidence. No changes to
 raw results, codec source, README or adapter code. Next bounded action remains
 preparing the reviewed PR #16 evidence for main with the license footer and
 publication validation. Do not erase the zstd empty-frame qualification.
+
+## Frame symmetry and LIT_CHUNK follow-up — 2026-09-11
+
+PR #19 follow-up to ee3dd40c6e0a46586558f5b20d3ec12b971a5666 verifies zstd
+indexed frame counts 61996/15499/3875/969/243 at 4/16/64/256/1024 KiB;
+all have zero empty data frames. Baseline: two indexed frames, one empty.
+Each file also has one seek-table skippable frame. Counts are retained parser
+evidence, not a new zstd -l run; original archives are absent locally.
+All ACEAPEX baseline/point commands unset LIT_CHUNK. In pinned ee5a37e this
+selects the legacy four-part zstd level-3 path, with DNA transform OFF for
+all six configurations; FSE policy remains 512 KiB. Newer changes do not
+apply retroactively. Source hash matches retained compiler provenance.
+Do not publish 6.57–7.18% as a c(g) interval: 6.569397% is matched seekable
+c(g), while 7.180634% is the historical CLI-versus-seekable comparison.
+See review/CG_BASELINE_REVIEW.md. No raw result bytes changed. Next: prepare
+PR #16 publication on licensed main, keeping these distinctions.

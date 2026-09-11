@@ -10,32 +10,48 @@
       "baseline_sha256": "9bde31bc0089ab71aad48561aae84acbe31fe780bb381211a75c38eff68b083a",
       "baseline_data_units": 1,
       "baseline_physical_units": 1,
+      "baseline_empty_units": 0,
       "command_changes": "granularity and ACEAPEX output filename only",
       "points": [
         {
           "g": 4096,
           "c_g_percent": 5.334654415840667,
-          "total_bytes": 83504247
+          "total_bytes": 83504247,
+          "data_units": 61996,
+          "indexed_units": 61996,
+          "empty_units": 0
         },
         {
           "g": 16384,
           "c_g_percent": 1.6301347519939502,
-          "total_bytes": 80359553
+          "total_bytes": 80359553,
+          "data_units": 15499,
+          "indexed_units": 15499,
+          "empty_units": 0
         },
         {
           "g": 65536,
           "c_g_percent": 0.5979020501535981,
-          "total_bytes": 79525066
+          "total_bytes": 79525066,
+          "data_units": 3875,
+          "indexed_units": 3875,
+          "empty_units": 0
         },
         {
           "g": 262144,
           "c_g_percent": 0.26692647279557,
-          "total_bytes": 79261153
+          "total_bytes": 79261153,
+          "data_units": 969,
+          "indexed_units": 969,
+          "empty_units": 0
         },
         {
           "g": 1048576,
           "c_g_percent": 0.14964117091070817,
-          "total_bytes": 79168052
+          "total_bytes": 79168052,
+          "data_units": 243,
+          "indexed_units": 243,
+          "empty_units": 0
         }
       ]
     },
@@ -45,32 +61,48 @@
       "baseline_sha256": "d2d3c22e1063d0b3ad3f7fce85663a1ec92db8f6322b5704198bf92cdf2f360f",
       "baseline_data_units": 1,
       "baseline_physical_units": 2,
+      "baseline_empty_units": 1,
       "command_changes": "granularity and ACEAPEX output filename only",
       "points": [
         {
           "g": 4096,
           "c_g_percent": 10.063390796858807,
-          "total_bytes": 87184580
+          "total_bytes": 87184580,
+          "data_units": 61996,
+          "indexed_units": 61996,
+          "empty_units": 0
         },
         {
           "g": 16384,
           "c_g_percent": 6.569397346535477,
-          "total_bytes": 83924167
+          "total_bytes": 83924167,
+          "data_units": 15499,
+          "indexed_units": 15499,
+          "empty_units": 0
         },
         {
           "g": 65536,
           "c_g_percent": 2.8293176849717216,
-          "total_bytes": 80693943
+          "total_bytes": 80693943,
+          "data_units": 3875,
+          "indexed_units": 3875,
+          "empty_units": 0
         },
         {
           "g": 262144,
           "c_g_percent": 4.302064110327375,
-          "total_bytes": 81935785
+          "total_bytes": 81935785,
+          "data_units": 969,
+          "indexed_units": 969,
+          "empty_units": 0
         },
         {
           "g": 1048576,
           "c_g_percent": -0.5099417105095538,
-          "total_bytes": 78013034
+          "total_bytes": 78013034,
+          "data_units": 243,
+          "indexed_units": 243,
+          "empty_units": 0
         }
       ]
     }

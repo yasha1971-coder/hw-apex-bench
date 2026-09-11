@@ -80,10 +80,14 @@ def audit(rows):
             require(normalize_command(point['commands'][0], codec, g) == command, 'encoder command differs beyond granularity/output')
             cost = 100*(1-baseline['total_bytes']/point['total_bytes'])
             require(row['status'] == 'measured' and math.isclose(row['value'], cost, abs_tol=1e-10), 'c(g) mismatch')
-            points.append(dict(g=g, c_g_percent=cost, total_bytes=point['total_bytes']))
+            points.append(dict(g=g, c_g_percent=cost, total_bytes=point['total_bytes'],
+                               data_units=point['geometry'].get('nonempty_blocks', point['geometry']['num_blocks']),
+                               indexed_units=point['geometry']['num_blocks'],
+                               empty_units=int(point['geometry'].get('block_size_histogram', {}).get('0', 0))))
         output.append(dict(codec=codec, baseline_bytes=baseline['total_bytes'],
                            baseline_sha256=baseline['archive_sha256'],
                            baseline_data_units=1, baseline_physical_units=baseline['geometry']['num_blocks'],
+                           baseline_empty_units=int(baseline['geometry'].get('block_size_histogram', {}).get('0', 0)),
                            command_changes='granularity and ACEAPEX output filename only', points=points))
     bgzf = sorted((r for r in rows if r['codec'] == 'bgzip-cg'), key=lambda r:r['g'])
     require([r['g'] for r in bgzf] == GRID, 'missing BGZF positions')
