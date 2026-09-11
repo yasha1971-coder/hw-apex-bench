@@ -1,0 +1,42 @@
+{
+  "workflow": 34626693337,
+  "artifact": 10273679252,
+  "tested_commit": "2c8ebcd9daf770525d32d4cc9a827e61de81ec87",
+  "zip_sha256": "bdcf98b9297a7f64cb17eccb7c87003c624e0221cdc609bfb0695b20f5d2ec47",
+  "status": "pass",
+  "timings_collected": false,
+  "files": {
+    "results.jsonl": {
+      "bytes": 1814,
+      "sha256": "8df84ac588d69822c743c05f1184a38e3fded31b2b7f1aee0d5da41efb5dc631"
+    },
+    "artifact.zip": {
+      "bytes": 11738,
+      "sha256": "bdcf98b9297a7f64cb17eccb7c87003c624e0221cdc609bfb0695b20f5d2ec47"
+    },
+    "audit.json": {
+      "bytes": 17904,
+      "sha256": "d1291dbed2385c3cc20d9b37a6b3c4eee1e0e4304177fcb4db96b6ceae90c387"
+    }
+  },
+  "independent_audit": [
+    "artifact ZIP digest matched GitHub",
+    "qualification receipt hash matched plan",
+    "qualification contains exact HTSlib and libdeflate commits",
+    "BGZF archive SHA256, bytes and ratio matched frozen435",
+    "new results.jsonl contains actual backend and qualified configuration",
+    "index SHA256 equals exact historical system binary output"
+  ],
+  "prior_download_failures": [
+    {
+      "workflow": 34625836396,
+      "artifact": 10274508375,
+      "sha256": "d0eaa2dbf2b9e80b42434d0e2c23442f645725e22f6e732c963179ce2580f2b1"
+    },
+    {
+      "workflow": 34625836396,
+      "artifact": 10274618711,
+      "sha256": "019d038c8034556c3992c97f5e03c3946892d7d18759220616e140e2c0d74f08"
+    }
+  ]
+}

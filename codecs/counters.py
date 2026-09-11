@@ -22,13 +22,16 @@ def build(codec,work):
     if codec=='bgzip':
         hook=dst/'count.c';hook.write_text('''#include <stdint.h>
 #include <zlib.h>
+#include <libdeflate.h>
 static uint64_t count;
 void hc_count_reset(void *ctx){(void)ctx;count=0;}
 uint64_t hc_count_bytes(void *ctx){(void)ctx;return count;}
 int __real_inflate(z_streamp,int);
 int __wrap_inflate(z_streamp s,int flush){uLong before=s->total_out;int r=__real_inflate(s,flush);count+=s->total_out-before;return r;}
+enum libdeflate_result __real_libdeflate_deflate_decompress(struct libdeflate_decompressor*,const void*,size_t,void*,size_t,size_t*);
+enum libdeflate_result __wrap_libdeflate_deflate_decompress(struct libdeflate_decompressor *d,const void *in,size_t ni,void *out,size_t no,size_t *actual){size_t got=0;enum libdeflate_result r=__real_libdeflate_deflate_decompress(d,in,ni,out,no,&got);if(r==LIBDEFLATE_SUCCESS)count+=got;if(actual)*actual=got;return r;}
 ''')
-        run(*common,'-shared','-I'+str(deps/'htslib'),wrapper,hook,deps/'htslib/libhts.a','-Wl,--wrap=inflate','-lz','-lm','-pthread','-o',target)
+        run(*common,'-shared','-I'+str(deps/'htslib'),'-I'+str(deps/'libdeflate'),wrapper,hook,deps/'htslib/libhts.a',work/'libdeflate-build/libdeflate.a','-Wl,--wrap=inflate','-Wl,--wrap=libdeflate_deflate_decompress','-lz','-lm','-pthread','-o',target)
         record(hook,hook.read_text())
     elif codec=='zstd_seekable':
         src=deps/'zstd';copy=dst/'zstd'

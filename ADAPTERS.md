@@ -150,7 +150,8 @@ separate from the published historical table.
 - ACEAPEX: 1b13df34ac8e839dd3232b59bc59560d689a435a, interactive preset.
 - zstd: f8745da6ff1ad1e7bab384bd1f9d742439278e99 (1.5.7).
 - HTSlib: 4b705e4fada8ee2b6b15746f725ee8ac51631803 (1.24), pinned submodules,
-  generated minimal zlib-only build configuration. CRAM is not qualified here.
+  explicit --with-libdeflate configuration, with libdeflate1.19 pinned at
+  dd12ff2b36d603dbb7fa8838fe7e7176fcbd4f6f and linked statically. CRAM is not qualified here.
 - XZ: 49053c0a649f4c8bd2b8d97ce915f401fbc0f3d9 (5.4.5); CMake builds both CLI
   and static PIC liblzma from this revision for --check. No system liblzma linkage.
 
@@ -273,3 +274,31 @@ python3 review/compare_native_structures.py results.jsonl RUN/manifest.json
 The evidence audit verifies raw sample and trace hashes and recalculates derived
 statistics. The historical comparison requires the same corpus and frozen source
 results; it reports actual matches and differences, never substitutes old numbers.
+
+## BGZF compression backend
+
+Both BGZF adapters build with --with-libdeflate. libdeflate1.19 is pinned to
+dd12ff2b36d603dbb7fa8838fe7e7176fcbd4f6f. The build fails if HTSlib's compiled
+feature mask lacks libdeflate; it never silently falls back to zlib. Build receipts
+retain hts_feature_string, bgzip --version output and the static library hash.
+The qualified configuration and results.jsonl toolchain explicitly record backend
+name/version/SHA, bgzip level6 and effective libdeflate level7.
+
+In HTSlib1.19 bgzip's CLI level range is0–9; HTSlib maps it to libdeflate's0–12.
+bgzip --version in that release prints HTSlib's version and copyright, not the
+backend. Neither a version label nor a package name proves backend equivalence.
+Counting libraries wrap actual libdeflate decompression separately from timed code.
+
+The official recommendation is https://www.htslib.org/benchmarks/zlib.html; its
+size results are corpus-dependent and do not claim every libdeflate archive is
+smaller. The pinned CLI manual is https://www.htslib.org/doc/1.19/bgzip.html.
+Our three-archive diagnostic compares the exact historical system binary, the old
+zlib candidate and the new pinned adapter without collecting performance timings.
+The previous236-row zlib candidate remains historical evidence of that build;
+changing the adapter does not retroactively relabel or replace its timings.
+
+The BGZF correction has now passed its full-corpus untimed archive comparison.
+See review/BGZF_BACKEND_REVIEW.md and evidence/bgzf-libdeflate-20260911/ for the
+original ZIP, matched archive/index hashes, verified restoration and backend JSONL.
+This closes the three BGZF deterministic differences without changing historical
+timings or rerunning the full benchmark.

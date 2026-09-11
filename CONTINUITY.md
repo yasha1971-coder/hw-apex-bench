@@ -756,3 +756,72 @@ Next bounded action: recover/pin historical BGZF backend/build and verify archiv
 equivalence in an isolated untimed check before any further timing decision.
 DO NOT restart completed workflow34619124537. No current draft PR was merged,
 no upstream ACE/glyph/context repository changed.
+
+## BGZF backend correction in progress
+
+User authorized libdeflate rebuild and untimed verification of three differences.
+Work branch tooling/bgzf-build-audit, based on cfb178f96b262229cd3bac2d4051e8f7292bd998.
+Both BGZF configs now require --with-libdeflate, pinned1.19 commit
+dd12ff2b36d603dbb7fa8838fe7e7176fcbd4f6f (annotated v1.19 tag peeled via git ls-remote).
+Backend metadata goes to configuration+toolchain; build verifies hts_features bit20.
+Counter library wraps actual libdeflate output; normal libraries uninstrumented.
+Official HTSlib recommendation verified. Corrections: bgzip1.19 CLI0–9 maps to
+libdeflate0–12; level6 maps7; --version does NOT show backend in1.19. Compression
+size superiority is not universal (official page even shows larger BAM at level6).
+
+Dedicated CI audit compares system binary SHA with historical e1ca105..., then
+three chr1 archives: old zlib build, pinned libdeflate adapter, exact historical
+system binary. MD5/oracle/CLI+native restores/index hashes and64 regions checked;
+no timers invoked. It also probes the libdeflate counter and serializes one real
+untimed ratio row with explicit backend. This branch skips native smoke timing
+steps, retains all correctness checks, and cannot trigger the old full workflow.
+Do not claim equivalence until the actual audit artifact passes. Full run34619124537
+and its236-row candidate remain unchanged. No PR merge authorized in this stage.
+
+PR27 code d6682389b069a0a9685ed44affbb06e80c21ed1f passed all6 correctness
+checks in34625836285 (timing steps skipped, old full job skipped). Untimed
+audit34625836396 attempts1/2 failed BEFORE compression: UCSC urllib timeout.
+Downloaded+hashed receipts10274508375 and10274618711 prove the historical
+/usr/bin/bgzip SHA matches and ldd resolves libdeflate.so.0 (system1.19-1build1.1).
+Thus backend identification is now proven, archive equivalence still pending.
+The diagnostic downloader now uses bounded IPv4 curl attempts on official cse/soe
+UCSC aliases, requiring unchanged MD5. Diagnostic-only code updates trigger its
+job; docs do not. This does not change or rerun the full measurement workflow.
+
+## BGZF backend blocker CLOSED — verified artifact
+
+PR27 https://github.com/yasha1971-coder/hw-apex-bench/pull/27 remains draft,
+base tooling/native-remaining-axes (PR26). Tested correction commit
+2c8ebcd9daf770525d32d4cc9a827e61de81ec87; tree044f2325766a93881354275a0a7e2ccbba4f343f.
+All6 correctness jobs34626693102 passed; timing smoke steps and full job skipped.
+Publication34626693032 and resident-context34626693157 passed.
+Untimed audit34626693337 SUCCEEDED. Artifact10273679252 ZIP11738bytes SHA256
+bdcf98b9297a7f64cb17eccb7c87003c624e0221cdc609bfb0695b20f5d2ec47 independently verified.
+Original ZIP+audit.json+real untimed results.jsonl+receipt retained under
+evidence/bgzf-libdeflate-20260911/. Qualification link+both source pins verified.
+
+All3 BGZF differences resolved EXACTLY:75009810archive bytes,
+SHA c41f38ce60f54fc0560e53c60a7ba645a6946d5827cdc0d21f6a2acf96bb4784,
+ratio3.3825582764886026 including62232-byte index. Libdeflate and exact historical
+system binary produce identical .gzi SHA f2eee38438413fe9070e29e50f39c1626f5304253d90c1d9fddad60693a65869.
+Control zlib reproduces old candidate76512773bytes/SHAaf90c826.../ratio3.316167684220197.
+Six full restores (CLI+native across3builds),192 native regions pass; separate
+counter probe reports65235actual bytes for16384requested. NO NEW TIMINGS.
+Official cse alias failed TLS; original soe URL succeeded with IPv4 curl and MD5.
+Do not remove certificate validation; earlier two failures were before compression.
+
+review/BGZF_BACKEND_REVIEW.md closes the previous acceptance blocker. Do NOT
+rewrite review/native-full-comparison.json from98/101 to101/101: corrected3 are a
+separate experiment; original236-row zlib candidate stays immutable. Frozen435
+unchanged. Native backend migration and this deterministic correction are complete
+in the tested scope; no435fresh-row/timing equality or release-readiness claim.
+Next action is review of stacked PRs26/27, not another measurement run.
+No merge performed; upstream ACE/glyph/context untouched.
+
+Final operational correction: PR path filters use cumulative PR differences, so
+the evidence-only checkpoint9e926183 also triggered a redundant untimed audit
+34627339963 and small CI34627339829. No performance measurements are involved.
+The canonical accepted proof remains34626693337/artifact10273679252; the later
+run does not replace it. Dedicated BGZF audit is now workflow_dispatch ONLY, so
+further documentation pushes cannot automatically repeat the completed experiment.
+This supersedes earlier statements that path filters alone prevent docs reruns.
