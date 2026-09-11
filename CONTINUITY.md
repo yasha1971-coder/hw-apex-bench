@@ -717,3 +717,42 @@ share their format label and must be measured in separate runs, so neither versi
 can silently overwrite the other's baseline. Four native-method regression tests
 pass. This does not change the current full run, which selects only BGZF1.19.
 Full workflow34619124537 remains in progress; do not dispatch another.
+
+## Full native run completed and independently audited — 2026-09-11
+
+Workflow34619124537 / job103328777993 SUCCEEDED at16:27UTC, tested code4195a21.
+Artifact10273026378 native-full-comparison, ZIP1164165bytes, SHA256
+3fb9531d64518b0c5c1e61968eae80a374ae4da0285ce0178555ff7fa87dc390 verified after download.
+Full manifest SHA4734d8337a5ab3429c9fc8f79ccd6a4bcf7e2752714b9a4bdd3291fa835b1343;
+236 candidate rows SHA70e371851bb21a7d1bf1d04a7d8ce59523c42654320cc4d16be76f51cb66cb7b.
+All9 axes audited on4 historical CPU configurations. All4 encode/decode curves
+reached the documented plateau; actual growth scales are recorded per codec.
+All145 retained raw sample/trace files pass the independent evidence audit;
+13 measurement sources match tested Git commit;4 check receipt links pass.
+Frozen435 remain byte-identical (extraction verification also passed).
+
+Deterministic comparison:98/101 primary checks exact; all80 H_alpha values AND
+all80 trace hashes exact; all4 amplification values exact; all5 zstd c(g) points
+and their baseline/point byte counts exact. zstd and both ACE profile archive
+SHA256/bytes/ratios match the historical publication.
+Three differences all describe the SAME BGZF archive change: bytes75009810 ->
+76512773, ratio3.3825582764886026 ->3.316167684220197, SHA differs. Historical
+provenance says system /usr/bin/bgzip (binary SHAe1ca105c4785d70fa8ee21d3a3278605f44d1670585e3c271a835dab29ba5dc9);
+the new pinned1.19 adapter is a minimal zlib-only build. Exact historical backend
+was not captured in the retained row; libdeflate is a hypothesis, not yet proved.
+Do not call this a same-build BGZF comparison or complete435 fresh-row replay.
+Review details:review/native-full-comparison.json; no candidate values published.
+
+Selection guard codecfef509c86170fc81c33d67ee8b07d71c3e065aa passed all6 small
+CI jobs in34621175723; its full job correctly SKIPPED. Publication34621175881
+and resident-context34621175702 also pass. Current docs/evidence follow-up
+changes no measurement backend; ADAPTERS.md no longer mixes stale pending-axis
+claims with current instructions. review/verify_native_evidence.py checks retained
+raw evidence only, collecting no timings (76 prior smoke files and145 full files pass).
+
+STOP POINT: native backend wiring and one full run are done; full historical
+equivalence is NOT accepted because of BGZF build difference and excluded scopes.
+Next bounded action: recover/pin historical BGZF backend/build and verify archive
+equivalence in an isolated untimed check before any further timing decision.
+DO NOT restart completed workflow34619124537. No current draft PR was merged,
+no upstream ACE/glyph/context repository changed.

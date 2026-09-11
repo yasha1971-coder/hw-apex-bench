@@ -60,8 +60,8 @@ byte-identical replay of every historical configuration or release readiness.
 
 ---
 
-The following sections document earlier extraction/check milestones; where their
-execution scope differs, the current status above supersedes it.
+The following sections describe the current adapter contract and qualification.
+Earlier extraction milestones remain available in Git history.
 
 # Add and check a codec
 
@@ -114,10 +114,10 @@ branch in the checker. `harness/test_check_adapter.py` demonstrates an external,
 CLI-only adapter that is discovered solely by its supplied path.
 
 The existing historical CLI dispatchers are retained separately for commands in
-published evidence. The new contract rejects unsupported granularities: BGZF CLI
-uses a 65280-byte ceiling; pinned ACEAPEX uses the interactive 16 KiB preset.
-XZ uses --block-size; zstd's seekable example accepts a frame size. Moving controlled
-c(g) orchestration and the other published configurations remains separate work.
+published evidence. The contract rejects unsupported granularities: BGZF CLI uses a 65280-byte
+ceiling. ACEAPEX fixes the selected profile's LIT/FSE parameters while c(g) varies
+only its LZ block size. XZ uses --block-size; zstd's seekable example accepts a
+frame size. Each adapter declares its configuration and constraints.
 
 ## Native semantics and scope
 
@@ -127,7 +127,7 @@ original size from archive metadata; it does not need the uncompressed original.
 ACEAPEX still parses its header inside every region API call; no caching
 optimization or upstream source change is included.
 
-Index preparation is outside the future timer. Lookup, decompression and copying
+Index preparation is outside the measurement timer. Lookup, decompression and copying
 are inside the native region callback. The shell bridge and Python ctypes probe
 are strictly correctness tools; never use their process time as region latency.
 See RESIDENT_CONTEXT.md for XZ single-Stream/no-padding and memory limits.
@@ -139,13 +139,11 @@ multiple block boundaries, guards and invalid ranges. Shell-region results are
 checked separately, using only archive-derived size. Archive/index hashes must
 remain unchanged after reading.
 
-For this new path, decode and region are currently qualified. Reasons for missing
-timing, accounting, counters, batch, block mapping and curve integration are
-emitted automatically. These do not replace the published historical capabilities.
-A passing --check is eligibility for later measurement, not a performance result;
-measurement scheduling must consume a successful receipt before adding a row.
-That scheduling/result integration is still pending, so no new codec enters the
-published table in this segment.
+The checker qualifies the declared native operations and configurations. A passing
+--check establishes eligibility, not a performance result. Scheduling consumes a
+current successful receipt before measuring. Supported axes execute their native
+backends; unsupported axes receive the adapter's reason. Candidate results remain
+separate from the published historical table.
 
 ## Dependency scope
 
@@ -158,7 +156,7 @@ published table in this segment.
 
 These pins establish correctness scope; they do not assert the latest release or
 retroactively qualify historical timing results with new dependency versions.
-All-four CI starts from a clean Ubuntu runner and retains check.json/check.log
+The six-configuration CI matrix starts from clean Ubuntu runners and retains check.json/check.log
 artifacts. Dependency sources remain unmodified; generated build files are allowed.
 
 ## Plan axes from a current check
@@ -210,13 +208,12 @@ build lock excludes cooperative rebuilds for the complete call sequence. This is
 covered with test handlers and the native execution path described below. Plans use their own schema, contain no measured values,
 and are never appended to the historical 435-row results file.
 
-Remaining work: connect actual native timing/counter/batch/curve implementations
-and validated result serialization to this seam, preserving their methodology and
-same-run baseline comparisons. The plan command itself does not finish migration
-of the nine axes or make the instrument release-ready.
+The native dispatcher connects timing, counters, profiles, batch and c(g) through
+these handlers and serializes candidate results with same-run baseline comparisons.
+The plan command itself performs no measurements.
 
 
-## Execute the first connected native axes
+## Execute a native subset
 
 ```sh
 ./run.sh --check codecs/xz.sh
@@ -230,7 +227,8 @@ without invoking an encoder or decoder. The output
 directory must be new. `manifest.json` is written only after all selected adapters
 and verification checks succeed. Raw candidate samples and failure diagnostics
 remain in the directory if a worker fails; they are not successful measurements.
-This experimental `cabench-native-samples-v1` format is not publication JSONL.
+The experimental `cabench-native-samples-v1` manifest links the separately
+serialized candidate results.jsonl and retained raw files.
 
 The C worker loads the same ABI-2 context libraries checked by `--check`, without
 codec-name branches. Archive loading, index preparation and output allocation are
@@ -250,13 +248,28 @@ floor(full_ms / region_p50_ms) + 1. Shared raw samples are reused, not remeasure
 A single-size decode result is explicitly `data_edge`, not a plateau throughput
 headline. These small native runs prove executable integration and correctness;
 their timings are not performance claims. Capability changes require new small
-check receipts. Missing axes remain adapter-owned migration reasons and are not
-substituted into the published historical table.
+check receipts. n/a is reserved for actual adapter limitations; missing backends
+are errors. The 435 published records retain their distinct historical provenance.
+Artifact preservation can be byte-identical; fresh timings cannot be expected to be.
 
-Migration remains incomplete: throughput plateaus/CLI encode timing, decoder
-counters, access-profile block mapping, native batch and controlled c(g) still need
-backends. Historical dense/default/frontier configurations and declared GPU rows
-must also keep their distinct provenance. The 435 published records are immutable:
-artifact replay can be byte-identical; fresh timings cannot be expected to be.
-The owner authorized a full comparison run after all axes are connected and small
-checks pass. It must write a separate artifact before any publication decision.
+The owner authorized one full comparison after all nine axes and small gates passed.
+That run writes a separate candidate artifact. Publication and release readiness
+require reviewing its actual results and remaining historical scope differences.
+
+Multiple selected adapters must have unique `codec_name` values. For example,
+BGZF 1.19 and 1.24 share a format label and require separate version runs. Ambiguous
+labels are rejected before execution and serialization to protect baseline selection.
+Use `--baseline bgzip_1_19` when that historical adapter is selected; without a
+selected nonzero comparable baseline, each ratio carries an explicit n/a reason.
+
+Audit a downloaded complete artifact without running measurements:
+
+```sh
+python3 review/verify_nine_axes.py RUN/manifest.json
+python3 review/verify_native_evidence.py RUN/manifest.json
+python3 review/compare_native_structures.py results.jsonl RUN/manifest.json
+```
+
+The evidence audit verifies raw sample and trace hashes and recalculates derived
+statistics. The historical comparison requires the same corpus and frozen source
+results; it reports actual matches and differences, never substitutes old numbers.
