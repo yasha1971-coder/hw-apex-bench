@@ -148,3 +148,20 @@ Next bounded action: review/prepare PR #16's complete table for evidence accepta
 and main integration, preserving the license footer and regeneration integrity.
 PR #18 merge authorization does not authorize merging PR #16 or PR #17. This
 checkpoint is documentation only and does not publish new measurements.
+
+## Focused c(g) baseline audit — 2026-09-11
+
+Documentation work continues in PR #19, branch docs/nine-axis-gate, from
+7499d65dfdfb54a220d4cce76132c2f1fafd43e7. The additional read-only audit and eleven
+tests verify all ten supported points' commands and whole-input geometry.
+ACEAPEX baseline: one LZ block covering 253935557 bytes. Zstd baseline: one
+nonempty whole-input frame PLUS an empty terminal frame, not literally one
+physical frame; both are included in the baseline file length. BGZF has no
+strict baseline. Source hashes matched retained compiler provenance.
+
+See review/CG_BASELINE_REVIEW.md and review/cg-baseline-check.json for the
+exact scope and commands. No archive was reopened or recompressed in this
+segment; existing restore receipts remain existing evidence. No changes to
+raw results, codec source, README or adapter code. Next bounded action remains
+preparing the reviewed PR #16 evidence for main with the license footer and
+publication validation. Do not erase the zstd empty-frame qualification.

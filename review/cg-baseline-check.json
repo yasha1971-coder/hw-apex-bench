@@ -1,0 +1,80 @@
+{
+  "schema": "cabench-cg-baseline-review-v1",
+  "timed": false,
+  "result": "PASS",
+  "scope": "retained commands, geometry and provenance; no fresh archive decoding",
+  "codecs": [
+    {
+      "codec": "aceapex-cg-default",
+      "baseline_bytes": 79049584,
+      "baseline_sha256": "9bde31bc0089ab71aad48561aae84acbe31fe780bb381211a75c38eff68b083a",
+      "baseline_data_units": 1,
+      "baseline_physical_units": 1,
+      "command_changes": "granularity and ACEAPEX output filename only",
+      "points": [
+        {
+          "g": 4096,
+          "c_g_percent": 5.334654415840667,
+          "total_bytes": 83504247
+        },
+        {
+          "g": 16384,
+          "c_g_percent": 1.6301347519939502,
+          "total_bytes": 80359553
+        },
+        {
+          "g": 65536,
+          "c_g_percent": 0.5979020501535981,
+          "total_bytes": 79525066
+        },
+        {
+          "g": 262144,
+          "c_g_percent": 0.26692647279557,
+          "total_bytes": 79261153
+        },
+        {
+          "g": 1048576,
+          "c_g_percent": 0.14964117091070817,
+          "total_bytes": 79168052
+        }
+      ]
+    },
+    {
+      "codec": "zstd-seekable-cg",
+      "baseline_bytes": 78410855,
+      "baseline_sha256": "d2d3c22e1063d0b3ad3f7fce85663a1ec92db8f6322b5704198bf92cdf2f360f",
+      "baseline_data_units": 1,
+      "baseline_physical_units": 2,
+      "command_changes": "granularity and ACEAPEX output filename only",
+      "points": [
+        {
+          "g": 4096,
+          "c_g_percent": 10.063390796858807,
+          "total_bytes": 87184580
+        },
+        {
+          "g": 16384,
+          "c_g_percent": 6.569397346535477,
+          "total_bytes": 83924167
+        },
+        {
+          "g": 65536,
+          "c_g_percent": 2.8293176849717216,
+          "total_bytes": 80693943
+        },
+        {
+          "g": 262144,
+          "c_g_percent": 4.302064110327375,
+          "total_bytes": 81935785
+        },
+        {
+          "g": 1048576,
+          "c_g_percent": -0.5099417105095538,
+          "total_bytes": 78013034
+        }
+      ]
+    }
+  ],
+  "bgzf": "n/a \u2014 no comparable single-parameter baseline",
+  "results_sha256": "cb52b8cb9fac484a6474d976681ea85ae2c052d80d820422b7f57c25ec938100"
+}
