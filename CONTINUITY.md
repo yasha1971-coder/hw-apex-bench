@@ -535,3 +535,15 @@ native measurement implementations and validated output to the dispatch seam.
 Do not describe the planner/test handlers as a completed measurement migration.
 Do not rerun full benchmarks, alter ACE header parsing, merge drafts without the
 owner's authorization, or add CRAM/release work to this segment.
+
+PR #24 saved: https://github.com/yasha1971-coder/hw-apex-bench/pull/24
+Base tooling/adapter-check (#23); code head c36b79dfab7879e5f56bdf85b9bea137f2c9aa6b.
+All CI passed: 34610793725 all-four check/plan matrix, 34610793549 publication
+integrity, 34610793562 native XZ. Downloaded and verified all four ZIP digests and
+cross-checked plan receipt hashes, qualification fingerprints and every n/a reason
+against the embedded check.json. Artifacts: 10269055027 zstd, 10269040019 ACE,
+10268965174 XZ, 10268940301 BGZF. Persistent summary: review/axis-planner-ci.json.
+Thirty-six plan positions verified (eight eligible, twenty-eight explicit n/a).
+This checkpoint only records CI evidence; tested source and publication are unchanged.
+PRs #21/#22/#23/#24 remain draft, unmerged. Next step is actual native backend
+integration; no claim that dispatch tests are real measurements or release readiness.
