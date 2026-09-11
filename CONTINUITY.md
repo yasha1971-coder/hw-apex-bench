@@ -597,3 +597,24 @@ matched-method/configuration comparison, without copying old values into a new r
 Next bounded action: check this native integration CI/artifacts, then connect the
 plateau runner while preserving published encode CLI wall-clock boundaries (do not
 substitute the ACE compression API, whose old geometry differs from the CLI).
+
+PR #25 saved: https://github.com/yasha1971-coder/hw-apex-bench/pull/25
+Base tooling/axis-planner (#24). Final tested code:
+a612d132b5b558ca66a64b345df7a736d6565631 (tree
+f1369e35d3809786f847a87ae4b950d2b735e032).
+All CI passed: 34614784390 all-four clean builds/checks/native dispatch,
+34614784393 publication integrity, 34614784397 native XZ correctness.
+Downloaded all four ZIPs, verified GitHub SHA-256, manifest-to-check receipt links,
+raw sample digests/workload/counts/percentiles, ratio accounting and break-even
+reuse. IDs: 10269363204 BGZF, 10269248394 zstd, 10269738189 ACE, 10269983119 XZ.
+Receipt summaries: review/native-dispatch-ci.json; repeatable ZIP audit:
+review/verify_native_artifact.py ZIP EXPECTED_SHA256.
+The final code accepts all nine axis names: unsupported selections emit exactly
+the adapter reason without archive creation; tested with BGZF batch as well as an
+external fixture. This is not a claim that all nine have measurement backends.
+
+Live inspection of the actual published row confirms htslib/bgzip 1.19, versus
+current correctness adapter 1.24. This must be reconciled before a matched-version
+full comparison. Do not silently treat those configurations as byte-identical.
+No full benchmark, publication rewrite or draft merge occurred. This checkpoint
+adds only evidence/audit documentation; it does not change tested measurement code.
