@@ -1,15 +1,11 @@
 name: Untimed BGZF build equivalence
+# The one-off migration experiment is complete; retain explicit manual reproduction.
 on:
-  pull_request:
-    paths:
-      - 'review/audit_bgzf_build.py'
-      - '.github/workflows/bgzf-build-audit.yml'
+  workflow_dispatch:
 permissions:
   contents: read
 jobs:
   archive-equivalence:
-    # Only code/workflow changes for this diagnostic branch; docs do not rerun it.
-    if: github.head_ref == 'tooling/bgzf-build-audit'
     runs-on: ubuntu-24.04
     timeout-minutes: 25
     steps:

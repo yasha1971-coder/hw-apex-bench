@@ -817,3 +817,11 @@ unchanged. Native backend migration and this deterministic correction are comple
 in the tested scope; no435fresh-row/timing equality or release-readiness claim.
 Next action is review of stacked PRs26/27, not another measurement run.
 No merge performed; upstream ACE/glyph/context untouched.
+
+Final operational correction: PR path filters use cumulative PR differences, so
+the evidence-only checkpoint9e926183 also triggered a redundant untimed audit
+34627339963 and small CI34627339829. No performance measurements are involved.
+The canonical accepted proof remains34626693337/artifact10273679252; the later
+run does not replace it. Dedicated BGZF audit is now workflow_dispatch ONLY, so
+further documentation pushes cannot automatically repeat the completed experiment.
+This supersedes earlier statements that path filters alone prevent docs reruns.
