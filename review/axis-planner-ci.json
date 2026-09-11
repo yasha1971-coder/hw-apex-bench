@@ -1,0 +1,299 @@
+{
+  "code_commit": "c36b79dfab7879e5f56bdf85b9bea137f2c9aa6b",
+  "pr": 24,
+  "workflow_run": 34610793725,
+  "scope": "planning and correctness only; no measurements",
+  "artifacts": [
+    {
+      "id": 10269055027,
+      "name": "adapter-check-zstd_seekable",
+      "digest": "sha256:66bfb9762d302dbe45469202a3f3fa102a4b85b43ba574c09d09c8e4e1e29e47",
+      "receipt_sha256": "e7bfe4d22faf860fb7ed392c26a875d71ff904e676a9f262e250641ce4e0c370",
+      "qualification_sha256": "03b0a878be20c11c80be6ac065697eb9b9a75c5cf35c9de8c61c5eaab2991cff",
+      "codec": "zstd-seekable",
+      "version": "1.5.7",
+      "configuration": {
+        "level": 3,
+        "encoder_threads": 1,
+        "decoder_threads": 1,
+        "granularity": 16384
+      },
+      "tasks": [
+        {
+          "axis": "amplification",
+          "action": "skip",
+          "status": "n/a",
+          "reason": "decoder counters not ported to context proof"
+        },
+        {
+          "axis": "batch",
+          "action": "skip",
+          "status": "n/a",
+          "reason": "no batch API"
+        },
+        {
+          "axis": "break_even",
+          "action": "skip",
+          "status": "n/a",
+          "reason": "timing runner not connected to context proof"
+        },
+        {
+          "axis": "c_g",
+          "action": "skip",
+          "status": "n/a",
+          "reason": "controlled curve runner not connected to context proof"
+        },
+        {
+          "axis": "decode",
+          "action": "schedule",
+          "status": "eligible",
+          "reason": null
+        },
+        {
+          "axis": "encode",
+          "action": "skip",
+          "status": "n/a",
+          "reason": "encode timer not connected to context proof"
+        },
+        {
+          "axis": "h_alpha",
+          "action": "skip",
+          "status": "n/a",
+          "reason": "block mapping callback not ported to context proof"
+        },
+        {
+          "axis": "ratio",
+          "action": "skip",
+          "status": "n/a",
+          "reason": "archive accounting not connected to context proof"
+        },
+        {
+          "axis": "region",
+          "action": "schedule",
+          "status": "eligible",
+          "reason": null
+        }
+      ]
+    },
+    {
+      "id": 10269040019,
+      "name": "adapter-check-aceapex",
+      "digest": "sha256:5e1c1a9003df3d369b2c1830717fce1fb2093a84499f907088e81723da63e16c",
+      "receipt_sha256": "21fe223bccf0040e2fbf042d31618d1189579759b1ce54b6b080fbb9f9084d9b",
+      "qualification_sha256": "cf56e04d93bf77acfaac06d1cc2b14054088388db77e24b229cf716a1d00783d",
+      "codec": "aceapex-interactive",
+      "version": "aceapex@1b13df34ac8e839dd3232b59bc59560d689a435a",
+      "configuration": {
+        "profile": "interactive",
+        "level": 2,
+        "encoder_requested_threads": 1,
+        "decoder_policy": "pinned native API defaults; no thread argument",
+        "granularity": 16384,
+        "lit_chunk": 65536,
+        "fse_chunk": 4096,
+        "min_match": 0
+      },
+      "tasks": [
+        {
+          "axis": "amplification",
+          "action": "skip",
+          "status": "n/a",
+          "reason": "decoder counters not ported to context proof"
+        },
+        {
+          "axis": "batch",
+          "action": "skip",
+          "status": "n/a",
+          "reason": "native batch callback not ported in context proof"
+        },
+        {
+          "axis": "break_even",
+          "action": "skip",
+          "status": "n/a",
+          "reason": "timing runner not connected to context proof"
+        },
+        {
+          "axis": "c_g",
+          "action": "skip",
+          "status": "n/a",
+          "reason": "controlled curve runner not connected to context proof"
+        },
+        {
+          "axis": "decode",
+          "action": "schedule",
+          "status": "eligible",
+          "reason": null
+        },
+        {
+          "axis": "encode",
+          "action": "skip",
+          "status": "n/a",
+          "reason": "encode timer not connected to context proof"
+        },
+        {
+          "axis": "h_alpha",
+          "action": "skip",
+          "status": "n/a",
+          "reason": "block mapping callback not ported to context proof"
+        },
+        {
+          "axis": "ratio",
+          "action": "skip",
+          "status": "n/a",
+          "reason": "archive accounting not connected to context proof"
+        },
+        {
+          "axis": "region",
+          "action": "schedule",
+          "status": "eligible",
+          "reason": null
+        }
+      ]
+    },
+    {
+      "id": 10268965174,
+      "name": "adapter-check-xz",
+      "digest": "sha256:a16a938993b1ae364e8043b3e59ea76fed61e6046c77b3798cfcf62fa60b43af",
+      "receipt_sha256": "048a79804b0858a02438cc0eabdfd949c964a909b26669aedf2c32a0104cd9e3",
+      "qualification_sha256": "4f9fc916c4bc8ca16aa20a68f0fef89afd412661fe971f8bf645b94184739bc0",
+      "codec": "xz-blocked",
+      "version": "5.4.5",
+      "configuration": {
+        "level": 6,
+        "encoder_threads": 1,
+        "decoder_threads": 1,
+        "check": "CRC64",
+        "granularity": 16384,
+        "block_option": "--block-size"
+      },
+      "tasks": [
+        {
+          "axis": "amplification",
+          "action": "skip",
+          "status": "n/a",
+          "reason": "decoder counters not ported to context proof"
+        },
+        {
+          "axis": "batch",
+          "action": "skip",
+          "status": "n/a",
+          "reason": "no batch API"
+        },
+        {
+          "axis": "break_even",
+          "action": "skip",
+          "status": "n/a",
+          "reason": "timing runner not connected to context proof"
+        },
+        {
+          "axis": "c_g",
+          "action": "skip",
+          "status": "n/a",
+          "reason": "controlled curve runner not connected to context proof"
+        },
+        {
+          "axis": "decode",
+          "action": "schedule",
+          "status": "eligible",
+          "reason": null
+        },
+        {
+          "axis": "encode",
+          "action": "skip",
+          "status": "n/a",
+          "reason": "encode timer not connected to context proof"
+        },
+        {
+          "axis": "h_alpha",
+          "action": "skip",
+          "status": "n/a",
+          "reason": "block mapping callback not ported to context proof"
+        },
+        {
+          "axis": "ratio",
+          "action": "skip",
+          "status": "n/a",
+          "reason": "archive accounting not connected to context proof"
+        },
+        {
+          "axis": "region",
+          "action": "schedule",
+          "status": "eligible",
+          "reason": null
+        }
+      ]
+    },
+    {
+      "id": 10268940301,
+      "name": "adapter-check-bgzip",
+      "digest": "sha256:5ebe4a4f852a618f81afeab6e85f73ba2c569634fb6e46773a9eb2bb64a1d675",
+      "receipt_sha256": "9de4232141c6e429bcbb6756063f88ae147b1fc124d0fb2b2c9ac046f38a481e",
+      "qualification_sha256": "2bd9fba7aedf3d2b0ffbf73cde83361c2658ad9303bb9173c7fc623ae988c18e",
+      "codec": "bgzip+htslib",
+      "version": "1.24",
+      "configuration": {
+        "level": 6,
+        "encoder_threads": 1,
+        "decoder_threads": 1,
+        "granularity": 65280,
+        "granularity_note": "BGZF CLI ceiling; actual blocks may be shorter"
+      },
+      "tasks": [
+        {
+          "axis": "amplification",
+          "action": "skip",
+          "status": "n/a",
+          "reason": "decoder counters not ported to context proof"
+        },
+        {
+          "axis": "batch",
+          "action": "skip",
+          "status": "n/a",
+          "reason": "no batch API"
+        },
+        {
+          "axis": "break_even",
+          "action": "skip",
+          "status": "n/a",
+          "reason": "timing runner not connected to context proof"
+        },
+        {
+          "axis": "c_g",
+          "action": "skip",
+          "status": "n/a",
+          "reason": "no comparable single-parameter baseline"
+        },
+        {
+          "axis": "decode",
+          "action": "schedule",
+          "status": "eligible",
+          "reason": null
+        },
+        {
+          "axis": "encode",
+          "action": "skip",
+          "status": "n/a",
+          "reason": "encode timer not connected to context proof"
+        },
+        {
+          "axis": "h_alpha",
+          "action": "skip",
+          "status": "n/a",
+          "reason": "block mapping callback not ported to context proof"
+        },
+        {
+          "axis": "ratio",
+          "action": "skip",
+          "status": "n/a",
+          "reason": "archive accounting not connected to context proof"
+        },
+        {
+          "axis": "region",
+          "action": "schedule",
+          "status": "eligible",
+          "reason": null
+        }
+      ]
+    }
+  ]
+}

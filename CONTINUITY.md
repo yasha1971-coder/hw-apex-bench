@@ -495,3 +495,55 @@ This final checkpoint changes only documentation/receipt summaries, not tested
 code or publication. PR #21/#22/#23 are still draft; no merge was performed.
 The check gate is complete for these four adapters. Next is measurement planning
 and output integration, with no rerun of the completed published measurements.
+
+## Capability planning and current-check eligibility — 2026-09-11
+
+Branch tooling/axis-planner starts at PR #23 checkpoint
+216f9ad47556c903227c9b1cff3b3e6ba2db1ea1. PR #23 was checked live: draft,
+unmerged; main remains 0e8246f8b14b74191b3bf8cc6f14b71be85779ce.
+
+New ./run.sh --plan [--codec NAME_OR_PATH] [--axis AXIS] produces a separate
+*.plan.json, never measurements. All selection/capability decisions come from
+the supplied adapter; no codec-name table in the planner. Current real four-codec
+plan has 36 positions: eight eligible decode/region tasks and 28 n/a tasks with
+adapter-owned reasons. These are new-path migration limits, not retractions of
+historical nine-axis results. No native performance backend is connected here.
+Internal dispatch_adapter revalidates the plan, preflights all handlers, skips
+unsupported axes, holds the build lock and rejects results if checked state changes.
+Missing backend is a blocking implementation error, never codec n/a.
+
+--check now writes protocol cabench-check-v2: snapshots of adapter/declared
+companion/shared correctness code, CLI/native binaries, resolved shared libraries,
+dependency commits/cleanliness, name/version/capabilities/configuration, constraints,
+architecture and selected loader environment. It compares before/after tests.
+Planning rejects missing, old, failed, stale or incomplete receipts. Adapters now
+provide codec_inputs, codec_build_artifacts and codec_configuration. Old CI receipts
+remain historical evidence and are not upgraded by editing them. This is local
+unsigned verification of declared inputs, not a portable attestation.
+
+Refreshed all four small checks locally (no performance timings); again 19 full
+restores and 2263 valid native regions. Planning against those real receipts passed.
+Fourteen new planner tests cover n/a provenance, handler dispatch, stale adapter,
+helper, binary or configuration, old/failed/incomplete receipts, tampered plans,
+active checks, unknown axes, missing backends and mutation during dispatch.
+Existing checker five tests, XZ six tests, native extraction five tests and
+publication validation/export pass; original 435 records and published documents
+are unchanged. Matrix CI now also creates plans from each freshly built receipt.
+
+Next bounded action: verify this PR's CI and plan artifacts, then connect actual
+native measurement implementations and validated output to the dispatch seam.
+Do not describe the planner/test handlers as a completed measurement migration.
+Do not rerun full benchmarks, alter ACE header parsing, merge drafts without the
+owner's authorization, or add CRAM/release work to this segment.
+
+PR #24 saved: https://github.com/yasha1971-coder/hw-apex-bench/pull/24
+Base tooling/adapter-check (#23); code head c36b79dfab7879e5f56bdf85b9bea137f2c9aa6b.
+All CI passed: 34610793725 all-four check/plan matrix, 34610793549 publication
+integrity, 34610793562 native XZ. Downloaded and verified all four ZIP digests and
+cross-checked plan receipt hashes, qualification fingerprints and every n/a reason
+against the embedded check.json. Artifacts: 10269055027 zstd, 10269040019 ACE,
+10268965174 XZ, 10268940301 BGZF. Persistent summary: review/axis-planner-ci.json.
+Thirty-six plan positions verified (eight eligible, twenty-eight explicit n/a).
+This checkpoint only records CI evidence; tested source and publication are unchanged.
+PRs #21/#22/#23/#24 remain draft, unmerged. Next step is actual native backend
+integration; no claim that dispatch tests are real measurements or release readiness.

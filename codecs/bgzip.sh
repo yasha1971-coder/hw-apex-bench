@@ -17,6 +17,9 @@ codec_context_build() {
 }
 source "${HB_ROOT:-$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.." && pwd)}/harness/check_common.sh"
 
+codec_configuration() { echo '{"level": 6, "encoder_threads": 1, "decoder_threads": 1, "granularity": 65280, "granularity_note": "BGZF CLI ceiling; actual blocks may be shorter"}'; }
+codec_inputs() { python3 -c 'import json,sys;print(json.dumps(sys.argv[1:]))' "$HB_ROOT/codecs/native/bgzip.c"; }
+codec_build_artifacts() { python3 -c 'import json,sys;print(json.dumps(sys.argv[1:]))' "$(codec_library)" "$HB_CHECK_WORK/deps/htslib/bgzip"; }
 codec_name() { echo 'bgzip+htslib'; }
 codec_version() { echo '1.24'; }
 codec_constraints() { echo '{"granularity":65280,"min_input_bytes":0}'; }

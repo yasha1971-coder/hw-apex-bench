@@ -19,6 +19,9 @@ codec_context_build() {
 }
 source "${HB_ROOT:-$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.." && pwd)}/harness/check_common.sh"
 
+codec_configuration() { echo '{"level": 6, "encoder_threads": 1, "decoder_threads": 1, "check": "CRC64", "granularity": 16384, "block_option": "--block-size"}'; }
+codec_inputs() { python3 -c 'import json,sys;print(json.dumps(sys.argv[1:]))' "$HB_ROOT/codecs/native/xz.c"; }
+codec_build_artifacts() { python3 -c 'import json,sys;print(json.dumps(sys.argv[1:]))' "$(codec_library)" "$HB_CHECK_WORK/xz-build/xz"; }
 codec_name() { echo 'xz-blocked'; }
 codec_version() { echo '5.4.5'; }
 codec_build() (

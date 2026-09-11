@@ -95,3 +95,58 @@ These pins establish correctness scope; they do not assert the latest release or
 retroactively qualify historical timing results with new dependency versions.
 All-four CI starts from a clean Ubuntu runner and retains check.json/check.log
 artifacts. Dependency sources remain unmodified; generated build files are allowed.
+
+## Plan axes from a current check
+
+```sh
+./run.sh --check codecs/xz.sh
+./run.sh --plan --codec xz --axis region --axis batch
+```
+
+`--plan` discovers adapters by basename or supplied file path. Repeat `--codec`
+and `--axis` for a subset; omit them to select every adapter and all nine axes.
+`--work` selects the same build-root directory as --check. Output defaults to
+`.work/axes.plan.json`; an explicit output must end in `.plan.json` to keep plans
+separate from measurement JSONL. The command performs no build or measurement.
+
+The plan asks the adapter for its current capabilities. Supported axes receive
+`schedule / eligible`; unsupported axes receive `skip / n/a` with exactly the
+adapter's reason. There is no codec-name capability table in the planner. Eligible
+means correctness-qualified, not measured or ready for publication. A missing
+measurement backend is a blocking implementation error, never an invented n/a
+reason attributed to the codec.
+
+New --check receipts use protocol `cabench-check-v2`. The checker snapshots state
+before and after correctness tests; the planner recomputes it. The binding covers:
+
+- Adapter shell, declared companion sources, and shared correctness code.
+- Declared native/CLI binaries and their resolved shared-library hashes.
+- Codec name/version, supported axes/reasons, explicit configuration and constraints.
+- Dependency commits, clean tracked sources, pinned/clean submodules, architecture
+  and the selected loader environment (including PATH).
+
+Adapters declare companion inputs with `codec_inputs` and executable/library
+outputs with `codec_build_artifacts`, both JSON path arrays. The native region
+library must appear in the latter. `codec_configuration` supplies the configuration
+being qualified; the default is the smoke constraints. Authors must declare their
+additional helpers/assets: trusted executable adapters cannot be audited for
+undeclared arbitrary dependencies by a generic shell checker.
+
+Old receipts remain historical evidence but do not satisfy this stronger gate.
+Rerun only the small --check after upgrading; no full benchmark is required.
+Receipts are local, unsigned checks of declared inputs, not portable attestations.
+A changed source, binary, configuration or loader environment requires rechecking.
+Documentation-only changes do not invalidate the protocol fingerprint.
+
+The internal `dispatch_adapter(plan, handlers)` seam revalidates a plan before
+calling handlers, never calls a handler for n/a, checks all required backends before
+starting, and rejects output if checked state changes during dispatch. A shared
+build lock excludes cooperative rebuilds for the complete call sequence. This is
+covered with test handlers; no performance handlers are connected or exposed on
+the CLI in this segment. Plans use their own schema, contain no measured values,
+and are never appended to the historical 435-row results file.
+
+Remaining work: connect actual native timing/counter/batch/curve implementations
+and validated result serialization to this seam, preserving their methodology and
+same-run baseline comparisons. The plan command itself does not finish migration
+of the nine axes or make the instrument release-ready.
