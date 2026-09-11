@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
 set -euo pipefail
 # Resident-context proof: capabilities describe this executable path only.
-codec_supports() { echo 'decode region'; }
+codec_supports() { echo 'ratio decode region break_even'; }
 codec_unavailable() {
   cat <<'JSON'
-{"ratio":"archive accounting not connected to context proof","encode":"encode timer not connected to context proof","amplification":"decoder counters not ported to context proof","c_g":"controlled curve runner not connected to context proof","batch":"no batch API","h_alpha":"block mapping callback not ported to context proof","break_even":"timing runner not connected to context proof"}
+{"encode":"encode timer not connected to context proof","amplification":"decoder counters not ported to context proof","c_g":"controlled curve runner not connected to context proof","batch":"no batch API","h_alpha":"block mapping callback not ported to context proof"}
 JSON
 }
 codec_context_build() {

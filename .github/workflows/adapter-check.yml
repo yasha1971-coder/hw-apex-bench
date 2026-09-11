@@ -6,6 +6,9 @@ on:
       - 'harness/check*'
       - 'harness/qualification.py'
       - 'harness/axis_planner.py'
+      - 'harness/native_measure.c'
+      - 'harness/native_execution.py'
+      - 'harness/test_native_execution.py'
       - 'harness/test_axis_planner.py'
       - 'harness/resident*'
       - 'harness/context-ace-sources.json'
@@ -32,10 +35,16 @@ jobs:
         run: python3 -m unittest discover -s harness -p test_check_adapter.py
       - name: Check eligibility and capability dispatch
         run: python3 -m unittest discover -s harness -p test_axis_planner.py
+      - name: Check native worker failure handling and workload
+        run: python3 -m unittest discover -s harness -p test_native_execution.py
       - name: Build and check the adapter on small corpora
         run: ./run.sh --check "codecs/${{ matrix.codec }}.sh"
       - name: Plan axes from the fresh receipt without measuring
         run: ./run.sh --plan --codec "${{ matrix.codec }}" --output ".work/${{ matrix.codec }}.plan.json"
+      - name: Exercise native dispatch on the small corpus
+        run: |
+          python3 harness/resident_fixture.py .work/native-input
+          ./run.sh --measure --codec "${{ matrix.codec }}" --axis ratio --axis decode --axis region --axis break_even --input .work/native-input --output-dir ".work/native-${{ matrix.codec }}"
       - name: Retain receipts and diagnostics
         if: always()
         uses: actions/upload-artifact@v4
@@ -45,4 +54,7 @@ jobs:
             .work/adapter-check/**/check.json
             .work/adapter-check/**/check.log
             .work/*.plan.json
+            .work/native-*/manifest.json
+            .work/native-*/**/*.jsonl
+            .work/native-*/**/*.log
           include-hidden-files: true
