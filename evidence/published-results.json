@@ -9,23 +9,51 @@
     "artifact_sha256_reported_by_github": "14a6f26b15670cc96bc5370547219981e5e70c0eed07cf80195f6069fabdc8da",
     "benchmark_commit": "9cad83e8a5c9a5f3bafb7ef2c70c8d0ead4276fb"
   },
-  "result_records": 420,
+  "result_records": 435,
   "run_ids": [
     "2026-09-10T20:29:44.589718+00:00",
+    "2026-09-10T23:38:56.105858+00:00",
     "owner-declared-2026-09-10"
   ],
   "files": {
     "results.jsonl": {
-      "bytes": 11505154,
-      "sha256": "4123976f7c546208c92d344a5fc27f21760b14eb84741d51415c8c5b7e97be3e"
+      "bytes": 12209658,
+      "sha256": "cb52b8cb9fac484a6474d976681ea85ae2c052d80d820422b7f57c25ec938100"
     },
     "README.md": {
-      "bytes": 27514,
-      "sha256": "d9d213a841337982c3c66b5c979bc272d52c096a8cd43232857601d072593e8e"
+      "bytes": 79287,
+      "sha256": "0df8b36ced5c034b410318e08ad7ff11d9c182387857494ab0b7168ea6257adc"
     },
     "BATCH_RESULTS.md": {
-      "bytes": 11271,
-      "sha256": "4dcbfeea157652cc72759a8766eaf8d779e78e6c1ab86405ed1f28cb9b7265fc"
+      "bytes": 19250,
+      "sha256": "d1aa51fee46758501e4f378bee48bae185b74d5db5ee3657a5741c70c49e46a2"
+    },
+    "CG_CURVE_RESULTS.md": {
+      "bytes": 44738,
+      "sha256": "af6bfa17db628c1be68174239f8cefe4e1c51d5c16767faa4d3ad89633a483c4"
+    },
+    "evidence/cg-curve-20260910/receipt.json": {
+      "bytes": 4143,
+      "sha256": "4457dc4c1d76dd43a39c0467e3d5875738700f55e8f6b2ac188612d8f0a99c84"
+    },
+    "AXES_RESULTS.md": {
+      "bytes": 4829,
+      "sha256": "662d19f2b371f1c9b1c8e72b037b3722ca60ad82878f1516a32ccd2e57418d03"
     }
+  },
+  "publication_state": "candidate in draft PR #14; not deployed",
+  "additional_sources": [
+    {
+      "evidence_group": "cg-five-point-v1",
+      "benchmark_commit": "d84f38af3b26d830fbc1cc654174f2bd673178ab",
+      "workflow_run_id": 34543023595,
+      "artifact_id": 10178051601,
+      "artifact_sha256_reported_by_github": "7b26a032aa21b7c39c599dc833494cfd7b186c4c26278d259faa6322f2d4566d"
+    }
+  ],
+  "rendering_revision": {
+    "scope": "nine-axis coverage, explicit missing-value reasons, strict same-container eligibility, plateau evidence validation",
+    "measurement_bytes_changed": false,
+    "results_sha256": "cb52b8cb9fac484a6474d976681ea85ae2c052d80d820422b7f57c25ec938100"
   }
 }

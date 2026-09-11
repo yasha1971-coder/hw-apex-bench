@@ -1,9 +1,5 @@
 name: Matched ACEAPEX harness audit
 on:
-  pull_request:
-    paths:
-      - 'harness/audit.py'
-      - '.github/workflows/audit.yml'
   workflow_dispatch:
 permissions:
   contents: read

@@ -1,0 +1,160 @@
+{
+  "artifact_sha256": "7b26a032aa21b7c39c599dc833494cfd7b186c4c26278d259faa6322f2d4566d",
+  "result_records": 435,
+  "prior_records_preserved": 420,
+  "prior_results_sha256": "4123976f7c546208c92d344a5fc27f21760b14eb84741d51415c8c5b7e97be3e",
+  "results_sha256": "cb52b8cb9fac484a6474d976681ea85ae2c052d80d820422b7f57c25ec938100",
+  "curve_points": 15,
+  "supported_points": 13,
+  "verified_timed_region_samples": 2600,
+  "full_restores_reported_verified": 15,
+  "benchmark_commit": "d84f38af3b26d830fbc1cc654174f2bd673178ab",
+  "run_id": "2026-09-10T23:38:56.105858+00:00",
+  "same_region_trace": true,
+  "all_raw_sample_digests_match": true,
+  "original_report_difference": "JSON metadata key order only; all other text identical",
+  "regenerated_reports_checked": true,
+  "summary": [
+    {
+      "codec": "aceapex-cg-default",
+      "g": 4096,
+      "actual": 4096,
+      "ratio": 3.0409897235526238,
+      "c_g": 5.334654415840667,
+      "p50_ms": 63.310648,
+      "p99_ms": 66.801747
+    },
+    {
+      "codec": "aceapex-cg-default",
+      "g": 16384,
+      "actual": 16384,
+      "ratio": 3.159992154261983,
+      "c_g": 1.6301347519939502,
+      "p50_ms": 62.379022,
+      "p99_ms": 65.579947
+    },
+    {
+      "codec": "aceapex-cg-default",
+      "g": 65536,
+      "actual": 65536,
+      "ratio": 3.193151163181682,
+      "c_g": 0.5979020501535981,
+      "p50_ms": 62.743751,
+      "p99_ms": 65.555416
+    },
+    {
+      "codec": "aceapex-cg-default",
+      "g": 262144,
+      "actual": 262144,
+      "ratio": 3.203783283344364,
+      "c_g": 0.26692647279557,
+      "p50_ms": 61.926912,
+      "p99_ms": 65.111021
+    },
+    {
+      "codec": "aceapex-cg-default",
+      "g": 1048576,
+      "actual": 1048576,
+      "ratio": 3.20755090702497,
+      "c_g": 0.14964117091070817,
+      "p50_ms": 62.188634,
+      "p99_ms": 65.55762
+    },
+    {
+      "codec": "zstd-seekable-cg",
+      "g": 4096,
+      "actual": 4096,
+      "ratio": 2.9126200642361297,
+      "c_g": 10.063390796858807,
+      "p50_ms": 0.053059,
+      "p99_ms": 0.072185
+    },
+    {
+      "codec": "zstd-seekable-cg",
+      "g": 16384,
+      "actual": 16384,
+      "ratio": 3.025773934699882,
+      "c_g": 6.569397346535477,
+      "p50_ms": 0.06989,
+      "p99_ms": 0.084708
+    },
+    {
+      "codec": "zstd-seekable-cg",
+      "g": 65536,
+      "actual": 65536,
+      "ratio": 3.1468973699798015,
+      "c_g": 2.8293176849717216,
+      "p50_ms": 0.097161,
+      "p99_ms": 0.212167
+    },
+    {
+      "codec": "zstd-seekable-cg",
+      "g": 262144,
+      "actual": 262144,
+      "ratio": 3.0992021007670822,
+      "c_g": 4.302064110327375,
+      "p50_ms": 0.208359,
+      "p99_ms": 0.596194
+    },
+    {
+      "codec": "zstd-seekable-cg",
+      "g": 1048576,
+      "actual": 1048576,
+      "ratio": 3.255040138549156,
+      "c_g": -0.5099417105095538,
+      "p50_ms": 0.859236,
+      "p99_ms": 1.414754
+    },
+    {
+      "codec": "bgzip-cg",
+      "g": 4096,
+      "actual": 4096,
+      "ratio": 2.9922321500902758,
+      "c_g": null,
+      "p50_ms": 0.057928,
+      "p99_ms": 0.072515
+    },
+    {
+      "codec": "bgzip-cg",
+      "g": 16384,
+      "actual": 16384,
+      "ratio": 3.171357564232885,
+      "c_g": null,
+      "p50_ms": 0.070392,
+      "p99_ms": 0.084338
+    },
+    {
+      "codec": "bgzip-cg",
+      "g": 65536,
+      "actual": 65280,
+      "ratio": 3.3824318949327994,
+      "c_g": null,
+      "p50_ms": 0.116408,
+      "p99_ms": 0.246992
+    },
+    {
+      "codec": "bgzip-cg",
+      "g": 262144,
+      "actual": null,
+      "ratio": null,
+      "c_g": null,
+      "p50_ms": null,
+      "p99_ms": null
+    },
+    {
+      "codec": "bgzip-cg",
+      "g": 1048576,
+      "actual": null,
+      "ratio": null,
+      "c_g": null,
+      "p50_ms": null,
+      "p99_ms": null
+    }
+  ],
+  "workflow_run_id": 34543023595,
+  "artifact_id": 10178051601,
+  "workflow_url": "https://github.com/yasha1971-coder/hw-apex-bench/actions/runs/34543023595",
+  "raw_artifact_location": "owner-private cabench-cg-curve-evidence.zip; no public raw ZIP",
+  "harness_tests": 18,
+  "source_review_sha256": "a1f5208e8381b6480380c3e1af3bf335693feb544bcc5b926989683b3c2338b1"
+}

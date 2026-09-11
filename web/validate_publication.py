@@ -71,6 +71,19 @@ def validate(root=ROOT):
                             ("BATCH_RESULTS.md", render_stage2(rows)[1])):
         if (root / name).read_bytes() != generated.encode("utf-8"):
             raise ValueError(f"Committed {name} differs from results.jsonl")
+    from table_cells import validate_tables
+    for name in ('README.md', 'BATCH_RESULTS.md'):
+        validate_tables((root / name).read_text(encoding='utf-8'))
+    if 'AXES_RESULTS.md' in manifest['files']:
+        from axes import render_coverage
+        if (root / 'AXES_RESULTS.md').read_text(encoding='utf-8') != render_coverage(rows):
+            raise ValueError('Committed AXES_RESULTS.md differs from results.jsonl')
+    if 'CG_CURVE_RESULTS.md' in manifest['files']:
+        from cg_curve import render as render_cg
+        curve = [r for r in rows if r.get('evidence_group') == 'cg-five-point-v1']
+        if (root / 'CG_CURVE_RESULTS.md').read_text(encoding='utf-8') != render_cg(curve):
+            raise ValueError('Committed curve report differs from results.jsonl')
+        validate_tables((root / 'CG_CURVE_RESULTS.md').read_text(encoding='utf-8'))
     return rows
 
 

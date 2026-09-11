@@ -76,6 +76,28 @@ predicates in protocol.json, including a 1% ratio allowance. A slower row retain
 FAIL; byte mismatches abort publication. GPU is a separate measured path and is
 never inferred from CPU rows.
 
+## Comparison discipline
+
+* Absolute latency and MB/s belong to the recorded machine. Normalize only to a
+  baseline from the same run, corpus, request trace and operation. A normalized
+  ratio is not guaranteed to remain constant on another architecture. Never mix
+  a historical default, an interactive profile and a new-default measurement.
+* Display the codec revision, block/frame size, literal/FSE units where applicable,
+  encoder workers and decoder workers beside the row. Unequal full-decoder worker
+  counts remain explicit and do not establish an equal-thread speed comparison.
+* A full-file measurement is not automatically a throughput plateau. Grow the
+  workload and recompute stability from the repetitions; otherwise retain
+  `data edge` with the reason and do not print a headline rate.
+* The 1% ratio comparison tolerance is a declared protocol allowance, not a
+  correction applied to file sizes. libzstd and htslib versions remain recorded;
+  no fixed version-induced density change is assumed without a matched experiment.
+* Keep losses beside wins. Unsupported native batch is generated from the row's
+  capability and reason; its measured single-call loop remains a separate method.
+  Every missing table cell says `n/a — reason`; it is never blank or zero-filled.
+* The retained JSONL is immutable evidence. Render README and the coverage report
+  from those records, verify exact reproduction, then update the publication
+  manifest only for reviewed data or explicitly explained rendering changes.
+
 ## Review boundary and history
 
 This is a new raw-byte operation contract. Do not compare its latency directly

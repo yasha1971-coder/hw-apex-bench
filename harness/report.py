@@ -1,5 +1,6 @@
 """Generate the review table only from one complete, verified three-codec run."""
 import json,pathlib,sys
+from table_cells import unavailable, validate_tables
 from configurations import CODECS, configuration, ACE_SHA
 METRICS=("ratio","region_p50","region_p99","amplification")
 ROOT=pathlib.Path(__file__).resolve().parents[1]
@@ -33,7 +34,7 @@ def validate(rows):
         # Separate strict c(g) claims may intentionally use another pinned
         # revision/configuration. Their validator lives in independence.py.
         if r["codec"] not in CODECS:
-            if r["metric"] == "independence_cost_strict_percent" or r.get("evidence_group") in ("zstd-frame-frontier","gpu-declared"):
+            if r["metric"] == "independence_cost_strict_percent" or r.get("evidence_group") in ("zstd-frame-frontier","gpu-declared","cg-five-point-v1"):
                 continue
             raise ValueError("Unexpected external codec row")
         if r["configuration"]!=configuration(r["codec"]): raise ValueError("Configuration mismatch")
@@ -54,17 +55,21 @@ def render(rows):
           next((line.strip() for line in meta["hardware"].get("lscpu", "").splitlines() if line.startswith("Model name:")), "CPU model unavailable"),
           "Hardware details, parameters and commands accompany every measurement in results.jsonl.",
           "",
+          __import__('axes').definitions(),
+          "",
+          "Coverage audit: [AXES_RESULTS.md](AXES_RESULTS.md). Recheck without measurements: `./run.sh --audit-axes`.",
+          "",
           "| Configuration | Level | Encoder threads | Block/frame bytes | LIT bytes | FSE bytes |",
           "|---|---:|---:|---:|---:|---:|",
-          "| bgzip+htslib | 6 | 1 | BGZF variable (<=65536 uncompressed) | n/a | n/a |",
-          "| zstd-seekable | 3 | 1 | 16384 | n/a | n/a |",
+          "| bgzip+htslib | 6 | 1 | BGZF variable (<=65536 uncompressed) | n/a — no separate literal stream | n/a — no FSE stream |",
+          "| zstd-seekable | 3 | 1 | 16384 | n/a — frame-owned literals | n/a — frame-owned entropy coding |",
           "| aceapex-interactive | 2 | 1 | 16384 | 65536 | 4096 |",
           "| aceapex-dense | 2 | 1 | 262144 | 1048576 | 32768 |",
           "",
           "| Codec / profile | block (bytes) | Ratio incl. indexes | Region p50 ms | Region p99 ms | Output amplification | GPU |",
           "|---|---:|---:|---:|---:|---:|---|"]
     for c in CODECS:
-        text.append("| "+c+" | "+str(ix[c,"ratio"]["configuration"]["block"])+" | "+" | ".join(f"{ix[c,m]['value']:.6f}" for m in METRICS)+" | n/a |")
+        text.append("| "+c+" | "+str(ix[c,"ratio"]["configuration"]["block"])+" | "+" | ".join(f"{ix[c,m]['value']:.6f}" for m in METRICS)+" | n/a — CPU run |")
     text+=["","Every timed operation reads the same 16,384 original-file bytes. No FASTA parsing is timed.",
            "Amplification A = sum_q(sum of bytes actually expanded by the decoder for query q) / sum_q(requested bytes) = decoded bytes / (200 × 16384).",
            "BGZF counts decompressed blocks, zstd counts reconstructed blocks within frames (including buffered output), and ACEAPEX counts only touched chunks in the literal, offset, length and command streams, not the complete streams. Repeated expansions count each time.",
@@ -82,7 +87,7 @@ def render(rows):
         if r["value"] != r["decoded_bytes_total"] / r["requested_bytes_total"]: raise ValueError("Amplification totals mismatch")
         streams=r.get("stream_decoded_bytes_total")
         if streams is not None and sum(streams)!=r["decoded_bytes_total"]: raise ValueError("Stream totals mismatch")
-        text.append(f"| {c} | {r['decoded_bytes_total']} | {r['requested_bytes_total']} | {str(streams) if streams is not None else 'n/a'} |")
+        text.append(f"| {c} | {r['decoded_bytes_total']} | {r['requested_bytes_total']} | {str(streams) if streams is not None else unavailable('no four-stream decomposition')} |")
     if meta.get("stage",1)>=2:
         from stage2_report import render_stage2
         extra, matrix=render_stage2(rows)
@@ -97,16 +102,23 @@ def render(rows):
         from zstd_frontier import render_zstd_frontier
         from gpu import render_gpu
         text += ["",render_zstd_frontier(rows),"",render_gpu(rows)]
+    if any(r.get("evidence_group") == "cg-five-point-v1" for r in rows):
+        from cg_curve import render as render_cg
+        text += ["", render_cg([r for r in rows if r.get("evidence_group") == "cg-five-point-v1"]).replace("# Density", "## Density", 1)]
     text+=["","These are descriptive comparisons against the same-machine baseline, not promises that any codec must win.",
            "A slower codec remains FAIL in this table; correctness failures abort report generation.",
            "",(ROOT/"METHOD.md").read_text()]
-    return "\n".join(text)+"\n"
+    rendered = "\n".join(text)+"\n"
+    validate_tables(rendered)
+    return rendered
 if __name__=="__main__":
     rows=[json.loads(s) for s in (ROOT/"results.jsonl").read_text().splitlines() if s.strip()]
     result=render(rows)
+    from axes import render_coverage as render_axes
+    (ROOT/"AXES_RESULTS.md").write_text(render_axes(rows), encoding="utf-8")
     if rows[0].get("stage",1)>=2:
         from stage2_report import render_stage2
         _,matrix=render_stage2(rows)
         (ROOT/"BATCH_RESULTS.md").write_text(matrix)
-    temp=ROOT/".work/README.pending.md"; temp.write_text(result); temp.replace(ROOT/"README.md")
-    print(result)
+    temp=ROOT/".work/README.pending.md"; temp.parent.mkdir(exist_ok=True); temp.write_text(result); temp.replace(ROOT/"README.md")
+    print(f"Regenerated reports from {len(rows)} retained measurement rows.")

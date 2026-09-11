@@ -1,15 +1,5 @@
 name: CPU benchmark verification
 on:
-  pull_request:
-    paths:
-      - 'run.sh'
-      - 'codecs/**'
-      - 'harness/**'
-      - 'corpora.json'
-      - 'protocol.json'
-      - 'gpu-results.declared.json'
-      - 'GPU.md'
-      - '.github/workflows/stage1.yml'
   workflow_dispatch:
 permissions:
   contents: read

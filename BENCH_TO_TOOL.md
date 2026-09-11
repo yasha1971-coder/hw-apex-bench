@@ -1,5 +1,19 @@
 # hw-apex-bench: benchmark to tool
 
+## Publication checkpoint
+
+This revision publishes the reviewed nine-axis evidence from PR #16 on main,
+with 435 original JSONL records, the recovered default report, generated coverage
+and the complete c(g) grid. Licenses, the negative-c(g) note and the baseline
+review are preserved. Nine-axis coverage means measured/derived evidence or an
+explicit unsupported reason; it does not fabricate unavailable BGZF geometries.
+No completed measurement is rerun. Full benchmark workflows are manual-only.
+
+After this revision is merged and publication checks pass, the next bounded step
+is the seven-function adapter interface. Reconcile draft PR #17 with this
+published baseline; do not merge its old README or measurements over main.
+The historical checkpoints below explain how the evidence gate was reached.
+
 ## Work order
 
 The owner's order is mandatory:
@@ -16,7 +30,7 @@ Do not add codecs or continue adapter refactoring before reviewing and accepting
 the nine-axis evidence. Do not repeat completed measurements. No changes to the
 aceapex, glyph-engine or yasha-context repositories are authorized.
 
-## Verified checkpoint: 2026-09-11
+## Historical checkpoint: 2026-09-11
 
 Licensing PR #18 was merged into main as
 `a5ab7e38bc1d995dc580c8f0e5e1b221f7bca8d7`. Code is Apache-2.0; original

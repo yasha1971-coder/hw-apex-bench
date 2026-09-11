@@ -5,6 +5,8 @@ on:
       - 'results.jsonl'
       - 'README.md'
       - 'BATCH_RESULTS.md'
+      - 'AXES_RESULTS.md'
+      - 'CG_CURVE_RESULTS.md'
       - 'METHOD.md'
       - 'web/**'
       - 'harness/**'
@@ -23,5 +25,13 @@ jobs:
       - uses: actions/checkout@v4
       - name: Reject corrupted evidence
         run: python3 -m unittest discover -s web -p test_publication.py -v
+      - name: Audit the nine-axis contract without benchmark execution
+        run: |
+          python3 -m unittest discover -s harness -p test_axes.py
+          python3 -m unittest discover -s harness -p test_cg_curve.py
+          ./run.sh --audit-axes
+          python3 review/audit_cg_baseline.py --results results.jsonl
+          python3 -m unittest discover -s review -p test_cg_baseline.py
+          python3 harness/audit_default.py evidence/default-a194893 DEFAULT_RESULTS.md
       - name: Verify committed snapshot and generate homepage
         run: python3 web/build.py .pages/index.html

@@ -17,7 +17,7 @@ for c in cs:
  F.append(core)
 batch=[r for r in rows if r['metric']=='batch_throughput' and r['n']==5000]
 assert len(batch)==30 and all(r['threads_requested']==1 and r['comparison_contract']=='loop1-vs-batch1' for r in batch)
-keys=['codec','method','access_profile','n','threads_requested','H_alpha','value','commands']
+keys=['codec','method','access_profile','n','threads_requested','H_alpha','value','commands','native_batch_available','native_batch_reason']
 zfront=[]
 for frame in [16384,65536,262144,2097152]:
  def z(metric): return one('zstd-seekable-frontier',metric,frame_bytes=frame)

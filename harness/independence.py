@@ -105,6 +105,7 @@ def add_independence(rows, meta, D):
     return rows
 
 def render_independence(rows):
+    from table_cells import unavailable
     # Historical numeric records retain their original metric name and bytes.
     rr=[r for r in rows if r['metric'] in ('independence_cost_percent','configuration_ratio_loss_percent')]
     if {r['codec'] for r in rr}!=set(CODECS) or len(rr)!=4:raise ValueError('Incomplete independence comparison')
@@ -117,21 +118,23 @@ def render_independence(rows):
         raise ValueError('bgzip must remain n/a without a same-encoder baseline')
     if strict_by['zstd-seekable']['status']!='measured':raise ValueError('zstd strict pair missing')
     if strict_by[ACE_CORE_STRICT['codec']]['status']!='measured':raise ValueError('reproduced ACEAPEX strict claim missing')
-    out=['## Independence cost c(g): strict baseline contract','','Only the independent block size may change. Corpus bytes, encoder revision, level, effective search/entropy parameters and threads must otherwise be fixed. Deterministic encoder behavior caused by the changed boundary is part of the treatment.',
+    out=['## Historical whole-input pairs and baseline eligibility','','Only the independent block size may change for strict c(g). Corpus bytes, encoder revision, container, level, effective search/entropy parameters and threads must otherwise be fixed. Deterministic encoder behavior caused by the changed boundary is part of the treatment.',
          '`c(g) = 100 × (1 − ratio_g / ratio_whole)`. Every ratio uses input bytes divided by complete output-file bytes. Historical JSONL metric independence_cost_percent means the operational comparison; strict claims are explicit rows with their own provenance.','',
          '| Codec/profile | block bytes | ratio g | ratio whole | Operational loss % | Strict c(g) | Encoder threads requested |','|---|---:|---:|---:|---:|---|---:|']
     for r in rr:
         expected=100*(1-r['whole_archive_bytes']/r['independent_archive_bytes'])
         if abs(expected-r['value'])>1e-10 or not r['full_restore_byte_equal']:raise ValueError('Invalid c(g) evidence')
         sr=strict_by[r['codec']]
-        sv=f"{sr['value']:.6f}" if sr['value'] is not None else 'n/a'
+        sv=f"{sr['value']:.6f}" if sr['value'] is not None else unavailable(sr.get('reason'))
+        if r['codec'] == 'zstd-seekable':
+            sv = unavailable('historical CLI/seekable pair changes container; see the matched five-point curve')
         out.append(f"| {r['codec']} | {r['configuration']['block']} | {r['ratio_g']:.6f} | {r['ratio_whole']:.6f} | {r['value']:.6f} | {sv} | 1 |")
     ext=strict_by[ACE_CORE_STRICT['codec']]
-    out.append(f"| ACEAPEX default @ ee5a37e (reproduced) | {ACE_CORE_STRICT['block']} | {ext['ratio_g']:.6f} | {ext['ratio_whole']:.6f} | — | {ext['value']:.6f} | {ACE_CORE_STRICT['threads']} |")
+    out.append(f"| ACEAPEX default @ ee5a37e (reproduced) | {ACE_CORE_STRICT['block']} | {ext['ratio_g']:.6f} | {ext['ratio_whole']:.6f} | n/a — separate strict experiment | {ext['value']:.6f} | {ACE_CORE_STRICT['threads']} |")
     for codec in ('bgzip+htslib','aceapex-interactive','aceapex-dense'):
         out += ['', codec+': '+STRICT_REASONS[codec]+'.']
     out += ['', 'ACEAPEX default @ ee5a37e was reproduced by GitHub Actions run 34488734677: 80364845 bytes at 16 KiB and 79053076 bytes for one whole-input block, both exact restores passing. GCC 13.3.0, libzstd 1.5.5. The compiled source `src/aceapex_main.cpp` was observed in the compiler trace and hashed. The result differs from the ace-core 1.631528% by 0.000740 percentage point.']
-    out += ['', 'zstd bases are explicitly zstd 1.5.7 level -3, one continuous frame versus independent 16384-byte frames. The user-reported historical version is 1.4.8 with 6.68%; version change is a hypothesis for the difference, not an attribution established by a matched rerun.',
+    out += ['', 'This historical zstd pair uses CLI output for the continuous baseline and the seekable container for the blocked archive. Its recorded 7.180634% remains an operational comparison, not strict same-container c(g). The separate five-point curve uses the reference seekable implementation for both sides. No difference is attributed to library version without a matched experiment.',
             'The historical 0.410% is payload-only: it excludes the AET header and 64-byte BlockOffsets entry per block. The cross-codec archive ratio includes both. Neither 0.410% nor 6.68% is an acceptance target.']
     out+=['','Whole-file means one continuous member/frame/output block, not an unlimited match window. gzip retains its 32 KiB backward-distance limit; this does not make its blocks independent. bgzip adds independent member boundaries, index/headers and implementation differences.',
           'ACEAPEX uses the same pinned binary on both sides. ACEAPEX_BS changes from 16384 or 262144 to 253935557. MIN_MATCH was cleared and defaults to 0. LIT_CHUNK/FSE_CHUNK remain 65536/4096 (interactive) or 1048576/32768 (dense).',

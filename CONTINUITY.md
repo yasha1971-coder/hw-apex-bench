@@ -199,3 +199,147 @@ validation and page export passed against the 420 rows currently in main.
 
 No codec or benchmark was run. The full 435-row evidence publication from
 PR #16 remains a separate next bounded step; adapter work stays paused.
+
+## Retained PR #16 preparation history
+
+## Adaptive default follow-up — 2026-09-11
+
+User requested remeasurement at ACEAPEX
+`a194893b676a089e5916063d62c45e77483d2c10`, with default beside profiles.
+Draft PR #15 (`experiment/default-a194893`) is stacked on draft PR #14
+(`experiment/cg-five-point-recovered`); neither has been merged.
+Successful measurement commit: `d25d8d16f45a073f167bfb2082f663a909a48ea1`.
+Workflow `34574867600` passed, artifact `10189247671`; exact checksums are in
+`evidence/default-a194893/receipt.json`. Six complete byte-verified restores,
+1000 verified timed region samples; report replays exactly from committed JSONL.
+Run `python3 harness/audit_default.py evidence/default-a194893 DEFAULT_RESULTS.md`.
+
+The new default on chr1 has 65536-byte literal chunks, complete-archive ratio
+3.7313812953, resident-region p50 2.724145 ms. Explicit LIT_CHUNK=0 has ratio
+3.2075509070 and fine-grained region n/a. This matched ratio increase is 16.33%,
+not a forced reproduction of the owner's separately reported +17.1%.
+All ACEAPEX configurations lose this single-region latency comparison to both
+baselines. Text and Silesia remain unmeasured here. No plateau throughput claim.
+
+Attempt `34574475551` failed at interactive restore: this Makefile CLI ignores
+--profile and the harness supplied mismatched FSE settings at decode. The harness
+was corrected to set explicit matching profile environments for encode and read,
+with actual archive geometry checked. This is not a codec failure under matched
+settings. The failed artifact is `10189096192`.
+
+Historical curve workflow `34543023595`, source
+`d84f38af3b26d830fbc1cc654174f2bd673178ab`, artifact `10178051601` completed.
+Its 62.379022 ms observation remains attached to old SHA/configuration; it is
+not a full-decode measurement or a new-default row. The independent measurement
+exposed the default configuration problem, according to the owner's subsequent
+reproduction and correction. Preserve this attribution for Paper 6.
+Curve audit / 435-row combined snapshot and deterministic rendering fix remain
+in a separate local curve checkout; their upload was interrupted. PR #14's
+remote head remains d84f38a at this checkpoint. Its raw artifact was separately
+preserved. Do not claim the combined snapshot has been published.
+
+Publication still contains the original verified 420 rows. Next bounded action:
+review the complete new default table and audit, then integrate accepted evidence
+with the pending curve report and publication validator. No unreviewed merge or
+cross-machine speedup claim. No upstream codec repositories were changed.
+
+## Interrupted table upload recovery — 2026-09-11
+
+Live GitHub verification found PR #15 still at
+`d25d8d16f45a073f167bfb2082f663a909a48ea1`: the table upload had not arrived.
+Recovered the six-file evidence commit `021a0261cbe85100c936d50882328f9136a3f685`
+onto that exact remote parent. The artifact ZIP digest matches GitHub, and the
+retained JSONL and DEFAULT_RESULTS.md match its bytes exactly. The default audit,
+420-row publication validator and homepage build passed without codec execution.
+
+This recovery commit uses `[skip ci]` because the user explicitly prohibited new
+measurements. Do not dispatch or rerun benchmark workflows while completing this
+handoff. Keep PR #15 draft and stacked on draft PR #14; main remains recovery
+merge `e181868f307225bea7c4c3532e0dfb1130d2ae37` at this checkpoint.
+
+PR #14's verified remote head is still
+`d84f38af3b26d830fbc1cc654174f2bd673178ab`. Its pending curve evidence exists in
+the separate local curve checkout at `419cfbe`; it is not part of this upload.
+Next bounded action: show DEFAULT_RESULTS.md for review, then recover and audit
+the existing curve report before any integration. Do not repeat measurements.
+
+## Instrument roadmap, first gate — 2026-09-11
+
+The owner supplied a seven-step instrument roadmap. Work is staged as requested;
+the current branch `tooling/nine-axis-contract` is the first gate, based on PR #15
+head `2a80299c6daba988b449d61ff9cdad3dc59ad98f`. PR #13 is merged; PR #14 and #15
+remain drafts. `TOOL_ROADMAP.md` preserves the remaining implementation sequence.
+
+Recovered the audited curve snapshot from local commit
+`419cfbe5ea63bdc4db68a9e28149e6deb5d57f93` into this review branch. Its full 435-row
+JSONL matches artifact `10178051601` exactly, including the original 420-row byte
+prefix. `harness/audit_curve.py` independently checks all 2,600 timed samples.
+The original core run already reached all eight encode/full-decode plateaus,
+including bgzip and zstd. No new benchmark or codec execution was needed.
+
+The generated README now defines nine axes; `AXES_RESULTS.md` and
+`./run.sh --audit-axes` validate their coverage. Reports generate native-batch
+unavailability from retained capability/reason fields. Blank/unexplained table
+cells fail publication. Plateau checks recompute sample CV, rates and summary
+evidence; same-run ratios reject mixed hardware or a fabricated PASS.
+
+The old zstd CLI-versus-seekable 7.180634% is still retained in raw JSONL and the
+operational comparison column, but no longer displayed as strict same-container
+c(g). The recovered matched series gives 6.569397% at 16 KiB. All raw values are
+unchanged. Historical ee5a37e default, 1b13df3 profiles and a194893 refresh remain
+separate; do not combine their axes into a fictitious configuration.
+
+Validation commands (no measurements):
+`python3 -m unittest discover -s harness -p test_axes.py`,
+`python3 -m unittest discover -s harness -p test_cg_curve.py`,
+`python3 -m unittest discover -s web -p test_publication.py`,
+`./run.sh --audit-axes`,
+`python3 harness/audit_default.py evidence/default-a194893 DEFAULT_RESULTS.md`,
+`python3 web/validate_publication.py`,
+`python3 web/build.py /tmp/cabench-pages/index.html`.
+
+Next bounded action: implement the adapter/native-callback contract and `--check`
+for the existing three formats, then replace automatic full PR benchmarks with
+small correctness CI. Shell process invocation cannot be the timed region path.
+No xz or CRAM adapter, licensing change, v0.1 tag or DOI has been claimed here.
+CRAM needs an alignment-specific lossless/operation contract; default quality
+quantization is not assumed. Same-run normalization is not machine invariance.
+Keep this first-gate report in draft for curve review; use `[skip ci]` on its
+evidence upload so existing full benchmark workflows are not re-executed.
+
+Delivery checkpoint: draft PR #16
+`https://github.com/yasha1971-coder/hw-apex-bench/pull/16` contains the first-gate
+implementation at `14f052409066f072fe84546620b6bc4a76cb6c54` (validated Git tree
+`2bdc1d6b857f0bae7e8c86c059bacd5bc20f0983`), stacked on PR #15. All 37 local tests
+passed; executable homepage JavaScript syntax also passed. The small final
+handoff commit only adds this delivery checkpoint. PR #14's remote head remained
+`d84f38af3b26d830fbc1cc654174f2bd673178ab`; the recovered curve is delivered in
+PR #16, not falsely attributed to an update of PR #14. Adapter extraction is the
+next stage, not a completed feature.
+
+## Nine-axis publication integration — 2026-09-11
+
+The owner authorized merging PR #20 and publishing PR #16 on main before any
+adapter work. PR #20 merged as 3dab71573fad34a30a01734b85aa48c41359fa98.
+This integration joins that main revision with PR #16's reviewed head
+1160850bda8385cc18d8960989cad15ecacd8b43. README, METHOD and report generation
+retain Apache/CC BY licensing, the negative-c(g) note and both follow-up reviews.
+The c(g) renderer now explicitly preserves the empty zstd baseline frame and
+states that the pinned ACEAPEX legacy literal path has DNA transform OFF.
+
+All 435 original results remain byte-identical:
+cb52b8cb9fac484a6474d976681ea85ae2c052d80d820422b7f57c25ec938100.
+Publication validation/export, nine-axis audit, default replay (six rows and
+1000 samples), matched-baseline audit and all 48 tests passed locally. Only
+reviewed README/curve-report digests were changed; source evidence is untouched.
+Full stage1/audit/cg/default/strict-cg workflows are manual-only so this update
+cannot launch completed measurements again. Publication CI includes the eleven
+focused baseline-review tests. No adapter code is imported from PR #17.
+
+After the PR #16 integration commit passes CI and is merged to main, nine-axis
+publication is the completed gate: 3 formats, 4 core configurations, 15 curve
+positions with 13 supported geometries, and explicit n/a for unsupported axes.
+The next bounded step is reconciling the seven-function adapter interface in
+PR #17 with published main. Do not overwrite published reports or licenses with
+that older branch's files. No new measurements, xz, CRAM or release are part of
+this publication segment. Read current main/PR/Pages status at the next turn.
