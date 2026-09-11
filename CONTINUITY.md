@@ -851,3 +851,19 @@ Zenodo archive; official integration requires enabling the repository and creati
 a GitHub release. Release scope must retain known historical435 exclusions and
 no-argument run.sh still being the historical runner (explicit --check/--measure
 are the new interface). Current task does not silently merge old drafts or addCRAM.
+
+## Authorized v0.1 release stage (2026-09-11)
+
+User explicitly authorized merging prepared PRs, v0.1, Zenodo and DOI; no new
+codecs or measurements. PRs21–28 merged sequentially; main cbe30768f19335702921eaa9a7f9c860e7ecec9e
+has tree590d12b8993241d72073ea3dad82af8e8ff682bf, identical to the tested PR28 head.
+Release preparation adds CFF version/date and release/v0.1.md, preserving earlier
+validation receipts. Narrow main-push release workflow verifies frozen435,
+downloads and hashes the existing full artifact, packs exact source, creates
+an annotated v0.1 without moving existing tags, verifies draft assets and publishes.
+It never launches measurements. Release notes distinguish full original CPU
+comparison, separate untimed BGZF closure and small-corpus XZ evidence.
+No DOI exists in this checkpoint. After publication verify live tag/release/assets,
+then complete Zenodo archival. No Zenodo connector or authenticated browser tool
+is currently exposed; repository integration state remains unknown. If archival
+requires account access, report that concrete blocker after completing the release.

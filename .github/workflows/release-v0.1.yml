@@ -1,0 +1,64 @@
+name: Publish v0.1
+on:
+  push:
+    branches: [main]
+    paths: ['release/v0.1.md']
+  workflow_dispatch:
+permissions:
+  contents: write
+  actions: read
+concurrency:
+  group: release-v0.1
+  cancel-in-progress: false
+jobs:
+  release:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Validate publication without measurements
+        run: |
+          python3 web/validate_publication.py
+          python3 web/build.py /tmp/cabench-pages/index.html
+          echo 'cb52b8cb9fac484a6474d976681ea85ae2c052d80d820422b7f57c25ec938100  results.jsonl' | sha256sum -c -
+          test "$(wc -l < results.jsonl)" -eq 435
+          grep -Fx 'version: "0.1"' CITATION.cff
+          grep -Fx 'date-released: "2026-09-11"' CITATION.cff
+      - name: Preserve existing evidence and pack exact source
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          mkdir -p dist
+          gh api "repos/$GITHUB_REPOSITORY/actions/artifacts/10273026378/zip" > dist/native-full-comparison.zip
+          echo '3fb9531d64518b0c5c1e61968eae80a374ae4da0285ce0178555ff7fa87dc390  dist/native-full-comparison.zip' | sha256sum -c -
+          git archive --format=zip --prefix=hw-apex-bench-v0.1/ -o dist/hw-apex-bench-v0.1.zip "$GITHUB_SHA"
+          git rev-parse HEAD HEAD^{tree} > dist/SOURCE_COMMIT_AND_TREE.txt
+          cd dist
+          sha256sum hw-apex-bench-v0.1.zip native-full-comparison.zip SOURCE_COMMIT_AND_TREE.txt > SHA256SUMS
+      - name: Publish immutable tag and verified assets
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          if git rev-parse --verify refs/tags/v0.1 >/dev/null 2>&1; then
+            test "$(git rev-parse 'v0.1^{commit}')" = "$GITHUB_SHA"
+          else
+            git config user.name 'github-actions[bot]'
+            git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+            git tag -a v0.1 "$GITHUB_SHA" -m 'hw-apex-bench v0.1'
+            git push origin refs/tags/v0.1
+          fi
+          if gh release view v0.1 --json isDraft > /tmp/release.json 2>/dev/null; then
+            # Never replace assets of an already published release.
+            python3 -c 'import json; assert json.load(open("/tmp/release.json"))["isDraft"], "Release already published; inspect instead of overwriting"'
+          else
+            gh release create v0.1 --verify-tag --draft --title 'hw-apex-bench v0.1' --notes-file release/v0.1.md
+          fi
+          gh release upload v0.1 dist/* --clobber
+          mkdir /tmp/release-download
+          gh release download v0.1 --dir /tmp/release-download
+          (cd /tmp/release-download && sha256sum -c SHA256SUMS)
+          gh release edit v0.1 --draft=false
