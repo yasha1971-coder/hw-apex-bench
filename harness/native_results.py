@@ -6,6 +6,9 @@ from pathlib import Path
 
 
 def rows(manifest,baseline_adapter='bgzip'):
+    names=[a['plan']['codec'] for a in manifest['adapters']]
+    if len(names)!=len(set(names)):
+        raise ValueError('duplicate codec labels cannot identify a unique baseline')
     result=[]
     baseline=next((a['plan']['codec'] for a in manifest['adapters'] if Path(a['plan']['adapter']).stem==baseline_adapter),None)
     for adapter in manifest['adapters']:

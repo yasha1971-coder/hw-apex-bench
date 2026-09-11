@@ -246,6 +246,8 @@ def main():
         adapters=[resolve_adapter(c) for c in a.codec]
         if len(set(adapters))!=len(adapters): raise ValueError('duplicate adapter selection')
         plans=[plan_adapter(c,work_directory(c,a.work),a.axis) for c in adapters]
+        if len({plan['codec'] for plan in plans})!=len(plans):
+            raise ValueError('duplicate codec labels: use unique configuration names or separate version runs')
         needs_region=any(t['action']=='schedule' and t['axis'] in {'region','break_even','amplification'}
                          for plan in plans for t in plan['tasks'])
         if needs_region and a.input.stat().st_size<16384:

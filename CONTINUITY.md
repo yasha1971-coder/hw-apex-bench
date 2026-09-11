@@ -710,3 +710,10 @@ compares archive sizes/hashes/ratios, amplification,80 profile entropy/trace cas
 and five same-version zstd c(g) points against the frozen435. It refuses a different
 corpus. Do not infer equality until the real artifact has been downloaded and checked.
 This checkpoint records partial CI evidence only, not completion of the full run.
+
+Follow-up selection guard (after the full-tested backend commit): duplicate codec
+labels now fail before output creation and during serialization. BGZF1.19 and1.24
+share their format label and must be measured in separate runs, so neither version
+can silently overwrite the other's baseline. Four native-method regression tests
+pass. This does not change the current full run, which selects only BGZF1.19.
+Full workflow34619124537 remains in progress; do not dispatch another.

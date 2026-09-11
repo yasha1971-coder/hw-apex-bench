@@ -47,6 +47,11 @@ class Methods(unittest.TestCase):
         self.assertTrue(all(r['verified'] for r in rows))
         bad=subprocess.run(command,env=dict(os.environ,BAD_BATCH_STATUS='1'),capture_output=True)
         self.assertNotEqual(bad.returncode,0)
+    def test_duplicate_labels_cannot_silently_replace_baseline(self):
+        from native_results import rows
+        manifest={'adapters':[{'plan':{'codec':'bgzip+htslib'}},{'plan':{'codec':'bgzip+htslib'}}]}
+        with self.assertRaisesRegex(ValueError,'duplicate codec labels'):rows(manifest)
+
     def test_reader_scope_is_restored_after_failure(self):
         with patch.dict(os.environ,{'FSE_CHUNK':'old'}):
             with self.assertRaisesRegex(ValueError,'failure'):
