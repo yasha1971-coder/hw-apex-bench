@@ -103,8 +103,8 @@ never inferred from CPU rows.
 This is a new raw-byte operation contract. Do not compare its latency directly
 with historical faidx/sequence timings or the 0.082 ms declared reference on
 another machine. The former results and matched-harness investigation remain in
-[AUDIT.md](AUDIT.md) and [historical evidence](evidence/).
-[Exact FAIL output from EPYC 9V74](evidence/audit-20260909/FAILS.md) is preserved.
+[AUDIT.md](AUDIT.md) and [historical evidence](../evidence).
+[Exact FAIL output from EPYC 9V74](../evidence/audit-20260909/FAILS.md) is preserved.
 
 Batch, H_alpha and break-even are implemented as specified in [BATCH_METHOD.md](BATCH_METHOD.md).
 `./run.sh` also measures independence cost c(g) and CPU plateau throughput;
@@ -117,7 +117,7 @@ harness and original ACEAPEX pin.
 
 ## Negative c(g)
 
-**Splitting can improve compression:** the [reviewed zstd-seekable 1 MiB point](review/CG_BASELINE_REVIEW.md)
+**Splitting can improve compression:** the [reviewed zstd-seekable 1 MiB point](../review/CG_BASELINE_REVIEW.md)
 has `c(g) = -0.509942%`: 78,013,034 bytes versus 78,410,855 bytes for the whole-input
 baseline, including container overhead. A negative sign is a valid outcome, not
 by itself an error. Local entropy adaptation can in principle outweigh lost
@@ -137,5 +137,5 @@ the seven-function contract, explicit unsupported axes and current integration l
 
 ## License
 
-Code: [Apache-2.0](LICENSE). Measurements: [CC BY 4.0](evidence/LICENSE).
-Third-party code retains its own licenses; see [NOTICE](NOTICE).
+Code: [Apache-2.0](../LICENSE). Measurements: [CC BY 4.0](../evidence/LICENSE).
+Third-party code retains its own licenses; see [NOTICE](../NOTICE).

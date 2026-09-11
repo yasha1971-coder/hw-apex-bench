@@ -27,7 +27,7 @@ def render_stage2(rows):
              "Three repetitions, median duration; loop/native order alternates. Both loop and batch use one worker (loop1-vs-batch1).",
              "H_alpha counts request-start blocks (actual GZI boundaries for BGZF, declared frame/block boundaries otherwise). H_alpha_16k is also recorded.",
              "bgzip and zstd-seekable native batch: n/a (no native batch API in these adapters); their measured method is loop.",
-             "All N=100/600/2000/5000 points are in [BATCH_RESULTS.md](BATCH_RESULTS.md). The fixed N=5000 view follows.", ""]
+             "All N=100/600/2000/5000 points are in [docs/BATCH_RESULTS.md](docs/BATCH_RESULTS.md). The fixed N=5000 view follows.", ""]
     header = ["| Codec/profile | block bytes | Access profile | method | N | H_alpha bits | Threads requested | ranges/s | / bgzip loop |",
               "|---|---:|---|---|---:|---:|---:|---:|---|"]
     full = ["# Batch results", "", "Generated from results.jsonl. All repetitions and trace hashes are retained in evidence.", "", *header]
@@ -68,7 +68,7 @@ def render_stage2(rows):
              "", "These historical points use another protocol and are not inputs to current pass/fail.",
              "The old parse checks without numpy are interpreted as skipped (missing dependency); the original FAIL text is preserved.",
              "", ("Batch review is complete; measured c(g) follows below." if rows[0].get("stage",1)>=3 else "Stop for review here. c(g), plateau throughput and the subsequent three-machine run remain deferred."),
-             "See [batch protocol and upstream attribution](BATCH_METHOD.md).", ""]
+             "See [batch protocol and upstream attribution](docs/BATCH_METHOD.md).", ""]
     rendered, matrix = "\n".join(text), "\n".join(full) + "\n"
     validate_tables(rendered)
     validate_tables(matrix)

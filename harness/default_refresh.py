@@ -221,7 +221,7 @@ def main():
     (work/'results.jsonl').write_text(''.join(json.dumps(r,sort_keys=True)+'\n' for r in rows))
     if render([json.loads(l) for l in (work/'results.jsonl').read_text().splitlines()])!=text:
         raise RuntimeError('Report replay differs')
-    (ROOT/'DEFAULT_RESULTS.md').write_text(text)
+    (ROOT/'docs/DEFAULT_RESULTS.md').write_text(text)
     print(text)
 
 

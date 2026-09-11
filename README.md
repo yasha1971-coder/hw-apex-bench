@@ -1,5 +1,7 @@
 # hw-apex-bench — Compressed Access Benchmark
 
+Start with [running the tool](docs/ADAPTERS.md), [adding a codec](CONTRIBUTING.md), or [the measurement method](docs/METHOD.md). [Documentation index](docs/README.md).
+
 Three codecs, four configurations. API-only byte regions; implemented axes and review boundary are below.
 
 Run: 2026-09-10T20:29:44.589718+00:00. Benchmark commit: 9cad83e8a5c9a5f3bafb7ef2c70c8d0ead4276fb.
@@ -33,7 +35,7 @@ The disk-size denominator means file lengths, not allocator blocks or the sum of
 A native batch API can be unavailable while a measured single-call loop remains valid. Missing values require a reason in the same cell.
 A configuration-specific unsupported result does not transfer measurements from another profile or revision.
 
-Coverage audit: [AXES_RESULTS.md](AXES_RESULTS.md). Recheck without measurements: `./run.sh --audit-axes`.
+Coverage audit: [docs/AXES_RESULTS.md](docs/AXES_RESULTS.md). Recheck without measurements: `./run.sh --audit-axes`.
 
 | Configuration | Level | Encoder threads | Block/frame bytes | LIT bytes | FSE bytes |
 |---|---:|---:|---:|---:|---:|
@@ -52,7 +54,7 @@ Coverage audit: [AXES_RESULTS.md](AXES_RESULTS.md). Recheck without measurements
 Every timed operation reads the same 16,384 original-file bytes. No FASTA parsing is timed.
 Amplification A = sum_q(sum of bytes actually expanded by the decoder for query q) / sum_q(requested bytes) = decoded bytes / (200 × 16384).
 BGZF counts decompressed blocks, zstd counts reconstructed blocks within frames (including buffered output), and ACEAPEX counts only touched chunks in the literal, offset, length and command streams, not the complete streams. Repeated expansions count each time.
-BGZF block=65536 is its size ceiling; actual blocks may be shorter. An unaligned request can cross block and entropy-chunk boundaries. (64 + 3 × 4) / 16 = 4.75 describes exactly one chunk of each kind, not a constant for arbitrary offsets. See [the trace explanation](AMPLIFICATION.md).
+BGZF block=65536 is its size ceiling; actual blocks may be shorter. An unaligned request can cross block and entropy-chunk boundaries. (64 + 3 × 4) / 16 = 4.75 describes exactly one chunk of each kind, not a constant for arbitrary offsets. See [the trace explanation](docs/AMPLIFICATION.md).
 
 | Codec | block (bytes) | Ratio / bgzip >= 0.99 | p50 / bgzip <= 1 | p99 / bgzip <= 1 |
 |---|---:|---|---|---|
@@ -87,7 +89,7 @@ Identical raw-byte requests across codecs; every native batch answer matches the
 Three repetitions, median duration; loop/native order alternates. Both loop and batch use one worker (loop1-vs-batch1).
 H_alpha counts request-start blocks (actual GZI boundaries for BGZF, declared frame/block boundaries otherwise). H_alpha_16k is also recorded.
 bgzip and zstd-seekable native batch: n/a (no native batch API in these adapters); their measured method is loop.
-All N=100/600/2000/5000 points are in [BATCH_RESULTS.md](BATCH_RESULTS.md). The fixed N=5000 view follows.
+All N=100/600/2000/5000 points are in [docs/BATCH_RESULTS.md](docs/BATCH_RESULTS.md). The fixed N=5000 view follows.
 
 | Codec/profile | block bytes | Access profile | method | N | H_alpha bits | Threads requested | ranges/s | / bgzip loop |
 |---|---:|---|---|---:|---:|---:|---:|---|
@@ -144,7 +146,7 @@ These historical points use another protocol and are not inputs to current pass/
 The old parse checks without numpy are interpreted as skipped (missing dependency); the original FAIL text is preserved.
 
 Batch review is complete; measured c(g) follows below.
-See [batch protocol and upstream attribution](BATCH_METHOD.md).
+See [batch protocol and upstream attribution](docs/BATCH_METHOD.md).
 
 
 ## Historical whole-input pairs and baseline eligibility
@@ -174,7 +176,7 @@ The historical 0.410% is payload-only: it excludes the AET header and 64-byte Bl
 Whole-file means one continuous member/frame/output block, not an unlimited match window. gzip retains its 32 KiB backward-distance limit; this does not make its blocks independent. bgzip adds independent member boundaries, index/headers and implementation differences.
 ACEAPEX uses the same pinned binary on both sides. ACEAPEX_BS changes from 16384 or 262144 to 253935557. MIN_MATCH was cleared and defaults to 0. LIT_CHUNK/FSE_CHUNK remain 65536/4096 (interactive) or 1048576/32768 (dense).
 Important correction: flattening is not disabled for the entire large block. The actual guard is local_pos < (1u<<20), with c_off <= local_pos. Eligible non-rep matches in its first MiB may be flattened; later matches are not. Each small block resets local_pos. The separate size impact of this difference is unmeasured; isolated c(g) is n/a for these ACEAPEX pairs.
-The old JSONL baseline caveat used the inaccurate shorthand “skips chain flattening above 1 MiB”. Raw historical evidence is preserved; this report and INDEPENDENCE_AUDIT.md correct that interpretation. No observed archive size or ratio has changed.
+The old JSONL baseline caveat used the inaccurate shorthand “skips chain flattening above 1 MiB”. Raw historical evidence is preserved; this report and docs/INDEPENDENCE_AUDIT.md correct that interpretation. No observed archive size or ratio has changed.
 
 ### Both compression commands for every row
 
@@ -240,7 +242,7 @@ Continuous baseline: ratio **3.793413104059**, archive **66941182 bytes**.
 env ACEAPEX_BS=253935557 ./.work/aceapex-cli c --in ./.work/chr1.fa --out ./.work/whole-aceapex-dense.archive --threads 1 --level 2 --profile dense
 ```
 
-[Expanded CLI commands, environment and flattening audit](INDEPENDENCE_AUDIT.md). Expected historical percentages are not acceptance thresholds.
+[Expanded CLI commands, environment and flattening audit](docs/INDEPENDENCE_AUDIT.md). Expected historical percentages are not acceptance thresholds.
 
 Plateau throughput follows below.
 
@@ -654,13 +656,13 @@ never inferred from CPU rows.
 This is a new raw-byte operation contract. Do not compare its latency directly
 with historical faidx/sequence timings or the 0.082 ms declared reference on
 another machine. The former results and matched-harness investigation remain in
-[AUDIT.md](AUDIT.md) and [historical evidence](evidence/).
+[AUDIT.md](docs/AUDIT.md) and [historical evidence](evidence).
 [Exact FAIL output from EPYC 9V74](evidence/audit-20260909/FAILS.md) is preserved.
 
-Batch, H_alpha and break-even are implemented as specified in [BATCH_METHOD.md](BATCH_METHOD.md).
+Batch, H_alpha and break-even are implemented as specified in [BATCH_METHOD.md](docs/BATCH_METHOD.md).
 `./run.sh` also measures independence cost c(g) and CPU plateau throughput;
 `--stage 2` stops before c(g), and `--stage 3` stops before throughput. The
-plateau contract is in [THROUGHPUT.md](THROUGHPUT.md). The next review stop
+plateau contract is in [THROUGHPUT.md](docs/THROUGHPUT.md). The next review stop
 precedes the three-machine experiment and separate GPU publication.
 The previous controlled audit is reproduced at benchmark commit
 `baede64fd37bd087eecf9a94333d8fbf33e23c33`; its script depends on that historical
@@ -683,7 +685,7 @@ The baseline's empty terminal frame remains included; see the linked review.
 Run `./run.sh --check codecs/xz.sh` for a small correctness check, or
 `./run.sh --check` for all four adapters. This builds pinned dependencies and
 checks byte-exact full and native regional restoration without collecting timings
-or modifying published results. See [ADAPTERS.md](ADAPTERS.md) for prerequisites,
+or modifying published results. See [ADAPTERS.md](docs/ADAPTERS.md) for prerequisites,
 the seven-function contract, explicit unsupported axes and current integration limits.
 
 ## License

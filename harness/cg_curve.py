@@ -340,7 +340,7 @@ def main():
     pending.write_text(''.join(keep)+''.join(json.dumps(r,sort_keys=True)+'\n' for r in rows))
     pending.replace(dest)
     (work/'curve.jsonl').write_text(''.join(json.dumps(r,sort_keys=True)+'\n' for r in rows))
-    (ROOT/'CG_CURVE_RESULTS.md').write_text(report)
+    (ROOT/'docs/CG_CURVE_RESULTS.md').write_text(report)
     (ROOT/'README.md').write_text(readme)
     print(report)
     print('STOP: five-point curve verified; review before merge.',file=sys.stderr)

@@ -130,7 +130,7 @@ optimization or upstream source change is included.
 Index preparation is outside the measurement timer. Lookup, decompression and copying
 are inside the native region callback. The shell bridge and Python ctypes probe
 are strictly correctness tools; never use their process time as region latency.
-See RESIDENT_CONTEXT.md for XZ single-Stream/no-padding and memory limits.
+See [resident context limits](RESIDENT_CONTEXT.md) for XZ single-Stream/no-padding and memory limits.
 
 The checker exercises mixed binary/DNA data, one byte, empty input, an exact
 block and a cross-block fixture. ACEAPEX's pinned CLI excludes empty input with

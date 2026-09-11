@@ -34,7 +34,7 @@ Run `2026-09-10T20:29:44.589718+00:00`; four configurations, three formats. See 
 
 ## Separate controlled c(g) run
 
-Run `2026-09-10T23:38:56.105858+00:00`; exact configurations and complete 15-position table: [CG_CURVE_RESULTS.md](CG_CURVE_RESULTS.md).
+Run `2026-09-10T23:38:56.105858+00:00`; exact configurations and complete 15-position table: [docs/CG_CURVE_RESULTS.md](CG_CURVE_RESULTS.md).
 
 | Configuration | Grid coverage | Strict c(g) availability |
 |---|---|---|
@@ -43,7 +43,7 @@ Run `2026-09-10T23:38:56.105858+00:00`; exact configurations and complete 15-pos
 | aceapex-cg-default | 5 measured geometries; 0 explicitly unsupported positions | 5 measured matched-baseline points |
 
 The curve uses ACEAPEX ee5a37e default; core profiles use 1b13df3. Neither is relabeled as adaptive default a194893.
-The separate a194893 refresh retains its six byte-verified rows in DEFAULT_RESULTS.md; it supplies no unmeasured amplification, batch or plateau values.
+The separate a194893 refresh retains its six byte-verified rows in docs/DEFAULT_RESULTS.md; it supplies no unmeasured amplification, batch or plateau values.
 
 ## Interpretation
 
