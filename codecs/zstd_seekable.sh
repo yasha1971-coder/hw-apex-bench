@@ -19,6 +19,9 @@ codec_context_build() {
 }
 source "${HB_ROOT:-$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.." && pwd)}/harness/check_common.sh"
 
+codec_configuration() { echo '{"level": 3, "encoder_threads": 1, "decoder_threads": 1, "granularity": 16384}'; }
+codec_inputs() { python3 -c 'import json,sys;print(json.dumps(sys.argv[1:]))' "$HB_ROOT/codecs/native/zstd_seekable.c"; }
+codec_build_artifacts() { python3 -c 'import json,sys;print(json.dumps(sys.argv[1:]))' "$(codec_library)" "$HB_CHECK_WORK/deps/zstd/contrib/seekable_format/examples/seekable_compression" "$HB_CHECK_WORK/deps/zstd/programs/zstd"; }
 codec_name() { echo 'zstd-seekable'; }
 codec_version() { echo '1.5.7'; }
 codec_build() (

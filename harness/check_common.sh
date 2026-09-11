@@ -16,6 +16,11 @@ hb_checkout() {
   [[ "$(git -C "$target" rev-parse HEAD)" == "$sha" ]] || { echo 'dependency SHA mismatch' >&2; return 1; }
   [[ -z "$(git -C "$target" status --porcelain --untracked-files=no)" ]] || { echo 'dirty dependency source' >&2; return 1; }
 }
+codec_configuration() { codec_constraints; }
+codec_inputs() { echo '[]'; }
+codec_build_artifacts() {
+  python3 -c 'import json,pathlib,sys;p=pathlib.Path(sys.argv[1]);print(json.dumps([str(p)] if p.is_file() else []))' "$(codec_library)"
+}
 codec_library() { echo "$HB_CHECK_WORK/context.so"; }
 codec_sidecar() { :; }
 codec_constraints() { echo '{"granularity":16384,"min_input_bytes":0}'; }
@@ -28,7 +33,7 @@ hb_entry() {
   shift
   local op=${1:?missing operation}; shift
   case "$op" in
-    codec_name|codec_version|codec_supports|codec_unavailable|codec_build|codec_compress|codec_decompress|codec_region|codec_constraints|codec_library|codec_sidecar|codec_artifacts)
+    codec_name|codec_version|codec_supports|codec_unavailable|codec_build|codec_compress|codec_decompress|codec_region|codec_constraints|codec_library|codec_sidecar|codec_artifacts|codec_inputs|codec_build_artifacts|codec_configuration)
       declare -F "$op" >/dev/null || { echo "missing function: $op" >&2; exit 2; }
       "$op" "$@"; exit $?;;
     *) echo 'unknown adapter operation' >&2; exit 2;;

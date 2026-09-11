@@ -12,6 +12,7 @@ import subprocess
 import sys
 import tempfile
 from resident_probe import capabilities
+from qualification import PROTOCOL, clean_environment, snapshot, fingerprint, work_directory
 
 ROOT=Path(__file__).resolve().parents[1]
 REQUIRED=('codec_name','codec_version','codec_build','codec_compress','codec_decompress','codec_region','codec_supports')
@@ -29,12 +30,7 @@ def check(adapter, work):
         return check_locked(adapter,work)
 
 def check_locked(adapter,work):
-    env=os.environ.copy()
-    env.update(HB_ROOT=str(ROOT),HB_CHECK_WORK=str(work),HB_JOBS='2')
-    for key in ('HB_HTSLIB','HB_ZSTD','HB_ACEAPEX','HB_XZ','HB_XZ_BUILD','XZ_DEFAULTS','XZ_OPT',
-                'ACEAPEX_BS','LIT_CHUNK','FSE_CHUNK','MIN_MATCH','LIT_LEVEL','LIT_LANES',
-                'NO_REP','DIRECT8','FORCED_BIN','ACEAPEX_DUMP','LD_PRELOAD'):
-        env.pop(key,None)
+    env=clean_environment(work)
     receipt=work/'check.json'; receipt.unlink(missing_ok=True)
     commands=[]
     with (work/'check.log').open('w') as log:
@@ -57,6 +53,7 @@ def check_locked(adapter,work):
         name=call('codec_name',capture=True); version=call('codec_version',capture=True)
         axes=capabilities(adapter,env)
         limits=json.loads(call('codec_constraints',capture=True))
+        config=json.loads(call('codec_configuration',capture=True))
         g=limits['granularity']; minimum=limits['min_input_bytes']
         if not isinstance(g,int) or not 1<=g<=1048576 or minimum not in (0,1):
             raise ValueError('invalid smoke-test constraints')
@@ -76,6 +73,9 @@ def check_locked(adapter,work):
                  'test -z "$(git status --porcelain --untracked-files=no)"'])
             sources.append(dict(directory=repo.name,commit=sha,submodules=subs))
         library=Path(call('codec_library',capture=True)) if axes['region']=='available' else None
+        qualified=snapshot(adapter,work)
+        if any(qualified[k]!=v for k,v in [('codec',name),('version',version),('capabilities',axes),('constraints',limits),('configuration',config)]):
+            raise ValueError('adapter metadata changed during build')
         cases=[]
         with tempfile.TemporaryDirectory(prefix='fixtures-',dir=work) as td:
             folder=Path(td)
@@ -117,9 +117,12 @@ def check_locked(adapter,work):
                 if {p.name:digest(p) for p in artifacts}!=archive_hashes:
                     raise ValueError('reader changed archive artifacts')
                 cases.append(item)
+        if snapshot(adapter,work)!=qualified:
+            raise ValueError('code or build changed during correctness checks')
         try: replay_adapter=str(adapter.relative_to(ROOT))
         except ValueError: replay_adapter=str(adapter)
-        result=dict(status='pass',codec=name,version=version,adapter_sha256=digest(adapter),
+        result=dict(status='pass',check_protocol=PROTOCOL,qualification=qualified,
+                    qualification_sha256=fingerprint(qualified),codec=name,version=version,adapter_sha256=digest(adapter),
                     command=shlex.join(['./run.sh','--check',replay_adapter]),capabilities=axes,
                     native_library_sha256=digest(library) if library else None,sources=sources,cases=cases,
                     commands=commands,timings_collected=False)
@@ -136,8 +139,7 @@ def main():
     args=p.parse_args()
     adapters=[args.adapter] if args.adapter else sorted((ROOT/'codecs').glob('*.sh'))
     for adapter in adapters:
-        key=adapter.stem+'-'+hashlib.sha256(str(adapter.resolve()).encode()).hexdigest()[:10]
-        work=args.work.resolve()/key
+        work=work_directory(adapter,args.work)
         try: check(adapter,work)
         except Exception as exc:
             print(f'STOP: {exc}\nBuild/check log: {work/"check.log"}',file=sys.stderr)

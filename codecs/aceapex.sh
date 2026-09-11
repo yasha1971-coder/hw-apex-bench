@@ -19,6 +19,9 @@ codec_context_build() {
 }
 source "${HB_ROOT:-$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.." && pwd)}/harness/check_common.sh"
 
+codec_configuration() { echo '{"profile": "interactive", "level": 2, "encoder_requested_threads": 1, "decoder_policy": "pinned native API defaults; no thread argument", "granularity": 16384, "lit_chunk": 65536, "fse_chunk": 4096, "min_match": 0}'; }
+codec_inputs() { python3 -c 'import json,sys;print(json.dumps(sys.argv[1:]))' "$HB_ROOT/codecs/native/aceapex.c"; }
+codec_build_artifacts() { python3 -c 'import json,sys;print(json.dumps(sys.argv[1:]))' "$(codec_library)" "$HB_CHECK_WORK/aceapex-cli"; }
 codec_name() { echo 'aceapex-interactive'; }
 codec_version() { echo 'aceapex@1b13df34ac8e839dd3232b59bc59560d689a435a'; }
 codec_constraints() { echo '{"granularity":16384,"min_input_bytes":1,"min_input_reason":"pinned ACE CLI does not support empty input"}'; }
