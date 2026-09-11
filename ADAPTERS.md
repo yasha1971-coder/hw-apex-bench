@@ -296,3 +296,9 @@ Our three-archive diagnostic compares the exact historical system binary, the ol
 zlib candidate and the new pinned adapter without collecting performance timings.
 The previous236-row zlib candidate remains historical evidence of that build;
 changing the adapter does not retroactively relabel or replace its timings.
+
+The BGZF correction has now passed its full-corpus untimed archive comparison.
+See review/BGZF_BACKEND_REVIEW.md and evidence/bgzf-libdeflate-20260911/ for the
+original ZIP, matched archive/index hashes, verified restoration and backend JSONL.
+This closes the three BGZF deterministic differences without changing historical
+timings or rerunning the full benchmark.

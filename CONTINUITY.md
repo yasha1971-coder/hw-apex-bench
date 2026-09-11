@@ -787,3 +787,33 @@ Thus backend identification is now proven, archive equivalence still pending.
 The diagnostic downloader now uses bounded IPv4 curl attempts on official cse/soe
 UCSC aliases, requiring unchanged MD5. Diagnostic-only code updates trigger its
 job; docs do not. This does not change or rerun the full measurement workflow.
+
+## BGZF backend blocker CLOSED — verified artifact
+
+PR27 https://github.com/yasha1971-coder/hw-apex-bench/pull/27 remains draft,
+base tooling/native-remaining-axes (PR26). Tested correction commit
+2c8ebcd9daf770525d32d4cc9a827e61de81ec87; tree044f2325766a93881354275a0a7e2ccbba4f343f.
+All6 correctness jobs34626693102 passed; timing smoke steps and full job skipped.
+Publication34626693032 and resident-context34626693157 passed.
+Untimed audit34626693337 SUCCEEDED. Artifact10273679252 ZIP11738bytes SHA256
+bdcf98b9297a7f64cb17eccb7c87003c624e0221cdc609bfb0695b20f5d2ec47 independently verified.
+Original ZIP+audit.json+real untimed results.jsonl+receipt retained under
+evidence/bgzf-libdeflate-20260911/. Qualification link+both source pins verified.
+
+All3 BGZF differences resolved EXACTLY:75009810archive bytes,
+SHA c41f38ce60f54fc0560e53c60a7ba645a6946d5827cdc0d21f6a2acf96bb4784,
+ratio3.3825582764886026 including62232-byte index. Libdeflate and exact historical
+system binary produce identical .gzi SHA f2eee38438413fe9070e29e50f39c1626f5304253d90c1d9fddad60693a65869.
+Control zlib reproduces old candidate76512773bytes/SHAaf90c826.../ratio3.316167684220197.
+Six full restores (CLI+native across3builds),192 native regions pass; separate
+counter probe reports65235actual bytes for16384requested. NO NEW TIMINGS.
+Official cse alias failed TLS; original soe URL succeeded with IPv4 curl and MD5.
+Do not remove certificate validation; earlier two failures were before compression.
+
+review/BGZF_BACKEND_REVIEW.md closes the previous acceptance blocker. Do NOT
+rewrite review/native-full-comparison.json from98/101 to101/101: corrected3 are a
+separate experiment; original236-row zlib candidate stays immutable. Frozen435
+unchanged. Native backend migration and this deterministic correction are complete
+in the tested scope; no435fresh-row/timing equality or release-readiness claim.
+Next action is review of stacked PRs26/27, not another measurement run.
+No merge performed; upstream ACE/glyph/context untouched.

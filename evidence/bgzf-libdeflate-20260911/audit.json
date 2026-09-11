@@ -1,0 +1,390 @@
+{
+  "status": "pass",
+  "timings_collected": false,
+  "htslib_commit": "8f7231035d0409d525767c66d9f49f1f967ee1df",
+  "historical_results_sha256": "cb52b8cb9fac484a6474d976681ea85ae2c052d80d820422b7f57c25ec938100",
+  "commands": [
+    {
+      "argv": [
+        "curl",
+        "--ipv4",
+        "--fail",
+        "--location",
+        "--silent",
+        "--show-error",
+        "--connect-timeout",
+        "20",
+        "--max-time",
+        "120",
+        "--retry",
+        "1",
+        "--retry-all-errors",
+        "--retry-delay",
+        "2",
+        "https://hgdownload.cse.ucsc.edu/goldenPath/hg38/chromosomes/chr1.fa.gz",
+        "--output",
+        "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/bgzf-build-audit/chr1.fa.gz"
+      ],
+      "cwd": "/home/runner/work/hw-apex-bench/hw-apex-bench",
+      "stdout_file": null
+    },
+    {
+      "argv": [
+        "curl",
+        "--ipv4",
+        "--fail",
+        "--location",
+        "--silent",
+        "--show-error",
+        "--connect-timeout",
+        "20",
+        "--max-time",
+        "120",
+        "--retry",
+        "1",
+        "--retry-all-errors",
+        "--retry-delay",
+        "2",
+        "https://hgdownload.soe.ucsc.edu/goldenPath/hg38/chromosomes/chr1.fa.gz",
+        "--output",
+        "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/bgzf-build-audit/chr1.fa.gz"
+      ],
+      "cwd": "/home/runner/work/hw-apex-bench/hw-apex-bench",
+      "stdout_file": null
+    },
+    {
+      "argv": [
+        "./run.sh",
+        "--check",
+        "codecs/bgzip_1_19.sh"
+      ],
+      "cwd": "/home/runner/work/hw-apex-bench/hw-apex-bench",
+      "stdout_file": null
+    },
+    {
+      "argv": [
+        "git",
+        "init",
+        "-q",
+        "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/bgzf-build-audit/htslib-zlib"
+      ],
+      "cwd": "/home/runner/work/hw-apex-bench/hw-apex-bench",
+      "stdout_file": null
+    },
+    {
+      "argv": [
+        "git",
+        "remote",
+        "add",
+        "origin",
+        "https://github.com/samtools/htslib.git"
+      ],
+      "cwd": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/bgzf-build-audit/htslib-zlib",
+      "stdout_file": null
+    },
+    {
+      "argv": [
+        "git",
+        "fetch",
+        "-q",
+        "--depth=1",
+        "--no-tags",
+        "origin",
+        "8f7231035d0409d525767c66d9f49f1f967ee1df"
+      ],
+      "cwd": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/bgzf-build-audit/htslib-zlib",
+      "stdout_file": null
+    },
+    {
+      "argv": [
+        "git",
+        "checkout",
+        "-q",
+        "--detach",
+        "FETCH_HEAD"
+      ],
+      "cwd": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/bgzf-build-audit/htslib-zlib",
+      "stdout_file": null
+    },
+    {
+      "argv": [
+        "git",
+        "submodule",
+        "update",
+        "--init",
+        "--depth",
+        "1"
+      ],
+      "cwd": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/bgzf-build-audit/htslib-zlib",
+      "stdout_file": null
+    },
+    {
+      "argv": [
+        "make",
+        "-j2",
+        "lib-static",
+        "bgzip",
+        "CFLAGS=-O3 -fPIC",
+        "PACKAGE_VERSION=1.19"
+      ],
+      "cwd": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/bgzf-build-audit/htslib-zlib",
+      "stdout_file": null
+    },
+    {
+      "argv": [
+        "gcc",
+        "-O3",
+        "-std=gnu11",
+        "-fPIC",
+        "-shared",
+        "-I/home/runner/work/hw-apex-bench/hw-apex-bench/harness",
+        "-I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/bgzf-build-audit/htslib-zlib",
+        "/home/runner/work/hw-apex-bench/hw-apex-bench/codecs/native/bgzip.c",
+        "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/bgzf-build-audit/htslib-zlib/libhts.a",
+        "-lz",
+        "-lm",
+        "-pthread",
+        "-o",
+        "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/bgzf-build-audit/context-zlib.so"
+      ],
+      "cwd": "/home/runner/work/hw-apex-bench/hw-apex-bench",
+      "stdout_file": null
+    },
+    {
+      "argv": [
+        "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/bgzf-build-audit/htslib-zlib/bgzip",
+        "-l",
+        "6",
+        "-@",
+        "1",
+        "-i",
+        "-I",
+        "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/bgzf-build-audit/zlib.bgz.gzi",
+        "-c",
+        "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/bgzf-build-audit/chr1.fa"
+      ],
+      "cwd": "/home/runner/work/hw-apex-bench/hw-apex-bench",
+      "stdout_file": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/bgzf-build-audit/zlib.bgz"
+    },
+    {
+      "argv": [
+        "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/bgzf-build-audit/htslib-zlib/bgzip",
+        "-d",
+        "-c",
+        "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/bgzf-build-audit/zlib.bgz"
+      ],
+      "cwd": "/home/runner/work/hw-apex-bench/hw-apex-bench",
+      "stdout_file": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/bgzf-build-audit/zlib.restored"
+    },
+    {
+      "argv": [
+        "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/adapter-check/bgzip_1_19-641ffcce08/deps/htslib/bgzip",
+        "-l",
+        "6",
+        "-@",
+        "1",
+        "-i",
+        "-I",
+        "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/bgzf-build-audit/libdeflate.bgz.gzi",
+        "-c",
+        "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/bgzf-build-audit/chr1.fa"
+      ],
+      "cwd": "/home/runner/work/hw-apex-bench/hw-apex-bench",
+      "stdout_file": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/bgzf-build-audit/libdeflate.bgz"
+    },
+    {
+      "argv": [
+        "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/adapter-check/bgzip_1_19-641ffcce08/deps/htslib/bgzip",
+        "-d",
+        "-c",
+        "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/bgzf-build-audit/libdeflate.bgz"
+      ],
+      "cwd": "/home/runner/work/hw-apex-bench/hw-apex-bench",
+      "stdout_file": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/bgzf-build-audit/libdeflate.restored"
+    },
+    {
+      "argv": [
+        "/usr/bin/bgzip",
+        "-l",
+        "6",
+        "-@",
+        "1",
+        "-i",
+        "-I",
+        "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/bgzf-build-audit/system.bgz.gzi",
+        "-c",
+        "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/bgzf-build-audit/chr1.fa"
+      ],
+      "cwd": "/home/runner/work/hw-apex-bench/hw-apex-bench",
+      "stdout_file": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/bgzf-build-audit/system.bgz"
+    },
+    {
+      "argv": [
+        "/usr/bin/bgzip",
+        "-d",
+        "-c",
+        "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/bgzf-build-audit/system.bgz"
+      ],
+      "cwd": "/home/runner/work/hw-apex-bench/hw-apex-bench",
+      "stdout_file": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/bgzf-build-audit/system.restored"
+    }
+  ],
+  "builds": {
+    "zlib": {
+      "binary_sha256": "e414f26604f95f73b26b8e22f4ef59531fee465476d7d28e4111a0f1e0d18fc3",
+      "libraries": {
+        "ldd": "\tlinux-vdso.so.1 (0x00007fd50a760000)\n\tlibz.so.1 => /lib/x86_64-linux-gnu/libz.so.1 (0x00007fd50a65e000)\n\tlibm.so.6 => /lib/x86_64-linux-gnu/libm.so.6 (0x00007fd50a575000)\n\tlibc.so.6 => /lib/x86_64-linux-gnu/libc.so.6 (0x00007fd50a200000)\n\t/lib64/ld-linux-x86-64.so.2 (0x00007fd50a762000)\n",
+        "files": {
+          "/usr/lib/x86_64-linux-gnu/libz.so.1.3": "86200da370f20476a2507e9097a789b5ef97269b4ca8d5e164ad82dab9d99892",
+          "/usr/lib/x86_64-linux-gnu/libm.so.6": "e9c4b28d340e415b8137480ec442662f981e1399386c5931dae0e886e3639e91",
+          "/usr/lib/x86_64-linux-gnu/libc.so.6": "8db37cf3f2169f59a0f07ef1fea308c35656668c64c8ff294e1860f4121eb161"
+        }
+      },
+      "archive_sha256": "af90c826674ec7a2780f8dacb2ac1fd1e5e9086c923c41121770f07f6e2e7335",
+      "archive_bytes": 76512773,
+      "index_sha256": "8a34451822cb76ac206f61518aab45d67d6ccaaec80440e388e111bd83aa22b8",
+      "index_bytes": 62232,
+      "ratio": 3.316167684220197,
+      "native_library_sha256": "13a161efaa4915a9336aa93fbad52a0ac1f92997f06637f1b54e279cb246157b",
+      "cli_restore": "byte-exact",
+      "native_restore": "byte-exact",
+      "regions_verified": 64,
+      "matches_historical_archive": false,
+      "compress_command": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/bgzf-build-audit/htslib-zlib/bgzip -l 6 -@ 1 -i -I /home/runner/work/hw-apex-bench/hw-apex-bench/.work/bgzf-build-audit/zlib.bgz.gzi -c /home/runner/work/hw-apex-bench/hw-apex-bench/.work/bgzf-build-audit/chr1.fa > /home/runner/work/hw-apex-bench/hw-apex-bench/.work/bgzf-build-audit/zlib.bgz"
+    },
+    "libdeflate": {
+      "binary_sha256": "2f9df2f62f7a0d888956305a552805a7d192f33e89efbc457e0072c3784875db",
+      "libraries": {
+        "ldd": "\tlinux-vdso.so.1 (0x00007f2527cb8000)\n\tlibz.so.1 => /lib/x86_64-linux-gnu/libz.so.1 (0x00007f2527b8c000)\n\tlibm.so.6 => /lib/x86_64-linux-gnu/libm.so.6 (0x00007f2527aa3000)\n\tlibc.so.6 => /lib/x86_64-linux-gnu/libc.so.6 (0x00007f2527800000)\n\t/lib64/ld-linux-x86-64.so.2 (0x00007f2527cba000)\n",
+        "files": {
+          "/usr/lib/x86_64-linux-gnu/libz.so.1.3": "86200da370f20476a2507e9097a789b5ef97269b4ca8d5e164ad82dab9d99892",
+          "/usr/lib/x86_64-linux-gnu/libm.so.6": "e9c4b28d340e415b8137480ec442662f981e1399386c5931dae0e886e3639e91",
+          "/usr/lib/x86_64-linux-gnu/libc.so.6": "8db37cf3f2169f59a0f07ef1fea308c35656668c64c8ff294e1860f4121eb161"
+        }
+      },
+      "archive_sha256": "c41f38ce60f54fc0560e53c60a7ba645a6946d5827cdc0d21f6a2acf96bb4784",
+      "archive_bytes": 75009810,
+      "index_sha256": "f2eee38438413fe9070e29e50f39c1626f5304253d90c1d9fddad60693a65869",
+      "index_bytes": 62232,
+      "ratio": 3.3825582764886026,
+      "native_library_sha256": "bd3d25abe142d78b6191bb152a7abf898bf256e794f29ec6901b7f17feac8fe3",
+      "cli_restore": "byte-exact",
+      "native_restore": "byte-exact",
+      "regions_verified": 64,
+      "matches_historical_archive": true,
+      "compress_command": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/adapter-check/bgzip_1_19-641ffcce08/deps/htslib/bgzip -l 6 -@ 1 -i -I /home/runner/work/hw-apex-bench/hw-apex-bench/.work/bgzf-build-audit/libdeflate.bgz.gzi -c /home/runner/work/hw-apex-bench/hw-apex-bench/.work/bgzf-build-audit/chr1.fa > /home/runner/work/hw-apex-bench/hw-apex-bench/.work/bgzf-build-audit/libdeflate.bgz"
+    },
+    "system": {
+      "binary_sha256": "e1ca105c4785d70fa8ee21d3a3278605f44d1670585e3c271a835dab29ba5dc9",
+      "libraries": {
+        "ldd": "\tlinux-vdso.so.1 (0x00007f76431bc000)\n\tlibdeflate.so.0 => /lib/x86_64-linux-gnu/libdeflate.so.0 (0x00007f76430f5000)\n\tlibhtscodecs.so.2 => /lib/x86_64-linux-gnu/libhtscodecs.so.2 (0x00007f76430c0000)\n\tliblzma.so.5 => /lib/x86_64-linux-gnu/liblzma.so.5 (0x00007f764308e000)\n\tlibbz2.so.1.0 => /lib/x86_64-linux-gnu/libbz2.so.1.0 (0x00007f764307a000)\n\tlibz.so.1 => /lib/x86_64-linux-gnu/libz.so.1 (0x00007f764305e000)\n\tlibm.so.6 => /lib/x86_64-linux-gnu/libm.so.6 (0x00007f7642f73000)\n\tlibc.so.6 => /lib/x86_64-linux-gnu/libc.so.6 (0x00007f7642c00000)\n\t/lib64/ld-linux-x86-64.so.2 (0x00007f76431be000)\n",
+        "files": {
+          "/usr/lib/x86_64-linux-gnu/libdeflate.so.0": "608c8d7e4345a9ff4b57aa853ce0c355cf2e1d5ec11b8bee86fb4760bba8a15f",
+          "/usr/lib/x86_64-linux-gnu/libhtscodecs.so.2.1.5": "2f22efa753f97399e81cf9e1e4f01f92c876569b5cc95e82c5546f5ac5945fa7",
+          "/usr/lib/x86_64-linux-gnu/liblzma.so.5.4.5": "696e868dd0700a19a6d65fc01608ec2d70d3cb91f65710e89180cd2e688f30cb",
+          "/usr/lib/x86_64-linux-gnu/libbz2.so.1.0.4": "cc08c9f50a8009ffd6391e0116a100369b11ca9238fa52392c019e6645b122a1",
+          "/usr/lib/x86_64-linux-gnu/libz.so.1.3": "86200da370f20476a2507e9097a789b5ef97269b4ca8d5e164ad82dab9d99892",
+          "/usr/lib/x86_64-linux-gnu/libm.so.6": "e9c4b28d340e415b8137480ec442662f981e1399386c5931dae0e886e3639e91",
+          "/usr/lib/x86_64-linux-gnu/libc.so.6": "8db37cf3f2169f59a0f07ef1fea308c35656668c64c8ff294e1860f4121eb161"
+        }
+      },
+      "archive_sha256": "c41f38ce60f54fc0560e53c60a7ba645a6946d5827cdc0d21f6a2acf96bb4784",
+      "archive_bytes": 75009810,
+      "index_sha256": "f2eee38438413fe9070e29e50f39c1626f5304253d90c1d9fddad60693a65869",
+      "index_bytes": 62232,
+      "ratio": 3.3825582764886026,
+      "native_library_sha256": "bd3d25abe142d78b6191bb152a7abf898bf256e794f29ec6901b7f17feac8fe3",
+      "cli_restore": "byte-exact",
+      "native_restore": "byte-exact",
+      "regions_verified": 64,
+      "matches_historical_archive": true,
+      "compress_command": "/usr/bin/bgzip -l 6 -@ 1 -i -I /home/runner/work/hw-apex-bench/hw-apex-bench/.work/bgzf-build-audit/system.bgz.gzi -c /home/runner/work/hw-apex-bench/hw-apex-bench/.work/bgzf-build-audit/chr1.fa > /home/runner/work/hw-apex-bench/hw-apex-bench/.work/bgzf-build-audit/system.bgz"
+    }
+  },
+  "system": {
+    "binary_sha256": "e1ca105c4785d70fa8ee21d3a3278605f44d1670585e3c271a835dab29ba5dc9",
+    "historical_binary_sha256": "e1ca105c4785d70fa8ee21d3a3278605f44d1670585e3c271a835dab29ba5dc9",
+    "exact_historical_binary": true,
+    "libraries": {
+      "ldd": "\tlinux-vdso.so.1 (0x00007fd02cc9f000)\n\tlibdeflate.so.0 => /lib/x86_64-linux-gnu/libdeflate.so.0 (0x00007fd02cbd8000)\n\tlibhtscodecs.so.2 => /lib/x86_64-linux-gnu/libhtscodecs.so.2 (0x00007fd02cba3000)\n\tliblzma.so.5 => /lib/x86_64-linux-gnu/liblzma.so.5 (0x00007fd02cb71000)\n\tlibbz2.so.1.0 => /lib/x86_64-linux-gnu/libbz2.so.1.0 (0x00007fd02cb5d000)\n\tlibz.so.1 => /lib/x86_64-linux-gnu/libz.so.1 (0x00007fd02cb41000)\n\tlibm.so.6 => /lib/x86_64-linux-gnu/libm.so.6 (0x00007fd02ca56000)\n\tlibc.so.6 => /lib/x86_64-linux-gnu/libc.so.6 (0x00007fd02c800000)\n\t/lib64/ld-linux-x86-64.so.2 (0x00007fd02cca1000)\n",
+      "files": {
+        "/usr/lib/x86_64-linux-gnu/libdeflate.so.0": "608c8d7e4345a9ff4b57aa853ce0c355cf2e1d5ec11b8bee86fb4760bba8a15f",
+        "/usr/lib/x86_64-linux-gnu/libhtscodecs.so.2.1.5": "2f22efa753f97399e81cf9e1e4f01f92c876569b5cc95e82c5546f5ac5945fa7",
+        "/usr/lib/x86_64-linux-gnu/liblzma.so.5.4.5": "696e868dd0700a19a6d65fc01608ec2d70d3cb91f65710e89180cd2e688f30cb",
+        "/usr/lib/x86_64-linux-gnu/libbz2.so.1.0.4": "cc08c9f50a8009ffd6391e0116a100369b11ca9238fa52392c019e6645b122a1",
+        "/usr/lib/x86_64-linux-gnu/libz.so.1.3": "86200da370f20476a2507e9097a789b5ef97269b4ca8d5e164ad82dab9d99892",
+        "/usr/lib/x86_64-linux-gnu/libm.so.6": "e9c4b28d340e415b8137480ec442662f981e1399386c5931dae0e886e3639e91",
+        "/usr/lib/x86_64-linux-gnu/libc.so.6": "8db37cf3f2169f59a0f07ef1fea308c35656668c64c8ff294e1860f4121eb161"
+      }
+    }
+  },
+  "packages": "libdeflate0:amd64\t1.19-1build1.1\nlibhts3t64:amd64\t1.19+ds-1.1build3\ntabix\t1.19+ds-1.1build3\nzlib1g:amd64\t1:1.3.dfsg-3.1ubuntu2.2\n",
+  "download_attempts": [
+    {
+      "url": "https://hgdownload.cse.ucsc.edu/goldenPath/hg38/chromosomes/chr1.fa.gz",
+      "status": "failed",
+      "error": "Command '['curl', '--ipv4', '--fail', '--location', '--silent', '--show-error', '--connect-timeout', '20', '--max-time', '120', '--retry', '1', '--retry-all-errors', '--retry-delay', '2', 'https://hgdownload.cse.ucsc.edu/goldenPath/hg38/chromosomes/chr1.fa.gz', '--output', '/home/runner/work/hw-apex-bench/hw-apex-bench/.work/bgzf-build-audit/chr1.fa.gz']' returned non-zero exit status 60."
+    },
+    {
+      "url": "https://hgdownload.soe.ucsc.edu/goldenPath/hg38/chromosomes/chr1.fa.gz",
+      "status": "verified",
+      "compressed_sha256": "baf03990d81ed87d66a976779c2eb4d8a0e5243829ca913556d3819fe0fba696"
+    }
+  ],
+  "corpus": {
+    "id": "chr1-hg38-fasta",
+    "url": "https://hgdownload.soe.ucsc.edu/goldenPath/hg38/chromosomes/chr1.fa.gz",
+    "md5": "9465e0f0df6e2c6eb39729c39cee5465",
+    "md5_scope": "uncompressed FASTA",
+    "bytes": 253935557,
+    "sha256": "04ee6db2e94ccc4daddc168453189d8c17a01454ba67ac0443a73a0401408ee0"
+  },
+  "qualified_plan": {
+    "codec": "bgzip+htslib",
+    "version": "1.19",
+    "adapter": "/home/runner/work/hw-apex-bench/hw-apex-bench/codecs/bgzip_1_19.sh",
+    "work": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/adapter-check/bgzip_1_19-641ffcce08",
+    "configuration": {
+      "level": 6,
+      "compression_backend": {
+        "name": "libdeflate",
+        "version": "1.19",
+        "commit": "dd12ff2b36d603dbb7fa8838fe7e7176fcbd4f6f",
+        "configure_option": "--with-libdeflate",
+        "effective_level": 7
+      },
+      "encoder_threads": 1,
+      "decoder_threads": 1,
+      "granularity": 65280,
+      "granularity_note": "BGZF CLI ceiling; actual blocks may be shorter"
+    },
+    "qualification_sha256": "d379e950c4cee7bb3bee72e06aed1e7b27bca9ce74ff3a51103361e1e2c811d3",
+    "receipt_sha256": "8acc245dee4bcb4ff2b9d1858cb4bd70f9db7e413f0ce58e9537f548463b08b0",
+    "tasks": [
+      {
+        "axis": "ratio",
+        "action": "schedule",
+        "status": "eligible",
+        "reason": null
+      }
+    ]
+  },
+  "pinned_backend": {
+    "backend": "libdeflate",
+    "version": "1.19",
+    "commit": "dd12ff2b36d603dbb7fa8838fe7e7176fcbd4f6f",
+    "static_library_sha256": "6574def9e6db85be3ac863f59bfbebed4ef1e88774bc9f8eaaf9ba5d428a5297",
+    "htslib_features": "build=configure libcurl=no S3=no GCS=no libdeflate=yes lzma=no bzip2=no plugins=no htscodecs=1.6.0-gffda731",
+    "bgzip_version_output": "bgzip (htslib) 1.19\nCopyright (C) 2023 Genome Research Ltd.\n",
+    "configure_option": "--with-libdeflate",
+    "bgzip_level": 6,
+    "effective_libdeflate_level": 7
+  },
+  "counter_probe": {
+    "requested_bytes": 16384,
+    "actual_decoded_bytes": 65235,
+    "verified": "byte-exact",
+    "timings_collected": false
+  },
+  "conclusion": "Pinned HTSlib with libdeflate reproduces historical archive and system index; zlib reproduces the full native candidate difference."
+}
