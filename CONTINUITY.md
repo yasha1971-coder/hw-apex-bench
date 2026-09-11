@@ -126,3 +126,25 @@ This branch deliberately does not import the extra recovered records or adapter
 changes from the draft branches. On subsequent merges, regenerate README from the
 merged METHOD.md/results.jsonl and update its manifest digest, retaining this
 license footer. Finish the licensing PR before resuming any adapter work.
+
+## Owner's ordering restored — 2026-09-11
+
+Licensing PR #18 is merged: main commit
+`a5ab7e38bc1d995dc580c8f0e5e1b221f7bca8d7`.
+The authoritative next order is in BENCH_TO_TOOL.md:
+nine-axis acceptance, adapters, check, xz, CONTRIBUTING/citation, CRAM, tag/DOI.
+Do not continue adapter work in PR #17 or add codecs ahead of the evidence gate.
+
+The nine-axis audit of retained PR #16 content at
+`1160850bda8385cc18d8960989cad15ecacd8b43` passes: 9 axes, 3 formats,
+4 core configurations, 15 curve positions, 13 supported geometries.
+The 31 axis/curve tests and publication validation pass. The checked files and
+results are identical to those in the local PR #17 checkout; no measurements
+were rerun. BGZF/zstd plateaus already exist, native batch has explicit n/a,
+and BGZF's strict c(g) limitation is not fabricated into five measured points.
+Main still has 420 records; the prepared 435-record publication is in PR #16.
+
+Next bounded action: review/prepare PR #16's complete table for evidence acceptance
+and main integration, preserving the license footer and regeneration integrity.
+PR #18 merge authorization does not authorize merging PR #16 or PR #17. This
+checkpoint is documentation only and does not publish new measurements.
