@@ -777,3 +777,13 @@ untimed ratio row with explicit backend. This branch skips native smoke timing
 steps, retains all correctness checks, and cannot trigger the old full workflow.
 Do not claim equivalence until the actual audit artifact passes. Full run34619124537
 and its236-row candidate remain unchanged. No PR merge authorized in this stage.
+
+PR27 code d6682389b069a0a9685ed44affbb06e80c21ed1f passed all6 correctness
+checks in34625836285 (timing steps skipped, old full job skipped). Untimed
+audit34625836396 attempts1/2 failed BEFORE compression: UCSC urllib timeout.
+Downloaded+hashed receipts10274508375 and10274618711 prove the historical
+/usr/bin/bgzip SHA matches and ldd resolves libdeflate.so.0 (system1.19-1build1.1).
+Thus backend identification is now proven, archive equivalence still pending.
+The diagnostic downloader now uses bounded IPv4 curl attempts on official cse/soe
+UCSC aliases, requiring unchanged MD5. Diagnostic-only code updates trigger its
+job; docs do not. This does not change or rerun the full measurement workflow.

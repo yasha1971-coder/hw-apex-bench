@@ -9,7 +9,6 @@ import random
 import shutil
 import subprocess
 import sys
-import urllib.request
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / 'harness'))
@@ -93,8 +92,26 @@ def main():
         assert report['system']['exact_historical_binary'], 'system binary differs from historical SHA'
         spec = json.loads((ROOT / 'corpora.json').read_text())['chr1_hg38']
         corpus = WORK / 'chr1.fa'
-        with urllib.request.urlopen(spec['url'], timeout=120) as response, gzip.GzipFile(fileobj=response) as src, corpus.open('wb') as out:
-            shutil.copyfileobj(src, out, 1024 * 1024)
+        # Two official UCSC aliases; the immutable uncompressed MD5 is the gate.
+        urls = [spec['url'].replace('hgdownload.soe.ucsc.edu','hgdownload.cse.ucsc.edu'), spec['url']]
+        report['download_attempts'] = []
+        compressed = WORK / 'chr1.fa.gz'
+        for url in dict.fromkeys(urls):
+            try:
+                compressed.unlink(missing_ok=True)
+                run(['curl','--ipv4','--fail','--location','--silent','--show-error',
+                     '--connect-timeout','20','--max-time','120','--retry','1',
+                     '--retry-all-errors','--retry-delay','2',url,'--output',compressed])
+                with gzip.open(compressed,'rb') as src, corpus.open('wb') as out:
+                    shutil.copyfileobj(src,out,1024*1024)
+                if digest(corpus,'md5') != spec['md5']:
+                    raise ValueError('downloaded corpus MD5 mismatch')
+                report['download_attempts'].append({'url':url,'status':'verified','compressed_sha256':digest(compressed)})
+                break
+            except (subprocess.CalledProcessError, subprocess.TimeoutExpired, OSError, EOFError) as error:
+                report['download_attempts'].append({'url':url,'status':'failed','error':str(error)})
+        else:
+            raise ValueError('both official UCSC corpus downloads failed; no compression was run')
         assert digest(corpus, 'md5') == spec['md5']
         report['corpus'] = dict(spec, bytes=corpus.stat().st_size, sha256=digest(corpus))
         run(['./run.sh', '--check', 'codecs/bgzip_1_19.sh'])
