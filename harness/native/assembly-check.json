@@ -1,0 +1,41 @@
+{
+  "checks": [
+    {
+      "source": "region_latency.c",
+      "count_decoder": false,
+      "assembly_sha256": "d332d0cd77d9d08ecffcf38ee17b085d864fc0fd4469db25abbcb5c9e365da44",
+      "byte_identical": true
+    },
+    {
+      "source": "region_latency.c",
+      "count_decoder": true,
+      "assembly_sha256": "b135b68aefb0d88a80d5c4bcaddee0829725c3b60d08b13986593b00718e83f9",
+      "byte_identical": true
+    },
+    {
+      "source": "batch.c",
+      "count_decoder": false,
+      "assembly_sha256": "0d04c7a05c3c31b9964f11e88cdab82076e832865b7cf1d656b0d503f9c38254",
+      "byte_identical": true
+    },
+    {
+      "source": "breakeven.c",
+      "count_decoder": false,
+      "assembly_sha256": "3ad0892d7663f69a87ce0c0cb8f5e6f3aa421d37c7f3f9c4265c87eae437b3b9",
+      "byte_identical": true
+    },
+    {
+      "source": "throughput.c",
+      "count_decoder": false,
+      "assembly_sha256": "1af9799db45dac149432dbc55335a8f43acd971894786992aa681feee5fe8793",
+      "byte_identical": true
+    }
+  ],
+  "compiler": "gcc (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0",
+  "headers": {
+    "aceapex_sha": "1b13df34ac8e839dd3232b59bc59560d689a435a",
+    "htslib_sha": "4b705e4fada8ee2b6b15746f725ee8ac51631803",
+    "zstd_sha": "f8745da6ff1ad1e7bab384bd1f9d742439278e99"
+  },
+  "note": "Same headers/compiler for both sides; no ABI or performance qualification of a different library version."
+}

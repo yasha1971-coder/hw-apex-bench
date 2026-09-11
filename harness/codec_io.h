@@ -34,29 +34,49 @@ static CB cb_open(const char *codec,const char *archive,const char *original) {
     if(!c.bg&&!c.zs&&strcmp(codec,"aceapex")) cb_die("unknown codec");
     c.arc=cb_readall(archive,&c.archive_size); c.original=cb_readall(original,&c.size);
     if(c.bg) {
-        c.fd=memfd_create("cabench-bgzf",MFD_CLOEXEC); if(c.fd<0) cb_die("memfd");
-        for(size_t pos=0;pos<c.archive_size;) { ssize_t n=write(c.fd,c.arc+pos,c.archive_size-pos); if(n<=0) cb_die("memfd write"); pos+=(size_t)n; }
-        if(lseek(c.fd,0,SEEK_SET)<0) cb_die("memfd rewind");
-        c.bgzf=bgzf_dopen(dup(c.fd),"r"); if(!c.bgzf) cb_die("bgzf open");
-        if(bgzf_index_load(c.bgzf,archive,".gzi")) cb_die("bgzf index");
+#define HWAPEX_EXTRACT_SECTION 3
+#include "native/bgzip.inc"
+#undef HWAPEX_EXTRACT_SECTION
     } else if(c.zs) {
-        c.seek=ZSTD_seekable_create(); if(!c.seek) cb_die("seekable create");
-        size_t r=ZSTD_seekable_initBuff(c.seek,c.arc,c.archive_size); if(ZSTD_isError(r)) cb_die("seekable init");
+#define HWAPEX_EXTRACT_SECTION 3
+#include "native/zstd_seekable.inc"
+#undef HWAPEX_EXTRACT_SECTION
     }
     return c;
 }
 static int64_t cb_region(CB *c,void *dst,uint64_t off,size_t len) {
     if(c->bg) {
-        if(bgzf_useek(c->bgzf,(off_t)off,SEEK_SET)) return -1;
-        return bgzf_read(c->bgzf,dst,len);
+#define HWAPEX_EXTRACT_SECTION 4
+#include "native/bgzip.inc"
+#undef HWAPEX_EXTRACT_SECTION
     }
-    if(c->zs) { size_t r=ZSTD_seekable_decompress(c->seek,dst,len,off); return ZSTD_isError(r)?-1:(int64_t)r; }
-    return aceapex_decompress_region(c->arc,c->archive_size,dst,len,off,len);
+    if(c->zs) {
+#define HWAPEX_EXTRACT_SECTION 4
+#include "native/zstd_seekable.inc"
+#undef HWAPEX_EXTRACT_SECTION
+ }
+
+#define HWAPEX_EXTRACT_SECTION 3
+#include "native/aceapex.inc"
+#undef HWAPEX_EXTRACT_SECTION
+
 }
 static int64_t cb_full(CB *c,void *dst) {
-    if(c->bg) { if(bgzf_seek(c->bgzf,0,SEEK_SET)) return -1; return bgzf_read(c->bgzf,dst,c->size); }
-    if(c->zs) { size_t r=ZSTD_seekable_decompress(c->seek,dst,c->size,0); return ZSTD_isError(r)?-1:(int64_t)r; }
-    return aceapex_decompress(c->arc,c->archive_size,dst,c->size);
+    if(c->bg) {
+#define HWAPEX_EXTRACT_SECTION 5
+#include "native/bgzip.inc"
+#undef HWAPEX_EXTRACT_SECTION
+ }
+    if(c->zs) {
+#define HWAPEX_EXTRACT_SECTION 5
+#include "native/zstd_seekable.inc"
+#undef HWAPEX_EXTRACT_SECTION
+ }
+
+#define HWAPEX_EXTRACT_SECTION 4
+#include "native/aceapex.inc"
+#undef HWAPEX_EXTRACT_SECTION
+
 }
 static void cb_close(CB *c) {
     if(c->bgzf && bgzf_close(c->bgzf)) cb_die("bgzf close");

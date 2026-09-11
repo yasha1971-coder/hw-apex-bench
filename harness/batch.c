@@ -28,7 +28,10 @@ int main(int argc,char **argv) {
     }
     if(native) {
         int w=n<10?n:10;
-        if(aceapex_decompress_ranges(c.arc,c.archive_size,ranges,(size_t)w,threads)!=w) cb_die("native warmup");
+
+#define HWAPEX_EXTRACT_SECTION 5
+#include "native/aceapex.inc"
+#undef HWAPEX_EXTRACT_SECTION
         for(int i=0;i<w;i++) if(ranges[i].written!=LEN||memcmp(ranges[i].dst,c.original+offset[i],LEN)) cb_die("native warmup differs");
     }
     for(int rep=0;rep<REPEATS;rep++) {
@@ -38,7 +41,10 @@ int main(int argc,char **argv) {
             if(batch) {
                 for(int i=0;i<n;i++) ranges[i].written=0;
                 double t0=cb_ms();
-                ok=aceapex_decompress_ranges(c.arc,c.archive_size,ranges,(size_t)n,threads);
+
+#define HWAPEX_EXTRACT_SECTION 6
+#include "native/aceapex.inc"
+#undef HWAPEX_EXTRACT_SECTION
                 batch_ms=cb_ms()-t0;
             } else {
                 double t0=cb_ms();

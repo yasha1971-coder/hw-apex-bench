@@ -23,6 +23,11 @@ jobs:
     timeout-minutes: 5
     steps:
       - uses: actions/checkout@v4
+      - name: Verify mechanical native-code extraction
+        run: |
+          git fetch --no-tags --depth=1 origin 0e8246f8b14b74191b3bf8cc6f14b71be85779ce
+          python3 harness/verify_native_extraction.py
+          python3 -m unittest discover -s harness -p test_native_extraction.py
       - name: Reject corrupted evidence
         run: python3 -m unittest discover -s web -p test_publication.py -v
       - name: Audit the nine-axis contract without benchmark execution

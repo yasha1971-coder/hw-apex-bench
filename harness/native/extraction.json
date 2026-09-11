@@ -1,0 +1,138 @@
+{
+  "schema": "cabench-native-extraction-v1",
+  "base_commit": "0e8246f8b14b74191b3bf8cc6f14b71be85779ce",
+  "sources": {
+    "harness/region_latency.c": {
+      "git_blob": "87fba759953126ce000e6dbebd3f85d4b7ca59de",
+      "sha256": "48a4793b9d6bb461ddf8d0cce8d1679a1584d08461333cdd30c6198f5ba438fb"
+    },
+    "harness/codec_io.h": {
+      "git_blob": "2c12572bd8ad8c33708db1b669207aa6f735e16b",
+      "sha256": "966c45211b4c6113971dc22c6896c2de778a765ec12bbe9c07ef8eec1ae43fd1"
+    },
+    "harness/batch.c": {
+      "git_blob": "894479b6b4f0ac0e8472638b5cb4379f5d9a8af7",
+      "sha256": "83220ad33749aebb3e219c15aaa9f658cadf8d34ac7b99289c2faee3dd1df74f"
+    }
+  },
+  "fragments": {
+    "bgzip": [
+      {
+        "section": 1,
+        "phase": "region setup",
+        "source": "harness/region_latency.c",
+        "bytes": 837,
+        "sha256": "b63378f5a637afdce5d42d48f7e964985af2370ad2669f846eeb59d3ea43bae2"
+      },
+      {
+        "section": 2,
+        "phase": "timed region call",
+        "source": "harness/region_latency.c",
+        "bytes": 241,
+        "sha256": "7b19fa7792660bdc6cc3091c6c9d125f18532010377e024bc95e7499fa19e694"
+      },
+      {
+        "section": 3,
+        "phase": "shared setup",
+        "source": "harness/codec_io.h",
+        "bytes": 443,
+        "sha256": "d23745a7d259ffa3818cf0d11455f941e272af76559ffeb8a74ed76273d44781"
+      },
+      {
+        "section": 4,
+        "phase": "shared region",
+        "source": "harness/codec_io.h",
+        "bytes": 107,
+        "sha256": "f51be2a335eb7f7612aae2f0baf53dcf45cea3e1a7236642dbbb36e8be308b83"
+      },
+      {
+        "section": 5,
+        "phase": "shared full decode",
+        "source": "harness/codec_io.h",
+        "bytes": 84,
+        "sha256": "d3e2565b1190c45780abe45d04f83efab1885eb806a8d5e8efae19fd5bf5ce2b"
+      }
+    ],
+    "zstd_seekable": [
+      {
+        "section": 1,
+        "phase": "region setup",
+        "source": "harness/region_latency.c",
+        "bytes": 277,
+        "sha256": "eefa8a3b411df09828d86842a3ba82c7606122e390f7c856d24fde12058a1974"
+      },
+      {
+        "section": 2,
+        "phase": "timed region call",
+        "source": "harness/region_latency.c",
+        "bytes": 200,
+        "sha256": "c4c8dc78aea70fe7fa399bc0c87a3edc9b2e69493cf754f120d87a4be35e90fe"
+      },
+      {
+        "section": 3,
+        "phase": "shared setup",
+        "source": "harness/codec_io.h",
+        "bytes": 194,
+        "sha256": "f159af0750c5075b186c8627a9052ea5b92c3b4eb4d6ede5785c586ff85380b4"
+      },
+      {
+        "section": 4,
+        "phase": "shared region",
+        "source": "harness/codec_io.h",
+        "bytes": 94,
+        "sha256": "416c9b66856604c354df1ea8a63076fea2cfa8527d9a25f90823f97da174e418"
+      },
+      {
+        "section": 5,
+        "phase": "shared full decode",
+        "source": "harness/codec_io.h",
+        "bytes": 96,
+        "sha256": "e0a2a2d9299ff207b1b90df34d7a468d9b01de956d841ccbdd4025037f003b08"
+      }
+    ],
+    "aceapex": [
+      {
+        "section": 1,
+        "phase": "region setup",
+        "source": "harness/region_latency.c",
+        "bytes": 352,
+        "sha256": "f3663db5cb4b079d5fd54c04b541b4670911e4b0f28b5048b6a33ec13e0918c0"
+      },
+      {
+        "section": 2,
+        "phase": "timed region call",
+        "source": "harness/region_latency.c",
+        "bytes": 195,
+        "sha256": "15eea60770ef4ded2a31050a54c0dbc0c89c5159ca597c1b3b8ad744a62bc05c"
+      },
+      {
+        "section": 3,
+        "phase": "shared region",
+        "source": "harness/codec_io.h",
+        "bytes": 77,
+        "sha256": "9adba3db92852cd37ca0b2e182577d65b06921a1e13fc7ba45169e15c62bbe8c"
+      },
+      {
+        "section": 4,
+        "phase": "shared full decode",
+        "source": "harness/codec_io.h",
+        "bytes": 66,
+        "sha256": "a110b739fc3c44e88f14ab5ea64a49c89d5a3ac35e61802437e2dc29ed87ae9a"
+      },
+      {
+        "section": 5,
+        "phase": "native batch warmup",
+        "source": "harness/batch.c",
+        "bytes": 113,
+        "sha256": "55f13d5162a498d174150b2eee427ff2ac64c0821b3c8175e8cd90f4220fd2e1"
+      },
+      {
+        "section": 6,
+        "phase": "timed native batch",
+        "source": "harness/batch.c",
+        "bytes": 93,
+        "sha256": "814a56be04e2f41faff4394672a1c6a07b08254189627ba400b6f415aaa664ab"
+      }
+    ]
+  }
+}
