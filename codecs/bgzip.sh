@@ -2,6 +2,7 @@
 set -euo pipefail
 HTS_PIN=4b705e4fada8ee2b6b15746f725ee8ac51631803
 HTS_RELEASE=1.24
+LIBDEFLATE_PIN=dd12ff2b36d603dbb7fa8838fe7e7176fcbd4f6f
 # Resident-context proof: capabilities describe this executable path only.
 codec_supports() { echo 'ratio encode decode region amplification h_alpha break_even'; }
 codec_unavailable() {
@@ -15,29 +16,22 @@ codec_context_build() {
   out="$1"
   local h="${HB_HTSLIB:?set HB_HTSLIB to a built HTSlib tree}"
   gcc -O3 -std=gnu11 -fPIC -shared -I"$root/harness" -I"$h" \
-    "$root/codecs/native/bgzip.c" "$h/libhts.a" -lz -lm -pthread -o "$out"
+    "$root/codecs/native/bgzip.c" "$h/libhts.a" "$HB_CHECK_WORK/libdeflate-build/libdeflate.a" -lz -lm -pthread -o "$out"
 }
 source "${HB_ROOT:-$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.." && pwd)}/harness/check_common.sh"
 
-codec_configuration() { echo '{"level": 6, "encoder_threads": 1, "decoder_threads": 1, "granularity": 65280, "granularity_note": "BGZF CLI ceiling; actual blocks may be shorter"}'; }
-codec_inputs() { python3 -c 'import json,sys;print(json.dumps(sys.argv[1:]))' "$HB_ROOT/codecs/native/bgzip.c" "$HB_ROOT/codecs/bgzip.sh" "$HB_ROOT/codecs/counters.py" "$HB_ROOT/harness/build_counters.py"; }
-codec_build_artifacts() { python3 -c 'import json,sys;print(json.dumps(sys.argv[1:]))' "$(codec_library)" "$(codec_counter_library)" "$HB_CHECK_WORK/counter-sources.json" "$HB_CHECK_WORK/deps/htslib/bgzip"; }
+codec_configuration() { echo '{"level": 6, "compression_backend": {"name":"libdeflate","version":"1.19","commit":"dd12ff2b36d603dbb7fa8838fe7e7176fcbd4f6f","configure_option":"--with-libdeflate","effective_level":7}, "encoder_threads": 1, "decoder_threads": 1, "granularity": 65280, "granularity_note": "BGZF CLI ceiling; actual blocks may be shorter"}'; }
+codec_inputs() { python3 -c 'import json,sys;print(json.dumps(sys.argv[1:]))' "$HB_ROOT/codecs/native/bgzip.c" "$HB_ROOT/codecs/bgzip.sh" "$HB_ROOT/codecs/bgzip_build.sh" "$HB_ROOT/codecs/bgzip_provenance.py" "$HB_ROOT/codecs/counters.py" "$HB_ROOT/harness/build_counters.py"; }
+codec_build_artifacts() { python3 -c 'import json,sys;print(json.dumps(sys.argv[1:]))' "$(codec_library)" "$(codec_counter_library)" "$HB_CHECK_WORK/counter-sources.json" "$HB_CHECK_WORK/deps/htslib/bgzip" "$HB_CHECK_WORK/bgzip-build.json" "$HB_CHECK_WORK/libdeflate-build/libdeflate.a"; }
 codec_name() { echo 'bgzip+htslib'; }
 codec_version() { echo "$HTS_RELEASE"; }
 codec_constraints() { echo '{"granularity":65280,"min_input_bytes":0}'; }
 codec_sidecar() { echo "$1.gzi"; }
 codec_artifacts() { python3 -c 'import json,sys;print(json.dumps([sys.argv[1],sys.argv[1]+".gzi"]))' "$1"; }
-codec_build() (
-  export HB_HTSLIB="$HB_CHECK_WORK/deps/htslib"
-  hb_checkout https://github.com/samtools/htslib.git "$HTS_PIN" "$HB_HTSLIB"
-  git -C "$HB_HTSLIB" submodule update --init --depth 1
-  printf '%s\n' '#define _XOPEN_SOURCE 700' '#define HAVE_DRAND48 1' > "$HB_HTSLIB/config.h"
-  printf '%s\n' 'LIBS = -lz -lm -lpthread' 'HTS_LIBS = -lz -lm -lpthread' 'NONCONFIGURE_OBJS =' > "$HB_HTSLIB/config.mk"
-  make -C "$HB_HTSLIB" -j"$HB_JOBS" lib-static bgzip CFLAGS='-O3 -fPIC' PACKAGE_VERSION="$HTS_RELEASE"
-  codec_context_build "$(codec_library)"
-  hb_checkout https://github.com/samtools/htslib.git "$HTS_PIN" "$HB_HTSLIB"
-  python3 "$HB_ROOT/codecs/counters.py" bgzip "$HB_CHECK_WORK"
-)
+codec_build() {
+  bash "$HB_ROOT/codecs/bgzip_build.sh" "$HTS_PIN" "$HTS_RELEASE" "$LIBDEFLATE_PIN"
+}
+
 codec_compress() {
   [[ "$3" == 65280 ]] || { echo 'BGZF CLI granularity is fixed; expected 65280 ceiling' >&2; return 1; }
   "$HB_CHECK_WORK/deps/htslib/bgzip" -l 6 -@ 1 -i -I "$2.gzi" -c "$1" > "$2"

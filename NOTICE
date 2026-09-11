@@ -37,6 +37,11 @@ This project uses the BSD option of upstream's BSD/GPLv2 dual licensing.
 Retain zstd/LICENSE and individual source notices, including xxHash attribution
 to Yann Collet and Meta Platforms, Inc., in redistributed dependency copies.
 
+libdeflate — MIT
+Copyright 2016 Eric Biggers
+https://github.com/ebiggers/libdeflate
+Pinned build dependency; retain its COPYING file when distributing binaries.
+
 System libraries and any additional transitive dependencies retain their own
 licenses. Copies or binaries of dependencies must retain the notices supplied
 by their respective distributions; this project does not relicense them.

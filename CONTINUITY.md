@@ -756,3 +756,24 @@ Next bounded action: recover/pin historical BGZF backend/build and verify archiv
 equivalence in an isolated untimed check before any further timing decision.
 DO NOT restart completed workflow34619124537. No current draft PR was merged,
 no upstream ACE/glyph/context repository changed.
+
+## BGZF backend correction in progress
+
+User authorized libdeflate rebuild and untimed verification of three differences.
+Work branch tooling/bgzf-build-audit, based on cfb178f96b262229cd3bac2d4051e8f7292bd998.
+Both BGZF configs now require --with-libdeflate, pinned1.19 commit
+dd12ff2b36d603dbb7fa8838fe7e7176fcbd4f6f (annotated v1.19 tag peeled via git ls-remote).
+Backend metadata goes to configuration+toolchain; build verifies hts_features bit20.
+Counter library wraps actual libdeflate output; normal libraries uninstrumented.
+Official HTSlib recommendation verified. Corrections: bgzip1.19 CLI0–9 maps to
+libdeflate0–12; level6 maps7; --version does NOT show backend in1.19. Compression
+size superiority is not universal (official page even shows larger BAM at level6).
+
+Dedicated CI audit compares system binary SHA with historical e1ca105..., then
+three chr1 archives: old zlib build, pinned libdeflate adapter, exact historical
+system binary. MD5/oracle/CLI+native restores/index hashes and64 regions checked;
+no timers invoked. It also probes the libdeflate counter and serializes one real
+untimed ratio row with explicit backend. This branch skips native smoke timing
+steps, retains all correctness checks, and cannot trigger the old full workflow.
+Do not claim equivalence until the actual audit artifact passes. Full run34619124537
+and its236-row candidate remain unchanged. No PR merge authorized in this stage.

@@ -35,7 +35,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Install build prerequisites
-        run: sudo apt-get update -qq && sudo apt-get install -y -qq build-essential cmake zlib1g-dev
+        run: sudo apt-get update -qq && sudo apt-get install -y -qq build-essential autoconf automake cmake zlib1g-dev
       - name: Check failure handling and external adapter
         run: python3 -m unittest discover -s harness -p test_check_adapter.py
       - name: Check eligibility and capability dispatch
@@ -49,11 +49,13 @@ jobs:
       - name: Plan axes from the fresh receipt without measuring
         run: ./run.sh --plan --codec "${{ matrix.codec }}" --output ".work/${{ matrix.codec }}.plan.json"
       - name: Exercise native dispatch on the small corpus
+        if: github.head_ref != 'tooling/bgzf-build-audit'
         run: |
           python3 harness/resident_fixture.py .work/native-input
           python3 -c 'from pathlib import Path; p=Path(".work/native-input");p.write_bytes(p.read_bytes()*4)'
           ./run.sh --measure --codec "${{ matrix.codec }}" --axis ratio --axis encode --axis decode --axis region --axis amplification --axis batch --axis h_alpha --axis c_g --axis break_even --plateau --copies 1,2,4 --batch-sizes 100 --input .work/native-input --output-dir ".work/native-${{ matrix.codec }}"
       - name: Audit all nine axes and generated records
+        if: github.head_ref != 'tooling/bgzf-build-audit'
         run: python3 review/verify_nine_axes.py ".work/native-${{ matrix.codec }}/manifest.json"
       - name: Retain receipts and diagnostics
         if: always()
@@ -81,7 +83,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Install build prerequisites
-        run: sudo apt-get update -qq && sudo apt-get install -y -qq build-essential cmake zlib1g-dev
+        run: sudo apt-get update -qq && sudo apt-get install -y -qq build-essential autoconf automake cmake zlib1g-dev
       - name: Run the authorized full native comparison
         run: python3 harness/full_native_run.py
       - name: Preserve full candidate evidence

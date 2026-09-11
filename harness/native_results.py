@@ -16,7 +16,8 @@ def rows(manifest,baseline_adapter='bgzip'):
         common={'codec':plan['codec'],'version':plan['version'],'corpus':manifest['corpus'],
             'corpus_md5':manifest['corpus_md5'],'granularity':cfg['granularity'],
             'configuration':cfg,'run_id':manifest['run_id'],'host':manifest['host'],
-            'toolchain':{'compiler':manifest['compiler'],'qualified_dependency_receipt':plan['qualification_sha256']},
+            'toolchain':{'compiler':manifest['compiler'],'qualified_dependency_receipt':plan['qualification_sha256'],
+                         'compression_backend':cfg.get('compression_backend')},
             'qualification_sha256':plan['qualification_sha256']}
         def emit(axis,value,unit,source=None,level='declared',**extra):
             source=source or {}

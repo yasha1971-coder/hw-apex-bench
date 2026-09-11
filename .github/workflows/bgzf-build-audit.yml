@@ -1,0 +1,33 @@
+name: Untimed BGZF build equivalence
+on:
+  pull_request:
+    paths:
+      - 'review/audit_bgzf_build.py'
+      - '.github/workflows/bgzf-build-audit.yml'
+permissions:
+  contents: read
+jobs:
+  archive-equivalence:
+    if: github.event.action == 'opened' && github.head_ref == 'tooling/bgzf-build-audit'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install historical system package and build prerequisites
+        run: sudo apt-get update -qq && sudo apt-get install -y -qq build-essential autoconf automake cmake tabix libhts-dev libdeflate-dev zlib1g-dev
+      - name: Compare archives without collecting timings
+        run: python3 review/audit_bgzf_build.py
+      - name: Preserve comparison and build diagnostics
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: bgzf-build-equivalence
+          include-hidden-files: true
+          path: |
+            .work/bgzf-build-audit/audit.json
+            .work/bgzf-build-audit/results.jsonl
+            .work/adapter-check/**/bgzip-build.json
+            .work/adapter-check/**/check.json
+            .work/bgzf-build-audit/commands.log
+            .work/bgzf-build-audit/htslib-*/config.h
+            .work/bgzf-build-audit/htslib-*/config.mk
