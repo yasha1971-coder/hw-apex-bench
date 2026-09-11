@@ -1,0 +1,35 @@
+name: Resident context correctness
+on:
+  pull_request:
+    paths:
+      - 'codecs/**'
+      - 'harness/resident*'
+      - 'harness/test_resident_xz.py'
+      - '.github/workflows/resident-context.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  xz:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - name: Prepare pinned XZ API headers
+        run: |
+          mkdir -p .work/xz
+          git -C .work/xz init -q
+          git -C .work/xz fetch -q --depth=1 https://github.com/tukaani-project/xz.git 49053c0a649f4c8bd2b8d97ce915f401fbc0f3d9
+          git -C .work/xz checkout -q --detach FETCH_HEAD
+      - name: Build and check native context without timings
+        run: |
+          export HB_XZ="$PWD/.work/xz"
+          export HB_CONTEXT_LIBRARY="$PWD/.work/xz-context.so"
+          bash codecs/xz.sh context-build "$HB_CONTEXT_LIBRARY"
+          python3 -m unittest discover -s harness -p test_resident_xz.py
+          python3 - <<'PY'
+          import ctypes, os
+          lib=ctypes.CDLL(os.environ['HB_CONTEXT_LIBRARY'])
+          lib.hc_version.restype=ctypes.c_char_p
+          print('Tested system liblzma:',lib.hc_version().decode())
+          PY

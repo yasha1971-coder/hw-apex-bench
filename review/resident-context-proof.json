@@ -1,0 +1,132 @@
+{
+  "scope": "resident context correctness only; not benchmark results",
+  "base_commit": "c82c96fcd9e9d60717ad601c991ec6f2251eff85",
+  "compiler": "gcc (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0",
+  "host": "Linux x86_64",
+  "xz_headers_sha": "49053c0a649f4c8bd2b8d97ce915f401fbc0f3d9",
+  "htslib_source_sha": "4b705e4fada8ee2b6b15746f725ee8ac51631803",
+  "zstd_source_sha": "f8745da6ff1ad1e7bab384bd1f9d742439278e99",
+  "aceapex_source_sha": "1b13df34ac8e839dd3232b59bc59560d689a435a",
+  "xz_linkage": "system liblzma.so.5; runtime version recorded per codec",
+  "fixture_command": "python3 harness/resident_fixture.py .work/context-input",
+  "fixture_bytes": 349571,
+  "fixture_encoding_commands": [
+    "$HB_HTSLIB/bgzip -l 6 -@ 1 -i -I .work/context-input.bgz.gzi -c .work/context-input > .work/context-input.bgz",
+    "$HB_ZSTD/contrib/seekable_format/examples/seekable_compression .work/context-input 16384 3",
+    "env -u ACEAPEX_BS -u LIT_CHUNK -u FSE_CHUNK -u MIN_MATCH .work/context-aceapex c --in .work/context-input --out .work/context-input.ace --threads 1 --level 2 --profile interactive",
+    "bash codecs/xz.sh compress .work/context-input .work/context-input.xz 16384"
+  ],
+  "ace_cli_build": "g++ -O3 -std=c++17 -pthread -I\"$HB_ACEAPEX/src\" -I\"$HB_ZSTD/lib\" \"$HB_ACEAPEX/aceapex_depth.cpp\" \"$HB_ZSTD/lib/libzstd.a\" -o .work/context-aceapex",
+  "cases": [
+    {
+      "capabilities": {
+        "amplification": "n/a — decoder counters not ported to context proof",
+        "batch": "n/a — no batch API",
+        "break_even": "n/a — timing runner not connected to context proof",
+        "c_g": "n/a — no comparable single-parameter baseline",
+        "decode": "available",
+        "encode": "n/a — encode timer not connected to context proof",
+        "h_alpha": "n/a — block mapping callback not ported to context proof",
+        "ratio": "n/a — archive accounting not connected to context proof",
+        "region": "available"
+      },
+      "corpus_sha256": "defc2a4e60edcbaa2b49bef2d1509a2043871beec12f0455bdc1f0f5559966d2",
+      "full_restore": "byte-exact",
+      "invalid_ranges": 3,
+      "region_checks": 168,
+      "timings_collected": false,
+      "version": "1.24",
+      "adapter": "codecs/bgzip.sh",
+      "native_source_sha256": "e782cbf846f8619621ba11f9e97bda9fa051693948ffadf61591abde1cfd6de4",
+      "library_sha256": "b16f04753438eaf02de390eb4856020ec335ee824e5dd6b0feded134141de796",
+      "archive_sha256": "4350affbbb1274779c0f089d5bdbdcfe4c6e7a43e139d07186c382ea8b886696",
+      "command": "python3 harness/resident_probe.py --adapter codecs/bgzip.sh --library .work/bgzip-context.so --archive .work/context-input.bgz --original .work/context-input --granularity 65280 --sidecar .work/context-input.bgz.gzi",
+      "build_command": "bash codecs/bgzip.sh context-build \"$PWD/.work/bgzip-context.so\"",
+      "sidecar_sha256": "637dd014b45a88193624662c32c8fc5dad54ee59f0cdc96ef696838778645a84"
+    },
+    {
+      "capabilities": {
+        "amplification": "n/a — decoder counters not ported to context proof",
+        "batch": "n/a — no batch API",
+        "break_even": "n/a — timing runner not connected to context proof",
+        "c_g": "n/a — controlled curve runner not connected to context proof",
+        "decode": "available",
+        "encode": "n/a — encode timer not connected to context proof",
+        "h_alpha": "n/a — block mapping callback not ported to context proof",
+        "ratio": "n/a — archive accounting not connected to context proof",
+        "region": "available"
+      },
+      "corpus_sha256": "defc2a4e60edcbaa2b49bef2d1509a2043871beec12f0455bdc1f0f5559966d2",
+      "full_restore": "byte-exact",
+      "invalid_ranges": 3,
+      "region_checks": 360,
+      "timings_collected": false,
+      "version": "1.5.7",
+      "adapter": "codecs/zstd_seekable.sh",
+      "native_source_sha256": "773d6c5228c9af8ee2eff0424491943e4762bd64f2e18a191321f1553eee162f",
+      "library_sha256": "30794444105b9750aa50b9ca13a7efde356d2566ada721bb3b36eb95f7b650ea",
+      "archive_sha256": "840589a97cc03d476a3b9cdf4f926cc10ed016265352f399f71842730447dbc1",
+      "command": "python3 harness/resident_probe.py --adapter codecs/zstd_seekable.sh --library .work/zstd-context.so --archive .work/context-input.zst --original .work/context-input --granularity 16384",
+      "build_command": "bash codecs/zstd_seekable.sh context-build \"$PWD/.work/zstd-context.so\""
+    },
+    {
+      "capabilities": {
+        "amplification": "n/a — decoder counters not ported to context proof",
+        "batch": "n/a — native batch callback not ported in context proof",
+        "break_even": "n/a — timing runner not connected to context proof",
+        "c_g": "n/a — controlled curve runner not connected to context proof",
+        "decode": "available",
+        "encode": "n/a — encode timer not connected to context proof",
+        "h_alpha": "n/a — block mapping callback not ported to context proof",
+        "ratio": "n/a — archive accounting not connected to context proof",
+        "region": "available"
+      },
+      "corpus_sha256": "defc2a4e60edcbaa2b49bef2d1509a2043871beec12f0455bdc1f0f5559966d2",
+      "full_restore": "byte-exact",
+      "invalid_ranges": 3,
+      "region_checks": 360,
+      "timings_collected": false,
+      "version": "aceapex@1b13df34ac8e839dd3232b59bc59560d689a435a",
+      "adapter": "codecs/aceapex.sh",
+      "native_source_sha256": "8a917aaeeb16f5a315c1564c1d888c589ed58b066ffc98f98cb3e69317e8443e",
+      "library_sha256": "2f20b525ec9641b7f464cbfb7aae481f2348b890d4130f0c73c4c701ab132894",
+      "archive_sha256": "7edca39cfab1e6fa1128d1a2c8ec6c9bc518f0eaff08059bbc19c90c509b9eeb",
+      "command": "python3 harness/resident_probe.py --adapter codecs/aceapex.sh --library .work/aceapex-context.so --archive .work/context-input.ace --original .work/context-input --granularity 16384",
+      "build_command": "bash codecs/aceapex.sh context-build \"$PWD/.work/aceapex-context.so\"",
+      "reader_environment": {
+        "ACEAPEX_BS": "16384",
+        "LIT_CHUNK": "65536",
+        "FSE_CHUNK": "4096",
+        "MIN_MATCH": "0"
+      }
+    },
+    {
+      "capabilities": {
+        "amplification": "n/a — decoder counters not ported to context proof",
+        "batch": "n/a — no batch API",
+        "break_even": "n/a — timing runner not connected to context proof",
+        "c_g": "n/a — controlled curve runner not connected to context proof",
+        "decode": "available",
+        "encode": "n/a — encode timer not connected to context proof",
+        "h_alpha": "n/a — block mapping callback not ported to context proof",
+        "ratio": "n/a — archive accounting not connected to context proof",
+        "region": "available"
+      },
+      "corpus_sha256": "defc2a4e60edcbaa2b49bef2d1509a2043871beec12f0455bdc1f0f5559966d2",
+      "full_restore": "byte-exact",
+      "invalid_ranges": 3,
+      "region_checks": 360,
+      "timings_collected": false,
+      "version": "5.4.5",
+      "adapter": "codecs/xz.sh",
+      "native_source_sha256": "b5e013ee5a3badc160de30372b9840107e0b5a3fe40d8b8f3599f7f84fe33ecb",
+      "library_sha256": "584cdc836ab4d98a9e7672de2355ee9cc49b79c89943fb8d11a844bc5b55ec8f",
+      "archive_sha256": "e9f13b4e28280476f30d7212c3a70604d668b35c4be5fbd542c843b53e04b301",
+      "command": "python3 harness/resident_probe.py --adapter codecs/xz.sh --library .work/xz-context.so --archive .work/context-input.xz --original .work/context-input --granularity 16384",
+      "build_command": "bash codecs/xz.sh context-build \"$PWD/.work/xz-context.so\""
+    }
+  ],
+  "xz_unittest_methods_passed": 6,
+  "results_records": 435,
+  "results_sha256": "cb52b8cb9fac484a6474d976681ea85ae2c052d80d820422b7f57c25ec938100"
+}
