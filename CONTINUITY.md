@@ -343,3 +343,25 @@ The next bounded step is reconciling the seven-function adapter interface in
 PR #17 with published main. Do not overwrite published reports or licenses with
 that older branch's files. No new measurements, xz, CRAM or release are part of
 this publication segment. Read current main/PR/Pages status at the next turn.
+
+## Publication completed — authoritative next-step checkpoint
+
+PR #20 is merged: 3dab71573fad34a30a01734b85aa48c41359fa98.
+PR #16 is merged into main: 3cb19d2fd3d4fc9ccf3dcb14bda281da7153f538.
+Its tested integration head is 42834db372d90946d06e7c457c2dbec57d960adf;
+publication CI 34594754058 passed with all 48 tests and read-only audits.
+Pages deployment 34594849190 passed on the merge commit. The live homepage
+https://yasha1971-coder.github.io/hw-apex-bench/ was fetched successfully and
+its embedded results_sha256 matches the reviewed 435-row snapshot:
+cb52b8cb9fac484a6474d976681ea85ae2c052d80d820422b7f57c25ec938100.
+
+The first gate is now complete in main: nine axes accounted for on three formats,
+including explicit unsupported positions; no new measurements were executed.
+Licenses, negative-c(g) note and source/empty-frame qualifications are published.
+This final checkpoint changes documentation only, not the tested publication.
+
+Next bounded task: inspect published main and reconcile the seven-function
+adapter contract with draft PR #17. Do not blindly merge the draft: its README,
+workflow and provenance state precede the publication. Preserve raw result bytes,
+license footer and matched-baseline semantics. Do not add xz or CRAM yet. Do not
+repeat the completed full benchmarks or alter the three protected repositories.
