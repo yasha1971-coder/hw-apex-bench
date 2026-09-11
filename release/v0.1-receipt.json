@@ -1,0 +1,53 @@
+{
+  "annotated_tag": "062b3e26f5590ffe24dfe2648f6b4d7b182671f3",
+  "assets": [
+    {
+      "name": "hw-apex-bench-v0.1.zip",
+      "sha256": "sha256:4b966c2b94be86b455affcbdde481ea289f6ba94ffc44e842bc07c3f9b23d9f3",
+      "size": 2040983,
+      "url": "https://github.com/yasha1971-coder/hw-apex-bench/releases/download/v0.1/hw-apex-bench-v0.1.zip"
+    },
+    {
+      "name": "native-full-comparison.zip",
+      "sha256": "sha256:3fb9531d64518b0c5c1e61968eae80a374ae4da0285ce0178555ff7fa87dc390",
+      "size": 1164165,
+      "url": "https://github.com/yasha1971-coder/hw-apex-bench/releases/download/v0.1/native-full-comparison.zip"
+    },
+    {
+      "name": "SHA256SUMS",
+      "sha256": "sha256:afd8dba096309e3b29c63b580e3a8f243388de09c576592209d735e7b5bdba25",
+      "size": 275,
+      "url": "https://github.com/yasha1971-coder/hw-apex-bench/releases/download/v0.1/SHA256SUMS"
+    },
+    {
+      "name": "SOURCE_COMMIT_AND_TREE.txt",
+      "sha256": "sha256:218fc6492c730814990f3ce677f854424517414a5a2416ee89baeec6a5177b9e",
+      "size": 82,
+      "url": "https://github.com/yasha1971-coder/hw-apex-bench/releases/download/v0.1/SOURCE_COMMIT_AND_TREE.txt"
+    }
+  ],
+  "commit": "9af8704116a915705fd2313eabc2459430e8551b",
+  "doi": null,
+  "frozen_records": 435,
+  "frozen_sha256": "cb52b8cb9fac484a6474d976681ea85ae2c052d80d820422b7f57c25ec938100",
+  "merged_prs": [
+    21,
+    22,
+    23,
+    24,
+    25,
+    26,
+    27,
+    28,
+    29
+  ],
+  "new_measurements_launched": false,
+  "published_at": "2026-09-11T18:06:09Z",
+  "release_url": "https://github.com/yasha1971-coder/hw-apex-bench/releases/tag/v0.1",
+  "tag": "v0.1",
+  "tree": "947b4fc1993c894e985af469dafcb91ec4e193aa",
+  "version": "0.1",
+  "workflow_conclusion": "success",
+  "workflow_id": 34631369637,
+  "zenodo_status": "Pending authenticated archival; integration state unknown."
+}

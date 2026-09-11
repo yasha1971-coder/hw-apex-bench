@@ -867,3 +867,15 @@ No DOI exists in this checkpoint. After publication verify live tag/release/asse
 then complete Zenodo archival. No Zenodo connector or authenticated browser tool
 is currently exposed; repository integration state remains unknown. If archival
 requires account access, report that concrete blocker after completing the release.
+
+Release completed: PR29 merged as9af8704116a915705fd2313eabc2459430e8551b;
+annotated tagv0.1 object062b3e26f5590ffe24dfe2648f6b4d7b182671f3 resolves to that commit.
+Workflow34631369637 succeeded. Public release has source ZIP, unchanged full-run
+ZIP, SHA256SUMS and source commit/tree receipt; API asset digests verified.
+release/v0.1-receipt.json records exact identities and URLs. No new measurements.
+Exact public Zenodo query for quoted hw-apex-bench returned zero records after
+publication. This does not prove integration is disabled or exclude indexing delay.
+Actual next action: authenticate Zenodo / inspect repository integration and archive
+existing v0.1, obtain real DOI, then add DOI to citation metadata on main without
+moving the released tag. No available authenticated Zenodo/browser capability in
+this session. Do not create a second GitHub release merely to trigger a webhook.
