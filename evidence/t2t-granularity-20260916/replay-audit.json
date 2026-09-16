@@ -1,0 +1,1219 @@
+{
+  "matched_archives": 300,
+  "first_run_results_sha256": "9e95df00d28f7d6b1f7bea18ee65257f00994ffeb096c857dd0d3942b294ec95",
+  "accepted_run_results_sha256": "c366e1ea02f1e6a3261c4dbd7067809390bd1dc5d0012eec1f53084b145bdc3c",
+  "first_run_damaged_logs": [
+    "chr4-telomere_context.seq.aceapex.g16384.log",
+    "chr7-annotation_complement.seq.aceapex.g16384.log",
+    "chr2-telomere_context.seq.aceapex.g4096.log",
+    "chr7-telomere_context.seq.aceapex.g4096.log",
+    "chr22-centromeric_HOR.seq.aceapex.g65536.log",
+    "chr5-telomere_context.seq.aceapex.g65536.log",
+    "chr4-centromeric_HOR.seq.aceapex.g262144.log",
+    "chr7-telomere_context.seq.aceapex.g262144.log",
+    "chr4-centromeric_HOR.seq.aceapex.g1048576.log"
+  ],
+  "note": "First-run log hashes changed after measurement; cause not established. Accepted run used isolated temporary inputs/output. All 300 actual archive sizes and SHA-256 hashes match both runs. Accepted logs verified.",
+  "archives": {
+    "chr2-centromeric_HOR.seq.aceapex.g16384.archive": {
+      "bytes": 87736,
+      "sha256": "ea6d752a7dbbfc57b6eb48c3a60bc6bcaa8c23bbb84d1e0b993596c0c6c833ec"
+    },
+    "chr2-centromeric_HOR.seq.zstd-seekable.g16384.archive": {
+      "bytes": 102259,
+      "sha256": "0e27e1fea96db94ee4e0b1ae3227739a96857e32c1e87f84d4bee4e204e60f44"
+    },
+    "chr2-telomere_context.seq.aceapex.g16384.archive": {
+      "bytes": 555044,
+      "sha256": "1e5ece2557680ac307df5bea06dd76e1b34c058602f691f307f61f472c9ee2bb"
+    },
+    "chr2-telomere_context.seq.zstd-seekable.g16384.archive": {
+      "bytes": 706609,
+      "sha256": "7c9225636f8093c934b90f90c8a50299966aad7350a7cb86120e7f43ac70c4f6"
+    },
+    "chr2-annotation_complement.seq.aceapex.g16384.archive": {
+      "bytes": 576098,
+      "sha256": "862125f0cb18c2eb50ec5dfba0b41b4e1cdd3e45d0fa1fa0806da99c6b72a96f"
+    },
+    "chr2-annotation_complement.seq.zstd-seekable.g16384.archive": {
+      "bytes": 740705,
+      "sha256": "eca64b642a1e222df5f13cdf5cf436c00fa87f8f38b3c4719166465c488496b8"
+    },
+    "chr14-centromeric_HOR.seq.aceapex.g16384.archive": {
+      "bytes": 47601,
+      "sha256": "ded0fa803739f71cee0d31420c88d9a015867c7cfcc717916d3d2c32a0676aed"
+    },
+    "chr14-centromeric_HOR.seq.zstd-seekable.g16384.archive": {
+      "bytes": 77439,
+      "sha256": "d3d5bc0034d4b47ef97c2f9024ad79d33fbef41ee473066452e5b371a0726ef6"
+    },
+    "chr14-telomere_context.seq.aceapex.g16384.archive": {
+      "bytes": 548505,
+      "sha256": "ac69eeb01296d2980b1f60eefe0468b3c8f105bc12ea034e46573ccb2efca3b1"
+    },
+    "chr14-telomere_context.seq.zstd-seekable.g16384.archive": {
+      "bytes": 702549,
+      "sha256": "49830de35257e82702075747a07a3fc825ed61794ce4b64a8bbd4816a63268fa"
+    },
+    "chr14-annotation_complement.seq.aceapex.g16384.archive": {
+      "bytes": 579357,
+      "sha256": "32f2a7d565decc4ce35569670e2a94624a5c566ac85ae057f19618b9ca1ddc06"
+    },
+    "chr14-annotation_complement.seq.zstd-seekable.g16384.archive": {
+      "bytes": 744527,
+      "sha256": "833458ef50608ad83963337a77dee979a75af9c5aef5b104646482892022f2ff"
+    },
+    "chr9-centromeric_HOR.seq.aceapex.g16384.archive": {
+      "bytes": 71993,
+      "sha256": "df24ff3efb82565ba84ec5087118c06568f583970ee3eb779c905f34c01a3ba8"
+    },
+    "chr9-centromeric_HOR.seq.zstd-seekable.g16384.archive": {
+      "bytes": 90115,
+      "sha256": "9704da8b33d34255181cdae0ef89903d5bb31f44e09640d74d0e4a00a80139d7"
+    },
+    "chr9-telomere_context.seq.aceapex.g16384.archive": {
+      "bytes": 573193,
+      "sha256": "70adb20685ef44d79cc378fafdf5e8892c3ad7839698650d2688a69c2addd844"
+    },
+    "chr9-telomere_context.seq.zstd-seekable.g16384.archive": {
+      "bytes": 732585,
+      "sha256": "b50e20fc4ab048fa8e79e36f27a517d60222ab7f75a8868c83afdfc36afac5e4"
+    },
+    "chr9-annotation_complement.seq.aceapex.g16384.archive": {
+      "bytes": 575474,
+      "sha256": "c8728e681e6770f3fda89a69df7ba370c333131eb24fffe7ca9824549e7d6ebf"
+    },
+    "chr9-annotation_complement.seq.zstd-seekable.g16384.archive": {
+      "bytes": 739455,
+      "sha256": "17d76fd8b9eec61be6aee19cfefc115f1774468e7740132c91778d96b21d90c3"
+    },
+    "chr4-centromeric_HOR.seq.aceapex.g16384.archive": {
+      "bytes": 79074,
+      "sha256": "b124b7d4b635057df905b7a8cf36cad2d3df744853159a16bf6cc5b0adc583e0"
+    },
+    "chr4-centromeric_HOR.seq.zstd-seekable.g16384.archive": {
+      "bytes": 95692,
+      "sha256": "7060b234fe30637cc6b75526094eadcf333f2674f26afb8f383a77d71972f766"
+    },
+    "chr4-telomere_context.seq.aceapex.g16384.archive": {
+      "bytes": 554956,
+      "sha256": "fc32a06d61484352c0d344d14f6f8e0b712098a66967f28770b2fc78bf71e79a"
+    },
+    "chr4-telomere_context.seq.zstd-seekable.g16384.archive": {
+      "bytes": 698009,
+      "sha256": "32c7998a827999d43b8f5c9533fd5d36c3d473d38b2b18fce16eaaea36e2dcf9"
+    },
+    "chr4-annotation_complement.seq.aceapex.g16384.archive": {
+      "bytes": 578845,
+      "sha256": "4bd641774cc88f5cba661fda5ee2f1deb725ba2888d4ce77c76a703de9079d3e"
+    },
+    "chr4-annotation_complement.seq.zstd-seekable.g16384.archive": {
+      "bytes": 742323,
+      "sha256": "38e12e9e97ad6ae25a6b92589d1c35325c27e4f0a95dc3600baedf174c88995f"
+    },
+    "chr20-centromeric_HOR.seq.aceapex.g16384.archive": {
+      "bytes": 68292,
+      "sha256": "fed08feff73749ebec9bc4cec5d6dd670ccc015c2384cd576a3d41e63e3ccada"
+    },
+    "chr20-centromeric_HOR.seq.zstd-seekable.g16384.archive": {
+      "bytes": 91092,
+      "sha256": "ab7134f24c3ab543be49f011967f19143a09935c07e2f05acc628484fb398ba4"
+    },
+    "chr20-telomere_context.seq.aceapex.g16384.archive": {
+      "bytes": 545948,
+      "sha256": "66db64c0313363bb4fb58ec135e226d542f0a42d89afc1926ff2f44389ebf4c1"
+    },
+    "chr20-telomere_context.seq.zstd-seekable.g16384.archive": {
+      "bytes": 691631,
+      "sha256": "612f17ac8c735faedd8d4824d59986a4c4364a7e498855f7a8a363a004ba1cd7"
+    },
+    "chr20-annotation_complement.seq.aceapex.g16384.archive": {
+      "bytes": 575640,
+      "sha256": "3ec627a46601f0c4f0b2eb5974c43ccda0563f4183ce0b7980b2a9d6812d18d1"
+    },
+    "chr20-annotation_complement.seq.zstd-seekable.g16384.archive": {
+      "bytes": 727202,
+      "sha256": "3642ecf34ee443b9c8861adb26c6a4f35cb5c61906b74bba069a2e763d3e6d00"
+    },
+    "chr22-centromeric_HOR.seq.aceapex.g16384.archive": {
+      "bytes": 59613,
+      "sha256": "f7a6589bb5b6da4873f31f85d22f45156fafa5de6275daaf431f2f64521a889e"
+    },
+    "chr22-centromeric_HOR.seq.zstd-seekable.g16384.archive": {
+      "bytes": 87660,
+      "sha256": "250ca6655c3ce5c7dae0b0b1568bf085156572b68d42bc273d6848185b045ec3"
+    },
+    "chr22-telomere_context.seq.aceapex.g16384.archive": {
+      "bytes": 558662,
+      "sha256": "b92f7dc405a60c0c5aa8ca4ec39d625bc9ee66b46acf145aa335106adb2d295f"
+    },
+    "chr22-telomere_context.seq.zstd-seekable.g16384.archive": {
+      "bytes": 700981,
+      "sha256": "60fb5e4805a60a3a613b3b6d3c9ee684a29297e6c33bf8b52de33794c28e8e0b"
+    },
+    "chr22-annotation_complement.seq.aceapex.g16384.archive": {
+      "bytes": 575419,
+      "sha256": "40cb19f074a395d9eb7ee477d2b28527cadf74712f4199894e6b80b96e1d7166"
+    },
+    "chr22-annotation_complement.seq.zstd-seekable.g16384.archive": {
+      "bytes": 734959,
+      "sha256": "574d31040fdd08aa3e68e471a0df28162b78dcf58a90f72e4d7da46dc99461b5"
+    },
+    "chr7-centromeric_HOR.seq.aceapex.g16384.archive": {
+      "bytes": 36119,
+      "sha256": "33c19f9396aa08457d5e088ce7621688de51f5d6006eb2407f26e002b03599a6"
+    },
+    "chr7-centromeric_HOR.seq.zstd-seekable.g16384.archive": {
+      "bytes": 56918,
+      "sha256": "7ef254d3f29013d621a45496085cdbc73a04981471d130bda752db4a8a0937fc"
+    },
+    "chr7-telomere_context.seq.aceapex.g16384.archive": {
+      "bytes": 545758,
+      "sha256": "1aa04c4b2e031e47c859c9bb3b4a90be15b3070c22bab35d0991326c5337d13d"
+    },
+    "chr7-telomere_context.seq.zstd-seekable.g16384.archive": {
+      "bytes": 690375,
+      "sha256": "cf6373c0a947facd54f63b44ac33e8e10de9c8e05f25f688c89d266902507ee8"
+    },
+    "chr7-annotation_complement.seq.aceapex.g16384.archive": {
+      "bytes": 577591,
+      "sha256": "f834b2a8f90bd18a2b8300c67f3f6c99a624194fbdbe2f288dfefee4983401a4"
+    },
+    "chr7-annotation_complement.seq.zstd-seekable.g16384.archive": {
+      "bytes": 742386,
+      "sha256": "da838914db91b66c85e09fff9433a9d3b985a34912d93eb084a27f785d535d61"
+    },
+    "chr11-centromeric_HOR.seq.aceapex.g16384.archive": {
+      "bytes": 70803,
+      "sha256": "42d0f6dbe5eaf3cbf4b699a92e08ac6778871e28996028bc990e473bd0711619"
+    },
+    "chr11-centromeric_HOR.seq.zstd-seekable.g16384.archive": {
+      "bytes": 96283,
+      "sha256": "ed863182a789151f8df6f40391b11687859e19d455643c589c18082df55a0e03"
+    },
+    "chr11-telomere_context.seq.aceapex.g16384.archive": {
+      "bytes": 536198,
+      "sha256": "316e845d99ded60e1f778389db0f799c7afe1dff48b3444255b2dd87e02d3e40"
+    },
+    "chr11-telomere_context.seq.zstd-seekable.g16384.archive": {
+      "bytes": 672492,
+      "sha256": "87b54f2465a22883aaca401120bf7612940faff5f86a4e805179fbaf1e6e2a9a"
+    },
+    "chr11-annotation_complement.seq.aceapex.g16384.archive": {
+      "bytes": 577260,
+      "sha256": "420eb0cca7377099a4355fbe651e9770422f4bed4537bdbb0e32c6cb0df48b4d"
+    },
+    "chr11-annotation_complement.seq.zstd-seekable.g16384.archive": {
+      "bytes": 742290,
+      "sha256": "91665024ec0bff97b0e6b4b83fdd9de2c9eaa9007b709f0a67ccbe25a74190ff"
+    },
+    "chr5-centromeric_HOR.seq.aceapex.g16384.archive": {
+      "bytes": 67033,
+      "sha256": "fec82993687259f7d1ebff9a527c65b8198729338cb0673e0c210c18ba4185cf"
+    },
+    "chr5-centromeric_HOR.seq.zstd-seekable.g16384.archive": {
+      "bytes": 87387,
+      "sha256": "a70db52680278eb3810d8a0e3aff4f9f42acaf24b2b91247a1e25f2771889781"
+    },
+    "chr5-telomere_context.seq.aceapex.g16384.archive": {
+      "bytes": 570417,
+      "sha256": "f36c287ef4d2ab8d2fc48e3efa45d0312287cf5edf2b80fb9c63d66928d9b636"
+    },
+    "chr5-telomere_context.seq.zstd-seekable.g16384.archive": {
+      "bytes": 711054,
+      "sha256": "4cfec9e8b45b8ce88bae7e16a7df716f11682b5f446f7def914657889a890794"
+    },
+    "chr5-annotation_complement.seq.aceapex.g16384.archive": {
+      "bytes": 575154,
+      "sha256": "ed25594ed20be16aa61902fc4cc216f178c7d20a9419e541d58fc872d081216d"
+    },
+    "chr5-annotation_complement.seq.zstd-seekable.g16384.archive": {
+      "bytes": 735944,
+      "sha256": "78632b6ac6fdc7331396ef268fa342cb2b844bd69070a81db57d606ca0673a58"
+    },
+    "chr19-centromeric_HOR.seq.aceapex.g16384.archive": {
+      "bytes": 68488,
+      "sha256": "2f2708760f162cd13f40217a24fd894353f460781ec75cb1b124d70997474229"
+    },
+    "chr19-centromeric_HOR.seq.zstd-seekable.g16384.archive": {
+      "bytes": 87382,
+      "sha256": "735e0011923794b8bad40ab774d0ae3277bda2ea2dab6fd80369c48766bec354"
+    },
+    "chr19-telomere_context.seq.aceapex.g16384.archive": {
+      "bytes": 571599,
+      "sha256": "0abecd1bea84306f80d5db9a0b30b4fc2b7c3a7feeba6c42c22a45173d839306"
+    },
+    "chr19-telomere_context.seq.zstd-seekable.g16384.archive": {
+      "bytes": 710074,
+      "sha256": "3e0904428a7c916b08f53afedc7220344a1646646052e211feb92c8dd06ae60b"
+    },
+    "chr19-annotation_complement.seq.aceapex.g16384.archive": {
+      "bytes": 565425,
+      "sha256": "25374a40d04801c0723ea6fc2f69a3cc1e93af73d434dc50eaaeda5ed78273c6"
+    },
+    "chr19-annotation_complement.seq.zstd-seekable.g16384.archive": {
+      "bytes": 684226,
+      "sha256": "72992cc3559fed944ed7f99830bb38e9ef097aaa762c6fae402c9f0dbc29ad40"
+    },
+    "chr2-centromeric_HOR.seq.aceapex.g4096.archive": {
+      "bytes": 160052,
+      "sha256": "dd34d4776ebb8556c5f8f45117b6d3062046cdd11b2919413af77e06b610c720"
+    },
+    "chr2-centromeric_HOR.seq.zstd-seekable.g4096.archive": {
+      "bytes": 211754,
+      "sha256": "cd003b81243df60cc9a5934b35ade10ef378bc5d61b630fb4bdbd99488534647"
+    },
+    "chr2-telomere_context.seq.aceapex.g4096.archive": {
+      "bytes": 581483,
+      "sha256": "c395d6a0d7c92617cf1763bf6b56b2c0a32a0d112604ea30d2de99c0365ace9b"
+    },
+    "chr2-telomere_context.seq.zstd-seekable.g4096.archive": {
+      "bytes": 731927,
+      "sha256": "0a41d8507d2d2961829c6ec6c37ad674b3908aa4053fd8714b3c635e71dc743f"
+    },
+    "chr2-annotation_complement.seq.aceapex.g4096.archive": {
+      "bytes": 601157,
+      "sha256": "0de710341a0caf8c5500b91948d9aabd09cd7cf49e11bb330f1e93fddd3c8233"
+    },
+    "chr2-annotation_complement.seq.zstd-seekable.g4096.archive": {
+      "bytes": 766341,
+      "sha256": "05d9986eb5d83c608fa174ad1b5b747f52edbe2352ebd5ef3c22c64078cced4b"
+    },
+    "chr14-centromeric_HOR.seq.aceapex.g4096.archive": {
+      "bytes": 108892,
+      "sha256": "9a6a323de3ffd5dac4176fb0bf191a526c1ce227be4f8f77073cf96852691d0e"
+    },
+    "chr14-centromeric_HOR.seq.zstd-seekable.g4096.archive": {
+      "bytes": 229307,
+      "sha256": "d0d6bec98ec50e07077566c7b8ecb5377993292884298a33543b5f6da3906f1a"
+    },
+    "chr14-telomere_context.seq.aceapex.g4096.archive": {
+      "bytes": 578621,
+      "sha256": "5eb6a3cb99afd4b8031fdd90f7bb536c8357e4782c9c7641cd9c95055bbadd95"
+    },
+    "chr14-telomere_context.seq.zstd-seekable.g4096.archive": {
+      "bytes": 731314,
+      "sha256": "edf0d368f8dd29823d215d4b09146872ca7d9304d0ac7e216410dbde946e34f0"
+    },
+    "chr14-annotation_complement.seq.aceapex.g4096.archive": {
+      "bytes": 604342,
+      "sha256": "f9bb67cb96e419d333670ffcb7bea1f3a7f1c7369b1c4bba5f7de422f92bf578"
+    },
+    "chr14-annotation_complement.seq.zstd-seekable.g4096.archive": {
+      "bytes": 769957,
+      "sha256": "87513749e8bbbdbae5f85f44da372430381cde5e5460fabcbb5b452cd27008f8"
+    },
+    "chr9-centromeric_HOR.seq.aceapex.g4096.archive": {
+      "bytes": 165214,
+      "sha256": "f3a01564dcbd7855cb05ac6215c86967ce3192041817f93eb907a30a833cd55d"
+    },
+    "chr9-centromeric_HOR.seq.zstd-seekable.g4096.archive": {
+      "bytes": 240589,
+      "sha256": "3f76be0e384aa1d9d30266b4d54b498b79f3f2675aeeb754cdbd336c01213f8e"
+    },
+    "chr9-telomere_context.seq.aceapex.g4096.archive": {
+      "bytes": 598084,
+      "sha256": "409a3f6dfa9cd6fe397b6dc00b7059b621a5f1df734128a518e668ce302d8f39"
+    },
+    "chr9-telomere_context.seq.zstd-seekable.g4096.archive": {
+      "bytes": 760463,
+      "sha256": "8eddffe9969652fc4d1e921ddf9f7751f08a4f7d79ee926151ba37a3a71443ee"
+    },
+    "chr9-annotation_complement.seq.aceapex.g4096.archive": {
+      "bytes": 600641,
+      "sha256": "2f9b5ff7531d333123517994889875d0acdfe1b1bf0c067cd988005b4e8a60ea"
+    },
+    "chr9-annotation_complement.seq.zstd-seekable.g4096.archive": {
+      "bytes": 766268,
+      "sha256": "5ed148fc54061f0bdb1ef689430be96dba14509b29dba9409b5579ed56949b49"
+    },
+    "chr4-centromeric_HOR.seq.aceapex.g4096.archive": {
+      "bytes": 200079,
+      "sha256": "2319d066e84b3cc96335dadb334fde527463087464b3c5e5b567203b25417b1c"
+    },
+    "chr4-centromeric_HOR.seq.zstd-seekable.g4096.archive": {
+      "bytes": 302940,
+      "sha256": "ee8c1db2c821f4f09048b4a765b65955a64eb37ccddfc558280980f0007400a2"
+    },
+    "chr4-telomere_context.seq.aceapex.g4096.archive": {
+      "bytes": 580542,
+      "sha256": "640eeab10dad7bcf5310008f76534582c58de49537685044e820e6a109668d89"
+    },
+    "chr4-telomere_context.seq.zstd-seekable.g4096.archive": {
+      "bytes": 727458,
+      "sha256": "8b21a330191a2c68491749a4471f260d19a5f00e3c7fc4e5d3c9aba75d337f75"
+    },
+    "chr4-annotation_complement.seq.aceapex.g4096.archive": {
+      "bytes": 603677,
+      "sha256": "02794661ffe4e3a84a2d1be4252d9851bdb63af781a44dedf561e0d2af04443b"
+    },
+    "chr4-annotation_complement.seq.zstd-seekable.g4096.archive": {
+      "bytes": 768188,
+      "sha256": "ab2875f286f06fbd8abf791ae59a0d8ad9d04de82596f710167a4071f7ce7ec8"
+    },
+    "chr20-centromeric_HOR.seq.aceapex.g4096.archive": {
+      "bytes": 164865,
+      "sha256": "4148b9aab82fa1c1585290bd6d5db4d2e50c37a0c7c93ef6f17fc6fcf3bc4284"
+    },
+    "chr20-centromeric_HOR.seq.zstd-seekable.g4096.archive": {
+      "bytes": 275175,
+      "sha256": "18ca0d44d13307b976dccd9d76349b396321e24b207b6c8d35d1074d191abd4d"
+    },
+    "chr20-telomere_context.seq.aceapex.g4096.archive": {
+      "bytes": 571524,
+      "sha256": "133e8ca40e3cd47cc61d49c81884bbb3387d36404fdddb323dddbd84ed6817b0"
+    },
+    "chr20-telomere_context.seq.zstd-seekable.g4096.archive": {
+      "bytes": 719549,
+      "sha256": "a960cb2c0661c01331d85d496541165c3c791e468b90986d02cb69be6fdbbc29"
+    },
+    "chr20-annotation_complement.seq.aceapex.g4096.archive": {
+      "bytes": 600878,
+      "sha256": "6b1276ffcc3033c5cb0413f0fdbe67f63f0afeb797399fbb38e468f13d4bd33c"
+    },
+    "chr20-annotation_complement.seq.zstd-seekable.g4096.archive": {
+      "bytes": 760601,
+      "sha256": "297c3c849f096684914e33fcec3359f00f7d5b304ce7374e824ef896c9c39aae"
+    },
+    "chr22-centromeric_HOR.seq.aceapex.g4096.archive": {
+      "bytes": 130372,
+      "sha256": "8d1df43706b3d4f4cf169ca49e21877827cdbf35bfe2b74ad19c709427151143"
+    },
+    "chr22-centromeric_HOR.seq.zstd-seekable.g4096.archive": {
+      "bytes": 240338,
+      "sha256": "624cc2b6421c0d4970aecdda26960c60d1442770eca88a4489d9a6be16a2f586"
+    },
+    "chr22-telomere_context.seq.aceapex.g4096.archive": {
+      "bytes": 584318,
+      "sha256": "8b4569692b1043d8e04157764010270367c13819c49cb089116f633f0a937cc4"
+    },
+    "chr22-telomere_context.seq.zstd-seekable.g4096.archive": {
+      "bytes": 730351,
+      "sha256": "983f1aa0faa6d06d77f2d3bdf07f2ac788cc68fb925e956758524e37c9d5fce0"
+    },
+    "chr22-annotation_complement.seq.aceapex.g4096.archive": {
+      "bytes": 600188,
+      "sha256": "13aeb3301c7f685d194db7c069c3d815be28c4568b482f8d1cb6622a7b14fd59"
+    },
+    "chr22-annotation_complement.seq.zstd-seekable.g4096.archive": {
+      "bytes": 765668,
+      "sha256": "734af23b7f0cb79db103572e35b0bd95f566c3a622bc7b6b1644c896880865e7"
+    },
+    "chr7-centromeric_HOR.seq.aceapex.g4096.archive": {
+      "bytes": 87714,
+      "sha256": "f9c19e3649a2ee4f273c97e80f00c2d23031fbbd82046d36a13124bd85130e44"
+    },
+    "chr7-centromeric_HOR.seq.zstd-seekable.g4096.archive": {
+      "bytes": 163908,
+      "sha256": "52cff3b71dedf036228f7c7b799e359252081f04dd5ad46a417fe7527b84c286"
+    },
+    "chr7-telomere_context.seq.aceapex.g4096.archive": {
+      "bytes": 571740,
+      "sha256": "139d4ff33ac1a54539e2c2f0fae3f2b9a02704717eea6898ceb1e4bf666d2567"
+    },
+    "chr7-telomere_context.seq.zstd-seekable.g4096.archive": {
+      "bytes": 720099,
+      "sha256": "46723c1c79f645220d9a48b4690c1d0aed6b50934d941037ce1b39691e023393"
+    },
+    "chr7-annotation_complement.seq.aceapex.g4096.archive": {
+      "bytes": 602520,
+      "sha256": "05f3b848d67337dc47a66f96a7641d1df3e5a84850389e1f953d3a7e7e69bbce"
+    },
+    "chr7-annotation_complement.seq.zstd-seekable.g4096.archive": {
+      "bytes": 768529,
+      "sha256": "fa6bc9a5caf0cebe50d3831cd4018c0f036fc94e3bd14e02fdf446ad7e395a02"
+    },
+    "chr11-centromeric_HOR.seq.aceapex.g4096.archive": {
+      "bytes": 144150,
+      "sha256": "17ad7777c3045a8de281c7c20393384be2b5addc396b6f5717857363165051fe"
+    },
+    "chr11-centromeric_HOR.seq.zstd-seekable.g4096.archive": {
+      "bytes": 226099,
+      "sha256": "e67e8250193e3496243b538badd74c1d857e5a9eaf2f4c276b4418be379ee782"
+    },
+    "chr11-telomere_context.seq.aceapex.g4096.archive": {
+      "bytes": 563520,
+      "sha256": "fece2f228ffc71e0324205d2af6fd0e0666907a179192752353c1c5015ac9292"
+    },
+    "chr11-telomere_context.seq.zstd-seekable.g4096.archive": {
+      "bytes": 704120,
+      "sha256": "4d62745c2a549cd66e8bb30887afc77a014654e06ce145b9f4224badba9ac9a6"
+    },
+    "chr11-annotation_complement.seq.aceapex.g4096.archive": {
+      "bytes": 602276,
+      "sha256": "f1713edbd5fdaf0fb09246f61429aefee5db9b4a089c0d3a8583f7da83deaa39"
+    },
+    "chr11-annotation_complement.seq.zstd-seekable.g4096.archive": {
+      "bytes": 768309,
+      "sha256": "9902afaee5b5eb0351347479af21714f4fbf3243ef1562cbddcc6e51815de696"
+    },
+    "chr5-centromeric_HOR.seq.aceapex.g4096.archive": {
+      "bytes": 140124,
+      "sha256": "71a9a90f80a0278fa0c06042b55eca1c536abc15a2498f0076374c4aacdc1f41"
+    },
+    "chr5-centromeric_HOR.seq.zstd-seekable.g4096.archive": {
+      "bytes": 215626,
+      "sha256": "5b1b351634f8854e5029d16f368eacfd46f6b85a7537cce51fdf06da87331c8c"
+    },
+    "chr5-telomere_context.seq.aceapex.g4096.archive": {
+      "bytes": 596434,
+      "sha256": "acee7f583616b96fc645b4b9d4cd3bafc735962a6629ca95240b5d5fdd75e59a"
+    },
+    "chr5-telomere_context.seq.zstd-seekable.g4096.archive": {
+      "bytes": 746466,
+      "sha256": "23abe85c09a73f725c2f244285b3b4b15e44dd9d4f1e7f07201c8b79aad4f3e1"
+    },
+    "chr5-annotation_complement.seq.aceapex.g4096.archive": {
+      "bytes": 600416,
+      "sha256": "ab7987877566ef85ca1541d310f9453e676b1ef52ca10ea7846d534f07ea330b"
+    },
+    "chr5-annotation_complement.seq.zstd-seekable.g4096.archive": {
+      "bytes": 764154,
+      "sha256": "11c5550b5d780776de532cc15a604f9148a3b6d581c7b9a28c288cd6bf857aca"
+    },
+    "chr19-centromeric_HOR.seq.aceapex.g4096.archive": {
+      "bytes": 123534,
+      "sha256": "beffd61db4eb98e1588282b6546763e768945aa51cd407d6b6fb0d388dad3be2"
+    },
+    "chr19-centromeric_HOR.seq.zstd-seekable.g4096.archive": {
+      "bytes": 173208,
+      "sha256": "bf9e06bd0e95d3b3f4096f6c779e579cb6a9d5a14b53bf58b1ecb0e9b02efc70"
+    },
+    "chr19-telomere_context.seq.aceapex.g4096.archive": {
+      "bytes": 597433,
+      "sha256": "66238c04f16e39d1a92b7a8fad140008849b483a7ac35a8b1138c91fe7c2aed9"
+    },
+    "chr19-telomere_context.seq.zstd-seekable.g4096.archive": {
+      "bytes": 747550,
+      "sha256": "4e8fbc2c033501b7b3fdc33c421cbcea19a5c1447f1d7fce6acfabd1078d28d0"
+    },
+    "chr19-annotation_complement.seq.aceapex.g4096.archive": {
+      "bytes": 590891,
+      "sha256": "96b5e1aa88f4baf9abc54d370d638880c1ab4e224c555873885af9461ffe8c6e"
+    },
+    "chr19-annotation_complement.seq.zstd-seekable.g4096.archive": {
+      "bytes": 730338,
+      "sha256": "9abbb99dff8325b599fba05594832a263d7e8841fd6edf5a89240d77480467b9"
+    },
+    "chr2-centromeric_HOR.seq.aceapex.g65536.archive": {
+      "bytes": 58677,
+      "sha256": "0e843ab6f031b5566e036d8a45543cc6891dfe5eeaa965042115cdfcac4503a7"
+    },
+    "chr2-centromeric_HOR.seq.zstd-seekable.g65536.archive": {
+      "bytes": 60149,
+      "sha256": "3179e9e65bbff67c3b6425fef206f39c32e1f6eab11c221d2a47d8ef1b5ae633"
+    },
+    "chr2-telomere_context.seq.aceapex.g65536.archive": {
+      "bytes": 548610,
+      "sha256": "4d48cf7213c0c7d1f2411886c8536db91d9684bd81d0aeb1d35b31980f7e764f"
+    },
+    "chr2-telomere_context.seq.zstd-seekable.g65536.archive": {
+      "bytes": 679785,
+      "sha256": "0f20a9fbd69e2fc8b6f307e31b70e20d8559b80d551664dc4333e7e715e432b3"
+    },
+    "chr2-annotation_complement.seq.aceapex.g65536.archive": {
+      "bytes": 569690,
+      "sha256": "5ffb41e72db07b713e7ea25faa77af25966209be6fd1cf9cfda82cd0ced7a97e"
+    },
+    "chr2-annotation_complement.seq.zstd-seekable.g65536.archive": {
+      "bytes": 704997,
+      "sha256": "df489f5ce6a438045aca29c1c494ca5c9e97b3cd7566d5a6fc89e8c2d5d06b59"
+    },
+    "chr14-centromeric_HOR.seq.aceapex.g65536.archive": {
+      "bytes": 25222,
+      "sha256": "39bcd5b494a9f2e183891d8ef86f4df2274cb559880487da2bc6627210a0200d"
+    },
+    "chr14-centromeric_HOR.seq.zstd-seekable.g65536.archive": {
+      "bytes": 33178,
+      "sha256": "8e6d28dd01c15872b577ce6327b9148b9e6adcc7b4f32709920573652125e0ed"
+    },
+    "chr14-telomere_context.seq.aceapex.g65536.archive": {
+      "bytes": 536219,
+      "sha256": "96a2d00ce2daff6b256f842091196deafc69732e8e3a90e9d13944d26c43c4c4"
+    },
+    "chr14-telomere_context.seq.zstd-seekable.g65536.archive": {
+      "bytes": 643227,
+      "sha256": "5191009823b670bbfebee11e7d3f7385f6b42c43155ee8f6f31f0b1b32bc99f2"
+    },
+    "chr14-annotation_complement.seq.aceapex.g65536.archive": {
+      "bytes": 572966,
+      "sha256": "99af6371717a9322878e6881eca6d0a41b6f313cd76e9b8cf27eb49d3477d24c"
+    },
+    "chr14-annotation_complement.seq.zstd-seekable.g65536.archive": {
+      "bytes": 710998,
+      "sha256": "c42e5dbba3aa9f152f90771acd71fb97958881be72826bffae8940bf646b2f36"
+    },
+    "chr9-centromeric_HOR.seq.aceapex.g65536.archive": {
+      "bytes": 39765,
+      "sha256": "6f879938bb7aa0239b9f69707c5a83ea4b90f902af68f5dabf68a23e69b28603"
+    },
+    "chr9-centromeric_HOR.seq.zstd-seekable.g65536.archive": {
+      "bytes": 44726,
+      "sha256": "e2d68df00c12cdd9102ce2e5532126554186b9138d8d19811677d7b14400facf"
+    },
+    "chr9-telomere_context.seq.aceapex.g65536.archive": {
+      "bytes": 566640,
+      "sha256": "ba72d1b4e7cb7cf5a86210a2eed2ffca762fd09877840852d70b8eda353b810a"
+    },
+    "chr9-telomere_context.seq.zstd-seekable.g65536.archive": {
+      "bytes": 699559,
+      "sha256": "6b2cd59ff9582c8d080834695a7f10eb71c8b03fa90403fee45157e1961daefc"
+    },
+    "chr9-annotation_complement.seq.aceapex.g65536.archive": {
+      "bytes": 569179,
+      "sha256": "76ab24e6c096b88184d804d99dc83b8d23099dd1307c4e56e21552cff9b85093"
+    },
+    "chr9-annotation_complement.seq.zstd-seekable.g65536.archive": {
+      "bytes": 706906,
+      "sha256": "f8e5a7e8be887d487fe37d755b2e9b96c6069859fea88df7af78f4f8818cf4e5"
+    },
+    "chr4-centromeric_HOR.seq.aceapex.g65536.archive": {
+      "bytes": 36159,
+      "sha256": "223fe977f4fcd155bf9f921f341e3c9ca97776e2b49216d0a2a10c4add9c5de8"
+    },
+    "chr4-centromeric_HOR.seq.zstd-seekable.g65536.archive": {
+      "bytes": 36149,
+      "sha256": "e747f8ca43620070e910667e5d77fc9d5f4d1a616a61604b1918fc900c7f9782"
+    },
+    "chr4-telomere_context.seq.aceapex.g65536.archive": {
+      "bytes": 547661,
+      "sha256": "0cc68542e905591b087de1bdd96a6bf2976cb5d06865394b0c85e96356213ed4"
+    },
+    "chr4-telomere_context.seq.zstd-seekable.g65536.archive": {
+      "bytes": 666396,
+      "sha256": "a05cd8d4d2d5f9d9925060174714a40a0ef598ee82bbf0e1a143e088729f1b3d"
+    },
+    "chr4-annotation_complement.seq.aceapex.g65536.archive": {
+      "bytes": 572370,
+      "sha256": "a1708ae461628f8c5345af70dd98df4e59a5358056de1c40e30cf0b12c19e412"
+    },
+    "chr4-annotation_complement.seq.zstd-seekable.g65536.archive": {
+      "bytes": 709619,
+      "sha256": "e9db33d662da8135f7885fe108b85c474d54a2616f9eb6fe05c977349fd8fe78"
+    },
+    "chr20-centromeric_HOR.seq.aceapex.g65536.archive": {
+      "bytes": 37925,
+      "sha256": "140150819ba4712eeb6f75a8595aa36d3a68d48ccdce4b0a8c29f66ae6ccd8b7"
+    },
+    "chr20-centromeric_HOR.seq.zstd-seekable.g65536.archive": {
+      "bytes": 40190,
+      "sha256": "e349a0a85a42c38faf47599c010ea8e97cd235bf26b610009f833b5e43418e61"
+    },
+    "chr20-telomere_context.seq.aceapex.g65536.archive": {
+      "bytes": 539888,
+      "sha256": "9493ec86d10e325ee4b84057308f7e036b5df02e5d062c95437967d594fa2911"
+    },
+    "chr20-telomere_context.seq.zstd-seekable.g65536.archive": {
+      "bytes": 660429,
+      "sha256": "e7d11a819eaa0f0071c27bef56098f1c3b5b1f85831c9726e5fbad871c16ed7b"
+    },
+    "chr20-annotation_complement.seq.aceapex.g65536.archive": {
+      "bytes": 568287,
+      "sha256": "db14f233fa9081c69e6c8628874adc5e80860b1b95e63b58c21166d0cc7ce342"
+    },
+    "chr20-annotation_complement.seq.zstd-seekable.g65536.archive": {
+      "bytes": 691107,
+      "sha256": "4d7ba145c405fcee4489ee51e01d35ff14d7f59b4682a77743de904b6a2ecf88"
+    },
+    "chr22-centromeric_HOR.seq.aceapex.g65536.archive": {
+      "bytes": 32751,
+      "sha256": "b22e4e3093f6f41256866a9c234fc16e5435815a293cdfd4e604851f31e30c9e"
+    },
+    "chr22-centromeric_HOR.seq.zstd-seekable.g65536.archive": {
+      "bytes": 40341,
+      "sha256": "81f3e2828be6adbbca9a6474bb431976c2c9b4bd36a835fb8b22f69c98544129"
+    },
+    "chr22-telomere_context.seq.aceapex.g65536.archive": {
+      "bytes": 552086,
+      "sha256": "9d4f86f92e7cefffba855e534872940523fb2f1f7b72f09f8bd72a1ba44a22bb"
+    },
+    "chr22-telomere_context.seq.zstd-seekable.g65536.archive": {
+      "bytes": 669885,
+      "sha256": "ad2e7843df0c780b2bda320ba72dfe90c6bfb29e5e69e34fdec103626d4dbeff"
+    },
+    "chr22-annotation_complement.seq.aceapex.g65536.archive": {
+      "bytes": 569764,
+      "sha256": "afbdd2e2b3ebc7bf109a60f7ab449e7bc86b8cd47c7651005d50f28ef6b7a973"
+    },
+    "chr22-annotation_complement.seq.zstd-seekable.g65536.archive": {
+      "bytes": 699065,
+      "sha256": "1c5e0aaca67286718dd9a1bfa71550ac2a3f4a1594a429cfc9271954e9711e17"
+    },
+    "chr7-centromeric_HOR.seq.aceapex.g65536.archive": {
+      "bytes": 20561,
+      "sha256": "2be9b4c27cdaf4b6c3e4f3b527d29aadbc253b7ebff8c785d0ea7ce855dad145"
+    },
+    "chr7-centromeric_HOR.seq.zstd-seekable.g65536.archive": {
+      "bytes": 25782,
+      "sha256": "7cc81925b531d336a802a0e7b86686bf0f5dcd79e284d15b96b704f0e9d0fc36"
+    },
+    "chr7-telomere_context.seq.aceapex.g65536.archive": {
+      "bytes": 539634,
+      "sha256": "c2ed1d867e2ab18633ba8810a1d76ea6f4e9fc0bf09dc3c80e615a9e47aab279"
+    },
+    "chr7-telomere_context.seq.zstd-seekable.g65536.archive": {
+      "bytes": 657925,
+      "sha256": "012dd53a63fe382ed33d6e8320a8070ae8304e710b33c95d9416ccfd7f85d3df"
+    },
+    "chr7-annotation_complement.seq.aceapex.g65536.archive": {
+      "bytes": 571340,
+      "sha256": "6491934c5d2f47273053fef5d6f1aa4186621cc892b0416f6fbb422a94baf932"
+    },
+    "chr7-annotation_complement.seq.zstd-seekable.g65536.archive": {
+      "bytes": 708120,
+      "sha256": "2e8395c8240d70fd89fd419185adf92f348daf492679e7c4a77b3ddb1a1ad150"
+    },
+    "chr11-centromeric_HOR.seq.aceapex.g65536.archive": {
+      "bytes": 42861,
+      "sha256": "589bd3bd5ec8e6f91a588f8892191039e7c8dfd3d102385a92db4ee48ac78e66"
+    },
+    "chr11-centromeric_HOR.seq.zstd-seekable.g65536.archive": {
+      "bytes": 50100,
+      "sha256": "5f7e2f2ebb7fe5f0491c3d1f70d4b9958e7588091b58fbc4abffcb0c7a4d358b"
+    },
+    "chr11-telomere_context.seq.aceapex.g65536.archive": {
+      "bytes": 528769,
+      "sha256": "82ac8da43392516c8b5637f88dd4ff151eaa5f75d129f2e22a9bc531ed3426a7"
+    },
+    "chr11-telomere_context.seq.zstd-seekable.g65536.archive": {
+      "bytes": 640960,
+      "sha256": "17591432773719168a0d7d5bc85526daded2523ca8669d4a65aa978b70762b5a"
+    },
+    "chr11-annotation_complement.seq.aceapex.g65536.archive": {
+      "bytes": 570824,
+      "sha256": "7dea2e08e92c187e191ca32c0a70ea8f339ff3240a4d3e6175063365ddd837c6"
+    },
+    "chr11-annotation_complement.seq.zstd-seekable.g65536.archive": {
+      "bytes": 707673,
+      "sha256": "3e097aa4e52807eb0444bc1555167a410b0a1475ba5ec24b8cedb01243315d3f"
+    },
+    "chr5-centromeric_HOR.seq.aceapex.g65536.archive": {
+      "bytes": 39710,
+      "sha256": "a562278b7b34b3bcc8d7c6c9a07cbeec07fcacfc3ed4ba18f9d4395e7f73f9fd"
+    },
+    "chr5-centromeric_HOR.seq.zstd-seekable.g65536.archive": {
+      "bytes": 45380,
+      "sha256": "37fc219a4e75e6e226d5fbd1f4087a3005af6b6daca10f6352ff48bc3522fba6"
+    },
+    "chr5-telomere_context.seq.aceapex.g65536.archive": {
+      "bytes": 562422,
+      "sha256": "88a445cafd16b64b15995c608de78502d52be6bd6c1b2021a0c6e4e64e7f327a"
+    },
+    "chr5-telomere_context.seq.zstd-seekable.g65536.archive": {
+      "bytes": 676632,
+      "sha256": "ab8b2f8d6476645bad56bd6df4712bc6ac2f2847dae1d0bb9d0049bda811907c"
+    },
+    "chr5-annotation_complement.seq.aceapex.g65536.archive": {
+      "bytes": 568735,
+      "sha256": "b4909f1fe08194aa18301ffbfb332c48115a8017c2f5b92ed13aa44fdd924f3c"
+    },
+    "chr5-annotation_complement.seq.zstd-seekable.g65536.archive": {
+      "bytes": 701735,
+      "sha256": "743b7a163ee3f88c9edaa05ab6f51d02c7adcc754d10d378f73737454aad48eb"
+    },
+    "chr19-centromeric_HOR.seq.aceapex.g65536.archive": {
+      "bytes": 49616,
+      "sha256": "bbd3996f92a45b28b053d6c696e049368502b8e43a175e050fb9800eb5222184"
+    },
+    "chr19-centromeric_HOR.seq.zstd-seekable.g65536.archive": {
+      "bytes": 58067,
+      "sha256": "01906c71d4ab96a4eacf6da59ec4dd77a98bb436fb7c4757b037293cd98fe060"
+    },
+    "chr19-telomere_context.seq.aceapex.g65536.archive": {
+      "bytes": 565377,
+      "sha256": "09b43cb41452291ad0924a371d84d47d63e10799c58724bb5844ac34034881a9"
+    },
+    "chr19-telomere_context.seq.zstd-seekable.g65536.archive": {
+      "bytes": 673624,
+      "sha256": "4346a51bcb2aa2bf974f54b95778be2110aa8bc5a507cd7c7b7c0978d1d839ae"
+    },
+    "chr19-annotation_complement.seq.aceapex.g65536.archive": {
+      "bytes": 558761,
+      "sha256": "77b82f658193bc8f56a9fcb63b8c7b21c84eba0d4db907343f3393e6e23b8546"
+    },
+    "chr19-annotation_complement.seq.zstd-seekable.g65536.archive": {
+      "bytes": 642029,
+      "sha256": "06bd36352f994435590b7dc0a2394aa60de1b6117a25eb4974bdeaf7eb7b4909"
+    },
+    "chr2-centromeric_HOR.seq.aceapex.g262144.archive": {
+      "bytes": 51152,
+      "sha256": "249f50c4bfd21170c3862872fb362315453624164b2bbf6a6ae0382441575943"
+    },
+    "chr2-centromeric_HOR.seq.zstd-seekable.g262144.archive": {
+      "bytes": 50500,
+      "sha256": "b8183f6b8fb69ff2dbc72353ac212face3efafa448e2a13d466e29632f683d56"
+    },
+    "chr2-telomere_context.seq.aceapex.g262144.archive": {
+      "bytes": 547012,
+      "sha256": "60daa5c597e7947181c32f542f7daf7cb60b67f71ca77f15439b7ba10484f3a5"
+    },
+    "chr2-telomere_context.seq.zstd-seekable.g262144.archive": {
+      "bytes": 684703,
+      "sha256": "ba3af2fd981f3862e19a2cbff785de171316b8c49cb313572b5a7540d293daf5"
+    },
+    "chr2-annotation_complement.seq.aceapex.g262144.archive": {
+      "bytes": 568087,
+      "sha256": "c35759b6f688c16eaeab0e5551c5bf785bb4cc5e920e9f5381c05824545ad2fc"
+    },
+    "chr2-annotation_complement.seq.zstd-seekable.g262144.archive": {
+      "bytes": 706999,
+      "sha256": "f0d972cf8dbf8a1581cf96d172845aae7641156580608b7e730946edbce64ebb"
+    },
+    "chr14-centromeric_HOR.seq.aceapex.g262144.archive": {
+      "bytes": 17964,
+      "sha256": "982e7192546a175325e5f53078f36dce7736398ee5f1be16f147648ba9db9f69"
+    },
+    "chr14-centromeric_HOR.seq.zstd-seekable.g262144.archive": {
+      "bytes": 22767,
+      "sha256": "9757fc98ee3c256de15f66dd395f4fa80d01077f9ebf80d905483bfabc9a92dd"
+    },
+    "chr14-telomere_context.seq.aceapex.g262144.archive": {
+      "bytes": 528865,
+      "sha256": "0941ab2a0207810193c6291f645f5fafd23f2520bf5c7f1c55027525fc57077e"
+    },
+    "chr14-telomere_context.seq.zstd-seekable.g262144.archive": {
+      "bytes": 630272,
+      "sha256": "8367a5bec6dbb78c67bfc9fc2b06257ceb1a5e0dad173ee69bd1c96ad441d04d"
+    },
+    "chr14-annotation_complement.seq.aceapex.g262144.archive": {
+      "bytes": 571455,
+      "sha256": "d17c00c0bb45317972e6e8144cc7bf316c7670a3da409c3b5a0fcc6f2e59c7b1"
+    },
+    "chr14-annotation_complement.seq.zstd-seekable.g262144.archive": {
+      "bytes": 714863,
+      "sha256": "d6473624b63dfdfdb293cd7cc5f40bc49b8f099e01a67cd175c982ac330c9e7f"
+    },
+    "chr9-centromeric_HOR.seq.aceapex.g262144.archive": {
+      "bytes": 29326,
+      "sha256": "421e4fdb59c6598519260a9fd7b96e7e14d7e45aa36eb43a7c4a1194a84cb1d9"
+    },
+    "chr9-centromeric_HOR.seq.zstd-seekable.g262144.archive": {
+      "bytes": 32853,
+      "sha256": "706cff8c5e8745211246ec6275db1802234e7e09d1dcb26059458631974eacc9"
+    },
+    "chr9-telomere_context.seq.aceapex.g262144.archive": {
+      "bytes": 565104,
+      "sha256": "a89e99f018306fd092bffcc329ecc6464d2174c192549211861b5e02fabd6ba6"
+    },
+    "chr9-telomere_context.seq.zstd-seekable.g262144.archive": {
+      "bytes": 703254,
+      "sha256": "83f1d3300d376c81e08c1a934c5c07fbc8b9981e31807861ed2983aec635e55b"
+    },
+    "chr9-annotation_complement.seq.aceapex.g262144.archive": {
+      "bytes": 567521,
+      "sha256": "0ec1f44f8465875b4cd2eb1afd833ba417dd800dfbebaafda945a93d22f1b0a2"
+    },
+    "chr9-annotation_complement.seq.zstd-seekable.g262144.archive": {
+      "bytes": 710996,
+      "sha256": "6a7f0d9cc045f5967d03939076fee8cdb1cc12210866d19b4c0e958f854b54b5"
+    },
+    "chr4-centromeric_HOR.seq.aceapex.g262144.archive": {
+      "bytes": 21874,
+      "sha256": "d7d59c9b59f419c34904171fd290debea762328c10aeb8f28bcce6d10e0e7bfe"
+    },
+    "chr4-centromeric_HOR.seq.zstd-seekable.g262144.archive": {
+      "bytes": 22291,
+      "sha256": "504a66ba42b2fc1fb045cfa4b892983348a3f11431e271cbb3417f2a6bc47613"
+    },
+    "chr4-telomere_context.seq.aceapex.g262144.archive": {
+      "bytes": 546190,
+      "sha256": "668f24013f459ad1686d3d7f98d33d04f5b0481fa13dba6afced15200b8feccf"
+    },
+    "chr4-telomere_context.seq.zstd-seekable.g262144.archive": {
+      "bytes": 667852,
+      "sha256": "7d85ad7205774b07ae4114cf9db61f75074732bee39cff60adac6d42ef5f126e"
+    },
+    "chr4-annotation_complement.seq.aceapex.g262144.archive": {
+      "bytes": 570773,
+      "sha256": "b9dfad9abff0a0f43d7f8a8a84099ed736fd6e15252a07ecedd3f13d91a6e493"
+    },
+    "chr4-annotation_complement.seq.zstd-seekable.g262144.archive": {
+      "bytes": 710661,
+      "sha256": "336448b9e3cf63134d778a31eaae57f0b2bef909392180562142039021bf37cb"
+    },
+    "chr20-centromeric_HOR.seq.aceapex.g262144.archive": {
+      "bytes": 27689,
+      "sha256": "ef46bb6f32d0600e417da29880824f7a5a5da58ccf197d5e6a2090ec7bf7a426"
+    },
+    "chr20-centromeric_HOR.seq.zstd-seekable.g262144.archive": {
+      "bytes": 29322,
+      "sha256": "48a210b4aad83cd4acdd4eb8de05908a52aae26ce8961d2d580ca85984220eac"
+    },
+    "chr20-telomere_context.seq.aceapex.g262144.archive": {
+      "bytes": 538150,
+      "sha256": "4d6741d0d95e0914aa5826090c04e9fe0de44ea9f07f64bf59198d75c22da9ca"
+    },
+    "chr20-telomere_context.seq.zstd-seekable.g262144.archive": {
+      "bytes": 662725,
+      "sha256": "9c1633093d6835aaf23ac996517742dcc45e28b7f37efb31bf6a0fb069b3d86e"
+    },
+    "chr20-annotation_complement.seq.aceapex.g262144.archive": {
+      "bytes": 567374,
+      "sha256": "3227e7702112606e9b2db5ee0c7a6383459feddb413a58f4101778c3a045c30c"
+    },
+    "chr20-annotation_complement.seq.zstd-seekable.g262144.archive": {
+      "bytes": 695865,
+      "sha256": "d6e4815e7930133edd72d3b75ef8f550245db9bf979ee8ad9de4a65a4e312e03"
+    },
+    "chr22-centromeric_HOR.seq.aceapex.g262144.archive": {
+      "bytes": 24667,
+      "sha256": "9ce3bf90d4136b055b45c2ecc03aae745ad01f5f0f6e9c05a35e947b3adacc6e"
+    },
+    "chr22-centromeric_HOR.seq.zstd-seekable.g262144.archive": {
+      "bytes": 29586,
+      "sha256": "c91a310e6114c10602b041986b19b4a4b7d35c75ee66bc2ab29d82a0eee31b75"
+    },
+    "chr22-telomere_context.seq.aceapex.g262144.archive": {
+      "bytes": 550116,
+      "sha256": "192eabc59caf560ab99511c5a6919be78f0c5fc74f108d545c3d8d7dc4fc592b"
+    },
+    "chr22-telomere_context.seq.zstd-seekable.g262144.archive": {
+      "bytes": 674580,
+      "sha256": "8d733a9a95324c794dce59191a7a891fba942cda15b11a19cab63ca8ef25c0ef"
+    },
+    "chr22-annotation_complement.seq.aceapex.g262144.archive": {
+      "bytes": 567694,
+      "sha256": "132c4787f93b037a11f0eca576ba9cdaffe4248e0dbaf6e959d55632abcddd09"
+    },
+    "chr22-annotation_complement.seq.zstd-seekable.g262144.archive": {
+      "bytes": 704667,
+      "sha256": "12a870d773dbb663b5dd858638783bb46098623b22da8f4c02eb710a31de8d93"
+    },
+    "chr7-centromeric_HOR.seq.aceapex.g262144.archive": {
+      "bytes": 15387,
+      "sha256": "26ec3ed86a28ef5d354d636657fada51d355a0ebc83d274391d6289226fee29b"
+    },
+    "chr7-centromeric_HOR.seq.zstd-seekable.g262144.archive": {
+      "bytes": 18429,
+      "sha256": "a78bbe613bfb54084fba70685dc34363a20c9f99f83259512dc0607d8594b097"
+    },
+    "chr7-telomere_context.seq.aceapex.g262144.archive": {
+      "bytes": 538300,
+      "sha256": "4c266a4e9909435f9be6faffd5c41a9f8fa1f48befa4bec28d75bec1af8464a7"
+    },
+    "chr7-telomere_context.seq.zstd-seekable.g262144.archive": {
+      "bytes": 661793,
+      "sha256": "87e5c714f7fa57c1ab872771cb31e97d0e9c71033061748254a44cb4ea5ee634"
+    },
+    "chr7-annotation_complement.seq.aceapex.g262144.archive": {
+      "bytes": 569745,
+      "sha256": "71af808c672de5fabb78aabe2ef65864cbf41b2b78a6e7691a9cc74e3662d204"
+    },
+    "chr7-annotation_complement.seq.zstd-seekable.g262144.archive": {
+      "bytes": 710396,
+      "sha256": "3ff39abad5fc7d0d4d91a55da9f4589450c957767b14299a6b138a223bb29af7"
+    },
+    "chr11-centromeric_HOR.seq.aceapex.g262144.archive": {
+      "bytes": 34764,
+      "sha256": "af8ec12cfb6c5824bc1b75fd6db32cca27b4c8e479413e622167de8e7dce466f"
+    },
+    "chr11-centromeric_HOR.seq.zstd-seekable.g262144.archive": {
+      "bytes": 39949,
+      "sha256": "b7a9b4c0ecbee68ff74002b579b7404235bd0b4ab8382299b711a9058edc0ac4"
+    },
+    "chr11-telomere_context.seq.aceapex.g262144.archive": {
+      "bytes": 526862,
+      "sha256": "8c77c90a510baddaa5fdc7ac55083d561bfb36ef9bad350ae265980af4d8e47a"
+    },
+    "chr11-telomere_context.seq.zstd-seekable.g262144.archive": {
+      "bytes": 644822,
+      "sha256": "fc6e6c594a0f5c04cafd8eb559837507393db8d06aee38cb4784abf679a4c5d8"
+    },
+    "chr11-annotation_complement.seq.aceapex.g262144.archive": {
+      "bytes": 569180,
+      "sha256": "fc3e34e1e7586654a489d864457f42d220142af051f84718197257d4acc1a485"
+    },
+    "chr11-annotation_complement.seq.zstd-seekable.g262144.archive": {
+      "bytes": 711873,
+      "sha256": "f14f21d93a93a8e88bfd608c8fdb405a3a76e7c3f66bafa46f999589e22a5f39"
+    },
+    "chr5-centromeric_HOR.seq.aceapex.g262144.archive": {
+      "bytes": 30050,
+      "sha256": "743bd8e50183b9293a878b34b5aecadb079dfbcccaee15e7d52ddc5259d10d39"
+    },
+    "chr5-centromeric_HOR.seq.zstd-seekable.g262144.archive": {
+      "bytes": 32968,
+      "sha256": "b92da66081342d5f078deadd69a02f04d404bd8726e043817eff95b8c37724b4"
+    },
+    "chr5-telomere_context.seq.aceapex.g262144.archive": {
+      "bytes": 561184,
+      "sha256": "f190ae516206845a8f9d3d3670cc99f83aa0e28b5a9a6ca83f8d407b75c59e55"
+    },
+    "chr5-telomere_context.seq.zstd-seekable.g262144.archive": {
+      "bytes": 680697,
+      "sha256": "84007b68c49093db218576942b083476b7d69ebe74a6c8508443f888c06987cc"
+    },
+    "chr5-annotation_complement.seq.aceapex.g262144.archive": {
+      "bytes": 567187,
+      "sha256": "4378c390634b3c6aaafe793d15ccc7d1f4b68d01b87725ec85ff3ea23f662400"
+    },
+    "chr5-annotation_complement.seq.zstd-seekable.g262144.archive": {
+      "bytes": 704968,
+      "sha256": "dfce8146b20095a8d4f8a0a3a991e28c3513d9feba88e28fa1c395545862a4e7"
+    },
+    "chr19-centromeric_HOR.seq.aceapex.g262144.archive": {
+      "bytes": 44120,
+      "sha256": "f97ddd7ceb94dc8aacd6cdfaa2282c8f7f30f9f3df09a5f1e243fb703abbd3f7"
+    },
+    "chr19-centromeric_HOR.seq.zstd-seekable.g262144.archive": {
+      "bytes": 52221,
+      "sha256": "0ccf5a2e825b66703546a2c93854ccfe2841bee212ebf7625f82e6e9f9d6cc70"
+    },
+    "chr19-telomere_context.seq.aceapex.g262144.archive": {
+      "bytes": 562699,
+      "sha256": "3618784b9771b4c3dcf14fb8cdb188c686ef7e57809720456e06433516ac9418"
+    },
+    "chr19-telomere_context.seq.zstd-seekable.g262144.archive": {
+      "bytes": 677461,
+      "sha256": "40e963b8b43c13b3b6d6b64285429aa8edf2135485273d961d0ebdba27e980e7"
+    },
+    "chr19-annotation_complement.seq.aceapex.g262144.archive": {
+      "bytes": 557336,
+      "sha256": "f0c17f1df1952de813daf7560ee4829c917b88ce8767c9dec983bccc8dc264b9"
+    },
+    "chr19-annotation_complement.seq.zstd-seekable.g262144.archive": {
+      "bytes": 639691,
+      "sha256": "a901c083ef1e412857646102d7cc2add75da3867cd10e5aa1381ab6b4618f8ab"
+    },
+    "chr2-centromeric_HOR.seq.aceapex.g1048576.archive": {
+      "bytes": 44881,
+      "sha256": "6a52dc8f7e493bde0aaf53919ad01dd0cf64bb4a7188f0ac2edc5650a5dfb32c"
+    },
+    "chr2-centromeric_HOR.seq.zstd-seekable.g1048576.archive": {
+      "bytes": 42161,
+      "sha256": "fe36df65e53062080394dd9be281b6e48f2c9b435e599ae0b5832b78bb37df0a"
+    },
+    "chr2-telomere_context.seq.aceapex.g1048576.archive": {
+      "bytes": 546570,
+      "sha256": "b6edcb16735962f5869f18a53c4695dfae6f33b0a1690bbfc004340273c67fc6"
+    },
+    "chr2-telomere_context.seq.zstd-seekable.g1048576.archive": {
+      "bytes": 652821,
+      "sha256": "1e5927c7dad13ee52b61397a200054412940584e8e7a69cc7ba8182f954600a1"
+    },
+    "chr2-annotation_complement.seq.aceapex.g1048576.archive": {
+      "bytes": 567706,
+      "sha256": "a6d59f9f59167324fb3b92cc5b1baa9909bc8a087033fbcc443ab362201cc308"
+    },
+    "chr2-annotation_complement.seq.zstd-seekable.g1048576.archive": {
+      "bytes": 670186,
+      "sha256": "6b49ccda27e212f362e4282c182126d9f5bba99465bdf95746c43988796af394"
+    },
+    "chr14-centromeric_HOR.seq.aceapex.g1048576.archive": {
+      "bytes": 15549,
+      "sha256": "dffa8d94fecb84905745d57e3c4ec7b0b748cadeebe5df7ebf947bc5c2857665"
+    },
+    "chr14-centromeric_HOR.seq.zstd-seekable.g1048576.archive": {
+      "bytes": 19086,
+      "sha256": "af5ced4f37b20a29fd0d7e79c3f43d693fc5a9731f30cbe9aec0b8c2432f317f"
+    },
+    "chr14-telomere_context.seq.aceapex.g1048576.archive": {
+      "bytes": 521682,
+      "sha256": "6729008a401c403d1c69b0387a0d0176838a8d8374e7af9b87a04e4013d86963"
+    },
+    "chr14-telomere_context.seq.zstd-seekable.g1048576.archive": {
+      "bytes": 576511,
+      "sha256": "7053cbcb501b9017515166f5c72670c612c70207fb8673b70e19a0a2221dc47d"
+    },
+    "chr14-annotation_complement.seq.aceapex.g1048576.archive": {
+      "bytes": 570918,
+      "sha256": "987f3cf9fe5d2c9037bef3c16bd6a8f17685f239e9e76f26340eb63d01901e69"
+    },
+    "chr14-annotation_complement.seq.zstd-seekable.g1048576.archive": {
+      "bytes": 676940,
+      "sha256": "8d006312637a0bb210a489f2502ca9ab8972a0557108fa75d85d54ed9237a885"
+    },
+    "chr9-centromeric_HOR.seq.aceapex.g1048576.archive": {
+      "bytes": 25944,
+      "sha256": "dd480ec9070dc7ab35804fb83d9c8d331ff1f6f101f5da4dbb9b5afca4c39385"
+    },
+    "chr9-centromeric_HOR.seq.zstd-seekable.g1048576.archive": {
+      "bytes": 29295,
+      "sha256": "e87cdbcc5e99d9e33fc0448a7f6f793ddfa472fae6f598e5a515e5b7174789f5"
+    },
+    "chr9-telomere_context.seq.aceapex.g1048576.archive": {
+      "bytes": 564779,
+      "sha256": "2c5d7389f0088581a7bc207a3aaf2ff09e559525f0850a6eff04cb66fa53348c"
+    },
+    "chr9-telomere_context.seq.zstd-seekable.g1048576.archive": {
+      "bytes": 664836,
+      "sha256": "42a790e9ac8c3dc052bc74cac45911e56d04ea8a4a3dd1d3397b95134b7993ca"
+    },
+    "chr9-annotation_complement.seq.aceapex.g1048576.archive": {
+      "bytes": 567172,
+      "sha256": "5944cb579e2b14200e9acbefa225be62b7141d7af397e54ab913a399f9f12391"
+    },
+    "chr9-annotation_complement.seq.zstd-seekable.g1048576.archive": {
+      "bytes": 671453,
+      "sha256": "3d651f77ac036ba39a4b4c6bb952f53fc37cb1ad89d7d0f0101beb53a8e62c18"
+    },
+    "chr4-centromeric_HOR.seq.aceapex.g1048576.archive": {
+      "bytes": 18029,
+      "sha256": "e1cbc946528a4de835c9488b660d6f970db1016af843fbded7e398c8269c8c8e"
+    },
+    "chr4-centromeric_HOR.seq.zstd-seekable.g1048576.archive": {
+      "bytes": 17894,
+      "sha256": "dde24aeb57b7d1eefe8dc05066103b5a7111066cbf580406d46a43c5e6b911e9"
+    },
+    "chr4-telomere_context.seq.aceapex.g1048576.archive": {
+      "bytes": 545815,
+      "sha256": "a2d08e9434cf388b858e1ea460499ef7bf3bf06fd5fa6475c124d709bfb6532b"
+    },
+    "chr4-telomere_context.seq.zstd-seekable.g1048576.archive": {
+      "bytes": 636265,
+      "sha256": "d7fb0fef2cd172d41111bbf1d6fd64fdac5f15c37028930faac3dceff4ded29d"
+    },
+    "chr4-annotation_complement.seq.aceapex.g1048576.archive": {
+      "bytes": 570429,
+      "sha256": "c0325235b71db813dfda042fab6042219b9b0d377de296597034b8ad8fbc0ccc"
+    },
+    "chr4-annotation_complement.seq.zstd-seekable.g1048576.archive": {
+      "bytes": 670723,
+      "sha256": "0d539ecc4d4bb12ffb834d98a1b2c346264450815cba032af06b3ac0c7e19e08"
+    },
+    "chr20-centromeric_HOR.seq.aceapex.g1048576.archive": {
+      "bytes": 24759,
+      "sha256": "6971c6b878256566c1847630dfa4225c9b581348ea21f0e1782434ac1d95777a"
+    },
+    "chr20-centromeric_HOR.seq.zstd-seekable.g1048576.archive": {
+      "bytes": 26166,
+      "sha256": "ff90b858051e94059dfeebd6d8d2a2b337164108605aba0cb2aad5166739e24d"
+    },
+    "chr20-telomere_context.seq.aceapex.g1048576.archive": {
+      "bytes": 537705,
+      "sha256": "bac03631e805a9605e938d76db124e10be3a08bd9724a260499864d5da04e210"
+    },
+    "chr20-telomere_context.seq.zstd-seekable.g1048576.archive": {
+      "bytes": 637208,
+      "sha256": "69655b470996f5da07a8015b255e4afb7ab3be0009f066b34aa9d46b97b4d405"
+    },
+    "chr20-annotation_complement.seq.aceapex.g1048576.archive": {
+      "bytes": 566794,
+      "sha256": "2fb92a74087dbe542f2139285cd832e4abd1896600811ffcca639a15535bf003"
+    },
+    "chr20-annotation_complement.seq.zstd-seekable.g1048576.archive": {
+      "bytes": 661133,
+      "sha256": "fcc50e7b69660bba330393eb6cbfad09129feb27450ecfdea4194cf2ef9b7786"
+    },
+    "chr22-centromeric_HOR.seq.aceapex.g1048576.archive": {
+      "bytes": 21446,
+      "sha256": "607a845d3bd4844e11cdb10f579eacfbcd5bdd602c33116cbb862bfb0ff43f05"
+    },
+    "chr22-centromeric_HOR.seq.zstd-seekable.g1048576.archive": {
+      "bytes": 25833,
+      "sha256": "4a0df3a3ea6d8b4950ee22ee1b4a17a12ee486b649c23b43d315cdf803420dfe"
+    },
+    "chr22-telomere_context.seq.aceapex.g1048576.archive": {
+      "bytes": 550210,
+      "sha256": "6eba039868b57b73594390c1f9fce94f4b3cd072a5d5bbfbe03fb8c8d4091100"
+    },
+    "chr22-telomere_context.seq.zstd-seekable.g1048576.archive": {
+      "bytes": 646524,
+      "sha256": "e9130c28084f4861ef1adc04aa78dc7e54b5cbe7259e7fcf0d143b9f6d5430f3"
+    },
+    "chr22-annotation_complement.seq.aceapex.g1048576.archive": {
+      "bytes": 567131,
+      "sha256": "c503217c9c3a608ade50d6f491fc23827ecdfecde1963b833d6247d78b34a74e"
+    },
+    "chr22-annotation_complement.seq.zstd-seekable.g1048576.archive": {
+      "bytes": 669349,
+      "sha256": "3412c7c0a8f9855a67cf0ace11916c432ceeb9a785f7fb0f06990125e3191bbb"
+    },
+    "chr7-centromeric_HOR.seq.aceapex.g1048576.archive": {
+      "bytes": 13960,
+      "sha256": "6ca37b65157f4f49e969a45edc37440608653a7717ec85023af9eb363cdc9ff2"
+    },
+    "chr7-centromeric_HOR.seq.zstd-seekable.g1048576.archive": {
+      "bytes": 16585,
+      "sha256": "5cb046623efb6c7cc89a4651137d72ff951836ac772f34dc2881e99c04fe38ca"
+    },
+    "chr7-telomere_context.seq.aceapex.g1048576.archive": {
+      "bytes": 537946,
+      "sha256": "656f998a1773fbc8b1c19b952c6592f667de9ac9aa197a254e88f18786de423e"
+    },
+    "chr7-telomere_context.seq.zstd-seekable.g1048576.archive": {
+      "bytes": 634675,
+      "sha256": "d1f9fa8bd108dabd3d366a45eaa50e747ee0252dd78e021bbca63a1017d1794d"
+    },
+    "chr7-annotation_complement.seq.aceapex.g1048576.archive": {
+      "bytes": 569293,
+      "sha256": "4b5244b4c64d91fd781ccd5605f23213a0b7544e832779471be0d8d578f7b13d"
+    },
+    "chr7-annotation_complement.seq.zstd-seekable.g1048576.archive": {
+      "bytes": 672633,
+      "sha256": "e3f81a430848f32cc9f1969904444134f05c8c8b353bb60e001d59bb2b50bde5"
+    },
+    "chr11-centromeric_HOR.seq.aceapex.g1048576.archive": {
+      "bytes": 31619,
+      "sha256": "4797e23e01fe44381c92e05bca0989c783474753882307f71a56733690727d49"
+    },
+    "chr11-centromeric_HOR.seq.zstd-seekable.g1048576.archive": {
+      "bytes": 35285,
+      "sha256": "b09b533048b5d631e36d45665fdc6e8e509f22b787807b5a57d555d238dffdd3"
+    },
+    "chr11-telomere_context.seq.aceapex.g1048576.archive": {
+      "bytes": 526501,
+      "sha256": "41fdeae9404d08b50305f209faf2e120737ddbf7c07bd7123e7979eb4cabebeb"
+    },
+    "chr11-telomere_context.seq.zstd-seekable.g1048576.archive": {
+      "bytes": 619584,
+      "sha256": "fe0dc231f621464a4dc42bbd12f2319e8bf920a25f021c72a99bf0c60ee00ebe"
+    },
+    "chr11-annotation_complement.seq.aceapex.g1048576.archive": {
+      "bytes": 568845,
+      "sha256": "71944b06d50824d09e38c891e56949e9633e67c08a1acb60ce5792d5eeb7c28d"
+    },
+    "chr11-annotation_complement.seq.zstd-seekable.g1048576.archive": {
+      "bytes": 672948,
+      "sha256": "f4592e8025f5444b13467d1dd59b4c82b9245559d077d3c03e87aa3ae23091f3"
+    },
+    "chr5-centromeric_HOR.seq.aceapex.g1048576.archive": {
+      "bytes": 27977,
+      "sha256": "eba966fcac4e8d64163194b1b7756d0d3f404fd59a63978f77baf86f08f3d395"
+    },
+    "chr5-centromeric_HOR.seq.zstd-seekable.g1048576.archive": {
+      "bytes": 31513,
+      "sha256": "f4da867558812c156e9bd207edb4ac0c5492084f7fb769413f09cd6d9ddbda2e"
+    },
+    "chr5-telomere_context.seq.aceapex.g1048576.archive": {
+      "bytes": 560524,
+      "sha256": "4aecd97bd85b34e4eb66aeeb801a7937afe301e45252f241eff27b41d9a71937"
+    },
+    "chr5-telomere_context.seq.zstd-seekable.g1048576.archive": {
+      "bytes": 648526,
+      "sha256": "5b2ba12287279a944842b8fc261c8bdf79b9ea9fb3119342cd5e6d0ed7025ae2"
+    },
+    "chr5-annotation_complement.seq.aceapex.g1048576.archive": {
+      "bytes": 567051,
+      "sha256": "75262e1684d8bc1b0e0d7ab2030139b8a6442de1c8c53cc0acf99844a6664432"
+    },
+    "chr5-annotation_complement.seq.zstd-seekable.g1048576.archive": {
+      "bytes": 668663,
+      "sha256": "986c9325d6ee7e0662c90f78c10ea8cb1e6d829869d0ef26d07897e99382ca83"
+    },
+    "chr19-centromeric_HOR.seq.aceapex.g1048576.archive": {
+      "bytes": 42176,
+      "sha256": "d5a593554937cfd4dfe48365e1fdc3f4837f7f2b5640f6cfa1d7761ab91beac6"
+    },
+    "chr19-centromeric_HOR.seq.zstd-seekable.g1048576.archive": {
+      "bytes": 49552,
+      "sha256": "cc175fef96fda9fe187a415a8c6a431e01ab2abd86a3c2edf972f68903cada72"
+    },
+    "chr19-telomere_context.seq.aceapex.g1048576.archive": {
+      "bytes": 562153,
+      "sha256": "29c9cecf8e22770b4d3e71959121192453da59ea1edf26c95f3b851543e0baaa"
+    },
+    "chr19-telomere_context.seq.zstd-seekable.g1048576.archive": {
+      "bytes": 646055,
+      "sha256": "ca0112bdc2dd77c6f845790cae8a8bdf9d4b9a0afb114d15f340ee6cacb37477"
+    },
+    "chr19-annotation_complement.seq.aceapex.g1048576.archive": {
+      "bytes": 556834,
+      "sha256": "4167029ec1fdab6748ee4e754acdf1967629e8938d18e3f3f8817b6b33b08c3e"
+    },
+    "chr19-annotation_complement.seq.zstd-seekable.g1048576.archive": {
+      "bytes": 613343,
+      "sha256": "cabac50834bfa6e7cdff4307e6c2df6880c6f5bfd072e2975df32a140d868a32"
+    }
+  }
+}

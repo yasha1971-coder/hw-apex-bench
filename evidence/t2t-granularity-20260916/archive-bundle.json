@@ -1,0 +1,9 @@
+{
+  "filename": "t2t-granularity-archives-20260916.zip",
+  "bytes": 196470262,
+  "sha256": "b2bcd29790221f7ddd2ed36e0656f07fc5f5efc21833d00f063a101dac32a0d5",
+  "archives": 300,
+  "inputs": 30,
+  "restores": 300,
+  "historical_byte_identical_archives": 60
+}

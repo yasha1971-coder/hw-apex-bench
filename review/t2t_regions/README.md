@@ -41,3 +41,39 @@ part of the result. Plain sequence windows are not whole-FASTA byte slices.
 
 `python3 review/t2t_regions/summarize.py` regenerates the standalone report from
 retained rows, without invoking codecs. Historical results.jsonl is untouched.
+
+## Five-granularity sweep on the frozen inputs
+
+Use the same build above and the exact 30 `.seq` files, checked against the
+retained manifest. Do not draw new windows. The sweep runs 16 KiB first and
+requires all 60 archive hashes to match the pilot before continuing to
+4, 64, 256 KiB and 1 MiB. BGZF remains the verified fixed baseline.
+
+```bash
+python3 review/t2t_regions/sweep.py --inputs .work/t2t-replay-windows \
+  --build .work/t2t-rebuild --out .work/t2t-sweep-results
+python3 review/t2t_regions/summarize_sweep.py \
+  --measurement .work/t2t-sweep-results --inputs .work/t2t-replay-windows \
+  --bundle /tmp/t2t-granularity-archives.zip
+```
+
+The second command validates archive geometry/hashes, input identities and
+logs, then writes the separate sweep evidence and generated report. It requires
+a new bundle path. Use an isolated working directory outside live two-way file
+sync while measuring, and transfer closed artifacts afterward.
+
+This measures full-file ratios, not timings or c(g). ACE metadata is decomposed
+into the 68-byte header, 64-byte block entries and four compressed streams.
+zstd seek tables and trailing empty frames stay in the stored-byte denominator.
+
+Verify retained rows/logs and optional raw archive bundle without measurements:
+
+```bash
+python3 review/t2t_regions/verify_sweep.py /path/to/t2t-granularity-archives-20260916.zip
+```
+
+`audit_sweep_replay.py FIRST_RUN SECOND_RUN` compares all 300 actual archive
+files in two independent runs and records their hashes. The published sweep
+uses the second run: nine first-run log files no longer matched their recorded
+hashes after completion. Both runs' actual archives match, and all accepted-run
+logs are intact. This repeat concerns density only, not reproducible timings.
