@@ -1074,3 +1074,19 @@ needs representation, input-size-dependent hash settings, integer/memory bounds
 and single-block feasibility review. Recommended complementary experiment is
 preregistered uniform length-matched T2T windows, not immediate whole-genome
 extrapolation. No new windows or whole-genome measurements started.
+
+## Chromosome protocol recorded; no run — 2026-09-16
+
+At user's request, recorded docs/T2T_CHROMOSOME_PROTOCOL.md without changing
+codecs or results. PR43 head before this documentation follow-up was
+26a81f0651ab9a7de7294b4c54caf7094ae937f1; it remains a review gate, not merged.
+The zstd1.5.7 reference seekable encoder has a1GiB decompressed-frame limit;
+small-input diagnostic accepted1073741824 and rejected1073741825 (exit11).
+Full T2T's single-frame baseline is unavailable through this unchanged encoder.
+Proposed complete-assembly coverage is per chromosome/FASTA sequence, with a
+single-block baseline per sequence and byte-summed aggregate C_sequences(g).
+Base-only extraction preserves case/symbols and includes every source record;
+do not relabel this as original-FASTA-byte coverage or whole-file c(g).
+No new corpus download, compression measurement, codec patch or PR merge in
+this checkpoint. Next action remains protocol/curve review, then a separately
+authorized bounded execution stage. Hecate/AGC references temper novelty claims.
