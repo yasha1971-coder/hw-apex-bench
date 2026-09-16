@@ -6,7 +6,7 @@ Commands run from the repository root.
 |---|---|
 | How do I run a measurement? | [Adapter guide](ADAPTERS.md) |
 | How do I add my codec? | [Contributing](../CONTRIBUTING.md), [XZ example](../codecs/xz.sh) |
-| Which corpus bytes are used? | [Corpus identity and admission](CORPORA.md) |
+| Which corpus bytes are used? | [Corpus identity and admission](CORPORA.md), [T2T regional experiment](T2T_REGIONS.md) |
 | What do these axes mean? | [Axes explained](AXES.md) |
 | Exactly what was measured? | [Method](METHOD.md), [configurations](CODECS.md) |
 | Can I reproduce this claim? | [Provenance](PROVENANCE.md), [audits](AUDITS/README.md) |
