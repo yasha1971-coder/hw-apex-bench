@@ -1,0 +1,17 @@
+[*] Compress: /tmp/t2t-sweep-verify.aQ4VCE/inputs/chr2-telomere_context.seq (2.10 MB) threads=8
+  Original:          2097152 bytes
+  Compressed:         546494 bytes
+  Ratio:  3.83747x
+  Phase LZ77:    0.049s
+  Phase lit/zstd:0.022s
+  Phase FSE:     0.008s
+  Phase fread:   0.000s
+  Phase sha256:  0.000s
+  Phase other:   0.000s
+  Encode: 26.37 MB/s  (0.080s)
+  XXH3:   51d74c7755214d1d
+[*] Decompress: /tmp/t2t-sweep-verify.aQ4VCE/measurement-isolated/chr2-telomere_context.seq.aceapex.g65536.archive -> /tmp/t2t-sweep-verify.aQ4VCE/measurement-isolated/chr2-telomere_context.seq.aceapex.g65536.restored
+  Phase entropy (4 streams in parallel): 0.028s
+  Phase lz77: 0.010s
+  Decode: 55.17 MB/s  (0.038s, algorithmic)
+  Decode wall: 48.86 MB/s  (0.043s, wall clock)

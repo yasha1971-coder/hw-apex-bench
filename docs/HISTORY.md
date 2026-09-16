@@ -1017,3 +1017,31 @@ Post-upload byte comparison caught CRLF normalization in the NCBI assembly
 report only. Restore its exact original blob; add review/t2t_regions/verify.py
 to verify source hashes, all90 retained log/row identities and the optional
 archive bundle. Numerical results and source coordinates are unaffected.
+
+## T2T granularity sweep and BGZF geometry audit — 2026-09-16
+
+Based on main f78cb1d81e69155a9624c53d4f57044841993da7 (pilot PR40 and
+raw-byte repair PR41). Same 30 frozen 2 MiB windows, ACE4915321 and zstd1.5.7,
+4/16/64/256/1024 KiB; BGZF fixed. All300 archives restored byte-exactly;
+all60 at16KiB match the pilot. A repeat in isolated temporary input/output
+directories reproduced all300 actual archive hashes. Nine first-run log files
+changed after completion; cause not established. Only intact second-run logs
+are accepted; replay-audit.json discloses this. No historical timing rerun.
+
+BGZF actual BSIZE/ISIZE inspection: every baseline archive contains32 blocks
+of65280 uncompressed bytes, an8192-byte tail and empty EOF. Comparable, not
+identical, to ACE65536 (0.392% larger). HOR64KiB ratio54.721 vs BGZF41.617:
+31.5% higher ratio /23.9% smaller archive, ACE wins10/10. At16KiB the prior
+30.3% size loss remains valid for that cross-preset comparison, not an inherent
+centromere weakness. ACE beats zstd aggregate ratio at all five sizes. Do not
+claim absence of weaknesses in general or a measured random-access advantage.
+
+HOR16KiB->1MiB savings:390412 bytes, metadata80640 (20.7%), streams309772
+(79.3%). Density sweep, not c(g), timings, or proof of one causal mechanism.
+Evidence: evidence/t2t-granularity-20260916; generated report:
+docs/RESULTS/T2T_GRANULARITY_20260916.md. ZIP196470262 bytes, SHA256
+b2bcd29790221f7ddd2ed36e0656f07fc5f5efc21833d00f063a101dac32a0d5,
+t2t-granularity-archives-20260916.zip, saved as a separate downloadable artifact.
+Checks: sweep verifier/bundle audit, publication435 digest validation, Pages
+build and local Markdown links. Root results, old evidence, tag and DOI unchanged.
+Next bounded action: review the standalone sweep PR; no additional measurements.

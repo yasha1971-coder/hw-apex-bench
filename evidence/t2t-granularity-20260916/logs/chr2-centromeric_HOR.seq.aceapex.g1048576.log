@@ -1,0 +1,17 @@
+[*] Compress: /tmp/t2t-sweep-verify.aQ4VCE/inputs/chr2-centromeric_HOR.seq (2.10 MB) threads=8
+  Original:          2097152 bytes
+  Compressed:          44685 bytes
+  Ratio:  46.93190x
+  Phase LZ77:    0.091s
+  Phase lit/zstd:0.002s
+  Phase FSE:     0.002s
+  Phase fread:   0.000s
+  Phase sha256:  0.000s
+  Phase other:   0.000s
+  Encode: 22.11 MB/s  (0.095s)
+  XXH3:   abf0da4a5a64d3dc
+[*] Decompress: /tmp/t2t-sweep-verify.aQ4VCE/measurement-isolated/chr2-centromeric_HOR.seq.aceapex.g1048576.archive -> /tmp/t2t-sweep-verify.aQ4VCE/measurement-isolated/chr2-centromeric_HOR.seq.aceapex.g1048576.restored
+  Phase entropy (4 streams in parallel): 0.015s
+  Phase lz77: 0.003s
+  Decode: 116.28 MB/s  (0.018s, algorithmic)
+  Decode wall: 105.86 MB/s  (0.020s, wall clock)

@@ -18,3 +18,8 @@ XZ qualification is documented in [ADAPTERS](../ADAPTERS.md).
 
 Separate follow-up: [T2T regional density, 2026-09-16](T2T_REGIONS_20260916.md),
 30 windows / 90 restored archives; not part of the historical 435-row snapshot.
+
+[T2T granularity sweep and BGZF block audit](T2T_GRANULARITY_20260916.md):
+same 30 windows, five block/frame sizes, 300 restored archives. At comparable
+approximately64KiB blocks, ACEAPEX's HOR ratio exceeds BGZF's; the earlier
+16KiB cross-preset loss is retained and explained, not generalized to the codec.

@@ -1,0 +1,17 @@
+[*] Compress: /tmp/t2t-sweep-verify.aQ4VCE/inputs/chr2-annotation_complement.seq (2.10 MB) threads=8
+  Original:          2097152 bytes
+  Compressed:         567838 bytes
+  Ratio:  3.69322x
+  Phase LZ77:    0.058s
+  Phase lit/zstd:0.013s
+  Phase FSE:     0.002s
+  Phase fread:   0.000s
+  Phase sha256:  0.000s
+  Phase other:   0.000s
+  Encode: 28.66 MB/s  (0.073s)
+  XXH3:   d27455abdceba2a4
+[*] Decompress: /tmp/t2t-sweep-verify.aQ4VCE/measurement-isolated/chr2-annotation_complement.seq.aceapex.g16384.archive -> /tmp/t2t-sweep-verify.aQ4VCE/measurement-isolated/chr2-annotation_complement.seq.aceapex.g16384.restored
+  Phase entropy (4 streams in parallel): 0.032s
+  Phase lz77: 0.010s
+  Decode: 50.46 MB/s  (0.042s, algorithmic)
+  Decode wall: 42.66 MB/s  (0.049s, wall clock)
