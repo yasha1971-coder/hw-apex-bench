@@ -4,5 +4,18 @@
     "url": "https://hgdownload.soe.ucsc.edu/goldenPath/hg38/chromosomes/chr1.fa.gz",
     "md5": "9465e0f0df6e2c6eb39729c39cee5465",
     "md5_scope": "uncompressed FASTA"
+  },
+  "t2t_chm13v2_0": {
+    "id": "t2t-chm13v2.0-fasta",
+    "assembly_accession": "GCA_009914755.4",
+    "url": "https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/009/914/755/GCA_009914755.4_T2T-CHM13v2.0/GCA_009914755.4_T2T-CHM13v2.0_genomic.fna.gz",
+    "md5": "cd1e52ce400c027ed0b7ab4b9d613f5a",
+    "md5_scope": "uncompressed FASTA",
+    "uncompressed_bytes": 3156259565,
+    "download_bytes": 932696125,
+    "verification_status": "owner-reported; independent download verification pending",
+    "preparation": "gzip decompression only; preserve all FASTA bytes",
+    "download_md5": "9280657210e4161147cbe13b022225b9",
+    "download_md5_source": "https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/009/914/755/GCA_009914755.4_T2T-CHM13v2.0/md5checksums.txt"
   }
 }
