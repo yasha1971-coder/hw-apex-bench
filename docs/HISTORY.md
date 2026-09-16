@@ -1045,3 +1045,32 @@ t2t-granularity-archives-20260916.zip, saved as a separate downloadable artifact
 Checks: sweep verifier/bundle audit, publication435 digest validation, Pages
 build and local Markdown links. Root results, old evidence, tag and DOI unchanged.
 Next bounded action: review the standalone sweep PR; no additional measurements.
+
+## Window-local c(g) baseline completion — 2026-09-16
+
+PR42 merged as9af68d7aa6f160d10aad52374face85014755843. User authorized next
+bounded stage. No matched whole-T2T curve is present; the old curve uses hg38
+chr1 and ACEee5a37e. Do not conflate it with T2T/4915321 or owner CLI stream ratios.
+Added60 one-whole-window baselines (2MiB), each restored exactly and encoded
+again:60/60 actual archive SHA256 matches. Reused all300 prior sweep records.
+Same binary hashes and settings; literal chunks remain65536 in every ACE archive;
+one LZ block, FSE default512KiB. zstd baseline has one nonempty plus one empty
+frame and seek table. Derived300 window c(g) records,30 aggregate points and
+100 chromosome-paired HOR-minus-control differences. No timings measured.
+
+ACE16KiB: HOR60.565%, control1.492%; ACE64KiB:32.422%,0.379%. HOR loss exceeds
+control in10/10 pairs at each g. zstd16KiB:66.681%,9.597%; at256KiB and1MiB
+paired counts drop to9/10 and8/10, retained. BGZF c(g) remains n/a with reason.
+These are losses relative to each codec's own one-window baseline, compatible
+with ACE beating BGZF in fixed-granularity absolute ratio. Not a universal
+weakness/no-weakness conclusion. No whole-T2T curve or priority claim established.
+
+Evidence: evidence/t2t-window-cg-20260916; generated report T2T_WINDOW_CG_20260916.md.
+ZIP t2t-window-cg-baselines-20260916.zip:24671702 bytes, SHA256
+7cfbee511feb11b1acb8fd3d6f518733ab18d4bef48709b85b30d33847416fac.
+Raw baseline bundle saved separately; prior435, pilot90, sweep300, tag/DOI unchanged.
+Next gate: review this complete local curve/audit before merge. Full-T2T work
+needs representation, input-size-dependent hash settings, integer/memory bounds
+and single-block feasibility review. Recommended complementary experiment is
+preregistered uniform length-matched T2T windows, not immediate whole-genome
+extrapolation. No new windows or whole-genome measurements started.

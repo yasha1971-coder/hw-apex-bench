@@ -77,3 +77,25 @@ files in two independent runs and records their hashes. The published sweep
 uses the second run: nine first-run log files no longer matched their recorded
 hashes after completion. Both runs' actual archives match, and all accepted-run
 logs are intact. This repeat concerns density only, not reproducible timings.
+
+## One-window c(g) baselines
+
+No repeat of the five-size sweep is needed. With the same pinned build and
+frozen inputs, run only one whole-window (2 MiB) block/frame per codec:
+
+```bash
+python3 review/t2t_regions/sweep.py --inputs /tmp/t2t-inputs \
+  --build .work/t2t-rebuild --out /tmp/t2t-baseline --baseline-only
+python3 review/t2t_regions/sweep.py --inputs /tmp/t2t-inputs \
+  --build .work/t2t-rebuild --out /tmp/t2t-baseline-repeat --baseline-only
+python3 review/t2t_regions/window_cg.py --baseline-dir /tmp/t2t-baseline \
+  --repeat-dir /tmp/t2t-baseline-repeat --bundle /tmp/t2t-window-baselines.zip
+python3 review/t2t_regions/window_cg.py --verify --bundle /tmp/t2t-window-baselines.zip
+python3 -m unittest discover -s review/t2t_regions -p 'test_window_cg.py'
+```
+
+Use new output directories and a new bundle path. The generator requires
+byte-identical baseline archives in the repeat, same binaries/settings as the
+retained sweep, matching input identities, a single LZ block/nonempty frame
+and unchanged ACE literal-chunk policy. It emits window-local c(g), not a
+whole-genome curve. Aggregate denominators are sums of separate window archives.
