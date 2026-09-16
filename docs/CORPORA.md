@@ -18,7 +18,7 @@ with HTTP errors treated as failures, decompress, then verify both expanded
 size and MD5 before any codec runs. These expected values were supplied from
 ace-core; no independent full download or benchmark was performed here.
 
-## ERR174310: local candidate, not admitted to the catalog
+## ERR174310: source-resolved byte-prefix recipe
 
 The owner's input is the first 5,368,709,120 bytes of the uncompressed
 `ERR174310_1.fastq`, not paired files, not concatenated mates, and not a prefix
@@ -36,13 +36,19 @@ returned this source for mate 1:
 - Compressed bytes: 18,575,686,207.
 - Compressed MD5: `b6099227bfb6d15c97395975eeeccd28`.
 
-These are ENA metadata, not a verified identity match to the owner's July file.
+A streamed gzip-prefix check on 2026-09-16 matched the owner's first
+104,857,600 expanded bytes exactly: MD5 `366e770acdf9892b9c5611fdeba9e6e6`
+and first line `@ERR174310.1 HSQ1008_141:5:1101:1454:3564/1`.
+See the [prefix receipt](../review/err174310-prefix-100mib.json).
+The stream was closed at the prefix boundary; the full gzip CRC and the
+5 GiB prefix were not verified. ENA metadata alone did not establish this match.
 A matching accession alone does not establish identical serialized FASTQ bytes.
-Before admission, retrieve the source, verify its checksum, decompress without
+Before measurement, retrieve the source, verify its checksum, decompress without
 rewriting records, and verify the exact prefix size and MD5 above. A mismatch
-must be reported as a different input, never silently substituted. Until that
-check passes, ERR174310 remains absent from corpora.json. No large download
-was started during this catalog update.
+must be reported as a different input, never silently substituted. The catalog now records this source and prefix recipe following the successful
+100 MiB check. The full-prefix MD5 remains owner-reported, not independently
+verified; do not measure an input until its size and MD5 pass. Only the compressed data needed to expand the first 100 MiB was read in this
+follow-up; the full 18.6 GB compressed source was not downloaded.
 
 ## Cross-host interpretation
 

@@ -1,0 +1,14 @@
+{
+  "url": "https://ftp.sra.ebi.ac.uk/vol1/fastq/ERR174/ERR174310/ERR174310_1.fastq.gz",
+  "uncompressed_bytes": 104857600,
+  "first_line": "@ERR174310.1 HSQ1008_141:5:1101:1454:3564/1",
+  "md5": "366e770acdf9892b9c5611fdeba9e6e6",
+  "expected_md5": "366e770acdf9892b9c5611fdeba9e6e6",
+  "match": true,
+  "gzip_whole_file_crc_verified": false,
+  "schema": "hw-apex-prefix-identity-v1",
+  "checked_at_utc": "2026-09-16T11:08:38.982259+00:00",
+  "scope": "first 104857600 decompressed bytes only; not proof of the 5 GiB prefix",
+  "expected_first_line": "@ERR174310.1 HSQ1008_141:5:1101:1454:3564/1",
+  "first_line_match": true
+}

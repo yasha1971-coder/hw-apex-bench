@@ -973,3 +973,19 @@ has not been matched to the owner's July file: keep it outside the catalog.
 Exact source metadata, prefix identity and invalid-FASTQ caveat are retained
 in docs/CORPORA.md. No large downloads, benchmarks, data or release changes.
 Cross-host ratios require protocol agreement; transferability is not assumed.
+
+## ERR174310 prefix check and T2T local-ratio preparation — 2026-09-16
+
+Streamed the ENA gzip source until exactly 104857600 expanded bytes. Header
+and MD5 match the owner: 366e770acdf9892b9c5611fdeba9e6e6. Receipt is in
+review/err174310-prefix-100mib.json. This is not a full gzip CRC or 5 GiB
+identity check. Following the requested 100 MiB gate, corpora.json now records
+the ENA source and 5 GiB prefix recipe, with full-prefix verification explicitly
+pending and mandatory before any measurement.
+Fetched official CHM13v2.0 Cen/Sat v2.1 and telomere BED annotations and
+recorded hashes in review/t2t-region-annotation-sources.json. All 50 telomere
+intervals are only 1000–6229 bp, requiring length-matched comparisons.
+Region ratio measurement is not run: exact ace-core ACEAPEX revision and
+settings underlying the reported 3.9% drop are needed; do not substitute
+the historical 1b13df3 adapter and claim it verifies the current codec.
+No published measurements, upstream codec sources, tag or DOI changed.

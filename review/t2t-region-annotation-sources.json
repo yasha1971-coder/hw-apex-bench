@@ -1,0 +1,22 @@
+{
+  "schema": "hw-apex-annotation-source-review-v1",
+  "retrieved_date": "2026-09-16",
+  "source_index": "https://github.com/marbl/CHM13",
+  "files": [
+    {
+      "url": "https://s3-us-west-2.amazonaws.com/human-pangenomics/T2T/CHM13/assemblies/annotation/chm13v2.0_censat_v2.1.bed",
+      "bytes": 194651,
+      "sha256": "2fecb4bddba9c643c259fc8d2136a59ef070a77c2a76c84ee8645c96da562946",
+      "intervals": 2523
+    },
+    {
+      "url": "https://s3-us-west-2.amazonaws.com/human-pangenomics/T2T/CHM13/assemblies/annotation/chm13v2.0_telomere.bed",
+      "bytes": 941,
+      "sha256": "740f65e772bbbfc7e96d0f03b589a492b887aeb1a153b633cd308fcfcce5fdad",
+      "intervals": 50
+    }
+  ],
+  "telomere_interval_bp_min": 1000,
+  "telomere_interval_bp_max": 6229,
+  "measurement_status": "not run; ace-core ACEAPEX revision and configuration unspecified"
+}

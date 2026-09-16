@@ -17,5 +17,20 @@
     "preparation": "gzip decompression only; preserve all FASTA bytes",
     "download_md5": "9280657210e4161147cbe13b022225b9",
     "download_md5_source": "https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/009/914/755/GCA_009914755.4_T2T-CHM13v2.0/md5checksums.txt"
+  },
+  "err174310_1_prefix_5gib": {
+    "id": "err174310-mate1-prefix-5gib-bytes",
+    "url": "https://ftp.sra.ebi.ac.uk/vol1/fastq/ERR174/ERR174310/ERR174310_1.fastq.gz",
+    "md5": "d628e1c9fb9466fcbd82109c3c7f9f10",
+    "md5_scope": "first 5368709120 uncompressed bytes of mate 1 FASTQ",
+    "uncompressed_bytes": 5368709120,
+    "download_bytes": 18575686207,
+    "download_md5": "b6099227bfb6d15c97395975eeeccd28",
+    "preparation": "gzip decompression followed by exact byte prefix; no record rewriting or mate concatenation",
+    "prefix_bytes": 5368709120,
+    "format": "bytes; final FASTQ record truncated",
+    "verification_status": "first 104857600 decompressed bytes verified against owner MD5; complete 5 GiB MD5 remains owner-reported and must be checked before measurement",
+    "verified_prefix_bytes": 104857600,
+    "verified_prefix_md5": "366e770acdf9892b9c5611fdeba9e6e6"
   }
 }
