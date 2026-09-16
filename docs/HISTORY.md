@@ -1011,3 +1011,9 @@ Results/logs/manifest/receipt: evidence/t2t-regions-20260916. Reproduction scrip
 review/t2t_regions. Generated report: docs/RESULTS/T2T_REGIONS_20260916.md.
 Historical435, released tag/DOI and upstream repositories unchanged. This is
 a cross-preset density pilot, not c(g), causation, or a first-ever priority claim.
+
+Regional pilot PR40 merged as e81eee256782e726b1c026a4f38e6e66204d7495.
+Post-upload byte comparison caught CRLF normalization in the NCBI assembly
+report only. Restore its exact original blob; add review/t2t_regions/verify.py
+to verify source hashes, all90 retained log/row identities and the optional
+archive bundle. Numerical results and source coordinates are unaffected.
