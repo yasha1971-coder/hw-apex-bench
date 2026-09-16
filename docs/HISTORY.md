@@ -962,3 +962,14 @@ The exact name/SHA allowlist is review/branch-cleanup-plan.json. A separate
 main-only workflow rechecks open PRs, protection, ancestry and unchanged SHA,
 then deletes atomically with per-ref leases and verifies tags/main unchanged.
 Its receipt is retained as a workflow artifact; no benchmark is involved.
+
+## Corpus catalog admission — 2026-09-16
+
+Based on main a3b58d280c066a616d61a5bfd7e677b88f51beea. Added a versioned
+T2T-CHM13v2.0 URL and owner-reported expanded MD5/size to corpora.json, with
+independent download verification explicitly pending. Default remains chr1.
+ENA metadata resolves ERR174310 mate 1, but its 5 GiB expanded byte prefix
+has not been matched to the owner's July file: keep it outside the catalog.
+Exact source metadata, prefix identity and invalid-FASTQ caveat are retained
+in docs/CORPORA.md. No large downloads, benchmarks, data or release changes.
+Cross-host ratios require protocol agreement; transferability is not assumed.
