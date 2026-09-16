@@ -1,0 +1,17 @@
+[*] Compress: /workspace/scratch/7721ddd65a02/hw-apex-bench-publication/.work/t2t-regions/windows/chr9-telomere_context.seq (2.10 MB) threads=8
+  Original:          2097152 bytes
+  Compressed:         564933 bytes
+  Ratio:  3.71221x
+  Phase LZ77:    0.168s
+  Phase lit/zstd:0.029s
+  Phase FSE:     0.002s
+  Phase fread:   0.000s
+  Phase sha256:  0.000s
+  Phase other:   0.001s
+  Encode: 10.47 MB/s  (0.200s)
+  XXH3:   e7ba41cd2085e8a6
+[*] Decompress: /workspace/scratch/7721ddd65a02/hw-apex-bench-publication/.work/t2t-regions/measurement/chr9-telomere_context.seq.aceapex.archive -> /workspace/scratch/7721ddd65a02/hw-apex-bench-publication/.work/t2t-regions/measurement/chr9-telomere_context.seq.aceapex.restored
+  Phase entropy (4 streams in parallel): 0.023s
+  Phase lz77: 0.009s
+  Decode: 65.44 MB/s  (0.032s, algorithmic)
+  Decode wall: 56.32 MB/s  (0.037s, wall clock)

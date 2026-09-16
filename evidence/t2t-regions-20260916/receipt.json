@@ -1,0 +1,24 @@
+{
+  "schema": "t2t-region-independent-review-v1",
+  "source_uncompressed_bytes": 3156259565,
+  "source_md5": "cd1e52ce400c027ed0b7ab4b9d613f5a",
+  "source_download_md5": "9280657210e4161147cbe13b022225b9",
+  "windows": 30,
+  "window_bytes": 2097152,
+  "independent_coordinate_extraction_matches": 30,
+  "archive_records": 90,
+  "byte_exact_restores": 90,
+  "archive_size_hash_checks": 90,
+  "timing_claims": false,
+  "published_historical_results_sha256": "cb52b8cb9fac484a6474d976681ea85ae2c052d80d820422b7f57c25ec938100",
+  "compiler": "gcc (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0",
+  "dependencies": {
+    "aceapex": "4915321bf118e564ef3883e58927992c7f9d8dc3",
+    "zstd": "f8745da6ff1ad1e7bab384bd1f9d742439278e99",
+    "htslib": "8f7231035d0409d525767c66d9f49f1f967ee1df",
+    "htscodecs": "ffda7310c4b3292955561d6c3b1743cb82bfe26b",
+    "libdeflate": "dd12ff2b36d603dbb7fa8838fe7e7176fcbd4f6f"
+  },
+  "bgzip_build": "minimal Make build with retained config.h HAVE_LIBDEFLATE=1; static libdeflate 1.19; not a configure --with-libdeflate invocation",
+  "ace_source_sha256": "d02841be0bb99d23ce83cff39d93d68ce3f4a9e7d0e5e5f6a954d76598e79919"
+}

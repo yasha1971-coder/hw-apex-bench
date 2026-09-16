@@ -989,3 +989,25 @@ Region ratio measurement is not run: exact ace-core ACEAPEX revision and
 settings underlying the reported 3.9% drop are needed; do not substitute
 the historical 1b13df3 adapter and claim it verifies the current codec.
 No published measurements, upstream codec sources, tag or DOI changed.
+
+## T2T regional ratio pilot completed — 2026-09-16
+
+Owner supplied original ACEAPEX SHA4915321bf118e564ef3883e58927992c7f9d8dc3
+(block16384, threads8, no other overrides). Compared a82b7f1: only decoder
+output allocation changes. Used4915321 with static libzstd1.5.7. Downloaded
+NCBI T2T; compressed MD5/size and expanded3156259565bytes MD5 both verified.
+Frozen seed20260916 selects10 eligible autosomes with >=2MiB contiguous HOR
+arrays, one HOR/terminal/control triplet per chromosome. Base-only windows,
+case preserved,2MiB each. All90 real archives restored byte-exactly; independent
+FASTA byte-offset extraction confirmed30/30 input hashes. No timing claims.
+BGZF htslib1.19/libdeflate1.19 (-l6,8threads), zstd-seekable1.5.7 (-3,16KiB,1thread).
+HOR aggregate ratios ACE31.9322, BGZF41.6171, zstd24.0436; controls3.6433,3.2583,
+2.8595. ACE loses to BGZF on10/10 HOR windows, wins all controls and terminal
+windows; wins against zstd on30/30. Terminal windows contain only0.08–0.18%
+annotated telomere. Do not call this pure-telomere or genome-wide evidence.
+ACE t/c printed ratios omit header/block table; these add8260bytes per window,
+12.58% of HOR archive bytes. Complete archives/indexes remain the metric.
+Results/logs/manifest/receipt: evidence/t2t-regions-20260916. Reproduction scripts:
+review/t2t_regions. Generated report: docs/RESULTS/T2T_REGIONS_20260916.md.
+Historical435, released tag/DOI and upstream repositories unchanged. This is
+a cross-preset density pilot, not c(g), causation, or a first-ever priority claim.

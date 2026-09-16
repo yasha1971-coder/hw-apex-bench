@@ -1,0 +1,354 @@
+{
+  "seed": 20260916,
+  "window_bytes": 2097152,
+  "selection": "10 eligible autosomes sampled without replacement; 5 p and 5 q ends; one triplet per chromosome; random valid control start",
+  "sequence_representation": "bases only; preserve case, remove FASTA headers and line breaks; no concatenation of distant intervals",
+  "source_md5_expected": "cd1e52ce400c027ed0b7ab4b9d613f5a",
+  "annotations": {
+    ".work/t2t-regions/GCA_009914755.4_T2T-CHM13v2.0_assembly_report.txt": "4305c05403b03de8b74ca7c0ba32fa8cbcccb21ee000872285ff5b9e9fe93f58",
+    "/tmp/chm13v2.0_censat_v2.1.bed": "2fecb4bddba9c643c259fc8d2136a59ef070a77c2a76c84ee8645c96da562946",
+    "/tmp/chm13v2.0_telomere.bed": "740f65e772bbbfc7e96d0f03b589a492b887aeb1a153b633cd308fcfcce5fdad"
+  },
+  "windows": [
+    {
+      "chromosome": "chr2",
+      "group": "centromeric_HOR",
+      "start": 92519379,
+      "end": 94616531,
+      "stratum_bounds": [
+        92300802,
+        94695067
+      ],
+      "accession": "CP068276.2",
+      "file": "chr2-centromeric_HOR.seq"
+    },
+    {
+      "chromosome": "chr2",
+      "group": "telomere_context",
+      "start": 0,
+      "end": 2097152,
+      "telomere_interval": [
+        0,
+        3600
+      ],
+      "telomere_fraction": 0.00171661376953125,
+      "arm": "p",
+      "accession": "CP068276.2",
+      "file": "chr2-telomere_context.seq"
+    },
+    {
+      "chromosome": "chr2",
+      "group": "annotation_complement",
+      "start": 160306501,
+      "end": 162403653,
+      "accession": "CP068276.2",
+      "file": "chr2-annotation_complement.seq"
+    },
+    {
+      "chromosome": "chr14",
+      "group": "centromeric_HOR",
+      "start": 10574188,
+      "end": 12671340,
+      "stratum_bounds": [
+        10092112,
+        12708411
+      ],
+      "accession": "CP068264.2",
+      "file": "chr14-centromeric_HOR.seq"
+    },
+    {
+      "chromosome": "chr14",
+      "group": "telomere_context",
+      "start": 99064340,
+      "end": 101161492,
+      "telomere_interval": [
+        101159600,
+        101161492
+      ],
+      "telomere_fraction": 0.0009021759033203125,
+      "arm": "q",
+      "accession": "CP068264.2",
+      "file": "chr14-telomere_context.seq"
+    },
+    {
+      "chromosome": "chr14",
+      "group": "annotation_complement",
+      "start": 34874289,
+      "end": 36971441,
+      "accession": "CP068264.2",
+      "file": "chr14-annotation_complement.seq"
+    },
+    {
+      "chromosome": "chr9",
+      "group": "centromeric_HOR",
+      "start": 45000235,
+      "end": 47097387,
+      "stratum_bounds": [
+        44951775,
+        47582595
+      ],
+      "accession": "CP068269.2",
+      "file": "chr9-centromeric_HOR.seq"
+    },
+    {
+      "chromosome": "chr9",
+      "group": "telomere_context",
+      "start": 0,
+      "end": 2097152,
+      "telomere_interval": [
+        0,
+        3800
+      ],
+      "telomere_fraction": 0.001811981201171875,
+      "arm": "p",
+      "accession": "CP068269.2",
+      "file": "chr9-telomere_context.seq"
+    },
+    {
+      "chromosome": "chr9",
+      "group": "annotation_complement",
+      "start": 26560740,
+      "end": 28657892,
+      "accession": "CP068269.2",
+      "file": "chr9-annotation_complement.seq"
+    },
+    {
+      "chromosome": "chr4",
+      "group": "centromeric_HOR",
+      "start": 52741229,
+      "end": 54838381,
+      "stratum_bounds": [
+        52115486,
+        54870510
+      ],
+      "accession": "CP068274.2",
+      "file": "chr4-centromeric_HOR.seq"
+    },
+    {
+      "chromosome": "chr4",
+      "group": "telomere_context",
+      "start": 0,
+      "end": 2097152,
+      "telomere_interval": [
+        0,
+        3400
+      ],
+      "telomere_fraction": 0.001621246337890625,
+      "arm": "p",
+      "accession": "CP068274.2",
+      "file": "chr4-telomere_context.seq"
+    },
+    {
+      "chromosome": "chr4",
+      "group": "annotation_complement",
+      "start": 99944277,
+      "end": 102041429,
+      "accession": "CP068274.2",
+      "file": "chr4-annotation_complement.seq"
+    },
+    {
+      "chromosome": "chr20",
+      "group": "centromeric_HOR",
+      "start": 26582849,
+      "end": 28680001,
+      "stratum_bounds": [
+        26383658,
+        29521051
+      ],
+      "accession": "CP068258.2",
+      "file": "chr20-centromeric_HOR.seq"
+    },
+    {
+      "chromosome": "chr20",
+      "group": "telomere_context",
+      "start": 64113103,
+      "end": 66210255,
+      "telomere_interval": [
+        66207000,
+        66210255
+      ],
+      "telomere_fraction": 0.0015521049499511719,
+      "arm": "q",
+      "accession": "CP068258.2",
+      "file": "chr20-telomere_context.seq"
+    },
+    {
+      "chromosome": "chr20",
+      "group": "annotation_complement",
+      "start": 4143685,
+      "end": 6240837,
+      "accession": "CP068258.2",
+      "file": "chr20-annotation_complement.seq"
+    },
+    {
+      "chromosome": "chr22",
+      "group": "centromeric_HOR",
+      "start": 12839007,
+      "end": 14936159,
+      "stratum_bounds": [
+        12788180,
+        15711065
+      ],
+      "accession": "CP068256.2",
+      "file": "chr22-centromeric_HOR.seq"
+    },
+    {
+      "chromosome": "chr22",
+      "group": "telomere_context",
+      "start": 49227774,
+      "end": 51324926,
+      "telomere_interval": [
+        51321800,
+        51324926
+      ],
+      "telomere_fraction": 0.0014905929565429688,
+      "arm": "q",
+      "accession": "CP068256.2",
+      "file": "chr22-telomere_context.seq"
+    },
+    {
+      "chromosome": "chr22",
+      "group": "annotation_complement",
+      "start": 32964396,
+      "end": 35061548,
+      "accession": "CP068256.2",
+      "file": "chr22-annotation_complement.seq"
+    },
+    {
+      "chromosome": "chr7",
+      "group": "centromeric_HOR",
+      "start": 61094578,
+      "end": 63191730,
+      "stratum_bounds": [
+        60414372,
+        63714499
+      ],
+      "accession": "CP068271.2",
+      "file": "chr7-centromeric_HOR.seq"
+    },
+    {
+      "chromosome": "chr7",
+      "group": "telomere_context",
+      "start": 0,
+      "end": 2097152,
+      "telomere_interval": [
+        0,
+        3600
+      ],
+      "telomere_fraction": 0.00171661376953125,
+      "arm": "p",
+      "accession": "CP068271.2",
+      "file": "chr7-telomere_context.seq"
+    },
+    {
+      "chromosome": "chr7",
+      "group": "annotation_complement",
+      "start": 145581045,
+      "end": 147678197,
+      "accession": "CP068271.2",
+      "file": "chr7-annotation_complement.seq"
+    },
+    {
+      "chromosome": "chr11",
+      "group": "centromeric_HOR",
+      "start": 51877158,
+      "end": 53974310,
+      "stratum_bounds": [
+        51023358,
+        54443345
+      ],
+      "accession": "CP068267.2",
+      "file": "chr11-centromeric_HOR.seq"
+    },
+    {
+      "chromosome": "chr11",
+      "group": "telomere_context",
+      "start": 0,
+      "end": 2097152,
+      "telomere_interval": [
+        0,
+        2200
+      ],
+      "telomere_fraction": 0.001049041748046875,
+      "arm": "p",
+      "accession": "CP068267.2",
+      "file": "chr11-telomere_context.seq"
+    },
+    {
+      "chromosome": "chr11",
+      "group": "annotation_complement",
+      "start": 99336659,
+      "end": 101433811,
+      "accession": "CP068267.2",
+      "file": "chr11-annotation_complement.seq"
+    },
+    {
+      "chromosome": "chr5",
+      "group": "centromeric_HOR",
+      "start": 47298718,
+      "end": 49395870,
+      "stratum_bounds": [
+        46830042,
+        49596625
+      ],
+      "accession": "CP068273.2",
+      "file": "chr5-centromeric_HOR.seq"
+    },
+    {
+      "chromosome": "chr5",
+      "group": "telomere_context",
+      "start": 179948287,
+      "end": 182045439,
+      "telomere_interval": [
+        182043800,
+        182045439
+      ],
+      "telomere_fraction": 0.0007815361022949219,
+      "arm": "q",
+      "accession": "CP068273.2",
+      "file": "chr5-telomere_context.seq"
+    },
+    {
+      "chromosome": "chr5",
+      "group": "annotation_complement",
+      "start": 160037669,
+      "end": 162134821,
+      "accession": "CP068273.2",
+      "file": "chr5-annotation_complement.seq"
+    },
+    {
+      "chromosome": "chr19",
+      "group": "centromeric_HOR",
+      "start": 27290715,
+      "end": 29387867,
+      "stratum_bounds": [
+        25818021,
+        29769351
+      ],
+      "accession": "CP068259.2",
+      "file": "chr19-centromeric_HOR.seq"
+    },
+    {
+      "chromosome": "chr19",
+      "group": "telomere_context",
+      "start": 59610212,
+      "end": 61707364,
+      "telomere_interval": [
+        61704200,
+        61707364
+      ],
+      "telomere_fraction": 0.0015087127685546875,
+      "arm": "q",
+      "accession": "CP068259.2",
+      "file": "chr19-telomere_context.seq"
+    },
+    {
+      "chromosome": "chr19",
+      "group": "annotation_complement",
+      "start": 10294991,
+      "end": 12392143,
+      "accession": "CP068259.2",
+      "file": "chr19-annotation_complement.seq"
+    }
+  ]
+}
