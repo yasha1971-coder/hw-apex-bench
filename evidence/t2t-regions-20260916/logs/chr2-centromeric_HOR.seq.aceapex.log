@@ -1,0 +1,17 @@
+[*] Compress: /workspace/scratch/7721ddd65a02/hw-apex-bench-publication/.work/t2t-regions/windows/chr2-centromeric_HOR.seq (2.10 MB) threads=8
+  Original:          2097152 bytes
+  Compressed:          79476 bytes
+  Ratio:  26.38724x
+  Phase LZ77:    0.057s
+  Phase lit/zstd:0.011s
+  Phase FSE:     0.005s
+  Phase fread:   0.000s
+  Phase sha256:  0.000s
+  Phase other:   0.003s
+  Encode: 27.32 MB/s  (0.077s)
+  XXH3:   abf0da4a5a64d3dc
+[*] Decompress: /workspace/scratch/7721ddd65a02/hw-apex-bench-publication/.work/t2t-regions/measurement/chr2-centromeric_HOR.seq.aceapex.archive -> /workspace/scratch/7721ddd65a02/hw-apex-bench-publication/.work/t2t-regions/measurement/chr2-centromeric_HOR.seq.aceapex.restored
+  Phase entropy (4 streams in parallel): 0.017s
+  Phase lz77: 0.009s
+  Decode: 78.65 MB/s  (0.027s, algorithmic)
+  Decode wall: 64.66 MB/s  (0.032s, wall clock)

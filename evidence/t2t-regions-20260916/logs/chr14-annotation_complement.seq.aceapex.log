@@ -1,0 +1,17 @@
+[*] Compress: /workspace/scratch/7721ddd65a02/hw-apex-bench-publication/.work/t2t-regions/windows/chr14-annotation_complement.seq (2.10 MB) threads=8
+  Original:          2097152 bytes
+  Compressed:         571097 bytes
+  Ratio:  3.67215x
+  Phase LZ77:    0.193s
+  Phase lit/zstd:0.022s
+  Phase FSE:     0.002s
+  Phase fread:   0.000s
+  Phase sha256:  0.000s
+  Phase other:   0.002s
+  Encode: 9.58 MB/s  (0.219s)
+  XXH3:   c17d4d1e9fb67a86
+[*] Decompress: /workspace/scratch/7721ddd65a02/hw-apex-bench-publication/.work/t2t-regions/measurement/chr14-annotation_complement.seq.aceapex.archive -> /workspace/scratch/7721ddd65a02/hw-apex-bench-publication/.work/t2t-regions/measurement/chr14-annotation_complement.seq.aceapex.restored
+  Phase entropy (4 streams in parallel): 0.028s
+  Phase lz77: 0.010s
+  Decode: 55.78 MB/s  (0.038s, algorithmic)
+  Decode wall: 48.09 MB/s  (0.044s, wall clock)

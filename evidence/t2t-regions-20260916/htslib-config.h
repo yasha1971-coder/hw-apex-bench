@@ -1,0 +1,4 @@
+#define _XOPEN_SOURCE 700
+#define HAVE_DRAND48 1
+
+#define HAVE_LIBDEFLATE 1

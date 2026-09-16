@@ -15,3 +15,6 @@ GPU observations are retained in the full report and [GPU scope](../GPU.md).
 XZ qualification is documented in [ADAPTERS](../ADAPTERS.md).
 
 [Interactive explorer](https://yasha1971-coder.github.io/hw-apex-bench/)
+
+Separate follow-up: [T2T regional density, 2026-09-16](T2T_REGIONS_20260916.md),
+30 windows / 90 restored archives; not part of the historical 435-row snapshot.

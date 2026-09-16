@@ -1,0 +1,27 @@
+#!/usr/bin/env python3
+"""Generate the standalone report from retained regional result rows."""
+import json
+from pathlib import Path
+ROOT=Path(__file__).resolve().parents[2];E=ROOT/'evidence/t2t-regions-20260916'
+rows=[json.loads(l) for l in (E/'results.jsonl').read_text().splitlines()]
+assert len(rows)==90
+codecs=['aceapex','bgzip','zstd-seekable'];groups=['centromeric_HOR','telomere_context','annotation_complement']
+summary={}
+lines=['# T2T regional density — 2026-09-16','','Thirty equal windows; 90 stored archives restored byte-exactly. No timing claims.','','| Region class | ACEAPEX | BGZF | zstd-seekable |','|---|---:|---:|---:|']
+for g in groups:
+ summary[g]={}
+ for c in codecs:
+  rr=[r for r in rows if r['group']==g and r['codec']==c];assert len(rr)==10
+  for r in rr:assert r['input_bytes']==2097152 and r['ratio']==r['input_bytes']/r['stored_bytes'] and r['verified']=='byte-exact'
+  summary[g][c]={'ratio':sum(r['input_bytes'] for r in rr)/sum(r['stored_bytes'] for r in rr),'stored_bytes':sum(r['stored_bytes'] for r in rr),'min_ratio':min(r['ratio'] for r in rr),'max_ratio':max(r['ratio'] for r in rr)}
+ lines.append('| '+g+' | '+' | '.join(f"{summary[g][c]['ratio']:.3f}" for c in codecs)+' |')
+lines+=['','Ratio = sum(input bytes) / sum(complete archive and required index bytes).','This is not the mean of window ratios. Each class contains ten 2 MiB base-only','sequences; FASTA headers and line wrapping were removed, case preserved.','','| Class | ACE archive size vs BGZF | ACE archive size vs zstd | ACE wins vs BGZF / zstd |','|---|---:|---:|---:|']
+for g in groups:
+ a=summary[g]['aceapex']['stored_bytes'];wins=[]
+ for c in codecs[1:]:
+  pairs={r['chromosome']:r for r in rows if r['group']==g and r['codec']==c}
+  wins.append(sum(r['stored_bytes']<pairs[r['chromosome']]['stored_bytes'] for r in rows if r['group']==g and r['codec']=='aceapex'))
+ lines.append(f"| {g} | {100*(a/summary[g]['bgzip']['stored_bytes']-1):+.1f}% | {100*(a/summary[g]['zstd-seekable']['stored_bytes']-1):+.1f}% | {wins[0]}/10 / {wins[1]}/10 |")
+lines+=['','## Interpretation and limits','','All three codecs compress these HOR windows more densely than their controls.','ACEAPEX nevertheless loses to BGZF on every HOR window, while beating BGZF','on every control and telomere-context window. It beats zstd-seekable on all 30.','This is a relative weakness against one baseline, not a fall in absolute ratio.','','ACEAPEX stores 8,260 bytes of header/block table per window. These bytes are','12.58% of its aggregate HOR archives, versus 1.43% on controls. They remain','included. The CLI t/c printed ratio counts four streams only; its reported','whole-genome ratios 3.57930 and 3.72329 are not complete-file ratios and were','not reproduced by this experiment. Payload metrics remain in each ACE row.','','Only autosomes with a contiguous annotated HOR interval at least 2 MiB were','eligible. Ten chromosomes were selected before encoding with seed 20260916.','Each contributes one HOR window, one terminal window (five p / five q arms),','and one random length-matched annotation-complement control. Chromosomes:','2, 14, 9, 4, 20, 22, 7, 11, 5, 19. Coordinates and hashes are in the manifest.','HOR annotation is not a claim of functional centromere activity. Controls are','not matched on GC or all repeat classes. This is a selected pilot, not a genome-wide estimate.','','Annotated telomeres occupy only 0.08–0.18% of these terminal windows; results','describe chromosome-end context, not pure telomeric repeats. Each window is','compressed separately; numbers do not allocate space inside a whole-genome archive.','','## Configurations','','- ACEAPEX 4915321bf118e564ef3883e58927992c7f9d8dc3: block 16 KiB, 8 encoder','  threads, default level 2, no profile; LIT_CHUNK/FSE_CHUNK/MIN_MATCH unset.','  Fresh CLI build with pinned static libzstd 1.5.7. Domain choice remains automatic.','- BGZF: htslib 1.19, static libdeflate 1.19, level 6, 8 encoder threads; native','  BGZF block ceiling 65,280 bytes; .gzi included. Minimal Make build, retained config.','- zstd-seekable: pinned zstd 1.5.7 reference encoder, level 3, 16 KiB frames,','  one encoder thread, checksum/seek table included.','','The presets differ in block geometry; this experiment does not identify a','causal effect of block independence or measure c(g). That requires a separate','within-codec granularity sweep with a matched single-block baseline. No priority','claim (first-ever result) or universal ranking is established.','','## Evidence and reproduction','','[90 records](../../evidence/t2t-regions-20260916/results.jsonl),','[window manifest](../../evidence/t2t-regions-20260916/manifest.json),','[independent review](../../evidence/t2t-regions-20260916/receipt.json),','[CLI logs](../../evidence/t2t-regions-20260916/logs/),','[reproduction instructions](../../review/t2t_regions/README.md).','','The frozen 435 published records, release tag, DOI and main comparison table','are unchanged. This report is generated by review/t2t_regions/summarize.py.']
+(E/'summary.json').write_text(json.dumps(summary,indent=2)+'\n')
+(ROOT/'docs/RESULTS/T2T_REGIONS_20260916.md').write_text('\n'.join(lines)+'\n')

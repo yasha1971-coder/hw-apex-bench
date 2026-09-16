@@ -1,7 +1,7 @@
-# T2T regional density: experiment pending configuration
+# T2T regional density: method and scope
 
 Goal: test whether aggregate density hides poor compression on annotated
-centromeric or telomeric sequences. No regional ratios have been measured yet.
+centromeric or telomeric sequences. The first 30-window pilot is complete: [results](RESULTS/T2T_REGIONS_20260916.md).
 The reported 3.9% whole-assembly drop is owner context, not a result of this test.
 
 ## Inputs and region definitions
@@ -40,7 +40,8 @@ explicitly defining a separate normalized corpus.
 
 ## Codec and result boundary
 
-Before execution obtain the exact ace-core ACEAPEX SHA and encoding command,
+The completed pilot pins the supplied original SHA 4915321 and encoding command;
+future experiments must likewise record the exact revision,
 including block, literal/FSE chunk, level, transform policy and thread settings.
 The benchmark's historical adapter at 1b13df3 is a different experiment unless
 that identity is explicitly intended. Keep pinned BGZF/libdeflate and zstd-seekable

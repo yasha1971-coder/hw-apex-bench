@@ -1,0 +1,8 @@
+{
+  "archive": "t2t-regional-archives-20260916.zip",
+  "bytes": 53075428,
+  "sha256": "78f354a13f70e64ac6790af27e2befa98ac132d582a238a3e804201c24ca9808",
+  "input_windows": 30,
+  "archives": 90,
+  "bgzf_indexes": 30
+}

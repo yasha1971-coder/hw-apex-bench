@@ -1,0 +1,62 @@
+{
+  "centromeric_HOR": {
+    "aceapex": {
+      "ratio": 31.93217531122859,
+      "stored_bytes": 656752,
+      "min_ratio": 23.902981672289595,
+      "max_ratio": 58.06229408344639
+    },
+    "bgzip": {
+      "ratio": 41.61709491264417,
+      "stored_bytes": 503916,
+      "min_ratio": 32.100411749399214,
+      "max_ratio": 61.77906086136805
+    },
+    "zstd-seekable": {
+      "ratio": 24.043649187654133,
+      "stored_bytes": 872227,
+      "min_ratio": 20.508238883619047,
+      "max_ratio": 36.845145648125374
+    }
+  },
+  "telomere_context": {
+    "aceapex": {
+      "ratio": 3.771666175084708,
+      "stored_bytes": 5560280,
+      "min_ratio": 3.658718791052926,
+      "max_ratio": 3.911152223618887
+    },
+    "bgzip": {
+      "ratio": 3.4170145213406173,
+      "stored_bytes": 6137381,
+      "min_ratio": 3.2593624111006116,
+      "max_ratio": 3.5552903361430013
+    },
+    "zstd-seekable": {
+      "ratio": 2.9889462611590996,
+      "stored_bytes": 7016359,
+      "min_ratio": 2.8626739559232033,
+      "max_ratio": 3.1184787328325094
+    }
+  },
+  "annotation_complement": {
+    "aceapex": {
+      "ratio": 3.6432525754990697,
+      "stored_bytes": 5756263,
+      "min_ratio": 3.6197922869664128,
+      "max_ratio": 3.7089835079807223
+    },
+    "bgzip": {
+      "ratio": 3.258276190749932,
+      "stored_bytes": 6436385,
+      "min_ratio": 3.1945113833349073,
+      "max_ratio": 3.538601198008943
+    },
+    "zstd-seekable": {
+      "ratio": 2.859486145178011,
+      "stored_bytes": 7334017,
+      "min_ratio": 2.816757484953534,
+      "max_ratio": 3.064998991561268
+    }
+  }
+}
