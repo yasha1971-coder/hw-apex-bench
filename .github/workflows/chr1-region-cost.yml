@@ -1,4 +1,4 @@
-name: chr1 current ACE region-cost baseline
+name: chr1 current ACE region-cost baseline ARM64
 on:
   pull_request:
     paths:
@@ -10,7 +10,7 @@ permissions:
 
 jobs:
   measure:
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-24.04-arm
     timeout-minutes: 120
     steps:
       - uses: actions/checkout@v4
