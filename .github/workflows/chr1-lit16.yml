@@ -1,9 +1,7 @@
 name: chr1 literal 64K vs 16K layer
+# Measurement is manual after the verified 2026-09-18 control run.
+# Evidence/report maintenance must not silently create new timing evidence.
 on:
-  pull_request:
-    paths:
-      - 'review/chr1_lit16/**'
-      - '.github/workflows/chr1-lit16.yml'
   workflow_dispatch:
 permissions:
   contents: read
