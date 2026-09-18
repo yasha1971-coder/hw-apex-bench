@@ -1,0 +1,196 @@
+name: chr1 current ACE region-cost baseline ARM64
+# Measurement is manual after the verified 2026-09-18 baseline run.
+# Documentation/evidence changes must not silently generate new timing evidence.
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+
+jobs:
+  measure:
+    runs-on: ubuntu-24.04-arm
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install prerequisites and perf
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq build-essential cmake git zlib1g-dev curl python3 linux-tools-common linux-tools-generic
+          PERF=$(find /usr/lib /usr/bin -type f -name perf 2>/dev/null | sort | head -1)
+          if [ -z "$PERF" ]; then PERF=$(command -v perf || true); fi
+          test -n "$PERF"
+          "$PERF" --version
+          echo "PERF=$PERF" >> "$GITHUB_ENV"
+          sudo sysctl -w kernel.perf_event_paranoid=-1 || true
+
+      - name: Download and verify full hg38 chr1
+        run: |
+          mkdir -p .work/corpus
+          curl --fail --location --retry 3 \
+            https://hgdownload.soe.ucsc.edu/goldenPath/hg38/chromosomes/chr1.fa.gz \
+            -o .work/corpus/chr1.fa.gz
+          gzip -dc .work/corpus/chr1.fa.gz > .work/corpus/chr1.fa
+          test "$(stat -c%s .work/corpus/chr1.fa)" = 253935557
+          echo '9465e0f0df6e2c6eb39729c39cee5465  .work/corpus/chr1.fa' | md5sum -c -
+          sha256sum .work/corpus/chr1.fa > .work/corpus/chr1.sha256
+          rm .work/corpus/chr1.fa.gz
+
+      - name: Build pinned current ACE resident path
+        run: |
+          bash review/matched_g/build_native.sh .work/build .work/native
+          gcc -O3 -std=c11 review/chr1_region_cost/micro_paths.c -o .work/native/micro_paths
+          gcc -O3 -fPIC -shared review/chr1_region_cost/malloc_count.c -o .work/native/malloc_count.so
+          gcc -O3 -std=c11 review/chr1_region_cost/alloc_probe.c -ldl -o .work/native/alloc_probe
+          gcc -O3 -std=c11 review/chr1_region_cost/perf_loop.c -ldl -o .work/native/perf_loop
+          gcc -O3 -fPIC -shared review/chr1_region_cost/stub_context.c -o .work/native/stub_context.so
+          sha256sum .work/native/micro_paths .work/native/malloc_count.so .work/native/alloc_probe \
+            .work/native/perf_loop .work/native/stub_context.so >> .work/native/SHA256SUMS
+
+      - name: Create exactly one current-API chr1 archive at g=R=16 KiB
+        run: |
+          mkdir -p /tmp/chr1-cost
+          env -u LIT_CHUNK -u FSE_CHUNK -u MIN_MATCH -u LIT_LANES \
+            ACEAPEX_BS=16384 \
+            .work/native/aceapex c \
+              --in .work/corpus/chr1.fa \
+              --out /tmp/chr1-cost/chr1.g16384.aet \
+              --threads 8 \
+              > /tmp/chr1-cost/encode.log 2>&1
+          sha256sum /tmp/chr1-cost/chr1.g16384.aet > /tmp/chr1-cost/archive.sha256
+          test -s /tmp/chr1-cost/chr1.g16384.aet
+
+      - name: Bit-perfect full native restore gate
+        run: |
+          CPU=$(python3 - <<'PY'
+          import os
+          print(min(os.sched_getaffinity(0)))
+          PY
+          )
+          echo "$CPU" > /tmp/chr1-cost/timed_cpu.txt
+          env -u LIT_CHUNK -u FSE_CHUNK -u MIN_MATCH -u LIT_LANES \
+            taskset -c "$CPU" \
+            .work/native/native_measure \
+              .work/native/ace_context.so \
+              /tmp/chr1-cost/chr1.g16384.aet \
+              .work/corpus/chr1.fa \
+              decode "" 1 \
+              > /tmp/chr1-cost/full-decode.jsonl
+          grep -q '"verified":true' /tmp/chr1-cost/full-decode.jsonl
+
+      - name: Measure current uninstrumented hc_region latency
+        run: |
+          CPU=$(cat /tmp/chr1-cost/timed_cpu.txt)
+          env -u LIT_CHUNK -u FSE_CHUNK -u MIN_MATCH -u LIT_LANES \
+            taskset -c "$CPU" \
+            .work/native/native_measure \
+              .work/native/ace_context.so \
+              /tmp/chr1-cost/chr1.g16384.aet \
+              .work/corpus/chr1.fa \
+              region "" \
+              > /tmp/chr1-cost/latency.jsonl
+          test "$(wc -l < /tmp/chr1-cost/latency.jsonl)" = 200
+
+      - name: Count malloc/free only inside hc_region
+        run: |
+          CPU=$(cat /tmp/chr1-cost/timed_cpu.txt)
+          env -u LIT_CHUNK -u FSE_CHUNK -u MIN_MATCH -u LIT_LANES \
+            LD_PRELOAD="$PWD/.work/native/malloc_count.so" \
+            taskset -c "$CPU" \
+            .work/native/alloc_probe \
+              .work/native/ace_context.so \
+              /tmp/chr1-cost/chr1.g16384.aet \
+              .work/corpus/chr1.fa \
+              > /tmp/chr1-cost/alloc.jsonl
+          test "$(wc -l < /tmp/chr1-cost/alloc.jsonl)" = 200
+
+      - name: Measure isolated header/locator and full-archive index scans
+        run: |
+          CPU=$(cat /tmp/chr1-cost/timed_cpu.txt)
+          taskset -c "$CPU" .work/native/micro_paths \
+            /tmp/chr1-cost/chr1.g16384.aet \
+            > /tmp/chr1-cost/micro.json
+          cat /tmp/chr1-cost/micro.json
+
+      - name: perf stat current hc_region and ABI loop control
+        run: |
+          set -euo pipefail
+          CPU=$(cat /tmp/chr1-cost/timed_cpu.txt)
+          mkdir -p /tmp/chr1-cost/perf
+          N=20000
+          for rep in 1 2 3 4 5; do
+            for kind in real stub; do
+              if [ "$kind" = real ]; then LIB="$PWD/.work/native/ace_context.so"; else LIB="$PWD/.work/native/stub_context.so"; fi
+              for q in 0 "$N"; do
+                sudo "$PERF" stat -x ';' -e cycles:u,instructions:u \
+                  -o "/tmp/chr1-cost/perf/$kind-$q-$rep.csv" \
+                  -- taskset -c "$CPU" \
+                     "$PWD/.work/native/perf_loop" "$LIB" \
+                     /tmp/chr1-cost/chr1.g16384.aet "$q" \
+                  > "/tmp/chr1-cost/perf/$kind-$q-$rep.out"
+              done
+            done
+          done
+          grep -R -E 'cycles|instructions' /tmp/chr1-cost/perf/*.csv | head
+
+      - name: Record provenance and summarize baseline ledger
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import hashlib,json,os,platform,subprocess
+          arc=Path('/tmp/chr1-cost/chr1.g16384.aet')
+          inp=Path('.work/corpus/chr1.fa')
+          def sha(p): return hashlib.sha256(Path(p).read_bytes()).hexdigest()
+          receipt={
+            "schema":"chr1-region-cost-receipt-v1",
+            "benchmark_commit":subprocess.check_output(["git","rev-parse","HEAD"],text=True).strip(),
+            "corpus":"hg38 chr1 FASTA",
+            "corpus_bytes":inp.stat().st_size,
+            "corpus_md5":subprocess.check_output(["md5sum",str(inp)],text=True).split()[0],
+            "corpus_sha256":sha(inp),
+            "archive_bytes":arc.stat().st_size,
+            "archive_sha256":sha(arc),
+            "ratio":inp.stat().st_size/arc.stat().st_size,
+            "g_bytes":16384,
+            "request_bytes":16384,
+            "aceapex":"4915321bf118e564ef3883e58927992c7f9d8dc3",
+            "zstd":"f8745da6ff1ad1e7bab384bd1f9d742439278e99",
+            "encode_command":"ACEAPEX_BS=16384 aceapex c --in chr1.fa --out chr1.g16384.aet --threads 8; no LIT_CHUNK/FSE_CHUNK/MIN_MATCH override",
+            "timed_cpu":int(Path('/tmp/chr1-cost/timed_cpu.txt').read_text()),
+            "platform":platform.platform(),
+            "lscpu":subprocess.check_output(["lscpu"],text=True),
+            "perf":subprocess.check_output([os.environ["PERF"],"--version"],text=True).strip(),
+            "timing_scope":"archive/context open, file I/O, output allocation/prefault and warmups outside native_measure per-query timer",
+            "absolute_times":"declared machine-specific"
+          }
+          Path('/tmp/chr1-cost/receipt.json').write_text(json.dumps(receipt,indent=2)+"\n")
+          PY
+          python3 review/chr1_region_cost/summarize.py \
+            --latency /tmp/chr1-cost/latency.jsonl \
+            --alloc /tmp/chr1-cost/alloc.jsonl \
+            --micro /tmp/chr1-cost/micro.json \
+            --perf-dir /tmp/chr1-cost/perf \
+            --queries 20000 \
+            --receipt /tmp/chr1-cost/receipt.json \
+            --out /tmp/chr1-cost/summary
+
+      - name: Show baseline table
+        run: cat /tmp/chr1-cost/summary/baseline.md
+
+      - name: Retain all baseline evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: chr1-current-region-cost-baseline
+          path: |
+            /tmp/chr1-cost/summary/baseline.json
+            /tmp/chr1-cost/summary/baseline.md
+            /tmp/chr1-cost/receipt.json
+            /tmp/chr1-cost/archive.sha256
+            /tmp/chr1-cost/encode.log
+            /tmp/chr1-cost/full-decode.jsonl
+            /tmp/chr1-cost/latency.jsonl
+            /tmp/chr1-cost/alloc.jsonl
+            /tmp/chr1-cost/micro.json
+            /tmp/chr1-cost/perf/**
+            .work/native/SHA256SUMS

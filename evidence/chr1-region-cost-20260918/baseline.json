@@ -1,0 +1,91 @@
+{
+  "schema": "chr1-region-cost-baseline-v1",
+  "date": "2026-09-18",
+  "purpose": "current ACEAPEX region API baseline before resident-context optimization",
+  "corpus": {
+    "name": "hg38 chr1 FASTA",
+    "bytes": 253935557,
+    "md5": "9465e0f0df6e2c6eb39729c39cee5465",
+    "sha256": "04ee6db2e94ccc4daddc168453189d8c17a01454ba67ac0443a73a0401408ee0"
+  },
+  "configuration": {
+    "aceapex": "4915321bf118e564ef3883e58927992c7f9d8dc3",
+    "zstd": "f8745da6ff1ad1e7bab384bd1f9d742439278e99",
+    "g_bytes": 16384,
+    "request_bytes": 16384,
+    "encoder_threads": 8,
+    "level": 2,
+    "overrides": "ACEAPEX_BS=16384 only; LIT_CHUNK/FSE_CHUNK/MIN_MATCH/LIT_LANES unset",
+    "archive_bytes": 69122682,
+    "archive_sha256": "c65bd2c494b6a6abd4164371de928695ea74e036ed7f4760420b6a7abefd3be4",
+    "ratio": 3.67369363648245,
+    "bit_perfect_full_restore": true
+  },
+  "primary_run": {
+    "actions_run_id": 35361801000,
+    "artifact_id": 10554896565,
+    "artifact_digest": "sha256:447f2a8bec4b5dc3d89b6dcb22d98c41d706eaddbf31c6815d456762a50fbe13",
+    "source_head_sha": "50ffc74139fb82f762d5cf358dbbf22d2ff4631b",
+    "actions_merge_ref_commit": "b6dfdb279533688cfcc0d97a90184643d3e1b508",
+    "platform": "Linux-6.17.0-1022-azure-aarch64-with-glibc2.39",
+    "cpu": "ARM Neoverse-N2",
+    "vcpus": 4,
+    "timed_cpu": 0,
+    "perf": "perf 6.17.13",
+    "absolute_times": "declared machine-specific"
+  },
+  "current_hc_region": {
+    "samples": 200,
+    "warmups": 12,
+    "p50_us": 903.599,
+    "p99_us": 1239.546,
+    "min_us": 637.926,
+    "max_us": 1527.205
+  },
+  "isolated_components": {
+    "header_and_range_locate_us": 0.015504,
+    "linear_stream_index_scan_us": 0.891148,
+    "allocator_calls_instrumented": {
+      "p50_us": 2.76,
+      "p99_us": 83.376,
+      "clock_pair_overhead_ns": 16,
+      "p50_alloc_like_calls": 16,
+      "p99_alloc_like_calls": 24,
+      "p50_free_calls": 16,
+      "p99_free_calls": 24,
+      "p50_requested_alloc_bytes": 1916619,
+      "p99_requested_alloc_bytes": 2399099
+    },
+    "note": "isolated/instrumented measurements overlap work inside full hc_region and are not an additive decomposition"
+  },
+  "archive_geometry": {
+    "blocks": 15499,
+    "literal_chunks": 2943,
+    "fse_chunks": {
+      "offsets": 12,
+      "lengths": 1,
+      "commands": 21
+    },
+    "fse_chunk_bytes": 524288
+  },
+  "perf_stat": {
+    "query_loop_queries": 20000,
+    "repeats": 5,
+    "controls": "zero-query setup subtraction plus ABI stub-loop subtraction",
+    "instructions_per_hc_region": 8796014.3911,
+    "cycles_per_hc_region": 2865229.06365,
+    "ipc": 3.069916643905184
+  },
+  "secondary_x86_wall_run": {
+    "actions_run_id": 35360295220,
+    "artifact_id": 10554028971,
+    "artifact_digest": "sha256:6f239b3236ed5d8b62ab118bea6c442f8961dbfc944a984f6ccb3191bc3f006c",
+    "cpu": "AMD EPYC 7763",
+    "platform": "Linux-6.17.0-1022-azure-x86_64-with-glibc2.39",
+    "p50_us": 1134.22,
+    "p99_us": 1802.999,
+    "perf_hardware_events": "not supported by hosted VM",
+    "header_and_range_locate_us": 0.013315,
+    "linear_stream_index_scan_us": 0.946665
+  }
+}

@@ -1,0 +1,50 @@
+{
+  "schema": "chr1-region-cost-run-receipt-v1",
+  "date": "2026-09-18",
+  "repository": "yasha1971-coder/hw-apex-bench",
+  "pr": 49,
+  "branch": "experiment/chr1-region-cost-baseline",
+  "primary": {
+    "actions_run_id": 35361199182,
+    "artifact_id": 10554745486,
+    "artifact_digest": "sha256:d84ce5bc5db4527d7b77906e3a68a232ac4caecea424369a48193c1d48681677",
+    "source_head_sha": "5e9ed7f444bf0eca9efd4354ea39031a8b87b8a2",
+    "actions_merge_ref_commit": "8c6a94f429dd37ea6eb8ca4aefab8f764cdfcdfa",
+    "result": "evidence/chr1-region-cost-20260918/baseline.json"
+  },
+  "independent_arm_repeat": {
+    "actions_run_id": 35361350566,
+    "artifact_id": 10555230707,
+    "artifact_digest": "sha256:3b3f405489164633dd2f7f89b529c6c8cc1efcb5de05ab83e6fff4b71f138030",
+    "source_head_sha": "436d58df5bb6438bcb57a365f9bcde7bc7079e93",
+    "perf_raw": "evidence/chr1-region-cost-20260918/perf-repeats.json"
+  },
+  "supplementary_x86": {
+    "actions_run_id": 35360295220,
+    "artifact_id": 10554028971,
+    "artifact_digest": "sha256:6f239b3236ed5d8b62ab118bea6c442f8961dbfc944a984f6ccb3191bc3f006c",
+    "cpu": "AMD EPYC 7763",
+    "p50_us": 1134.22,
+    "p99_us": 1802.999,
+    "hardware_pmu": "cycles/instructions <not supported>; no substitute counter used"
+  },
+  "corpus": {
+    "bytes": 253935557,
+    "md5": "9465e0f0df6e2c6eb39729c39cee5465",
+    "sha256": "04ee6db2e94ccc4daddc168453189d8c17a01454ba67ac0443a73a0401408ee0"
+  },
+  "archive": {
+    "bytes": 69122682,
+    "sha256": "c65bd2c494b6a6abd4164371de928695ea74e036ed7f4760420b6a7abefd3be4",
+    "complete_ratio": 3.67369363648245,
+    "g_bytes": 16384,
+    "request_bytes": 16384,
+    "full_restore": "bit-perfect"
+  },
+  "pins": {
+    "aceapex": "4915321bf118e564ef3883e58927992c7f9d8dc3",
+    "zstd": "f8745da6ff1ad1e7bab384bd1f9d742439278e99"
+  },
+  "timing_policy": "absolute times declared machine-specific; structural counters and same-run deltas retained",
+  "optimization_policy": "future changes must compare against this pre-optimization baseline; isolated rows are overlapping and must not be summed"
+}

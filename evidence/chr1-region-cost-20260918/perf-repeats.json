@@ -1,0 +1,82 @@
+{
+  "schema": "chr1-region-cost-perf-repeats-v1",
+  "source_run_id": 35361350566,
+  "artifact_id": 10555230707,
+  "artifact_digest": "sha256:3b3f405489164633dd2f7f89b529c6c8cc1efcb5de05ab83e6fff4b71f138030",
+  "events": [
+    "cycles:u",
+    "instructions:u"
+  ],
+  "queries": 20000,
+  "repeats": 5,
+  "real_0": {
+    "cycles": [
+      37342350,
+      36937347,
+      36924220,
+      36978456,
+      37366096
+    ],
+    "instructions": [
+      104439981,
+      104439977,
+      104439977,
+      104439977,
+      104439966
+    ]
+  },
+  "real_20000": {
+    "cycles": [
+      57341998239,
+      57278792343,
+      57350902685,
+      57322812280,
+      57419195185
+    ],
+    "instructions": [
+      176025368157,
+      176025368153,
+      176025368157,
+      176025368153,
+      176025368153
+    ]
+  },
+  "stub_0": {
+    "cycles": [
+      574199,
+      605944,
+      601596,
+      618951,
+      717259
+    ],
+    "instructions": [
+      468066,
+      468066,
+      468070,
+      468066,
+      468066
+    ]
+  },
+  "stub_20000": {
+    "cycles": [
+      994975,
+      1044454,
+      1054312,
+      1036701,
+      1112232
+    ],
+    "instructions": [
+      1108420,
+      1108386,
+      1108401,
+      1108420,
+      1108424
+    ]
+  },
+  "derived": {
+    "instructions_per_hc_region_loop_adjusted": 8796014.3911,
+    "cycles_per_hc_region_loop_adjusted": 2865229.06365,
+    "ipc": 3.069916643905184
+  },
+  "method": "median of five runs; per-query delta after N=0 setup subtraction and ABI-stub query-loop subtraction"
+}
