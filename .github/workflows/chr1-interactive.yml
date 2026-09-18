@@ -1,0 +1,219 @@
+name: chr1 ACE interactive profile control
+# Measurement is manual after the verified 2026-09-18 control run.
+# Evidence/report maintenance must not silently create new timing evidence.
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+
+jobs:
+  measure:
+    runs-on: ubuntu-24.04-arm
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install prerequisites and perf
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq build-essential cmake git zlib1g-dev curl python3 linux-tools-common linux-tools-generic
+          PERF=$(find /usr/lib /usr/bin -type f -name perf 2>/dev/null | sort | head -1)
+          if [ -z "$PERF" ]; then PERF=$(command -v perf || true); fi
+          test -n "$PERF"
+          "$PERF" --version
+          echo "PERF=$PERF" >> "$GITHUB_ENV"
+          sudo sysctl -w kernel.perf_event_paranoid=-1 || true
+
+      - name: Download and verify full hg38 chr1
+        run: |
+          mkdir -p .work/corpus
+          curl --fail --location --retry 3 \
+            https://hgdownload.soe.ucsc.edu/goldenPath/hg38/chromosomes/chr1.fa.gz \
+            -o .work/corpus/chr1.fa.gz
+          gzip -dc .work/corpus/chr1.fa.gz > .work/corpus/chr1.fa
+          test "$(stat -c%s .work/corpus/chr1.fa)" = 253935557
+          echo '9465e0f0df6e2c6eb39729c39cee5465  .work/corpus/chr1.fa' | md5sum -c -
+          rm .work/corpus/chr1.fa.gz
+
+      - name: Build pinned current ACE path and profiling controls
+        run: |
+          bash review/matched_g/build_native.sh .work/build .work/native
+          gcc -O3 -fPIC -shared review/chr1_region_cost/malloc_count.c -o .work/native/malloc_count.so
+          gcc -O3 -std=c11 review/chr1_region_cost/alloc_probe.c -ldl -o .work/native/alloc_probe
+          gcc -O3 -std=c11 review/chr1_region_cost/perf_loop.c -ldl -o .work/native/perf_loop
+          gcc -O3 -fPIC -shared review/chr1_region_cost/stub_context.c -o .work/native/stub_context.so
+
+          mkdir -p .work/counter/deps
+          ln -s "$PWD/.work/build/aceapex-source" .work/counter/deps/aceapex
+          ln -s "$PWD/.work/build/zstd" .work/counter/deps/zstd
+          python3 - <<'PY'
+          from pathlib import Path
+          import importlib.util
+          p=Path('codecs/counters.py')
+          spec=importlib.util.spec_from_file_location('counters',p)
+          m=importlib.util.module_from_spec(spec); spec.loader.exec_module(m)
+          m.build('aceapex',Path('.work/counter'))
+          PY
+          test -s .work/counter/counter-context.so
+          sha256sum .work/native/ace_context.so .work/native/native_measure \
+            .work/native/alloc_probe .work/native/malloc_count.so .work/native/perf_loop \
+            .work/counter/counter-context.so > .work/native/INTERACTIVE_SHA256SUMS
+
+      - name: Create one interactive-profile chr1 archive
+        run: |
+          mkdir -p /tmp/chr1-interactive
+          env -u MIN_MATCH -u LIT_LANES \
+            ACEAPEX_BS=16384 LIT_CHUNK=65536 FSE_CHUNK=4096 \
+            .work/native/aceapex c \
+              --in .work/corpus/chr1.fa \
+              --out /tmp/chr1-interactive/chr1.interactive.aet \
+              --threads 8 \
+              > /tmp/chr1-interactive/encode.log 2>&1
+          test -s /tmp/chr1-interactive/chr1.interactive.aet
+          sha256sum /tmp/chr1-interactive/chr1.interactive.aet > /tmp/chr1-interactive/archive.sha256
+
+      - name: Bit-perfect full native restore gate
+        run: |
+          CPU=$(python3 - <<'PY'
+          import os
+          print(min(os.sched_getaffinity(0)))
+          PY
+          )
+          echo "$CPU" > /tmp/chr1-interactive/timed_cpu.txt
+          env -u MIN_MATCH -u LIT_LANES \
+            ACEAPEX_BS=16384 LIT_CHUNK=65536 FSE_CHUNK=4096 \
+            taskset -c "$CPU" \
+            .work/native/native_measure \
+              .work/native/ace_context.so \
+              /tmp/chr1-interactive/chr1.interactive.aet \
+              .work/corpus/chr1.fa \
+              decode "" 1 \
+              > /tmp/chr1-interactive/full-decode.jsonl
+          grep -q '"verified":true' /tmp/chr1-interactive/full-decode.jsonl
+
+      - name: Measure current interactive hc_region latency
+        run: |
+          CPU=$(cat /tmp/chr1-interactive/timed_cpu.txt)
+          env -u MIN_MATCH -u LIT_LANES \
+            ACEAPEX_BS=16384 LIT_CHUNK=65536 FSE_CHUNK=4096 \
+            taskset -c "$CPU" \
+            .work/native/native_measure \
+              .work/native/ace_context.so \
+              /tmp/chr1-interactive/chr1.interactive.aet \
+              .work/corpus/chr1.fa \
+              region "" \
+              > /tmp/chr1-interactive/latency.jsonl
+          test "$(wc -l < /tmp/chr1-interactive/latency.jsonl)" = 200
+
+      - name: Count temporary allocations inside hc_region
+        run: |
+          CPU=$(cat /tmp/chr1-interactive/timed_cpu.txt)
+          env -u MIN_MATCH -u LIT_LANES \
+            ACEAPEX_BS=16384 LIT_CHUNK=65536 FSE_CHUNK=4096 \
+            LD_PRELOAD="$PWD/.work/native/malloc_count.so" \
+            taskset -c "$CPU" \
+            .work/native/alloc_probe \
+              .work/native/ace_context.so \
+              /tmp/chr1-interactive/chr1.interactive.aet \
+              .work/corpus/chr1.fa \
+              > /tmp/chr1-interactive/alloc.jsonl
+          test "$(wc -l < /tmp/chr1-interactive/alloc.jsonl)" = 200
+
+      - name: Measure decoded-byte random-access amplification
+        run: |
+          CPU=$(cat /tmp/chr1-interactive/timed_cpu.txt)
+          env -u MIN_MATCH -u LIT_LANES \
+            ACEAPEX_BS=16384 LIT_CHUNK=65536 FSE_CHUNK=4096 \
+            taskset -c "$CPU" \
+            .work/native/native_measure \
+              .work/counter/counter-context.so \
+              /tmp/chr1-interactive/chr1.interactive.aet \
+              .work/corpus/chr1.fa \
+              amplification "" \
+              > /tmp/chr1-interactive/amplification.jsonl
+          test "$(wc -l < /tmp/chr1-interactive/amplification.jsonl)" = 200
+
+      - name: perf stat current interactive hc_region and ABI loop control
+        run: |
+          set -euo pipefail
+          CPU=$(cat /tmp/chr1-interactive/timed_cpu.txt)
+          mkdir -p /tmp/chr1-interactive/perf
+          N=20000
+          for rep in 1 2 3 4 5; do
+            for kind in real stub; do
+              if [ "$kind" = real ]; then LIB="$PWD/.work/native/ace_context.so"; else LIB="$PWD/.work/native/stub_context.so"; fi
+              for q in 0 "$N"; do
+                sudo env ACEAPEX_BS=16384 LIT_CHUNK=65536 FSE_CHUNK=4096 \
+                  "$PERF" stat -x ';' -e cycles:u,instructions:u \
+                  -o "/tmp/chr1-interactive/perf/$kind-$q-$rep.csv" \
+                  -- taskset -c "$CPU" \
+                     "$PWD/.work/native/perf_loop" "$LIB" \
+                     /tmp/chr1-interactive/chr1.interactive.aet "$q" \
+                  > "/tmp/chr1-interactive/perf/$kind-$q-$rep.out"
+              done
+            done
+          done
+          ! grep -R '<not supported>' /tmp/chr1-interactive/perf/*.csv
+
+      - name: Record provenance and summarize interactive control
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import hashlib,json,os,platform,subprocess
+          inp=Path('.work/corpus/chr1.fa')
+          arc=Path('/tmp/chr1-interactive/chr1.interactive.aet')
+          def sha(p): return hashlib.sha256(Path(p).read_bytes()).hexdigest()
+          receipt={
+            "schema":"chr1-interactive-receipt-v1",
+            "benchmark_commit":subprocess.check_output(["git","rev-parse","HEAD"],text=True).strip(),
+            "corpus_bytes":inp.stat().st_size,
+            "corpus_md5":subprocess.check_output(["md5sum",str(inp)],text=True).split()[0],
+            "corpus_sha256":sha(inp),
+            "archive_bytes":arc.stat().st_size,
+            "archive_sha256":sha(arc),
+            "ratio":inp.stat().st_size/arc.stat().st_size,
+            "g_bytes":16384,
+            "request_bytes":16384,
+            "profile":"interactive",
+            "environment":{"ACEAPEX_BS":"16384","LIT_CHUNK":"65536","FSE_CHUNK":"4096","MIN_MATCH":"unset"},
+            "aceapex":"4915321bf118e564ef3883e58927992c7f9d8dc3",
+            "zstd":"f8745da6ff1ad1e7bab384bd1f9d742439278e99",
+            "timed_cpu":int(Path('/tmp/chr1-interactive/timed_cpu.txt').read_text()),
+            "platform":platform.platform(),
+            "lscpu":subprocess.check_output(["lscpu"],text=True),
+            "perf":subprocess.check_output([os.environ["PERF"],"--version"],text=True).strip(),
+            "absolute_times":"declared machine-specific",
+            "full_restore":"bit-perfect"
+          }
+          Path('/tmp/chr1-interactive/receipt.json').write_text(json.dumps(receipt,indent=2)+"\n")
+          PY
+          python3 review/chr1_interactive/summarize.py \
+            --latency /tmp/chr1-interactive/latency.jsonl \
+            --alloc /tmp/chr1-interactive/alloc.jsonl \
+            --amplification /tmp/chr1-interactive/amplification.jsonl \
+            --perf-dir /tmp/chr1-interactive/perf \
+            --archive /tmp/chr1-interactive/chr1.interactive.aet \
+            --receipt /tmp/chr1-interactive/receipt.json \
+            --default-baseline evidence/chr1-region-cost-20260918/baseline.json \
+            --queries 20000 \
+            --out /tmp/chr1-interactive/summary
+          cat /tmp/chr1-interactive/summary/interactive-baseline.md
+
+      - name: Retain complete interactive control
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: chr1-interactive-profile-baseline
+          path: |
+            /tmp/chr1-interactive/summary/interactive-baseline.json
+            /tmp/chr1-interactive/summary/interactive-baseline.md
+            /tmp/chr1-interactive/receipt.json
+            /tmp/chr1-interactive/archive.sha256
+            /tmp/chr1-interactive/encode.log
+            /tmp/chr1-interactive/full-decode.jsonl
+            /tmp/chr1-interactive/latency.jsonl
+            /tmp/chr1-interactive/alloc.jsonl
+            /tmp/chr1-interactive/amplification.jsonl
+            /tmp/chr1-interactive/perf/**
+            .work/native/INTERACTIVE_SHA256SUMS
+            .work/counter/counter-sources.json

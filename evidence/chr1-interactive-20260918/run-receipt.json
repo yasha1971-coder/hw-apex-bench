@@ -1,0 +1,16 @@
+{
+  "schema": "chr1-interactive-run-receipt-v1",
+  "date": "2026-09-18",
+  "repository": "yasha1971-coder/hw-apex-bench",
+  "pr": 50,
+  "branch": "experiment/chr1-interactive-profile-baseline",
+  "actions_run_id": 35363065302,
+  "artifact_id": 10554508821,
+  "artifact_digest": "sha256:c4c59492aa774444fbd574b7d8d6d217b148ae663b93010291b757b0dbfe5288",
+  "source_head_sha": "5227773e014f6bb63efc5025b448c540cce9b042",
+  "actions_merge_ref_commit": "cf9c46cbd7a2cb4d1795a32e0373f9e457f42893",
+  "judge": "full native bit-perfect restore before profiling; all 200 latency and amplification requests verified",
+  "aggregation": "derived offline from retained raw artifact after the first summarizer rejected perf event suffix cycles:u; no measurement rerun",
+  "result": "evidence/chr1-interactive-20260918/baseline.json",
+  "perf_raw": "evidence/chr1-interactive-20260918/perf-repeats.json"
+}
