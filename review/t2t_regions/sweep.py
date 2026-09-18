@@ -59,7 +59,10 @@ def main():
     parser = argparse.ArgumentParser()
     for name in ('inputs', 'build', 'out'):
         parser.add_argument('--' + name, required=True, type=Path)
+    parser.add_argument('--baseline-only', action='store_true',
+                        help='Measure one whole-input block/frame per frozen window; do not repeat the sweep')
     a = parser.parse_args()
+    grid = (2097152,) if a.baseline_only else GRID
     a.out.mkdir(parents=True, exist_ok=False)
     manifest = json.loads((PRIOR / 'manifest.json').read_text())
     old = {(r['chromosome'], r['group'], r['codec']): r for r in
@@ -79,7 +82,8 @@ def main():
                   'binary_sha256': {k: digest(p) for k, p in bins.items()},
                   'manifest_sha256': digest(PRIOR / 'manifest.json'),
                   'previous_results_sha256': digest(PRIOR / 'results.jsonl'),
-                  'grid_execution_order': GRID, 'ace_threads': 8, 'ace_level': 2,
+                  'grid_execution_order': grid, 'baseline_only': a.baseline_only,
+                  'ace_threads': 8, 'ace_level': 2,
                   'zstd_threads': 1, 'zstd_level': 3, 'libzstd': '1.5.7',
                   'other_ace_overrides': 'unset; automatic domain policy retained',
                   'bgzf': 'fixed historical verified files, not remeasured',
@@ -88,7 +92,7 @@ def main():
     total = 0
     with (a.out / 'results.jsonl').open('x') as output:
         # First reproduce every 16 KiB archive before proceeding to new sizes.
-        for g in GRID:
+        for g in grid:
             for w in manifest['windows']:
                 inp = (a.inputs / w['file']).resolve()
                 raw = inp.read_bytes()
@@ -134,7 +138,8 @@ def main():
                            'bgzf_reference_bytes': old[w['chromosome'], w['group'], 'bgzip']['stored_bytes']}
                     output.write(json.dumps(row, sort_keys=True) + '\n'); output.flush()
                     total += 1
-            print(f'g={g}: {total} byte-exact restores; 16 KiB replay gate passed', flush=True)
+            print(f'g={g}: {total} byte-exact restores; ' +
+                  ('whole-window baseline' if a.baseline_only else '16 KiB replay gate passed'), flush=True)
     print('Complete:', total, 'archives', flush=True)
 
 

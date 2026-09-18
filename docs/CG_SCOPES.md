@@ -7,7 +7,7 @@ Always include g, input, codec revision and the one-block baseline with a claim.
 | Name | Input and baseline | Example at g = 16 KiB | Status |
 |---|---|---|---|
 | c_file(g), whole-input granularity cost | Complete hg38 chr1 FASTA, 253935557 bytes; one whole-input block/nonempty frame | ACEAPEX ee5a37e: 1.632%; matched zstd-seekable: 6.569% | Published historical evidence |
-| c_window(g), window-local granularity cost | Same frozen 2 MiB base-only T2T window; one block/nonempty frame per window | ACEAPEX 4915321: HOR 60.565%, controls 1.492% | PR #43, separate review required |
+| c_window(g), window-local granularity cost | Same frozen 2 MiB base-only T2T window; one block/nonempty frame per window | ACEAPEX 4915321: HOR 60.565%, controls 1.492% | Published in PR #43; separate local experiment |
 
 The window-group aggregate is one minus the sum of baseline bytes divided by
 the sum of point bytes. It is not the mean of percentages, nor a single archive

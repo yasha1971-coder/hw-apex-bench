@@ -23,3 +23,7 @@ Separate follow-up: [T2T regional density, 2026-09-16](T2T_REGIONS_20260916.md),
 same 30 windows, five block/frame sizes, 300 restored archives. At comparable
 approximately64KiB blocks, ACEAPEX's HOR ratio exceeds BGZF's; the earlier
 16KiB cross-preset loss is retained and explained, not generalized to the codec.
+
+[Window-local T2T c(g)](T2T_WINDOW_CG_20260916.md): verified one-window baselines
+complete the five-point curves for HOR, controls and terminal context. This is
+not a whole-T2T baseline or a latency comparison; the full-genome gate is explicit.
