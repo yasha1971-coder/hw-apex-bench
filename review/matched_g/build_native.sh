@@ -7,6 +7,7 @@ out=${2:?new output directory required}
 
 bash "$root/review/t2t_regions/build.sh" "$work"
 mkdir -p "$out"
+cp "$work/aceapex" "$out/aceapex"
 
 gcc -O3 -std=c11 -I"$root/harness" "$root/harness/native_measure.c" -ldl -o "$out/native_measure"
 
@@ -42,6 +43,6 @@ gcc -O3 -fPIC -shared \
   "$work/htslib/libhts.a" "$work/libdeflate-build/libdeflate.a" \
   -lz -lm -pthread -o "$out/bgzf_context.so"
 
-sha256sum "$out/native_measure" "$out/bgzf_encode_g" "$out/ace_context.so" "$out/bgzf_context.so" > "$out/SHA256SUMS"
+sha256sum "$out/aceapex" "$out/native_measure" "$out/bgzf_encode_g" "$out/ace_context.so" "$out/bgzf_context.so" > "$out/SHA256SUMS"
 "$out/bgzf_encode_g" 2>&1 | grep -q "usage:"
 echo "PASS: matched-g native bundle built"
