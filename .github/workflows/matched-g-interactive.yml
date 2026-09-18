@@ -1,9 +1,7 @@
 name: Matched-g interactive ACE vs BGZF
+# Measurement is manual after the verified 2026-09-18 run.
+# Evidence/report maintenance must not silently create new timing evidence.
 on:
-  pull_request:
-    paths:
-      - 'review/matched_g_interactive/**'
-      - '.github/workflows/matched-g-interactive.yml'
   workflow_dispatch:
 permissions:
   contents: read
@@ -149,7 +147,7 @@ jobs:
             /tmp/matched-g-interactive/g65280/samples.jsonl
 
       - name: Build the five-point curve
-        run: python3 review/matched_g_interactive/curve.py --root /tmp/matched-g --out /tmp/matched-g-interactive/curve
+        run: python3 review/matched_g_interactive/curve.py --root /tmp/matched-g-interactive --out /tmp/matched-g-interactive/curve
       - uses: actions/upload-artifact@v4
         if: always()
         with:
