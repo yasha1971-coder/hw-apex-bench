@@ -1160,3 +1160,14 @@ regenerated and its presentation digest recalculated, not selected from one
 side. First-user CI35301915720 passed completely with artifact10530117888.
 Next authorized work is HWB-003 on the same30 windows/five granularities,
 plus separate match-distance analysis; no new ERR174310 download.
+
+## Clarify the configuration-specific BGZF comparison — 2026-09-18
+
+Focused documentation correction: the16KiB ACE /65280-byte BGZF pilot has
+30.3% larger ACE archives; at65536 /65280 bytes the published sweep shows
+31.5% higher ACE ratio and23.9% smaller archives. Block sizes differ0.39%.
+The report and generator retain both results and remove the codec-intrinsic
+centromere-weakness interpretation. Density does not rank region latency.
+No measurement, historical result, release, tag, or DOI changes.
+Access/histogram evidence publication remains separate and unfinished.
+User stop: after this correction PR, no new measurements or whole-T2T c(g).
