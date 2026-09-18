@@ -28,6 +28,7 @@ int main(int argc,char**argv){
     void*ctx=open_ctx(arc,an,NULL,UINT64_MAX);if(!ctx||size_ctx(ctx)!=on)die("context");
     unsigned char*out=malloc(16384);if(!out)die("out");
 
+    void(*calibrate)(void)=sym(RTLD_DEFAULT,"mc_calibrate");
     void(*reset)(void)=sym(RTLD_DEFAULT,"mc_reset");
     void(*enable)(void)=sym(RTLD_DEFAULT,"mc_enable");
     void(*disable)(void)=sym(RTLD_DEFAULT,"mc_disable");
@@ -38,6 +39,10 @@ int main(int argc,char**argv){
     uint64_t(*gbm)(void)=sym(RTLD_DEFAULT,"mc_malloc_bytes");
     uint64_t(*gbc)(void)=sym(RTLD_DEFAULT,"mc_calloc_bytes");
     uint64_t(*gbr)(void)=sym(RTLD_DEFAULT,"mc_realloc_bytes");
+    uint64_t(*gan)(void)=sym(RTLD_DEFAULT,"mc_alloc_ns");
+    uint64_t(*gfn)(void)=sym(RTLD_DEFAULT,"mc_free_ns");
+    uint64_t(*gco)(void)=sym(RTLD_DEFAULT,"mc_clock_overhead_ns");
+    calibrate();
 
     uint64_t seed=20260909;
     for(int q=-12;q<200;q++){
@@ -52,10 +57,12 @@ int main(int argc,char**argv){
         if(n!=16384||memcmp(out,orig+off,16384))die("mismatch");
         printf("{\"query\":%d,\"offset\":%llu,\"malloc\":%llu,\"free\":%llu,"
                "\"calloc\":%llu,\"realloc\":%llu,\"malloc_bytes\":%llu,"
-               "\"calloc_bytes\":%llu,\"realloc_bytes\":%llu}\n",
+               "\"calloc_bytes\":%llu,\"realloc_bytes\":%llu,"
+               "\"alloc_ns\":%llu,\"free_ns\":%llu,\"clock_pair_overhead_ns\":%llu}\n",
                q,(unsigned long long)off,(unsigned long long)gm(),(unsigned long long)gf(),
                (unsigned long long)gc(),(unsigned long long)gr(),
-               (unsigned long long)gbm(),(unsigned long long)gbc(),(unsigned long long)gbr());
+               (unsigned long long)gbm(),(unsigned long long)gbc(),(unsigned long long)gbr(),
+               (unsigned long long)gan(),(unsigned long long)gfn(),(unsigned long long)gco());
     }
     close_ctx(ctx);dlclose(lib);free(out);free(orig);free(arc);return 0;
 }
