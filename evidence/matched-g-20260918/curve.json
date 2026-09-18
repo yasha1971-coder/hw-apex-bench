@@ -1,0 +1,66 @@
+{
+  "schema": "matched-g-curve-v1",
+  "corpus": "30 frozen T2T-CHM13v2.0 windows x 2 MiB",
+  "request_bytes": 16384,
+  "warmups": 12,
+  "passes": 3,
+  "samples_per_codec_per_g": 18000,
+  "density_definition": "total input bytes / total complete stored bytes; BGZF includes .gzi",
+  "rows": [
+    {
+      "g": 4096,
+      "ace_ratio": 4.7462337091545885,
+      "bgzf_ratio": 3.794020198813717,
+      "ace_p50_ms": 0.274156,
+      "bgzf_p50_ms": 0.053571,
+      "density_gain_pct": 25.09774488387282,
+      "latency_penalty_pct": 411.76196076235277,
+      "equal_percent_margin_pct": -386.6642158784799,
+      "bit_perfect": true
+    },
+    {
+      "g": 8192,
+      "ace_ratio": 5.056373554615686,
+      "bgzf_ratio": 4.139525656981168,
+      "ace_p50_ms": 0.259729,
+      "bgzf_p50_ms": 0.054012,
+      "density_gain_pct": 22.14862217578686,
+      "latency_penalty_pct": 380.87276901429317,
+      "equal_percent_margin_pct": -358.72414683850633,
+      "bit_perfect": true
+    },
+    {
+      "g": 16384,
+      "ace_ratio": 5.254573615700607,
+      "bgzf_ratio": 4.406649881846465,
+      "ace_p50_ms": 0.252896,
+      "bgzf_p50_ms": 0.063419,
+      "density_gain_pct": 19.24191294042281,
+      "latency_penalty_pct": 298.77008467493965,
+      "equal_percent_margin_pct": -279.52817173451683,
+      "bit_perfect": true
+    },
+    {
+      "g": 32768,
+      "ace_ratio": 5.372720751494449,
+      "bgzf_ratio": 4.64372562331464,
+      "ace_p50_ms": 0.266261,
+      "bgzf_p50_ms": 0.059041,
+      "density_gain_pct": 15.698497011101619,
+      "latency_penalty_pct": 350.9764401009468,
+      "equal_percent_margin_pct": -335.27794308984517,
+      "bit_perfect": true
+    },
+    {
+      "g": 65280,
+      "ace_ratio": 5.438417390886423,
+      "bgzf_ratio": 4.810834213586169,
+      "ace_p50_ms": 0.314202,
+      "bgzf_p50_ms": 0.100369,
+      "density_gain_pct": 13.0452048322079,
+      "latency_penalty_pct": 213.04685709731092,
+      "equal_percent_margin_pct": -200.00165226510302,
+      "bit_perfect": true
+    }
+  ]
+}

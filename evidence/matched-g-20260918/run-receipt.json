@@ -1,0 +1,72 @@
+{
+  "schema": "matched-g-receipt-v1",
+  "date": "2026-09-18",
+  "repository": "yasha1971-coder/hw-apex-bench",
+  "pr": 47,
+  "branch": "experiment/matched-g-bgzf-legal-corridor-v1",
+  "head_sha": "619c823b321dc85e2c7ebac5d79cf3a04fcead10",
+  "actions_run_id": 35356858787,
+  "actions_run_conclusion": "success",
+  "actions_pr_merge_ref_commit": "7823a8bf8aa50f9844e73ba3bc97856ad5d0f737",
+  "manifest_sha256": "c5bc7014ecd0d6c7855e7ad1b01afbd20b8a7f2e55c93c8e78098fa4c049a763",
+  "native_measure_sha256": "0438a5cc5e3e90fdcfcb6079d656443ff58fdc1965900cd163f504fbe563cac6",
+  "ace_context_sha256": "3141aba53ae6569b94498ea61cf2a027b7f17dac69d8d0938ee63b3a9b08361d",
+  "bgzf_context_sha256": "b93d51125020d54736a1537a073231cb3f2a5b50593da2d7a7b31a603607ce01",
+  "bgzf_encoder_sha256": "9d40d1e7344e1c9f7e891ea6d997dd33c51004774ea783700c888a99de19c2fa",
+  "platform": "Linux-6.17.0-1022-azure-x86_64-with-glibc2.39",
+  "cpu": "AMD EPYC 7763 64-Core Processor",
+  "timed_cpu": 0,
+  "codec_pins": {
+    "aceapex": "4915321bf118e564ef3883e58927992c7f9d8dc3",
+    "zstd": "f8745da6ff1ad1e7bab384bd1f9d742439278e99",
+    "htslib": "8f7231035d0409d525767c66d9f49f1f967ee1df",
+    "libdeflate": "dd12ff2b36d603dbb7fa8838fe7e7176fcbd4f6f"
+  },
+  "points": [
+    {
+      "g": 4096,
+      "artifact_id": 10552500385,
+      "artifact_digest": "sha256:fb1aa9a0f416feba39e4244d80fc7fb14833bae0d673a092e68ddc80235ac218",
+      "result_sha256": "c3a99043b22d3e9a35fa8aa6fd3407b773aacd1677605d497f11f477a2a4d3bc"
+    },
+    {
+      "g": 8192,
+      "artifact_id": 10552555450,
+      "artifact_digest": "sha256:53e82f778297cd9cf33aabe0cc929795e163f0e59ad597faef724db1c802449a",
+      "result_sha256": "3b8ff09e96fd560d2c2891c43d3672158ba281a65cafcb76a2ff0c8d389122ab"
+    },
+    {
+      "g": 16384,
+      "artifact_id": 10552970349,
+      "artifact_digest": "sha256:a73d33ee4fb6ddff43fbe594cffb53e75af8475f7b1c7ce2b4333ffd46907f72",
+      "result_sha256": "318fd91b490011cfbcc85b15ef7844455454d003e3be5fdb14ea9596690afb59"
+    },
+    {
+      "g": 32768,
+      "artifact_id": 10553175000,
+      "artifact_digest": "sha256:fc2403d165671d6a0802aac59c88e311a64777576d49424e0459fc01b6cb7a5e",
+      "result_sha256": "d201668004ea300aa8dc0a1bfddd9dbe7e3b019d667be9720e521fe8203a4f92"
+    },
+    {
+      "g": 65280,
+      "artifact_id": 10552685572,
+      "artifact_digest": "sha256:a83b581284e49bd44d7c5d2ee062ce102efbe05db10ca0c6f2f8dcbb45fbc9ba",
+      "result_sha256": "1b7a10c9fbab7d4d9efc89cd3d7fea4edf470ba0f237076e7da5c40be41ee4bb"
+    }
+  ],
+  "curve_artifact": {
+    "artifact_id": 10552980388,
+    "artifact_digest": "sha256:44842b483428e254c4a341f25c6185340a750d36a02f23d94011e894a105971f",
+    "curve_json_sha256": "bb82bb38a457fd9a93261f80f603f9fd9910769cceaca3e81856b9e7ab3e249d"
+  },
+  "totals": {
+    "archive_configurations": 300,
+    "bit_perfect_archive_configurations": 300,
+    "timed_region_requests": 180000
+  },
+  "bgzf_boundary": {
+    "max_matched_uncompressed_g_bytes": 65280,
+    "reason": "compatible BGZF virtual offsets reserve 16 low bits for in-block offset; pinned htslib's regular uncompressed payload ceiling is 65280 because the complete BGZF member must fit within 65536 bytes",
+    "above_boundary": "closed / not part of the interoperable matched-g corridor"
+  }
+}
