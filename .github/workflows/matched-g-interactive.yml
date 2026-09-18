@@ -1,0 +1,161 @@
+name: Matched-g interactive ACE vs BGZF
+on:
+  pull_request:
+    paths:
+      - 'review/matched_g_interactive/**'
+      - '.github/workflows/matched-g-interactive.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+
+jobs:
+  measure:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 180
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install prerequisites
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq build-essential cmake git zlib1g-dev curl python3
+
+      - name: Download and verify frozen T2T source
+        run: |
+          mkdir -p .work/source
+          curl --fail --location --retry 3 \
+            https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/009/914/755/GCA_009914755.4_T2T-CHM13v2.0/GCA_009914755.4_T2T-CHM13v2.0_genomic.fna.gz \
+            -o .work/source/t2t.fna.gz
+          echo '9280657210e4161147cbe13b022225b9  .work/source/t2t.fna.gz' | md5sum -c -
+          gzip -dc .work/source/t2t.fna.gz > .work/source/t2t.fa
+          test "$(stat -c%s .work/source/t2t.fa)" = 3156259565
+          echo 'cd1e52ce400c027ed0b7ab4b9d613f5a  .work/source/t2t.fa' | md5sum -c -
+
+      - name: Recreate the exact thirty frozen windows
+        run: |
+          python3 review/t2t_regions/prepare.py \
+            --fasta .work/source/t2t.fa \
+            --report evidence/t2t-regions-20260916/GCA_009914755.4_T2T-CHM13v2.0_assembly_report.txt \
+            --censat evidence/t2t-regions-20260916/chm13v2.0_censat_v2.1.bed \
+            --telomeres evidence/t2t-regions-20260916/chm13v2.0_telomere.bed \
+            --out .work/windows
+          rm -f .work/source/t2t.fa .work/source/t2t.fna.gz
+
+      - name: Build exact pinned codec dependencies
+        run: |
+          bash review/t2t_regions/build.sh .work/build
+
+      - name: Build resident native readers and exact-g BGZF writer
+        run: |
+          mkdir -p .work/native
+          gcc -O3 -std=c11 -Iharness harness/native_measure.c -ldl -o .work/native/native_measure
+
+          cp codecs/native/aceapex.c .work/native/ace_context.c
+          python3 - <<'PY'
+          from pathlib import Path
+          p=Path('.work/native/ace_context.c')
+          s=p.read_text()
+          old='1b13df34ac8e839dd3232b59bc59560d689a435a'
+          new='4915321bf118e564ef3883e58927992c7f9d8dc3'
+          assert s.count(old)==1
+          p.write_text(s.replace(old,new))
+          PY
+          gcc -O3 -fPIC -Iharness -I.work/build/aceapex-source/src \
+            -c .work/native/ace_context.c -o .work/native/ace_context.o
+          g++ -O3 -std=c++17 -fPIC -shared -pthread \
+            -I.work/build/aceapex-source/src -I.work/build/zstd/lib \
+            .work/native/ace_context.o \
+            .work/build/aceapex-source/src/aceapex_api.cpp \
+            .work/build/zstd/lib/libzstd.a \
+            -o .work/native/ace_context.so
+
+          cmake -S .work/build/libdeflate -B .work/build/libdeflate-pic-build \
+            -DCMAKE_BUILD_TYPE=Release -DCMAKE_POSITION_INDEPENDENT_CODE=ON \
+            -DLIBDEFLATE_BUILD_SHARED_LIB=OFF -DLIBDEFLATE_BUILD_GZIP=OFF \
+            -DLIBDEFLATE_BUILD_TESTS=OFF
+          cmake --build .work/build/libdeflate-pic-build --parallel 4
+
+          gcc -O3 -fPIC -shared -Iharness -I.work/build/htslib \
+            codecs/native/bgzip.c \
+            .work/build/htslib/libhts.a .work/build/libdeflate-pic-build/libdeflate.a \
+            -lz -lm -pthread -o .work/native/bgzf_context.so
+
+          gcc -O3 -I.work/build/htslib review/matched_g/bgzf_encode_g.c \
+            .work/build/htslib/libhts.a .work/build/libdeflate-build/libdeflate.a \
+            -lz -lm -pthread -o .work/native/bgzf_encode_g
+
+          .work/build/htslib/bgzip --version
+          .work/build/aceapex --help >/dev/null 2>&1 || true
+          sha256sum .work/native/* > .work/native/SHA256SUMS
+
+      - name: Measure g=4096
+        run: python3 review/matched_g_interactive/run_point.py --g 4096 --inputs .work/windows --build .work/build --native .work/native --out /tmp/matched-g-interactive/g4096
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: matched-g-interactive-4096
+          path: |
+            /tmp/matched-g-interactive/g4096/result.json
+            /tmp/matched-g-interactive/g4096/provenance.json
+            /tmp/matched-g-interactive/g4096/configurations.jsonl
+            /tmp/matched-g-interactive/g4096/samples.jsonl
+
+      - name: Measure g=8192
+        run: python3 review/matched_g_interactive/run_point.py --g 8192 --inputs .work/windows --build .work/build --native .work/native --out /tmp/matched-g-interactive/g8192
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: matched-g-interactive-8192
+          path: |
+            /tmp/matched-g-interactive/g8192/result.json
+            /tmp/matched-g-interactive/g8192/provenance.json
+            /tmp/matched-g-interactive/g8192/configurations.jsonl
+            /tmp/matched-g-interactive/g8192/samples.jsonl
+
+      - name: Measure g=16384
+        run: python3 review/matched_g_interactive/run_point.py --g 16384 --inputs .work/windows --build .work/build --native .work/native --out /tmp/matched-g-interactive/g16384
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: matched-g-interactive-16384
+          path: |
+            /tmp/matched-g-interactive/g16384/result.json
+            /tmp/matched-g-interactive/g16384/provenance.json
+            /tmp/matched-g-interactive/g16384/configurations.jsonl
+            /tmp/matched-g-interactive/g16384/samples.jsonl
+
+      - name: Measure g=32768
+        run: python3 review/matched_g_interactive/run_point.py --g 32768 --inputs .work/windows --build .work/build --native .work/native --out /tmp/matched-g-interactive/g32768
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: matched-g-interactive-32768
+          path: |
+            /tmp/matched-g-interactive/g32768/result.json
+            /tmp/matched-g-interactive/g32768/provenance.json
+            /tmp/matched-g-interactive/g32768/configurations.jsonl
+            /tmp/matched-g-interactive/g32768/samples.jsonl
+
+      - name: Measure g=65280
+        run: python3 review/matched_g_interactive/run_point.py --g 65280 --inputs .work/windows --build .work/build --native .work/native --out /tmp/matched-g-interactive/g65280
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: matched-g-interactive-65280
+          path: |
+            /tmp/matched-g-interactive/g65280/result.json
+            /tmp/matched-g-interactive/g65280/provenance.json
+            /tmp/matched-g-interactive/g65280/configurations.jsonl
+            /tmp/matched-g-interactive/g65280/samples.jsonl
+
+      - name: Build the five-point curve
+        run: python3 review/matched_g_interactive/curve.py --root /tmp/matched-g --out /tmp/matched-g-interactive/curve
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: matched-g-interactive-curve
+          path: |
+            /tmp/matched-g-interactive/curve/curve.json
+            /tmp/matched-g-interactive/curve/curve.md
+            /tmp/matched-g-interactive/g*/result.json
+            /tmp/matched-g-interactive/g*/provenance.json
