@@ -1,0 +1,63 @@
+{
+  "schema": "matched-g-interactive-receipt-v1",
+  "date": "2026-09-18",
+  "repository": "yasha1971-coder/hw-apex-bench",
+  "pr": 51,
+  "branch": "experiment/matched-g-interactive-v1",
+  "source_head_sha": "059ebf6bf252d7890fd1e30b16910ebe59128dfa",
+  "actions_run_id": 35364484648,
+  "actions_conclusion": "measurement points success; curve aggregation path typo only",
+  "actions_merge_ref_commit": "9ac064ceff9a59eafe86e40f4462c56e116302f5",
+  "platform": "Linux-6.17.0-1022-azure-x86_64-with-glibc2.39",
+  "cpu": "AMD EPYC 7763 64-Core Processor",
+  "vcpus": 4,
+  "timed_cpu": 0,
+  "manifest_sha256": "c5bc7014ecd0d6c7855e7ad1b01afbd20b8a7f2e55c93c8e78098fa4c049a763",
+  "ace_profile": {
+    "aceapex": "4915321bf118e564ef3883e58927992c7f9d8dc3",
+    "lit_chunk": 65536,
+    "fse_chunk": 4096,
+    "min_match": "unset"
+  },
+  "artifacts": [
+    {
+      "g": 4096,
+      "id": 10555941521,
+      "digest": "sha256:672afca86d911d9d4ab7f69709d5e40df89980ed6adbbdeb71825a89defa1df5",
+      "result_sha256": "e1356c545e2f6216fafac2e4b0f0d48f5d823a9172bd9cb961845ef1af8fad8f"
+    },
+    {
+      "g": 8192,
+      "id": 10556021540,
+      "digest": "sha256:f62826b01fc5f0c2617813ea0c5fa9a0c5601229e6fd58ef7baa5d6230759b62",
+      "result_sha256": "65510175df1595d4a0877e29ca70a3b182998a5d0fb6a5b9f06f588242f1a1dc"
+    },
+    {
+      "g": 16384,
+      "id": 10556256400,
+      "digest": "sha256:f4e8f4744b1a01e3feb672a09fc52a53e7eb953c6016dc29a2e8696eed93bad3",
+      "result_sha256": "58f066d467a4d1f2c07d8b9f20933f9fd9d43b7de1969b449a542914778f615b"
+    },
+    {
+      "g": 32768,
+      "id": 10556336223,
+      "digest": "sha256:09189c880cbb470a4341421aba5ae16a4dace8294105dd4afc2c2381e77d8634",
+      "result_sha256": "f5fe7373553120355098bbb71d71046a02e3163d753c54736bc92a30d3eee370"
+    },
+    {
+      "g": 65280,
+      "id": 10555896652,
+      "digest": "sha256:f9bb3aa2e7316a946d2da2cdde5e2d188da77f997c0ee56159e7dd7adeeb76df",
+      "result_sha256": "c8e6c29d4142317173d3d5c0e0c79f89b37ef8b9c2baeba823c182a662368109"
+    }
+  ],
+  "totals": {
+    "archive_configurations": 300,
+    "bit_perfect_archive_configurations": 300,
+    "timed_region_requests": 180000
+  },
+  "bgzf_boundary": {
+    "max_matched_uncompressed_g_bytes": 65280,
+    "above_boundary": "closed / not part of compatible matched-g corridor"
+  }
+}
