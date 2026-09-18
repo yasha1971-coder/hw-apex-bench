@@ -15,7 +15,7 @@ On Ubuntu, install the prerequisites (the only command here requiring sudo):
 
 ```bash
 sudo apt-get update
-sudo apt-get install -y build-essential cmake autoconf automake zlib1g-dev git python3
+sudo apt-get install -y ca-certificates build-essential cmake autoconf automake zlib1g-dev git python3
 git clone https://github.com/yasha1971-coder/hw-apex-bench.git
 cd hw-apex-bench
 ./run.sh --check codecs/xz.sh

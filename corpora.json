@@ -13,7 +13,7 @@
     "md5_scope": "uncompressed FASTA",
     "uncompressed_bytes": 3156259565,
     "download_bytes": 932696125,
-    "verification_status": "owner-reported; independent download verification pending",
+    "verification_status": "independent compressed and uncompressed MD5/size verification completed; evidence/t2t-regions-20260916/receipt.json",
     "preparation": "gzip decompression only; preserve all FASTA bytes",
     "download_md5": "9280657210e4161147cbe13b022225b9",
     "download_md5_source": "https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/009/914/755/GCA_009914755.4_T2T-CHM13v2.0/md5checksums.txt"
@@ -29,8 +29,9 @@
     "preparation": "gzip decompression followed by exact byte prefix; no record rewriting or mate concatenation",
     "prefix_bytes": 5368709120,
     "format": "bytes; final FASTQ record truncated",
-    "verification_status": "first 104857600 decompressed bytes verified against owner MD5; complete 5 GiB MD5 remains owner-reported and must be checked before measurement",
-    "verified_prefix_bytes": 104857600,
-    "verified_prefix_md5": "366e770acdf9892b9c5611fdeba9e6e6"
+    "verification_status": "exact 5 GiB expanded prefix independently verified; full source gzip CRC/compressed MD5 not verified",
+    "verified_prefix_bytes": 5368709120,
+    "verified_prefix_md5": "d628e1c9fb9466fcbd82109c3c7f9f10",
+    "verification_receipt": "review/err174310-prefix-5gib.json"
   }
 }

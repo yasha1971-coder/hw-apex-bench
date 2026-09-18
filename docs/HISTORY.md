@@ -1066,3 +1066,23 @@ Validated435 publication records, unchanged README table bytes,6 integrity tests
 810 explorer combinations and the349571-byte fixture. README remains125lines.
 Only README's byte count/hash in the publication manifest changes to match its
 new generated text; all measurement digests and original receipts are preserved.
+
+## Clarify corpus and c(g) scope before local-curve publication — 2026-09-18
+
+Repository About saved through the authenticated GitHub UI: concrete byte-range
+comparison description, Pages URL, compression/random-access/benchmark topics.
+Corrected the stale CORPORA T2T admission wording using the retained independent
+receipt; no source or measurement hash changed. Added c_file(g) versus
+c_window(g) scope guide and a generated README warning. Historical1.632% is
+hg38 chr1/ACEee5a37e; local60.565% is selected T2T HOR/ACE4915321, not the same
+input or codec policy. PR43 is separate and remains unmerged. BGZF65280 versus
+ACE65536 bytes was already explicit in the published PR42 report.
+
+Full ERR1743105GiB prefix independently streamed and verified on2026-09-18:
+5368709120bytes, MD5d628e1c9fb9466fcbd82109c3c7f9f10, same first header and
+100MiB MD5. Receipt review/err174310-prefix-5gib.json; reproducible verifier
+review/verify_err174310_prefix.py. Full gzip CRC/compressed MD5 remain unverified.
+Catalog verification statuses now reflect retained evidence for both new inputs;
+input URLs, expected hashes, historical435, codec sources and DOI are unchanged.
+A dedicated first-user workflow builds only XZ in a fresh Ubuntu24.04 container,
+checks correctness and plans axes; no timing run or historical full run.

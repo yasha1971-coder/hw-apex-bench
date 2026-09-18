@@ -1,0 +1,43 @@
+name: First user XZ check
+on:
+  pull_request:
+    paths:
+      - 'docs/GETTING_STARTED.md'
+      - '.github/workflows/first-user-check.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  first-user:
+    runs-on: ubuntu-24.04
+    container: ubuntu:24.04
+    timeout-minutes: 15
+    steps:
+      - name: Install documented prerequisites in a fresh Ubuntu container
+        run: |
+          apt-get update -qq
+          apt-get install -y -qq ca-certificates build-essential cmake autoconf automake zlib1g-dev git python3
+      - uses: actions/checkout@v4
+      - name: Record environment and frozen data identity
+        run: |
+          mkdir -p /tmp/first-user
+          cat /etc/os-release > /tmp/first-user/os-release
+          dpkg-query -W > /tmp/first-user/packages.txt
+          sha256sum results.jsonl > /tmp/first-user/results.sha256
+          test ! -e .work/adapter-check
+      - name: Run the first documented correctness check
+        run: ./run.sh --check codecs/xz.sh
+      - name: Inspect capabilities from the fresh receipt without measuring
+        run: ./run.sh --plan --codec xz --axis ratio --axis region --axis batch --output /tmp/first-user/plan.json
+      - name: Verify frozen data was not changed
+        run: sha256sum --check /tmp/first-user/results.sha256
+      - name: Retain qualification and environment receipts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: first-user-xz
+          include-hidden-files: true
+          path: |
+            /tmp/first-user/
+            .work/adapter-check/**/check.json
+            .work/adapter-check/**/check.log
