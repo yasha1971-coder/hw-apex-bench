@@ -57,6 +57,61 @@ The T2T source was re-downloaded and verified before extraction:
 - expanded MD5: \`cd1e52ce400c027ed0b7ab4b9d613f5a\`
 - expanded bytes: \`3156259565\`
 
+## Timing boundary: what is inside the p50
+
+Both codecs are timed **in-process through resident shared libraries by the same
+\`harness/native_measure.c\` worker**. No codec CLI, subprocess startup, archive
+file I/O, dynamic-library load, archive open, index load, output allocation or
+output-buffer prefault is inside the region timer.
+
+For every configuration the worker first reads the archive and original input,
+\`dlopen()\`s the codec wrapper, creates one resident context with \`hc_open()\`,
+allocates and prefaults the guarded 16 KiB destination, and then performs 12
+warmups. The timer surrounds only one call to \`hc_region()\`.
+
+The two codec wrappers nevertheless expose different internal lifecycle
+semantics:
+
+- ACEAPEX \`hc_region()\` calls the public one-shot
+  \`aceapex_decompress_region()\` on every query. That API reparses and validates
+  the archive header on each call, derives the relevant stream ranges, creates
+  temporary range/span buffers, decodes the touched blocks, copies the requested
+  bytes, and releases those temporaries.
+- BGZF \`hc_open()\` creates a persistent \`BGZF *\` once and loads the \`.gzi\`
+  index before timing. Each timed \`hc_region()\` then performs
+  \`bgzf_useek()\` + \`bgzf_read()\` on that already-open context.
+
+Therefore the matched-g p50 is a fair comparison of the **current resident
+library operations exposed by the two implementations**, but it is not a
+format-only lower bound. In particular, ACE's ~0.25 ms contains reusable
+implementation work that is independent of the chosen g as well as the
+g-dependent decode span. It is consequently a real optimization target for a
+persistent ACE region context; it must not be attributed to block size alone.
+
+A future ACE resident-context experiment may cache validated header/table
+state and reusable scratch buffers, but it must be published as a new
+implementation result rather than rewriting this measurement.
+
+## Historical latency comparisons are not directly comparable
+
+Earlier Paper 5 checks did not use this symmetric resident-library harness.
+ACE latency was measured through an in-process library helper, while the BGZF
+reference was timed by launching \`samtools faidx\` as a subprocess for each
+request. The old script explicitly describes that value as a "bgzip process
+read" and notes about 15x on EPYC and 11x on a laptop.
+
+Those ratios include process/CLI overhead on the BGZF side and must not be used
+as a baseline for the present resident-library ratio. In the exact matched-g
+run, the direct ratio \`ACE p50 / BGZF p50\` ranges from about **3.13x to 5.12x**.
+(For example, +213% latency penalty means 3.13x total latency, not 2.13x.)
+
+The GitHub Actions host is also a shared Azure VM. CPU affinity was pinned to
+CPU 0, which fixes scheduling affinity but does not guarantee invariant clock
+frequency, steal time, cache interference or identical host placement. Absolute
+latencies are therefore **declared machine-specific observations only**. The
+portable result of this run is the same-run curve and same-run codec ratios;
+no absolute latency threshold is inferred from the GitHub runner.
+
 ## What the slopes say
 
 ACEAPEX is denser at every legal g, but slower at every legal g.
@@ -66,9 +121,27 @@ The relative density advantage decreases monotonically as g grows:
 
 The relative p50 latency penalty is not monotonic:
 **+411.76% → +380.87% → +298.77% → +350.98% → +213.05%**.
-ACE's own absolute p50 is lowest at 16 KiB (0.252896 ms); BGZF's ceiling point
-also becomes substantially slower, which reduces the relative penalty at
-65,280 B.
+ACE's own absolute p50 is lowest at 16 KiB (0.252896 ms), exactly the request
+length. BGZF does **not** have the same minimum: its lowest measured p50 is at
+4 KiB (0.053571 ms), with 8 KiB nearly identical. Its 65,280 B point rises to
+0.100369 ms, about 1.87x the 4 KiB value.
+
+The matched-g run did not collect amplification counters, so amplification is
+not reported as a measured axis here. Geometry nevertheless explains why the
+largest BGZF block is disadvantaged for a 16 KiB request: a random request
+usually requires substantially more than 16 KiB of block output, and a
+separate earlier counter run reported 4.821x BGZF decoded-byte amplification
+for 65,280-byte blocks. That historical counter is context, not a substituted
+measurement for this curve.
+
+The useful generalization is therefore not "optimal g always equals request
+size." The data support a narrower rule: **search g on the scale of the
+application's typical region, including values below it**, because larger g
+increases overdecode while smaller g increases per-block overhead and density
+cost. ACE's present implementation bottoms near R=16 KiB; BGZF's present
+implementation prefers the smaller tested blocks. The optimum is a property of
+workload + decoder implementation + format geometry, not of codec identity
+alone.
 
 There is no dimensionally universal statement that a percentage density gain
 "covers" a percentage latency loss without a workload utility function. If,
@@ -87,9 +160,11 @@ So under that explicit equal-percentage convention there is **no crossing
 inside the interoperable BGZF corridor**. This is a statement about that
 normalization, not a universal application preference.
 
-In Pareto terms, neither codec dominates the other on these two objectives:
-ACEAPEX always provides higher density; BGZF always provides lower p50 region
-latency.
+In Pareto terms, neither **current implementation path** dominates the other on
+these two measured objectives: ACEAPEX always provides higher density; BGZF
+always provides lower resident-library p50. This is intentionally phrased as
+an implementation result, not a claim that the encoded formats impose those
+absolute latencies.
 
 ## Reproduction and provenance
 
