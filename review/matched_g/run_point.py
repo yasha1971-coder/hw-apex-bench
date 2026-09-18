@@ -66,8 +66,8 @@ def main():
                 geometry={"granularity":a.g}
                 lib=ace_so
             else:
-                gzi=(a.out/"archives"/(stem+".gzi")).resolve(); side=str(gzi)
-                cmd=[encoder,inp,arc,gzi,str(a.g)]
+                gzi=Path(str(arc)+".gzi").resolve(); side=str(gzi)
+                cmd=[encoder,inp,arc,str(a.g)]
                 run(cmd,env=env,stdout=subprocess.DEVNULL,stderr=subprocess.DEVNULL,timeout=600)
                 z=bgzf_isizes(arc.read_bytes()); data=z[:-1]
                 if any(x > a.g for x in data) or any(x != a.g for x in data[:-1]):
