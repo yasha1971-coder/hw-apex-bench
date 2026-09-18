@@ -6,6 +6,7 @@
 - [Independence audit](INDEPENDENCE_AUDIT.md)
 - [Strict c(g) protocol](STRICT_CG.md)
 - [BGZF backend reconciliation](BGZF_BACKEND_REVIEW.md)
+- [First-user and adoption audit, 2026-09-18](ADOPTION_20260918.md)
 
 Original machine-readable receipts and verification scripts remain in
 [evidence](../../evidence/) and [review](../../review/).

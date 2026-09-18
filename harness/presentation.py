@@ -40,20 +40,20 @@ and small-corpus evidence, not an invented row in this historical comparison.
 [Explore the measurements →](https://yasha1971-coder.github.io/hw-apex-bench/)
 [Add your codec →](CONTRIBUTING.md)
 
-## Usage
+## Try it
 
-Run commands from the repository root on Linux.
-Prerequisites and pinned builds are in [ADAPTERS.md](docs/ADAPTERS.md).
-For the native comparison below, qualify both XZ and BGZF as described there,
-and supply the same input file to both; the output directory must be new.
+Choose a codec and block size for small reads; compare density, latency and decoded work.
+Start with the [copy-and-run guide](docs/GETTING_STARTED.md): prerequisites,
+a small generated input, expected outputs and troubleshooting. Linux required.
+The correctness check builds pinned dependencies; it does not collect timings.
 
 ```bash
-./run.sh                         # historical full pipeline; expensive
-./run.sh --check codecs/xz.sh     # qualify an adapter before measuring
-./run.sh --measure --codec xz --codec bgzip --axis region --input input.bin --output-dir .work/region-run
+git clone https://github.com/yasha1971-coder/hw-apex-bench.git
+cd hw-apex-bench
+./run.sh --check codecs/xz.sh     # first success: byte-exact correctness, not speed
 ```
 
-The no-argument command is the historical runner, not an all-adapter dispatcher.
+The no-argument `./run.sh` starts the expensive historical runner; it is not the quick start.
 Native subsets use `--measure`; bare `--codec` is not a supported entry point.
 Use `--plan` to inspect capability decisions without starting measurements.
 The documented corpus URLs and checksums are in [corpora.json](corpora.json).

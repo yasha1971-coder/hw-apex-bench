@@ -1,6 +1,7 @@
 # Contributing
 
 Add codecs through adapters; keep measurement methods and published evidence stable.
+First visit? Complete [one small correctness check](docs/GETTING_STARTED.md) before reading the full interface.
 
 - Start with [ADAPTERS.md](docs/ADAPTERS.md), including the native ABI and declared helper files.
 - Use Linux, Bash, Python 3, Git, GCC/G++, Make, CMake, Autoconf, Automake and zlib development headers.

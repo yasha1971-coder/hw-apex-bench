@@ -1045,3 +1045,24 @@ t2t-granularity-archives-20260916.zip, saved as a separate downloadable artifact
 Checks: sweep verifier/bundle audit, publication435 digest validation, Pages
 build and local Markdown links. Root results, old evidence, tag and DOI unchanged.
 Next bounded action: review the standalone sweep PR; no additional measurements.
+
+## First-user cleanup and adoption audit — 2026-09-18
+
+Independent documentation branch from main9af68d7; PR43 remains untouched.
+Live GitHub metadata:0stars/0forks, created2026-09-09, homepage unset/topics empty.
+No traffic or independent-run data: causes of low adoption remain hypotheses.
+Audited README, generator, Pages template, adapter/native commands and CI against
+lzbench/TurboBench and genomic-access related work. ENCODE.SU announcement found
+in search; replies inaccessible403, so no claimed community verdict.
+Added docs/GETTING_STARTED.md, first-run/workload issue templates and audit
+docs/AUDITS/ADOPTION_20260918.md. README first example now small XZ correctness
+qualification; optional XZ/BGZF comparison uses the existing fixture and explicit
+new output directory. Pages gets Try it navigation. Generator keeps the new path.
+No runtime behavior, codecs, measurements, prior evidence, tag or DOI changed.
+No outreach, metadata settings change, telemetry, new benchmark or PR merge.
+Next gates: review presentation PR, clean-environment onboarding validation,
+then authorized targeted feedback; prioritize independent use over star counts.
+Validated435 publication records, unchanged README table bytes,6 integrity tests,
+810 explorer combinations and the349571-byte fixture. README remains125lines.
+Only README's byte count/hash in the publication manifest changes to match its
+new generated text; all measurement digests and original receipts are preserved.
