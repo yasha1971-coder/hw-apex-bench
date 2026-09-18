@@ -11,7 +11,7 @@ permissions:
 jobs:
   measure:
     runs-on: ubuntu-24.04
-    timeout-minutes: 90
+    timeout-minutes: 180
     steps:
       - uses: actions/checkout@v4
 
@@ -91,6 +91,7 @@ jobs:
       - name: Measure g=4096
         run: python3 review/matched_g/run_point.py --g 4096 --inputs .work/windows --build .work/build --native .work/native --out /tmp/matched-g/g4096
       - uses: actions/upload-artifact@v4
+        if: always()
         with:
           name: matched-g-4096
           path: |
@@ -102,6 +103,7 @@ jobs:
       - name: Measure g=8192
         run: python3 review/matched_g/run_point.py --g 8192 --inputs .work/windows --build .work/build --native .work/native --out /tmp/matched-g/g8192
       - uses: actions/upload-artifact@v4
+        if: always()
         with:
           name: matched-g-8192
           path: |
@@ -113,6 +115,7 @@ jobs:
       - name: Measure g=16384
         run: python3 review/matched_g/run_point.py --g 16384 --inputs .work/windows --build .work/build --native .work/native --out /tmp/matched-g/g16384
       - uses: actions/upload-artifact@v4
+        if: always()
         with:
           name: matched-g-16384
           path: |
@@ -124,6 +127,7 @@ jobs:
       - name: Measure g=32768
         run: python3 review/matched_g/run_point.py --g 32768 --inputs .work/windows --build .work/build --native .work/native --out /tmp/matched-g/g32768
       - uses: actions/upload-artifact@v4
+        if: always()
         with:
           name: matched-g-32768
           path: |
@@ -135,6 +139,7 @@ jobs:
       - name: Measure g=65280
         run: python3 review/matched_g/run_point.py --g 65280 --inputs .work/windows --build .work/build --native .work/native --out /tmp/matched-g/g65280
       - uses: actions/upload-artifact@v4
+        if: always()
         with:
           name: matched-g-65280
           path: |
@@ -146,6 +151,7 @@ jobs:
       - name: Build the five-point curve
         run: python3 review/matched_g/curve.py --root /tmp/matched-g --out /tmp/matched-g/curve
       - uses: actions/upload-artifact@v4
+        if: always()
         with:
           name: matched-g-curve
           path: |
