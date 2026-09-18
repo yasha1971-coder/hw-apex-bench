@@ -6,6 +6,11 @@ out=${2:?new output directory required}
 [[ ! -e "$work" && ! -e "$out" ]] || { echo "STOP: output exists" >&2; exit 1; }
 
 bash "$root/review/t2t_regions/build.sh" "$work"
+cmake -S "$work/libdeflate" -B "$work/libdeflate-pic-build" \
+  -DCMAKE_BUILD_TYPE=Release -DCMAKE_POSITION_INDEPENDENT_CODE=ON \
+  -DLIBDEFLATE_BUILD_SHARED_LIB=OFF -DLIBDEFLATE_BUILD_GZIP=OFF \
+  -DLIBDEFLATE_BUILD_TESTS=OFF
+cmake --build "$work/libdeflate-pic-build" --parallel 4
 mkdir -p "$out"
 cp "$work/aceapex" "$out/aceapex"
 
@@ -40,7 +45,7 @@ g++ -O3 -std=c++17 -fPIC -shared -pthread \
 gcc -O3 -fPIC -shared \
   -I"$out/stage/harness" -I"$work/htslib" \
   "$out/stage/codecs/native/bgzip.c" \
-  "$work/htslib/libhts.a" "$work/libdeflate-build/libdeflate.a" \
+  "$work/htslib/libhts.a" "$work/libdeflate-pic-build/libdeflate.a" \
   -lz -lm -pthread -o "$out/bgzf_context.so"
 
 sha256sum "$out/aceapex" "$out/native_measure" "$out/bgzf_encode_g" "$out/ace_context.so" "$out/bgzf_context.so" > "$out/SHA256SUMS"
