@@ -11,13 +11,13 @@ static void die(const char *s) {
 }
 
 int main(int argc, char **argv) {
-    if (argc != 5) {
+    if (argc != 4) {
         fprintf(stderr, "usage: bgzf_encode_g INPUT OUTPUT INDEX G\n");
         return 2;
     }
     char *end = NULL;
-    unsigned long parsed = strtoul(argv[4], &end, 10);
-    if (!argv[4][0] || *end || parsed < 1 || parsed > 65280) {
+    unsigned long parsed = strtoul(argv[3], &end, 10);
+    if (!argv[3][0] || *end || parsed < 1 || parsed > 65280) {
         fprintf(stderr, "STOP: G must be 1..65280 bytes\n");
         return 2;
     }
@@ -43,7 +43,7 @@ int main(int argc, char **argv) {
     }
     free(buf);
     if (fclose(in)) die("close input");
-    if (bgzf_index_dump(out, argv[3], NULL) < 0) die("index dump");
+    if (bgzf_index_dump(out, argv[2], ".gzi") < 0) die("index dump");
     if (bgzf_close(out) < 0) die("close output");
     return 0;
 }
