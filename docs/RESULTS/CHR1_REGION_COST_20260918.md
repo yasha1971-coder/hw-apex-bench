@@ -52,6 +52,32 @@ enabled only around `hc_region()`; a measured back-to-back clock-pair overhead
 is removed per allocation call. It is not substituted for the uninstrumented
 latency run.
 
+## Independent ARM repeat
+
+A second complete run on the same ARM64 runner class and unchanged archive/protocol
+completed after the baseline was committed: Actions **35361350566**, artifact
+**10555230707**.
+
+| Diagnostic | Primary | Independent repeat |
+|---|---:|---:|
+| p50 | 913.668 µs | 903.599 µs |
+| p99 | 1,274.394 µs | 1,239.546 µs |
+| header + locate | 0.0166 µs | 0.0155 µs |
+| linear index scan | 0.8911 µs | 0.8911 µs |
+| alloc/free libc time p50 | 2.176 µs | 2.760 µs |
+| instructions / request | 8,796,014 | 8,796,014 |
+| cycles / request | 2,875,685 | 2,865,229 |
+| IPC | 3.059 | 3.070 |
+
+The wall-clock p50 differs by about 1.1%, while retired instructions are effectively
+identical and cycles differ by about 0.36%. This is the expected distinction between
+declared hosted-runner time and the more stable structural work count. The repeat is
+retained as confirmation; it does not replace the primary run.
+
+Raw five-repeat PMU counters from the repeat are committed in
+`evidence/chr1-region-cost-20260918/perf-repeats.json`, and both artifact identities
+are in `evidence/chr1-region-cost-20260918/run-receipt.json`.
+
 ## Full-archive geometry
 
 The 16 KiB chr1 archive contains:
