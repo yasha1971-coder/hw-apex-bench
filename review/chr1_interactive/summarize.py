@@ -9,7 +9,7 @@ def nearest(xs,q):
 def perf_value(p,event):
     for line in Path(p).read_text().splitlines():
         parts=[x.strip() for x in line.split(';')]
-        if event not in parts: continue
+        if not any(x.startswith(event) for x in parts): continue
         raw=parts[0].replace(',','')
         if raw.startswith('<'): return None
         return float(raw)
