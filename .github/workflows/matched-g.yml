@@ -69,9 +69,15 @@ jobs:
             .work/build/zstd/lib/libzstd.a \
             -o .work/native/ace_context.so
 
+          cmake -S .work/build/libdeflate -B .work/build/libdeflate-pic-build \
+            -DCMAKE_BUILD_TYPE=Release -DCMAKE_POSITION_INDEPENDENT_CODE=ON \
+            -DLIBDEFLATE_BUILD_SHARED_LIB=OFF -DLIBDEFLATE_BUILD_GZIP=OFF \
+            -DLIBDEFLATE_BUILD_TESTS=OFF
+          cmake --build .work/build/libdeflate-pic-build --parallel 4
+
           gcc -O3 -fPIC -shared -Iharness -I.work/build/htslib \
             codecs/native/bgzip.c \
-            .work/build/htslib/libhts.a .work/build/libdeflate-build/libdeflate.a \
+            .work/build/htslib/libhts.a .work/build/libdeflate-pic-build/libdeflate.a \
             -lz -lm -pthread -o .work/native/bgzf_context.so
 
           gcc -O3 -I.work/build/htslib review/matched_g/bgzf_encode_g.c \
