@@ -15,8 +15,10 @@ The NCBI checksum listing reports compressed MD5
 `9280657210e4161147cbe13b022225b9`; its metadata was retrieved on 2026-09-16.
 Keep headers, line endings, wrapping and sequence order unchanged. Download
 with HTTP errors treated as failures, decompress, then verify both expanded
-size and MD5 before any codec runs. These expected values were supplied from
-ace-core; no independent full download or benchmark was performed here.
+size and MD5 before any codec runs. The values were initially supplied from ace-core. The subsequent regional
+experiment independently verified both compressed and expanded MD5 and the
+expanded size; see its [retained receipt](../evidence/t2t-regions-20260916/receipt.json).
+Thirty frozen windows were measured. This does not establish a whole-T2T c(g) curve.
 
 ## ERR174310: source-resolved byte-prefix recipe
 

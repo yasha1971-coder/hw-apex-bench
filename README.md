@@ -65,6 +65,7 @@ The documented corpus URLs and checksums are in [corpora.json](corpora.json).
 
 Amplification can reach one when decoded work matches the requested bytes.
 Break-even is a cost model, not a promise about batched or overlapping requests.
+[File c_file(g) and window c_window(g)](docs/CG_SCOPES.md) use different baseline inputs; corpus, scale and codec version differ, so their percentages are not directly comparable.
 A negative c(g) is valid: local coding statistics can outweigh lost long matches.
 Access entropy and block size describe the workload; neither is a quality score.
 

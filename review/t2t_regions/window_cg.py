@@ -87,16 +87,16 @@ def calculate(bases):
 
 
 def report(summary, paired):
-    lines = ['# T2T window-local c(g) — 2026-09-16', '',
+    lines = ['# T2T window-local c_window(g) — 2026-09-16', '',
              'A completed local curve, not a whole-T2T curve. Sixty new one-whole-window',
              'baselines complete the retained 300 measurements without rerunning them.',
              'Each baseline restores byte-exactly; a second encoding reproduced all 60 hashes.', '',
-             'c(g) is ratio loss relative to one block covering the same 2 MiB window:',
+             '[c_window(g), distinct from historical c_file(g)](../CG_SCOPES.md), is ratio loss relative to one block covering the same 2 MiB window:',
              '`(ratio_whole - ratio_g) / ratio_whole = 1 - bytes_whole / bytes_g`.',
              'The aggregate uses sums of stored bytes, not mean per-window c(g).',
              'Its baseline is ten separate one-window archives, never a concatenated 20 MiB file.', '']
     for c in CODECS:
-        lines += ['## '+c, '', '| g | HOR c(g) | Control c(g) | Terminal-context c(g) | HOR > control, paired |',
+        lines += ['## '+c, '', '| g | HOR c_window(g) | Control c_window(g) | Terminal-context c_window(g) | HOR > control, paired |',
                   '|---|---:|---:|---:|---:|']
         for g in sorted(GRID):
             ss = [next(s for s in summary if (s['codec'],s['granularity'],s['group']) == (c,g,group)) for group in GROUPS]
@@ -106,7 +106,10 @@ def report(summary, paired):
     lines += ['BGZF c(g): **n/a — no comparable single-parameter whole-window baseline**.',
               'Its verified fixed-block density comparison remains in the',
               '[granularity report](T2T_GRANULARITY_20260916.md); no synthetic BGZF baseline is used.', '',
+              'BGZF blocks are 65,280 bytes; ACE at 64 KiB uses 65,536 bytes (0.392% larger).',
+              'The comparison is close in granularity, not identical.', '',
               '## What this establishes', '',
+              'See [HWB-001 (measured) and HWB-002 (mechanism unproven)](../CLAIM_LEDGER.md).', '',
               'Relative to its own one-window baseline, each tested codec loses substantially',
               'more density on these selected HOR windows at small blocks than on controls.',
               'This is a granularity penalty, not an absolute density weakness: ACEAPEX can',

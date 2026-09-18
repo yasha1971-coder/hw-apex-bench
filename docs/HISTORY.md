@@ -1090,3 +1090,16 @@ do not relabel this as original-FASTA-byte coverage or whole-file c(g).
 No new corpus download, compression measurement, codec patch or PR merge in
 this checkpoint. Next action remains protocol/curve review, then a separately
 authorized bounded execution stage. Hecate/AGC references temper novelty claims.
+
+## Local c(g) naming, claim ledger and bounded review — 2026-09-18
+
+PR43 reviewed from f4c898b0ed50c5c1061a2c08e254cf74a3e0dca6. Retained60 baseline
+archives and300 swept archives verified; five tests passed. See
+review/T2T_WINDOW_CG_REVIEW.md. Generated report uses c_window(g), README links
+the c_file/c_window scope distinction; complete-input chr1 is not whole T2T.
+Added benchmark-scoped HWB-001/002/003 ledger: measured density response,
+unproven reference-distance mechanism, planned later latency/amplification sweep.
+Corrected stale T2T corpus verification wording using its retained receipt.
+PR43 stays unmerged, raw numerical evidence and original435 unchanged.
+About was saved separately through GitHub UI. Full5GiB ERR174310 verification
+is the next gate, followed by a clean first-run check; no new density/timing sweep.

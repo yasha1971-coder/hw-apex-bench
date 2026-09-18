@@ -18,6 +18,7 @@ Further protocols: [batch](BATCH_METHOD.md), [throughput](THROUGHPUT.md),
 [resident contexts](RESIDENT_CONTEXT.md), [codec extraction](CODEC_EXTRACTION.md),
 [default refresh](DEFAULT_REFRESH.md), [GPU scope](GPU.md).
 Planning: [roadmap](TOOL_ROADMAP.md), [original tool plan](BENCH_TO_TOOL.md).
+Claims: [numbered ledger](CLAIM_LEDGER.md), [c(g) scopes](CG_SCOPES.md).
 Maintainers: [working agreement](AGENTS.md).
 
 Code: [Apache-2.0](../LICENSE). Measurements: [CC BY 4.0](../evidence/LICENSE).
