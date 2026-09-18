@@ -1,0 +1,45 @@
+{
+  "schema": "chr1-literal-layer-run-receipt-v1",
+  "date": "2026-09-18",
+  "repository": "yasha1971-coder/hw-apex-bench",
+  "pr": 52,
+  "branch": "experiment/chr1-lit16-layer",
+  "source_head_sha": "036c94de378cfc610780b23cf8b8c52ab8360001",
+  "actions_run_id": 35364898137,
+  "actions_conclusion": "success",
+  "artifact_id": 10555862164,
+  "artifact_digest": "sha256:82e78727bbdc15c68963aa13ca9118947e301ad267ed97db5ed23202fbe9131a",
+  "corpus": {
+    "name": "hg38 chr1 FASTA",
+    "bytes": 253935557,
+    "md5": "9465e0f0df6e2c6eb39729c39cee5465"
+  },
+  "pins": {
+    "aceapex": "dbbb8b774bfe4933d40a3f39d357dc9598947a70",
+    "zstd": "f8745da6ff1ad1e7bab384bd1f9d742439278e99"
+  },
+  "common": {
+    "g_bytes": 16384,
+    "request_bytes": 16384,
+    "fse_chunk_bytes": 4096,
+    "min_match": "unset",
+    "decoder": "same unmodified aceapex_decompress_region",
+    "full_restore": "bit-perfect for both archives"
+  },
+  "lit64": {
+    "archive_bytes": 69409878,
+    "archive_sha256": "b2e3098b6492a21b25bc8cc2e1c8f55aba340d6820845320477025395afccc46",
+    "encoder": "production source"
+  },
+  "lit16": {
+    "archive_bytes": 71792605,
+    "archive_sha256": "7515c591d813063b10c2058607a4a3613772ea331ca1265390a248cd9503159a",
+    "encoder": "private source copy; only explicit LIT_CHUNK floor changed from 64KiB to 16KiB"
+  },
+  "production_source_changed": false,
+  "dctx_audit": {
+    "ace_path": "src/aceapex_main.cpp lit_range/fse_range call one-shot ZSTD_decompress for touched chunks",
+    "zstd_path": "lib/decompress/zstd_decompress.c",
+    "conclusion": "pinned default ZSTD_decompress uses a transient DCtx per call; no persistent DCtx is reused by the current ACE region path"
+  }
+}
