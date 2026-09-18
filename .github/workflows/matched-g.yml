@@ -1,9 +1,7 @@
 name: Matched-g BGZF legal corridor
+# Measurement is deliberately manual after the verified 2026-09-18 run.
+# PR synchronization must not silently create new timing evidence.
 on:
-  pull_request:
-    paths:
-      - 'review/matched_g/**'
-      - '.github/workflows/matched-g.yml'
   workflow_dispatch:
 permissions:
   contents: read
