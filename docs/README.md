@@ -4,6 +4,7 @@ Commands run from the repository root.
 
 | Your question | Start here |
 |---|---|
+| What is released, supported or still experimental? | [Current status](STATUS.md) |
 | How do I get a first successful run? | [Getting started](GETTING_STARTED.md) |
 | How do I run my own measurement? | [Getting started](GETTING_STARTED.md), [adapter reference](ADAPTERS.md) |
 | How do I add my codec? | [Contributing](../CONTRIBUTING.md), [XZ example](../codecs/xz.sh) |

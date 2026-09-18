@@ -4,6 +4,8 @@ Use this tool when your application reads small byte ranges from compressed
 data and you need to compare density, region latency and decoded work. The
 published genome snapshot illustrates a trade-off; it does not choose a codec
 for your data or model disk/network I/O. Start with correctness, then measure.
+`./run.sh --help` is offline and starts no work.
+See [current status](STATUS.md) for release and platform boundaries.
 
 ## 1. Prepare Linux and qualify XZ
 

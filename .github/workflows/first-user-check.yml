@@ -3,6 +3,11 @@ on:
   pull_request:
     paths:
       - 'docs/GETTING_STARTED.md'
+      - 'run.sh'
+      - 'codecs/xz.sh'
+      - 'codecs/lib/**'
+      - 'harness/check_adapter.py'
+      - 'harness/qualification.py'
       - '.github/workflows/first-user-check.yml'
   workflow_dispatch:
 permissions:
