@@ -1,9 +1,7 @@
 name: chr1 current ACE region-cost baseline ARM64
+# Measurement is manual after the verified 2026-09-18 baseline run.
+# Documentation/evidence changes must not silently generate new timing evidence.
 on:
-  pull_request:
-    paths:
-      - 'review/chr1_region_cost/**'
-      - '.github/workflows/chr1-region-cost.yml'
   workflow_dispatch:
 permissions:
   contents: read
