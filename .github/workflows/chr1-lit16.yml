@@ -1,0 +1,228 @@
+name: chr1 literal 64K vs 16K layer
+on:
+  pull_request:
+    paths:
+      - 'review/chr1_lit16/**'
+      - '.github/workflows/chr1-lit16.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+
+jobs:
+  measure:
+    runs-on: ubuntu-24.04-arm
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install prerequisites and perf
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq build-essential cmake git zlib1g-dev curl python3 linux-tools-common linux-tools-generic
+          PERF=$(find /usr/lib /usr/bin -type f -name perf 2>/dev/null | sort | head -1)
+          if [ -z "$PERF" ]; then PERF=$(command -v perf || true); fi
+          test -n "$PERF"
+          "$PERF" --version
+          echo "PERF=$PERF" >> "$GITHUB_ENV"
+          sudo sysctl -w kernel.perf_event_paranoid=-1 || true
+
+      - name: Download and verify hg38 chr1
+        run: |
+          mkdir -p .work/corpus
+          curl --fail --location --retry 3 \
+            https://hgdownload.soe.ucsc.edu/goldenPath/hg38/chromosomes/chr1.fa.gz \
+            -o .work/corpus/chr1.fa.gz
+          gzip -dc .work/corpus/chr1.fa.gz > .work/corpus/chr1.fa
+          test "$(stat -c%s .work/corpus/chr1.fa)" = 253935557
+          echo '9465e0f0df6e2c6eb39729c39cee5465  .work/corpus/chr1.fa' | md5sum -c -
+          rm .work/corpus/chr1.fa.gz
+
+      - name: Build exact ACE pubrepo source and pinned zstd
+        run: |
+          mkdir -p .work
+          git init -q .work/zstd
+          git -C .work/zstd remote add origin https://github.com/facebook/zstd.git
+          git -C .work/zstd fetch -q --depth=1 origin f8745da6ff1ad1e7bab384bd1f9d742439278e99
+          git -C .work/zstd checkout -q --detach FETCH_HEAD
+          test "$(git -C .work/zstd rev-parse HEAD)" = f8745da6ff1ad1e7bab384bd1f9d742439278e99
+          make -C .work/zstd/lib -j4 libzstd.a CFLAGS='-O3 -fPIC'
+
+          git init -q .work/ace
+          git -C .work/ace remote add origin https://github.com/yasha1971-coder/aceapex.git
+          git -C .work/ace fetch -q --depth=1 origin dbbb8b774bfe4933d40a3f39d357dc9598947a70
+          git -C .work/ace checkout -q --detach FETCH_HEAD
+          test "$(git -C .work/ace rev-parse HEAD)" = dbbb8b774bfe4933d40a3f39d357dc9598947a70
+
+          g++ -O3 -std=c++17 -march=native -funroll-loops -pthread \
+            -I.work/zstd/lib -I.work/ace/src \
+            .work/ace/src/aceapex_main.cpp .work/zstd/lib/libzstd.a \
+            -o .work/ace64
+
+          cp -a .work/ace/src .work/ace16-src
+          python3 - <<'PY'
+          from pathlib import Path
+          p=Path('.work/ace16-src/aceapex_main.cpp')
+          s=p.read_text()
+          old='if(e){ size_t v=strtoull(e,0,10); return v<(1u<<16) ? 0 : v; }'
+          new='if(e){ size_t v=strtoull(e,0,10); return v<(1u<<14) ? 0 : v; }'
+          assert s.count(old)==1
+          p.write_text(s.replace(old,new))
+          PY
+          g++ -O3 -std=c++17 -march=native -funroll-loops -pthread \
+            -I.work/zstd/lib -I.work/ace16-src \
+            .work/ace16-src/aceapex_main.cpp .work/zstd/lib/libzstd.a \
+            -o .work/ace16
+
+      - name: Build unchanged resident decoder and probes
+        run: |
+          mkdir -p .work/native
+          gcc -O3 -std=c11 -Iharness harness/native_measure.c -ldl -o .work/native/native_measure
+
+          cp codecs/native/aceapex.c .work/native/ace_context.c
+          python3 - <<'PY'
+          from pathlib import Path
+          p=Path('.work/native/ace_context.c')
+          s=p.read_text()
+          old='1b13df34ac8e839dd3232b59bc59560d689a435a'
+          new='dbbb8b774bfe4933d40a3f39d357dc9598947a70'
+          assert s.count(old)==1
+          p.write_text(s.replace(old,new))
+          PY
+          gcc -O3 -fPIC -Iharness -I.work/ace/src \
+            -c .work/native/ace_context.c -o .work/native/ace_context.o
+          g++ -O3 -std=c++17 -fPIC -shared -pthread \
+            -I.work/ace/src -I.work/zstd/lib \
+            .work/native/ace_context.o .work/ace/src/aceapex_api.cpp \
+            .work/zstd/lib/libzstd.a -o .work/native/ace_context.so
+
+          gcc -O3 -fPIC -shared review/chr1_region_cost/malloc_count.c -o .work/native/malloc_count.so
+          gcc -O3 -std=c11 review/chr1_region_cost/alloc_probe.c -ldl -o .work/native/alloc_probe
+          gcc -O3 -std=c11 review/chr1_region_cost/perf_loop.c -ldl -o .work/native/perf_loop
+          gcc -O3 -fPIC -shared review/chr1_region_cost/stub_context.c -o .work/native/stub_context.so
+
+      - name: Create 64 KiB and experimental 16 KiB literal archives
+        run: |
+          mkdir -p /tmp/lit-layer/lit64 /tmp/lit-layer/lit16
+          env -u MIN_MATCH -u LIT_LANES \
+            ACEAPEX_BS=16384 LIT_CHUNK=65536 FSE_CHUNK=4096 \
+            .work/ace64 c --in .work/corpus/chr1.fa --out /tmp/lit-layer/lit64/archive.aet --threads 8 \
+            > /tmp/lit-layer/lit64/encode.log 2>&1
+          env -u MIN_MATCH -u LIT_LANES \
+            ACEAPEX_BS=16384 LIT_CHUNK=16384 FSE_CHUNK=4096 \
+            .work/ace16 c --in .work/corpus/chr1.fa --out /tmp/lit-layer/lit16/archive.aet --threads 8 \
+            > /tmp/lit-layer/lit16/encode.log 2>&1
+          sha256sum /tmp/lit-layer/lit64/archive.aet /tmp/lit-layer/lit16/archive.aet > /tmp/lit-layer/archives.sha256
+
+      - name: Verify both full restores bit-perfect
+        run: |
+          CPU=$(python3 - <<'PY'
+          import os
+          print(min(os.sched_getaffinity(0)))
+          PY
+          )
+          echo "$CPU" > /tmp/lit-layer/timed_cpu.txt
+          for p in lit64 lit16; do
+            LIT=65536; [ "$p" = lit16 ] && LIT=16384
+            env ACEAPEX_BS=16384 LIT_CHUNK="$LIT" FSE_CHUNK=4096 \
+              taskset -c "$CPU" .work/native/native_measure \
+                .work/native/ace_context.so /tmp/lit-layer/$p/archive.aet \
+                .work/corpus/chr1.fa decode "" 1 \
+                > /tmp/lit-layer/$p/full-decode.jsonl
+            grep -q '"verified":true' /tmp/lit-layer/$p/full-decode.jsonl
+          done
+
+      - name: Measure p50 and allocations for both literal granularities
+        run: |
+          CPU=$(cat /tmp/lit-layer/timed_cpu.txt)
+          for p in lit64 lit16; do
+            LIT=65536; [ "$p" = lit16 ] && LIT=16384
+            env ACEAPEX_BS=16384 LIT_CHUNK="$LIT" FSE_CHUNK=4096 \
+              taskset -c "$CPU" .work/native/native_measure \
+                .work/native/ace_context.so /tmp/lit-layer/$p/archive.aet \
+                .work/corpus/chr1.fa region "" \
+                > /tmp/lit-layer/$p/latency.jsonl
+            test "$(wc -l < /tmp/lit-layer/$p/latency.jsonl)" = 200
+
+            env ACEAPEX_BS=16384 LIT_CHUNK="$LIT" FSE_CHUNK=4096 \
+              LD_PRELOAD="$PWD/.work/native/malloc_count.so" \
+              taskset -c "$CPU" .work/native/alloc_probe \
+                .work/native/ace_context.so /tmp/lit-layer/$p/archive.aet \
+                .work/corpus/chr1.fa \
+                > /tmp/lit-layer/$p/alloc.jsonl
+            test "$(wc -l < /tmp/lit-layer/$p/alloc.jsonl)" = 200
+          done
+
+      - name: perf stat both literal granularities
+        run: |
+          set -euo pipefail
+          CPU=$(cat /tmp/lit-layer/timed_cpu.txt)
+          N=20000
+          for p in lit64 lit16; do
+            mkdir -p /tmp/lit-layer/$p/perf
+            LIT=65536; [ "$p" = lit16 ] && LIT=16384
+            for rep in 1 2 3 4 5; do
+              for kind in real stub; do
+                if [ "$kind" = real ]; then LIB="$PWD/.work/native/ace_context.so"; else LIB="$PWD/.work/native/stub_context.so"; fi
+                for q in 0 "$N"; do
+                  sudo env ACEAPEX_BS=16384 LIT_CHUNK="$LIT" FSE_CHUNK=4096 \
+                    "$PERF" stat -x ';' -e cycles:u,instructions:u \
+                    -o "/tmp/lit-layer/$p/perf/$kind-$q-$rep.csv" \
+                    -- taskset -c "$CPU" "$PWD/.work/native/perf_loop" "$LIB" \
+                       /tmp/lit-layer/$p/archive.aet "$q" \
+                    > "/tmp/lit-layer/$p/perf/$kind-$q-$rep.out"
+                done
+              done
+            done
+            ! grep -R '<not supported>' /tmp/lit-layer/$p/perf/*.csv
+          done
+
+      - name: Record receipts and summarize
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import hashlib,json,platform,subprocess
+          inp=Path('.work/corpus/chr1.fa')
+          def sha(p): return hashlib.sha256(Path(p).read_bytes()).hexdigest()
+          for name,lit in [('lit64',65536),('lit16',16384)]:
+              a=Path('/tmp/lit-layer')/name/'archive.aet'
+              rec={
+                "schema":"chr1-literal-layer-receipt-v1",
+                "profile":name,"literal_chunk_bytes":lit,"fse_chunk_bytes":4096,
+                "g_bytes":16384,"request_bytes":16384,
+                "corpus_bytes":inp.stat().st_size,
+                "corpus_md5":subprocess.check_output(["md5sum",str(inp)],text=True).split()[0],
+                "archive_bytes":a.stat().st_size,"archive_sha256":sha(a),
+                "ratio":inp.stat().st_size/a.stat().st_size,
+                "aceapex":"dbbb8b774bfe4933d40a3f39d357dc9598947a70",
+                "zstd":"f8745da6ff1ad1e7bab384bd1f9d742439278e99",
+                "encoder":"production source" if name=="lit64" else "private copy: only explicit LIT_CHUNK floor 64KiB->16KiB",
+                "decoder":"same unmodified aceapex_decompress_region for both",
+                "platform":platform.platform(),
+                "lscpu":subprocess.check_output(["lscpu"],text=True),
+                "full_restore":"bit-perfect"
+              }
+              (Path('/tmp/lit-layer')/name/'receipt.json').write_text(json.dumps(rec,indent=2)+"\n")
+          PY
+          python3 review/chr1_lit16/summarize.py \
+            --root64 /tmp/lit-layer/lit64 --root16 /tmp/lit-layer/lit16 \
+            --archive64 /tmp/lit-layer/lit64/archive.aet --archive16 /tmp/lit-layer/lit16/archive.aet \
+            --receipt64 /tmp/lit-layer/lit64/receipt.json --receipt16 /tmp/lit-layer/lit16/receipt.json \
+            --queries 20000 --out /tmp/lit-layer/summary
+          cat /tmp/lit-layer/summary/literal-layer.md
+
+      - name: Retain literal-layer evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: chr1-literal-layer-64k-vs-16k
+          path: |
+            /tmp/lit-layer/summary/**
+            /tmp/lit-layer/lit64/receipt.json
+            /tmp/lit-layer/lit16/receipt.json
+            /tmp/lit-layer/lit64/latency.jsonl
+            /tmp/lit-layer/lit16/latency.jsonl
+            /tmp/lit-layer/lit64/alloc.jsonl
+            /tmp/lit-layer/lit16/alloc.jsonl
+            /tmp/lit-layer/lit64/perf/**
+            /tmp/lit-layer/lit16/perf/**
+            /tmp/lit-layer/archives.sha256
