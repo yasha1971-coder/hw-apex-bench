@@ -6,6 +6,7 @@
 - [Batch matrix](BATCH_RESULTS.md): all measured profiles and request counts.
 - [Five-point c(g)](CG_CURVE_RESULTS.md): separate baseline, revision and granularity sweep.
 - [Default ACEAPEX refresh](DEFAULT_RESULTS.md): separate configuration and evidence.
+- [Current ACEAPEX interactive vs BGZF matched-g curve](MATCHED_G_INTERACTIVE_20260918.md): exact legal 4/8/16/32/~64 KiB corridor, same machine, density + resident p50. The [default-profile matched-g run](MATCHED_G_BGZF_20260918.md) is retained as historical evidence.
 
 The 435 historical records are in [results.jsonl](../../results.jsonl).
 [Native full-run comparison](../../review/native-full-comparison.json) retains
