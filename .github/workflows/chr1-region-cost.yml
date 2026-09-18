@@ -19,7 +19,8 @@ jobs:
         run: |
           sudo apt-get update -qq
           sudo apt-get install -y -qq build-essential cmake git zlib1g-dev curl python3 linux-tools-common linux-tools-generic
-          PERF=$(find /usr/lib/linux-tools -type f -name perf | sort | tail -1)
+          PERF=$(find /usr/lib /usr/bin -type f -name perf 2>/dev/null | sort | head -1)
+          if [ -z "$PERF" ]; then PERF=$(command -v perf || true); fi
           test -n "$PERF"
           "$PERF" --version
           echo "PERF=$PERF" >> "$GITHUB_ENV"
