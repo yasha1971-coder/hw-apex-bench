@@ -87,5 +87,25 @@
     "perf_hardware_events": "not supported by hosted VM",
     "header_and_range_locate_us": 0.013315,
     "linear_stream_index_scan_us": 0.946665
+  },
+  "independent_arm_repeat": {
+    "actions_run_id": 35361350566,
+    "artifact_id": 10555230707,
+    "artifact_digest": "sha256:3b3f405489164633dd2f7f89b529c6c8cc1efcb5de05ab83e6fff4b71f138030",
+    "source_head_sha": "436d58df5bb6438bcb57a365f9bcde7bc7079e93",
+    "platform": "Linux-6.17.0-1022-azure-aarch64-with-glibc2.39",
+    "cpu": "ARM Neoverse-N2",
+    "p50_us": 903.599,
+    "p99_us": 1239.546,
+    "header_and_range_locate_us": 0.015504,
+    "linear_stream_index_scan_us": 0.891148,
+    "allocator_calls_instrumented_p50_us": 2.76,
+    "p50_alloc_like_calls": 16,
+    "p50_free_calls": 16,
+    "p50_requested_alloc_bytes": 1916619,
+    "instructions_per_hc_region": 8796014.3911,
+    "cycles_per_hc_region": 2865229.06365,
+    "ipc": 3.069916643905184,
+    "role": "independent full rerun; confirms structural counters and machine-local timing stability, does not replace primary_run"
   }
 }
