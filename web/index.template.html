@@ -11,7 +11,8 @@
 <header><strong>hw-apex-bench</strong><nav aria-label="Main"><a href="#measurements">Values</a><a href="https://github.com/yasha1971-coder/hw-apex-bench/blob/main/docs/GETTING_STARTED.md">Try it</a><a href="https://github.com/yasha1971-coder/hw-apex-bench/blob/main/CONTRIBUTING.md">Add a codec</a><a href="https://github.com/yasha1971-coder/hw-apex-bench/tree/main/docs">Method & evidence</a></nav></header>
 <main>
 <h1>How much does a small read cost?</h1>
-<p class="muted">Choose two axes, or trace the full profile. Every point comes from retained measurements.</p>
+<p class="muted">Compare density and resident read cost. This is a historical genome example, not a prediction for your files.</p>
+<p><a href="https://github.com/yasha1971-coder/hw-apex-bench/blob/main/docs/GETTING_STARTED.md">Try your own data</a> · <a href="https://github.com/yasha1971-coder/hw-apex-bench/blob/main/docs/STATUS.md">What is released and what is measured?</a></p>
 <div class="controls">
 <label>View<select id="view"><option value="pair">Two-axis plot</option><option value="parallel">Parallel coordinates</option></select></label>
 <label>X axis<select id="x-axis"></select></label><label>Y axis<select id="y-axis"></select></label>
@@ -26,7 +27,7 @@
 <p id="plot-note" class="note"></p>
 <p class="note">The slider selects five measured profiles; it never interpolates. Batch workers: 1; requests: 5,000. <span id="profile-note"></span></p>
 <h2 id="measurements">Values behind the plot</h2>
-<p class="note">Green marks a best observed value only where direction is meaningful and scope matches. Granularity, access break-even is descriptive; access entropy appears only in the batch table properties, not rankings. Missing values are never plotted as zero.</p>
+<p class="note">Green marks a best observed value only where direction is meaningful and scope matches. Granularity and access break-even are descriptive properties, not rankings. Access entropy appears only in the batch table. Missing values are never plotted as zero.</p>
 <div class="scroll"><table id="values"><caption>Absolute values belong to the measured host. Compare matching configurations and runs.</caption><thead></thead><tbody></tbody></table></div>
 <details open><summary>Historical CPU batch results for the selected profile (separate from c(g))</summary><div class="scroll"><table id="batch"><thead><tr><th>Configuration</th><th>Method</th><th>Workers</th><th>H_alpha · bits</th><th>ranges/s</th></tr></thead><tbody></tbody></table></div></details>
 <div class="links"><a href="https://github.com/yasha1971-coder/hw-apex-bench/blob/main/docs/AXES.md">New to the axes?</a><a href="https://github.com/yasha1971-coder/hw-apex-bench/blob/main/docs/RESULTS/FULL_REPORT.md">All historical tables & provenance</a><a href="https://github.com/yasha1971-coder/hw-apex-bench/blob/main/docs/ADAPTERS.md">Run and qualify an adapter</a></div>

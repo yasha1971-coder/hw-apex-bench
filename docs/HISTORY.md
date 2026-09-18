@@ -1171,3 +1171,45 @@ centromere-weakness interpretation. Density does not rank region latency.
 No measurement, historical result, release, tag, or DOI changes.
 Access/histogram evidence publication remains separate and unfinished.
 User stop: after this correction PR, no new measurements or whole-T2T c(g).
+
+## Practical entry audit after PR45 — 2026-09-18
+
+PR #45 merged as 5f2c9f2bf305dbcb271c79be5af5c4cef572c7fd. Worked in an isolated
+checkout so unfinished access-study files are not mixed into this PR.
+Moved help/unknown-option handling ahead of historical stage1 setup. Added bounded
+status/support navigation and marked historical plans/audits. Publication CI
+now covers every PR; no new benchmark in it. Pages data unchanged.
+Scores and external comparisons in AUDITS/PROJECT_REVIEW_20260918.md; missing
+public access evidence and independent adoption remain below 6, not papered over.
+No new timings, whole-T2T c(g), codec/upstream edits, tag or DOI publication.
+
+
+## Thread recovery and entry-point compatibility — 2026-09-18
+
+Recovered the uncommitted `docs/project-entry-audit` checkout after the previous
+conversation ended. Live GitHub confirms PR #45 merged at
+`5f2c9f2bf305dbcb271c79be5af5c4cef572c7fd`; `git pull --ff-only origin main`
+confirmed that base. No successor PR existed at recovery.
+
+Review caught a draft regression: rejecting every unknown entry also rejected
+the supported `--stage N` used by the historical workflow. Restored stages 1–5,
+rejecting invalid stages before Python. Two stubbed tests cover 20 valid/invalid
+cases, literal argument forwarding and cleared codec overrides, without timing.
+Dispatcher-only changes now use these tests plus the fresh-container XZ
+correctness workflow. The adapter matrix still checks all six configurations; it selects timing tests
+only when implementation files change or the workflow is manually invoked.
+This dispatcher/documentation change must not start its timing runs.
+
+Current owner constraint: no new measurements or whole-T2T c(g). Work only in
+hw-apex-bench; preserve the 435 records and all existing evidence/release IDs.
+The pending resident-access/distance study remains in the separate
+`experiment/t2t-resident-sweep` checkout, code commit `235b74f` plus staged files;
+it is not merged, published or discarded by this work. No new study execution,
+external outreach, old-draft merge or repository rename is authorized here.
+
+Validation at recovery: two dispatcher tests (20 cases), shell syntax, 435-row
+publication digest verification, 197 local Markdown links, Pages export and
+810 explorer combinations passed. `results.jsonl`, README and the publication
+manifest match the merged PR #45 base byte-for-byte; generated homepage matches
+its committed export. All workflow YAML parses. Fresh GitHub CI is the remaining
+delivery gate, not a request to rerun any benchmark.

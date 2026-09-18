@@ -1,5 +1,10 @@
 # From measured tables to an extensible instrument
 
+> Historical design plan, retained for context. Steps 1–5 and the v0.1 release
+> are implemented; CRAM remains deferred. See [current status](STATUS.md) for
+> released versus experimental evidence. Future-tense sections below are not
+> a statement that adapters or the release are still missing.
+
 The nine-axis gate is `./run.sh --audit-axes`. Its generated report is
 [AXES_RESULTS.md](RESULTS/AXES_RESULTS.md). The gate accounts for supported measurements
 and explicit format limitations; it does not invent a BGZF whole-file block or a

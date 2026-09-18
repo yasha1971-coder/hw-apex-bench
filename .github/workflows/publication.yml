@@ -1,19 +1,6 @@
 name: Committed publication integrity
 on:
   pull_request:
-    paths:
-      - 'results.jsonl'
-      - 'README.md'
-      - 'docs/RESULTS/BATCH_RESULTS.md'
-      - 'docs/RESULTS/AXES_RESULTS.md'
-      - 'docs/RESULTS/CG_CURVE_RESULTS.md'
-      - 'docs/METHOD.md'
-      - 'web/**'
-      - 'harness/**'
-      - 'evidence/published-results.json'
-      - 'evidence/stage5-20260910/**'
-      - '.github/workflows/publication.yml'
-      - '.github/workflows/pages.yml'
   workflow_dispatch:
 permissions:
   contents: read
@@ -28,6 +15,8 @@ jobs:
           git fetch --no-tags --depth=1 origin 0e8246f8b14b74191b3bf8cc6f14b71be85779ce
           python3 harness/verify_native_extraction.py
           python3 -m unittest discover -s harness -p test_native_extraction.py
+      - name: Verify safe command entry points
+        run: python3 -m unittest discover -s harness -p test_entrypoints.py
       - name: Reject corrupted evidence
         run: python3 -m unittest discover -s web -p test_publication.py -v
       - name: Audit the nine-axis contract without benchmark execution
