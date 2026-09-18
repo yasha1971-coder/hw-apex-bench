@@ -25,23 +25,23 @@ are outside the ordinary per-query timer.
 
 ## Baseline table
 
-Primary complete run: GitHub Actions **35361199182**, ARM Neoverse-N2,
+Primary complete run: GitHub Actions **35361801000**, ARM Neoverse-N2,
 Linux 6.17.0-1022-azure aarch64, CPU affinity pinned to CPU 0.
 
 | Layer / diagnostic | Measured baseline |
 |---|---:|
-| full current `hc_region` p50 | **913.668 µs** |
-| full current `hc_region` p99 | **1,274.394 µs** |
-| isolated header parse + range locate | **0.0166 µs** |
+| full current `hc_region` p50 | **903.599 µs** |
+| full current `hc_region` p99 | **1,239.546 µs** |
+| isolated header parse + range locate | **0.0155 µs** |
 | isolated full-archive stream-index scan | **0.8911 µs** |
-| allocator calls inside `hc_region`, instrumented p50 | **2.176 µs** |
-| allocator calls inside `hc_region`, instrumented p99 | **85.832 µs** |
+| allocator calls inside `hc_region`, instrumented p50 | **2.760 µs** |
+| allocator calls inside `hc_region`, instrumented p99 | **83.376 µs** |
 | alloc-like calls / request, p50 | **16** |
 | free calls / request, p50 | **16** |
 | requested allocation bytes / request, p50 | **1,916,619 B** |
 | perf instructions / `hc_region` | **8,796,014** |
-| perf cycles / `hc_region` | **2,875,685** |
-| adjusted IPC | **3.059** |
+| perf cycles / `hc_region` | **2,865,229** |
+| adjusted IPC | **3.070** |
 
 The perf values are the median of five 20,000-query hot-loop runs. Each run
 uses a zero-query setup control and an ABI-compatible stub loop; the reported
@@ -60,14 +60,14 @@ completed after the baseline was committed: Actions **35361350566**, artifact
 
 | Diagnostic | Primary | Independent repeat |
 |---|---:|---:|
-| p50 | 913.668 µs | 903.599 µs |
-| p99 | 1,274.394 µs | 1,239.546 µs |
-| header + locate | 0.0166 µs | 0.0155 µs |
+| p50 | 903.599 µs | 903.599 µs |
+| p99 | 1,239.546 µs | 1,239.546 µs |
+| header + locate | 0.0155 µs | 0.0155 µs |
 | linear index scan | 0.8911 µs | 0.8911 µs |
-| alloc/free libc time p50 | 2.176 µs | 2.760 µs |
+| alloc/free libc time p50 | 2.760 µs | 2.760 µs |
 | instructions / request | 8,796,014 | 8,796,014 |
-| cycles / request | 2,875,685 | 2,865,229 |
-| IPC | 3.059 | 3.070 |
+| cycles / request | 2,865,229 | 2,865,229 |
+| IPC | 3.070 | 3.070 |
 
 The wall-clock p50 differs by about 1.1%, while retired instructions are effectively
 identical and cycles differ by about 0.36%. This is the expected distinction between
@@ -96,7 +96,7 @@ Likewise, header parsing and block/range lookup are effectively negligible at
 this scale. The allocator itself consumes only a few microseconds at the
 median, despite the current call path making 16 alloc-like calls and 16 frees
 and requesting roughly 1.9 MiB of temporary storage per request. That memory
-churn can still create downstream cache/write costs; the 2.176 µs figure is
+churn can still create downstream cache/write costs; the 2.760 µs figure is
 only time spent inside allocator calls, not the cost of filling or decoding
 those temporary buffers.
 
@@ -140,10 +140,10 @@ Compact baseline:
 `evidence/chr1-region-cost-20260918/baseline.json`
 
 Primary artifact:
-- Actions run: `35361199182`
-- artifact: `10554745486`
+- Actions run: `35361801000`
+- artifact: `10554896565`
 - artifact digest:
-  `sha256:d84ce5bc5db4527d7b77906e3a68a232ac4caecea424369a48193c1d48681677`
+  `sha256:447f2a8bec4b5dc3d89b6dcb22d98c41d706eaddbf31c6815d456762a50fbe13`
 
 Secondary x86 artifact:
 - Actions run: `35360295220`
