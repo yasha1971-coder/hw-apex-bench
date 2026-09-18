@@ -1103,3 +1103,60 @@ Corrected stale T2T corpus verification wording using its retained receipt.
 PR43 stays unmerged, raw numerical evidence and original435 unchanged.
 About was saved separately through GitHub UI. Full5GiB ERR174310 verification
 is the next gate, followed by a clean first-run check; no new density/timing sweep.
+
+## First-user cleanup and adoption audit — 2026-09-18
+
+Independent documentation branch from main9af68d7; PR43 remains untouched.
+Live GitHub metadata:0stars/0forks, created2026-09-09, homepage unset/topics empty.
+No traffic or independent-run data: causes of low adoption remain hypotheses.
+Audited README, generator, Pages template, adapter/native commands and CI against
+lzbench/TurboBench and genomic-access related work. ENCODE.SU announcement found
+in search; replies inaccessible403, so no claimed community verdict.
+Added docs/GETTING_STARTED.md, first-run/workload issue templates and audit
+docs/AUDITS/ADOPTION_20260918.md. README first example now small XZ correctness
+qualification; optional XZ/BGZF comparison uses the existing fixture and explicit
+new output directory. Pages gets Try it navigation. Generator keeps the new path.
+No runtime behavior, codecs, measurements, prior evidence, tag or DOI changed.
+No outreach, metadata settings change, telemetry, new benchmark or PR merge.
+Next gates: review presentation PR, clean-environment onboarding validation,
+then authorized targeted feedback; prioritize independent use over star counts.
+Validated435 publication records, unchanged README table bytes,6 integrity tests,
+810 explorer combinations and the349571-byte fixture. README remains125lines.
+Only README's byte count/hash in the publication manifest changes to match its
+new generated text; all measurement digests and original receipts are preserved.
+
+## Clarify corpus and c(g) scope before local-curve publication — 2026-09-18
+
+Repository About saved through the authenticated GitHub UI: concrete byte-range
+comparison description, Pages URL, compression/random-access/benchmark topics.
+Corrected the stale CORPORA T2T admission wording using the retained independent
+receipt; no source or measurement hash changed. Added c_file(g) versus
+c_window(g) scope guide and a generated README warning. Historical1.632% is
+hg38 chr1/ACEee5a37e; local60.565% is selected T2T HOR/ACE4915321, not the same
+input or codec policy. PR43 is separate and remains unmerged. BGZF65280 versus
+ACE65536 bytes was already explicit in the published PR42 report.
+
+Full ERR1743105GiB prefix independently streamed and verified on2026-09-18:
+5368709120bytes, MD5d628e1c9fb9466fcbd82109c3c7f9f10, same first header and
+100MiB MD5. Receipt review/err174310-prefix-5gib.json; reproducible verifier
+review/verify_err174310_prefix.py. Full gzip CRC/compressed MD5 remain unverified.
+Catalog verification statuses now reflect retained evidence for both new inputs;
+input URLs, expected hashes, historical435, codec sources and DOI are unchanged.
+A dedicated first-user workflow builds only XZ in a fresh Ubuntu24.04 container,
+checks correctness and plans axes; no timing run or historical full run.
+
+First-user CI35301737110: fresh Ubuntu container installed documented packages,
+built pinned XZ and passed5 restores/4454 native regions. The next plan step
+correctly rejected our workflow output name plan.json (requires *.plan.json).
+Corrected to xz.plan.json; the application guard was not changed. Repeat the
+small correctness workflow to close the remaining CI gate, not a benchmark.
+
+## Integration of PR43 and PR44 — 2026-09-18
+
+PR43 merged as783fd340fc9c0914f5bdb46547ef430cd7068887. Integrating its
+local c_window(g) scope/ledger with the first-user documentation, verified5GiB
+prefix and fresh-container CI from PR44. Both histories retained; README is
+regenerated and its presentation digest recalculated, not selected from one
+side. First-user CI35301915720 passed completely with artifact10530117888.
+Next authorized work is HWB-003 on the same30 windows/five granularities,
+plus separate match-distance analysis; no new ERR174310 download.

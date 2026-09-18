@@ -6,7 +6,7 @@ by the owner; its exact statement and source have not been verified here.
 
 ## HWB-001 — Selected HOR windows have greater local granularity cost
 
-Evidence: measured and hash-reproduced; publication: pending PR #43 review.
+Evidence: measured and hash-reproduced; publication: reviewed and merged in PR #43.
 At 16 KiB, ACEAPEX 4915321 c_window(g) is 60.565% on the ten selected HOR
 windows and 1.492% on ten chromosome-paired controls: a 59.073 percentage-point
 difference between group aggregates. At 64 KiB the figures are 32.422% and

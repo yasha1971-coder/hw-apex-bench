@@ -1,0 +1,18 @@
+{
+  "schema": "hw-apex-prefix-identity-v1",
+  "url": "https://ftp.sra.ebi.ac.uk/vol1/fastq/ERR174/ERR174310/ERR174310_1.fastq.gz",
+  "expected_bytes": 5368709120,
+  "expected_md5": "d628e1c9fb9466fcbd82109c3c7f9f10",
+  "gzip_whole_file_crc_verified": false,
+  "compressed_whole_file_md5_verified": false,
+  "scope": "exactly first 5 GiB expanded bytes; incomplete final FASTQ record",
+  "resolved_url": "https://ftp.sra.ebi.ac.uk/vol1/fastq/ERR174/ERR174310/ERR174310_1.fastq.gz",
+  "uncompressed_bytes": 5368709120,
+  "md5": "d628e1c9fb9466fcbd82109c3c7f9f10",
+  "prefix_100mib_md5": "366e770acdf9892b9c5611fdeba9e6e6",
+  "first_line": "@ERR174310.1 HSQ1008_141:5:1101:1454:3564/1",
+  "first_line_match": true,
+  "match": true,
+  "checked_at_utc": "2026-09-18T03:01:24.073338+00:00",
+  "elapsed_seconds": 246.795
+}
