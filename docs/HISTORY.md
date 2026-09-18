@@ -1086,3 +1086,9 @@ Catalog verification statuses now reflect retained evidence for both new inputs;
 input URLs, expected hashes, historical435, codec sources and DOI are unchanged.
 A dedicated first-user workflow builds only XZ in a fresh Ubuntu24.04 container,
 checks correctness and plans axes; no timing run or historical full run.
+
+First-user CI35301737110: fresh Ubuntu container installed documented packages,
+built pinned XZ and passed5 restores/4454 native regions. The next plan step
+correctly rejected our workflow output name plan.json (requires *.plan.json).
+Corrected to xz.plan.json; the application guard was not changed. Repeat the
+small correctness workflow to close the remaining CI gate, not a benchmark.

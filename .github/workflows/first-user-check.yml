@@ -28,7 +28,7 @@ jobs:
       - name: Run the first documented correctness check
         run: ./run.sh --check codecs/xz.sh
       - name: Inspect capabilities from the fresh receipt without measuring
-        run: ./run.sh --plan --codec xz --axis ratio --axis region --axis batch --output /tmp/first-user/plan.json
+        run: ./run.sh --plan --codec xz --axis ratio --axis region --axis batch --output /tmp/first-user/xz.plan.json
       - name: Verify frozen data was not changed
         run: sha256sum --check /tmp/first-user/results.sha256
       - name: Retain qualification and environment receipts
