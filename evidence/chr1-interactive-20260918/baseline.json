@@ -1,0 +1,105 @@
+{
+  "schema": "chr1-interactive-profile-baseline-v1",
+  "date": "2026-09-18",
+  "purpose": "same full-chr1 current-API baseline with documented interactive entropy profile",
+  "corpus": {
+    "name": "hg38 chr1 FASTA",
+    "bytes": 253935557,
+    "md5": "9465e0f0df6e2c6eb39729c39cee5465",
+    "sha256": "04ee6db2e94ccc4daddc168453189d8c17a01454ba67ac0443a73a0401408ee0"
+  },
+  "configuration": {
+    "aceapex": "4915321bf118e564ef3883e58927992c7f9d8dc3",
+    "zstd": "f8745da6ff1ad1e7bab384bd1f9d742439278e99",
+    "profile": "interactive",
+    "g_bytes": 16384,
+    "request_bytes": 16384,
+    "level": 2,
+    "encoder_threads": 8,
+    "environment": {
+      "ACEAPEX_BS": "16384",
+      "LIT_CHUNK": "65536",
+      "FSE_CHUNK": "4096",
+      "MIN_MATCH": "unset"
+    },
+    "literal_chunk_bytes": 65536,
+    "fse_chunk_bytes": 4096,
+    "archive_bytes": 69409878,
+    "archive_sha256": "b2e3098b6492a21b25bc8cc2e1c8f55aba340d6820845320477025395afccc46",
+    "complete_ratio": 3.6584930605986656,
+    "full_restore": "bit-perfect"
+  },
+  "run": {
+    "actions_run_id": 35363065302,
+    "artifact_id": 10554508821,
+    "artifact_digest": "sha256:c4c59492aa774444fbd574b7d8d6d217b148ae663b93010291b757b0dbfe5288",
+    "source_head_sha": "5227773e014f6bb63efc5025b448c540cce9b042",
+    "actions_merge_ref_commit": "cf9c46cbd7a2cb4d1795a32e0373f9e457f42893",
+    "platform": "Linux-6.17.0-1022-azure-aarch64-with-glibc2.39",
+    "cpu": "ARM Neoverse-N2",
+    "vcpus": 4,
+    "timed_cpu": 0,
+    "perf": "perf 6.17.13",
+    "absolute_times": "declared machine-specific"
+  },
+  "hc_region": {
+    "samples": 200,
+    "warmups": 12,
+    "seed": 20260909,
+    "p50_us": 109.626,
+    "p99_us": 199.06,
+    "min_us": 75.732,
+    "max_us": 242.506
+  },
+  "temporary_allocations": {
+    "p50_requested_bytes": 914724,
+    "p99_requested_bytes": 1496187,
+    "p50_alloc_like_calls": 17,
+    "p99_alloc_like_calls": 26,
+    "p50_free_calls": 17,
+    "p99_free_calls": 26,
+    "allocator_libc_time_p50_us": 8.176,
+    "allocator_libc_time_p99_us": 15.776
+  },
+  "random_access_amplification": {
+    "decoded_bytes": 20369408,
+    "requested_bytes": 3276800,
+    "ra": 6.21625,
+    "p50_decoded_bytes_per_request": 81920,
+    "p99_decoded_bytes_per_request": 151552,
+    "definition": "entropy decoder output bytes / requested bytes, same 200 verified region trace"
+  },
+  "perf_stat": {
+    "query_loop_queries": 20000,
+    "repeats": 5,
+    "controls": "zero-query setup subtraction plus ABI stub-loop subtraction",
+    "instructions_per_hc_region": 1480154.15745,
+    "cycles_per_hc_region": 410717.684,
+    "ipc": 3.6038237823964745
+  },
+  "default_control": {
+    "source": "evidence/chr1-region-cost-20260918/baseline.json",
+    "archive_bytes": 69122682,
+    "complete_ratio": 3.67369363648245,
+    "p50_us": 903.599,
+    "p50_requested_temp_bytes": 1916619,
+    "instructions_per_hc_region": 8796014.3911,
+    "cycles_per_hc_region": 2865229.06365,
+    "literal_chunk_bytes": 65536,
+    "fse_chunk_bytes": 524288
+  },
+  "delta_interactive_vs_default": {
+    "archive_bytes": 287196,
+    "archive_growth_pct": 0.4154873504474299,
+    "ratio_change_pct": -0.41376819593315073,
+    "p50_us": -793.973,
+    "p50_reduction_pct": 87.86784845932765,
+    "requested_temp_bytes_p50": -1001895,
+    "temp_reduction_pct": 52.27408264240311,
+    "instructions_per_request": -7315860.23365,
+    "instruction_reduction_pct": 83.17244502296799,
+    "cycles_per_request": -2454511.37965,
+    "cycles_reduction_pct": 85.6654503051568
+  },
+  "interpretation": "g, R, public API and 64 KiB literal chunking are held fixed; the coarse instruction cut is associated with changing FSE entropy granularity from default 512 KiB to interactive 4 KiB. It is not a sub-function timing decomposition."
+}
