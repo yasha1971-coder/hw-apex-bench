@@ -1,0 +1,75 @@
+{
+  "schema": "matched-g-interactive-curve-v1",
+  "date": "2026-09-18",
+  "ace_profile": "interactive",
+  "lit_chunk": 65536,
+  "fse_chunk": 4096,
+  "corpus": "30 frozen T2T-CHM13v2.0 windows x 2 MiB",
+  "request_bytes": 16384,
+  "warmups": 12,
+  "passes": 3,
+  "samples_per_codec_per_g": 18000,
+  "density_definition": "total input bytes / total complete stored bytes; BGZF includes .gzi",
+  "rows": [
+    {
+      "g": 4096,
+      "ace_ratio": 4.682707592246785,
+      "bgzf_ratio": 3.794020198813717,
+      "ace_p50_ms": 0.129884,
+      "bgzf_p50_ms": 0.05338,
+      "density_gain_pct": 23.42337011571354,
+      "latency_penalty_pct": 143.31959535406523,
+      "equal_percent_margin_pct": -119.89622523835169,
+      "bit_perfect": true,
+      "samples_per_codec": 18000
+    },
+    {
+      "g": 8192,
+      "ace_ratio": 5.010591085043662,
+      "bgzf_ratio": 4.139525656981168,
+      "ace_p50_ms": 0.135144,
+      "bgzf_p50_ms": 0.053901,
+      "density_gain_pct": 21.04263870411025,
+      "latency_penalty_pct": 150.7263316079479,
+      "equal_percent_margin_pct": -129.68369290383765,
+      "bit_perfect": true,
+      "samples_per_codec": 18000
+    },
+    {
+      "g": 16384,
+      "ace_ratio": 5.219838328657723,
+      "bgzf_ratio": 4.406649881846465,
+      "ace_p50_ms": 0.136646,
+      "bgzf_p50_ms": 0.063028,
+      "density_gain_pct": 18.453665905277617,
+      "latency_penalty_pct": 116.80205622897759,
+      "equal_percent_margin_pct": -98.34839032369997,
+      "bit_perfect": true,
+      "samples_per_codec": 18000
+    },
+    {
+      "g": 32768,
+      "ace_ratio": 5.344308290977387,
+      "bgzf_ratio": 4.64372562331464,
+      "ace_p50_ms": 0.151254,
+      "bgzf_p50_ms": 0.05885,
+      "density_gain_pct": 15.086650773365019,
+      "latency_penalty_pct": 157.01614273576888,
+      "equal_percent_margin_pct": -141.92949196240386,
+      "bit_perfect": true,
+      "samples_per_codec": 18000
+    },
+    {
+      "g": 65280,
+      "ace_ratio": 5.412620686842839,
+      "bgzf_ratio": 4.810834213586169,
+      "ace_p50_ms": 0.173986,
+      "bgzf_p50_ms": 0.100158,
+      "density_gain_pct": 12.50898381734249,
+      "latency_penalty_pct": 73.7115357734779,
+      "equal_percent_margin_pct": -61.202551956135416,
+      "bit_perfect": true,
+      "samples_per_codec": 18000
+    }
+  ]
+}
