@@ -1,5 +1,7 @@
 # Measurement method
 
+See [c_file(g) versus c_window(g)](CG_SCOPES.md) before comparing granularity costs.
+
 ## Nine-axis measurement contract
 
 | Axis | Unit | Definition and procedure |

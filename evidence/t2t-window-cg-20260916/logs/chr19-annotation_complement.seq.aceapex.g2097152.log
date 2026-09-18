@@ -1,0 +1,17 @@
+[*] Compress: /tmp/t2t-sweep-verify.aQ4VCE/inputs/chr19-annotation_complement.seq (2.10 MB) threads=8
+  Original:          2097152 bytes
+  Compressed:         556281 bytes
+  Ratio:  3.76995x
+  Phase LZ77:    0.099s
+  Phase lit/zstd:0.014s
+  Phase FSE:     0.002s
+  Phase fread:   0.000s
+  Phase sha256:  0.000s
+  Phase other:   0.000s
+  Encode: 18.15 MB/s  (0.116s)
+  XXH3:   cd52003189c49437
+[*] Decompress: /tmp/t2t-sweep-verify.aQ4VCE/whole-window-baseline/chr19-annotation_complement.seq.aceapex.g2097152.archive -> /tmp/t2t-sweep-verify.aQ4VCE/whole-window-baseline/chr19-annotation_complement.seq.aceapex.g2097152.restored
+  Phase entropy (4 streams in parallel): 0.034s
+  Phase lz77: 0.006s
+  Decode: 51.75 MB/s  (0.041s, algorithmic)
+  Decode wall: 45.70 MB/s  (0.046s, wall clock)

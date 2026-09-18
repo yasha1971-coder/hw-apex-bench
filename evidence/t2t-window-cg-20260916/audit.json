@@ -1,0 +1,14 @@
+{
+  "baseline_count": 60,
+  "byte_exact_restores_per_run": 60,
+  "independent_repeat_hash_matches": 60,
+  "prior_sweep_sha256": "c366e1ea02f1e6a3261c4dbd7067809390bd1dc5d0012eec1f53084b145bdc3c",
+  "repeat_results_sha256": "5f2c7482915feccd5dcc3d0047638aaa08b05fd076dcc378fe2e8423b3b85a4e",
+  "accepted_results_sha256": "d6b87ef9a62dc9f976c80ea6ef8dc2f608481498008e97cfbb68a3c065b23ecb",
+  "bundle_filename": "t2t-window-cg-baselines-20260916.zip",
+  "bundle_bytes": 24671702,
+  "bundle_sha256": "7cfbee511feb11b1acb8fd3d6f518733ab18d4bef48709b85b30d33847416fac",
+  "whole_T2T_measured": false,
+  "baseline_scope": "one block/frame per same frozen 2 MiB window",
+  "bgzf_cg": "n/a \u2014 no comparable single-parameter whole-window baseline"
+}

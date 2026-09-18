@@ -1045,3 +1045,61 @@ t2t-granularity-archives-20260916.zip, saved as a separate downloadable artifact
 Checks: sweep verifier/bundle audit, publication435 digest validation, Pages
 build and local Markdown links. Root results, old evidence, tag and DOI unchanged.
 Next bounded action: review the standalone sweep PR; no additional measurements.
+
+## Window-local c(g) baseline completion — 2026-09-16
+
+PR42 merged as9af68d7aa6f160d10aad52374face85014755843. User authorized next
+bounded stage. No matched whole-T2T curve is present; the old curve uses hg38
+chr1 and ACEee5a37e. Do not conflate it with T2T/4915321 or owner CLI stream ratios.
+Added60 one-whole-window baselines (2MiB), each restored exactly and encoded
+again:60/60 actual archive SHA256 matches. Reused all300 prior sweep records.
+Same binary hashes and settings; literal chunks remain65536 in every ACE archive;
+one LZ block, FSE default512KiB. zstd baseline has one nonempty plus one empty
+frame and seek table. Derived300 window c(g) records,30 aggregate points and
+100 chromosome-paired HOR-minus-control differences. No timings measured.
+
+ACE16KiB: HOR60.565%, control1.492%; ACE64KiB:32.422%,0.379%. HOR loss exceeds
+control in10/10 pairs at each g. zstd16KiB:66.681%,9.597%; at256KiB and1MiB
+paired counts drop to9/10 and8/10, retained. BGZF c(g) remains n/a with reason.
+These are losses relative to each codec's own one-window baseline, compatible
+with ACE beating BGZF in fixed-granularity absolute ratio. Not a universal
+weakness/no-weakness conclusion. No whole-T2T curve or priority claim established.
+
+Evidence: evidence/t2t-window-cg-20260916; generated report T2T_WINDOW_CG_20260916.md.
+ZIP t2t-window-cg-baselines-20260916.zip:24671702 bytes, SHA256
+7cfbee511feb11b1acb8fd3d6f518733ab18d4bef48709b85b30d33847416fac.
+Raw baseline bundle saved separately; prior435, pilot90, sweep300, tag/DOI unchanged.
+Next gate: review this complete local curve/audit before merge. Full-T2T work
+needs representation, input-size-dependent hash settings, integer/memory bounds
+and single-block feasibility review. Recommended complementary experiment is
+preregistered uniform length-matched T2T windows, not immediate whole-genome
+extrapolation. No new windows or whole-genome measurements started.
+
+## Chromosome protocol recorded; no run — 2026-09-16
+
+At user's request, recorded docs/T2T_CHROMOSOME_PROTOCOL.md without changing
+codecs or results. PR43 head before this documentation follow-up was
+26a81f0651ab9a7de7294b4c54caf7094ae937f1; it remains a review gate, not merged.
+The zstd1.5.7 reference seekable encoder has a1GiB decompressed-frame limit;
+small-input diagnostic accepted1073741824 and rejected1073741825 (exit11).
+Full T2T's single-frame baseline is unavailable through this unchanged encoder.
+Proposed complete-assembly coverage is per chromosome/FASTA sequence, with a
+single-block baseline per sequence and byte-summed aggregate C_sequences(g).
+Base-only extraction preserves case/symbols and includes every source record;
+do not relabel this as original-FASTA-byte coverage or whole-file c(g).
+No new corpus download, compression measurement, codec patch or PR merge in
+this checkpoint. Next action remains protocol/curve review, then a separately
+authorized bounded execution stage. Hecate/AGC references temper novelty claims.
+
+## Local c(g) naming, claim ledger and bounded review — 2026-09-18
+
+PR43 reviewed from f4c898b0ed50c5c1061a2c08e254cf74a3e0dca6. Retained60 baseline
+archives and300 swept archives verified; five tests passed. See
+review/T2T_WINDOW_CG_REVIEW.md. Generated report uses c_window(g), README links
+the c_file/c_window scope distinction; complete-input chr1 is not whole T2T.
+Added benchmark-scoped HWB-001/002/003 ledger: measured density response,
+unproven reference-distance mechanism, planned later latency/amplification sweep.
+Corrected stale T2T corpus verification wording using its retained receipt.
+PR43 stays unmerged, raw numerical evidence and original435 unchanged.
+About was saved separately through GitHub UI. Full5GiB ERR174310 verification
+is the next gate, followed by a clean first-run check; no new density/timing sweep.
