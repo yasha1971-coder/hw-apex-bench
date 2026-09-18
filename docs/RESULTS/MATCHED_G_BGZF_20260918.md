@@ -1,5 +1,7 @@
 # ACEAPEX vs BGZF — exact matched-g legal corridor (2026-09-18)
 
+> **Historical default-profile comparison.** The current external ACEAPEX-vs-BGZF matched-g comparison uses the documented interactive ACE profile (LIT_CHUNK=64 KiB, FSE_CHUNK=4 KiB) and is published in [MATCHED_G_INTERACTIVE_20260918.md](MATCHED_G_INTERACTIVE_20260918.md). The numbers below remain unchanged as evidence for the default entropy profile; do not use this table as the current random-access Pareto result.
+
 This result closes the earlier apples-to-oranges comparison. ACEAPEX and BGZF
 were measured on the same frozen T2T corpus, at the same uncompressed
 granularity \(g\), with the same 16 KiB resident region trace.
