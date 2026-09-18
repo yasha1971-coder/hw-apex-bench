@@ -1,9 +1,7 @@
 name: chr1 ACE interactive profile control
+# Measurement is manual after the verified 2026-09-18 control run.
+# Evidence/report maintenance must not silently create new timing evidence.
 on:
-  pull_request:
-    paths:
-      - 'review/chr1_interactive/**'
-      - '.github/workflows/chr1-interactive.yml'
   workflow_dispatch:
 permissions:
   contents: read
