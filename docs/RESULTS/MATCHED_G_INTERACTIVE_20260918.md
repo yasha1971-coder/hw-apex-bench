@@ -1,5 +1,7 @@
 # ACEAPEX interactive vs BGZF — exact matched-g legal corridor (2026-09-18)
 
+Measured on thirty frozen 2 MiB T2T-CHM13v2.0 windows, not the chr1 snapshot; ratios are not comparable between the two tables.
+
 **Current external random-access comparison.** This supersedes the earlier default-profile Pareto interpretation while retaining that run as historical evidence.
 
 ACEAPEX uses the documented interactive entropy profile at every point:
@@ -10,17 +12,17 @@ Same thirty frozen 2 MiB T2T-CHM13v2.0 windows, same resident 16 KiB request tra
 same in-process native wrappers, same x86 GitHub runner, and full byte-perfect
 restore before timing.
 
-| exact g (B) | ACE ratio | BGZF ratio | ACE p50 (ms) | BGZF p50 (ms) | ACE density gain | ACE latency penalty |
-|---:|---:|---:|---:|---:|---:|---:|
-| 4,096 | 4.682708 | 3.794020 | 0.129884 | 0.053380 | +23.42% | +143.32% |
-| 8,192 | 5.010591 | 4.139526 | 0.135144 | 0.053901 | +21.04% | +150.73% |
-| 16,384 | 5.219838 | 4.406650 | 0.136646 | 0.063028 | +18.45% | +116.80% |
-| 32,768 | 5.344308 | 4.643726 | 0.151254 | 0.058850 | +15.09% | +157.02% |
-| 65,280 | 5.412621 | 4.810834 | 0.173986 | 0.100158 | +12.51% | +73.71% |
+| exact g (B) | ACE ratio | BGZF ratio | ACE p50 (ms) | BGZF p50 (ms) | ACE p99 (ms) | BGZF p99 (ms) | ACE density gain | ACE latency penalty |
+|---:|---:|---:|---:|---:|---:|---:|---:|---:|
+| 4,096 | 4.682708 | 3.794020 | 0.129884 | 0.053380 | 0.276728 | 0.073939 | +23.42% | +143.32% |
+| 8,192 | 5.010591 | 4.139526 | 0.135144 | 0.053901 | 0.265508 | 0.077826 | +21.04% | +150.73% |
+| 16,384 | 5.219838 | 4.406650 | 0.136646 | 0.063028 | 0.261129 | 0.090670 | +18.45% | +116.80% |
+| 32,768 | 5.344308 | 4.643726 | 0.151254 | 0.058850 | 0.280375 | 0.135283 | +15.09% | +157.02% |
+| 65,280 | 5.412621 | 4.810834 | 0.173986 | 0.100158 | 0.396223 | 0.223559 | +12.51% | +73.71% |
 
 Density is total input / complete stored bytes; BGZF includes `.gzi`.
-p50 is nearest-rank over 18,000 verified resident requests per codec per point
-(30 windows × 3 passes × 200 requests).
+p50 and p99 are nearest-rank statistics over the same 18,000 verified resident requests per codec per point
+(30 windows × 3 passes × 200 requests). The p99 column is derived from the retained samples of run 35364484648; no benchmark was rerun.
 
 ## What replaces the default-profile Pareto
 
