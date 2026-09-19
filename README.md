@@ -9,20 +9,7 @@ When a genome, column store or cache stays compressed, a request reads only a pi
 hw-apex-bench adds region latency, decoded work and access-pattern measurements
 alongside full-file costs, with explicit reproduction and verification evidence.
 
-| Codec | Granularity | Ratio | p50 ms | p99 ms | Amplification |
-|---|---:|---:|---:|---:|---:|
-| bgzip+htslib | ≤ 64 KiB | 3.383 | 0.102 | 0.212 | 4.82 |
-| zstd-seekable | 16 KiB | 3.026 | 0.046 | 0.0594 | 2 |
-| aceapex-interactive | 16 KiB | 3.658 | 0.13 | 0.24 | 6.22 |
-| aceapex-dense | 256 KiB | 3.781 | 1.33 | 2.52 | 83.4 |
-
-ACEAPEX dense has the highest ratio; zstd-seekable has the lowest p50, p99
-and amplification. Both ACEAPEX profiles trade slower regions for greater density.
-
-This is the preserved chr1 CPU snapshot: three formats, four configurations,
-200 resident 16 KiB byte reads per configuration; absolute times belong to its host.
-BGZF granularity is a ceiling; actual blocks vary. XZ has separate qualification
-and small-corpus evidence, not an invented row in this historical comparison.
+[lzbench](https://github.com/inikep/lzbench) and [TurboBench](https://github.com/powturbo/TurboBench) rank compressors by density and bulk throughput; [SeqBench](https://dl.acm.org/doi/10.1145/3698587.3701386) covers sequence compression; per-format seekable readers exist for gzip ([rapidgzip](https://pypi.org/project/rapidgzip/)), zstd ([zstdra](https://github.com/derijkp/zstdra), [seekable-zstd](https://github.com/3leaps/seekable-zstd)) and BGZF ([htslib bgzip](https://www.htslib.org/doc/bgzip.html)). None of them compares the cost of reading one region across formats at matched block sizes. That is what this measures.
 
 ## Matched-g: interactive ACEAPEX vs BGZF
 
@@ -40,6 +27,21 @@ ACEAPEX uses the interactive profile (`LIT_CHUNK=64 KiB`, `FSE_CHUNK=4 KiB`) at 
 
 [Matched-g interactive report →](docs/RESULTS/MATCHED_G_INTERACTIVE_20260918.md)  
 [GitHub Actions run 35364484648 →](https://github.com/yasha1971-coder/hw-apex-bench/actions/runs/35364484648)
+
+| Codec | Granularity | Ratio | p50 ms | p99 ms | Amplification |
+|---|---:|---:|---:|---:|---:|
+| bgzip+htslib | ≤ 64 KiB | 3.383 | 0.102 | 0.212 | 4.82 |
+| zstd-seekable | 16 KiB | 3.026 | 0.046 | 0.0594 | 2 |
+| aceapex-interactive | 16 KiB | 3.658 | 0.13 | 0.24 | 6.22 |
+| aceapex-dense | 256 KiB | 3.781 | 1.33 | 2.52 | 83.4 |
+
+ACEAPEX dense has the highest ratio; zstd-seekable has the lowest p50, p99
+and amplification. Both ACEAPEX profiles trade slower regions for greater density.
+
+This is the preserved chr1 CPU snapshot: three formats, four configurations,
+200 resident 16 KiB byte reads per configuration; absolute times belong to its host.
+BGZF granularity is a ceiling; actual blocks vary. XZ has separate qualification
+and small-corpus evidence, not an invented row in this historical comparison.
 
 [All nine axes and full results →](docs/RESULTS/README.md)
 [Explore the measurements →](https://yasha1971-coder.github.io/hw-apex-bench/)
