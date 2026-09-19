@@ -21,8 +21,8 @@
       "sha256": "cb52b8cb9fac484a6474d976681ea85ae2c052d80d820422b7f57c25ec938100"
     },
     "README.md": {
-      "bytes": 8662,
-      "sha256": "b49b8f8c870531111bcfd0cd1c8abf3ddc1ce23058c19b7811d21a3ebb8879bd"
+      "bytes": 9412,
+      "sha256": "63daddcfc6cd76f05f241a3fb4d54624a1e07b2c3cd008ef4e16d7fe27b192ad"
     },
     "docs/RESULTS/BATCH_RESULTS.md": {
       "bytes": 19250,
@@ -80,7 +80,7 @@
     }
   ],
   "rendering_revision": {
-    "scope": "README/Pages matched-g corpus disclosure, p50+p99 static table, deployment-source verification and first-screen artifact checks; historical measurement bytes unchanged",
+    "scope": "README/Pages first-screen matched-g plus chr1 independence-cost and N=5000 batch decision callouts; historical measurement bytes unchanged",
     "measurement_bytes_changed": false,
     "results_sha256": "cb52b8cb9fac484a6474d976681ea85ae2c052d80d820422b7f57c25ec938100"
   },
