@@ -45,6 +45,10 @@ ACEAPEX uses the interactive profile (`LIT_CHUNK=64 KiB`, `FSE_CHUNK=4 KiB`) at 
 [Matched-g interactive report →](docs/RESULTS/MATCHED_G_INTERACTIVE_20260918.md)  
 [GitHub Actions run 35364484648 →](https://github.com/yasha1971-coder/hw-apex-bench/actions/runs/35364484648)
 
+**Independence cost at 16 KiB (separate chr1 `c_file(g)` scope):** ACEAPEX default @ ee5a37e costs **1.632%** versus **6.569%** for matched zstd-seekable; BGZF is **n/a** because no same-encoder whole-input baseline exists. [Scope and provenance →](docs/CG_SCOPES.md)
+
+**Batch changes the dense trade-off:** for **5,000 uniform ranges**, ACEAPEX dense moves from **659.6 → 12,369.7 ranges/s (18.75×)** with its native batch API, while interactive moves from **6,444.6 → 12,312.5 (1.91×)**. The current bgzip and zstd-seekable adapters expose no native batch API. On batch-heavy workloads, dense reaches essentially the same batch throughput as interactive while retaining its higher ratio. [Batch results →](docs/RESULTS/BATCH_RESULTS.md)
+
 '''+ '\n'.join(table)+'''
 
 ACEAPEX dense has the highest ratio; zstd-seekable has the lowest p50, p99

@@ -29,6 +29,10 @@ jobs:
           grep -Fq '35364484648' .pages/index.html
           grep -Fq '0.276728' .pages/index.html
           grep -Fq '0.223559' .pages/index.html
+          grep -Fq '1.632%' .pages/index.html
+          grep -Fq '6.569%' .pages/index.html
+          grep -Fq '12,369.7' .pages/index.html
+          grep -Fq '12,312.5' .pages/index.html
       - name: Verify Pages is configured for GitHub Actions
         id: pages
         uses: actions/configure-pages@v5
@@ -63,7 +67,11 @@ jobs:
                  && grep -Fq 'SeqBench' <<<"$html" \
                  && grep -Fq '35364484648' <<<"$html" \
                  && grep -Fq '0.276728' <<<"$html" \
-                 && grep -Fq '0.223559' <<<"$html"; then
+                 && grep -Fq '0.223559' <<<"$html" \
+                 && grep -Fq '1.632%' <<<"$html" \
+                 && grep -Fq '6.569%' <<<"$html" \
+                 && grep -Fq '12,369.7' <<<"$html" \
+                 && grep -Fq '12,312.5' <<<"$html"; then
                 echo "Live Pages verified at ${PAGE_URL}"
                 exit 0
               fi
