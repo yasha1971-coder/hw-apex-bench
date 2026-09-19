@@ -59,5 +59,11 @@
   "bgzf_boundary": {
     "max_matched_uncompressed_g_bytes": 65280,
     "above_boundary": "closed / not part of compatible matched-g corridor"
+  },
+  "derived_statistics": {
+    "p50": "nearest-rank over 18,000 verified samples per codec/g",
+    "p99": "nearest-rank over the same 18,000 verified samples per codec/g",
+    "source": "retained samples.jsonl in the five checkpoint artifacts from Actions run 35364484648",
+    "remeasurement": false
   }
 }
