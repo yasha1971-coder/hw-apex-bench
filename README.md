@@ -24,6 +24,23 @@ This is the preserved chr1 CPU snapshot: three formats, four configurations,
 BGZF granularity is a ceiling; actual blocks vary. XZ has separate qualification
 and small-corpus evidence, not an invented row in this historical comparison.
 
+## Matched-g: interactive ACEAPEX vs BGZF
+
+ACEAPEX is written by the author of this benchmark. Its density advantage and its latency penalty are both reported below; the harness, corpora and raw samples are in the repository.
+
+| exact g | ACE ratio | BGZF ratio | ACE p50 ms | BGZF p50 ms |
+|---:|---:|---:|---:|---:|
+| 4 KiB | 4.682708 | 3.794020 | 0.129884 | 0.053380 |
+| 8 KiB | 5.010591 | 4.139526 | 0.135144 | 0.053901 |
+| 16 KiB | 5.219838 | 4.406650 | 0.136646 | 0.063028 |
+| 32 KiB | 5.344308 | 4.643726 | 0.151254 | 0.058850 |
+| 65,280 B | 5.412621 | 4.810834 | 0.173986 | 0.100158 |
+
+ACEAPEX uses the interactive profile (`LIT_CHUNK=64 KiB`, `FSE_CHUNK=4 KiB`) at every point. Both codecs were measured on the same runner, frozen corpus and resident 16 KiB request trace.
+
+[Matched-g interactive report →](docs/RESULTS/MATCHED_G_INTERACTIVE_20260918.md)  
+[GitHub Actions run 35364484648 →](https://github.com/yasha1971-coder/hw-apex-bench/actions/runs/35364484648)
+
 [All nine axes and full results →](docs/RESULTS/README.md)
 [Explore the measurements →](https://yasha1971-coder.github.io/hw-apex-bench/)
 [Add your codec →](CONTRIBUTING.md)
