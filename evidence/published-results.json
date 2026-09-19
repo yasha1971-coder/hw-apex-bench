@@ -21,8 +21,8 @@
       "sha256": "cb52b8cb9fac484a6474d976681ea85ae2c052d80d820422b7f57c25ec938100"
     },
     "README.md": {
-      "bytes": 8380,
-      "sha256": "b56e09f1c6f4cef7c29cd79b08e8f68d762d9b19946e2aae5024a69ab1dd0a12"
+      "bytes": 8662,
+      "sha256": "b49b8f8c870531111bcfd0cd1c8abf3ddc1ce23058c19b7811d21a3ebb8879bd"
     },
     "docs/RESULTS/BATCH_RESULTS.md": {
       "bytes": 19250,
@@ -80,7 +80,7 @@
     }
   ],
   "rendering_revision": {
-    "scope": "README first-screen matched-g evidence, static Pages matched-g table, benchmark-scope positioning links; historical measurement bytes unchanged",
+    "scope": "README/Pages matched-g corpus disclosure, p50+p99 static table, deployment-source verification and first-screen artifact checks; historical measurement bytes unchanged",
     "measurement_bytes_changed": false,
     "results_sha256": "cb52b8cb9fac484a6474d976681ea85ae2c052d80d820422b7f57c25ec938100"
   },
