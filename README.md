@@ -11,15 +11,17 @@ alongside full-file costs, with explicit reproduction and verification evidence.
 
 ## Matched-g: interactive ACEAPEX vs BGZF
 
+Measured on thirty frozen 2 MiB T2T-CHM13v2.0 windows, not the chr1 snapshot above; ratios are not comparable between the two tables.
+
 ACEAPEX is written by the author of this benchmark. Its density advantage and its latency penalty are both reported below; the harness, corpora and raw samples are in the repository.
 
-| exact g | ACE ratio | BGZF ratio | ACE p50 ms | BGZF p50 ms |
-|---:|---:|---:|---:|---:|
-| 4 KiB | 4.682708 | 3.794020 | 0.129884 | 0.053380 |
-| 8 KiB | 5.010591 | 4.139526 | 0.135144 | 0.053901 |
-| 16 KiB | 5.219838 | 4.406650 | 0.136646 | 0.063028 |
-| 32 KiB | 5.344308 | 4.643726 | 0.151254 | 0.058850 |
-| 65,280 B | 5.412621 | 4.810834 | 0.173986 | 0.100158 |
+| exact g | ACE ratio | BGZF ratio | ACE p50 ms | BGZF p50 ms | ACE p99 ms | BGZF p99 ms |
+|---:|---:|---:|---:|---:|---:|---:|
+| 4 KiB | 4.682708 | 3.794020 | 0.129884 | 0.053380 | 0.276728 | 0.073939 |
+| 8 KiB | 5.010591 | 4.139526 | 0.135144 | 0.053901 | 0.265508 | 0.077826 |
+| 16 KiB | 5.219838 | 4.406650 | 0.136646 | 0.063028 | 0.261129 | 0.090670 |
+| 32 KiB | 5.344308 | 4.643726 | 0.151254 | 0.058850 | 0.280375 | 0.135283 |
+| 65,280 B | 5.412621 | 4.810834 | 0.173986 | 0.100158 | 0.396223 | 0.223559 |
 
 ACEAPEX uses the interactive profile (`LIT_CHUNK=64 KiB`, `FSE_CHUNK=4 KiB`) at every point. Both codecs were measured on the same runner, frozen corpus and resident 16 KiB request trace.
 
