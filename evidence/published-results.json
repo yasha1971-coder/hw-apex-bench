@@ -21,8 +21,8 @@
       "sha256": "cb52b8cb9fac484a6474d976681ea85ae2c052d80d820422b7f57c25ec938100"
     },
     "README.md": {
-      "bytes": 9412,
-      "sha256": "63daddcfc6cd76f05f241a3fb4d54624a1e07b2c3cd008ef4e16d7fe27b192ad"
+      "bytes": 9924,
+      "sha256": "45156f7ab9cf69806f0d693336eb5d318ec639f2d869a9bf435306824d1d17c1"
     },
     "docs/RESULTS/BATCH_RESULTS.md": {
       "bytes": 19250,
@@ -41,8 +41,8 @@
       "sha256": "0eaa81c8130b0b74624853081944cb7ea9f78be1ed54a707514ae9514e3716fe"
     },
     "docs/RESULTS/FULL_REPORT.md": {
-      "bytes": 68900,
-      "sha256": "d4a6d4bea500553e7cb83273d2122be90e2477a780cccdea0d7862cfeafc3eda"
+      "bytes": 69250,
+      "sha256": "30469654f02ad2bb9e7aed457eaeaa000768a301420c892e1d4e0490075b67b3"
     },
     "docs/AXES.md": {
       "bytes": 2575,
@@ -80,7 +80,7 @@
     }
   ],
   "rendering_revision": {
-    "scope": "README/Pages first-screen matched-g plus chr1 independence-cost and N=5000 batch decision callouts; historical measurement bytes unchanged",
+    "scope": "first-screen dense conclusion corrected from access-entropy sweep; low-entropy batch reuse and loop-path loss documented; first-screen claims require scope/date and multi-point evidence",
     "measurement_bytes_changed": false,
     "results_sha256": "cb52b8cb9fac484a6474d976681ea85ae2c052d80d820422b7f57c25ec938100"
   },

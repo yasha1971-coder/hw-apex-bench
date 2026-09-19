@@ -119,6 +119,11 @@ never inferred from CPU rows.
 * Keep losses beside wins. Unsupported native batch is generated from the row's
   capability and reason; its measured single-call loop remains a separate method.
   Every missing table cell says `n/a — reason`; it is never blank or zero-filled.
+* First-screen numbers always carry their measurement scope and date. A conclusion
+  from one point is never promoted to the first screen; promotion requires a sweep
+  with at least three measured points. Wording such as “X is approximately equal
+  to Y” must state how many measured points support it and is not published from
+  a single point.
 * The retained JSONL is immutable evidence. Render README and the coverage report
   from those records, verify exact reproduction, then update the publication
   manifest only for reviewed data or explicitly explained rendering changes.

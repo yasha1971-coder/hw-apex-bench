@@ -17,12 +17,9 @@ def render_readme(rows):
         table.append('| '+c+' | '+block+' | '+' | '.join(format(v, '.4g' if i == 0 else '.3g') for i,v in enumerate(vals))+' |')
     text = '''# hw-apex-bench — Compressed Access Benchmark
 
-Measure access to a region of a compressed file without decoding the rest:
-nine measurement axes, with adapters for BGZF, zstd-seekable, ACEAPEX and blocked XZ.
+Measure access to a region of a compressed file without decoding the rest: nine measurement axes, with adapters for BGZF, zstd-seekable, ACEAPEX and blocked XZ.
 
-When a genome, column store or cache stays compressed, a request reads only a piece.
-hw-apex-bench adds region latency, decoded work and access-pattern measurements
-alongside full-file costs, with explicit reproduction and verification evidence.
+When a genome, column store or cache stays compressed, a request reads only a piece. hw-apex-bench adds region latency, decoded work and access-pattern measurements alongside full-file costs, with explicit reproduction and verification evidence.
 
 [lzbench](https://github.com/inikep/lzbench) and [TurboBench](https://github.com/powturbo/TurboBench) rank compressors by density and bulk throughput; [SeqBench](https://dl.acm.org/doi/10.1145/3698587.3701386) covers sequence compression; per-format seekable readers exist for gzip ([rapidgzip](https://pypi.org/project/rapidgzip/)), zstd ([zstdra](https://github.com/derijkp/zstdra), [seekable-zstd](https://github.com/3leaps/seekable-zstd)) and BGZF ([htslib bgzip](https://www.htslib.org/doc/bgzip.html)). None of them compares the cost of reading one region across formats at matched block sizes. That is what this measures.
 
@@ -47,17 +44,19 @@ ACEAPEX uses the interactive profile (`LIT_CHUNK=64 KiB`, `FSE_CHUNK=4 KiB`) at 
 
 **Independence cost at 16 KiB (separate chr1 `c_file(g)` scope):** ACEAPEX default @ ee5a37e costs **1.632%** versus **6.569%** for matched zstd-seekable; BGZF is **n/a** because no same-encoder whole-input baseline exists. [Scope and provenance →](docs/CG_SCOPES.md)
 
-**Batch changes the dense trade-off:** for **5,000 uniform ranges**, ACEAPEX dense moves from **659.6 → 12,369.7 ranges/s (18.75×)** with its native batch API, while interactive moves from **6,444.6 → 12,312.5 (1.91×)**. The current bgzip and zstd-seekable adapters expose no native batch API. On batch-heavy workloads, dense reaches essentially the same batch throughput as interactive while retaining its higher ratio. [Batch results →](docs/RESULTS/BATCH_RESULTS.md)
+**Batch sweep scope (2026-09-19):** hg38 chr1, N=5000, 16 KiB ranges, workers=1, Actions run 35427975099.
+
+A native batch API is what makes the dense profile usable at all for region reads: it moves from 659.6 to 12,369.7 ranges/s under uniform access. But dense leads interactive only under uniform access. Once requests concentrate, interactive overtakes it somewhere between 12 and 8 bits of access entropy and keeps the lead: at Hα ≈ 2 bits, interactive reaches 869,088 ranges/s against 467,998 for dense. For batch-heavy workloads with any locality, interactive is the profile to pick.
+
+Concentration helps BGZF more than it helps ACEAPEX in the single-request path. Under uniform access bgzip runs 10,040.6 ranges/s against ACEAPEX interactive at 9,086.4, a 1.1× gap. At Hα ≈ 2 bits bgzip reaches 64,722.7 against 13,847.4, a 4.7× gap. The batch API is where ACEAPEX answers locality; the loop path is not.
+
+[Access-entropy sweep →](docs/RESULTS/ACCESS_ENTROPY_20260919.md)
 
 '''+ '\n'.join(table)+'''
 
-ACEAPEX dense has the highest ratio; zstd-seekable has the lowest p50, p99
-and amplification. Both ACEAPEX profiles trade slower regions for greater density.
+ACEAPEX dense has the highest ratio; zstd-seekable has the lowest p50, p99 and amplification. Both ACEAPEX profiles trade slower regions for greater density.
 
-This is the preserved chr1 CPU snapshot: three formats, four configurations,
-200 resident 16 KiB byte reads per configuration; absolute times belong to its host.
-BGZF granularity is a ceiling; actual blocks vary. XZ has separate qualification
-and small-corpus evidence, not an invented row in this historical comparison.
+This is the preserved chr1 CPU snapshot: three formats, four configurations, 200 resident 16 KiB byte reads per configuration; absolute times belong to its host. BGZF granularity is a ceiling; actual blocks vary. XZ has separate qualification and small-corpus evidence, not an invented row in this historical comparison.
 
 [All nine axes and full results →](docs/RESULTS/README.md)
 [Explore the measurements →](https://yasha1971-coder.github.io/hw-apex-bench/)

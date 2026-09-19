@@ -25,6 +25,10 @@ The published `H_alpha` is the **measured Shannon entropy of request starts on t
 | zipf-h2 | 2.001 | aceapex-interactive | 2.001 | 13,847.4 | 869,087.9 | 65.39× |
 | zipf-h2 | 2.001 | aceapex-dense | 0.206 | 1,357.0 | 467,998.1 | 344.87× |
 
+At low access entropy these batch figures reflect reuse of already-decompressed chunks, not a fresh decode of every range: at Hα ≈ 2 bits the requests concentrate into a handful of blocks. 869,088 ranges/s is 1.15 µs per range, which is below the cost of decoding 16 KiB. Read these as the throughput of a batch API that exploits locality, not as a decode rate.
+
+Concentration helps BGZF more than it helps ACEAPEX in the single-request path. Under uniform access bgzip runs 10,040.6 ranges/s against ACEAPEX interactive at 9,086.4, a 1.1× gap. At Hα ≈ 2 bits bgzip reaches 64,722.7 against 13,847.4, a 4.7× gap. The batch API is where ACEAPEX answers locality; the loop path is not.
+
 ## Answer
 
 For **ACEAPEX interactive**, batch advantage grows monotonically as access entropy falls: **1.86× → 4.51× → 17.60× → 65.39×** from H=11.994 to H=2.001 bits.
