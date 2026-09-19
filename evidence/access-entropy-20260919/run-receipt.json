@@ -1,0 +1,40 @@
+{
+  "schema": "access-entropy-run-receipt-v1",
+  "date": "2026-09-19",
+  "repository": "yasha1971-coder/hw-apex-bench",
+  "pr": 58,
+  "branch": "experiment/access-entropy-sweep-v1",
+  "source_head_sha": "465d336fbbbb78e61bda93fa9b24244bfac30b0c",
+  "actions_merge_ref_commit": "d7ac33083835f54e143f33ffff1b7a65169cb288",
+  "actions_run_id": 35427975099,
+  "actions_conclusion": "success",
+  "artifact_id": 10579228345,
+  "artifact_digest": "sha256:901eeaf9c01841dca3a213c81d3c816fbd9e7da464f2ca049f2982389e28b081",
+  "artifact_name": "access-entropy-sweep-v1",
+  "host": {
+    "cpu": "AMD EPYC 9V45 96-Core Processor",
+    "platform": "Linux-6.17.0-1022-azure-x86_64-with-glibc2.39",
+    "timed_cpu": 0,
+    "vcpus": 4
+  },
+  "corpus": {
+    "bytes": 253935557,
+    "md5": "9465e0f0df6e2c6eb39729c39cee5465",
+    "sha256": "04ee6db2e94ccc4daddc168453189d8c17a01454ba67ac0443a73a0401408ee0"
+  },
+  "workload": {
+    "requests": 5000,
+    "request_bytes": 16384,
+    "workers": 1,
+    "repetitions": 3,
+    "profiles": 4,
+    "codec_configurations": 4
+  },
+  "judge": "all 5000 loop responses per repeat are byte-compared against source; for ACE native batch all 5000 batch outputs per repeat are byte-compared against the verified loop/source",
+  "trace_targets": "uniform plus finite Zipf traces selected so measured common 16 KiB-grid H_alpha is approximately 12/8/4/2 bits; measured H_alpha is normative",
+  "interpretation_note": "The measurement artifact's first generated prose said dense was already ahead at the highest-H point. The committed report keeps that fact but adds the necessary ordering transition: as concentration increases, interactive overtakes dense between H=11.994 and 7.995 and remains ahead at all lower measured H. No timing value was changed or rerun.",
+  "result": "evidence/access-entropy-20260919/results.json",
+  "report": "docs/RESULTS/ACCESS_ENTROPY_20260919.md",
+  "homepage_changed": false,
+  "remeasurement_after_run": false
+}

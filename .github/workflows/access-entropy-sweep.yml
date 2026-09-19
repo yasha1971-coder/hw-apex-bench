@@ -1,0 +1,79 @@
+name: Access-entropy batch sweep
+# Manual-only after the verified sweep in Actions run 35427975099.
+# PR synchronization must not repeat the expensive measurement.
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+
+jobs:
+  measure:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install build prerequisites
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq \
+            build-essential cmake autoconf automake pkg-config zlib1g-dev \
+            ca-certificates git python3 curl
+
+      - name: Download and verify hg38 chr1
+        run: |
+          mkdir -p /tmp/access-entropy-corpus
+          curl --fail --location --retry 3 \
+            https://hgdownload.soe.ucsc.edu/goldenPath/hg38/chromosomes/chr1.fa.gz \
+            -o /tmp/access-entropy-corpus/chr1.fa.gz
+          gzip -dc /tmp/access-entropy-corpus/chr1.fa.gz > /tmp/access-entropy-corpus/chr1.fa
+          rm /tmp/access-entropy-corpus/chr1.fa.gz
+          test "$(stat -c%s /tmp/access-entropy-corpus/chr1.fa)" = 253935557
+          echo '9465e0f0df6e2c6eb39729c39cee5465  /tmp/access-entropy-corpus/chr1.fa' | md5sum -c -
+
+      - name: Qualify the same four resident adapters
+        run: |
+          CHECK=/tmp/access-entropy-check
+          ./run.sh --check codecs/bgzip.sh --work "$CHECK"
+          ./run.sh --check codecs/zstd_seekable.sh --work "$CHECK"
+          ./run.sh --check codecs/aceapex.sh --work "$CHECK"
+          ./run.sh --check codecs/aceapex_dense.sh --work "$CHECK"
+
+      - name: Build unchanged batch judge
+        run: |
+          gcc -O3 -std=gnu11 -Wall -Wextra -Werror \
+            harness/native_batch.c -ldl -o /tmp/access-entropy-native-batch
+          sha256sum harness/native_batch.c /tmp/access-entropy-native-batch
+
+      - name: Generate deterministic entropy traces
+        run: |
+          python3 review/access_entropy/traces.py \
+            --size 253935557 \
+            --out /tmp/access-entropy-traces
+          cat /tmp/access-entropy-traces/profiles.json
+
+      - name: Run bounded entropy sweep on one runner
+        run: |
+          python3 review/access_entropy/run.py \
+            --input /tmp/access-entropy-corpus/chr1.fa \
+            --check-root /tmp/access-entropy-check \
+            --traces /tmp/access-entropy-traces \
+            --worker /tmp/access-entropy-native-batch \
+            --out /tmp/access-entropy-run \
+            --actions-run-id "$GITHUB_RUN_ID"
+
+      - name: Show single result table
+        run: cat /tmp/access-entropy-run/REPORT.md
+
+      - name: Retain complete sweep evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: access-entropy-sweep-v1
+          path: |
+            /tmp/access-entropy-run/results.json
+            /tmp/access-entropy-run/REPORT.md
+            /tmp/access-entropy-run/raw/**
+            /tmp/access-entropy-traces/**
+            /tmp/access-entropy-check/**/check.json
+            /tmp/access-entropy-check/**/check.log
