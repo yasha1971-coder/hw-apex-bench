@@ -14,15 +14,16 @@
 <p class="muted">Compare density and resident read cost. This is a historical genome example, not a prediction for your files.</p>
 <p><a href="https://github.com/inikep/lzbench">lzbench</a> and <a href="https://github.com/powturbo/TurboBench">TurboBench</a> rank compressors by density and bulk throughput; <a href="https://dl.acm.org/doi/10.1145/3698587.3701386">SeqBench</a> covers sequence compression; per-format seekable readers exist for gzip (<a href="https://pypi.org/project/rapidgzip/">rapidgzip</a>), zstd (<a href="https://github.com/derijkp/zstdra">zstdra</a>, <a href="https://github.com/3leaps/seekable-zstd">seekable-zstd</a>) and BGZF (<a href="https://www.htslib.org/doc/bgzip.html">htslib bgzip</a>). None of them compares the cost of reading one region across formats at matched block sizes. That is what this measures.</p>
 <h2 id="matched-g">Matched-g: interactive ACEAPEX vs BGZF</h2>
+<p>Measured on thirty frozen 2 MiB T2T-CHM13v2.0 windows, not the chr1 snapshot above; ratios are not comparable between the two tables.</p>
 <p>ACEAPEX is written by the author of this benchmark. Its density advantage and its latency penalty are both reported below; the harness, corpora and raw samples are in the repository.</p>
 <div class="scroll"><table aria-label="Interactive ACEAPEX versus BGZF at matched block sizes">
-<thead><tr><th>exact g</th><th>ACE ratio</th><th>BGZF ratio</th><th>ACE p50 ms</th><th>BGZF p50 ms</th></tr></thead>
+<thead><tr><th>exact g</th><th>ACE ratio</th><th>BGZF ratio</th><th>ACE p50 ms</th><th>BGZF p50 ms</th><th>ACE p99 ms</th><th>BGZF p99 ms</th></tr></thead>
 <tbody>
-<tr><td>4 KiB</td><td>4.682708</td><td>3.794020</td><td>0.129884</td><td>0.053380</td></tr>
-<tr><td>8 KiB</td><td>5.010591</td><td>4.139526</td><td>0.135144</td><td>0.053901</td></tr>
-<tr><td>16 KiB</td><td>5.219838</td><td>4.406650</td><td>0.136646</td><td>0.063028</td></tr>
-<tr><td>32 KiB</td><td>5.344308</td><td>4.643726</td><td>0.151254</td><td>0.058850</td></tr>
-<tr><td>65,280 B</td><td>5.412621</td><td>4.810834</td><td>0.173986</td><td>0.100158</td></tr>
+<tr><td>4 KiB</td><td>4.682708</td><td>3.794020</td><td>0.129884</td><td>0.053380</td><td>0.276728</td><td>0.073939</td></tr>
+<tr><td>8 KiB</td><td>5.010591</td><td>4.139526</td><td>0.135144</td><td>0.053901</td><td>0.265508</td><td>0.077826</td></tr>
+<tr><td>16 KiB</td><td>5.219838</td><td>4.406650</td><td>0.136646</td><td>0.063028</td><td>0.261129</td><td>0.090670</td></tr>
+<tr><td>32 KiB</td><td>5.344308</td><td>4.643726</td><td>0.151254</td><td>0.058850</td><td>0.280375</td><td>0.135283</td></tr>
+<tr><td>65,280 B</td><td>5.412621</td><td>4.810834</td><td>0.173986</td><td>0.100158</td><td>0.396223</td><td>0.223559</td></tr>
 </tbody></table></div>
 <p class="note">ACEAPEX interactive: LIT_CHUNK=64 KiB, FSE_CHUNK=4 KiB. Both codecs use the same runner, frozen corpus and resident 16 KiB request trace.</p>
 <p><a href="https://github.com/yasha1971-coder/hw-apex-bench/blob/main/docs/RESULTS/MATCHED_G_INTERACTIVE_20260918.md">Matched-g interactive report</a> · <a href="https://github.com/yasha1971-coder/hw-apex-bench/actions/runs/35364484648">GitHub Actions run 35364484648</a></p>

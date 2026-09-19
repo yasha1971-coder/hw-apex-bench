@@ -21,7 +21,9 @@
       "latency_penalty_pct": 143.31959535406523,
       "equal_percent_margin_pct": -119.89622523835169,
       "bit_perfect": true,
-      "samples_per_codec": 18000
+      "samples_per_codec": 18000,
+      "ace_p99_ms": 0.276728,
+      "bgzf_p99_ms": 0.073939
     },
     {
       "g": 8192,
@@ -33,7 +35,9 @@
       "latency_penalty_pct": 150.7263316079479,
       "equal_percent_margin_pct": -129.68369290383765,
       "bit_perfect": true,
-      "samples_per_codec": 18000
+      "samples_per_codec": 18000,
+      "ace_p99_ms": 0.265508,
+      "bgzf_p99_ms": 0.077826
     },
     {
       "g": 16384,
@@ -45,7 +49,9 @@
       "latency_penalty_pct": 116.80205622897759,
       "equal_percent_margin_pct": -98.34839032369997,
       "bit_perfect": true,
-      "samples_per_codec": 18000
+      "samples_per_codec": 18000,
+      "ace_p99_ms": 0.261129,
+      "bgzf_p99_ms": 0.09067
     },
     {
       "g": 32768,
@@ -57,7 +63,9 @@
       "latency_penalty_pct": 157.01614273576888,
       "equal_percent_margin_pct": -141.92949196240386,
       "bit_perfect": true,
-      "samples_per_codec": 18000
+      "samples_per_codec": 18000,
+      "ace_p99_ms": 0.280375,
+      "bgzf_p99_ms": 0.135283
     },
     {
       "g": 65280,
@@ -69,7 +77,10 @@
       "latency_penalty_pct": 73.7115357734779,
       "equal_percent_margin_pct": -61.202551956135416,
       "bit_perfect": true,
-      "samples_per_codec": 18000
+      "samples_per_codec": 18000,
+      "ace_p99_ms": 0.396223,
+      "bgzf_p99_ms": 0.223559
     }
-  ]
+  ],
+  "p99_definition": "nearest-rank p99 over the same 18,000 verified resident requests per codec and g; derived from retained samples of run 35364484648 without remeasurement"
 }
