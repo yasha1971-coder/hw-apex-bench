@@ -20,11 +20,28 @@ def render_readme(rows):
 Measure access to a region of a compressed file without decoding the rest:
 nine measurement axes, with adapters for BGZF, zstd-seekable, ACEAPEX and blocked XZ.
 
-[lzbench](https://github.com/inikep/lzbench) and
-[TurboBench](https://github.com/powturbo/TurboBench) cover compression density and bulk speed.
 When a genome, column store or cache stays compressed, a request reads only a piece.
 hw-apex-bench adds region latency, decoded work and access-pattern measurements
 alongside full-file costs, with explicit reproduction and verification evidence.
+
+[lzbench](https://github.com/inikep/lzbench) and [TurboBench](https://github.com/powturbo/TurboBench) rank compressors by density and bulk throughput; [SeqBench](https://dl.acm.org/doi/10.1145/3698587.3701386) covers sequence compression; per-format seekable readers exist for gzip ([rapidgzip](https://pypi.org/project/rapidgzip/)), zstd ([zstdra](https://github.com/derijkp/zstdra), [seekable-zstd](https://github.com/3leaps/seekable-zstd)) and BGZF ([htslib bgzip](https://www.htslib.org/doc/bgzip.html)). None of them compares the cost of reading one region across formats at matched block sizes. That is what this measures.
+
+## Matched-g: interactive ACEAPEX vs BGZF
+
+ACEAPEX is written by the author of this benchmark. Its density advantage and its latency penalty are both reported below; the harness, corpora and raw samples are in the repository.
+
+| exact g | ACE ratio | BGZF ratio | ACE p50 ms | BGZF p50 ms |
+|---:|---:|---:|---:|---:|
+| 4 KiB | 4.682708 | 3.794020 | 0.129884 | 0.053380 |
+| 8 KiB | 5.010591 | 4.139526 | 0.135144 | 0.053901 |
+| 16 KiB | 5.219838 | 4.406650 | 0.136646 | 0.063028 |
+| 32 KiB | 5.344308 | 4.643726 | 0.151254 | 0.058850 |
+| 65,280 B | 5.412621 | 4.810834 | 0.173986 | 0.100158 |
+
+ACEAPEX uses the interactive profile (`LIT_CHUNK=64 KiB`, `FSE_CHUNK=4 KiB`) at every point. Both codecs were measured on the same runner, frozen corpus and resident 16 KiB request trace.
+
+[Matched-g interactive report →](docs/RESULTS/MATCHED_G_INTERACTIVE_20260918.md)  
+[GitHub Actions run 35364484648 →](https://github.com/yasha1971-coder/hw-apex-bench/actions/runs/35364484648)
 
 '''+ '\n'.join(table)+'''
 
