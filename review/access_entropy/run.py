@@ -257,17 +257,27 @@ def main():
         d=ace[p["profile"]]["aceapex-dense"]["batch_ranges_s"]
         i=ace[p["profile"]]["aceapex-interactive"]["batch_ranges_s"]
         comparisons.append((p["H_alpha_bits"],d,i,p["profile"]))
-    winners=[x for x in comparisons if x[1]>x[2]]
-    if not winners:
+    states=[d>i for _,d,i,_ in comparisons]
+    transitions=[idx for idx in range(1,len(states)) if states[idx]!=states[idx-1]]
+    if all(states):
+        h,d,i,_=comparisons[-1]
+        cross=f'Dense exceeds interactive batch throughput at every measured entropy point, including H_alpha={h:.3f} bits ({d:,.1f} vs {i:,.1f} ranges/s).'
+    elif not any(states):
         cross="Dense does not exceed interactive batch throughput at any measured entropy point."
-    elif winners[0] is comparisons[0]:
-        h,d,i,name=winners[0]
-        cross=f'Dense already exceeds interactive at the highest measured entropy point, H_alpha={h:.3f} bits ({d:,.1f} vs {i:,.1f} ranges/s); no lower-entropy crossover is required by these measurements.'
+    elif states[0] and transitions:
+        idx=transitions[0];high=comparisons[idx-1];low=comparisons[idx]
+        tail=states[idx:]
+        cross=(f'Dense is ahead at the uniform/high-entropy endpoint H_alpha={high[0]:.3f} bits '
+               f'({high[1]:,.1f} vs {high[2]:,.1f} ranges/s), but as access concentrates interactive overtakes dense '
+               f'between H_alpha={high[0]:.3f} and {low[0]:.3f} bits. '
+               +("Interactive remains ahead at every lower measured entropy point." if not any(tail) else
+                 "The ordering changes again at a lower measured point; see the table."))
     else:
-        idx=comparisons.index(winners[0]);lo=comparisons[idx-1];hi=comparisons[idx]
-        cross=(f'Dense first exceeds interactive at measured H_alpha={hi[0]:.3f} bits '
-               f'({hi[1]:,.1f} vs {hi[2]:,.1f} ranges/s); the observed crossover is bracketed between '
-               f'H_alpha={lo[0]:.3f} and {hi[0]:.3f} bits.')
+        idx=next(i for i,x in enumerate(states) if x)
+        high=comparisons[idx-1];low=comparisons[idx]
+        cross=(f'Dense first exceeds interactive as concentration increases between H_alpha={high[0]:.3f} and '
+               f'{low[0]:.3f} bits; at H_alpha={low[0]:.3f} dense measures {low[1]:,.1f} versus '
+               f'{low[2]:,.1f} ranges/s.')
     result={
         "schema":"access-entropy-sweep-v1",
         "actions_run_id":a.actions_run_id,
