@@ -1,9 +1,7 @@
 name: Access-entropy batch sweep
+# Manual-only after the verified sweep in Actions run 35427975099.
+# PR synchronization must not repeat the expensive measurement.
 on:
-  pull_request:
-    paths:
-      - 'review/access_entropy/**'
-      - '.github/workflows/access-entropy-sweep.yml'
   workflow_dispatch:
 permissions:
   contents: read
