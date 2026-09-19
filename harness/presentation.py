@@ -47,7 +47,13 @@ ACEAPEX uses the interactive profile (`LIT_CHUNK=64 KiB`, `FSE_CHUNK=4 KiB`) at 
 
 **Independence cost at 16 KiB (separate chr1 `c_file(g)` scope):** ACEAPEX default @ ee5a37e costs **1.632%** versus **6.569%** for matched zstd-seekable; BGZF is **n/a** because no same-encoder whole-input baseline exists. [Scope and provenance →](docs/CG_SCOPES.md)
 
-**Batch changes the dense trade-off:** for **5,000 uniform ranges**, ACEAPEX dense moves from **659.6 → 12,369.7 ranges/s (18.75×)** with its native batch API, while interactive moves from **6,444.6 → 12,312.5 (1.91×)**. The current bgzip and zstd-seekable adapters expose no native batch API. On batch-heavy workloads, dense reaches essentially the same batch throughput as interactive while retaining its higher ratio. [Batch results →](docs/RESULTS/BATCH_RESULTS.md)
+**Batch sweep scope (2026-09-19):** hg38 chr1, N=5000, 16 KiB ranges, workers=1, Actions run 35427975099.
+
+A native batch API is what makes the dense profile usable at all for region reads: it moves from 659.6 to 12,369.7 ranges/s under uniform access. But dense leads interactive only under uniform access. Once requests concentrate, interactive overtakes it somewhere between 12 and 8 bits of access entropy and keeps the lead: at Hα ≈ 2 bits, interactive reaches 869,088 ranges/s against 467,998 for dense. For batch-heavy workloads with any locality, interactive is the profile to pick.
+
+Concentration helps BGZF more than it helps ACEAPEX in the single-request path. Under uniform access bgzip runs 10,040.6 ranges/s against ACEAPEX interactive at 9,086.4, a 1.1× gap. At Hα ≈ 2 bits bgzip reaches 64,722.7 against 13,847.4, a 4.7× gap. The batch API is where ACEAPEX answers locality; the loop path is not.
+
+[Access-entropy sweep →](docs/RESULTS/ACCESS_ENTROPY_20260919.md)
 
 '''+ '\n'.join(table)+'''
 
