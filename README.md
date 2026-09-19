@@ -3,8 +3,6 @@
 Measure access to a region of a compressed file without decoding the rest:
 nine measurement axes, with adapters for BGZF, zstd-seekable, ACEAPEX and blocked XZ.
 
-[lzbench](https://github.com/inikep/lzbench) and
-[TurboBench](https://github.com/powturbo/TurboBench) cover compression density and bulk speed.
 When a genome, column store or cache stays compressed, a request reads only a piece.
 hw-apex-bench adds region latency, decoded work and access-pattern measurements
 alongside full-file costs, with explicit reproduction and verification evidence.
