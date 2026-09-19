@@ -1,0 +1,274 @@
+{
+  "schema": "access-entropy-sweep-v1",
+  "date": "2026-09-19",
+  "actions_run_id": 35427975099,
+  "corpus": {
+    "id": "chr1-hg38-fasta",
+    "bytes": 253935557,
+    "md5": "9465e0f0df6e2c6eb39729c39cee5465",
+    "sha256": "04ee6db2e94ccc4daddc168453189d8c17a01454ba67ac0443a73a0401408ee0"
+  },
+  "host": {
+    "platform": "Linux-6.17.0-1022-azure-x86_64-with-glibc2.39",
+    "cpu": "AMD EPYC 9V45 96-Core Processor",
+    "timed_cpu": 0,
+    "vcpus": 4
+  },
+  "workload": {
+    "requests": 5000,
+    "request_bytes": 16384,
+    "workers": 1,
+    "repetitions": 3
+  },
+  "entropy_axis": "measured Shannon entropy of request starts on common 16 KiB grid",
+  "profiles": [
+    {
+      "profile": "uniform",
+      "H_alpha_bits": 11.99373571143033,
+      "zipf_alpha": null,
+      "distinct_16k_start_blocks": 4297,
+      "trace_sha256": "407b0490226849732d62129abfa8d973be9d65a87982c6fdc43dbacb8d1989b5"
+    },
+    {
+      "profile": "zipf-h8",
+      "H_alpha_bits": 7.994610827572889,
+      "zipf_alpha": 1.089,
+      "distinct_16k_start_blocks": 1516,
+      "trace_sha256": "b2f94cc1584c1d786249ee31f4d274b51b3664fd41ff464b6368a99b1cd5db01"
+    },
+    {
+      "profile": "zipf-h4",
+      "H_alpha_bits": 4.001617626496113,
+      "zipf_alpha": 1.555,
+      "distinct_16k_start_blocks": 334,
+      "trace_sha256": "683042f419970051b4b213e672716e1f640b87d61d6acdf52da3578017137bf0"
+    },
+    {
+      "profile": "zipf-h2",
+      "H_alpha_bits": 2.00109971303283,
+      "zipf_alpha": 2.163,
+      "distinct_16k_start_blocks": 68,
+      "trace_sha256": "4187461d72fe0c0ddbe3c1dfdb2762e4cef44b05b9c0328c13d1d335f5b79d63"
+    }
+  ],
+  "adapters": [
+    {
+      "codec": "bgzip+htslib",
+      "version": "1.24",
+      "granularity": 65280,
+      "qualification_sha256": "0c645ecdad006458b8363393fdd34f31cb7650e432eaa87017ce084a9c80651b",
+      "archive_sha256": "c41f38ce60f54fc0560e53c60a7ba645a6946d5827cdc0d21f6a2acf96bb4784",
+      "sidecar_sha256": "f2eee38438413fe9070e29e50f39c1626f5304253d90c1d9fddad60693a65869",
+      "full_restore": "byte-exact",
+      "native_batch": false
+    },
+    {
+      "codec": "zstd-seekable",
+      "version": "1.5.7",
+      "granularity": 16384,
+      "qualification_sha256": "5b20ed3913e2faf00994829ac3a9bff9e20450fdcd1718eb985c93c4d12f43c7",
+      "archive_sha256": "0abc3a0d4db3f48b8c4d594350bd6d3ae4782cc3bb74909c06757b13082846d5",
+      "full_restore": "byte-exact",
+      "native_batch": false
+    },
+    {
+      "codec": "aceapex-interactive",
+      "version": "aceapex@1b13df34ac8e839dd3232b59bc59560d689a435a",
+      "granularity": 16384,
+      "lit_chunk": 65536,
+      "fse_chunk": 4096,
+      "qualification_sha256": "45b0c8540abf2c83458a206bf41bee1f13105ead4a0305d1392aa2a9c9d71121",
+      "archive_sha256": "b2e3098b6492a21b25bc8cc2e1c8f55aba340d6820845320477025395afccc46",
+      "full_restore": "byte-exact",
+      "native_batch": true
+    },
+    {
+      "codec": "aceapex-dense",
+      "version": "aceapex@1b13df34ac8e839dd3232b59bc59560d689a435a",
+      "granularity": 262144,
+      "lit_chunk": 1048576,
+      "fse_chunk": 32768,
+      "qualification_sha256": "4cb7512e6e92bce1b35f2db19b0aafa3b2b432289eb496a659d580721617f0ad",
+      "archive_sha256": "429d85b995eca2dc5922734b78f4f56f96eb1278fab3776a61455b9b39347d74",
+      "full_restore": "byte-exact",
+      "native_batch": true
+    }
+  ],
+  "rows": [
+    [
+      "uniform",
+      11.99373571143033,
+      "bgzip+htslib",
+      11.285997353352828,
+      10040.615413898144,
+      null,
+      null,
+      "8ca046bab1173341fe3b70ef9a1dd802e981052319033ca791d436f2b17ff413"
+    ],
+    [
+      "uniform",
+      11.99373571143033,
+      "zstd-seekable",
+      11.99373571143033,
+      27231.291298193482,
+      null,
+      null,
+      "ae5aa92b7e0d23316c7b08a0e1092937445c8a1783502a1d2922491566883c83"
+    ],
+    [
+      "uniform",
+      11.99373571143033,
+      "aceapex-interactive",
+      11.99373571143033,
+      9086.431264540357,
+      16827.14156279432,
+      1.8558923922124329,
+      "9036a7b14571d070671eae658d8dc6be3f6c623483dd9497b1165742594aa98a"
+    ],
+    [
+      "uniform",
+      11.99373571143033,
+      "aceapex-dense",
+      9.774765178312139,
+      973.8702592542121,
+      20343.9654328034,
+      20.89546812919157,
+      "812c16435614db1cce924f0a869be5669f1f4007fd248fc9fb44fc42ffe7887a"
+    ],
+    [
+      "zipf-h8",
+      7.994610827572889,
+      "bgzip+htslib",
+      6.507155380309046,
+      11920.52006596997,
+      null,
+      null,
+      "da70fb3271f015938aedd08b301afff6cbed879f36a4f0a9a11192ab7f0281f5"
+    ],
+    [
+      "zipf-h8",
+      7.994610827572889,
+      "zstd-seekable",
+      7.994610827572889,
+      28912.788816931126,
+      null,
+      null,
+      "bea4d033bc720dc0c03656b5595dda76f5a6d320e2c2eb8f75261d5cda7a61a3"
+    ],
+    [
+      "zipf-h8",
+      7.994610827572889,
+      "aceapex-interactive",
+      7.994610827572889,
+      10417.56288092001,
+      47002.64199030469,
+      4.507685011869906,
+      "ac2bddc3a56f6edc401b3936b9bc2194d947dde3d58202feaa29c8e73dd0f836"
+    ],
+    [
+      "zipf-h8",
+      7.994610827572889,
+      "aceapex-dense",
+      4.9954957695254505,
+      1173.1902830572997,
+      18664.19449207526,
+      15.839212455456522,
+      "78ca6c136c0ba9e2726308cbaebbfa75e4eb2a4a5df42f243b3de1867f53694c"
+    ],
+    [
+      "zipf-h4",
+      4.001617626496113,
+      "bgzip+htslib",
+      2.4178855441395948,
+      23317.915745076567,
+      null,
+      null,
+      "c375a803f31ab7bb7754da7415ffcb069dca7809269ee93171f467ee3b4e900c"
+    ],
+    [
+      "zipf-h4",
+      4.001617626496113,
+      "zstd-seekable",
+      4.001617626496113,
+      32183.02284268573,
+      null,
+      null,
+      "1fa96325059bcd172ad542131bdf398251590f494dd8f01c654ed3bc50201927"
+    ],
+    [
+      "zipf-h4",
+      4.001617626496113,
+      "aceapex-interactive",
+      4.001617626496113,
+      12581.425887468935,
+      218119.74843987668,
+      17.599815902449997,
+      "81d3750eb2b11f648b8b18927dbcfa905cbc406902a3d4eb511159860b015cba"
+    ],
+    [
+      "zipf-h4",
+      4.001617626496113,
+      "aceapex-dense",
+      1.2945924289959558,
+      1279.9534927567254,
+      71735.15518437426,
+      56.187304550396185,
+      "34b03a42660d6a219934d1a030c1100460624d67d0fdb5e5deebabde44db76b9"
+    ],
+    [
+      "zipf-h2",
+      2.00109971303283,
+      "bgzip+htslib",
+      0.7281577412525491,
+      64722.68877931999,
+      null,
+      null,
+      "0945ab3ab1e8240b87dad2dc637603bf89dbf995e5b5ceec17a1ad60178ee976"
+    ],
+    [
+      "zipf-h2",
+      2.00109971303283,
+      "zstd-seekable",
+      2.00109971303283,
+      34113.33054258999,
+      null,
+      null,
+      "428105e8510dc48e5fd95374612e524f2814ba8411e262c598189ea14744ca3b"
+    ],
+    [
+      "zipf-h2",
+      2.00109971303283,
+      "aceapex-interactive",
+      2.00109971303283,
+      13847.389915306512,
+      869087.8992024902,
+      65.39474985814613,
+      "7e7037443d4df288bac9c04e4259183d716f79092a1d76c4a357ede5738eb50e"
+    ],
+    [
+      "zipf-h2",
+      2.00109971303283,
+      "aceapex-dense",
+      0.20583528489591882,
+      1357.0364704270658,
+      467998.146352942,
+      344.86777367572205,
+      "eefa8a8bfd1d4785d46fe4a5cd936b278a606084c09f2eac6583aaf27b82227d"
+    ]
+  ],
+  "row_schema": [
+    "profile",
+    "H_alpha_bits",
+    "codec",
+    "codec_H_alpha_bits",
+    "loop_ranges_s",
+    "batch_ranges_s",
+    "batch_speedup",
+    "raw_sha256"
+  ],
+  "judge": "harness/native_batch.c compares every loop result byte-for-byte with original and every available native-batch result with the same verified loop/original outside timing; three repeats × 5000 ranges per available method",
+  "conclusions": {
+    "batch_concentration": "Interactive batch/loop speedup grows monotonically as measured common H_alpha falls: 1.86× → 4.51× → 17.60× → 65.39×. Dense is not monotonic because it dips from 20.90× at H=11.994 to 15.84× at H=7.995, then rises to 56.19× and 344.87×; its endpoint advantage nevertheless grows by more than an order of magnitude.",
+    "dense_vs_interactive": "Dense batch throughput is higher only at the uniform/high-entropy endpoint: 20,344.0 vs 16,827.1 ranges/s at H=11.994. As access concentrates, interactive overtakes dense between H=11.994 and H=7.995, and remains ahead at H=7.995, 4.002 and 2.001. No measured lower-entropy point has dense re-overtaking interactive."
+  }
+}
