@@ -31,7 +31,18 @@ for frame in [16384,65536,262144,2097152]:
  zfront.append(dict(frame_bytes=frame,ratio=z('zstd_frame_ratio')['value'],p50=z('zstd_frame_region_p50_ms')['value'],
    p99=z('zstd_frame_region_p99_ms')['value'],amplification=z('zstd_frame_amplification')['value'],
    full_decode=z('zstd_frame_full_decode_mb_s')['value'],full_status=z('zstd_frame_full_decode_mb_s')['status']))
-gpu=[r for r in rows if r.get('evidence_group')=='gpu-declared']
+gpu_source=json.loads((R/'evidence/aceapex-gpu-open-20260929/results.json').read_text())
+assert gpu_source['status']=='measured' and gpu_source['external_runner']=='Colab'
+gpu=[dict(
+    gpu=r['gpu'], corpus=r['corpus'], ace_commit=r['ace_commit'],
+    vram_gb=r['vram_mib']/1024, value=r['on_device_gb_s'],
+    delivered_gb_s=r['delivered_gb_s'], on_device_ms=r['on_device_ms'],
+    h2d_plus_decode_ms=r['h2d_plus_decode_ms'], check=r['check'],
+    status='measured — external runner: Colab',
+    source_log=r['source_log'],
+    driver=gpu_source['software']['driver'], cuda=gpu_source['software']['cuda'],
+    nvcomp=gpu_source['software']['nvcomp'])
+  for r in gpu_source['rows']]
 cg=[]
 for r in rows:
  if r.get('evidence_group')=='cg-five-point-v1':
