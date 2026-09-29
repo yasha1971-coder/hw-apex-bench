@@ -26,11 +26,15 @@ jobs:
           grep -Fq 'Measured on thirty frozen 2 MiB T2T-CHM13v2.0 windows' .pages/index.html
           grep -Fq 'ACEAPEX is written by the author of this benchmark.' .pages/index.html
           grep -Fq 'SeqBench' .pages/index.html
-          grep -Fq '35364484648' .pages/index.html
-          grep -Fq '0.276728' .pages/index.html
-          grep -Fq '0.223559' .pages/index.html
+          grep -Fq '36641590388' .pages/index.html
+          grep -Fq '0.068290' .pages/index.html
+          grep -Fq '0.211221' .pages/index.html
           grep -Fq '1.632%' .pages/index.html
+          grep -Fq '1.735%' .pages/index.html
           grep -Fq '6.569%' .pages/index.html
+          grep -Fq 'measured — external runner: Colab' .pages/index.html
+          grep -Fq '68.29' .pages/index.html
+          grep -Fq '118.15' .pages/index.html
           grep -Fq '12,369.7' .pages/index.html
           grep -Fq '869,088' .pages/index.html
           grep -Fq '467,998' .pages/index.html
@@ -69,11 +73,15 @@ jobs:
               if grep -Fq 'Measured on thirty frozen 2 MiB T2T-CHM13v2.0 windows' <<<"$html" \
                  && grep -Fq 'ACEAPEX is written by the author of this benchmark.' <<<"$html" \
                  && grep -Fq 'SeqBench' <<<"$html" \
-                 && grep -Fq '35364484648' <<<"$html" \
-                 && grep -Fq '0.276728' <<<"$html" \
-                 && grep -Fq '0.223559' <<<"$html" \
+                 && grep -Fq '36641590388' <<<"$html" \
+                 && grep -Fq '0.068290' <<<"$html" \
+                 && grep -Fq '0.211221' <<<"$html" \
                  && grep -Fq '1.632%' <<<"$html" \
+                 && grep -Fq '1.735%' <<<"$html" \
                  && grep -Fq '6.569%' <<<"$html" \
+                 && grep -Fq 'measured — external runner: Colab' <<<"$html" \
+                 && grep -Fq '68.29' <<<"$html" \
+                 && grep -Fq '118.15' <<<"$html" \
                  && grep -Fq '12,369.7' <<<"$html" \
                  && grep -Fq '869,088' <<<"$html" \
                  && grep -Fq '467,998' <<<"$html" \
