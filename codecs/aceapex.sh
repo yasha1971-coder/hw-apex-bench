@@ -1,64 +1,10 @@
 #!/usr/bin/env bash
 set -euo pipefail
-ACE_PROFILE=interactive
-# Resident-context proof: capabilities describe this executable path only.
-codec_supports() { echo 'ratio encode decode region amplification h_alpha batch c_g break_even'; }
-codec_unavailable() {
-  cat <<'JSON'
-{}
-JSON
-}
-codec_context_build() {
-  local root out
-  root="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.." && pwd)"
-  out="$1"
-  local a="${HB_ACEAPEX:?set HB_ACEAPEX to source exported from published 1b13df3}" z="${HB_ZSTD:?set HB_ZSTD}"
-  python3 "$root/harness/verify_context_sources.py" "$a"
-  gcc -O3 -std=gnu11 -fPIC -I"$root/harness" -I"$a/src" -c "$root/codecs/native/aceapex.c" -o "$out.o"
-  g++ -O3 -std=c++17 -fPIC -shared -pthread -I"$a/src" -I"$z/lib" \
-    "$out.o" "$a/src/aceapex_api.cpp" "$z/lib/libzstd.a" -o "$out"
-}
-source "${HB_ROOT:-$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.." && pwd)}/harness/check_common.sh"
-
-codec_configuration() { echo '{"profile": "interactive", "level": 2, "encoder_requested_threads": 1, "decoder_policy": "pinned native API defaults; no thread argument", "granularity": 16384, "lit_chunk": 65536, "fse_chunk": 4096, "min_match": 0, "reader_environment":{"ACEAPEX_BS":"16384","LIT_CHUNK":"65536","FSE_CHUNK":"4096","MIN_MATCH":"0"}}'; }
-codec_inputs() { python3 -c 'import json,sys;print(json.dumps(sys.argv[1:]))' "$HB_ROOT/codecs/native/aceapex.c" "$HB_ROOT/codecs/aceapex.sh" "$HB_ROOT/codecs/counters.py" "$HB_ROOT/harness/build_counters.py"; }
-codec_build_artifacts() { python3 -c 'import json,sys;print(json.dumps(sys.argv[1:]))' "$(codec_library)" "$(codec_counter_library)" "$HB_CHECK_WORK/counter-sources.json" "$HB_CHECK_WORK/aceapex-cli"; }
-codec_name() { echo "aceapex-$ACE_PROFILE"; }
-codec_version() { echo 'aceapex@1b13df34ac8e839dd3232b59bc59560d689a435a'; }
-codec_constraints() { echo '{"granularity":16384,"min_input_bytes":1,"min_input_reason":"pinned ACE CLI does not support empty input"}'; }
-codec_build() (
-  export HB_ZSTD="$HB_CHECK_WORK/deps/zstd"
-  hb_checkout https://github.com/facebook/zstd.git f8745da6ff1ad1e7bab384bd1f9d742439278e99 "$HB_ZSTD"
-  make -C "$HB_ZSTD/lib" -j"$HB_JOBS" libzstd.a CFLAGS='-O3 -fPIC'
-  export HB_ACEAPEX="$HB_CHECK_WORK/deps/aceapex"
-  hb_checkout https://github.com/yasha1971-coder/aceapex.git 1b13df34ac8e839dd3232b59bc59560d689a435a "$HB_ACEAPEX"
-  codec_context_build "$(codec_library)"
-  g++ -O3 -std=c++17 -pthread -I"$HB_ACEAPEX/src" -I"$HB_ZSTD/lib" "$HB_ACEAPEX/aceapex_depth.cpp" "$HB_ZSTD/lib/libzstd.a" -o "$HB_CHECK_WORK/aceapex-cli"
-  python3 "$HB_ROOT/codecs/counters.py" aceapex "$HB_CHECK_WORK"
-)
-codec_compress() {
-  [[ "$3" =~ ^[0-9]+$ && "$3" -ge 4096 && "$3" -le 4294967295 && -s "$1" ]] || { echo 'pinned interactive preset requires nonempty input and granularity >=4096' >&2; return 1; }
-  env -u LIT_CHUNK -u FSE_CHUNK -u MIN_MATCH ACEAPEX_BS="$3" "$HB_CHECK_WORK/aceapex-cli" c --in "$1" --out "$2" --threads 1 --level 2 --profile "$ACE_PROFILE"
-}
-codec_decompress() { "$HB_CHECK_WORK/aceapex-cli" d --in "$1" --out "$2" --profile "$ACE_PROFILE"; }
-
-codec_encode_command() { python3 -c 'import json,sys; b,i,o,g,profile=sys.argv[1:]; assert int(g)>=4096; print(json.dumps({"argv":[b,"c","--in",i,"--out",o,"--threads","1","--level","2","--profile",profile]}))' "$HB_CHECK_WORK/aceapex-cli" "$1" "$2" "$3" "$ACE_PROFILE"; }
-
-codec_counter_library() { echo "$HB_CHECK_WORK/counter-context.so"; }
-
-# Sourcing exposes functions without running the historical CLI dispatcher.
+ACE_REF=50723533be48a8d9ed42e4b0f9e1f9106ef169b7
+ACE_LABEL=aceapex-v2.1.0-interactive
+ACE_MODE=interactive
+ACE_VERSION=aceapex-v2.1.0@50723533be48a8d9ed42e4b0f9e1f9106ef169b7
+source "${HB_ROOT:-$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.." && pwd)}/review/aceapex_upgrade/adapter_common.sh"
 if [[ "${BASH_SOURCE[0]}" != "$0" ]]; then return 0; fi
 hb_entry "$@"
-if [[ "${1:-}" == context-build ]]; then codec_context_build "$2"; exit; fi
-if [[ "${1:-}" == supports ]]; then codec_supports; exit; fi
-if [[ "${1:-}" == unavailable ]]; then codec_unavailable; exit; fi
-case "$1" in
- build)
-  read -r -a cxx <<< "${CXX:-g++}"
-  "${cxx[@]}" -O3 -std=c++17 -pthread -I"$2/aceapex/src" -I"$2/zstd/lib" \
-    "$2/aceapex/aceapex_depth.cpp" "$2/zstd/lib/libzstd.a" -o "$2/aceapex-cli"
-  ;;
- compress) "$2/aceapex-cli" c --in "$3" --out "$4" --threads 1 --level 2 --profile "$5";;
- restore) "$2/aceapex-cli" d --in "$3" --out "$4" --profile "$5";;
- *) exit 2;;
-esac
+case "${1:-}" in supports) codec_supports;; unavailable) codec_unavailable;; esac
