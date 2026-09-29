@@ -25,9 +25,7 @@ When a genome, column store or cache stays compressed, a request reads only a pi
 
 ## Matched-g refresh: ACEAPEX v2.1.0 / main open vs BGZF — 2026-09-30
 
-Measured on thirty frozen 2 MiB T2T-CHM13v2.0 windows, not the chr1 snapshot below; ratios are not comparable between the two tables.
-
-ACEAPEX is written by the author of this benchmark. Its density advantage and its latency penalty are both reported below; the harness, corpora and raw samples are in the repository.
+Measured on thirty frozen 2 MiB T2T-CHM13v2.0 windows, not the chr1 snapshot below; ratios are not comparable between the two tables. ACEAPEX is written by the author of this benchmark. Its density advantage and its latency penalty are both reported below; the harness, corpora and raw samples are in the repository.
 
 Each cell is **ratio · p50 / p99 ms**.
 
