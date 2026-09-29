@@ -44,7 +44,7 @@ The modern rows use a persistent C99 decoder handle; the legacy row retains the 
 [ACEAPEX v2.1.0 / open refresh report →](docs/RESULTS/ACEAPEX_UPGRADE_20260930.md)  
 [GitHub Actions run 36641590388 →](https://github.com/yasha1971-coder/hw-apex-bench/actions/runs/36641590388) · [historical 2026-09-18 matched-g report →](docs/RESULTS/MATCHED_G_INTERACTIVE_20260918.md)
 
-**Independence cost at 16 KiB (separate chr1 `c_file(g)` scope):** ACEAPEX default @ ee5a37e costs **1.632%** versus **6.569%** for matched zstd-seekable; BGZF is **n/a** because no same-encoder whole-input baseline exists. [Scope and provenance →](docs/CG_SCOPES.md)
+**Independence cost at 16 KiB (separate full-chr1 `c_file(g)` scopes):** historical ACEAPEX default @ ee5a37e is **1.632%**; current main-open @ ec347787 is **1.735%**; matched zstd-seekable is **6.569%**. BGZF is **n/a** because no same-encoder whole-input baseline exists. These ACE values use different revisions/profiles and are shown as separate measured scopes, not as a one-variable profile delta. [Current refresh →](docs/RESULTS/ACEAPEX_UPGRADE_20260930.md) · [Scope definitions →](docs/CG_SCOPES.md)
 
 **Batch sweep scope (2026-09-19):** hg38 chr1, N=5000, 16 KiB ranges, workers=1, Actions run 35427975099.
 
