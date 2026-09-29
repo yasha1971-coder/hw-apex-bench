@@ -1,0 +1,31 @@
+{
+  "schema": "aceapex-upgrade-run-receipt-v1",
+  "date": "2026-09-30",
+  "pr": 60,
+  "repository": "yasha1971-coder/hw-apex-bench",
+  "source_branch": "upgrade/aceapex-v210-open",
+  "source_head_at_measurement": "eabea4dd6f8a33be147a55bb20f22e05ca1409bb",
+  "actions_checkout_commit": "a2c4fc73b0bdff4cb8adb1eeeea4974ea4cb5e80",
+  "actions_run_id": 36641590388,
+  "cpu_artifact": {
+    "id": 11066383397,
+    "name": "aceapex-v210-open-cpu-refresh",
+    "digest": "sha256:55c4e34f0728e8e6051a938a3bffd4375f6a9e74fa71461193e8f92f05e68314",
+    "status": "success"
+  },
+  "adapter_artifact": {
+    "id": 11066542803,
+    "name": "aceapex-modern-adapter-receipts",
+    "digest": "sha256:fdeb18f89903b7509dff0bbab7da551a5ff403604e159f138f2e38e0b3d105c4",
+    "status": "success"
+  },
+  "pins": {
+    "aceapex_v2_1_0": "50723533be48a8d9ed42e4b0f9e1f9106ef169b7",
+    "aceapex_main_open": "ec3477877e7ed3f9792885a1a8beb26e48f4b717",
+    "legacy_control": "1b13df34ac8e839dd3232b59bc59560d689a435a"
+  },
+  "judge": "all matched-g archives pass full byte-exact restore before timing; every region sample is byte-verified against its frozen window; c(g) archives also pass full byte-exact restore",
+  "workflow_state": "manual-only after the successful measurement so report/evidence synchronization cannot repeat the expensive run",
+  "historical_policy": "existing 1b13df3 publication is immutable; new same-run legacy values are retained only inside this refresh scope",
+  "gpu_policy": "measured GPU evidence is imported byte-for-byte from aceapex/results; hw-apex-bench performs no GPU rerun; status is external runner: Colab"
+}
