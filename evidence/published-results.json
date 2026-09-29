@@ -21,8 +21,8 @@
       "sha256": "cb52b8cb9fac484a6474d976681ea85ae2c052d80d820422b7f57c25ec938100"
     },
     "README.md": {
-      "bytes": 9924,
-      "sha256": "45156f7ab9cf69806f0d693336eb5d318ec639f2d869a9bf435306824d1d17c1"
+      "bytes": 10922,
+      "sha256": "559d67baa41e7ccd56b3cdc405b95ce18b3be76bfb0bb0744f83b3d3831b066e"
     },
     "docs/RESULTS/BATCH_RESULTS.md": {
       "bytes": 19250,
@@ -77,10 +77,24 @@
       "workflow_run_id": 34543023595,
       "artifact_id": 10178051601,
       "artifact_sha256_reported_by_github": "7b26a032aa21b7c39c599dc833494cfd7b186c4c26278d259faa6322f2d4566d"
+    },
+    {
+      "evidence_group": "aceapex-v210-open-refresh-v1",
+      "benchmark_branch": "upgrade/aceapex-v210-open",
+      "workflow_run_id": 36641590388,
+      "artifact_id": 11066383397,
+      "artifact_sha256_reported_by_github": "55c4e34f0728e8e6051a938a3bffd4375f6a9e74fa71461193e8f92f05e68314"
+    },
+    {
+      "evidence_group": "aceapex-open-gpu-colab-20260929",
+      "source_repository": "yasha1971-coder/aceapex",
+      "source_snapshot": "ec3477877e7ed3f9792885a1a8beb26e48f4b717",
+      "status": "measured — external runner: Colab",
+      "report": "docs/RESULTS/GPU_OPEN_20260929.md"
     }
   ],
   "rendering_revision": {
-    "scope": "first-screen dense conclusion corrected from access-entropy sweep; low-entropy batch reuse and loop-path loss documented; first-screen claims require scope/date and multi-point evidence",
+    "scope": "current first-screen ACEAPEX v2.1.0/main-open matched-g refresh and open c(g); current GPU presentation uses measured external Colab evidence; historical results.jsonl unchanged",
     "measurement_bytes_changed": false,
     "results_sha256": "cb52b8cb9fac484a6474d976681ea85ae2c052d80d820422b7f57c25ec938100"
   },

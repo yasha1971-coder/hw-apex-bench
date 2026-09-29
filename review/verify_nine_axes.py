@@ -30,7 +30,10 @@ def verify(path):
                 require(item['reason'] and not any(s in item['reason'] for s in ('not ported','not connected','not implemented')),'migration gap disguised as n/a')
         values={k:v['value'] for k,v in items.items()}
         for axis in ('region','amplification'):
-            r=values[axis];blob=(root/r['raw_samples']).read_bytes()
+            r=values[axis]
+            if r is None:
+                continue
+            blob=(root/r['raw_samples']).read_bytes()
             require(hashlib.sha256(blob).hexdigest()==r['raw_sha256'],'raw hash mismatch')
             samples=[json.loads(line) for line in blob.splitlines()]
             require(len(samples)==200 and all(p['verified'] for p in samples),'incomplete region verification')

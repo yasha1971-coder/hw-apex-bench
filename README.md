@@ -6,26 +6,26 @@ When a genome, column store or cache stays compressed, a request reads only a pi
 
 [lzbench](https://github.com/inikep/lzbench) and [TurboBench](https://github.com/powturbo/TurboBench) rank compressors by density and bulk throughput; [SeqBench](https://dl.acm.org/doi/10.1145/3698587.3701386) covers sequence compression; per-format seekable readers exist for gzip ([rapidgzip](https://pypi.org/project/rapidgzip/)), zstd ([zstdra](https://github.com/derijkp/zstdra), [seekable-zstd](https://github.com/3leaps/seekable-zstd)) and BGZF ([htslib bgzip](https://www.htslib.org/doc/bgzip.html)). None of them compares the cost of reading one region across formats at matched block sizes. That is what this measures.
 
-## Matched-g: interactive ACEAPEX vs BGZF
+## Matched-g refresh: ACEAPEX v2.1.0 / main open vs BGZF — 2026-09-30
 
-Measured on thirty frozen 2 MiB T2T-CHM13v2.0 windows, not the chr1 snapshot above; ratios are not comparable between the two tables.
+Measured on thirty frozen 2 MiB T2T-CHM13v2.0 windows, not the chr1 snapshot below; ratios are not comparable between the two tables. ACEAPEX is written by the author of this benchmark. Its density advantage and its latency penalty are both reported below; the harness, corpora and raw samples are in the repository.
 
-ACEAPEX is written by the author of this benchmark. Its density advantage and its latency penalty are both reported below; the harness, corpora and raw samples are in the repository.
+Each cell is **ratio · p50 / p99 ms**.
 
-| exact g | ACE ratio | BGZF ratio | ACE p50 ms | BGZF p50 ms | ACE p99 ms | BGZF p99 ms |
-|---:|---:|---:|---:|---:|---:|---:|
-| 4 KiB | 4.682708 | 3.794020 | 0.129884 | 0.053380 | 0.276728 | 0.073939 |
-| 8 KiB | 5.010591 | 4.139526 | 0.135144 | 0.053901 | 0.265508 | 0.077826 |
-| 16 KiB | 5.219838 | 4.406650 | 0.136646 | 0.063028 | 0.261129 | 0.090670 |
-| 32 KiB | 5.344308 | 4.643726 | 0.151254 | 0.058850 | 0.280375 | 0.135283 |
-| 65,280 B | 5.412621 | 4.810834 | 0.173986 | 0.100158 | 0.396223 | 0.223559 |
+| exact g | BGZF | ACE 1b13df3 legacy | ACE v2.1.0 interactive | ACE main open |
+|---:|---:|---:|---:|---:|
+| 4 KiB | 3.794020 · 0.052949 / 0.067827 | 4.682708 · 0.136184 / 0.269816 | 4.682708 · 0.068290 / 0.135201 | 4.455378 · 0.211221 / 0.458329 |
+| 8 KiB | 4.139526 · 0.054550 / 0.071012 | 5.010591 · 0.141694 / 0.263842 | 5.010591 · 0.067162 / 0.139417 | 4.879676 · 0.153141 / 0.467160 |
+| 16 KiB | 4.406650 · 0.065482 / 0.083762 | 5.219838 · 0.143850 / 0.272584 | 5.219838 · 0.074632 / 0.149201 | 5.148826 · 0.176257 / 0.482423 |
+| 32 KiB | 4.643726 · 0.062581 / 0.142081 | 5.344308 · 0.156778 / 0.303165 | 5.344308 · 0.083464 / 0.180311 | 5.307601 · 0.216979 / 0.529897 |
+| 65,280 B | 4.810834 · 0.108651 / 0.244448 | 5.412621 · 0.210062 / 0.438012 | 5.412621 · 0.124668 / 0.277486 | 5.395254 · 0.271045 / 0.757243 |
 
-ACEAPEX uses the interactive profile (`LIT_CHUNK=64 KiB`, `FSE_CHUNK=4 KiB`) at every point. Both codecs were measured on the same runner, frozen corpus and resident 16 KiB request trace.
+The modern rows use a persistent C99 decoder handle; the legacy row retains the historical one-shot path as a same-run control. v2.1.0 interactive cuts legacy p50 by 40.7–52.6% and leaves only a 9.2–20.9 µs p50 gap to BGZF. Main open does **not** remove that remainder: it is slower than v2.1.0 interactive at all 5 points and is also less dense at all 5 points.
 
-[Matched-g interactive report →](docs/RESULTS/MATCHED_G_INTERACTIVE_20260918.md)  
-[GitHub Actions run 35364484648 →](https://github.com/yasha1971-coder/hw-apex-bench/actions/runs/35364484648)
+[ACEAPEX v2.1.0 / open refresh report →](docs/RESULTS/ACEAPEX_UPGRADE_20260930.md)  
+[GitHub Actions run 36641590388 →](https://github.com/yasha1971-coder/hw-apex-bench/actions/runs/36641590388) · [historical 2026-09-18 matched-g report →](docs/RESULTS/MATCHED_G_INTERACTIVE_20260918.md)
 
-**Independence cost at 16 KiB (separate chr1 `c_file(g)` scope):** ACEAPEX default @ ee5a37e costs **1.632%** versus **6.569%** for matched zstd-seekable; BGZF is **n/a** because no same-encoder whole-input baseline exists. [Scope and provenance →](docs/CG_SCOPES.md)
+**Independence cost at 16 KiB (separate full-chr1 `c_file(g)` scopes):** historical ACEAPEX default @ ee5a37e is **1.632%**; current main-open @ ec347787 is **1.735%**; matched zstd-seekable is **6.569%**. BGZF is **n/a** because no same-encoder whole-input baseline exists. These ACE values use different revisions/profiles and are shown as separate measured scopes, not as a one-variable profile delta. [Current refresh →](docs/RESULTS/ACEAPEX_UPGRADE_20260930.md) · [Scope definitions →](docs/CG_SCOPES.md)
 
 **Batch sweep scope (2026-09-19):** hg38 chr1, N=5000, 16 KiB ranges, workers=1, Actions run 35427975099.
 
@@ -123,7 +123,7 @@ The full migration comparison and untimed BGZF closure remain distinct receipts.
 Their deterministic checks do not assert byte-identical timing on different hosts.
 The strict c(g) run uses its own baseline and configuration; do not splice it
 into the interactive/dense CPU rows as though it were the same experiment.
-GPU observations remain separately labelled owner-declared evidence.
+Current open-profile GPU rows are measured external Colab evidence with retained logs; older owner-declared GPU observations remain historical.
 
 The Pages explorer selects only measured profile points, without interpolation.
 Unavailable comparisons stay visible with their reasons.

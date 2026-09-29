@@ -1,0 +1,204 @@
+{
+  "schema": "aceapex-upgrade-20260930-v1",
+  "date": "2026-09-30",
+  "status": "measured",
+  "source": {
+    "actions_run_id": 36641590388,
+    "artifact_id": 11066383397,
+    "artifact_digest": "sha256:55c4e34f0728e8e6051a938a3bffd4375f6a9e74fa71461193e8f92f05e68314",
+    "branch_head": "eabea4dd6f8a33be147a55bb20f22e05ca1409bb",
+    "actions_checkout_commit": "a2c4fc73b0bdff4cb8adb1eeeea4974ea4cb5e80"
+  },
+  "host": {
+    "platform": "Linux-6.17.0-1022-azure-x86_64-with-glibc2.39",
+    "cpu": "INTEL(R) XEON(R) PLATINUM 8573C",
+    "vcpus": 4,
+    "timed_cpu": 0
+  },
+  "pins": {
+    "legacy": "1b13df34ac8e839dd3232b59bc59560d689a435a",
+    "v2_1_0": "50723533be48a8d9ed42e4b0f9e1f9106ef169b7",
+    "main_open": "ec3477877e7ed3f9792885a1a8beb26e48f4b717",
+    "zstd": "f8745da6ff1ad1e7bab384bd1f9d742439278e99",
+    "htslib": "8f7231035d0409d525767c66d9f49f1f967ee1df",
+    "libdeflate": "dd12ff2b36d603dbb7fa8838fe7e7176fcbd4f6f"
+  },
+  "matched_g": {
+    "corpus": "30 frozen T2T-CHM13v2.0 windows x 2 MiB",
+    "request_bytes": 16384,
+    "passes": 3,
+    "samples_per_codec_per_g": 18000,
+    "archives_verified": 600,
+    "modern_reader": "persistent C99 aceapex_dec_open/region/close handle",
+    "legacy_reader": "historical one-shot C++ aceapex_decompress_region",
+    "rows": [
+      {
+        "g": 4096,
+        "bgzf": {
+          "ratio": 3.79402,
+          "p50_ms": 0.052949,
+          "p99_ms": 0.067827
+        },
+        "legacy": {
+          "ratio": 4.682708,
+          "p50_ms": 0.136184,
+          "p99_ms": 0.269816
+        },
+        "v210": {
+          "ratio": 4.682708,
+          "p50_ms": 0.06829,
+          "p99_ms": 0.135201
+        },
+        "open": {
+          "ratio": 4.455378,
+          "p50_ms": 0.211221,
+          "p99_ms": 0.458329
+        }
+      },
+      {
+        "g": 8192,
+        "bgzf": {
+          "ratio": 4.139526,
+          "p50_ms": 0.05455,
+          "p99_ms": 0.071012
+        },
+        "legacy": {
+          "ratio": 5.010591,
+          "p50_ms": 0.141694,
+          "p99_ms": 0.263842
+        },
+        "v210": {
+          "ratio": 5.010591,
+          "p50_ms": 0.067162,
+          "p99_ms": 0.139417
+        },
+        "open": {
+          "ratio": 4.879676,
+          "p50_ms": 0.153141,
+          "p99_ms": 0.46716
+        }
+      },
+      {
+        "g": 16384,
+        "bgzf": {
+          "ratio": 4.40665,
+          "p50_ms": 0.065482,
+          "p99_ms": 0.083762
+        },
+        "legacy": {
+          "ratio": 5.219838,
+          "p50_ms": 0.14385,
+          "p99_ms": 0.272584
+        },
+        "v210": {
+          "ratio": 5.219838,
+          "p50_ms": 0.074632,
+          "p99_ms": 0.149201
+        },
+        "open": {
+          "ratio": 5.148826,
+          "p50_ms": 0.176257,
+          "p99_ms": 0.482423
+        }
+      },
+      {
+        "g": 32768,
+        "bgzf": {
+          "ratio": 4.643726,
+          "p50_ms": 0.062581,
+          "p99_ms": 0.142081
+        },
+        "legacy": {
+          "ratio": 5.344308,
+          "p50_ms": 0.156778,
+          "p99_ms": 0.303165
+        },
+        "v210": {
+          "ratio": 5.344308,
+          "p50_ms": 0.083464,
+          "p99_ms": 0.180311
+        },
+        "open": {
+          "ratio": 5.307601,
+          "p50_ms": 0.216979,
+          "p99_ms": 0.529897
+        }
+      },
+      {
+        "g": 65280,
+        "bgzf": {
+          "ratio": 4.810834,
+          "p50_ms": 0.108651,
+          "p99_ms": 0.244448
+        },
+        "legacy": {
+          "ratio": 5.412621,
+          "p50_ms": 0.210062,
+          "p99_ms": 0.438012
+        },
+        "v210": {
+          "ratio": 5.412621,
+          "p50_ms": 0.124668,
+          "p99_ms": 0.277486
+        },
+        "open": {
+          "ratio": 5.395254,
+          "p50_ms": 0.271045,
+          "p99_ms": 0.757243
+        }
+      }
+    ],
+    "derived": {
+      "v210_vs_legacy_p50_reduction_pct": [
+        49.8546,
+        52.6007,
+        48.1182,
+        46.7629,
+        40.6518
+      ],
+      "v210_p50_gap_over_bgzip_us": [
+        15.341,
+        12.612,
+        9.15,
+        20.883,
+        16.017
+      ],
+      "open_minus_v210_p50_us": [
+        142.931,
+        85.979,
+        101.625,
+        133.515,
+        146.377
+      ],
+      "conclusion": "v2.1.0 persistent interactive reduces the legacy one-shot p50 by 40.65–52.60% and narrows the same-run BGZF p50 gap to 9.15–20.88 us. main-open is slower than v2.1.0 interactive at all five matched-g points, adding 85.98–146.38 us p50; it does not reduce the residual constant region latency in this implementation."
+    }
+  },
+  "open_cg": {
+    "scope": "full hg38 chr1, c_file(16 KiB), main-open only",
+    "input_bytes": 253935557,
+    "input_md5": "9465e0f0df6e2c6eb39729c39cee5465",
+    "g16k": {
+      "archive_bytes": 68998725,
+      "ratio": 3.680293469190916,
+      "sha256": "70f3c0db254e61a5c0c1bc7d386a8a6bf158f1ab76ebc5a2a533005468e643eb"
+    },
+    "whole": {
+      "archive_bytes": 67801892,
+      "ratio": 3.7452576839596157,
+      "sha256": "0ef62723db7f5a273a44a20428778411489a5b0a9bec5061d9a92d758e4d322a"
+    },
+    "c_g_percent": 1.7345726315957322,
+    "historical_default_reference": {
+      "value_percent": 1.632267,
+      "revision": "ee5a37e",
+      "scope": "separate strict historical experiment; retained unchanged"
+    },
+    "delta_vs_historical_default_percentage_points": 0.10230563159573225
+  },
+  "correctness": {
+    "matched_g_archives": "600/600 full byte-exact restores before timing",
+    "region_samples": "360,000 verified timed requests total",
+    "open_cg": "both archives full byte-exact restored"
+  },
+  "note": "Historical published 1b13df3 results are not rewritten; the legacy row above is a same-run control in this new evidence scope."
+}

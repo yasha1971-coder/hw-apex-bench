@@ -57,7 +57,7 @@ tracer=shlex.join([sys.executable,str(ROOT/"harness/compiler_trace.py"),"--real"
 build_env=os.environ.copy()
 build_env.update(CABENCH_COMPILE_TRACE=str(compile_trace),CC=tracer+" gcc",CXX=tracer+" g++")
 run(["bash","codecs/zstd_seekable.sh","build",D,jobs],env=build_env)
-run(["bash","codecs/aceapex.sh","build",D],env=build_env)
+run(["bash","codecs/aceapex_legacy.sh","build",D],env=build_env)
 source_spec=D/"source-spec.json"
 source_spec.write_text(json.dumps({"codecs":[
     {"codec":"zstd-seekable","repository_root":str(z),"expected_commit":zsha,
@@ -109,8 +109,8 @@ for codec in CODECS:
     else:
         profile=config["profile"]
         arc=D/("chr1-"+profile+".aet")
-        run(["bash","codecs/aceapex.sh","compress",D,fa,arc,profile])
-        dec=["bash","codecs/aceapex.sh","restore",D,arc,D/"restore.fa",profile]
+        run(["bash","codecs/aceapex_legacy.sh","compress",D,fa,arc,profile])
+        dec=["bash","codecs/aceapex_legacy.sh","restore",D,arc,D/"restore.fa",profile]
         sidecars=[]
     restored=D/"restore.fa"
     if codec.startswith("aceapex-"): run(dec)
