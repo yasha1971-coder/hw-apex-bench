@@ -1,12 +1,13 @@
 # Release, support and evidence status
 
-Status checked on 2026-09-18. Start with [Getting started](GETTING_STARTED.md).
+Status checked on 2026-09-30. Start with [Getting started](GETTING_STARTED.md).
 
 | Item | What a visitor can rely on |
 |---|---|
 | Published software | [v0.1](https://github.com/yasha1971-coder/hw-apex-bench/releases/tag/v0.1); source release, not an installer |
 | Citation | DOI 10.5281/zenodo.22713364 is recorded for v0.1; no new version DOI is claimed |
-| Current main | Includes later documentation, corpus checks and reviewed T2T density studies; not identical to the v0.1 tag |
+| Current main | Includes later documentation, reviewed T2T studies, the ACEAPEX v2.1.0/current-open refresh and measured external-Colab GPU evidence; not identical to the v0.1 tag |
+| Current ACEAPEX adapter | `codecs/aceapex.sh` pins v2.1.0 (`50723533…`); `codecs/aceapex_open.sh` pins main-open (`ec347787…`); legacy `1b13df3` remains historical |
 | Historical homepage | 435 frozen records; primary plot is chr1, three formats/four configurations, resident reads on its recorded host |
 | Fourth format | XZ has an adapter and correctness evidence; it is not a missing or estimated row in the historical table |
 | T2T density | [Regional](RESULTS/T2T_REGIONS_20260916.md), [granularity](RESULTS/T2T_GRANULARITY_20260916.md) and [scope definitions](CG_SCOPES.md); selected equal-sized windows, not a whole-genome curve |
