@@ -1,0 +1,149 @@
+{
+  "schema": "aceapex-gpu-open-colab-v1",
+  "date": "2026-09-29",
+  "status": "measured",
+  "external_runner": "Colab",
+  "source_repository": "yasha1971-coder/aceapex",
+  "source_snapshot": "ec3477877e7ed3f9792885a1a8beb26e48f4b717",
+  "software": {
+    "driver": "580.82.07",
+    "cuda": "12.8",
+    "nvcomp": "5.3.0.16",
+    "libzstd": "1.5.5"
+  },
+  "axes": {
+    "full_decode": "measured",
+    "region_seek": "n/a — not measured by imported Colab open-profile logs"
+  },
+  "corpora": {
+    "chr1": {
+      "bytes": 253935557,
+      "md5": "9465e0f0df6e2c6eb39729c39cee5465"
+    },
+    "t2t": {
+      "bytes": 3156259565,
+      "md5": "cd1e52ce400c027ed0b7ab4b9d613f5a",
+      "accession": "GCA_009914755.4"
+    }
+  },
+  "rows": [
+    {
+      "gpu": "Tesla T4",
+      "cc": "7.5",
+      "vram_mib": 15360,
+      "corpus": "chr1",
+      "ace_commit": "907a4705d822c1f62ec3e7d27e70889611f7338f",
+      "archive_bytes": 67975888,
+      "on_device_ms": 20.512,
+      "on_device_gb_s": 12.38,
+      "h2d_plus_decode_ms": 25.94,
+      "delivered_gb_s": 9.79,
+      "auto_pipeline_ms": null,
+      "check": "bit-perfect",
+      "source_log": "source/colab-2026-09-29-t4-gpu-open.log",
+      "source_blob_sha": "71c273e09cf0c7c685964e05da40644e63b440b9"
+    },
+    {
+      "gpu": "NVIDIA L4",
+      "cc": "8.9",
+      "vram_mib": 23034,
+      "corpus": "chr1",
+      "ace_commit": "6c25962fc37ceea87087c59fa1f223230c66e7cc",
+      "archive_bytes": 67975888,
+      "on_device_ms": 10.141,
+      "on_device_gb_s": 25.04,
+      "h2d_plus_decode_ms": 15.573,
+      "delivered_gb_s": 16.31,
+      "auto_pipeline_ms": null,
+      "check": "bit-perfect",
+      "source_log": "source/colab-2026-09-29-l4-gpu-open.log",
+      "source_blob_sha": "9045cc12a375298800ce08aa1fb0494a681dece7"
+    },
+    {
+      "gpu": "NVIDIA A100-SXM4-40GB",
+      "cc": "8.0",
+      "vram_mib": 40960,
+      "corpus": "chr1",
+      "ace_commit": "907a4705d822c1f62ec3e7d27e70889611f7338f",
+      "archive_bytes": 67975888,
+      "on_device_ms": 6.17,
+      "on_device_gb_s": 41.15,
+      "h2d_plus_decode_ms": 11.59,
+      "delivered_gb_s": 21.91,
+      "auto_pipeline_ms": null,
+      "check": "bit-perfect",
+      "source_log": "source/colab-2026-09-29-a100-sxm4-40gb-gpu-open.log",
+      "source_blob_sha": "816d0bf00d6fca2a546f2e98e172dbc244664ba6"
+    },
+    {
+      "gpu": "NVIDIA A100-SXM4-80GB",
+      "cc": "8.0",
+      "vram_mib": 81920,
+      "corpus": "chr1",
+      "ace_commit": "5d9786a58975504961fbce7361c660d8ae45839b",
+      "archive_bytes": 67975888,
+      "on_device_ms": 6.09,
+      "on_device_gb_s": 41.69,
+      "h2d_plus_decode_ms": 11.509,
+      "delivered_gb_s": 22.06,
+      "auto_pipeline_ms": null,
+      "check": "bit-perfect",
+      "source_log": "source/colab-2026-09-29-a100-sxm4-80gb-gpu-open.log",
+      "source_blob_sha": "6e2a802e97081c0c9df835f1003e3d011371d4f4"
+    },
+    {
+      "gpu": "NVIDIA RTX PRO 6000 Blackwell Server Edition",
+      "cc": "12.0",
+      "vram_mib": 97887,
+      "corpus": "chr1",
+      "ace_commit": "907a4705d822c1f62ec3e7d27e70889611f7338f",
+      "archive_bytes": 67975888,
+      "on_device_ms": 3.719,
+      "on_device_gb_s": 68.29,
+      "h2d_plus_decode_ms": 4.897,
+      "delivered_gb_s": 51.86,
+      "auto_pipeline_ms": null,
+      "check": "bit-perfect",
+      "source_log": "source/colab-2026-09-29-rtx-pro-6000-blackwell-server-edition-gpu-open.log",
+      "source_blob_sha": "1c019f75717df9e46f1171512bba93a808346245"
+    },
+    {
+      "gpu": "NVIDIA A100-SXM4-80GB",
+      "cc": "8.0",
+      "vram_mib": 81920,
+      "corpus": "t2t",
+      "ace_commit": "5d9786a58975504961fbce7361c660d8ae45839b",
+      "archive_bytes": 887641942,
+      "on_device_ms": 52.283,
+      "on_device_gb_s": 60.37,
+      "h2d_plus_decode_ms": 123.011,
+      "delivered_gb_s": 25.66,
+      "auto_pipeline_ms": null,
+      "check": "bit-perfect",
+      "source_log": "source/colab-2026-09-29-a100-sxm4-80gb-gpu-open.log",
+      "source_blob_sha": "6e2a802e97081c0c9df835f1003e3d011371d4f4"
+    },
+    {
+      "gpu": "NVIDIA RTX PRO 6000 Blackwell Server Edition",
+      "cc": "12.0",
+      "vram_mib": 97887,
+      "corpus": "t2t",
+      "ace_commit": "51c9655bbd5be41fe29f107c9cb957fed1a06b54",
+      "archive_bytes": 887641942,
+      "on_device_ms": 26.713,
+      "on_device_gb_s": 118.15,
+      "h2d_plus_decode_ms": 42.071,
+      "delivered_gb_s": 75.02,
+      "auto_pipeline_ms": 33.353,
+      "auto_pipeline_delivered_gb_s": 94.63,
+      "check": "bit-perfect",
+      "source_log": "source/colab-2026-09-29-rtx-pro-6000-blackwell-dense-open.log",
+      "source_blob_sha": "45f991a4434a6a4f0c886b94a3cfa8670c4b3570"
+    }
+  ],
+  "source_table": {
+    "path": "source/gpu-open-table.md",
+    "source_blob_sha": "79fc3969bf9d91a3ce0b1c993c7a190d8a78ac2e"
+  },
+  "note": "T4, L4, A100-40GB and Blackwell open-profile base logs skipped T2T because the corpus was absent on those Colab sessions. T2T measured rows exist for A100-80GB and the later Blackwell session. No missing GPU/corpus pair is synthesized."
+}
