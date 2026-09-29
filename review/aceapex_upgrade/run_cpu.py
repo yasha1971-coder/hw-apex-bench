@@ -113,6 +113,16 @@ def matched_g(a):
                     "sidecar_sha256":sha(side) if side else None,"geometry":geometry,
                     "encode_command":[str(x) for x in cmd],"bit_perfect":True
                 })
+        # Profile-identity gate: open must produce a distinct archive representation.
+        # This catches accidentally building a legacy CLI that ignores AX_PROFILE.
+        pairs=[]
+        for w in windows:
+            v=next(x for x in configs if x["window"]==w["file"] and x["codec"]=="ace-v210")
+            o=next(x for x in configs if x["window"]==w["file"] and x["codec"]=="ace-open")
+            pairs.append(v["archive_sha256"] != o["archive_sha256"])
+        if not any(pairs):
+            raise AssertionError("AX_PROFILE=open produced no archive difference from v2.1 interactive")
+
         lat={c:[] for c in CODECS}
         for pass_id in range(3):
             order=list(range(len(configs)));random.Random(20260930+g+pass_id).shuffle(order)
