@@ -137,7 +137,7 @@ The full migration comparison and untimed BGZF closure remain distinct receipts.
 Their deterministic checks do not assert byte-identical timing on different hosts.
 The strict c(g) run uses its own baseline and configuration; do not splice it
 into the interactive/dense CPU rows as though it were the same experiment.
-GPU observations remain separately labelled owner-declared evidence.
+Current open-profile GPU rows are measured external Colab evidence with retained logs; older owner-declared GPU observations remain historical.
 
 The Pages explorer selects only measured profile points, without interpolation.
 Unavailable comparisons stay visible with their reasons.
