@@ -1,15 +1,7 @@
 name: ACEAPEX v2.1.0 and open refresh
+# Manual-only after verified CPU refresh run 36641590388.
+# PR synchronization must not repeat the 600-archive / 360,000-region measurement.
 on:
-  pull_request:
-    paths:
-      - 'codecs/aceapex_v210.sh'
-      - 'codecs/aceapex_open.sh'
-      - 'codecs/aceapex_modern_common.sh'
-      - 'codecs/native/aceapex_persistent.c'
-      - 'review/aceapex_upgrade/**'
-      - 'evidence/aceapex-gpu-open-20260929/**'
-      - 'docs/RESULTS/GPU_OPEN_20260929.md'
-      - '.github/workflows/aceapex-upgrade.yml'
   workflow_dispatch:
 permissions:
   contents: read
