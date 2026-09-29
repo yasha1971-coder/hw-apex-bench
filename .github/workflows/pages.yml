@@ -32,7 +32,7 @@ jobs:
           grep -Fq '1.632%' .pages/index.html
           grep -Fq '1.735%' .pages/index.html
           grep -Fq '6.569%' .pages/index.html
-          grep -Fq 'measured — external runner: Colab' .pages/index.html
+          grep -Fq 'GPU rows are measured on external Colab runners' .pages/index.html
           grep -Fq '68.29' .pages/index.html
           grep -Fq '118.15' .pages/index.html
           grep -Fq '12,369.7' .pages/index.html
@@ -79,7 +79,7 @@ jobs:
                  && grep -Fq '1.632%' <<<"$html" \
                  && grep -Fq '1.735%' <<<"$html" \
                  && grep -Fq '6.569%' <<<"$html" \
-                 && grep -Fq 'measured — external runner: Colab' <<<"$html" \
+                 && grep -Fq 'GPU rows are measured on external Colab runners' <<<"$html" \
                  && grep -Fq '68.29' <<<"$html" \
                  && grep -Fq '118.15' <<<"$html" \
                  && grep -Fq '12,369.7' <<<"$html" \
