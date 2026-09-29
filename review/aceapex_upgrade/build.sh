@@ -24,8 +24,13 @@ checkout ace-legacy "$LEGACY"
 checkout ace-v210 "$V210"
 checkout ace-open "$OPEN"
 
-for v in legacy v210 open; do
-  g++ -O3 -std=c++17 -pthread -I"$work/ace-$v/src" -I"$work/zstd/lib"     "$work/ace-$v/aceapex_depth.cpp" "$work/zstd/lib/libzstd.a" -o "$out/ace-$v"
+# Preserve the historical legacy encoder path. Modern revisions use the
+# canonical upstream CLI translation unit named by CMakeLists.txt and README.
+g++ -O3 -std=c++17 -pthread -I"$work/ace-legacy/src" -I"$work/zstd/lib" \
+  "$work/ace-legacy/aceapex_depth.cpp" "$work/zstd/lib/libzstd.a" -o "$out/ace-legacy"
+for v in v210 open; do
+  g++ -O3 -std=c++17 -pthread -I"$work/ace-$v/src" -I"$work/zstd/lib" \
+    "$work/ace-$v/src/aceapex_main.cpp" "$work/zstd/lib/libzstd.a" -o "$out/ace-$v"
 done
 
 gcc -O3 -std=c11 -I"$root/harness" "$root/harness/native_measure.c" -ldl -o "$out/native_measure"
