@@ -23,12 +23,16 @@ configuration, same-run baseline ratio or explicit reason, and qualification has
 The sample schema has evolved; historical PR #25 ZIP audit applies to its four-axis
 artifacts. Use `python3 review/verify_nine_axes.py RUN/manifest.json` for full axes.
 
-ACEAPEX reader_environment is necessary sideband configuration at pinned 1b13.
-In particular full decode uses FSE_CHUNK: omitting the published 4096 value can
-silently appear correct below a chunk boundary, then fail on larger inputs.
-The correctness fixture now grows to 16 copies to cross that boundary. Environment
-parameters are fingerprinted, restored after in-process operations, passed to native
-workers and included in reproduction commands. No upstream decoder was changed.
+The current `codecs/aceapex.sh` pins ACEAPEX v2.1.0 at
+`50723533be48a8d9ed42e4b0f9e1f9106ef169b7` and uses its persistent C99 decoder
+handle. The current open adapter pins main at
+`ec3477877e7ed3f9792885a1a8beb26e48f4b717` and encodes with `AX_PROFILE=open`.
+The old 1b13df3 adapter is retained separately as `codecs/aceapex_legacy.sh` for
+historical replay, and the historical dense adapter still sources that legacy path.
+Modern archives record the FSE chunk geometry used by the decoder; qualification
+fingerprints exact source pins, configuration and binaries. The modern adapter
+currently marks amplification n/a until its counter path is wired, and its new
+c(g) result is retained in the separate 2026-09-30 refresh evidence.
 
 `codec_encode_command` returns JSON argv plus optional stdout_archive/produced
 fields, so the generic runner never times shell adapter setup or invents encoder
@@ -124,8 +128,10 @@ frame size. Each adapter declares its configuration and constraints.
 Open receives resident bytes plus an optional sidecar path. ABI 2 discovers the
 original size from archive metadata; it does not need the uncompressed original.
 `hc_size` exposes that size. An optional expected size can be checked at open.
-ACEAPEX still parses its header inside every region API call; no caching
-optimization or upstream source change is included.
+Current v2.1.0/open ACEAPEX adapters open one persistent
+`aceapex_dec_open` handle per benchmark context; header/chunk-table parsing and
+per-stream ZSTD_DCtx allocation occur outside region timing and the handle is reused.
+The historical 1b13df3 adapter retains its one-shot region API and per-call lifecycle.
 
 Index preparation is outside the measurement timer. Lookup, decompression and copying
 are inside the native region callback. The shell bridge and Python ctypes probe
@@ -147,7 +153,12 @@ separate from the published historical table.
 
 ## Dependency scope
 
-- ACEAPEX: 1b13df34ac8e839dd3232b59bc59560d689a435a, interactive preset.
+- ACEAPEX current interactive adapter: v2.1.0,
+  `50723533be48a8d9ed42e4b0f9e1f9106ef169b7`, persistent C99 decoder.
+- ACEAPEX current open adapter: main snapshot
+  `ec3477877e7ed3f9792885a1a8beb26e48f4b717`, `AX_PROFILE=open`.
+- ACEAPEX historical control: `1b13df34ac8e839dd3232b59bc59560d689a435a`,
+  retained in `aceapex_legacy.sh`; historical dense evidence remains on that line.
 - zstd: f8745da6ff1ad1e7bab384bd1f9d742439278e99 (1.5.7).
 - HTSlib: 4b705e4fada8ee2b6b15746f725ee8ac51631803 (1.24), pinned submodules,
   explicit --with-libdeflate configuration, with libdeflate1.19 pinned at
@@ -233,11 +244,12 @@ serialized candidate results.jsonl and retained raw files.
 
 The C worker loads the same ABI-2 context libraries checked by `--check`, without
 codec-name branches. Archive loading, index preparation and output allocation are
-outside timing. Region timing covers the native context callback, including its
-bounds checks and the existing decoder API; it excludes process launch, Python,
-verification and serialization. ACEAPEX still parses its header inside each API
-call. This callback boundary is recorded explicitly; no claim of instruction-level
-identity to the older directly linked timing calls is made.
+outside timing. Region timing covers the native context callback, including its bounds checks and
+decoder work; it excludes process launch, Python, verification and serialization.
+The current ACEAPEX v2.1/open context reuses a persistent decoder handle, while the
+legacy 1b13df3 context intentionally preserves the old one-shot call. This callback
+boundary is recorded explicitly; no claim of instruction-level identity to older
+directly linked timing calls is made.
 
 The region workload retains 12 warmups, seed 20260909, 200 reads of 16 KiB and the
 historical LCG sequence. Full decode retains one warmup and five samples. Every
