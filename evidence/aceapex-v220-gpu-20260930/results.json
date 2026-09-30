@@ -1,0 +1,78 @@
+{
+  "schema": "aceapex-v220-gpu-blackwell-colab-v1",
+  "date": "2026-09-30",
+  "status": "measured",
+  "external_runner": "Colab",
+  "gpu": "NVIDIA RTX PRO 6000 Blackwell Server Edition",
+  "source_ace_commit": "27b61b1430715e47848cea6d54a333b2f1642334",
+  "aceapex_release": "v2.2.0",
+  "aceapex_tag_sha": "0a143cd64b35a802835f18c361f981968edf25a1",
+  "libzstd": "1.5.5",
+  "block_bytes": 16384,
+  "literal_chunk_bytes": 65536,
+  "statistic": "median of 3",
+  "correctness": "every row bit-perfect; FNV of GPU output equals original",
+  "source_repository": "yasha1971-coder/aceapex",
+  "source_files": [
+    {
+      "path": "release/v2.2.0.md",
+      "blob_sha": "4a399f43d759fc9ee29fccdf6c509bd3719347cd"
+    },
+    {
+      "path": "CHANGELOG.md",
+      "blob_sha": "266426e1504d737b380b5ed0e50b23eede62774f"
+    },
+    {
+      "path": "results/limits-2026-09-30.md",
+      "blob_sha": "8ab545b654d37971a2ba03f74e369de3275dd114"
+    }
+  ],
+  "raw_log": {
+    "requested_identity": "Colab Blackwell log for ACE commit 27b61b1",
+    "committed_in_upstream_snapshot": false,
+    "note": "results/limits-2026-09-30.md states Blackwell 2026-09-30 logs were in the conversation; no raw-log path is invented"
+  },
+  "rows": [
+    {
+      "corpus": "chr1",
+      "profile": "zstd",
+      "archive_bytes": 60442704,
+      "on_device_ms": 3.501,
+      "on_device_gb_s": 72.5,
+      "h2d_total_ms": 4.547,
+      "pipeline": false,
+      "check": "bit-perfect"
+    },
+    {
+      "corpus": "chr1",
+      "profile": "open",
+      "archive_bytes": 63083287,
+      "on_device_ms": 2.826,
+      "on_device_gb_s": 89.9,
+      "h2d_total_ms": 3.919,
+      "pipeline": false,
+      "check": "bit-perfect"
+    },
+    {
+      "corpus": "T2T-CHM13v2.0",
+      "profile": "zstd",
+      "archive_bytes": 822393156,
+      "on_device_ms": 35.542,
+      "on_device_gb_s": 88.8,
+      "h2d_total_ms": 49.759,
+      "pipeline": false,
+      "check": "bit-perfect"
+    },
+    {
+      "corpus": "T2T-CHM13v2.0",
+      "profile": "open",
+      "archive_bytes": 853264869,
+      "on_device_ms": 27.135,
+      "on_device_gb_s": 116.3,
+      "h2d_total_ms": 31.063,
+      "pipeline": true,
+      "delivered_gb_s": 101.6,
+      "check": "bit-perfect"
+    }
+  ]
+}
