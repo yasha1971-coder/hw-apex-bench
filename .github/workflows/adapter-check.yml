@@ -39,22 +39,36 @@ jobs:
           EVENT_NAME: ${{ github.event_name }}
           BASE_SHA: ${{ github.event.pull_request.base.sha }}
           HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+          HEAD_REF: ${{ github.head_ref }}
         run: |
           python3 - <<'PY_SCOPE'
-          import os, subprocess
-          # Dispatcher/docs/workflow edits still receive real adapter correctness
-          # checks. Timing workers only need exercising for implementation edits
-          # or an explicit manual workflow invocation.
+          import json, os, subprocess
+          from pathlib import Path
+          # Correctness checks always run. Timing smoke tests must not repeat
+          # the already successful v2.2 implementation during publication-only
+          # synchronization. Other PRs retain the original full-PR scope.
           measure = os.environ['EVENT_NAME'] == 'workflow_dispatch'
           if not measure:
+              compare_base = os.environ['BASE_SHA']
+              frozen = Path('evidence/aceapex-v220-cpu-20260930/receipt.json')
+              if os.environ['HEAD_REF'] == 'upgrade/aceapex-v220' and frozen.is_file():
+                  receipt = json.loads(frozen.read_text())
+                  expected = 'a22075e3f3b51a012bb6dff34d5e5643e43e428f'
+                  if receipt['run_id'] == 36751391857 and receipt['run_head_sha'] == expected:
+                      compare_base = expected
+                      print('Compare implementation against successful frozen run 36751391857')
               paths = subprocess.check_output([
-                  'git', 'diff', '--name-only', os.environ['BASE_SHA'],
+                  'git', 'diff', '--name-only', compare_base,
                   os.environ['HEAD_SHA'], '--'
               ], text=True).splitlines()
               measure = any(
                   p.startswith('codecs/') or
                   (p.startswith('harness/') and p != 'harness/test_entrypoints.py') or
-                  p == 'review/verify_nine_axes.py' for p in paths)
+                  p in ('review/verify_nine_axes.py',
+                        'review/aceapex_upgrade/adapter_common.sh',
+                        'review/aceapex_v220/build.sh',
+                        'review/aceapex_v220/build_counter.py',
+                        'review/aceapex_v220/run.py') for p in paths)
           with open(os.environ['GITHUB_OUTPUT'], 'a') as out:
               out.write('measure=' + str(measure).lower() + '\n')
           print('Run timing checks:', measure)

@@ -1,0 +1,180 @@
+{
+  "schema": "aceapex-v220-cg-v1",
+  "date": "2026-09-30",
+  "rows": [
+    {
+      "scope": "full-chr1-c_file",
+      "encoder": "l1",
+      "profile": "interactive",
+      "g": 16384,
+      "c_g_percent": 1.7017521485995668,
+      "g16k": {
+        "g": 16384,
+        "archive_bytes": 60440764,
+        "ratio": 4.201395551518839,
+        "archive_sha256": "0ac30d8db352fdf3328495fc2166e6b2463323e8860847cc05711e094cdd4fa5",
+        "command": [
+          ".work/native/aceapex-v220",
+          "c",
+          "--in",
+          "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/source/chr1.fa",
+          "--out",
+          "/tmp/aceapex-v220/c-g/l1-g16k.aet",
+          "--threads",
+          "8",
+          "--level",
+          "2"
+        ],
+        "environment": {
+          "ACEAPEX_BS": "16384",
+          "LIT_CHUNK": "65536",
+          "FSE_CHUNK": "4096"
+        }
+      },
+      "whole": {
+        "g": 253935557,
+        "archive_bytes": 59412212,
+        "ratio": 4.274130661891531,
+        "archive_sha256": "51e6d5fa3af7fd59bdbc69597a73396694fcc36e00bd54810a818a0922f4ffc6",
+        "command": [
+          ".work/native/aceapex-v220",
+          "c",
+          "--in",
+          "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/source/chr1.fa",
+          "--out",
+          "/tmp/aceapex-v220/c-g/l1-whole.aet",
+          "--threads",
+          "8",
+          "--level",
+          "2"
+        ],
+        "environment": {
+          "ACEAPEX_BS": "253935557",
+          "LIT_CHUNK": "65536",
+          "FSE_CHUNK": "4096"
+        }
+      },
+      "provenance": {
+        "actions_run_id": 36751391857,
+        "host": {
+          "platform": "Linux-6.17.0-1022-azure-x86_64-with-glibc2.39",
+          "cpu": "AMD EPYC 7763 64-Core Processor",
+          "timed_cpu": 0,
+          "affinity_available": [
+            0,
+            1,
+            2,
+            3
+          ]
+        },
+        "aceapex_tag": "v2.2.0",
+        "aceapex_sha": "0a143cd64b35a802835f18c361f981968edf25a1",
+        "ace_binary_sha256": "9d5523717c5d33f9ec2fa0dc670324fecc847d0214dfc5fe85456b5c00497c06",
+        "ace_build": "upstream make with benchmark-pinned static libzstd",
+        "libzstd_version": "*** Zstandard CLI (64-bit) v1.5.7, by Yann Collet ***",
+        "zstd_sha": "f8745da6ff1ad1e7bab384bd1f9d742439278e99",
+        "htslib_sha": "8f7231035d0409d525767c66d9f49f1f967ee1df",
+        "libdeflate_sha": "dd12ff2b36d603dbb7fa8838fe7e7176fcbd4f6f",
+        "native_measure_sha256": "0438a5cc5e3e90fdcfcb6079d656443ff58fdc1965900cd163f504fbe563cac6",
+        "ace_context_sha256": "23d9960c25a9f7b10c4d1ee166f730ef497d355618444a4f127394b010aa7a15",
+        "ace_counter_context_sha256": "669aa242e39aa687bc303cb8bf23b418db106550f290b586aa70c5e5fa10e8fc",
+        "zstd_context_sha256": "ad7c37250e6d4c5c57d65a902e74d009264cc184c2ec087fc0b2d2829ca401c3",
+        "zstd_counter_context_sha256": "11bd141f1c7a0c71aab2301099b1330c7543680b0c5134744d617b33e69c33e6",
+        "bgzf_context_sha256": "b93d51125020d54736a1537a073231cb3f2a5b50593da2d7a7b31a603607ce01",
+        "bgzf_counter_context_sha256": "1fa8c375296afb807261216824c8bf717476edb37dc04f48c5fb5720da21a2a1",
+        "codec_version": "v2.2.0@0a143cd64b35a802835f18c361f981968edf25a1",
+        "encoder": "l1 default",
+        "fixed": "LIT_CHUNK=65536; FSE_CHUNK=4096; level=2; threads=8",
+        "judge": "both archives full byte-exact restore"
+      }
+    },
+    {
+      "scope": "full-chr1-c_file",
+      "encoder": "chain",
+      "profile": "interactive",
+      "g": 16384,
+      "c_g_percent": 1.7198142892572266,
+      "g16k": {
+        "g": 16384,
+        "archive_bytes": 69409878,
+        "ratio": 3.6584930605986656,
+        "archive_sha256": "fec0a028af5c8e5b0d73e9dcd11336381f4f9768d5508f38a22d4064a515f5cf",
+        "command": [
+          ".work/native/aceapex-v220",
+          "c",
+          "--in",
+          "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/source/chr1.fa",
+          "--out",
+          "/tmp/aceapex-v220/c-g/chain-g16k.aet",
+          "--threads",
+          "8",
+          "--level",
+          "2"
+        ],
+        "environment": {
+          "ACEAPEX_BS": "16384",
+          "LIT_CHUNK": "65536",
+          "FSE_CHUNK": "4096",
+          "AX_ENC": "chain"
+        }
+      },
+      "whole": {
+        "g": 253935557,
+        "archive_bytes": 68216157,
+        "ratio": 3.7225133775858996,
+        "archive_sha256": "8bb2c5c4434a9fdbefaf456a6246439194bcf04503d8a3056855dec03fd15703",
+        "command": [
+          ".work/native/aceapex-v220",
+          "c",
+          "--in",
+          "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/source/chr1.fa",
+          "--out",
+          "/tmp/aceapex-v220/c-g/chain-whole.aet",
+          "--threads",
+          "8",
+          "--level",
+          "2"
+        ],
+        "environment": {
+          "ACEAPEX_BS": "253935557",
+          "LIT_CHUNK": "65536",
+          "FSE_CHUNK": "4096",
+          "AX_ENC": "chain"
+        }
+      },
+      "provenance": {
+        "actions_run_id": 36751391857,
+        "host": {
+          "platform": "Linux-6.17.0-1022-azure-x86_64-with-glibc2.39",
+          "cpu": "AMD EPYC 7763 64-Core Processor",
+          "timed_cpu": 0,
+          "affinity_available": [
+            0,
+            1,
+            2,
+            3
+          ]
+        },
+        "aceapex_tag": "v2.2.0",
+        "aceapex_sha": "0a143cd64b35a802835f18c361f981968edf25a1",
+        "ace_binary_sha256": "9d5523717c5d33f9ec2fa0dc670324fecc847d0214dfc5fe85456b5c00497c06",
+        "ace_build": "upstream make with benchmark-pinned static libzstd",
+        "libzstd_version": "*** Zstandard CLI (64-bit) v1.5.7, by Yann Collet ***",
+        "zstd_sha": "f8745da6ff1ad1e7bab384bd1f9d742439278e99",
+        "htslib_sha": "8f7231035d0409d525767c66d9f49f1f967ee1df",
+        "libdeflate_sha": "dd12ff2b36d603dbb7fa8838fe7e7176fcbd4f6f",
+        "native_measure_sha256": "0438a5cc5e3e90fdcfcb6079d656443ff58fdc1965900cd163f504fbe563cac6",
+        "ace_context_sha256": "23d9960c25a9f7b10c4d1ee166f730ef497d355618444a4f127394b010aa7a15",
+        "ace_counter_context_sha256": "669aa242e39aa687bc303cb8bf23b418db106550f290b586aa70c5e5fa10e8fc",
+        "zstd_context_sha256": "ad7c37250e6d4c5c57d65a902e74d009264cc184c2ec087fc0b2d2829ca401c3",
+        "zstd_counter_context_sha256": "11bd141f1c7a0c71aab2301099b1330c7543680b0c5134744d617b33e69c33e6",
+        "bgzf_context_sha256": "b93d51125020d54736a1537a073231cb3f2a5b50593da2d7a7b31a603607ce01",
+        "bgzf_counter_context_sha256": "1fa8c375296afb807261216824c8bf717476edb37dc04f48c5fb5720da21a2a1",
+        "codec_version": "v2.2.0@0a143cd64b35a802835f18c361f981968edf25a1",
+        "encoder": "AX_ENC=chain",
+        "fixed": "LIT_CHUNK=65536; FSE_CHUNK=4096; level=2; threads=8",
+        "judge": "both archives full byte-exact restore"
+      }
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+name: ACEAPEX v2.2 publication integrity
+
+# Read-only checks of frozen evidence. No artifact downloads, codec execution,
+# benchmark dispatch, repository writes, or automatic commits.
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  frozen-publication:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Recompute statistics only from committed samples
+        run: python3 review/aceapex_v220/publish.py --check
+      - name: Test rejection of damaged evidence and manual table edits
+        run: python3 review/aceapex_v220/test_publication.py
+      - name: Verify GPU import without running GPU code
+        run: python3 review/aceapex_v220/check_gpu_import.py

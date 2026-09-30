@@ -1,0 +1,7 @@
+aceapex=v2.2.0@0a143cd64b35a802835f18c361f981968edf25a1
+doi=10.5281/zenodo.23061934
+zstd=f8745da6ff1ad1e7bab384bd1f9d742439278e99
+zstd_version=*** Zstandard CLI (64-bit) v1.5.7, by Yann Collet ***
+htslib=8f7231035d0409d525767c66d9f49f1f967ee1df
+libdeflate=dd12ff2b36d603dbb7fa8838fe7e7176fcbd4f6f
+ace_binary_sha256=9d5523717c5d33f9ec2fa0dc670324fecc847d0214dfc5fe85456b5c00497c06

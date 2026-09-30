@@ -1,0 +1,14 @@
+{
+  "amplification_samples": 120000,
+  "archive_configurations": 600,
+  "c_g_archives": 4,
+  "equal_request_schedules_checked": true,
+  "full_decode_samples": 1800,
+  "matrix_points": 20,
+  "measurements_repeated": false,
+  "qualification_receipts": 2,
+  "region_samples": 360000,
+  "source_run": 36751391857,
+  "statistics_recomputed_from_retained_samples": true,
+  "status": "pass"
+}

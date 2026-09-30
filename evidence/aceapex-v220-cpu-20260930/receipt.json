@@ -1,0 +1,197 @@
+{
+  "artifacts": {
+    "cpu": {
+      "files": 18,
+      "id": 11115186898,
+      "sha256": "be1ce4937041678bf396bfd3c98a821417d141f717073a50477920e151681717"
+    },
+    "qualification": {
+      "files": 6,
+      "id": 11115131449,
+      "sha256": "08d498dda02886a76924f0f59f37c1b13c4bd5687398775d714ff477ef26998a"
+    }
+  },
+  "benchmark_checkout_sha": "876c0bef8f7b2c2681e9bd9c94bd2c88d2b09688",
+  "checkout_note": "GitHub pull-request merge checkout; parents are base and run head",
+  "checkout_parents": [
+    "ec6cd69a203057ba3c9b8219684f8ac7450c0718",
+    "a22075e3f3b51a012bb6dff34d5e5643e43e428f"
+  ],
+  "cpu_completed_utc": "2026-09-30T17:32:28Z",
+  "date": "2026-09-30",
+  "files": [
+    {
+      "artifact_id": 11115186898,
+      "bytes": 6870,
+      "original_member": "tmp/aceapex-v220/c-g/results.json",
+      "path": "c-g/results.json",
+      "sha256": "85493185d4394e5ab4fe52e9b86950ad49f21b8c06606c021fda3e230baf78d3"
+    },
+    {
+      "artifact_id": 11115186898,
+      "bytes": 21778770,
+      "original_member": "tmp/aceapex-v220/matched-g/amplification-samples.jsonl",
+      "path": "matched-g/amplification-samples.jsonl",
+      "sha256": "bbf888af4d774e2d45928304028a29a862c019091e152736a7978e7aac524527"
+    },
+    {
+      "artifact_id": 11115186898,
+      "bytes": 199044,
+      "original_member": "tmp/aceapex-v220/matched-g/full-decode-samples.jsonl",
+      "path": "matched-g/full-decode-samples.jsonl",
+      "sha256": "0549d38201ead1d8346d354f3c646399417a3b9787375d4773c5c85a657d1e27"
+    },
+    {
+      "artifact_id": 11115186898,
+      "bytes": 90945,
+      "original_member": "tmp/aceapex-v220/matched-g/g16384/configurations.json",
+      "path": "matched-g/g16384/configurations.json",
+      "sha256": "61f3e8a7d385fc76e65c114702afb0feaebd696d17334b23fe0906382d8ad90e"
+    },
+    {
+      "artifact_id": 11115186898,
+      "bytes": 90928,
+      "original_member": "tmp/aceapex-v220/matched-g/g32768/configurations.json",
+      "path": "matched-g/g32768/configurations.json",
+      "sha256": "4e43494239b03d7634a1ad7808a87f963f570becd5323c840460a9d22473aedf"
+    },
+    {
+      "artifact_id": 11115186898,
+      "bytes": 90626,
+      "original_member": "tmp/aceapex-v220/matched-g/g4096/configurations.json",
+      "path": "matched-g/g4096/configurations.json",
+      "sha256": "7fe0760a1f1ccdd26c2b0a643f98c8462729e9bba651635c9b62c866b9cb569d"
+    },
+    {
+      "artifact_id": 11115186898,
+      "bytes": 90896,
+      "original_member": "tmp/aceapex-v220/matched-g/g65280/configurations.json",
+      "path": "matched-g/g65280/configurations.json",
+      "sha256": "7636ff3b80c3b5b9cdf540a147b5d3cc497702f696b91fecb98eda349e9479bf"
+    },
+    {
+      "artifact_id": 11115186898,
+      "bytes": 90622,
+      "original_member": "tmp/aceapex-v220/matched-g/g8192/configurations.json",
+      "path": "matched-g/g8192/configurations.json",
+      "sha256": "f5a6092a732b2ddea0791d2feda52b51cc3af794f79b68ad59e82dcd4dae420f"
+    },
+    {
+      "artifact_id": 11115186898,
+      "bytes": 59670729,
+      "original_member": "tmp/aceapex-v220/matched-g/region-samples.jsonl",
+      "path": "matched-g/region-samples.jsonl",
+      "sha256": "633cff5e4143969b5e30de9b9a0eeda4052e9ef132bf9eaccedadc40fb733519"
+    },
+    {
+      "artifact_id": 11115186898,
+      "bytes": 54983,
+      "original_member": "tmp/aceapex-v220/matched-g/results.json",
+      "path": "matched-g/results.json",
+      "sha256": "ed4f6706482ecd8d9dd7c52efbb64e988ae137d05b2e5528d5b5d95d0dfb2b81"
+    },
+    {
+      "artifact_id": 11115186898,
+      "bytes": 380,
+      "original_member": "home/runner/work/hw-apex-bench/hw-apex-bench/.work/native/PINS",
+      "path": "native/PINS",
+      "sha256": "1c2917a45e43001a3cd3d20bcd5ff270d0791361558d14a305a6c93d482f5faf"
+    },
+    {
+      "artifact_id": 11115186898,
+      "bytes": 1293,
+      "original_member": "home/runner/work/hw-apex-bench/hw-apex-bench/.work/native/SHA256SUMS",
+      "path": "native/SHA256SUMS",
+      "sha256": "3803d6d01ea93a3d57c03c6e12f1109d0923900947b5213f0a00fc5ddc0ecb44"
+    },
+    {
+      "artifact_id": 11115186898,
+      "bytes": 473,
+      "original_member": "home/runner/work/hw-apex-bench/hw-apex-bench/.work/native/ace-counter-sources.json",
+      "path": "native/ace-counter-sources.json",
+      "sha256": "52ae7a3311da6b28a8c576b85687ab6b288d953efb4b05e7b4c1653b398f7fb9"
+    },
+    {
+      "artifact_id": 11115186898,
+      "bytes": 138,
+      "original_member": "home/runner/work/hw-apex-bench/hw-apex-bench/.work/native/aceapex-v220.sha256",
+      "path": "native/aceapex-v220.sha256",
+      "sha256": "279141af067e813e18c8046cdda4bc4e4e4eaae7d11bff55758a6d9d6c0659f3"
+    },
+    {
+      "artifact_id": 11115186898,
+      "bytes": 170,
+      "original_member": "home/runner/work/hw-apex-bench/hw-apex-bench/.work/native/bgzf-counter-sources.json",
+      "path": "native/bgzf-counter-sources.json",
+      "sha256": "ce54f1789eadb184d83976a1ffd81c0a7bdbc3b4428bab4245b4dc34ead4c121"
+    },
+    {
+      "artifact_id": 11115186898,
+      "bytes": 388,
+      "original_member": "home/runner/work/hw-apex-bench/hw-apex-bench/.work/native/zstd-counter-sources.json",
+      "path": "native/zstd-counter-sources.json",
+      "sha256": "bb20ffd40008b3f90bf5558eda523f6a029dead1bf7dbc7e6970266521eaac34"
+    },
+    {
+      "artifact_id": 11115186898,
+      "bytes": 54,
+      "original_member": "home/runner/work/hw-apex-bench/hw-apex-bench/.work/native/zstd-version.txt",
+      "path": "native/zstd-version.txt",
+      "sha256": "f6d344e585f9a9ceb9500ff65355ce23bcc39dec9e4164aceab9da0a5ac3113e"
+    },
+    {
+      "artifact_id": 11115131449,
+      "bytes": 24829,
+      "original_member": "aceapex-22234051c2/check.json",
+      "path": "qualification/aceapex-22234051c2/check.json",
+      "sha256": "f7c3725a423fc1b1bb4b438b52e527abe0887f6aa9bbbb0d90b057ff5ad3c4cc"
+    },
+    {
+      "artifact_id": 11115131449,
+      "bytes": 21491,
+      "original_member": "aceapex-22234051c2/check.log",
+      "path": "qualification/aceapex-22234051c2/check.log",
+      "sha256": "33bfb7635dc6fa164e272f5850d58c3be8e804c4a5dee2b18c22964f0def3848"
+    },
+    {
+      "artifact_id": 11115131449,
+      "bytes": 473,
+      "original_member": "aceapex-22234051c2/counter-sources.json",
+      "path": "qualification/aceapex-22234051c2/counter-sources.json",
+      "sha256": "52ae7a3311da6b28a8c576b85687ab6b288d953efb4b05e7b4c1653b398f7fb9"
+    },
+    {
+      "artifact_id": 11115131449,
+      "bytes": 25443,
+      "original_member": "aceapex_open-009446f28d/check.json",
+      "path": "qualification/aceapex_open-009446f28d/check.json",
+      "sha256": "ec63591dd8da75487fba6aa5dafcf3e83f3a633fa1184eb50179a8b823133ca0"
+    },
+    {
+      "artifact_id": 11115131449,
+      "bytes": 22110,
+      "original_member": "aceapex_open-009446f28d/check.log",
+      "path": "qualification/aceapex_open-009446f28d/check.log",
+      "sha256": "67359dc4ab4c6515cf9df1a77c84a1c9553c5b41b357d7c6941a30de504278d1"
+    },
+    {
+      "artifact_id": 11115131449,
+      "bytes": 473,
+      "original_member": "aceapex_open-009446f28d/counter-sources.json",
+      "path": "qualification/aceapex_open-009446f28d/counter-sources.json",
+      "sha256": "ac03530ede423c24af788c2a2a4cbcf8920d5d196b90fee46f598f76dc637a91"
+    },
+    {
+      "artifact_id": 11115186898,
+      "bytes": 65246,
+      "original_member": "tmp/aceapex-v220/results.json",
+      "path": "results.json",
+      "sha256": "640362d2e25dfc9a875af04c598f8e0f47a1498dbdbafc82439ba0f0e4d93f74"
+    }
+  ],
+  "measurements_repeated": false,
+  "run_head_sha": "a22075e3f3b51a012bb6dff34d5e5643e43e428f",
+  "run_id": 36751391857,
+  "schema": "aceapex-v220-publication-receipt-v1",
+  "storage": "UTF-8 artifact members copied byte-for-byte; original member names mapped above"
+}

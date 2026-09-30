@@ -1,0 +1,320 @@
+{
+  "status": "pass",
+  "check_protocol": "cabench-check-v2",
+  "qualification": {
+    "codec": "aceapex-v2.2.0-open",
+    "version": "aceapex-v2.2.0-open@0a143cd64b35a802835f18c361f981968edf25a1",
+    "capabilities": {
+      "amplification": "available",
+      "batch": "available",
+      "break_even": "available",
+      "c_g": "n/a \u2014 version-specific c(g) is measured in the ACEAPEX upgrade review",
+      "decode": "available",
+      "encode": "available",
+      "h_alpha": "available",
+      "ratio": "available",
+      "region": "available"
+    },
+    "constraints": {
+      "granularity": 16384,
+      "min_input_bytes": 0
+    },
+    "configuration": {
+      "profile": "open",
+      "profile_selector": "AX_PROFILE=open",
+      "encoder": "DNA default for pinned revision",
+      "level": 2,
+      "encoder_requested_threads": 1,
+      "decoder_policy": "persistent C99 handle; one handle per benchmark context",
+      "granularity": 16384,
+      "lit_chunk": 65536,
+      "fse_chunk": 4096,
+      "reader_environment": {}
+    },
+    "protocol": "cabench-check-v2",
+    "files": {
+      "/home/runner/work/hw-apex-bench/hw-apex-bench/codecs/aceapex_open.sh": "3a3bf01207185c807468a715b1335fab20d9a970d6445d129c5fe0df9c774901",
+      "/home/runner/work/hw-apex-bench/hw-apex-bench/harness/check_adapter.py": "803213045e9ee94e2f3f92aa83966aa349809ae7527620ca313827a8f9722ac3",
+      "/home/runner/work/hw-apex-bench/hw-apex-bench/harness/check_common.sh": "df11d994850cd721308e1ecba4474dd665734916e68bf6372fd8124ebe7dc341",
+      "/home/runner/work/hw-apex-bench/hw-apex-bench/harness/check_region.py": "f63aea3605ccc950a1666b7582febacf5f3a2ba9b1ba174d2a39d440955b48fd",
+      "/home/runner/work/hw-apex-bench/hw-apex-bench/harness/resident_probe.py": "cec517b3087119968d7219c592ffd9579de6de9eb61260dbe557e248cdfdfcfc",
+      "/home/runner/work/hw-apex-bench/hw-apex-bench/harness/resident_context.h": "299ba195dc8092d27d8dfb0613fcbdbc063852454e3f71a654c189881caaf20f",
+      "/home/runner/work/hw-apex-bench/hw-apex-bench/harness/resident_fixture.py": "23ffefe0da758c13d9fd6e960fc82efbb9ba4a116b00a990f78ae972c3e4a994",
+      "/home/runner/work/hw-apex-bench/hw-apex-bench/harness/qualification.py": "8d85cef43a1ac4c1cc2cfc05eab33ba20fc89b960e84a7f69cf9d435c9a681c2",
+      "/home/runner/work/hw-apex-bench/hw-apex-bench/harness/verify_context_sources.py": "6a484d205e5129c7e5fcd37ccd5773b07bfed27329ab8dd9706187ea373a90b6",
+      "/home/runner/work/hw-apex-bench/hw-apex-bench/harness/context-ace-sources.json": "483266fb3b1bad62f408874ed32278deab7599ee2318ee18650ab0e03f50fa3c",
+      "/home/runner/work/hw-apex-bench/hw-apex-bench/harness/reader_environment.py": "a2aabb9093d67da641306ef792b4b27020a18cb2925f0a7fd43844371929e8a4",
+      "/home/runner/work/hw-apex-bench/hw-apex-bench/codecs/native/aceapex_persistent.c": "be8a459a3f1f7c8e42141a7d7ab3b69d2653b79536541551d07d47cb76b1a36e",
+      "/home/runner/work/hw-apex-bench/hw-apex-bench/review/aceapex_upgrade/adapter_common.sh": "48dc7f7efaa1c7cf592a28e4697b842ffad3e2f9e6a1a1cc3c5684ad7c17ccde",
+      "/home/runner/work/hw-apex-bench/hw-apex-bench/review/aceapex_v220/build_counter.py": "fe63f7a363485d8083894247aeffba7f9c80596d5023923b6f967bdd96b15235",
+      "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/v220-check/aceapex_open-009446f28d/context.so": "44703c39a42397552a1ddf6a728ca565517f67e9ae6ab799def1500109935a19",
+      "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/v220-check/aceapex_open-009446f28d/counter-context.so": "6da48f8d3e41989bc1f545935670b67143ca5aaff6084c671cf3a8f6b3753100",
+      "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/v220-check/aceapex_open-009446f28d/counter-sources.json": "ac03530ede423c24af788c2a2a4cbcf8920d5d196b90fee46f598f76dc637a91",
+      "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/v220-check/aceapex_open-009446f28d/aceapex-cli": "933fa1a06ba6d48d030cae5ad3e84ff21cb39f9045186a5d4e1ab7c7efba9652"
+    },
+    "linked_libraries": {
+      "/usr/lib/x86_64-linux-gnu/libc.so.6": "3a15d66867d83762c7f2f1e37359cb8f6c5743edb369c65285cb0b1c4f7498bf",
+      "/usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2": "c20a2dc8917c755f02b94049356320fe1f62ac7d9f8994731f807d9df39302da",
+      "/usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.33": "1fd75fe70354a416d75aef22bcae68c47bd25d20e2d0568c30b1a9838cf62f11",
+      "/usr/lib/x86_64-linux-gnu/libgcc_s.so.1": "d93224d2b0dab4247598be683adca02f5cf00586f99c187579cd7e92058fb7cb",
+      "/usr/lib/x86_64-linux-gnu/libm.so.6": "fce00b6f25f459cf4ae0b7fae4257909a1a8a86f9149e7c029a5d617baf1ccd0"
+    },
+    "sources": [
+      {
+        "directory": "aceapex",
+        "commit": "0a143cd64b35a802835f18c361f981968edf25a1",
+        "submodules": ""
+      },
+      {
+        "directory": "zstd",
+        "commit": "f8745da6ff1ad1e7bab384bd1f9d742439278e99",
+        "submodules": ""
+      }
+    ],
+    "build_artifacts": [
+      "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/v220-check/aceapex_open-009446f28d/context.so",
+      "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/v220-check/aceapex_open-009446f28d/counter-context.so",
+      "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/v220-check/aceapex_open-009446f28d/counter-sources.json",
+      "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/v220-check/aceapex_open-009446f28d/aceapex-cli"
+    ],
+    "host": {
+      "system": "Linux",
+      "machine": "x86_64"
+    },
+    "loader_environment": {
+      "PATH": "/snap/bin:/home/runner/.local/bin:/opt/pipx_bin:/home/runner/.cargo/bin:/home/runner/.config/composer/vendor/bin:/usr/local/.ghcup/bin:/home/runner/.dotnet/tools:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin",
+      "LD_LIBRARY_PATH": "",
+      "GLIBC_TUNABLES": ""
+    }
+  },
+  "qualification_sha256": "41e505231093b99be9596ab58412d3fcb57f45ad224107de69cf8abf34f82511",
+  "codec": "aceapex-v2.2.0-open",
+  "version": "aceapex-v2.2.0-open@0a143cd64b35a802835f18c361f981968edf25a1",
+  "adapter_sha256": "3a3bf01207185c807468a715b1335fab20d9a970d6445d129c5fe0df9c774901",
+  "command": "./run.sh --check codecs/aceapex_open.sh",
+  "capabilities": {
+    "amplification": "available",
+    "batch": "available",
+    "break_even": "available",
+    "c_g": "n/a \u2014 version-specific c(g) is measured in the ACEAPEX upgrade review",
+    "decode": "available",
+    "encode": "available",
+    "h_alpha": "available",
+    "ratio": "available",
+    "region": "available"
+  },
+  "native_library_sha256": "44703c39a42397552a1ddf6a728ca565517f67e9ae6ab799def1500109935a19",
+  "sources": [
+    {
+      "directory": "aceapex",
+      "commit": "0a143cd64b35a802835f18c361f981968edf25a1",
+      "submodules": ""
+    },
+    {
+      "directory": "zstd",
+      "commit": "f8745da6ff1ad1e7bab384bd1f9d742439278e99",
+      "submodules": ""
+    }
+  ],
+  "cases": [
+    {
+      "fixture": "mixed",
+      "input_bytes": 5593136,
+      "input_sha256": "2ec2d7b3f1eb6adaff8a26e9da919a97fedb2b9e2fc97304d858d0031def8819",
+      "archive_sha256": "d37152cedc019797351433db9268c6a6345353f1418bee6dc85475eb046dd687",
+      "artifacts": {
+        "mixed.archive": "d37152cedc019797351433db9268c6a6345353f1418bee6dc85475eb046dd687"
+      },
+      "full_restore": "byte-exact",
+      "status": "pass",
+      "native": {
+        "capabilities": {
+          "amplification": "available",
+          "batch": "available",
+          "break_even": "available",
+          "c_g": "n/a \u2014 version-specific c(g) is measured in the ACEAPEX upgrade review",
+          "decode": "available",
+          "encode": "available",
+          "h_alpha": "available",
+          "ratio": "available",
+          "region": "available"
+        },
+        "corpus_sha256": "2ec2d7b3f1eb6adaff8a26e9da919a97fedb2b9e2fc97304d858d0031def8819",
+        "full_restore": "byte-exact",
+        "invalid_ranges": 3,
+        "region_checks": 4200,
+        "timings_collected": false,
+        "version": "aceapex-v2.2.0-open@0a143cd64b35a802835f18c361f981968edf25a1"
+      }
+    },
+    {
+      "fixture": "one-byte",
+      "input_bytes": 1,
+      "input_sha256": "4b68ab3847feda7d6c62c1fbcbeebfa35eab7351ed5e78f4ddadea5df64b8015",
+      "archive_sha256": "3fe964936d4a4713f2ff52e4541b18e8438a67d17f4538d69bc8b3830ddc17e0",
+      "artifacts": {
+        "one-byte.archive": "3fe964936d4a4713f2ff52e4541b18e8438a67d17f4538d69bc8b3830ddc17e0"
+      },
+      "full_restore": "byte-exact",
+      "status": "pass",
+      "native": {
+        "capabilities": {
+          "amplification": "available",
+          "batch": "available",
+          "break_even": "available",
+          "c_g": "n/a \u2014 version-specific c(g) is measured in the ACEAPEX upgrade review",
+          "decode": "available",
+          "encode": "available",
+          "h_alpha": "available",
+          "ratio": "available",
+          "region": "available"
+        },
+        "corpus_sha256": "4b68ab3847feda7d6c62c1fbcbeebfa35eab7351ed5e78f4ddadea5df64b8015",
+        "full_restore": "byte-exact",
+        "invalid_ranges": 3,
+        "region_checks": 3,
+        "timings_collected": false,
+        "version": "aceapex-v2.2.0-open@0a143cd64b35a802835f18c361f981968edf25a1"
+      }
+    },
+    {
+      "fixture": "empty",
+      "input_bytes": 0,
+      "input_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive_sha256": "fd051a05fdd87c7c1ebae50da25ee38c85b542ae1589988f50df2bd708f22c38",
+      "artifacts": {
+        "empty.archive": "fd051a05fdd87c7c1ebae50da25ee38c85b542ae1589988f50df2bd708f22c38"
+      },
+      "full_restore": "byte-exact",
+      "status": "pass",
+      "native": {
+        "capabilities": {
+          "amplification": "available",
+          "batch": "available",
+          "break_even": "available",
+          "c_g": "n/a \u2014 version-specific c(g) is measured in the ACEAPEX upgrade review",
+          "decode": "available",
+          "encode": "available",
+          "h_alpha": "available",
+          "ratio": "available",
+          "region": "available"
+        },
+        "corpus_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "full_restore": "byte-exact",
+        "invalid_ranges": 3,
+        "region_checks": 1,
+        "timings_collected": false,
+        "version": "aceapex-v2.2.0-open@0a143cd64b35a802835f18c361f981968edf25a1"
+      }
+    },
+    {
+      "fixture": "exact-block",
+      "input_bytes": 16384,
+      "input_sha256": "4348e3b98e8a327b34ced39c1da9e67cdb4cd5e48e4d7960607a3ae403d35f0c",
+      "archive_sha256": "8da459883ab3b94960211a1fc6fab99af8f56d0b4fb6d234741d3f1e6a8190e3",
+      "artifacts": {
+        "exact-block.archive": "8da459883ab3b94960211a1fc6fab99af8f56d0b4fb6d234741d3f1e6a8190e3"
+      },
+      "full_restore": "byte-exact",
+      "status": "pass",
+      "native": {
+        "capabilities": {
+          "amplification": "available",
+          "batch": "available",
+          "break_even": "available",
+          "c_g": "n/a \u2014 version-specific c(g) is measured in the ACEAPEX upgrade review",
+          "decode": "available",
+          "encode": "available",
+          "h_alpha": "available",
+          "ratio": "available",
+          "region": "available"
+        },
+        "corpus_sha256": "4348e3b98e8a327b34ced39c1da9e67cdb4cd5e48e4d7960607a3ae403d35f0c",
+        "full_restore": "byte-exact",
+        "invalid_ranges": 3,
+        "region_checks": 108,
+        "timings_collected": false,
+        "version": "aceapex-v2.2.0-open@0a143cd64b35a802835f18c361f981968edf25a1"
+      }
+    },
+    {
+      "fixture": "cross-block",
+      "input_bytes": 49169,
+      "input_sha256": "845cc9aa7bbecbc4a662afc37127d84cf53f41672ba8b2a6a7881e6a6c29b287",
+      "archive_sha256": "9c7846d06ad34f8e176dd5b440b1d9d2bdf3748f0e35217f81db6e086265b9d0",
+      "artifacts": {
+        "cross-block.archive": "9c7846d06ad34f8e176dd5b440b1d9d2bdf3748f0e35217f81db6e086265b9d0"
+      },
+      "full_restore": "byte-exact",
+      "status": "pass",
+      "native": {
+        "capabilities": {
+          "amplification": "available",
+          "batch": "available",
+          "break_even": "available",
+          "c_g": "n/a \u2014 version-specific c(g) is measured in the ACEAPEX upgrade review",
+          "decode": "available",
+          "encode": "available",
+          "h_alpha": "available",
+          "ratio": "available",
+          "region": "available"
+        },
+        "corpus_sha256": "845cc9aa7bbecbc4a662afc37127d84cf53f41672ba8b2a6a7881e6a6c29b287",
+        "full_restore": "byte-exact",
+        "invalid_ranges": 3,
+        "region_checks": 142,
+        "timings_collected": false,
+        "version": "aceapex-v2.2.0-open@0a143cd64b35a802835f18c361f981968edf25a1"
+      }
+    }
+  ],
+  "commands": [
+    "bash -c 'source \"$1\"; shift; for fn in \"$@\"; do declare -F \"$fn\" >/dev/null || exit 2; done' contract /home/runner/work/hw-apex-bench/hw-apex-bench/codecs/aceapex_open.sh codec_name codec_version codec_build codec_compress codec_decompress codec_region codec_supports",
+    "bash /home/runner/work/hw-apex-bench/hw-apex-bench/codecs/aceapex_open.sh _call codec_name",
+    "bash /home/runner/work/hw-apex-bench/hw-apex-bench/codecs/aceapex_open.sh _call codec_version",
+    "bash /home/runner/work/hw-apex-bench/hw-apex-bench/codecs/aceapex_open.sh _call codec_constraints",
+    "bash /home/runner/work/hw-apex-bench/hw-apex-bench/codecs/aceapex_open.sh _call codec_configuration",
+    "bash /home/runner/work/hw-apex-bench/hw-apex-bench/codecs/aceapex_open.sh _call codec_build",
+    "git -C /home/runner/work/hw-apex-bench/hw-apex-bench/.work/v220-check/aceapex_open-009446f28d/deps/aceapex rev-parse HEAD",
+    "git -C /home/runner/work/hw-apex-bench/hw-apex-bench/.work/v220-check/aceapex_open-009446f28d/deps/aceapex status --porcelain --untracked-files=no",
+    "git -C /home/runner/work/hw-apex-bench/hw-apex-bench/.work/v220-check/aceapex_open-009446f28d/deps/aceapex submodule status --recursive",
+    "git -C /home/runner/work/hw-apex-bench/hw-apex-bench/.work/v220-check/aceapex_open-009446f28d/deps/aceapex submodule foreach --quiet --recursive 'test -z \"$(git status --porcelain --untracked-files=no)\"'",
+    "git -C /home/runner/work/hw-apex-bench/hw-apex-bench/.work/v220-check/aceapex_open-009446f28d/deps/zstd rev-parse HEAD",
+    "git -C /home/runner/work/hw-apex-bench/hw-apex-bench/.work/v220-check/aceapex_open-009446f28d/deps/zstd status --porcelain --untracked-files=no",
+    "git -C /home/runner/work/hw-apex-bench/hw-apex-bench/.work/v220-check/aceapex_open-009446f28d/deps/zstd submodule status --recursive",
+    "git -C /home/runner/work/hw-apex-bench/hw-apex-bench/.work/v220-check/aceapex_open-009446f28d/deps/zstd submodule foreach --quiet --recursive 'test -z \"$(git status --porcelain --untracked-files=no)\"'",
+    "bash /home/runner/work/hw-apex-bench/hw-apex-bench/codecs/aceapex_open.sh _call codec_library",
+    "/usr/bin/python3 /home/runner/work/hw-apex-bench/hw-apex-bench/harness/resident_fixture.py /home/runner/work/hw-apex-bench/hw-apex-bench/.work/v220-check/aceapex_open-009446f28d/fixtures-4yukir9s/corpus",
+    "bash /home/runner/work/hw-apex-bench/hw-apex-bench/codecs/aceapex_open.sh _call codec_compress /home/runner/work/hw-apex-bench/hw-apex-bench/.work/v220-check/aceapex_open-009446f28d/fixtures-4yukir9s/mixed.input /home/runner/work/hw-apex-bench/hw-apex-bench/.work/v220-check/aceapex_open-009446f28d/fixtures-4yukir9s/mixed.archive 16384",
+    "bash /home/runner/work/hw-apex-bench/hw-apex-bench/codecs/aceapex_open.sh _call codec_artifacts /home/runner/work/hw-apex-bench/hw-apex-bench/.work/v220-check/aceapex_open-009446f28d/fixtures-4yukir9s/mixed.archive",
+    "bash /home/runner/work/hw-apex-bench/hw-apex-bench/codecs/aceapex_open.sh _call codec_decompress /home/runner/work/hw-apex-bench/hw-apex-bench/.work/v220-check/aceapex_open-009446f28d/fixtures-4yukir9s/mixed.archive /home/runner/work/hw-apex-bench/hw-apex-bench/.work/v220-check/aceapex_open-009446f28d/fixtures-4yukir9s/mixed.restored",
+    "bash /home/runner/work/hw-apex-bench/hw-apex-bench/codecs/aceapex_open.sh _call codec_sidecar /home/runner/work/hw-apex-bench/hw-apex-bench/.work/v220-check/aceapex_open-009446f28d/fixtures-4yukir9s/mixed.archive",
+    "/usr/bin/python3 /home/runner/work/hw-apex-bench/hw-apex-bench/harness/resident_probe.py --adapter /home/runner/work/hw-apex-bench/hw-apex-bench/codecs/aceapex_open.sh --library /home/runner/work/hw-apex-bench/hw-apex-bench/.work/v220-check/aceapex_open-009446f28d/context.so --archive /home/runner/work/hw-apex-bench/hw-apex-bench/.work/v220-check/aceapex_open-009446f28d/fixtures-4yukir9s/mixed.archive --original /home/runner/work/hw-apex-bench/hw-apex-bench/.work/v220-check/aceapex_open-009446f28d/fixtures-4yukir9s/mixed.input --granularity 16384",
+    "bash /home/runner/work/hw-apex-bench/hw-apex-bench/codecs/aceapex_open.sh _call codec_region /home/runner/work/hw-apex-bench/hw-apex-bench/.work/v220-check/aceapex_open-009446f28d/fixtures-4yukir9s/mixed.archive 16383 32779 /home/runner/work/hw-apex-bench/hw-apex-bench/.work/v220-check/aceapex_open-009446f28d/fixtures-4yukir9s/region.out",
+    "bash /home/runner/work/hw-apex-bench/hw-apex-bench/codecs/aceapex_open.sh _call codec_compress /home/runner/work/hw-apex-bench/hw-apex-bench/.work/v220-check/aceapex_open-009446f28d/fixtures-4yukir9s/one-byte.input /home/runner/work/hw-apex-bench/hw-apex-bench/.work/v220-check/aceapex_open-009446f28d/fixtures-4yukir9s/one-byte.archive 16384",
+    "bash /home/runner/work/hw-apex-bench/hw-apex-bench/codecs/aceapex_open.sh _call codec_artifacts /home/runner/work/hw-apex-bench/hw-apex-bench/.work/v220-check/aceapex_open-009446f28d/fixtures-4yukir9s/one-byte.archive",
+    "bash /home/runner/work/hw-apex-bench/hw-apex-bench/codecs/aceapex_open.sh _call codec_decompress /home/runner/work/hw-apex-bench/hw-apex-bench/.work/v220-check/aceapex_open-009446f28d/fixtures-4yukir9s/one-byte.archive /home/runner/work/hw-apex-bench/hw-apex-bench/.work/v220-check/aceapex_open-009446f28d/fixtures-4yukir9s/one-byte.restored",
+    "bash /home/runner/work/hw-apex-bench/hw-apex-bench/codecs/aceapex_open.sh _call codec_sidecar /home/runner/work/hw-apex-bench/hw-apex-bench/.work/v220-check/aceapex_open-009446f28d/fixtures-4yukir9s/one-byte.archive",
+    "/usr/bin/python3 /home/runner/work/hw-apex-bench/hw-apex-bench/harness/resident_probe.py --adapter /home/runner/work/hw-apex-bench/hw-apex-bench/codecs/aceapex_open.sh --library /home/runner/work/hw-apex-bench/hw-apex-bench/.work/v220-check/aceapex_open-009446f28d/context.so --archive /home/runner/work/hw-apex-bench/hw-apex-bench/.work/v220-check/aceapex_open-009446f28d/fixtures-4yukir9s/one-byte.archive --original /home/runner/work/hw-apex-bench/hw-apex-bench/.work/v220-check/aceapex_open-009446f28d/fixtures-4yukir9s/one-byte.input --granularity 16384",
+    "bash /home/runner/work/hw-apex-bench/hw-apex-bench/codecs/aceapex_open.sh _call codec_region /home/runner/work/hw-apex-bench/hw-apex-bench/.work/v220-check/aceapex_open-009446f28d/fixtures-4yukir9s/one-byte.archive 1 0 /home/runner/work/hw-apex-bench/hw-apex-bench/.work/v220-check/aceapex_open-009446f28d/fixtures-4yukir9s/region.out",
+    "bash /home/runner/work/hw-apex-bench/hw-apex-bench/codecs/aceapex_open.sh _call codec_compress /home/runner/work/hw-apex-bench/hw-apex-bench/.work/v220-check/aceapex_open-009446f28d/fixtures-4yukir9s/empty.input /home/runner/work/hw-apex-bench/hw-apex-bench/.work/v220-check/aceapex_open-009446f28d/fixtures-4yukir9s/empty.archive 16384",
+    "bash /home/runner/work/hw-apex-bench/hw-apex-bench/codecs/aceapex_open.sh _call codec_artifacts /home/runner/work/hw-apex-bench/hw-apex-bench/.work/v220-check/aceapex_open-009446f28d/fixtures-4yukir9s/empty.archive",
+    "bash /home/runner/work/hw-apex-bench/hw-apex-bench/codecs/aceapex_open.sh _call codec_decompress /home/runner/work/hw-apex-bench/hw-apex-bench/.work/v220-check/aceapex_open-009446f28d/fixtures-4yukir9s/empty.archive /home/runner/work/hw-apex-bench/hw-apex-bench/.work/v220-check/aceapex_open-009446f28d/fixtures-4yukir9s/empty.restored",
+    "bash /home/runner/work/hw-apex-bench/hw-apex-bench/codecs/aceapex_open.sh _call codec_sidecar /home/runner/work/hw-apex-bench/hw-apex-bench/.work/v220-check/aceapex_open-009446f28d/fixtures-4yukir9s/empty.archive",
+    "/usr/bin/python3 /home/runner/work/hw-apex-bench/hw-apex-bench/harness/resident_probe.py --adapter /home/runner/work/hw-apex-bench/hw-apex-bench/codecs/aceapex_open.sh --library /home/runner/work/hw-apex-bench/hw-apex-bench/.work/v220-check/aceapex_open-009446f28d/context.so --archive /home/runner/work/hw-apex-bench/hw-apex-bench/.work/v220-check/aceapex_open-009446f28d/fixtures-4yukir9s/empty.archive --original /home/runner/work/hw-apex-bench/hw-apex-bench/.work/v220-check/aceapex_open-009446f28d/fixtures-4yukir9s/empty.input --granularity 16384",
+    "bash /home/runner/work/hw-apex-bench/hw-apex-bench/codecs/aceapex_open.sh _call codec_region /home/runner/work/hw-apex-bench/hw-apex-bench/.work/v220-check/aceapex_open-009446f28d/fixtures-4yukir9s/empty.archive 0 0 /home/runner/work/hw-apex-bench/hw-apex-bench/.work/v220-check/aceapex_open-009446f28d/fixtures-4yukir9s/region.out",
+    "bash /home/runner/work/hw-apex-bench/hw-apex-bench/codecs/aceapex_open.sh _call codec_compress /home/runner/work/hw-apex-bench/hw-apex-bench/.work/v220-check/aceapex_open-009446f28d/fixtures-4yukir9s/exact-block.input /home/runner/work/hw-apex-bench/hw-apex-bench/.work/v220-check/aceapex_open-009446f28d/fixtures-4yukir9s/exact-block.archive 16384",
+    "bash /home/runner/work/hw-apex-bench/hw-apex-bench/codecs/aceapex_open.sh _call codec_artifacts /home/runner/work/hw-apex-bench/hw-apex-bench/.work/v220-check/aceapex_open-009446f28d/fixtures-4yukir9s/exact-block.archive",
+    "bash /home/runner/work/hw-apex-bench/hw-apex-bench/codecs/aceapex_open.sh _call codec_decompress /home/runner/work/hw-apex-bench/hw-apex-bench/.work/v220-check/aceapex_open-009446f28d/fixtures-4yukir9s/exact-block.archive /home/runner/work/hw-apex-bench/hw-apex-bench/.work/v220-check/aceapex_open-009446f28d/fixtures-4yukir9s/exact-block.restored",
+    "bash /home/runner/work/hw-apex-bench/hw-apex-bench/codecs/aceapex_open.sh _call codec_sidecar /home/runner/work/hw-apex-bench/hw-apex-bench/.work/v220-check/aceapex_open-009446f28d/fixtures-4yukir9s/exact-block.archive",
+    "/usr/bin/python3 /home/runner/work/hw-apex-bench/hw-apex-bench/harness/resident_probe.py --adapter /home/runner/work/hw-apex-bench/hw-apex-bench/codecs/aceapex_open.sh --library /home/runner/work/hw-apex-bench/hw-apex-bench/.work/v220-check/aceapex_open-009446f28d/context.so --archive /home/runner/work/hw-apex-bench/hw-apex-bench/.work/v220-check/aceapex_open-009446f28d/fixtures-4yukir9s/exact-block.archive --original /home/runner/work/hw-apex-bench/hw-apex-bench/.work/v220-check/aceapex_open-009446f28d/fixtures-4yukir9s/exact-block.input --granularity 16384",
+    "bash /home/runner/work/hw-apex-bench/hw-apex-bench/codecs/aceapex_open.sh _call codec_region /home/runner/work/hw-apex-bench/hw-apex-bench/.work/v220-check/aceapex_open-009446f28d/fixtures-4yukir9s/exact-block.archive 16383 1 /home/runner/work/hw-apex-bench/hw-apex-bench/.work/v220-check/aceapex_open-009446f28d/fixtures-4yukir9s/region.out",
+    "bash /home/runner/work/hw-apex-bench/hw-apex-bench/codecs/aceapex_open.sh _call codec_compress /home/runner/work/hw-apex-bench/hw-apex-bench/.work/v220-check/aceapex_open-009446f28d/fixtures-4yukir9s/cross-block.input /home/runner/work/hw-apex-bench/hw-apex-bench/.work/v220-check/aceapex_open-009446f28d/fixtures-4yukir9s/cross-block.archive 16384",
+    "bash /home/runner/work/hw-apex-bench/hw-apex-bench/codecs/aceapex_open.sh _call codec_artifacts /home/runner/work/hw-apex-bench/hw-apex-bench/.work/v220-check/aceapex_open-009446f28d/fixtures-4yukir9s/cross-block.archive",
+    "bash /home/runner/work/hw-apex-bench/hw-apex-bench/codecs/aceapex_open.sh _call codec_decompress /home/runner/work/hw-apex-bench/hw-apex-bench/.work/v220-check/aceapex_open-009446f28d/fixtures-4yukir9s/cross-block.archive /home/runner/work/hw-apex-bench/hw-apex-bench/.work/v220-check/aceapex_open-009446f28d/fixtures-4yukir9s/cross-block.restored",
+    "bash /home/runner/work/hw-apex-bench/hw-apex-bench/codecs/aceapex_open.sh _call codec_sidecar /home/runner/work/hw-apex-bench/hw-apex-bench/.work/v220-check/aceapex_open-009446f28d/fixtures-4yukir9s/cross-block.archive",
+    "/usr/bin/python3 /home/runner/work/hw-apex-bench/hw-apex-bench/harness/resident_probe.py --adapter /home/runner/work/hw-apex-bench/hw-apex-bench/codecs/aceapex_open.sh --library /home/runner/work/hw-apex-bench/hw-apex-bench/.work/v220-check/aceapex_open-009446f28d/context.so --archive /home/runner/work/hw-apex-bench/hw-apex-bench/.work/v220-check/aceapex_open-009446f28d/fixtures-4yukir9s/cross-block.archive --original /home/runner/work/hw-apex-bench/hw-apex-bench/.work/v220-check/aceapex_open-009446f28d/fixtures-4yukir9s/cross-block.input --granularity 16384",
+    "bash /home/runner/work/hw-apex-bench/hw-apex-bench/codecs/aceapex_open.sh _call codec_region /home/runner/work/hw-apex-bench/hw-apex-bench/.work/v220-check/aceapex_open-009446f28d/fixtures-4yukir9s/cross-block.archive 16383 32779 /home/runner/work/hw-apex-bench/hw-apex-bench/.work/v220-check/aceapex_open-009446f28d/fixtures-4yukir9s/region.out"
+  ],
+  "timings_collected": false
+}
