@@ -1,0 +1,185 @@
++ bash -c 'source "$1"; shift; for fn in "$@"; do declare -F "$fn" >/dev/null || exit 2; done' contract /home/runner/work/hw-apex-bench/hw-apex-bench/codecs/aceapex_open.sh codec_name codec_version codec_build codec_compress codec_decompress codec_region codec_supports
++ bash /home/runner/work/hw-apex-bench/hw-apex-bench/codecs/aceapex_open.sh _call codec_name
++ bash /home/runner/work/hw-apex-bench/hw-apex-bench/codecs/aceapex_open.sh _call codec_version
++ bash /home/runner/work/hw-apex-bench/hw-apex-bench/codecs/aceapex_open.sh _call codec_constraints
++ bash /home/runner/work/hw-apex-bench/hw-apex-bench/codecs/aceapex_open.sh _call codec_configuration
++ bash /home/runner/work/hw-apex-bench/hw-apex-bench/codecs/aceapex_open.sh _call codec_build
+make: Entering directory '/home/runner/work/hw-apex-bench/hw-apex-bench/.work/v220-check/aceapex_open-009446f28d/deps/zstd/lib'
+CC obj/conf_4f17eb1fad913c768387bc99a8a95d7d/static/debug.o
+CC obj/conf_4f17eb1fad913c768387bc99a8a95d7d/static/entropy_common.o
+CC obj/conf_4f17eb1fad913c768387bc99a8a95d7d/static/error_private.o
+CC obj/conf_4f17eb1fad913c768387bc99a8a95d7d/static/fse_decompress.o
+CC obj/conf_4f17eb1fad913c768387bc99a8a95d7d/static/pool.o
+CC obj/conf_4f17eb1fad913c768387bc99a8a95d7d/static/threading.o
+CC obj/conf_4f17eb1fad913c768387bc99a8a95d7d/static/xxhash.o
+CC obj/conf_4f17eb1fad913c768387bc99a8a95d7d/static/zstd_common.o
+CC obj/conf_4f17eb1fad913c768387bc99a8a95d7d/static/zstd_v05.o
+CC obj/conf_4f17eb1fad913c768387bc99a8a95d7d/static/zstd_v06.o
+CC obj/conf_4f17eb1fad913c768387bc99a8a95d7d/static/zstd_v07.o
+CC obj/conf_4f17eb1fad913c768387bc99a8a95d7d/static/fse_compress.o
+CC obj/conf_4f17eb1fad913c768387bc99a8a95d7d/static/hist.o
+CC obj/conf_4f17eb1fad913c768387bc99a8a95d7d/static/huf_compress.o
+CC obj/conf_4f17eb1fad913c768387bc99a8a95d7d/static/zstd_compress.o
+CC obj/conf_4f17eb1fad913c768387bc99a8a95d7d/static/zstd_compress_literals.o
+CC obj/conf_4f17eb1fad913c768387bc99a8a95d7d/static/zstd_compress_sequences.o
+CC obj/conf_4f17eb1fad913c768387bc99a8a95d7d/static/zstd_compress_superblock.o
+CC obj/conf_4f17eb1fad913c768387bc99a8a95d7d/static/zstd_double_fast.o
+CC obj/conf_4f17eb1fad913c768387bc99a8a95d7d/static/zstd_fast.o
+CC obj/conf_4f17eb1fad913c768387bc99a8a95d7d/static/zstd_lazy.o
+CC obj/conf_4f17eb1fad913c768387bc99a8a95d7d/static/zstd_ldm.o
+CC obj/conf_4f17eb1fad913c768387bc99a8a95d7d/static/zstd_opt.o
+CC obj/conf_4f17eb1fad913c768387bc99a8a95d7d/static/zstd_preSplit.o
+CC obj/conf_4f17eb1fad913c768387bc99a8a95d7d/static/zstdmt_compress.o
+CC obj/conf_4f17eb1fad913c768387bc99a8a95d7d/static/huf_decompress.o
+CC obj/conf_4f17eb1fad913c768387bc99a8a95d7d/static/zstd_ddict.o
+CC obj/conf_4f17eb1fad913c768387bc99a8a95d7d/static/zstd_decompress.o
+CC obj/conf_4f17eb1fad913c768387bc99a8a95d7d/static/zstd_decompress_block.o
+AS obj/conf_4f17eb1fad913c768387bc99a8a95d7d/static/huf_decompress_amd64.o
+CC obj/conf_4f17eb1fad913c768387bc99a8a95d7d/static/cover.o
+CC obj/conf_4f17eb1fad913c768387bc99a8a95d7d/static/divsufsort.o
+CC obj/conf_4f17eb1fad913c768387bc99a8a95d7d/static/fastcover.o
+CC obj/conf_4f17eb1fad913c768387bc99a8a95d7d/static/zdict.o
+compiling single-threaded static library 1.5.7
+make: Leaving directory '/home/runner/work/hw-apex-bench/hw-apex-bench/.work/v220-check/aceapex_open-009446f28d/deps/zstd/lib'
+make: Entering directory '/home/runner/work/hw-apex-bench/hw-apex-bench/.work/v220-check/aceapex_open-009446f28d/deps/aceapex'
+rm -rf src/aceapex_api.o aceapex axdec libaceapex_decode.so
+make: Leaving directory '/home/runner/work/hw-apex-bench/hw-apex-bench/.work/v220-check/aceapex_open-009446f28d/deps/aceapex'
+make: Entering directory '/home/runner/work/hw-apex-bench/hw-apex-bench/.work/v220-check/aceapex_open-009446f28d/deps/aceapex'
+g++ -std=c++17 -O3 -march=native -funroll-loops -DACEAPEX_CLI -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/v220-check/aceapex_open-009446f28d/deps/zstd/lib -Isrc -c -o src/aceapex_api.o src/aceapex_api.cpp
+In file included from src/aceapex_api.cpp:2:
+src/aceapex_main.cpp: In function 'int do_decompress(const char*, const char*, int)':
+src/aceapex_main.cpp:1651:10: warning: ignoring return value of 'size_t fread(void*, size_t, size_t, FILE*)' declared with attribute 'warn_unused_result' [-Wunused-result]
+ 1651 |     fread(&hdr,sizeof(hdr),1,fin);
+      |     ~~~~~^~~~~~~~~~~~~~~~~~~~~~~~
+src/aceapex_main.cpp:1673:10: warning: ignoring return value of 'size_t fread(void*, size_t, size_t, FILE*)' declared with attribute 'warn_unused_result' [-Wunused-result]
+ 1673 |     fread(boffs.data(),sizeof(BlockOffsets),nb,fin);
+      |     ~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+src/aceapex_main.cpp:1680:10: warning: ignoring return value of 'size_t fread(void*, size_t, size_t, FILE*)' declared with attribute 'warn_unused_result' [-Wunused-result]
+ 1680 |     fread(zlit,1,hdr.zlit_sz,fin); fread(zoff,1,hdr.zoff_sz,fin);
+      |     ~~~~~^~~~~~~~~~~~~~~~~~~~~~~~
+src/aceapex_main.cpp:1680:41: warning: ignoring return value of 'size_t fread(void*, size_t, size_t, FILE*)' declared with attribute 'warn_unused_result' [-Wunused-result]
+ 1680 |     fread(zlit,1,hdr.zlit_sz,fin); fread(zoff,1,hdr.zoff_sz,fin);
+      |                                    ~~~~~^~~~~~~~~~~~~~~~~~~~~~~~
+src/aceapex_main.cpp:1681:10: warning: ignoring return value of 'size_t fread(void*, size_t, size_t, FILE*)' declared with attribute 'warn_unused_result' [-Wunused-result]
+ 1681 |     fread(zlen,1,hdr.zlen_sz,fin); fread(zcmd,1,hdr.zcmd_sz,fin);
+      |     ~~~~~^~~~~~~~~~~~~~~~~~~~~~~~
+src/aceapex_main.cpp:1681:41: warning: ignoring return value of 'size_t fread(void*, size_t, size_t, FILE*)' declared with attribute 'warn_unused_result' [-Wunused-result]
+ 1681 |     fread(zlen,1,hdr.zlen_sz,fin); fread(zcmd,1,hdr.zcmd_sz,fin);
+      |                                    ~~~~~^~~~~~~~~~~~~~~~~~~~~~~~
+src/aceapex_main.cpp: In function 'int do_test(const char*, int, int)':
+src/aceapex_main.cpp:1783:10: warning: ignoring return value of 'size_t fread(void*, size_t, size_t, FILE*)' declared with attribute 'warn_unused_result' [-Wunused-result]
+ 1783 |     fread(src,1,src_size,fin); fclose(fin);
+      |     ~~~~~^~~~~~~~~~~~~~~~~~~~
+g++ -o aceapex src/aceapex_api.o -lpthread /home/runner/work/hw-apex-bench/hw-apex-bench/.work/v220-check/aceapex_open-009446f28d/deps/zstd/lib/libzstd.a
+make: Leaving directory '/home/runner/work/hw-apex-bench/hw-apex-bench/.work/v220-check/aceapex_open-009446f28d/deps/aceapex'
++ git -C /home/runner/work/hw-apex-bench/hw-apex-bench/.work/v220-check/aceapex_open-009446f28d/deps/aceapex rev-parse HEAD
++ git -C /home/runner/work/hw-apex-bench/hw-apex-bench/.work/v220-check/aceapex_open-009446f28d/deps/aceapex status --porcelain --untracked-files=no
++ git -C /home/runner/work/hw-apex-bench/hw-apex-bench/.work/v220-check/aceapex_open-009446f28d/deps/aceapex submodule status --recursive
++ git -C /home/runner/work/hw-apex-bench/hw-apex-bench/.work/v220-check/aceapex_open-009446f28d/deps/aceapex submodule foreach --quiet --recursive 'test -z "$(git status --porcelain --untracked-files=no)"'
++ git -C /home/runner/work/hw-apex-bench/hw-apex-bench/.work/v220-check/aceapex_open-009446f28d/deps/zstd rev-parse HEAD
++ git -C /home/runner/work/hw-apex-bench/hw-apex-bench/.work/v220-check/aceapex_open-009446f28d/deps/zstd status --porcelain --untracked-files=no
++ git -C /home/runner/work/hw-apex-bench/hw-apex-bench/.work/v220-check/aceapex_open-009446f28d/deps/zstd submodule status --recursive
++ git -C /home/runner/work/hw-apex-bench/hw-apex-bench/.work/v220-check/aceapex_open-009446f28d/deps/zstd submodule foreach --quiet --recursive 'test -z "$(git status --porcelain --untracked-files=no)"'
++ bash /home/runner/work/hw-apex-bench/hw-apex-bench/codecs/aceapex_open.sh _call codec_library
++ /usr/bin/python3 /home/runner/work/hw-apex-bench/hw-apex-bench/harness/resident_fixture.py /home/runner/work/hw-apex-bench/hw-apex-bench/.work/v220-check/aceapex_open-009446f28d/fixtures-4yukir9s/corpus
++ bash /home/runner/work/hw-apex-bench/hw-apex-bench/codecs/aceapex_open.sh _call codec_compress /home/runner/work/hw-apex-bench/hw-apex-bench/.work/v220-check/aceapex_open-009446f28d/fixtures-4yukir9s/mixed.input /home/runner/work/hw-apex-bench/hw-apex-bench/.work/v220-check/aceapex_open-009446f28d/fixtures-4yukir9s/mixed.archive 16384
+[*] Compress: /home/runner/work/hw-apex-bench/hw-apex-bench/.work/v220-check/aceapex_open-009446f28d/fixtures-4yukir9s/mixed.input (5.59 MB) threads=1
+  Original:          5593136 bytes
+  Compressed:         550709 bytes
+  Ratio:  10.15625x
+  Phase LZ77:    0.017s
+  Phase lit/zstd:0.005s
+  Phase FSE:     0.002s
+  Phase fread:   0.000s
+  Phase sha256:  0.000s
+  Phase other:   0.000s
+  Encode: 228.99 MB/s  (0.024s)
+  XXH3:   cdeb537fcb192fe4
++ bash /home/runner/work/hw-apex-bench/hw-apex-bench/codecs/aceapex_open.sh _call codec_artifacts /home/runner/work/hw-apex-bench/hw-apex-bench/.work/v220-check/aceapex_open-009446f28d/fixtures-4yukir9s/mixed.archive
++ bash /home/runner/work/hw-apex-bench/hw-apex-bench/codecs/aceapex_open.sh _call codec_decompress /home/runner/work/hw-apex-bench/hw-apex-bench/.work/v220-check/aceapex_open-009446f28d/fixtures-4yukir9s/mixed.archive /home/runner/work/hw-apex-bench/hw-apex-bench/.work/v220-check/aceapex_open-009446f28d/fixtures-4yukir9s/mixed.restored
+[*] Decompress: /home/runner/work/hw-apex-bench/hw-apex-bench/.work/v220-check/aceapex_open-009446f28d/fixtures-4yukir9s/mixed.archive -> /home/runner/work/hw-apex-bench/hw-apex-bench/.work/v220-check/aceapex_open-009446f28d/fixtures-4yukir9s/mixed.restored
+  Phase entropy (4 streams in parallel): 0.012s
+  Phase lz77: 0.010s
+  Decode: 255.00 MB/s  (0.022s, algorithmic)
+  Decode wall: 239.11 MB/s  (0.023s, wall clock)
++ bash /home/runner/work/hw-apex-bench/hw-apex-bench/codecs/aceapex_open.sh _call codec_sidecar /home/runner/work/hw-apex-bench/hw-apex-bench/.work/v220-check/aceapex_open-009446f28d/fixtures-4yukir9s/mixed.archive
++ /usr/bin/python3 /home/runner/work/hw-apex-bench/hw-apex-bench/harness/resident_probe.py --adapter /home/runner/work/hw-apex-bench/hw-apex-bench/codecs/aceapex_open.sh --library /home/runner/work/hw-apex-bench/hw-apex-bench/.work/v220-check/aceapex_open-009446f28d/context.so --archive /home/runner/work/hw-apex-bench/hw-apex-bench/.work/v220-check/aceapex_open-009446f28d/fixtures-4yukir9s/mixed.archive --original /home/runner/work/hw-apex-bench/hw-apex-bench/.work/v220-check/aceapex_open-009446f28d/fixtures-4yukir9s/mixed.input --granularity 16384
++ bash /home/runner/work/hw-apex-bench/hw-apex-bench/codecs/aceapex_open.sh _call codec_region /home/runner/work/hw-apex-bench/hw-apex-bench/.work/v220-check/aceapex_open-009446f28d/fixtures-4yukir9s/mixed.archive 16383 32779 /home/runner/work/hw-apex-bench/hw-apex-bench/.work/v220-check/aceapex_open-009446f28d/fixtures-4yukir9s/region.out
++ bash /home/runner/work/hw-apex-bench/hw-apex-bench/codecs/aceapex_open.sh _call codec_compress /home/runner/work/hw-apex-bench/hw-apex-bench/.work/v220-check/aceapex_open-009446f28d/fixtures-4yukir9s/one-byte.input /home/runner/work/hw-apex-bench/hw-apex-bench/.work/v220-check/aceapex_open-009446f28d/fixtures-4yukir9s/one-byte.archive 16384
+[*] Compress: /home/runner/work/hw-apex-bench/hw-apex-bench/.work/v220-check/aceapex_open-009446f28d/fixtures-4yukir9s/one-byte.input (0.00 MB) threads=1
+  Original:                1 bytes
+  Compressed:             61 bytes
+  Ratio:  0.01639x
+  Phase LZ77:    0.002s
+  Phase lit/zstd:0.000s
+  Phase FSE:     0.003s
+  Phase fread:   0.000s
+  Phase sha256:  0.000s
+  Phase other:   0.000s
+  Encode: 0.00 MB/s  (0.005s)
+  XXH3:   715e1e961e1e0537
++ bash /home/runner/work/hw-apex-bench/hw-apex-bench/codecs/aceapex_open.sh _call codec_artifacts /home/runner/work/hw-apex-bench/hw-apex-bench/.work/v220-check/aceapex_open-009446f28d/fixtures-4yukir9s/one-byte.archive
++ bash /home/runner/work/hw-apex-bench/hw-apex-bench/codecs/aceapex_open.sh _call codec_decompress /home/runner/work/hw-apex-bench/hw-apex-bench/.work/v220-check/aceapex_open-009446f28d/fixtures-4yukir9s/one-byte.archive /home/runner/work/hw-apex-bench/hw-apex-bench/.work/v220-check/aceapex_open-009446f28d/fixtures-4yukir9s/one-byte.restored
+[*] Decompress: /home/runner/work/hw-apex-bench/hw-apex-bench/.work/v220-check/aceapex_open-009446f28d/fixtures-4yukir9s/one-byte.archive -> /home/runner/work/hw-apex-bench/hw-apex-bench/.work/v220-check/aceapex_open-009446f28d/fixtures-4yukir9s/one-byte.restored
+  Phase entropy (4 streams in parallel): 0.002s
+  Phase lz77: 0.000s
+  Decode: 0.00 MB/s  (0.002s, algorithmic)
+  Decode wall: 0.00 MB/s  (0.002s, wall clock)
++ bash /home/runner/work/hw-apex-bench/hw-apex-bench/codecs/aceapex_open.sh _call codec_sidecar /home/runner/work/hw-apex-bench/hw-apex-bench/.work/v220-check/aceapex_open-009446f28d/fixtures-4yukir9s/one-byte.archive
++ /usr/bin/python3 /home/runner/work/hw-apex-bench/hw-apex-bench/harness/resident_probe.py --adapter /home/runner/work/hw-apex-bench/hw-apex-bench/codecs/aceapex_open.sh --library /home/runner/work/hw-apex-bench/hw-apex-bench/.work/v220-check/aceapex_open-009446f28d/context.so --archive /home/runner/work/hw-apex-bench/hw-apex-bench/.work/v220-check/aceapex_open-009446f28d/fixtures-4yukir9s/one-byte.archive --original /home/runner/work/hw-apex-bench/hw-apex-bench/.work/v220-check/aceapex_open-009446f28d/fixtures-4yukir9s/one-byte.input --granularity 16384
++ bash /home/runner/work/hw-apex-bench/hw-apex-bench/codecs/aceapex_open.sh _call codec_region /home/runner/work/hw-apex-bench/hw-apex-bench/.work/v220-check/aceapex_open-009446f28d/fixtures-4yukir9s/one-byte.archive 1 0 /home/runner/work/hw-apex-bench/hw-apex-bench/.work/v220-check/aceapex_open-009446f28d/fixtures-4yukir9s/region.out
++ bash /home/runner/work/hw-apex-bench/hw-apex-bench/codecs/aceapex_open.sh _call codec_compress /home/runner/work/hw-apex-bench/hw-apex-bench/.work/v220-check/aceapex_open-009446f28d/fixtures-4yukir9s/empty.input /home/runner/work/hw-apex-bench/hw-apex-bench/.work/v220-check/aceapex_open-009446f28d/fixtures-4yukir9s/empty.archive 16384
+[*] Compress: /home/runner/work/hw-apex-bench/hw-apex-bench/.work/v220-check/aceapex_open-009446f28d/fixtures-4yukir9s/empty.input (0 bytes) -> empty archive, 68 bytes
++ bash /home/runner/work/hw-apex-bench/hw-apex-bench/codecs/aceapex_open.sh _call codec_artifacts /home/runner/work/hw-apex-bench/hw-apex-bench/.work/v220-check/aceapex_open-009446f28d/fixtures-4yukir9s/empty.archive
++ bash /home/runner/work/hw-apex-bench/hw-apex-bench/codecs/aceapex_open.sh _call codec_decompress /home/runner/work/hw-apex-bench/hw-apex-bench/.work/v220-check/aceapex_open-009446f28d/fixtures-4yukir9s/empty.archive /home/runner/work/hw-apex-bench/hw-apex-bench/.work/v220-check/aceapex_open-009446f28d/fixtures-4yukir9s/empty.restored
+[*] Decompress: /home/runner/work/hw-apex-bench/hw-apex-bench/.work/v220-check/aceapex_open-009446f28d/fixtures-4yukir9s/empty.archive -> /home/runner/work/hw-apex-bench/hw-apex-bench/.work/v220-check/aceapex_open-009446f28d/fixtures-4yukir9s/empty.restored
+  Empty archive: 0 bytes written, hash OK
++ bash /home/runner/work/hw-apex-bench/hw-apex-bench/codecs/aceapex_open.sh _call codec_sidecar /home/runner/work/hw-apex-bench/hw-apex-bench/.work/v220-check/aceapex_open-009446f28d/fixtures-4yukir9s/empty.archive
++ /usr/bin/python3 /home/runner/work/hw-apex-bench/hw-apex-bench/harness/resident_probe.py --adapter /home/runner/work/hw-apex-bench/hw-apex-bench/codecs/aceapex_open.sh --library /home/runner/work/hw-apex-bench/hw-apex-bench/.work/v220-check/aceapex_open-009446f28d/context.so --archive /home/runner/work/hw-apex-bench/hw-apex-bench/.work/v220-check/aceapex_open-009446f28d/fixtures-4yukir9s/empty.archive --original /home/runner/work/hw-apex-bench/hw-apex-bench/.work/v220-check/aceapex_open-009446f28d/fixtures-4yukir9s/empty.input --granularity 16384
++ bash /home/runner/work/hw-apex-bench/hw-apex-bench/codecs/aceapex_open.sh _call codec_region /home/runner/work/hw-apex-bench/hw-apex-bench/.work/v220-check/aceapex_open-009446f28d/fixtures-4yukir9s/empty.archive 0 0 /home/runner/work/hw-apex-bench/hw-apex-bench/.work/v220-check/aceapex_open-009446f28d/fixtures-4yukir9s/region.out
++ bash /home/runner/work/hw-apex-bench/hw-apex-bench/codecs/aceapex_open.sh _call codec_compress /home/runner/work/hw-apex-bench/hw-apex-bench/.work/v220-check/aceapex_open-009446f28d/fixtures-4yukir9s/exact-block.input /home/runner/work/hw-apex-bench/hw-apex-bench/.work/v220-check/aceapex_open-009446f28d/fixtures-4yukir9s/exact-block.archive 16384
+[*] Compress: /home/runner/work/hw-apex-bench/hw-apex-bench/.work/v220-check/aceapex_open-009446f28d/fixtures-4yukir9s/exact-block.input (0.02 MB) threads=1
+  Original:            16384 bytes
+  Compressed:            334 bytes
+  Ratio:  49.05389x
+  Phase LZ77:    0.002s
+  Phase lit/zstd:0.000s
+  Phase FSE:     0.003s
+  Phase fread:   0.000s
+  Phase sha256:  0.000s
+  Phase other:   0.000s
+  Encode: 3.14 MB/s  (0.005s)
+  XXH3:   168f7fb4781d0831
++ bash /home/runner/work/hw-apex-bench/hw-apex-bench/codecs/aceapex_open.sh _call codec_artifacts /home/runner/work/hw-apex-bench/hw-apex-bench/.work/v220-check/aceapex_open-009446f28d/fixtures-4yukir9s/exact-block.archive
++ bash /home/runner/work/hw-apex-bench/hw-apex-bench/codecs/aceapex_open.sh _call codec_decompress /home/runner/work/hw-apex-bench/hw-apex-bench/.work/v220-check/aceapex_open-009446f28d/fixtures-4yukir9s/exact-block.archive /home/runner/work/hw-apex-bench/hw-apex-bench/.work/v220-check/aceapex_open-009446f28d/fixtures-4yukir9s/exact-block.restored
+[*] Decompress: /home/runner/work/hw-apex-bench/hw-apex-bench/.work/v220-check/aceapex_open-009446f28d/fixtures-4yukir9s/exact-block.archive -> /home/runner/work/hw-apex-bench/hw-apex-bench/.work/v220-check/aceapex_open-009446f28d/fixtures-4yukir9s/exact-block.restored
+  Phase entropy (4 streams in parallel): 0.002s
+  Phase lz77: 0.000s
+  Decode: 9.33 MB/s  (0.002s, algorithmic)
+  Decode wall: 8.78 MB/s  (0.002s, wall clock)
++ bash /home/runner/work/hw-apex-bench/hw-apex-bench/codecs/aceapex_open.sh _call codec_sidecar /home/runner/work/hw-apex-bench/hw-apex-bench/.work/v220-check/aceapex_open-009446f28d/fixtures-4yukir9s/exact-block.archive
++ /usr/bin/python3 /home/runner/work/hw-apex-bench/hw-apex-bench/harness/resident_probe.py --adapter /home/runner/work/hw-apex-bench/hw-apex-bench/codecs/aceapex_open.sh --library /home/runner/work/hw-apex-bench/hw-apex-bench/.work/v220-check/aceapex_open-009446f28d/context.so --archive /home/runner/work/hw-apex-bench/hw-apex-bench/.work/v220-check/aceapex_open-009446f28d/fixtures-4yukir9s/exact-block.archive --original /home/runner/work/hw-apex-bench/hw-apex-bench/.work/v220-check/aceapex_open-009446f28d/fixtures-4yukir9s/exact-block.input --granularity 16384
++ bash /home/runner/work/hw-apex-bench/hw-apex-bench/codecs/aceapex_open.sh _call codec_region /home/runner/work/hw-apex-bench/hw-apex-bench/.work/v220-check/aceapex_open-009446f28d/fixtures-4yukir9s/exact-block.archive 16383 1 /home/runner/work/hw-apex-bench/hw-apex-bench/.work/v220-check/aceapex_open-009446f28d/fixtures-4yukir9s/region.out
++ bash /home/runner/work/hw-apex-bench/hw-apex-bench/codecs/aceapex_open.sh _call codec_compress /home/runner/work/hw-apex-bench/hw-apex-bench/.work/v220-check/aceapex_open-009446f28d/fixtures-4yukir9s/cross-block.input /home/runner/work/hw-apex-bench/hw-apex-bench/.work/v220-check/aceapex_open-009446f28d/fixtures-4yukir9s/cross-block.archive 16384
+[*] Compress: /home/runner/work/hw-apex-bench/hw-apex-bench/.work/v220-check/aceapex_open-009446f28d/fixtures-4yukir9s/cross-block.input (0.05 MB) threads=1
+  Original:            49169 bytes
+  Compressed:            873 bytes
+  Ratio:  56.32188x
+  Phase LZ77:    0.002s
+  Phase lit/zstd:0.000s
+  Phase FSE:     0.003s
+  Phase fread:   0.000s
+  Phase sha256:  0.000s
+  Phase other:   0.000s
+  Encode: 9.18 MB/s  (0.005s)
+  XXH3:   6637f9314a31ea7b
++ bash /home/runner/work/hw-apex-bench/hw-apex-bench/codecs/aceapex_open.sh _call codec_artifacts /home/runner/work/hw-apex-bench/hw-apex-bench/.work/v220-check/aceapex_open-009446f28d/fixtures-4yukir9s/cross-block.archive
++ bash /home/runner/work/hw-apex-bench/hw-apex-bench/codecs/aceapex_open.sh _call codec_decompress /home/runner/work/hw-apex-bench/hw-apex-bench/.work/v220-check/aceapex_open-009446f28d/fixtures-4yukir9s/cross-block.archive /home/runner/work/hw-apex-bench/hw-apex-bench/.work/v220-check/aceapex_open-009446f28d/fixtures-4yukir9s/cross-block.restored
+[*] Decompress: /home/runner/work/hw-apex-bench/hw-apex-bench/.work/v220-check/aceapex_open-009446f28d/fixtures-4yukir9s/cross-block.archive -> /home/runner/work/hw-apex-bench/hw-apex-bench/.work/v220-check/aceapex_open-009446f28d/fixtures-4yukir9s/cross-block.restored
+  Phase entropy (4 streams in parallel): 0.002s
+  Phase lz77: 0.005s
+  Decode: 7.25 MB/s  (0.007s, algorithmic)
+  Decode wall: 7.11 MB/s  (0.007s, wall clock)
++ bash /home/runner/work/hw-apex-bench/hw-apex-bench/codecs/aceapex_open.sh _call codec_sidecar /home/runner/work/hw-apex-bench/hw-apex-bench/.work/v220-check/aceapex_open-009446f28d/fixtures-4yukir9s/cross-block.archive
++ /usr/bin/python3 /home/runner/work/hw-apex-bench/hw-apex-bench/harness/resident_probe.py --adapter /home/runner/work/hw-apex-bench/hw-apex-bench/codecs/aceapex_open.sh --library /home/runner/work/hw-apex-bench/hw-apex-bench/.work/v220-check/aceapex_open-009446f28d/context.so --archive /home/runner/work/hw-apex-bench/hw-apex-bench/.work/v220-check/aceapex_open-009446f28d/fixtures-4yukir9s/cross-block.archive --original /home/runner/work/hw-apex-bench/hw-apex-bench/.work/v220-check/aceapex_open-009446f28d/fixtures-4yukir9s/cross-block.input --granularity 16384
++ bash /home/runner/work/hw-apex-bench/hw-apex-bench/codecs/aceapex_open.sh _call codec_region /home/runner/work/hw-apex-bench/hw-apex-bench/.work/v220-check/aceapex_open-009446f28d/fixtures-4yukir9s/cross-block.archive 16383 32779 /home/runner/work/hw-apex-bench/hw-apex-bench/.work/v220-check/aceapex_open-009446f28d/fixtures-4yukir9s/region.out

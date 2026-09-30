@@ -1,5 +1,6 @@
 # Results by scope
 
+- [ACEAPEX v2.2.0 refresh, 2026-09-30](ACEAPEX_V220_20260930.md): five separate CPU axes, frozen raw samples, external Blackwell GPU import and explicit limits.
 - [Complete historical CPU report](FULL_REPORT.md): all former README tables,
   machine identity, methods, commands and review boundaries.
 - [Nine-axis coverage](AXES_RESULTS.md): implemented, measured and unsupported points.

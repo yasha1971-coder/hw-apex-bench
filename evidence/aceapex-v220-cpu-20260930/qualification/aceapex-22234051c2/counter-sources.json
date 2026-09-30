@@ -1,0 +1,7 @@
+{
+  "upstream_c_decoder_sha256": "f856b3d2506128459e7d444b31f693322baa0f2067ff3bb6dcf88b4720cab1b2",
+  "instrumented_c_decoder_sha256": "73eb1d333c8dd0af31d3b065138ae59f1afe3edff90803fd1ef10c244f3c1960",
+  "wrapper_sha256": "be8a459a3f1f7c8e42141a7d7ab3b69d2653b79536541551d07d47cb76b1a36e",
+  "counter_library_sha256": "669aa242e39aa687bc303cb8bf23b418db106550f290b586aa70c5e5fa10e8fc",
+  "instrumentation": "count decoded raw chunk bytes only on persistent-cache miss"
+}
