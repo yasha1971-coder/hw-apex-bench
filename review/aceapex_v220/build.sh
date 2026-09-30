@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 set -euo pipefail
 root=$(cd -- "$(dirname -- "$0")/../.." && pwd)
-work=${1:?new build dir}
-out=${2:?new output dir}
+work=$(realpath -m "${1:?new build dir}")
+out=$(realpath -m "${2:?new output dir}")
 [[ ! -e "$work" && ! -e "$out" ]] || { echo "STOP: output exists" >&2; exit 1; }
 
 # Frozen benchmark dependencies.
