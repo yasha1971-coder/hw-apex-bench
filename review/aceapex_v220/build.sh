@@ -69,7 +69,7 @@ gcc -O3 -I"$work/htslib" "$root/review/matched_g/bgzf_encode_g.c" \
 mkdir -p "$out/bgzf-counter/deps"
 ln -s "$work/htslib" "$out/bgzf-counter/deps/htslib"
 ln -s "$work/libdeflate" "$out/bgzf-counter/deps/libdeflate"
-ln -s "$work/libdeflate-build" "$out/bgzf-counter/libdeflate-build"
+ln -s "$work/libdeflate-pic-build" "$out/bgzf-counter/libdeflate-build"
 python3 "$root/codecs/counters.py" bgzip "$out/bgzf-counter"
 cp "$out/bgzf-counter/counter-context.so" "$out/bgzf-counter-context.so"
 cp "$out/bgzf-counter/counter-sources.json" "$out/bgzf-counter-sources.json"
