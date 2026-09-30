@@ -59,9 +59,9 @@ codec_compress() {
   local input=$1 output=$2 g=$3
   [[ "$g" =~ ^[0-9]+$ && "$g" -ge 4096 && "$g" -le 4294967295 ]] || return 2
   if [[ "$ACE_MODE" == open ]]; then
-    env -u MIN_MATCH -u AX_TOK -u AX_LIT       ACEAPEX_BS="$g" LIT_CHUNK=65536 FSE_CHUNK=4096 AX_PROFILE=open       "$HB_CHECK_WORK/aceapex-cli" c --in "$input" --out "$output" --threads 1 --level 2
+    env -u MIN_MATCH -u AX_TOK -u AX_LIT -u AX_ENC       ACEAPEX_BS="$g" LIT_CHUNK=65536 FSE_CHUNK=4096 AX_PROFILE=open       "$HB_CHECK_WORK/aceapex-cli" c --in "$input" --out "$output" --threads 1 --level 2
   else
-    env -u MIN_MATCH -u AX_PROFILE -u AX_TOK -u AX_LIT       ACEAPEX_BS="$g" LIT_CHUNK=65536 FSE_CHUNK=4096       "$HB_CHECK_WORK/aceapex-cli" c --in "$input" --out "$output" --threads 1 --level 2
+    env -u MIN_MATCH -u AX_PROFILE -u AX_TOK -u AX_LIT -u AX_ENC       ACEAPEX_BS="$g" LIT_CHUNK=65536 FSE_CHUNK=4096       "$HB_CHECK_WORK/aceapex-cli" c --in "$input" --out "$output" --threads 1 --level 2
   fi
 }
 codec_decompress() { "$HB_CHECK_WORK/aceapex-cli" d --in "$1" --out "$2"; }
