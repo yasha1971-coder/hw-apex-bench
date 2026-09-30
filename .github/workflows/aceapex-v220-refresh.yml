@@ -1,0 +1,125 @@
+name: ACEAPEX v2.2.0 refresh
+
+on:
+  pull_request:
+    types: [opened]
+    paths:
+      - 'codecs/aceapex.sh'
+      - 'codecs/aceapex_open.sh'
+      - 'review/aceapex_v220/**'
+      - 'review/aceapex_upgrade/adapter_common.sh'
+      - '.github/workflows/aceapex-v220-refresh.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  qualify-and-import:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install build prerequisites
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq build-essential cmake git python3 zlib1g-dev pkg-config
+      - name: Qualify v2.2.0 interactive adapter
+        run: ./run.sh --check codecs/aceapex.sh --work .work/v220-check
+      - name: Qualify v2.2.0 open adapter
+        run: ./run.sh --check codecs/aceapex_open.sh --work .work/v220-check
+      - name: Verify external GPU import
+        run: python3 review/aceapex_v220/check_gpu_import.py
+      - name: Retain qualification receipts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: aceapex-v220-adapter-receipts
+          path: |
+            .work/v220-check/**/check.json
+            .work/v220-check/**/check.log
+            .work/v220-check/**/counter-sources.json
+
+  cpu-refresh:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 300
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install prerequisites
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq build-essential cmake git python3 zlib1g-dev pkg-config curl
+      - name: Download and verify T2T-CHM13v2.0
+        run: |
+          mkdir -p .work/source
+          curl --fail --location --retry 3 \
+            https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/009/914/755/GCA_009914755.4_T2T-CHM13v2.0/GCA_009914755.4_T2T-CHM13v2.0_genomic.fna.gz \
+            -o .work/source/t2t.fna.gz
+          echo '9280657210e4161147cbe13b022225b9  .work/source/t2t.fna.gz' | md5sum -c -
+          gzip -dc .work/source/t2t.fna.gz > .work/source/t2t.fa
+          test "$(stat -c%s .work/source/t2t.fa)" = 3156259565
+          echo 'cd1e52ce400c027ed0b7ab4b9d613f5a  .work/source/t2t.fa' | md5sum -c -
+      - name: Recreate the exact thirty frozen windows
+        run: |
+          python3 review/t2t_regions/prepare.py \
+            --fasta .work/source/t2t.fa \
+            --report evidence/t2t-regions-20260916/GCA_009914755.4_T2T-CHM13v2.0_assembly_report.txt \
+            --censat evidence/t2t-regions-20260916/chm13v2.0_censat_v2.1.bed \
+            --telomeres evidence/t2t-regions-20260916/chm13v2.0_telomere.bed \
+            --out .work/windows
+          rm -f .work/source/t2t.fa .work/source/t2t.fna.gz
+      - name: Download and verify hg38 chr1
+        run: |
+          curl --fail --location --retry 3 \
+            https://hgdownload.soe.ucsc.edu/goldenPath/hg38/chromosomes/chr1.fa.gz \
+            -o .work/source/chr1.fa.gz
+          gzip -dc .work/source/chr1.fa.gz > .work/source/chr1.fa
+          rm .work/source/chr1.fa.gz
+          test "$(stat -c%s .work/source/chr1.fa)" = 253935557
+          echo '9465e0f0df6e2c6eb39729c39cee5465  .work/source/chr1.fa' | md5sum -c -
+      - name: Build exact pinned bundle
+        run: bash review/aceapex_v220/build.sh .work/build .work/native
+      - name: Show binary and library provenance
+        run: |
+          cat .work/native/PINS
+          cat .work/native/aceapex-v220.sha256
+          cat .work/native/zstd-version.txt
+      - name: Run full v2.2.0 refresh
+        run: |
+          python3 review/aceapex_v220/run.py \
+            --inputs .work/windows \
+            --chr1 .work/source/chr1.fa \
+            --native .work/native \
+            --out /tmp/aceapex-v220 \
+            --actions-run-id "$GITHUB_RUN_ID"
+      - name: Show compact measured summary
+        run: |
+          python3 - <<'PY'
+          import json
+          d=json.load(open('/tmp/aceapex-v220/results.json'))
+          for r in d['matched_g']['rows']:
+              print(r['g'],r['codec'],'ratio',round(r['ratio_file'],6),'p50',round(r['region_p50_ms'],6),
+                    'p99',round(r['region_p99_ms'],6),'amp',round(r['amplification'],6),'be',r['break_even_n'])
+          for r in d['c_g']['rows']:
+              print('c(g)',r['encoder'],r['c_g_percent'],r['g16k']['archive_bytes'],r['whole']['archive_bytes'])
+          PY
+      - name: Retain complete CPU evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: aceapex-v220-cpu-refresh
+          path: |
+            /tmp/aceapex-v220/results.json
+            /tmp/aceapex-v220/matched-g/results.json
+            /tmp/aceapex-v220/matched-g/region-samples.jsonl
+            /tmp/aceapex-v220/matched-g/amplification-samples.jsonl
+            /tmp/aceapex-v220/matched-g/full-decode-samples.jsonl
+            /tmp/aceapex-v220/matched-g/g*/configurations.json
+            /tmp/aceapex-v220/c-g/results.json
+            .work/native/PINS
+            .work/native/SHA256SUMS
+            .work/native/aceapex-v220.sha256
+            .work/native/zstd-version.txt
+            .work/native/ace-counter-sources.json
+            .work/native/zstd-counter-sources.json
+            .work/native/bgzf-counter-sources.json
