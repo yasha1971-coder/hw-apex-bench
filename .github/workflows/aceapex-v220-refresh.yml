@@ -2,7 +2,7 @@ name: ACEAPEX v2.2.0 refresh
 
 on:
   pull_request:
-    types: [opened]
+    types: [opened, synchronize]
     paths:
       - 'codecs/aceapex.sh'
       - 'codecs/aceapex_open.sh'
