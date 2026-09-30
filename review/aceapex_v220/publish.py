@@ -18,6 +18,7 @@ CHECKOUT = '876c0bef8f7b2c2681e9bd9c94bd2c88d2b09688'
 BASE = 'ec6cd69a203057ba3c9b8219684f8ac7450c0718'
 ACE = '0a143cd64b35a802835f18c361f981968edf25a1'
 BINARY = '9d5523717c5d33f9ec2fa0dc670324fecc847d0214dfc5fe85456b5c00497c06'
+RECEIPT = 'c08706f95981fb6b1fcfa804e705cb6b5e94a12ff388ca2ed74e4675ab9baa66'
 ARTIFACTS = {
     'cpu': (11115186898, 'be1ce4937041678bf396bfd3c98a821417d141f717073a50477920e151681717', 18),
     'qualification': (11115131449, '08d498dda02886a76924f0f59f37c1b13c4bd5687398775d714ff477ef26998a', 6),
@@ -105,6 +106,7 @@ def close(a, b, context: str) -> None:
 
 def validate(root: Path):
     out = root / EVIDENCE
+    require(sha((out / 'receipt.json').read_bytes()) == RECEIPT, 'source receipt hash')
     receipt = load(out / 'receipt.json')
     require(receipt['run_id'] == RUN and receipt['run_head_sha'] == RUN_HEAD, 'run identity')
     require(receipt['benchmark_checkout_sha'] == CHECKOUT, 'checkout identity')
@@ -245,6 +247,10 @@ Measured 2026-09-30. Publication-only continuation: **no measurements repeated**
 
 ## Scope and reading rules
 
+ADR-020 changes the DNA-default encoder to l1; the ACEPX2 format is unchanged.
+This is why encoder-dependent rows were measured afresh in the source run
+rather than copied from v2.1.0. This continuation only publishes that frozen run.
+
 CPU: thirty frozen 2 MiB T2T-CHM13v2.0 windows (60 MiB total),
 AMD EPYC 7763, Linux Azure runner, timed CPU 0. Exact common g is
 4096 / 8192 / 16384 / 32768 / 65280 B; 65280 B is not 64 KiB.
@@ -261,8 +267,8 @@ The measured shared resident decoder matches the interactive qualification SHA-2
 the open adapter receipt identifies a separate library binary. Both receipts
 record the same pinned decoder source; all measured open returns were byte-checked.
 
-**Ratio here is input/archive-file bytes.** Required BGZF .gzi sidecars are
-retained and listed, but excluded from this assignment's ratio. This is not the
+**Ratio here is input/archive-file bytes.** Required BGZF .gzi sidecar sizes
+and hashes are retained; sidecar bytes are excluded from this assignment's ratio. This is not the
 repository's general all-stored-bytes definition; do not splice these ratios
 into historical tables or claim a version speedup across different runs.
 The p50 win is not a universal latency win; p99 and decoded work remain visible.
