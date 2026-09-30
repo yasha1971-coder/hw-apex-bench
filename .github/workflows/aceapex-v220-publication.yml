@@ -1,0 +1,63 @@
+name: ACEAPEX v2.2 publication integrity
+
+# Publication-only: imports the already successful run; never calls a codec.
+# The temporary importer is sealed to read-only validation after its first commit.
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/aceapex-v220-publication.yml'
+      - 'review/aceapex_v220/publish.py'
+      - 'evidence/aceapex-v220-cpu-20260930/**'
+      - 'docs/RESULTS/ACEAPEX_V220_20260930.md'
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  frozen-publication:
+    if: github.event.pull_request.number == 61 && github.event.pull_request.head.repo.full_name == github.repository && github.event.pull_request.head.ref == 'upgrade/aceapex-v220'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    permissions:
+      contents: write
+      actions: read
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+      - name: Import only the hash-pinned successful artifacts
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          if test ! -f evidence/aceapex-v220-cpu-20260930/receipt.json; then
+            gh api repos/yasha1971-coder/hw-apex-bench/actions/runs/36751391857 > /tmp/source-run.json
+            python3 - <<'PY'
+          import json
+          r=json.load(open('/tmp/source-run.json'))
+          assert r['status']=='completed' and r['conclusion']=='success'
+          assert r['head_sha']=='a22075e3f3b51a012bb6dff34d5e5643e43e428f'
+          PY
+            gh api repos/yasha1971-coder/hw-apex-bench/actions/artifacts/11115186898/zip > /tmp/cpu.zip
+            gh api repos/yasha1971-coder/hw-apex-bench/actions/artifacts/11115131449/zip > /tmp/qualification.zip
+            python3 review/aceapex_v220/publish.py --cpu-zip /tmp/cpu.zip --qualification-zip /tmp/qualification.zip
+          fi
+          python3 review/aceapex_v220/publish.py --check
+      - name: Commit only publication files to the same PR branch
+        env:
+          EXPECTED_HEAD: ${{ github.event.pull_request.head.sha }}
+        run: |
+          set -euo pipefail
+          git add evidence/aceapex-v220-cpu-20260930 docs/RESULTS/ACEAPEX_V220_20260930.md docs/RESULTS/README.md
+          if git diff --cached --quiet; then exit 0; fi
+          python3 - <<'PY'
+          import subprocess
+          paths=subprocess.check_output(['git','diff','--cached','--name-only'],text=True).splitlines()
+          assert all(p.startswith('evidence/aceapex-v220-cpu-20260930/') or p in ('docs/RESULTS/ACEAPEX_V220_20260930.md','docs/RESULTS/README.md') for p in paths)
+          PY
+          test "$(git ls-remote origin refs/heads/upgrade/aceapex-v220 | cut -f1)" = "$EXPECTED_HEAD"
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git commit -m 'Publish frozen ACEAPEX v2.2.0 evidence; no remeasurement'
+          git push origin HEAD:refs/heads/upgrade/aceapex-v220
