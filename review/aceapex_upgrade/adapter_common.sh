@@ -6,10 +6,10 @@ set -euo pipefail
 : "${ACE_MODE:?}"
 : "${ACE_VERSION:?}"
 
-codec_supports() { echo 'ratio encode decode region h_alpha batch break_even'; }
+codec_supports() { echo 'ratio encode decode region amplification h_alpha batch break_even'; }
 codec_unavailable() {
   cat <<'JSON'
-{"amplification":"modern persistent adapter counter path not wired","c_g":"version-specific c(g) is measured in the ACEAPEX upgrade review"}
+{"c_g":"version-specific c(g) is measured in the ACEAPEX upgrade review"}
 JSON
 }
 
@@ -30,7 +30,7 @@ codec_inputs() {
 }
 codec_library() { echo "$HB_CHECK_WORK/context.so"; }
 codec_build_artifacts() {
-  python3 -c 'import json,sys;print(json.dumps(sys.argv[1:]))'     "$(codec_library)" "$HB_CHECK_WORK/aceapex-cli"
+  python3 -c 'import json,sys;print(json.dumps(sys.argv[1:]))'     "$(codec_library)" "$(codec_counter_library)" "$HB_CHECK_WORK/counter-sources.json" "$HB_CHECK_WORK/aceapex-cli"
 }
 codec_artifacts() { python3 -c 'import json,sys;print(json.dumps([sys.argv[1]]))' "$1"; }
 
@@ -47,8 +47,12 @@ codec_build() (
   export HB_ACEAPEX="$HB_CHECK_WORK/deps/aceapex"
   hb_checkout https://github.com/yasha1971-coder/aceapex.git "$ACE_REF" "$HB_ACEAPEX"
   codec_context_build "$(codec_library)"
-  # Canonical upstream CLI: CMakeLists.txt and README both build src/aceapex_main.cpp.
-  g++ -O3 -std=c++17 -pthread -I"$HB_ACEAPEX/src" -I"$HB_ZSTD/lib"     "$HB_ACEAPEX/src/aceapex_main.cpp" "$HB_ZSTD/lib/libzstd.a" -o "$HB_CHECK_WORK/aceapex-cli"
+  make -C "$HB_ACEAPEX" clean
+  make -C "$HB_ACEAPEX" -j"$HB_JOBS" \
+    ZSTD_CFLAGS="-I$HB_ZSTD/lib" \
+    ZSTD_LIBS="$HB_ZSTD/lib/libzstd.a"
+  cp "$HB_ACEAPEX/aceapex" "$HB_CHECK_WORK/aceapex-cli"
+  python3 "$HB_ROOT/review/aceapex_v220/build_counter.py" "$HB_CHECK_WORK" "$ACE_VERSION"
 )
 
 codec_compress() {
@@ -64,3 +68,5 @@ codec_decompress() { "$HB_CHECK_WORK/aceapex-cli" d --in "$1" --out "$2"; }
 codec_encode_command() {
   python3 -c 'import json,sys; b,i,o,g,m=sys.argv[1:]; e={"ACEAPEX_BS":g,"LIT_CHUNK":"65536","FSE_CHUNK":"4096"}; e.update({"AX_PROFILE":"open"} if m=="open" else {}); print(json.dumps({"argv":[b,"c","--in",i,"--out",o,"--threads","1","--level","2"],"environment":e}))'     "$HB_CHECK_WORK/aceapex-cli" "$1" "$2" "$3" "$ACE_MODE"
 }
+
+codec_counter_library() { echo "$HB_CHECK_WORK/counter-context.so"; }
