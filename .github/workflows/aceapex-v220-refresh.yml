@@ -1,14 +1,8 @@
 name: ACEAPEX v2.2.0 refresh
 
+# Manual-only after verified refresh run 36751391857.
+# Evidence/report synchronization must not repeat this expensive measurement.
 on:
-  pull_request:
-    types: [opened, synchronize]
-    paths:
-      - 'codecs/aceapex.sh'
-      - 'codecs/aceapex_open.sh'
-      - 'review/aceapex_v220/**'
-      - 'review/aceapex_upgrade/adapter_common.sh'
-      - '.github/workflows/aceapex-v220-refresh.yml'
   workflow_dispatch:
 
 permissions:
