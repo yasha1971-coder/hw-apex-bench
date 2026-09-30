@@ -20,13 +20,13 @@ codec_version() { echo "$ACE_VERSION"; }
 codec_constraints() { echo '{"granularity":16384,"min_input_bytes":0}'; }
 codec_configuration() {
   if [[ "$ACE_MODE" == open ]]; then
-    printf '%s\n' '{"profile":"open","profile_selector":"AX_PROFILE=open","level":2,"encoder_requested_threads":1,"decoder_policy":"persistent C99 handle; one handle per benchmark context","granularity":16384,"lit_chunk":65536,"fse_chunk":4096,"reader_environment":{}}'
+    printf '%s\n' '{"profile":"open","profile_selector":"AX_PROFILE=open","encoder":"DNA default for pinned revision","level":2,"encoder_requested_threads":1,"decoder_policy":"persistent C99 handle; one handle per benchmark context","granularity":16384,"lit_chunk":65536,"fse_chunk":4096,"reader_environment":{}}'
   else
-    printf '%s\n' '{"profile":"interactive","level":2,"encoder_requested_threads":1,"decoder_policy":"persistent C99 handle; one handle per benchmark context","granularity":16384,"lit_chunk":65536,"fse_chunk":4096,"reader_environment":{}}'
+    printf '%s\n' '{"profile":"interactive","encoder":"DNA default for pinned revision","level":2,"encoder_requested_threads":1,"decoder_policy":"persistent C99 handle; one handle per benchmark context","granularity":16384,"lit_chunk":65536,"fse_chunk":4096,"reader_environment":{}}'
   fi
 }
 codec_inputs() {
-  python3 -c 'import json,sys;print(json.dumps(sys.argv[1:]))'     "$HB_ROOT/codecs/native/aceapex_persistent.c"     "$HB_ROOT/review/aceapex_upgrade/adapter_common.sh"     "${BASH_SOURCE[1]:-${BASH_SOURCE[0]}}"
+  python3 -c 'import json,sys;print(json.dumps(sys.argv[1:]))'     "$HB_ROOT/codecs/native/aceapex_persistent.c"     "$HB_ROOT/review/aceapex_upgrade/adapter_common.sh"     "$HB_ROOT/review/aceapex_v220/build_counter.py"     "${BASH_SOURCE[1]:-${BASH_SOURCE[0]}}"
 }
 codec_library() { echo "$HB_CHECK_WORK/context.so"; }
 codec_build_artifacts() {
