@@ -33,6 +33,8 @@ jobs:
           printf '%s  %s\n' 9280657210e4161147cbe13b022225b9 .work/regions/t2t.fa.gz | md5sum -c -
           gzip -dc .work/regions/t2t.fa.gz > .work/regions/t2t.fa
           printf '%s  %s\n' cd1e52ce400c027ed0b7ab4b9d613f5a .work/regions/t2t.fa | md5sum -c -
+          samtools faidx .work/regions/chr1.fa
+          samtools faidx .work/regions/t2t.fa
       - name: Generate identical deterministic request sets
         run: |
           set -euo pipefail
