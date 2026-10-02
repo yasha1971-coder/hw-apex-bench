@@ -1,0 +1,29 @@
+{
+  "codec": "lz4-frame",
+  "version": "runtime",
+  "version_command": [
+    "lz4",
+    "--version"
+  ],
+  "checksum_mode": "no-content-checksum",
+  "compress": [
+    "lz4",
+    "-q",
+    "--no-frame-crc",
+    "{input}",
+    "{archive}"
+  ],
+  "decompress": [
+    "lz4",
+    "-q",
+    "-d",
+    "-f",
+    "{archive}",
+    "{output}"
+  ],
+  "preflight": null,
+  "region": {
+    "supported": false,
+    "reason": "LZ4 frame has no random-access index in this axis"
+  }
+}
