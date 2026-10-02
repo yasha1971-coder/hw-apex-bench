@@ -1,6 +1,11 @@
 name: Freeze common region lists
 on:
   workflow_dispatch:
+  push:
+    branches: [axes/corruption-region-latency]
+    paths:
+      - 'review/new_axes_20261002/generate_regions.py'
+      - '.github/workflows/freeze-common-regions.yml'
 permissions:
   contents: write
 jobs:
