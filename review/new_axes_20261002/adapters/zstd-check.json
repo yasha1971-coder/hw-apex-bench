@@ -1,9 +1,31 @@
 {
   "codec": "zstd",
-  "version": "runtime: zstd --version",
+  "version": "runtime",
   "checksum_mode": "check",
-  "compress": ["zstd","-q","--check","{input}","-o","{archive}"],
-  "decompress": ["zstd","-q","-d","-f","{archive}","-o","{output}"],
+  "compress": [
+    "zstd",
+    "-q",
+    "--check",
+    "{input}",
+    "-o",
+    "{archive}"
+  ],
+  "decompress": [
+    "zstd",
+    "-q",
+    "-d",
+    "-f",
+    "{archive}",
+    "-o",
+    "{output}"
+  ],
   "preflight": null,
-  "region": {"supported": false, "reason": "plain zstd frame has no random-access index"}
+  "region": {
+    "supported": false,
+    "reason": "plain zstd frame has no random-access index"
+  },
+  "version_command": [
+    "zstd",
+    "--version"
+  ]
 }
