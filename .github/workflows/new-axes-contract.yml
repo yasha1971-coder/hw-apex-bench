@@ -1,0 +1,54 @@
+name: New axes contract checks
+on:
+  pull_request:
+    paths:
+      - 'regions/**'
+      - 'harness/corruption.py'
+      - 'harness/region_latency.py'
+      - 'harness/test_corruption.py'
+      - 'review/new_axes_20261002/**'
+      - '.github/workflows/new-axes-contract.yml'
+permissions:
+  contents: read
+jobs:
+  contract:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Unit-test deterministic corruption plan
+        run: |
+          set -euo pipefail
+          python3 -m unittest harness/test_corruption.py
+      - name: Validate frozen request sets
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import hashlib
+          from pathlib import Path
+          expected={
+            "regions/chr1-10000x5000.tsv":"9d392b18edae7f146c124ef9b125120b7bf36ab13f28b43919ca47a67632193f",
+            "regions/chr1-10000x5000.sha256.tsv":"aa322f5c5ad2038058b538864a8dcfe7b958f6fd28e12b0cb7b44c2d33debd31",
+            "regions/t2t-10000x5000.tsv":"ffcd908681e571524350b84a125440c2cdcb9a277e474e3b37ffc5720b301e96",
+            "regions/t2t-10000x5000.sha256.tsv":"9afe989c8d6d2595bf61bcbf4a5f582a8890f06e6e920197e5dee3c29c7420c2",
+          }
+          for name,want in expected.items():
+              p=Path(name); got=hashlib.sha256(p.read_bytes()).hexdigest()
+              if got != want: raise SystemExit(f"{name}: digest mismatch")
+              data=[x for x in p.read_text().splitlines() if x and not x.startswith("#")]
+              if len(data) != 10001: raise SystemExit(f"{name}: expected header plus 10000 rows")
+          print("PASS: frozen region lists and references")
+          PY
+      - name: Validate adapter contracts
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          for p in sorted(Path("review/new_axes_20261002/adapters").glob("*.json")):
+              d=json.loads(p.read_text())
+              for k in ("codec","version","checksum_mode","compress","decompress","region"):
+                  if k not in d: raise SystemExit(f"{p}: missing {k}")
+              if not isinstance(d["compress"],list) or not isinstance(d["decompress"],list):
+                  raise SystemExit(f"{p}: commands must be argv arrays")
+          print("PASS: adapter contracts")
+          PY
