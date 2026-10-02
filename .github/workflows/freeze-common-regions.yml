@@ -12,9 +12,16 @@ jobs:
   regions:
     if: github.ref == 'refs/heads/axes/corruption-region-latency'
     runs-on: ubuntu-24.04
+    env:
+      DEBIAN_FRONTEND: noninteractive
     timeout-minutes: 45
     steps:
       - uses: actions/checkout@v4
+      - name: Install FASTA indexer
+        run: |
+          set -euo pipefail
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq samtools
       - name: Download pinned FASTA sources
         run: |
           set -euo pipefail
