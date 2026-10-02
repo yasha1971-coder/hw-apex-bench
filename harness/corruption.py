@@ -70,7 +70,10 @@ def main():
     ap.add_argument("--cases",type=int,default=N)
     a=ap.parse_args()
     adapter=json.loads(a.adapter.read_text())
-    source=a.input.read_bytes(); clean=a.archive.read_bytes()
+    source=a.input.read_bytes()
+    a.archive.parent.mkdir(parents=True,exist_ok=True)
+    version=prepare(adapter,a.input,a.archive)
+    clean=a.archive.read_bytes()
     a.out.mkdir(parents=True,exist_ok=True)
     csvp=a.out/"cases.csv"; counts=Counter(); kind_counts=Counter()
     with tempfile.TemporaryDirectory(prefix="hw-corrupt-") as td, csvp.open("w",newline="") as fh:
@@ -89,7 +92,7 @@ def main():
             arc.unlink(missing_ok=True); out.unlink(missing_ok=True)
     summary={
       "schema":"corruption-robustness-v1","seed":SEED,"cases":a.cases,
-      "codec":adapter["codec"],"version":adapter["version"],"checksum_mode":adapter["checksum_mode"],
+      "codec":adapter["codec"],"version":version,"checksum_mode":adapter["checksum_mode"],
       "archive_bytes":len(clean),"archive_sha256":hashlib.sha256(clean).hexdigest(),
       "input_bytes":len(source),"input_sha256":hashlib.sha256(source).hexdigest(),
       "memory_limit_mib":a.memory_mib,"watchdog_seconds":10,
