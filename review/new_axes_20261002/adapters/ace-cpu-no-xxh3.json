@@ -23,11 +23,11 @@
     "{archive}"
   ],
   "decompress": [
-    "python3",
-    "review/new_axes_20261002/ace_cpu_adapter.py",
-    "decompress",
-    "no-xxh3",
+    ".work/axes-20261002/ace/aceapex-no-xxh3",
+    "d",
+    "--in",
     "{archive}",
+    "--out",
     "{output}"
   ],
   "preflight": null
