@@ -3,7 +3,7 @@ set -euo pipefail
 ROOT=$(cd -- "$(dirname -- "$0")/../.." && pwd)
 OUT=${1:-"$ROOT/.work/axes-20261002/ace"}
 SRC="$OUT/src"
-SHA=207bf0042dfd410f908f3b8eeb7bc8701bdbf3ee
+SHA=${ACE_SHA:-af5f56b3d4e9d54d25c58bfee25973bebbf9027a}
 mkdir -p "$OUT"
 rm -rf "$SRC"
 git clone --quiet https://github.com/yasha1971-coder/aceapex.git "$SRC"
