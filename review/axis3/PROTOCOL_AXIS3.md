@@ -45,6 +45,10 @@ Warmup, cache policy and archive residency are recorded. A codec without a scope
 - ACEAPEX open: each assembly encoded independently; CPU in-process library region path plus explicit sidecars required for FASTA coordinate mapping.
 - ACEAPEX-refrel: reserved adapter slot only. Status `format-not-frozen`; no measurements or inferred numbers until its format is frozen.
 
+## Window-law diagnostic
+
+Alongside every eligible in-process result, measure one-thread full-decode throughput `D_Q` and actual mean uncompressed decode granule `Q`, then report the prediction `R ≈ D_Q/(W+Q−1)`, predicted p50 `(W+Q−1)/D_Q`, measured p50 and signed error %. Detailed rules are in `WINDOW_LAW.md`. This is diagnostic evidence, not a ranking and never crosses CPU/GPU/CLI scope boundaries.
+
 ## Judge
 
 Every returned window is normalized only according to the frozen reference rule (FASTA line breaks removed; bases uppercase) and SHA-256 compared with the sibling request reference. One mismatch, short read, decoder error, crash or missing request marks the whole measurement row `FAILED`. A failed row may retain diagnostics but MUST NOT publish throughput as a valid result.
