@@ -25,7 +25,7 @@ Path(out).write_text(json.dumps({
   "offset_bytes":104857600,
   "length_bytes":16777216,
   "range_half_open":"[104857600,121634816)",
-  "input_path":path,
+  "input_path":"chr1-mid-100MiB-16MiB.fa",
   "input_sha256":sha
 },indent=2,sort_keys=True)+"\n")
 PY
