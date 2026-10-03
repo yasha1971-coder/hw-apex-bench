@@ -3,7 +3,7 @@ set -euo pipefail
 ROOT=$(cd -- "$(dirname -- "$0")/../.." && pwd)
 WORK=${1:-"$ROOT/.work/axes-20261002"}
 mkdir -p "$WORK/source" "$WORK/region"
-ACE_SHA=${ACE_SHA:-af5f56b3d4e9d54d25c58bfee25973bebbf9027a}
+ACE_SHA=${ACE_SHA:-091bb1e75aca7691e8b87db7f0fd8505e74739a0}
 export ACE_SHA
 bash "$ROOT/review/new_axes_20261002/build_ace_cpu.sh" "$WORK/ace"
 bash "$ROOT/review/new_axes_20261002/build_region_helpers.sh" "$WORK/region/lib" "$WORK/ace/src" "$ACE_SHA"
