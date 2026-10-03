@@ -48,6 +48,12 @@ jobs:
           grep -Fq 'ACE_CXXFLAGS="-std=c++17 -O3 -march=native -funroll-loops -DACEAPEX_CLI"' review/new_axes_20261002/build_region_helpers.sh
           grep -Fq 'offset_bytes":104857600' review/new_axes_20261002/run_corruption_ace_core.sh
           grep -Fq 'length_bytes":16777216' review/new_axes_20261002/run_corruption_ace_core.sh
+          grep -Fq '"input_path":"chr1-mid-100MiB-16MiB.fa"' review/new_axes_20261002/run_corruption_ace_core.sh
+          if grep -Fq '/home/' review/new_axes_20261002/results/ace-core-2026-10-03-c929561/corruption/INPUT_MANIFEST.json; then
+            echo 'absolute path leaked into INPUT_MANIFEST.json' >&2
+            exit 1
+          fi
+          grep -Fq '7bd8e0091d0b54895abc5ad9b354ad7d5f7d5883' review/new_axes_20261002/PROTOCOL.md
           python3 -m py_compile harness/corruption.py harness/region_latency.py review/new_axes_20261002/ace_cpu_adapter.py
       - name: Verify ACE C++ shim exports unmangled ABI
         run: |
