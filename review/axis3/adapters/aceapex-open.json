@@ -1,0 +1,13 @@
+{
+  "codec": "ACEAPEX-open",
+  "modes": [
+    "independent-per-assembly"
+  ],
+  "scopes": [
+    "cpu-in-process",
+    "cli"
+  ],
+  "build": "ACEAPEX open pinned at official-run time; retain FASTA coordinate sidecar",
+  "region": "aceapex_decompress_region with coordinate mapping / aceapex faidx",
+  "status": "ready-contract"
+}
