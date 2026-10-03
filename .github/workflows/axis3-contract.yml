@@ -55,6 +55,11 @@ jobs:
           out.write_text("\n".join(rows)+"\n")
           PY
           python3 review/axis3/judge.py --references "$RUNNER_TEMP/cohort/w4096.sha256.tsv" --answers "$RUNNER_TEMP/cohort/answers.hex" --result "$RUNNER_TEMP/cohort/judge.json"
+      - name: Two-bit capacity baseline on synthetic cohort
+        run: |
+          set -euo pipefail
+          python3 review/axis3/two_bit_capacity.py "$RUNNER_TEMP/cohort" > "$RUNNER_TEMP/cohort/two-bit.json"
+          grep -Fq '"status": "PASS"' "$RUNNER_TEMP/cohort/two-bit.json"
       - name: Judge must reject corruption
         run: |
           set -euo pipefail
