@@ -7,6 +7,13 @@ ACE_SHA=${ACE_SHA:-091bb1e75aca7691e8b87db7f0fd8505e74739a0}
 export ACE_SHA
 bash "$ROOT/review/new_axes_20261002/build_ace_cpu.sh" "$WORK/ace"
 bash "$ROOT/review/new_axes_20261002/build_region_helpers.sh" "$WORK/region/lib" "$WORK/ace/src" "$ACE_SHA"
+{
+  printf "aceapex_commit=%s\n" "$ACE_SHA"
+  printf "ace_cpp_cxxflags="; cat "$WORK/region/lib/ACE_CPP_CXXFLAGS.txt"
+  printf "ace_cli_makefile_cxxflags=-std=c++17 -O3 -march=native -funroll-loops -DACEAPEX_CLI\n"
+  printf "ace_cpp_link_flags=-fPIC -shared -pthread -lzstd\n"
+  g++ --version | head -1
+} > "$WORK/region/RUN.txt"
 if [ -f "$WORK/source/chr1.fa" ]; then :; else curl --fail --location --retry 3 https://hgdownload.soe.ucsc.edu/goldenPath/hg38/chromosomes/chr1.fa.gz -o "$WORK/source/chr1.fa.gz"; gzip -dc "$WORK/source/chr1.fa.gz" > "$WORK/source/chr1.fa"; fi
 printf "%s  %s\n" 9465e0f0df6e2c6eb39729c39cee5465 "$WORK/source/chr1.fa" | md5sum -c -
 if [ -f "$WORK/source/t2t.fa" ]; then :; else curl --fail --location --retry 3 https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/009/914/755/GCA_009914755.4_T2T-CHM13v2.0/GCA_009914755.4_T2T-CHM13v2.0_genomic.fna.gz -o "$WORK/source/t2t.fa.gz"; gzip -dc "$WORK/source/t2t.fa.gz" > "$WORK/source/t2t.fa"; fi
