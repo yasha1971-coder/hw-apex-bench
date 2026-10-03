@@ -1,0 +1,12 @@
+# ace-core official run, 2026-10-03
+axis 10 (corruption): hw-apex-bench c8ed7663e2c7eace6d3056bdb643868ea9838f8e, run_corruption_ace_core.sh unchanged; c8ed766 -> 03cfb30 changes only ace_cpp_region_shim.cpp and CI, not the corruption harness or adapters
+corruption start 2026-10-03T09:38:31Z
+corruption end 2026-10-03T10:31:20Z
+axis 11 (region): hw-apex-bench 03cfb3003619cd9375d8deb7959583418a718e27, run_region_ace_core.sh unchanged
+region start 2026-10-03T10:31:43Z
+region end 2026-10-03T10:33:59Z
+first attempt on c8ed766 (09:37Z) stopped at its first row: ace-cpp-region.so exported a C++-mangled axcpp_region (fixed in 03cfb30); its partial outputs are not used
+aceapex 091bb1e75aca7691e8b87db7f0fd8505e74739a0; htslib 1.13+ds (libhts-dev, pkg-config), samtools 1.13, zstd 1.4.8, lz4 1.9.3
+region lists sha256 == CI: chr1 9d392b18edae7f146c124ef9b125120b7bf36ab13f28b43919ca47a67632193f (refs aa322f5c...), t2t ffcd908681e571524350b84a125440c2cdcb9a277e474e3b37ffc5720b301e96 (refs 9afe989c...); 10 rows x 10 000 regions, all verified
+corruption: 7 adapters x 10 000 cases, kinds 1667/1667/1667/1667/1666/1666 (bit_flip, random_bytes, zeroed_run, truncation / header, payload); 0 hang, 0 crash in every row
+corpora: symlinks to a read-only local copy, md5 checked by the scripts
