@@ -38,6 +38,14 @@ jobs:
               if len(data) != 10001: raise SystemExit(f"{name}: expected header plus 10000 rows")
           print("PASS: frozen region lists and references")
           PY
+      - name: Syntax-check explicit ace-core runners
+        run: |
+          set -euo pipefail
+          bash -n review/new_axes_20261002/build_ace_cpu.sh
+          bash -n review/new_axes_20261002/build_region_helpers.sh
+          bash -n review/new_axes_20261002/run_corruption_ace_core.sh
+          bash -n review/new_axes_20261002/run_region_ace_core.sh
+          python3 -m py_compile harness/corruption.py harness/region_latency.py review/new_axes_20261002/ace_cpu_adapter.py
       - name: Validate adapter contracts
         run: |
           set -euo pipefail
