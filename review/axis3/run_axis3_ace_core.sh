@@ -21,6 +21,7 @@ mkdir -p "$OUT"/{source,requests,results}
 # Phase 2: index FASTA truth, then freeze N=4/50/all × W=256/4096/65536/1048576 request+reference files.
 # Phase 3: build each available adapter once per N/configuration and record wall time, peak RSS, exact bytes including sidecars.
 # Phase 4: execute the identical 10,000 requests per N/W/scope; judge every window before emitting a valid throughput row.
+# Phase 5: for each eligible in-process codec/config measure one-thread full decode D_Q, derive actual Q geometry, and emit window-law predicted p50 + signed error.
 # AGC capability probing must record whether exact windows or larger contig/set extraction was required.
 # ACEAPEX-refrel remains n/a until its format is frozen.
 printf '%s\n' "prepared-only: no official axis3 measurement has been run" > "$OUT/STATUS.txt"
