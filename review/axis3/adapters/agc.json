@@ -1,0 +1,13 @@
+{
+  "codec": "AGC",
+  "modes": [
+    "reference",
+    "no-reference"
+  ],
+  "scopes": [
+    "cli"
+  ],
+  "build": "agc create ...",
+  "region": "probe pinned AGC getctg/getset capabilities; record amplification when exact window is unavailable",
+  "status": "implementation-required-before-official-run"
+}
