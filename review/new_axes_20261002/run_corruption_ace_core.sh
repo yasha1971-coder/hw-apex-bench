@@ -13,7 +13,7 @@ fi
 printf "%s  %s\n" 9465e0f0df6e2c6eb39729c39cee5465 "$CHR1" | md5sum -c -
 head -c 16777216 "$CHR1" > "$WORK/source/chr1-16MiB.fa"
 sha256sum "$WORK/source/chr1-16MiB.fa" > "$WORK/source/chr1-16MiB.fa.sha256"
-ACE_SHA=${ACE_SHA:-af5f56b3d4e9d54d25c58bfee25973bebbf9027a}
+ACE_SHA=${ACE_SHA:-091bb1e75aca7691e8b87db7f0fd8505e74739a0}
 export ACE_SHA
 bash "$ROOT/review/new_axes_20261002/build_ace_cpu.sh" "$WORK/ace"
 {
