@@ -1,6 +1,6 @@
 {
   "codec": "aceapex-cpu-open",
-  "version": "207bf0042dfd410f908f3b8eeb7bc8701bdbf3ee",
+  "version": "af5f56b3d4e9d54d25c58bfee25973bebbf9027a",
   "version_command": [
     "cat",
     ".work/axes-20261002/ace/ACEAPEX_COMMIT"
