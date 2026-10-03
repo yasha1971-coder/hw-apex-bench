@@ -46,6 +46,39 @@ jobs:
           bash -n review/new_axes_20261002/run_corruption_ace_core.sh
           bash -n review/new_axes_20261002/run_region_ace_core.sh
           python3 -m py_compile harness/corruption.py harness/region_latency.py review/new_axes_20261002/ace_cpu_adapter.py
+      - name: Verify ACE C++ shim exports unmangled ABI
+        run: |
+          set -euo pipefail
+          tmp=$(mktemp -d)
+          cat > "$tmp/aceapex.h" <<'EOF'
+          #include <stdint.h>
+          #include <stddef.h>
+          #ifdef __cplusplus
+          extern "C" {
+          #endif
+          int64_t aceapex_decompress_region(const void*,size_t,void*,size_t,uint64_t,uint64_t);
+          #ifdef __cplusplus
+          }
+          #endif
+          EOF
+          cat > "$tmp/stub.cpp" <<'EOF'
+          #include <stdint.h>
+          #include <stddef.h>
+          extern "C" int64_t aceapex_decompress_region(const void*,size_t,void*,size_t,uint64_t,uint64_t) { return -2; }
+          EOF
+          g++ -O2 -std=c++17 -fPIC -shared -I"$tmp" review/new_axes_20261002/ace_cpp_region_shim.cpp "$tmp/stub.cpp" -o "$tmp/shim.so"
+          nm -D --defined-only "$tmp/shim.so" | awk '{print $3}' | grep -Fx axcpp_region
+          nm -D --defined-only "$tmp/shim.so" | awk '{print $3}' | grep -Fx axcpp_decoder
+          python3 - "$tmp/shim.so" <<'PY'
+          import ctypes,sys
+          lib=ctypes.CDLL(sys.argv[1])
+          fn=lib.axcpp_region
+          fn.restype=ctypes.c_int64
+          fn.argtypes=[ctypes.c_void_p,ctypes.c_size_t,ctypes.c_void_p,ctypes.c_size_t,ctypes.c_uint64,ctypes.c_uint64]
+          if fn(None,0,None,0,0,0) != -2:
+              raise SystemExit("unexpected shim forwarding result")
+          print("PASS: ctypes resolves axcpp_region and forwards through the C ABI")
+          PY
       - name: Validate adapter contracts
         run: |
           set -euo pipefail
