@@ -1,0 +1,9 @@
+{
+  "input_path": "/home/aeterna/pubrepo/.wk/hwab62/.work/axes-20261002/source/chr1-mid-100MiB-16MiB.fa",
+  "input_sha256": "29a01276c5d4f40d15e6deab7841853d04e55459a3ebe68c77113336ae76fea1",
+  "length_bytes": 16777216,
+  "offset_bytes": 104857600,
+  "range_half_open": "[104857600,121634816)",
+  "source_corpus": "hg38 chr1 FASTA",
+  "source_md5": "9465e0f0df6e2c6eb39729c39cee5465"
+}
