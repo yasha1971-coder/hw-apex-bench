@@ -45,6 +45,9 @@ jobs:
           bash -n review/new_axes_20261002/build_region_helpers.sh
           bash -n review/new_axes_20261002/run_corruption_ace_core.sh
           bash -n review/new_axes_20261002/run_region_ace_core.sh
+          grep -Fq 'ACE_CXXFLAGS="-std=c++17 -O3 -march=native -funroll-loops -DACEAPEX_CLI"' review/new_axes_20261002/build_region_helpers.sh
+          grep -Fq 'offset_bytes":104857600' review/new_axes_20261002/run_corruption_ace_core.sh
+          grep -Fq 'length_bytes":16777216' review/new_axes_20261002/run_corruption_ace_core.sh
           python3 -m py_compile harness/corruption.py harness/region_latency.py review/new_axes_20261002/ace_cpu_adapter.py
       - name: Verify ACE C++ shim exports unmangled ABI
         run: |
