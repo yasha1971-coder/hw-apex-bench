@@ -1,6 +1,6 @@
 # Corruption robustness and single-region latency — protocol
 
-Status: protocol / implementation branch. No external publication. No imported ACEAPEX number is a cross-codec result until measured by this common harness.
+Status: common CPU harness measured on ace-core; final evidence commit `7bd8e0091d0b54895abc5ad9b354ad7d5f7d5883`. No external publication. GPU remains a later stage.
 
 ## Axis 10: corruption robustness
 
@@ -36,7 +36,19 @@ Every case is executed out-of-process behind a 10 s watchdog so crashes/hangs ar
 
 Primary result is counts and rates by codec, integrity mode, mutation operator and location, plus totals. Do not rank rows that have different integrity semantics.
 
-Reference-only until replaced by this harness: ACEAPEX private stress on H100/Blackwell reported 0 hangs and 0 silent errors with XXH3; 131 silent errors without hash. Its mutation distribution differs and is not a benchmark row.
+The earlier ACEAPEX private stress is superseded for this axis by the common CPU harness. Final ace-core results (10,000 cases per row, seed 20261002, input chr1 [104857600,121634816), SHA-256 `29a01276c5d4f40d15e6deab7841853d04e55459a3ebe68c77113336ae76fea1`):
+
+| codec | integrity | refused | caught | harmless | SILENT | hang | crash |
+|---|---|---:|---:|---:|---:|---:|---:|
+| ACEAPEX CPU open 091bb1e | XXH3 | 0 | 9918 | 82 | 0 | 0 | 0 |
+| ACEAPEX CPU open 091bb1e | no XXH3 | 0 | 9713 | 93 | 194 | 0 | 0 |
+| BGZF / htslib 1.13 | CRC32 mandatory | 0 | 9979 | 20 | 1 | 0 | 0 |
+| LZ4 1.9.3 | content checksum | 0 | 9997 | 3 | 0 | 0 | 0 |
+| LZ4 1.9.3 | no content checksum | 0 | 3779 | 8 | 6213 | 0 | 0 |
+| zstd 1.4.8 | frame checksum | 0 | 9996 | 4 | 0 | 0 | 0 |
+| zstd 1.4.8 | no checksum | 0 | 6202 | 3 | 3795 | 0 | 0 |
+
+The single BGZF SILENT case is case 867: truncation exactly at a BGZF block boundary; `bgzip -d` warns that the EOF marker is absent but exits 0 with shorter output, therefore it is SILENT under the common harness definition.
 
 ## Axis 11: single-region latency
 
@@ -56,12 +68,29 @@ Report nearest-rank p50 and p99 in microseconds, plus sample count. Record:
 
 In-process and process-per-request are different scopes and MUST NOT share a ranking/table ordering. GPU resident rows also remain a distinct execution scope unless another codec is measured under the same boundary.
 
-Imported 2026-10-02 ACEAPEX numbers are reference/evidence only until the common request list is run:
-- ace-core CPU, one thread, open token chunk 16 KiB at/after 7bb790f: T2T 91.2/160.9 us; chr1 44.3/82.6 us.
-- prior 64 KiB: T2T 114.6/242.4 us; chr1 69.2/109.5 us.
-- resident GPU: Blackwell 64 KiB 749/2010 us; Blackwell 16 KiB 502/950 us; H100 16 KiB 540/1077 us.
-- BGZF/samtools faidx Colab: process/request 1165/1322 us; one invocation about 110 us/region. These are separate modes.
-- AGC 3.2.4 HPRC 1–4 assemblies: 15.3–22.8 ms/process; different corpus and process scope, reference only.
+Final common-harness CPU results are from evidence commit `7bd8e0091d0b54895abc5ad9b354ad7d5f7d5883`. Every row contains 10,000 identical frozen requests and all returned regions passed their per-region SHA-256.
+
+**In-process scope**
+
+| corpus | codec / decoder | p50 us | p95 us | p99 us |
+|---|---|---:|---:|---:|
+| chr1 | ACEAPEX 091bb1e C++ `aceapex_decompress_region` | 41.718 | 76.233 | 86.633 |
+| chr1 | ACEAPEX 091bb1e C99 decoder | 44.573 | 78.217 | 82.554 |
+| chr1 | BGZF htslib | 103.294 | 193.022 | 198.782 |
+| T2T | ACEAPEX 091bb1e C++ `aceapex_decompress_region` | 51.085 | 93.365 | 126.647 |
+| T2T | ACEAPEX 091bb1e C99 decoder | 47.569 | 89.468 | 114.415 |
+| T2T | BGZF htslib | 102.603 | 189.906 | 195.737 |
+
+**Process-per-request scope**
+
+| corpus | codec | p50 us | p95 us | p99 us |
+|---|---|---:|---:|---:|
+| chr1 | ACEAPEX 091bb1e CLI faidx | 1016.996 | 1185.472 | 1257.116 |
+| chr1 | BGZF samtools faidx | 1245.895 | 1457.281 | 1526.971 |
+| T2T | ACEAPEX 091bb1e CLI faidx | 1068.694 | 1287.754 | 1357.064 |
+| T2T | BGZF samtools faidx | 1892.938 | 2071.453 | 2214.942 |
+
+zstd and lz4 have no random-access index in this axis and therefore have no region latency row. GPU measurements and AGC measurements remain contextual/reference evidence because they were not produced by this common CPU harness.
 
 ## Hardware/full-decode context (not Axis 11 region rows)
 
