@@ -23,7 +23,7 @@ def raw_span(meta,start1,end1):
     return a,z-a
 def verify(seq,want):
     return len(seq)==5000 and hashlib.sha256(seq.upper()).hexdigest()==want
-def ace(a,reqs,hashes):
+def ace_c99(a,reqs,hashes):
     lib=ctypes.CDLL(str(a.library)); lib.hc_open.restype=ctypes.c_void_p; lib.hc_open.argtypes=[ctypes.c_void_p,ctypes.c_size_t,ctypes.c_char_p,ctypes.c_uint64]
     lib.hc_region.restype=ctypes.c_int64; lib.hc_region.argtypes=[ctypes.c_void_p,ctypes.c_uint64,ctypes.c_void_p,ctypes.c_size_t]; lib.hc_close.argtypes=[ctypes.c_void_p]
     idx=fai(a.fasta)
@@ -41,6 +41,20 @@ def ace(a,reqs,hashes):
           if not verify(seq,want): raise SystemExit("ACE region hash mismatch")
           times.append(dt/1000)
       finally: lib.hc_close(ctx)
+    return times
+def ace_cpp(a,reqs,hashes):
+    lib=ctypes.CDLL(str(a.library)); lib.axcpp_region.restype=ctypes.c_int64
+    lib.axcpp_region.argtypes=[ctypes.c_void_p,ctypes.c_size_t,ctypes.c_void_p,ctypes.c_size_t,ctypes.c_uint64,ctypes.c_uint64]
+    idx=fai(a.fasta)
+    with open(a.archive,"rb") as fh:
+      mm=mmap.mmap(fh.fileno(),0,access=mmap.ACCESS_READ); buf=(ctypes.c_ubyte*len(mm)).from_buffer_copy(mm); times=[]
+      for (name,s,e),want in zip(reqs,hashes):
+        off,n=raw_span(idx[name],s,e); out=ctypes.create_string_buffer(n)
+        t=time.perf_counter_ns(); got=lib.axcpp_region(buf,len(mm),out,n,off,n); dt=time.perf_counter_ns()-t
+        if got!=n: raise SystemExit("ACE C++ region read failed")
+        seq=out.raw[:n].replace(b"\n",b"").replace(b"\r",b"")[:5000]
+        if not verify(seq,want): raise SystemExit("ACE C++ region hash mismatch")
+        times.append(dt/1000)
     return times
 def bgzf(a,reqs,hashes):
     lib=ctypes.CDLL(str(a.library)); lib.fx_open.restype=ctypes.c_void_p; lib.fx_open.argtypes=[ctypes.c_char_p]
@@ -65,11 +79,12 @@ def process_mode(a,reqs,hashes):
       times.append(dt/1000)
     return times
 def main():
-    ap=argparse.ArgumentParser(); ap.add_argument("--mode",choices=("ace-in-process","bgzf-in-process","process"),required=True)
+    ap=argparse.ArgumentParser(); ap.add_argument("--mode",choices=("ace-cpp-in-process","ace-c99-in-process","bgzf-in-process","process"),required=True)
     ap.add_argument("--regions",required=True);ap.add_argument("--reference",required=True);ap.add_argument("--archive",type=Path,required=True);ap.add_argument("--fasta",type=Path)
     ap.add_argument("--library",type=Path);ap.add_argument("--codec",required=True);ap.add_argument("--version",required=True);ap.add_argument("--corpus",required=True);ap.add_argument("--command",nargs="+")
     ap.add_argument("--out",type=Path,required=True);a=ap.parse_args(); reqs,hs=load_requests(a.regions,a.reference)
-    if a.mode=="ace-in-process": xs=ace(a,reqs,hs)
+    if a.mode=="ace-cpp-in-process": xs=ace_cpp(a,reqs,hs)
+    elif a.mode=="ace-c99-in-process": xs=ace_c99(a,reqs,hs)
     elif a.mode=="bgzf-in-process": xs=bgzf(a,reqs,hs)
     else: xs=process_mode(a,reqs,hs)
     r={"schema":"single-region-latency-v1","codec":a.codec,"version":a.version,"corpus":a.corpus,"mode":a.mode,"device":"CPU","samples":len(xs),"region_bases":5000,"p50_us":nr(xs,.50),"p95_us":nr(xs,.95),"p99_us":nr(xs,.99),"bit_perfect":True}
