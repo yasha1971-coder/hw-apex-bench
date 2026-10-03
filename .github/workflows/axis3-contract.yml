@@ -1,0 +1,76 @@
+name: Axis 3 cohort contracts
+on:
+  pull_request:
+    paths:
+      - 'review/axis3/**'
+      - '.github/workflows/axis3-contract.yml'
+permissions:
+  contents: read
+jobs:
+  synthetic:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install synthetic adapter dependencies
+        run: |
+          set -euo pipefail
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq samtools tabix
+      - name: Create three related mini assemblies
+        run: |
+          set -euo pipefail
+          python3 review/axis3/make_synthetic.py "$RUNNER_TEMP/cohort"
+          : > "$RUNNER_TEMP/cohort/manifest.tsv"
+          printf 'assembly_id\tlocal_fasta\tsha256\n' >> "$RUNNER_TEMP/cohort/manifest.tsv"
+          for f in "$RUNNER_TEMP"/cohort/asm*.fa; do
+            samtools faidx "$f"
+            id=$(basename "$f" .fa)
+            h=$(sha256sum "$f" | cut -d' ' -f1)
+            printf '%s\t%s\t%s\n' "$id" "$f" "$h" >> "$RUNNER_TEMP/cohort/manifest.tsv"
+          done
+      - name: Deterministic window contract and FASTA truth
+        run: |
+          set -euo pipefail
+          for w in 256 4096 65536; do
+            python3 review/axis3/generate_windows.py --manifest "$RUNNER_TEMP/cohort/manifest.tsv" --n all --window "$w" --out-prefix "$RUNNER_TEMP/cohort/w$w"
+            python3 review/axis3/generate_windows.py --manifest "$RUNNER_TEMP/cohort/manifest.tsv" --n all --window "$w" --out-prefix "$RUNNER_TEMP/cohort/repeat$w"
+            cmp "$RUNNER_TEMP/cohort/w$w.tsv" "$RUNNER_TEMP/cohort/repeat$w.tsv"
+            cmp "$RUNNER_TEMP/cohort/w$w.sha256.tsv" "$RUNNER_TEMP/cohort/repeat$w.sha256.tsv"
+          done
+      - name: BGZF adapter bit-perfect synthetic windows
+        run: |
+          set -euo pipefail
+          for f in "$RUNNER_TEMP"/cohort/asm*.fa; do bgzip -c "$f" > "$f.bgz"; samtools faidx "$f.bgz"; done
+          python3 - "$RUNNER_TEMP/cohort" <<'PY'
+          import subprocess,sys
+          from pathlib import Path
+          root=Path(sys.argv[1]); req=root/"w4096.tsv"; out=root/"answers.hex"
+          rows=[]
+          for line in req.read_text().splitlines():
+            if not line or line.startswith("#") or line.startswith("assembly_id"): continue
+            a,c,s,e=line.split("\t")
+            cp=subprocess.run(["samtools","faidx",str(root/(a+".fa.bgz")),f"{c}:{s}-{e}"],capture_output=True,check=True)
+            seq=b"".join(x for x in cp.stdout.splitlines() if not x.startswith(b">"))
+            rows.append(seq.hex())
+          out.write_text("\n".join(rows)+"\n")
+          PY
+          python3 review/axis3/judge.py --references "$RUNNER_TEMP/cohort/w4096.sha256.tsv" --answers "$RUNNER_TEMP/cohort/answers.hex" --result "$RUNNER_TEMP/cohort/judge.json"
+      - name: Judge must reject corruption
+        run: |
+          set -euo pipefail
+          cp "$RUNNER_TEMP/cohort/answers.hex" "$RUNNER_TEMP/cohort/bad.hex"
+          sed -i '1s/^../00/' "$RUNNER_TEMP/cohort/bad.hex"
+          if python3 review/axis3/judge.py --references "$RUNNER_TEMP/cohort/w4096.sha256.tsv" --answers "$RUNNER_TEMP/cohort/bad.hex" --result "$RUNNER_TEMP/cohort/bad.json"; then
+            echo 'judge accepted corrupted answer' >&2
+            exit 1
+          fi
+      - name: Contracts and path hygiene
+        run: |
+          set -euo pipefail
+          python3 -m py_compile review/axis3/generate_windows.py review/axis3/judge.py review/axis3/make_synthetic.py
+          bash -n review/axis3/run_axis3_ace_core.sh
+          grep -Fq 'format-not-frozen' review/axis3/adapters/aceapex-refrel.json
+          if grep -R -F '/home/' review/axis3; then
+            echo 'absolute /home path in axis3 source' >&2
+            exit 1
+          fi
