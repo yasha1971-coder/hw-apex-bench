@@ -1,0 +1,62 @@
+{
+  "adapter": {
+    "checksum_mode": "crc32-mandatory",
+    "codec": "bgzip-htslib",
+    "compress": [
+      "python3",
+      "review/new_axes_20261002/pipe_codec.py",
+      "{archive}",
+      "bgzip",
+      "-c",
+      "{input}"
+    ],
+    "decompress": [
+      "python3",
+      "review/new_axes_20261002/pipe_codec.py",
+      "{output}",
+      "bgzip",
+      "-d",
+      "-c",
+      "{archive}"
+    ],
+    "preflight": null,
+    "region": {
+      "library": "htslib faidx_fetch_seq64",
+      "modes": [
+        "in-process",
+        "process-per-request"
+      ],
+      "process": "samtools faidx",
+      "supported": true
+    },
+    "version": "runtime",
+    "version_command": [
+      "bgzip",
+      "--version"
+    ]
+  },
+  "archive_bytes": 5344148,
+  "archive_sha256": "e0147cd0d25b5f84b6333a9c3d805eda11f8bb91176e272e96ea72e7f0a352ed",
+  "cases": 10000,
+  "checksum_mode": "crc32-mandatory",
+  "codec": "bgzip-htslib",
+  "input_bytes": 16777216,
+  "input_sha256": "3ff02f2320d2456038fcdac081ad33d8180d3e60d0b63fb5a658c7670a851731",
+  "kind_counts": {
+    "bit_flip": 1667,
+    "header": 1666,
+    "payload": 1666,
+    "random_bytes": 1667,
+    "truncation": 1667,
+    "zeroed_run": 1667
+  },
+  "memory_limit_mib": 2048,
+  "outcomes": {
+    "caught": 9981,
+    "harmless": 19
+  },
+  "schema": "corruption-robustness-v1",
+  "seed": 20261002,
+  "version": "bgzip (htslib) 1.13+ds",
+  "watchdog_seconds": 10
+}

@@ -1,0 +1,36 @@
+{
+  "codec": "bgzip-htslib",
+  "version": "runtime",
+  "version_command": [
+    "bgzip",
+    "--version"
+  ],
+  "checksum_mode": "crc32-mandatory",
+  "compress": [
+    "python3",
+    "review/new_axes_20261002/pipe_codec.py",
+    "{archive}",
+    "bgzip",
+    "-c",
+    "{input}"
+  ],
+  "decompress": [
+    "python3",
+    "review/new_axes_20261002/pipe_codec.py",
+    "{output}",
+    "bgzip",
+    "-d",
+    "-c",
+    "{archive}"
+  ],
+  "preflight": null,
+  "region": {
+    "supported": true,
+    "modes": [
+      "in-process",
+      "process-per-request"
+    ],
+    "library": "htslib faidx_fetch_seq64",
+    "process": "samtools faidx"
+  }
+}
