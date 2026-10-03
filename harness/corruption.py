@@ -41,8 +41,34 @@ def limit_memory(mib):
         resource.setrlimit(resource.RLIMIT_CORE,(0,0))
     return apply
 
-def render(template,archive,output):
-    return [x.replace("{archive}",str(archive)).replace("{output}",str(output)) for x in template]
+def render(template,archive,output,input_path=None):
+    values={"{archive}":str(archive),"{output}":str(output),"{input}":str(input_path) if input_path is not None else ""}
+    rendered=[]
+    for arg in template:
+        for key,value in values.items():
+            arg=arg.replace(key,value)
+        rendered.append(arg)
+    return rendered
+
+def prepare(adapter,input_path,archive):
+    archive.unlink(missing_ok=True)
+    cp=subprocess.run(render(adapter["compress"],archive,archive,input_path),
+                      stdout=subprocess.DEVNULL,stderr=subprocess.PIPE,text=True)
+    if cp.returncode < 0:
+        raise SystemExit(f"compress crashed by signal {-cp.returncode}")
+    if cp.returncode != 0:
+        raise SystemExit("compress failed: "+cp.stderr[-2000:])
+    if not archive.exists() or archive.stat().st_size == 0:
+        raise SystemExit("compress produced no archive")
+    version=adapter.get("version","unknown")
+    vcmd=adapter.get("version_command")
+    if vcmd:
+        vp=subprocess.run(vcmd,text=True,capture_output=True)
+        if vp.returncode != 0:
+            raise SystemExit("version command failed")
+        lines=(vp.stdout or vp.stderr).strip().splitlines()
+        if lines: version=lines[0]
+    return version
 
 def run_case(adapter,archive,output,memory_mib):
     pre=adapter.get("preflight")
