@@ -1,0 +1,45 @@
+{
+  "schema": "axis3-adapter-v1",
+  "codec": "OpenZL",
+  "upstream_repository": "facebook/openzl",
+  "upstream_tag": "v0.3.0",
+  "upstream_commit": "32246b48faee46807f84183dac4db479089f5445",
+  "frame_format_version": 27,
+  "measurements_allowed": false,
+  "variants": {
+    "l1_w64k": {
+      "compression_level": 1,
+      "lz_window_log": 16,
+      "lz_window_bytes": 65536,
+      "chunk_bytes": 65536
+    },
+    "l1_w1m": {
+      "compression_level": 1,
+      "lz_window_log": 20,
+      "lz_window_bytes": 1048576,
+      "chunk_bytes": 1048576
+    },
+    "l3_w64k": {
+      "compression_level": 3,
+      "lz_window_log": 16,
+      "lz_window_bytes": 65536,
+      "chunk_bytes": 65536
+    },
+    "l3_w1m": {
+      "compression_level": 3,
+      "lz_window_log": 20,
+      "lz_window_bytes": 1048576,
+      "chunk_bytes": 1048576
+    }
+  },
+  "scopes": [
+    "cpu-in-process"
+  ],
+  "random_access_status": "synthetic-contract-only",
+  "note": "LZ windowLog and independently segmented chunk size are both pinned to the requested 64 KiB or 1 MiB value; they are distinct upstream concepts and are recorded separately.",
+  "window_law": {
+    "Q": "actual independently decoded segment size; measure from produced frame/segment geometry",
+    "D_Q": "one-thread full decode on ace-core after synthetic CI gate"
+  },
+  "enable_gate": "all four variants must build v27 frames, full round-trip bit-perfect, and synthetic window extraction/judge must pass before measurements_allowed=true"
+}
