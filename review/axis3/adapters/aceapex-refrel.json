@@ -4,5 +4,6 @@
   "scopes": [],
   "build": "n/a",
   "region": "n/a",
-  "status": "format-not-frozen"
+  "status": "superseded-by-aceapex-refrel3-stub",
+  "measurements_allowed": false
 }
