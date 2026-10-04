@@ -43,7 +43,7 @@ Warmup, cache policy and archive residency are recorded. A codec without a scope
 - BGZF + htslib: each assembly independently BGZF-compressed and indexed; CPU in-process region access through htslib/faidx. Storage includes every .gz/.bgz plus .fai/.gzi required.
 - 2-bit packing: capacity/reference baseline, exactly 2 bits/base only for A/C/G/T plus explicit side information necessary to represent all other FASTA symbols and contig boundaries losslessly. It is not called a codec-speed result unless an actual accessor is measured.
 - ACEAPEX open: each assembly encoded independently; CPU in-process library region path plus explicit sidecars required for FASTA coordinate mapping.
-- ACEAPEX-refrel: reserved adapter slot only. Status `format-not-frozen`; no measurements or inferred numbers until its format is frozen.
+- ACEAPEX-refrel3: reserved adapter gated by upstream `research/refrel/FORMAT.md` on ACEAPEX branch `refrel`. Until that file exists and declares the format frozen, status is `not-frozen` and measurements are forbidden. Predeclared variants are `q4k` (`RR_BS=4096`) and `q16k` (`RR_BS=16384`); for the window-law diagnostic, `Q_block = RR_BS`. No D_Q, size or access result may be inferred from research logs before freeze.
 
 ## Window-law diagnostic
 
