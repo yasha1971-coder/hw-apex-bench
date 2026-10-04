@@ -100,9 +100,27 @@ jobs:
           assert d["variants"]["q16k"]["Q_block"] == 16384
           print("PASS: refrel3 frozen v1 q4k/q16k bit-perfect; enable gate satisfied by this run")
           PY
-      - name: OpenZL v0.3.0 frame-27 contract gate
+      - name: OpenZL v0.3.0 exact-window synthetic round-trip
         run: |
           set -euo pipefail
+          bash review/axis3/build_openzl_v030.sh "$RUNNER_TEMP/openzl"
+          export OPENZL_HELPER="$RUNNER_TEMP/openzl/openzl-lz-helper"
+          for variant in l1_w64k l1_w1m l3_w64k l3_w1m; do
+            src="$RUNNER_TEMP/cohort/asm1.fa"
+            arc="$RUNNER_TEMP/cohort/$variant.zl"
+            out="$RUNNER_TEMP/cohort/$variant.out.fa"
+            log="$RUNNER_TEMP/cohort/$variant.log"
+            bash review/axis3/openzl_adapter.sh build "$variant" "$src" "$arc" 2>"$log"
+            bash review/axis3/openzl_adapter.sh decode "$arc" "$out"
+            cmp "$src" "$out"
+            grep -Fq 'FRAME_REFLECTION formatVersion=27' "$log"
+            case "$variant" in
+              l1_w64k) grep -Fq 'GRAPH_REFLECTION level=1 windowLog=16 windowBytes=65536' "$log";;
+              l1_w1m) grep -Fq 'GRAPH_REFLECTION level=1 windowLog=20 windowBytes=1048576' "$log";;
+              l3_w64k) grep -Fq 'GRAPH_REFLECTION level=3 windowLog=16 windowBytes=65536' "$log";;
+              l3_w1m) grep -Fq 'GRAPH_REFLECTION level=3 windowLog=20 windowBytes=1048576' "$log";;
+            esac
+          done
           python3 - <<'PY'
           import json
           from pathlib import Path
@@ -110,27 +128,8 @@ jobs:
           assert d["upstream_commit"] == "32246b48faee46807f84183dac4db479089f5445"
           assert d["frame_format_version"] == 27
           assert d["measurements_allowed"] is False
-          want={
-            "l1_w64k":(1,16,65536),
-            "l1_w1m":(1,20,1048576),
-            "l3_w64k":(3,16,65536),
-            "l3_w1m":(3,20,1048576),
-          }
-          for k,(level,wlog,wbytes) in want.items():
-              v=d["variants"][k]
-              assert (v["compression_level"],v["lz_window_log"],v["lz_window_bytes"]) == (level,wlog,wbytes)
-          print("PASS: OpenZL v0.3.0 frame-27 variants are pinned and measurement-disabled")
+          print("PASS: all four exact OpenZL variants reflected and bit-perfect; enable gate satisfied by this run")
           PY
-          bash -n review/axis3/build_openzl_v030.sh
-          bash -n review/axis3/openzl_adapter.sh
-          # Fail closed: stock zli does not expose ZL_LzParam_windowLog. A synthetic
-          # bit-perfect measurement gate is not satisfied until a parameterized graph
-          # helper can prove both windowLog and round-trip for all four variants.
-          export OPENZL_ZLI=/bin/false
-          if bash review/axis3/openzl_adapter.sh build l1_w64k "$RUNNER_TEMP/cohort/asm1.fa" "$RUNNER_TEMP/x.zl"; then
-            echo 'OpenZL adapter unexpectedly enabled before windowLog helper' >&2
-            exit 1
-          fi
       - name: Contracts and path hygiene
         run: |
           set -euo pipefail
