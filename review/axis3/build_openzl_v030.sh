@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 set -euo pipefail
+ROOT=$(cd -- "$(dirname -- "$0")/../.." && pwd)
 OUT=${1:?output directory}
 SHA=32246b48faee46807f84183dac4db479089f5445
 SRC="$OUT/openzl"
@@ -13,4 +14,7 @@ ZLI=$(find "$OUT/build" -type f -name zli -perm -111 | head -1)
 test -n "$ZLI"
 cp "$ZLI" "$OUT/zli"
 "$OUT/zli" --version > "$OUT/VERSION.txt"
+LIB=$(find "$OUT/build" -type f \( -name 'libopenzl.a' -o -name 'libopenzl.so' \) | head -1)
+test -n "$LIB"
+cc -O3 -I"$SRC/include" "$ROOT/review/axis3/openzl_lz_helper.c" "$LIB" -lstdc++ -lpthread -lm -o "$OUT/openzl-lz-helper"
 printf '%s\n' "$SHA" > "$OUT/OPENZL_COMMIT"
