@@ -23,5 +23,5 @@ mkdir -p "$OUT"/{source,requests,results}
 # Phase 4: execute the identical 10,000 requests per N/W/scope; judge every window before emitting a valid throughput row.
 # Phase 5: for each eligible in-process codec/config measure one-thread full decode D_Q, derive actual Q geometry, and emit window-law predicted p50 + signed error.
 # AGC capability probing must record whether exact windows or larger contig/set extraction was required.
-# ACEAPEX-refrel remains n/a until its format is frozen.
+# ACEAPEX-refrel3 q4k/q16k remains n/a until upstream research/refrel/FORMAT.md exists and declares the format frozen; Q_block=RR_BS only after that gate.
 printf '%s\n' "prepared-only: no official axis3 measurement has been run" > "$OUT/STATUS.txt"
