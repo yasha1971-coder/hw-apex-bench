@@ -74,7 +74,19 @@ jobs:
           set -euo pipefail
           python3 -m py_compile review/axis3/generate_windows.py review/axis3/judge.py review/axis3/make_synthetic.py
           bash -n review/axis3/run_axis3_ace_core.sh
-          grep -Fq 'format-not-frozen' review/axis3/adapters/aceapex-refrel.json
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          p=Path("review/axis3/adapters/aceapex-refrel3.json")
+          d=json.loads(p.read_text())
+          assert d["freeze_contract"] == "research/refrel/FORMAT.md"
+          assert d["freeze_status"] == "not-frozen"
+          assert d["measurements_allowed"] is False
+          assert d["variants"]["q4k"]["RR_BS"] == d["variants"]["q4k"]["Q_block"] == 4096
+          assert d["variants"]["q16k"]["RR_BS"] == d["variants"]["q16k"]["Q_block"] == 16384
+          assert d["scopes"] == []
+          print("PASS: refrel3 remains a non-measuring q4k/q16k freeze-gated stub")
+          PY
           if grep -R -F '/home/' review/axis3; then
             echo 'absolute /home path in axis3 source' >&2
             exit 1
