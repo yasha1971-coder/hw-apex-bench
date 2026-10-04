@@ -69,6 +69,37 @@ jobs:
             echo 'judge accepted corrupted answer' >&2
             exit 1
           fi
+      - name: Refrel3 frozen-v1 q4k/q16k synthetic round-trip
+        run: |
+          set -euo pipefail
+          bash review/axis3/build_refrel3.sh "$RUNNER_TEMP/refrel3"
+          export RR3_BIN="$RUNNER_TEMP/refrel3/refrel3v1"
+          ref="$RUNNER_TEMP/cohort/asm1.fa"
+          for variant in q4k q16k; do
+            asm="$RUNNER_TEMP/cohort/asm2.fa"
+            arc="$RUNNER_TEMP/cohort/asm2.$variant.rr3"
+            out="$RUNNER_TEMP/cohort/asm2.$variant.out.fa"
+            bash review/axis3/refrel3_adapter.sh build "$ref" "$variant" 2 "$asm" "$arc"
+            bash review/axis3/refrel3_adapter.sh decode "$ref" "$arc" "$out"
+            cmp "$asm" "$out"
+            bash review/axis3/refrel3_adapter.sh info "$arc" > "$arc.info"
+            case "$variant" in q4k) grep -Fq 'Q 4096' "$arc.info";; q16k) grep -Fq 'Q 16384' "$arc.info";; esac
+            region='asm2:1001-5096'
+            bash review/axis3/refrel3_adapter.sh region "$ref" "$arc" "$region" > "$arc.fetch"
+            samtools faidx "$asm" "$region" > "$arc.truth"
+            cmp "$arc.fetch" "$arc.truth"
+          done
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          d=json.loads(Path("review/axis3/adapters/aceapex-refrel3.json").read_text())
+          assert d["upstream_commit"] == "5b6d5cec0f5962a561ac48822a1b5c48793a5b47"
+          assert d["freeze_status"] == "frozen-v1"
+          assert d["measurements_allowed"] is False
+          assert d["variants"]["q4k"]["Q_block"] == 4096
+          assert d["variants"]["q16k"]["Q_block"] == 16384
+          print("PASS: refrel3 frozen v1 q4k/q16k bit-perfect; enable gate satisfied by this run")
+          PY
       - name: Contracts and path hygiene
         run: |
           set -euo pipefail
@@ -80,12 +111,11 @@ jobs:
           p=Path("review/axis3/adapters/aceapex-refrel3.json")
           d=json.loads(p.read_text())
           assert d["freeze_contract"] == "research/refrel/FORMAT.md"
-          assert d["freeze_status"] == "not-frozen"
-          assert d["measurements_allowed"] is False
+          assert d["freeze_status"] == "frozen-v1"
+          assert d["upstream_commit"] == "5b6d5cec0f5962a561ac48822a1b5c48793a5b47"
           assert d["variants"]["q4k"]["RR_BS"] == d["variants"]["q4k"]["Q_block"] == 4096
           assert d["variants"]["q16k"]["RR_BS"] == d["variants"]["q16k"]["Q_block"] == 16384
-          assert d["scopes"] == []
-          print("PASS: refrel3 remains a non-measuring q4k/q16k freeze-gated stub")
+          print("PASS: refrel3 frozen-v1 contract pinned")
           PY
           if grep -R -F '/home/' review/axis3; then
             echo 'absolute /home path in axis3 source' >&2
