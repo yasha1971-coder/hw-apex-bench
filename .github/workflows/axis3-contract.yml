@@ -87,7 +87,21 @@ jobs:
             region='asm2:1001-5096'
             bash review/axis3/refrel3_adapter.sh region "$ref" "$arc" "$region" > "$arc.fetch"
             samtools faidx "$asm" "$region" > "$arc.truth"
-            cmp "$arc.fetch" "$arc.truth"
+            python3 - "$arc.fetch" "$arc.truth" <<'PY'
+            import hashlib,sys
+            from pathlib import Path
+            def seq(path):
+                lines=Path(path).read_bytes().splitlines()
+                return b"".join(x for x in lines if not x.startswith(b">")).upper()
+            got,want=seq(sys.argv[1]),seq(sys.argv[2])
+            if got != want:
+                n=min(len(got),len(want))
+                off=next((i for i in range(n) if got[i]!=want[i]),n)
+                raise SystemExit(f"refrel3 fetch mismatch: base_offset={off} got_len={len(got)} want_len={len(want)} got_sha256={hashlib.sha256(got).hexdigest()} want_sha256={hashlib.sha256(want).hexdigest()}")
+            if len(got) != 4096:
+                raise SystemExit(f"refrel3 fetch length={len(got)}, expected=4096")
+            print("PASS: refrel3 fetch bases bit-perfect", hashlib.sha256(got).hexdigest())
+            PY
           done
           python3 - <<'PY'
           import json
