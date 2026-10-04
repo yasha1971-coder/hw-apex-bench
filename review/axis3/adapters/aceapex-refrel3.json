@@ -1,0 +1,29 @@
+{
+  "schema": "axis3-adapter-v1",
+  "codec": "ACEAPEX-refrel3",
+  "upstream_repository": "yasha1971-coder/aceapex",
+  "upstream_branch": "refrel",
+  "freeze_contract": "research/refrel/FORMAT.md",
+  "freeze_status": "not-frozen",
+  "measurements_allowed": false,
+  "variants": {
+    "q4k": {
+      "RR_BS": 4096,
+      "Q_block": 4096,
+      "Q_definition": "Q_block = RR_BS"
+    },
+    "q16k": {
+      "RR_BS": 16384,
+      "Q_block": 16384,
+      "Q_definition": "Q_block = RR_BS"
+    }
+  },
+  "scopes": [],
+  "build": "n/a until research/refrel/FORMAT.md exists and declares the frozen refrel3 format",
+  "region": "n/a until format freeze",
+  "window_law": {
+    "status": "n/a-until-format-freeze",
+    "Q_block": "RR_BS",
+    "D_Q": "must be measured after freeze on the same official runner/scope"
+  }
+}
