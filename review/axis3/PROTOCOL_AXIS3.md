@@ -61,7 +61,7 @@ CI creates 2–3 deterministic ~1 MiB mini-assemblies derived from one common sy
 - every available adapter round-trips and returns bit-perfect windows;
 - judge rejects one deliberately corrupted answer;
 - storage accounting includes declared sidecars;
-- result/manifest files contain no absolute `/home/` paths.
+- result/manifest files contain no absolute paths under the home directory.
 
 CI is correctness-only. Its timing is not benchmark evidence.
 
