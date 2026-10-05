@@ -22,9 +22,27 @@ static ZL_GraphID make_graph(ZL_Compressor* c,int level,int wlog){
     ZL_LocalParams lp={0}; lp.intParams.intParams=ints; lp.intParams.nbIntParams=2;
     ZL_GraphParameters gp={0}; gp.localParams=&lp;
     ZL_RESULT_OF(ZL_GraphID) rr=ZL_Compressor_parameterizeGraph(c,ZL_GRAPH_LZ,&gp);
-    if(ZL_isError(rr.report)){die_report("parameterizeGraph",rr.report);}
-    ZL_GraphID g=rr.value;
-    if(ZL_Compressor_Graph_getBaseGraphID(c,g).id != ZL_GRAPH_LZ.id){fprintf(stderr,"wrong base graph\n");exit(2);}
+    /* OpenZL v0.3.0 public Result accessors:
+     * include/openzl/zl_errors.h:183 ZL_RES_isError
+     * include/openzl/zl_errors.h:186 ZL_RES_value
+     * include/openzl/zl_errors.h:189 ZL_RES_code
+     */
+    if(ZL_RES_isError(rr)){
+        fprintf(stderr,"parameterizeGraph failed: %s\n",ZL_ErrorCode_toString(ZL_RES_code(rr)));
+        exit(2);
+    }
+    ZL_GraphID g=ZL_RES_value(rr);
+    /* OpenZL v0.3.0 public GraphID/reflection API:
+     * include/openzl/zl_graph_api.h:139 ZL_GraphID_isValid
+     * include/openzl/zl_reflection.h:104 ZL_Compressor_Graph_getName
+     * include/openzl/zl_reflection.h:154 ZL_Compressor_Graph_getBaseGraphID
+     */
+    if(!ZL_GraphID_isValid(g)){fprintf(stderr,"parameterized graph invalid\n");exit(2);}
+    ZL_GraphID base=ZL_Compressor_Graph_getBaseGraphID(c,g);
+    if(!ZL_GraphID_isValid(base)){fprintf(stderr,"base graph invalid\n");exit(2);}
+    const char* baseName=ZL_Compressor_Graph_getName(c,base);
+    const char* lzName=ZL_Compressor_Graph_getName(c,ZL_GRAPH_LZ);
+    if(!baseName || !lzName || strcmp(baseName,lzName)!=0){fprintf(stderr,"wrong base graph\n");exit(2);}
     ZL_LocalParams got=ZL_Compressor_Graph_getLocalParams(c,g); int gl=0,gw=0;
     if(!lp_get(got,ZL_LzParam_compressionLevel,&gl)||!lp_get(got,ZL_LzParam_windowLog,&gw)||gl!=level||gw!=wlog){
         fprintf(stderr,"reflection mismatch requested level=%d windowLog=%d got level=%d windowLog=%d\n",level,wlog,gl,gw);exit(3);
