@@ -1,0 +1,24 @@
+# silence gate (run 2) 2026-10-05T17:18:25Z
+uptime:  17:18:25 up 300 days,  8:49,  6 users,  load average: 0.48, 1.77, 1.56
+loadavg: 0.48 1.77 1.56 1/1080 2327103
+df: 61G free of 878G
+top processes by CPU (pid user %cpu %mem command):
+    PID USER     %CPU %MEM COMMAND
+2310730 aeterna   1.0  0.2 2.1.284
+3585607 root      0.7  0.3 uvicorn
+3277404 root      0.2  0.0 cloudflared
+ 554052 aeterna   0.1  0.0 claude
+2212880 aeterna   0.1  0.0 copilot-runtime
+2321915 root      0.1  0.0 kworker/u64:3-ext4-rsv-conversion
+      1 root      0.0  0.0 systemd
+background (counted as background, not stopped):
+      1 glyph 0.0 0.0 (sd-pam)
+      2 glyph 0.0 0.0 bash
+      1 glyph 0.0 0.0 code-07f806f999
+      2 glyph 0.0 0.0 python3
+      1 glyph 0.0 0.0 screen
+      1 glyph 0.0 0.0 systemd
+      2 glyph 0.0 0.0 tmux:
+      1 glyph 0.0 1.4 query_fm_binary
+      1 root 0.0 0.0 entrypoint.sh
+      1 root 0.7 0.3 uvicorn

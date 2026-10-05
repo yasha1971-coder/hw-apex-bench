@@ -100,40 +100,59 @@ jobs:
           assert d["variants"]["q16k"]["Q_block"] == 16384
           print("PASS: refrel3 frozen v1 q4k/q16k bit-perfect; enable gate satisfied by this run")
           PY
-      - name: OpenZL v0.3.0 exact-window synthetic round-trip
+      - name: OpenZL v0.3.0 segmented random-access synthetic round-trip
         run: |
           set -euo pipefail
           bash review/axis3/build_openzl_v030.sh "$RUNNER_TEMP/openzl"
           export OPENZL_HELPER="$RUNNER_TEMP/openzl/openzl-lz-helper"
+          src="$RUNNER_TEMP/cohort/asm1.fa"
           for variant in l1_w64k l1_w1m l3_w64k l3_w1m; do
-            src="$RUNNER_TEMP/cohort/asm1.fa"
-            arc="$RUNNER_TEMP/cohort/$variant.zl"
-            out="$RUNNER_TEMP/cohort/$variant.out.fa"
-            log="$RUNNER_TEMP/cohort/$variant.log"
-            bash review/axis3/openzl_adapter.sh build "$variant" "$src" "$arc" 2>"$log"
+            arc="$RUNNER_TEMP/cohort/$variant.ozseg"
+            out="$RUNNER_TEMP/cohort/$variant.out.bases"
+            bash review/axis3/openzl_adapter.sh build "$variant" "$src" "$arc"
             bash review/axis3/openzl_adapter.sh decode "$arc" "$out"
-            cmp "$src" "$out"
-            grep -Fq 'FRAME_REFLECTION formatVersion=27' "$log"
+            samtools faidx "$src" asm1 | tail -n +2 | tr -d '\n\r' > "$out.truth"
+            cmp "$out" "$out.truth"
+            region='asm1:1001-66536'
+            bash review/axis3/openzl_adapter.sh fetch "$arc" "$region" > "$out.fetch"
+            samtools faidx "$src" "$region" | tail -n +2 | tr -d '\n\r' > "$out.fetch.truth"
+            cmp "$out.fetch" "$out.fetch.truth"
+            bash review/axis3/openzl_adapter.sh info "$arc" > "$arc.info"
             case "$variant" in
-              l1_w64k) grep -Fq 'GRAPH_REFLECTION level=1 windowLog=16 windowBytes=65536' "$log";;
-              l1_w1m) grep -Fq 'GRAPH_REFLECTION level=1 windowLog=20 windowBytes=1048576' "$log";;
-              l3_w64k) grep -Fq 'GRAPH_REFLECTION level=3 windowLog=16 windowBytes=65536' "$log";;
-              l3_w1m) grep -Fq 'GRAPH_REFLECTION level=3 windowLog=20 windowBytes=1048576' "$log";;
+              l1_w64k) grep -Fq '"Q":65536' "$arc.info"; grep -Fq '"windowLog":16' "$arc.info";;
+              l1_w1m) grep -Fq '"Q":1048576' "$arc.info"; grep -Fq '"windowLog":20' "$arc.info";;
+              l3_w64k) grep -Fq '"Q":65536' "$arc.info"; grep -Fq '"windowLog":16' "$arc.info";;
+              l3_w1m) grep -Fq '"Q":1048576' "$arc.info"; grep -Fq '"windowLog":20' "$arc.info";;
             esac
           done
-          python3 - <<'PY'
-          import json
-          from pathlib import Path
-          d=json.loads(Path("review/axis3/adapters/openzl-v030.json").read_text())
-          assert d["upstream_commit"] == "32246b48faee46807f84183dac4db479089f5445"
-          assert d["frame_format_version"] == 27
-          assert d["measurements_allowed"] is False
-          print("PASS: all four exact OpenZL variants reflected and bit-perfect; enable gate satisfied by this run")
+      - name: OpenZL regression assembly larger than 1.6 GiB
+        run: |
+          set -euo pipefail
+          export OPENZL_HELPER="$RUNNER_TEMP/openzl/openzl-lz-helper"
+          big="$RUNNER_TEMP/big.fa"
+          python3 - "$big" <<'PY'
+          import sys
+          p=sys.argv[1]; block=(b"ACGT"*(1024*1024//4))
+          with open(p,"wb") as f:
+              f.write(b">big\n")
+              for _ in range(1640): f.write(block+b"\n")
           PY
+          test "$(stat -c %s "$big")" -gt 1717986918
+          samtools faidx "$big"
+          arc="$RUNNER_TEMP/big.l1_w1m.ozseg"; out="$RUNNER_TEMP/big.out"
+          bash review/axis3/openzl_adapter.sh build l1_w1m "$big" "$arc"
+          bash review/axis3/openzl_adapter.sh decode "$arc" "$out"
+          got=$(sha256sum "$out" | cut -d' ' -f1)
+          want=$(samtools faidx "$big" big | tail -n +2 | tr -d '\n\r' | sha256sum | cut -d' ' -f1)
+          test "$got" = "$want"
+          region='big:1717000001-1717065536'
+          bash review/axis3/openzl_adapter.sh fetch "$arc" "$region" > "$RUNNER_TEMP/big.fetch"
+          samtools faidx "$big" "$region" | tail -n +2 | tr -d '\n\r' > "$RUNNER_TEMP/big.truth"
+          cmp "$RUNNER_TEMP/big.fetch" "$RUNNER_TEMP/big.truth"
       - name: Contracts and path hygiene
         run: |
           set -euo pipefail
-          python3 -m py_compile review/axis3/generate_windows.py review/axis3/judge.py review/axis3/make_synthetic.py tools/cmp_bases.py
+          python3 -m py_compile review/axis3/generate_windows.py review/axis3/judge.py review/axis3/make_synthetic.py review/axis3/openzl_segmented.py tools/cmp_bases.py
           bash -n review/axis3/run_axis3_ace_core.sh
           python3 - <<'PY'
           import json
