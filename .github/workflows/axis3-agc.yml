@@ -1,0 +1,36 @@
+name: Axis 3 AGC library correctness
+on:
+  pull_request:
+    paths:
+      - 'review/axis3/agc_*'
+      - 'review/axis3/build_agc_v324.sh'
+      - 'review/axis3/test_agc*'
+      - '.github/workflows/axis3-agc.yml'
+permissions:
+  contents: read
+jobs:
+  agc:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - name: Syntax and production adapter mocks
+        run: |
+          set -euo pipefail
+          python3 -m py_compile review/axis3/*.py
+          for f in review/axis3/*.sh; do bash -n "$f"; done
+          python3 tools/check_workflow_syntax.py .github/workflows/axis3-agc.yml
+          python3 -m unittest discover -s review/axis3 -p test_agc_adapter.py -v
+      - name: Install native correctness prerequisites
+        run: |
+          set -euo pipefail
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq samtools nasm cmake
+      - name: Build pinned libagc and native shim
+        run: |
+          set -euo pipefail
+          bash review/axis3/build_agc_v324.sh "$RUNNER_TEMP/axis3-agc"
+      - name: Single-create t2t and noref native ranges
+        run: |
+          set -euo pipefail
+          python3 review/axis3/test_agc_synthetic.py --binary "$RUNNER_TEMP/axis3-agc/agc-cli" --library "$RUNNER_TEMP/axis3-agc/libhwa_agc.so" --out "$RUNNER_TEMP/axis3-agc-truth"
