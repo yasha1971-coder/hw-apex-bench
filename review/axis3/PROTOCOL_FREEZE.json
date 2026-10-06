@@ -1,0 +1,1 @@
+{"schema":"hwapex-protocol-freeze-v1","protocol_path":"review/axis3/PROTOCOL_AXIS3.frozen.md","sha256":"0510e0fceaaf6e6eba291e440606a504ff61342e79e652f765eab1d0d1622646","status":"frozen-before-measurement","change_rule":"semantic change requires new protocol version and complete rerun","window_law_primary":"B","window_law_secondary":"A"}
