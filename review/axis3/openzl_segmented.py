@@ -30,7 +30,9 @@ def build(a):
         while len(pending)>=q: emit(bytes(pending[:q]));del pending[:q]
       if pending: emit(bytes(pending))
     meta={"schema":"openzl-segmented-v1","variant":a.variant,"level":level,"windowLog":wlog,"lz_window_bytes":1<<wlog,"Q":q,"uncompressed_bases":logical,"contigs":contigs,"frames":frames}
-    m=json.dumps(meta,separators=(",",":"),sort_keys=True).encode()\n    table_sha=hashlib.sha256(m).digest()\n    Path(a.output).write_bytes(b"OZSEG1\\n"+bytes([1])+len(m).to_bytes(8,"little")+table_sha+m+data)
+    m=json.dumps(meta,separators=(",",":"),sort_keys=True).encode()
+    table_sha=hashlib.sha256(m).digest()
+    Path(a.output).write_bytes(b"OZSEG1\\n"+bytes([1])+len(m).to_bytes(8,"little")+table_sha+m+data)
 def openarc(path):
     f=open(path,"rb")
     magic=f.read(7)
