@@ -1,0 +1,36 @@
+name: Axis 3 BGZF dual configuration correctness
+on:
+  pull_request:
+    paths:
+      - 'review/axis3/bgzf_*'
+      - 'review/axis3/build_bgzf_axis3.sh'
+      - 'review/axis3/test_bgzf*'
+      - '.github/workflows/axis3-bgzf.yml'
+permissions:
+  contents: read
+jobs:
+  bgzf:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - name: Syntax and production adapter mocks
+        run: |
+          set -euo pipefail
+          python3 -m py_compile review/axis3/*.py
+          for f in review/axis3/*.sh; do bash -n "$f"; done
+          python3 tools/check_workflow_syntax.py .github/workflows/axis3-bgzf.yml
+          python3 -m unittest discover -s review/axis3 -p test_bgzf_adapter.py -v
+      - name: Native build prerequisites
+        run: |
+          set -euo pipefail
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq autoconf automake libtool zlib1g-dev samtools cmake
+      - name: Build existing pinned htslib and libdeflate
+        run: |
+          set -euo pipefail
+          bash review/axis3/build_bgzf_axis3.sh "$RUNNER_TEMP/axis3-bgzf"
+      - name: Default and matched-g library fetch correctness
+        run: |
+          set -euo pipefail
+          python3 review/axis3/test_bgzf_synthetic.py --bgzip "$RUNNER_TEMP/axis3-bgzf/bgzip" --library "$RUNNER_TEMP/axis3-bgzf/libhwa_bgzf.so" --out "$RUNNER_TEMP/axis3-bgzf-truth"
