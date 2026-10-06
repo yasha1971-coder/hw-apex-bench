@@ -38,8 +38,8 @@ jobs:
           "$RUNNER_TEMP/unit-venv/bin/python" -m pip install -q jsonschema==4.26.0
           "$RUNNER_TEMP/unit-venv/bin/python" -m py_compile tools/*.py tests/*.py
           "$RUNNER_TEMP/unit-venv/bin/python" -m unittest discover -s tests -v 2>&1 | tee "$RUNNER_TEMP/unit.log"
-          # the series Q1..P2 carries 76 tests; a smaller count means a test file was not collected
-          grep -q '^Ran 76 tests' "$RUNNER_TEMP/unit.log"
+          # the series Q1..P2 carries 76 tests + the protocol-freeze test; a smaller count means a test file was not collected
+          grep -q '^Ran 77 tests' "$RUNNER_TEMP/unit.log"
           grep -q '^OK$' "$RUNNER_TEMP/unit.log"
       - name: Install synthetic adapter dependencies
         run: |
