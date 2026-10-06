@@ -11,6 +11,13 @@ jobs:
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
+      - name: Fast syntax gate
+        run: |
+          set -euo pipefail
+          python3 -m py_compile review/axis3/*.py
+          for f in review/axis3/*.sh; do
+            bash -n "$f"
+          done
       - name: Install synthetic adapter dependencies
         run: |
           set -euo pipefail
