@@ -71,7 +71,7 @@ jobs:
         run: |
           set -euo pipefail
           python3 review/axis3/two_bit_capacity.py "$RUNNER_TEMP/cohort" > "$RUNNER_TEMP/cohort/two-bit.json"
-          grep -Fq '"status": "PASS"' "$RUNNER_TEMP/cohort/two-bit.json"
+          python3 -c 'import json,sys; d=json.load(open(sys.argv[1])); assert d["status"] == "PASS"' "$RUNNER_TEMP/cohort/two-bit.json"
       - name: Judge must reject corruption
         run: |
           set -euo pipefail
@@ -165,12 +165,24 @@ jobs:
             bash review/axis3/openzl_adapter.sh info "$arc" > "$arc.info"; rc=$?
             set -e
             echo "EXIT variant=$variant stage=info rc=$rc"; test "$rc" -eq 0
-            case "$variant" in
-              l1_w64k) grep -Fq '"Q":65536' "$arc.info"; grep -Fq '"windowLog":16' "$arc.info";;
-              l1_w1m) grep -Fq '"Q":1048576' "$arc.info"; grep -Fq '"windowLog":20' "$arc.info";;
-              l3_w64k) grep -Fq '"Q":65536' "$arc.info"; grep -Fq '"windowLog":16' "$arc.info";;
-              l3_w1m) grep -Fq '"Q":1048576' "$arc.info"; grep -Fq '"windowLog":20' "$arc.info";;
-            esac
+            python3 - "$arc.info" "$variant" "$(stat -c %s "$out.truth")" <<'PY'
+            import json,math,sys
+            p,variant,input_size=sys.argv[1],sys.argv[2],int(sys.argv[3])
+            expected={
+              "l1_w64k":(65536,16,1),
+              "l1_w1m":(1048576,20,1),
+              "l3_w64k":(65536,16,3),
+              "l3_w1m":(1048576,20,3),
+            }
+            q,wlog,level=expected[variant]
+            d=json.load(open(p))
+            assert d["Q"] == q, (d["Q"],q)
+            assert d["windowLog"] == wlog, (d["windowLog"],wlog)
+            assert d["level"] == level, (d["level"],level)
+            assert len(d["frames"]) == math.ceil(input_size/q), (len(d["frames"]),math.ceil(input_size/q))
+            assert sum(x["ulen"] for x in d["frames"]) == input_size, (sum(x["ulen"] for x in d["frames"]),input_size)
+            print("INFO_CONTRACT_PASS",variant,"Q",q,"windowLog",wlog,"level",level,"frames",len(d["frames"]),"sum_ulen",input_size)
+            PY
             echo "EXIT variant=$variant stage=info_contract rc=0"
           done
       - name: OpenZL regression assembly larger than 1.6 GiB
