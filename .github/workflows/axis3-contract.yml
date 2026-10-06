@@ -100,6 +100,31 @@ jobs:
           assert d["variants"]["q16k"]["Q_block"] == 16384
           print("PASS: refrel3 frozen v1 q4k/q16k bit-perfect; enable gate satisfied by this run")
           PY
+      - name: OZSEG container unit tests without OpenZL
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import hashlib,json,tempfile
+          from pathlib import Path
+          import importlib.util
+          p=Path("review/axis3/openzl_segmented.py")
+          spec=importlib.util.spec_from_file_location("oz",p);oz=importlib.util.module_from_spec(spec);spec.loader.exec_module(oz)
+          def pack(frames):
+              meta={"schema":"openzl-segmented-v1","variant":"mock","level":1,"windowLog":16,"lz_window_bytes":65536,"Q":4,"uncompressed_bases":sum(len(x) for x in frames),"contigs":[],"frames":[]}
+              data=bytearray();u=0
+              for x in frames:
+                  meta["frames"].append({"uoff":u,"ulen":len(x),"coff":len(data),"clen":len(x)});data+=x;u+=len(x)
+              m=json.dumps(meta,separators=(",",":"),sort_keys=True).encode()
+              return b"OZSEG1\n"+bytes([1])+len(m).to_bytes(8,"little")+hashlib.sha256(m).digest()+m+data
+          cases={"zero":[],"one":[b"ABCD"],"three":[b"ABCD",b"EFGH",b"I"],"empty_input":[],"exact_q":[b"ABCD",b"EFGH"]}
+          with tempfile.TemporaryDirectory() as td:
+              for name,frames in cases.items():
+                  fn=Path(td)/name;fn.write_bytes(pack(frames))
+                  f,m,base=oz.openarc(fn)
+                  assert len(m["frames"])==len(frames)
+                  got=[(x["uoff"],x["ulen"],x["coff"],x["clen"]) for x in m["frames"]]
+                  print(name,"size",fn.stat().st_size,"header",fn.read_bytes()[:32].hex(" "),"frames",got)
+          PY
       - name: OpenZL v0.3.0 segmented random-access synthetic round-trip
         run: |
           set -euo pipefail
@@ -110,7 +135,12 @@ jobs:
             arc="$RUNNER_TEMP/cohort/$variant.ozseg"
             out="$RUNNER_TEMP/cohort/$variant.out.bases"
             bash review/axis3/openzl_adapter.sh build "$variant" "$src" "$arc"
-            bash review/axis3/openzl_adapter.sh decode "$arc" "$out"
+            printf 'writer_path=%s writer_size=%s\n' "$arc" "$(stat -c %s "$arc")"
+            xxd -l 32 "$arc"
+            reader_path="$arc"
+            printf 'reader_path=%s reader_size=%s\n' "$reader_path" "$(stat -c %s "$reader_path")"
+            xxd -l 32 "$reader_path"
+            bash review/axis3/openzl_adapter.sh decode "$reader_path" "$out"
             samtools faidx "$src" asm1 | tail -n +2 | tr -d '\n\r' > "$out.truth"
             cmp "$out" "$out.truth"
             region='asm1:1001-66536'

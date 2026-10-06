@@ -30,9 +30,18 @@ def build(a):
         while len(pending)>=q: emit(bytes(pending[:q]));del pending[:q]
       if pending: emit(bytes(pending))
     meta={"schema":"openzl-segmented-v1","variant":a.variant,"level":level,"windowLog":wlog,"lz_window_bytes":1<<wlog,"Q":q,"uncompressed_bases":logical,"contigs":contigs,"frames":frames}
-    m=json.dumps(meta,separators=(",",":")).encode();Path(a.output).write_bytes(b"OZSEG1\\n"+len(m).to_bytes(8,"little")+m+data)
+    m=json.dumps(meta,separators=(",",":"),sort_keys=True).encode()\n    table_sha=hashlib.sha256(m).digest()\n    Path(a.output).write_bytes(b"OZSEG1\\n"+bytes([1])+len(m).to_bytes(8,"little")+table_sha+m+data)
 def openarc(path):
- f=open(path,"rb"); assert f.read(7)==b"OZSEG1\n"; n=int.from_bytes(f.read(8),"little");m=json.loads(f.read(n));base=15+n;return f,m,base
+    f=open(path,"rb")
+    magic=f.read(7)
+    if magic!=b"OZSEG1\n": raise ValueError(f"bad OZSEG magic: {magic!r}")
+    version=f.read(1)
+    if version!=bytes([1]): raise ValueError(f"bad OZSEG version: {version!r}")
+    n=int.from_bytes(f.read(8),"little")
+    want=f.read(32);raw=f.read(n);got=hashlib.sha256(raw).digest()
+    if got!=want: raise ValueError("OZSEG table checksum mismatch")
+    m=json.loads(raw);base=48+n
+    return f,m,base
 def frame(f,m,base,i,helper,td):
  x=m["frames"][i];f.seek(base+x["coff"]);z=f.read(x["clen"]);arc=Path(td)/"a";out=Path(td)/"o";arc.write_bytes(z)
  subprocess.run([helper,"decompress",str(arc),str(out)],check=True);return out.read_bytes()

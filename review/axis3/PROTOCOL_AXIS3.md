@@ -46,6 +46,18 @@ Warmup, cache policy and archive residency are recorded. A codec without a scope
 - OpenZL v0.3.0 (frame v27), segmented random-access adapter: `l1_w64k` = L1, windowLog 16, Q=64 KiB; `l1_w1m` = L1, windowLog 20, Q=1 MiB; `l3_w64k` = L3, windowLog 16, Q=64 KiB; `l3_w1m` = L3, windowLog 20, Q=1 MiB. Q is the target uncompressed size of each independently decodable frame (last frame may be shorter); LZ window is recorded separately. The adapter stores a frame index with compressed offset/length and uncompressed offset/length plus contig-to-global-base mapping. A window decodes only intersecting frames. Measurement gate requires bit-perfect small synthetic tests and a generated regression assembly larger than 1.6 GiB, including fetch equality against samtools.
 - ACEAPEX-refrel3: reserved adapter gated by upstream `research/refrel/FORMAT.md` on ACEAPEX branch `refrel`. Until that file exists and declares the format frozen, status is `not-frozen` and measurements are forbidden. Predeclared variants are `q4k` (`RR_BS=4096`) and `q16k` (`RR_BS=16384`); for the window-law diagnostic, `Q_block = RR_BS`. No D_Q, size or access result may be inferred from research logs before freeze.
 
+### OZSEG1 container v1
+
+The segmented OpenZL adapter uses a benchmark-local binary container. Wire format is fixed as:
+1. bytes 0..6: magic `OZSEG1` followed by one LF byte (`4f 5a 53 45 47 31 0a`);
+2. byte 7: container version, unsigned value `1`;
+3. bytes 8..15: metadata-table length as unsigned 64-bit little-endian;
+4. bytes 16..47: SHA-256 of the exact metadata-table bytes;
+5. bytes 48..(48+table_length-1): canonical compact JSON metadata table (sorted keys);
+6. remaining bytes: concatenated independent OpenZL v27 frames.
+
+Each frame-table entry contains `uoff` (uncompressed global offset), `ulen` (uncompressed length), `coff` (compressed offset relative to the first frame byte), and `clen` (compressed length). The table also contains contig name/global-start/length mappings, variant, Q, LZ windowLog and level. The table SHA-256 is verified before any frame offset is trusted. All integer header fields are little-endian; JSON integer fields are decimal JSON numbers.
+
 ## Window-law diagnostic
 
 Alongside every eligible in-process result, measure one-thread full-decode throughput `D_Q` and actual mean uncompressed decode granule `Q`, then report the prediction `R ≈ D_Q/(W+Q−1)`, predicted p50 `(W+Q−1)/D_Q`, measured p50 and signed error %. Detailed rules are in `WINDOW_LAW.md`. This is diagnostic evidence, not a ranking and never crosses CPU/GPU/CLI scope boundaries.
