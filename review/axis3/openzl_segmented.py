@@ -2,6 +2,10 @@
 import argparse,hashlib,json,os,subprocess,tempfile
 from pathlib import Path
 
+MAGIC = bytes.fromhex("4f5a534547310a")
+VERSION = 1
+assert MAGIC == bytes.fromhex("4f5a534547310a") and len(MAGIC) == 7
+
 def cfg(v):
  d={"l1_w64k":(1,16,65536),"l1_w1m":(1,20,1048576),"l3_w64k":(3,16,65536),"l3_w1m":(3,20,1048576)}
  if v not in d: raise SystemExit("bad variant")
@@ -32,18 +36,22 @@ def build(a):
     meta={"schema":"openzl-segmented-v1","variant":a.variant,"level":level,"windowLog":wlog,"lz_window_bytes":1<<wlog,"Q":q,"uncompressed_bases":logical,"contigs":contigs,"frames":frames}
     m=json.dumps(meta,separators=(",",":"),sort_keys=True).encode()
     table_sha=hashlib.sha256(m).digest()
-    Path(a.output).write_bytes(b"OZSEG1\\n"+bytes([1])+len(m).to_bytes(8,"little")+table_sha+m+data)
-def openarc(path):
+    write_container(a.output,m,data)
+def write_container(path,table_bytes,payload):
+    table_sha=hashlib.sha256(table_bytes).digest()
+    Path(path).write_bytes(MAGIC+bytes([VERSION])+len(table_bytes).to_bytes(8,"little")+table_sha+table_bytes+payload)
+def read_container(path):
     f=open(path,"rb")
-    magic=f.read(7)
-    if magic!=b"OZSEG1\n": raise ValueError(f"bad OZSEG magic: {magic!r}")
+    magic=f.read(len(MAGIC))
+    if magic!=MAGIC: raise ValueError(f"bad OZSEG magic: {magic!r}")
     version=f.read(1)
-    if version!=bytes([1]): raise ValueError(f"bad OZSEG version: {version!r}")
+    if version!=bytes([VERSION]): raise ValueError(f"bad OZSEG version: {version!r}")
     n=int.from_bytes(f.read(8),"little")
     want=f.read(32);raw=f.read(n);got=hashlib.sha256(raw).digest()
     if got!=want: raise ValueError("OZSEG table checksum mismatch")
-    m=json.loads(raw);base=48+n
-    return f,m,base
+    return f,json.loads(raw),len(MAGIC)+1+8+32+n
+def openarc(path):
+    return read_container(path)
 def frame(f,m,base,i,helper,td):
  x=m["frames"][i];f.seek(base+x["coff"]);z=f.read(x["clen"]);arc=Path(td)/"a";out=Path(td)/"o";arc.write_bytes(z)
  subprocess.run([helper,"decompress",str(arc),str(out)],check=True);return out.read_bytes()
