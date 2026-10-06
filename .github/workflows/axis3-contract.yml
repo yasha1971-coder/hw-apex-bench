@@ -119,32 +119,59 @@ jobs:
       - name: OpenZL v0.3.0 segmented random-access synthetic round-trip
         run: |
           set -euo pipefail
+          set -x
           bash review/axis3/build_openzl_v030.sh "$RUNNER_TEMP/openzl"
           export OPENZL_HELPER="$RUNNER_TEMP/openzl/openzl-lz-helper"
           src="$RUNNER_TEMP/cohort/asm1.fa"
           for variant in l1_w64k l1_w1m l3_w64k l3_w1m; do
             arc="$RUNNER_TEMP/cohort/$variant.ozseg"
             out="$RUNNER_TEMP/cohort/$variant.out.bases"
+            echo "STAGE variant=$variant build"
             bash review/axis3/openzl_adapter.sh build "$variant" "$src" "$arc"
             printf 'writer_path=%s writer_size=%s\n' "$arc" "$(stat -c %s "$arc")"
             xxd -l 32 "$arc"
             reader_path="$arc"
             printf 'reader_path=%s reader_size=%s\n' "$reader_path" "$(stat -c %s "$reader_path")"
             xxd -l 32 "$reader_path"
-            bash review/axis3/openzl_adapter.sh decode "$reader_path" "$out"
+            echo "STAGE variant=$variant decode"
+            set +e
+            bash review/axis3/openzl_adapter.sh decode "$reader_path" "$out"; rc=$?
+            set -e
+            echo "EXIT variant=$variant stage=decode rc=$rc"; test "$rc" -eq 0
             samtools faidx "$src" asm1 | tail -n +2 | tr -d '\n\r' > "$out.truth"
-            cmp "$out" "$out.truth"
+            echo "STAGE variant=$variant cmp_full"
+            printf 'full got_size=%s want_size=%s got_sha256=%s want_sha256=%s\n' "$(stat -c %s "$out")" "$(stat -c %s "$out.truth")" "$(sha256sum "$out" | cut -d' ' -f1)" "$(sha256sum "$out.truth" | cut -d' ' -f1)"
+            set +e
+            cmp "$out" "$out.truth"; rc=$?
+            if [ "$rc" -ne 0 ]; then cmp -l "$out" "$out.truth" | head -20 || true; fi
+            set -e
+            echo "EXIT variant=$variant stage=cmp_full rc=$rc"; test "$rc" -eq 0
             region='asm1:1001-66536'
-            bash review/axis3/openzl_adapter.sh fetch "$arc" "$region" > "$out.fetch"
+            echo "STAGE variant=$variant fetch region=$region"
+            set +e
+            bash review/axis3/openzl_adapter.sh fetch "$arc" "$region" > "$out.fetch"; rc=$?
+            set -e
+            echo "EXIT variant=$variant stage=fetch rc=$rc"; test "$rc" -eq 0
             samtools faidx "$src" "$region" | tail -n +2 | tr -d '\n\r' > "$out.fetch.truth"
-            cmp "$out.fetch" "$out.fetch.truth"
-            bash review/axis3/openzl_adapter.sh info "$arc" > "$arc.info"
+            echo "STAGE variant=$variant cmp_fetch"
+            printf 'fetch got_size=%s want_size=%s got_sha256=%s want_sha256=%s\n' "$(stat -c %s "$out.fetch")" "$(stat -c %s "$out.fetch.truth")" "$(sha256sum "$out.fetch" | cut -d' ' -f1)" "$(sha256sum "$out.fetch.truth" | cut -d' ' -f1)"
+            set +e
+            cmp "$out.fetch" "$out.fetch.truth"; rc=$?
+            if [ "$rc" -ne 0 ]; then cmp -l "$out.fetch" "$out.fetch.truth" | head -20 || true; fi
+            set -e
+            echo "EXIT variant=$variant stage=cmp_fetch rc=$rc"; test "$rc" -eq 0
+            echo "STAGE variant=$variant info"
+            set +e
+            bash review/axis3/openzl_adapter.sh info "$arc" > "$arc.info"; rc=$?
+            set -e
+            echo "EXIT variant=$variant stage=info rc=$rc"; test "$rc" -eq 0
             case "$variant" in
               l1_w64k) grep -Fq '"Q":65536' "$arc.info"; grep -Fq '"windowLog":16' "$arc.info";;
               l1_w1m) grep -Fq '"Q":1048576' "$arc.info"; grep -Fq '"windowLog":20' "$arc.info";;
               l3_w64k) grep -Fq '"Q":65536' "$arc.info"; grep -Fq '"windowLog":16' "$arc.info";;
               l3_w1m) grep -Fq '"Q":1048576' "$arc.info"; grep -Fq '"windowLog":20' "$arc.info";;
             esac
+            echo "EXIT variant=$variant stage=info_contract rc=0"
           done
       - name: OpenZL regression assembly larger than 1.6 GiB
         run: |
