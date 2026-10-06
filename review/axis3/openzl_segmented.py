@@ -42,14 +42,43 @@ def write_container(path,table_bytes,payload):
     Path(path).write_bytes(MAGIC+bytes([VERSION])+len(table_bytes).to_bytes(8,"little")+table_sha+table_bytes+payload)
 def read_container(path):
     f=open(path,"rb")
-    magic=f.read(len(MAGIC))
-    if magic!=MAGIC: raise ValueError(f"bad OZSEG magic: {magic!r}")
-    version=f.read(1)
-    if version!=bytes([VERSION]): raise ValueError(f"bad OZSEG version: {version!r}")
-    n=int.from_bytes(f.read(8),"little")
-    want=f.read(32);raw=f.read(n);got=hashlib.sha256(raw).digest()
-    if got!=want: raise ValueError("OZSEG table checksum mismatch")
-    return f,json.loads(raw),len(MAGIC)+1+8+32+n
+    try:
+        total=os.fstat(f.fileno()).st_size
+        fixed=len(MAGIC)+1+8+32
+        if total<fixed: raise ValueError("truncated OZSEG header")
+        if f.read(len(MAGIC))!=MAGIC: raise ValueError("bad OZSEG magic")
+        if f.read(1)!=bytes([VERSION]): raise ValueError("bad OZSEG version")
+        n=int.from_bytes(f.read(8),"little")
+        if n>total-fixed: raise ValueError("truncated OZSEG table")
+        want=f.read(32);raw=f.read(n)
+        if hashlib.sha256(raw).digest()!=want: raise ValueError("OZSEG table checksum mismatch")
+        def unique_pairs(items):
+            result={}
+            for key,value in items:
+                if key in result: raise ValueError("duplicate OZSEG table key")
+                result[key]=value
+            return result
+        m=json.loads(raw,object_pairs_hook=unique_pairs)
+        if not isinstance(m,dict): raise ValueError("OZSEG table must be an object")
+        q=m.get("Q");size=m.get("uncompressed_bases");frames=m.get("frames")
+        if type(q) is not int or q<=0 or type(size) is not int or size<0 or not isinstance(frames,list):
+            raise ValueError("invalid OZSEG geometry types")
+        if len(frames)!=(size+q-1)//q: raise ValueError("wrong OZSEG frame count")
+        uoff=coff=0
+        for frame_info in frames:
+            if not isinstance(frame_info,dict): raise ValueError("invalid OZSEG index row")
+            values=[frame_info.get(k) for k in ("uoff","ulen","coff","clen")]
+            if any(type(v) is not int for v in values): raise ValueError("OZSEG offsets must be integers")
+            u,l,c,z=values
+            if u!=uoff or c!=coff or l!=min(q,size-uoff) or l<=0 or z<=0:
+                raise ValueError("OZSEG gap, overlap or invalid segment length")
+            uoff+=l;coff+=z
+        base=fixed+n
+        if uoff!=size or coff!=total-base: raise ValueError("OZSEG payload size mismatch")
+        return f,m,base
+    except Exception:
+        f.close()
+        raise
 def openarc(path):
     return read_container(path)
 def frame(f,m,base,i,helper,td):
