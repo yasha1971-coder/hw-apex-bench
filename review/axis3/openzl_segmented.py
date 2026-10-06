@@ -82,21 +82,48 @@ def read_container(path):
 def openarc(path):
     return read_container(path)
 def frame(f,m,base,i,helper,td):
- x=m["frames"][i];f.seek(base+x["coff"]);z=f.read(x["clen"]);arc=Path(td)/"a";out=Path(td)/"o";arc.write_bytes(z)
- subprocess.run([helper,"decompress",str(arc),str(out)],check=True);return out.read_bytes()
+    x=m["frames"][i];f.seek(base+x["coff"]);z=f.read(x["clen"])
+    if len(z)!=x["clen"]: raise ValueError("short OZSEG compressed segment")
+    arc=Path(td)/"a";out=Path(td)/"o";arc.write_bytes(z)
+    subprocess.run([helper,"decompress",str(arc),str(out)],check=True)
+    result=out.read_bytes()
+    if len(result)!=x["ulen"]: raise ValueError("OZSEG decoded segment length mismatch")
+    return result
+
 def fetch(a):
- f,m,base=openarc(a.archive); name,span=a.region.split(":");s,e=map(int,span.split("-")); c=next(x for x in m["contigs"] if x["name"]==name)
- lo=c["start"]+s-1;hi=c["start"]+e; q=m["Q"]; ans=bytearray()
- with tempfile.TemporaryDirectory() as td:
-  for i in range(lo//q,(hi-1)//q+1):
-   b=frame(f,m,base,i,a.helper,td);u=m["frames"][i]["uoff"];ans+=b[max(lo,u)-u:min(hi,u+len(b))-u]
- os.write(1,bytes(ans))
+    f,m,base=openarc(a.archive)
+    try:
+        name,span=a.region.rsplit(":",1);s,e=map(int,span.split("-"))
+        matches=[x for x in m["contigs"] if x["name"]==name]
+        if len(matches)!=1: raise ValueError("unknown or ambiguous OZSEG contig")
+        c=matches[0]
+        if not 1<=s<=e<=c["length"]: raise ValueError("window outside OZSEG contig")
+        lo=c["start"]+s-1;hi=c["start"]+e;q=m["Q"];ans=bytearray()
+        with tempfile.TemporaryDirectory() as td:
+            for i in range(lo//q,(hi-1)//q+1):
+                chunk=frame(f,m,base,i,a.helper,td);u=m["frames"][i]["uoff"]
+                ans.extend(chunk[max(lo,u)-u:min(hi,u+len(chunk))-u])
+        if len(ans)!=e-s+1: raise ValueError("short OZSEG window")
+        view=memoryview(ans)
+        while view:
+            written=os.write(1,view)
+            if written<=0: raise OSError("failed OZSEG stdout write")
+            view=view[written:]
+    finally:
+        f.close()
+
 def decode(a):
- f,m,base=openarc(a.archive)
- with open(a.output,"wb") as o, tempfile.TemporaryDirectory() as td:
-  for i in range(len(m["frames"])): o.write(frame(f,m,base,i,a.helper,td))
+    f,m,base=openarc(a.archive)
+    try:
+        with open(a.output,"wb") as o, tempfile.TemporaryDirectory() as td:
+            for i in range(len(m["frames"])): o.write(frame(f,m,base,i,a.helper,td))
+    finally:
+        f.close()
+
 def info(a):
- f,m,base=openarc(a.archive);print(json.dumps(m))
+    f,m,base=openarc(a.archive)
+    try: print(json.dumps(m))
+    finally: f.close()
 def main():
  ap=argparse.ArgumentParser();sp=ap.add_subparsers(dest="op",required=True)
  p=sp.add_parser("build");p.add_argument("--helper",required=True);p.add_argument("--variant",required=True);p.add_argument("--input",required=True);p.add_argument("--output",required=True)
