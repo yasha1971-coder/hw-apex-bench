@@ -93,6 +93,19 @@ nearest-rank p50/p95/p99; raw nanoseconds; aggregate windows/s; build wall time;
 stored bytes including indexes/reference; total and per-assembly storage; peak
 RSS. Window-law primary model B is t(W)=c0+(W+Q-1)/D_Q. D_Q is measured independently by full sequential decode with one thread on the same format/corpus. c0 is not fitted to window results: c0 = median(t(W=1)) - Q/D_Q, where W=1 is a separate 10,000-request random-position probe using the same format, thread and seed rule. W=1 is calibration only and is excluded from the verdict set W={1024,8192,65536}. If c0<0, model B is FAIL for that format and is reported unchanged. Secondary model A, t(W)=(W+Q-1)/D_Q, is printed beside B but never affects the verdict. For model B the absolute p50 prediction error threshold is <=20% inclusive. No coefficients may be tuned from the 1/8/64 KiB observations. The comparison must include at least four non-ACEAPEX formats; declared candidates are BGZF default, BGZF matched-g, zstd seekable, indexed lz4, OpenZL-seg and AGC.
 
+### Verdict-window clarification (v1.1)
+
+Only W = {1024,8192,65536} contributes a p50 model-B error verdict. W=1 is
+CALIBRATION_ONLY. Any additional W with 1 < W <= 65536 that is not in that set
+is DIAGNOSTIC_ONLY: preserve its raw observations and both model predictions,
+but do not use its prediction error in the aggregate verdict or to fit c0.
+A negative c0 still makes model B FAIL for that format, independently of W.
+Correctness is mandatory even for diagnostic observations: a wrong SHA, short
+read or decoder error makes the run FAILED, not a waived diagnostic error.
+Freeze the optional diagnostic-W list with the run inputs before execution.
+This is a clarification of the existing v1.1 verdict set, not a change to pins,
+the byte/coordinate domain, model B, or the inclusive 20% criterion.
+
 ## Axis 4 — each region across the cohort
 
 Freeze N query groups. Every group contains one explicit coordinate mapping for

@@ -55,3 +55,27 @@ int64_t hwa_bgzf_fetch(void *context, const char *contig, uint64_t start0,
     return got;
 }
 void hwa_bgzf_close(void *context) { if (context != NULL) fai_destroy((faidx_t *)context); }
+
+/* B: a separate persistent sequential BGZF cursor from the same pinned library.
+ * No bgzf_mt: one decode thread. Raw FASTA output is normalized and SHA-checked
+ * by the caller outside the timed call; Q is counted in canonical base bytes.
+ */
+void *hwa_bgzf_dq_open(const char *archive) { return bgzf_open(archive, "r"); }
+int64_t hwa_bgzf_dq_decode(void *context, void *destination, size_t capacity) {
+    if (context == NULL || destination == NULL || capacity > INT64_MAX) return -1;
+    BGZF *f = (BGZF *)context;
+    if (bgzf_seek(f, 0, SEEK_SET) < 0) return -2;
+    size_t used = 0;
+    while (used < capacity) {
+        size_t want = capacity - used;
+        if (want > 1048576) want = 1048576;
+        ssize_t n = bgzf_read(f, (unsigned char *)destination + used, want);
+        if (n < 0) return -3;
+        if (n == 0) break;
+        used += (size_t)n;
+    }
+    unsigned char extra;
+    if (bgzf_read(f, &extra, 1) != 0) return -4;
+    return (int64_t)used;
+}
+void hwa_bgzf_dq_close(void *context) { if (context != NULL) bgzf_close((BGZF *)context); }

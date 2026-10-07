@@ -112,7 +112,7 @@ class Refrel3Reader:
         n=self.lib.hwa_rr3_length(self.h,c.encode());
         if n<0:raise KeyError(c)
         return n
-    def translated(self,r):return {'assembly_id':r.assembly,'contig_id':r.contig,'start':r.start0+1,'end':r.end0,'convention':'1-based-inclusive'}
+    def translated(self,r):return {'assembly_id':r.assembly,'contig_id':r.contig,'start0':r.start0,'end0':r.end0,'convention':'0-based-half-open','api':'hwa_rr3_fetch'}
     def fetch(self,a,c,s,e):
         n=self.contig_length(a,c)
         if not 0<=s<e<=n:raise ValueError('window outside contig')

@@ -34,3 +34,15 @@ jobs:
         run: |
           set -euo pipefail
           python3 review/axis3/test_bgzf_synthetic.py --bgzip "$RUNNER_TEMP/axis3-bgzf/bgzip" --library "$RUNNER_TEMP/axis3-bgzf/libhwa_bgzf.so" --out "$RUNNER_TEMP/axis3-bgzf-truth"
+      - name: B full sequential decode and canonical windows (no timing)
+        run: |
+          set -euo pipefail
+          root="$RUNNER_TEMP/axis3-bgzf-truth"
+          python3 -m review.axis3.check_verdict_native --family bgzf --variant default \
+            --library "$RUNNER_TEMP/axis3-bgzf/libhwa_bgzf.so" \
+            --archive "$root/default.bgz" --source "$root/truth.fa"
+          for g in 4096 16384 65280; do
+            python3 -m review.axis3.check_verdict_native --family bgzf --variant matched-g --granule "$g" \
+              --library "$RUNNER_TEMP/axis3-bgzf/libhwa_bgzf.so" \
+              --archive "$root/matched-g$g.bgz" --source "$root/truth.fa"
+          done

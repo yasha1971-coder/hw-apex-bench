@@ -38,10 +38,15 @@ def freeze_windows(coordinates,truth):
 def nearest_rank(v,p):
     if not v: raise ValueError('no samples')
     return sorted(v)[(p*len(v)+99)//100-1]
-def run_windows(reader,requests,*,expected_count=OFFICIAL_REQUEST_COUNT,calibration=False,clock:Callable[[],int]=time.perf_counter_ns):
+def run_windows(reader,requests,*,expected_count=OFFICIAL_REQUEST_COUNT,calibration=False,diagnostic=False,clock:Callable[[],int]=time.perf_counter_ns):
     if reader.scope!='cpu-in-process' or reader.decoder_threads!=1: raise ValueError('one-thread CPU in-process reader required')
     if len(requests)!=expected_count or not requests: raise ValueError('request count differs from frozen contract')
-    w=requests[0].length; allowed=(1,) if calibration else WINDOW_BYTES
+    w=requests[0].length
+    if calibration and diagnostic: raise ValueError('calibration and diagnostic are exclusive')
+    allowed = (1,) if calibration else WINDOW_BYTES
+    if diagnostic:
+        if type(w) is not int or not 1 < w <= 65536 or w in WINDOW_BYTES: raise ValueError('invalid diagnostic W')
+        allowed = (w,)
     if w not in allowed: raise ValueError('W outside frozen set')
     seen=set();rows=[];lat=[]
     for r in requests:
@@ -60,4 +65,4 @@ def run_windows(reader,requests,*,expected_count=OFFICIAL_REQUEST_COUNT,calibrat
             row['error']=f'{type(exc).__name__}: {exc}';rows.append(row)
             return {'status':'FAILED','verified':len(lat),'p50_us':None,'p95_us':None,'p99_us':None,'windows_per_second':None},rows
         rows.append(row)
-    return {'status':'PASS','kind':'c0-probe' if calibration else 'axis3-window','W_bytes':w,'verified':len(rows),'p50_us':nearest_rank(lat,50)/1000,'p95_us':nearest_rank(lat,95)/1000,'p99_us':nearest_rank(lat,99)/1000,'windows_per_second':len(rows)*1e9/sum(lat)},rows
+    return {'status':'PASS','kind':'c0-probe' if calibration else ('diagnostic-only' if diagnostic else 'axis3-window'),'W_bytes':w,'verified':len(rows),'p50_us':nearest_rank(lat,50)/1000,'p95_us':nearest_rank(lat,95)/1000,'p99_us':nearest_rank(lat,99)/1000,'windows_per_second':len(rows)*1e9/sum(lat)},rows

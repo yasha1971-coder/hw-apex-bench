@@ -54,6 +54,15 @@ class ProtocolFreezeTest(unittest.TestCase):
                         "load <0.5", ">20,000,000,000 bytes"):
             self.assertIn(literal, self.protocol)
 
+    def test_v11_verdict_scope_clarification(self):
+        self.assertEqual(self.freeze["verdict_windows_bytes"], [1024, 8192, 65536])
+        self.assertEqual(self.freeze["calibration_window_bytes"], 1)
+        self.assertEqual(self.freeze["clarifies_sha256"],
+                         "f0bb442a804d5989a6e6262304e46250cdf7a93c815038729a1ad21e8927402a")
+        for clause in ("CALIBRATION_ONLY", "DIAGNOSTIC_ONLY", "Correctness is mandatory even for diagnostic",
+                       "Freeze the optional diagnostic-W list"):
+            self.assertIn(clause, self.protocol)
+
     def test_freeze_names_prior_version_and_rerun_rule(self):
         self.assertEqual(self.freeze["supersedes_sha256"],
                          "0510e0fceaaf6e6eba291e440606a504ff61342e79e652f765eab1d0d1622646")

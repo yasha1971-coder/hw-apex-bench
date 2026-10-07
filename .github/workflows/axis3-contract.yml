@@ -49,7 +49,7 @@ jobs:
           import unittest
 
           # Keep collection count strict; optional native cases are still collected.
-          expected_total = 100
+          expected_total = 154  # B: before=100; after=154; native requirements unchanged
           suite = unittest.defaultTestLoader.discover("tests")
           native_type = importlib.import_module("test_s2_native_readers").NativeAvailability
 
@@ -176,6 +176,7 @@ jobs:
         run: |
           set -euo pipefail
           bash review/axis3/build_refrel3.sh "$RUNNER_TEMP/refrel3"
+          bash review/axis3/build_refrel3_native.sh "$RUNNER_TEMP/refrel3"
           export RR3_BIN="$RUNNER_TEMP/refrel3/refrel3v1"
           ref="$RUNNER_TEMP/cohort/asm1.fa"
           for variant in q4k q16k; do
@@ -191,6 +192,9 @@ jobs:
             bash review/axis3/refrel3_adapter.sh region "$ref" "$arc" "$region" > "$arc.fetch"
             samtools faidx "$asm" "$region" > "$arc.truth"
             python3 tools/cmp_bases.py --got "$arc.fetch" --want "$arc.truth" --variant "$variant" --expected-len 4096
+            python3 -m review.axis3.check_verdict_native --family refrel3 --variant "$variant" \
+              --library "$RUNNER_TEMP/refrel3/libhwa_refrel3.so" --reference "$ref" \
+              --archive "$arc" --source "$asm"
           done
           python3 - <<'PY'
           import json
