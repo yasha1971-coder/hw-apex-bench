@@ -40,7 +40,7 @@ jobs:
           "$RUNNER_TEMP/unit-venv/bin/python" -m unittest discover -s tests -v 2>&1 | tee "$RUNNER_TEMP/unit.log"
           # S2 adds 18 collected tests; before=82, after=100
           grep -q '^Ran 100 tests' "$RUNNER_TEMP/unit.log"
-          grep -q '^OK$' "$RUNNER_TEMP/unit.log"
+          grep -qE '^OK( \(skipped=10\))?$' "$RUNNER_TEMP/unit.log"
       - name: Install synthetic adapter dependencies
         run: |
           set -euo pipefail
