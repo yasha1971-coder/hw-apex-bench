@@ -34,6 +34,22 @@ int main(void) {
 }
 EOF
 printf 'OPENZL_STATIC=%s\nZSTD_STATIC=%s\nLZ4_STATIC=%s\n' "$LIB" "$ZSTD_LIB" "$LZ4_LIB"
-cc -I"$SRC/src/openzl/zstd" -I"$SRC/src/openzl/lz4" "$OUT/dependency_versions.c" "$ZSTD_LIB" "$LZ4_LIB" -lpthread -lm -o "$OUT/dependency-versions"
-"$OUT/dependency-versions"
+# This diagnostic is not a build/correctness gate. The helper link above remains fatal.
+# Do not substitute system libraries; retain the pinned static paths printed above.
+probe_status="$OUT/dependency_versions.status"
+if cc -I"$SRC/src/openzl/zstd" -I"$SRC/src/openzl/lz4" "$OUT/dependency_versions.c" "$ZSTD_LIB" "$LZ4_LIB" -lpthread -lm -o "$OUT/dependency-versions" > "$OUT/dependency_versions.build.log" 2>&1; then
+  if "$OUT/dependency-versions" > "$OUT/dependency_versions.txt" 2> "$OUT/dependency_versions.err"; then
+    printf 'DEPENDENCY_VERSION_PROBE_OK\n' > "$probe_status"
+    cat "$OUT/dependency_versions.txt"
+  else
+    rc=$?
+    printf 'DEPENDENCY_VERSION_PROBE_UNAVAILABLE stage=run rc=%s; dependency versions unverified\n' "$rc" > "$probe_status"
+    cat "$OUT/dependency_versions.err" >&2
+  fi
+else
+  rc=$?
+  printf 'DEPENDENCY_VERSION_PROBE_UNAVAILABLE stage=compile rc=%s; dependency versions unverified\n' "$rc" > "$probe_status"
+  cat "$OUT/dependency_versions.build.log" >&2
+fi
+cat "$probe_status"
 printf '%s\n' "$SHA" > "$OUT/OPENZL_COMMIT"

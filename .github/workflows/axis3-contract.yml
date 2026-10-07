@@ -37,10 +37,83 @@ jobs:
           python3 -m venv "$RUNNER_TEMP/unit-venv"
           "$RUNNER_TEMP/unit-venv/bin/python" -m pip install -q jsonschema==4.26.0
           "$RUNNER_TEMP/unit-venv/bin/python" -m py_compile tools/*.py tests/*.py
-          "$RUNNER_TEMP/unit-venv/bin/python" -m unittest discover -s tests -v 2>&1 | tee "$RUNNER_TEMP/unit.log"
-          # S2 adds 18 collected tests; before=82, after=100
-          grep -q '^Ran 100 tests' "$RUNNER_TEMP/unit.log"
-          grep -qE '^OK( \(skipped=10\))?$' "$RUNNER_TEMP/unit.log"
+          "$RUNNER_TEMP/unit-venv/bin/python" - "$RUNNER_TEMP/unit-result.json" <<'PY' 2>&1 | tee "$RUNNER_TEMP/unit.log"
+          import ast
+          import importlib
+          import inspect
+          import json
+          import os
+          from pathlib import Path
+          import sys
+          import textwrap
+          import unittest
+
+          # Keep collection count strict; optional native cases are still collected.
+          expected_total = 100
+          suite = unittest.defaultTestLoader.discover("tests")
+          native_type = importlib.import_module("test_s2_native_readers").NativeAvailability
+
+          def cases(item):
+              if isinstance(item, unittest.TestSuite):
+                  for child in item:
+                      yield from cases(child)
+              else:
+                  yield item
+
+          collected = list(cases(suite))
+          expected_skips = {}
+          native_cases = []
+          for case in collected:
+              if not isinstance(case, native_type):
+                  continue
+              method = getattr(type(case), case._testMethodName)
+              tree = ast.parse(textwrap.dedent(inspect.getsource(method)))
+              calls = [node for node in ast.walk(tree)
+                       if isinstance(node, ast.Call)
+                       and isinstance(node.func, ast.Attribute)
+                       and isinstance(node.func.value, ast.Name)
+                       and node.func.value.id == "self" and node.func.attr == "need"]
+              # Discover each requirement from the real test body, not a duplicate list.
+              if len(calls) != 1 or not calls[0].args:
+                  raise SystemExit("Unrecognized native requirement: " + case.id())
+              argument = calls[0].args[0]
+              if not isinstance(argument, ast.Constant) or not isinstance(argument.value, str):
+                  raise SystemExit("Native environment key must be literal: " + case.id())
+              key = argument.value
+              if not (key.startswith("HWAPEX_") and key.endswith("_SO")):
+                  raise SystemExit("Invalid native environment key: " + case.id())
+              value = os.environ.get(key)
+              # Unset tool: optional. Configured but missing/broken tool: test must FAIL.
+              state = "unset" if not value else ("file" if Path(value).is_file() else "configured-missing-file")
+              native_cases.append({"id": case.id(), "env": key, "availability": state})
+              if not value:
+                  expected_skips[case.id()] = (
+                      key + " not set: native tool/library unavailable in this environment")
+
+          if not native_cases or len(collected) != expected_total:
+              raise SystemExit(f"Collection mismatch: collected={len(collected)} expected={expected_total}")
+          result = unittest.TextTestRunner(verbosity=2).run(suite)
+          observed_skips = {case.id(): reason for case, reason in result.skipped}
+          valid = (result.wasSuccessful() and not result.expectedFailures
+                   and result.testsRun == expected_total
+                   and len(result.skipped) == len(observed_skips)
+                   and observed_skips == expected_skips)
+          receipt = {
+              "schema": "axis3-unit-gate-v1", "expected_total": expected_total,
+              "collected": len(collected), "tests_run": result.testsRun,
+              "failures": len(result.failures), "errors": len(result.errors),
+              "unexpected_successes": len(result.unexpectedSuccesses),
+              "expected_failures": len(result.expectedFailures),
+              "native_cases": native_cases,
+              "expected_skips": expected_skips, "observed_skips": observed_skips,
+              "status": "PASS" if valid else "FAIL",
+          }
+          Path(sys.argv[1]).write_text(json.dumps(receipt, sort_keys=True, indent=2) + chr(10))
+          print(f"NATIVE_SKIP_GATE status={receipt['status']} collected={len(collected)} "
+                f"expected_skips={len(expected_skips)} observed_skips={len(result.skipped)}")
+          if not valid:
+              raise SystemExit(1)
+          PY
       - name: Install synthetic adapter dependencies
         run: |
           set -euo pipefail
