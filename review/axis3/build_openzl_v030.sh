@@ -4,9 +4,14 @@ ROOT=$(cd -- "$(dirname -- "$0")/../.." && pwd)
 OUT=${1:?output directory}
 SHA=32246b48faee46807f84183dac4db479089f5445
 SRC="$OUT/openzl"
-rm -rf "$SRC"; mkdir -p "$OUT"
-git clone --quiet --recurse-submodules https://github.com/facebook/openzl.git "$SRC"
-git -C "$SRC" checkout --quiet "$SHA"
+mkdir -p "$OUT"
+if [ -d "$SRC/.git" ] && [ "$(git -C "$SRC" rev-parse HEAD)" = "$SHA" ]; then
+  echo "PINNED_OPENZL_SOURCE_CACHE_VERIFIED=$SHA"
+else
+  rm -rf "$SRC" "$OUT/build"
+  git clone --quiet --recurse-submodules https://github.com/facebook/openzl.git "$SRC"
+  git -C "$SRC" checkout --quiet "$SHA"
+fi
 git -C "$SRC" submodule update --init --recursive --quiet
 cmake -S "$SRC" -B "$OUT/build" -DCMAKE_BUILD_TYPE=Release -DOPENZL_BUILD_CLI=ON
 cmake --build "$OUT/build" -j2

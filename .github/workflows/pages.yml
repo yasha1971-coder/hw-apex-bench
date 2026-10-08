@@ -8,17 +8,17 @@ on:
   workflow_dispatch:
 permissions:
   contents: read
-  pages: write
-  id-token: write
-  statuses: write
 concurrency:
   group: github-pages-${{ github.event_name }}-${{ github.ref }}
   cancel-in-progress: false
 jobs:
   build:
+    permissions:
+      contents: read
+      pages: write
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
       - name: Verify committed evidence and generate homepage
         run: python3 web/build.py .pages/index.html
       - name: Verify first-screen matched-g evidence is in the deploy artifact
@@ -43,16 +43,21 @@ jobs:
           grep -Fq 'For batch-heavy workloads with any locality, interactive is the profile to pick.' .pages/index.html
       - name: Verify Pages is configured for GitHub Actions
         id: pages
-        uses: actions/configure-pages@v5
+        uses: actions/configure-pages@983d7736d9b0ae728b81ab479565c72886d7745b
       - name: Show Pages target
         run: |
           echo "base_url=${{ steps.pages.outputs.base_url }}"
           echo "base_path=${{ steps.pages.outputs.base_path }}"
-      - uses: actions/upload-pages-artifact@v4
+      - uses: actions/upload-pages-artifact@7b1f4a764d45c48632c6b24a0339c27f5614fb0b
         with:
           path: .pages
 
   deploy:
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+      statuses: write
     if: github.event_name != 'pull_request'
     needs: build
     environment:
@@ -62,7 +67,7 @@ jobs:
     steps:
       - name: Deploy public homepage
         id: deployment
-        uses: actions/deploy-pages@v4
+        uses: actions/deploy-pages@d6db90164ac5ed86f2b6aed7e0febac5b3c0c03e
       - name: Verify the live homepage contains this release
         env:
           PAGE_URL: ${{ steps.deployment.outputs.page_url }}

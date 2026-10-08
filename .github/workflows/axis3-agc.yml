@@ -13,7 +13,7 @@ jobs:
     runs-on: ubuntu-24.04
     timeout-minutes: 30
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
       - name: Syntax and production adapter mocks
         run: |
           set -euo pipefail
@@ -26,10 +26,22 @@ jobs:
           set -euo pipefail
           sudo apt-get update -qq
           sudo apt-get install -y -qq samtools nasm cmake
+      - name: Restore pinned native build cache
+        id: native-cache
+        uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830
+        with:
+          path: ${{ runner.temp }}/axis3-agc
+          key: axis3-agc-e67e3fc865a459779118d3d4e9fbdf42c70ba75e-${{ runner.os }}-${{ hashFiles('review/axis3/build_agc_v324.sh', 'review/axis3/agc_shim.cpp') }}
       - name: Build pinned libagc and native shim
         run: |
           set -euo pipefail
-          bash review/axis3/build_agc_v324.sh "$RUNNER_TEMP/axis3-agc"
+          if test -f "$RUNNER_TEMP/axis3-agc/AGC_COMMIT" &&
+             test "$(cat "$RUNNER_TEMP/axis3-agc/AGC_COMMIT")" = e67e3fc865a459779118d3d4e9fbdf42c70ba75e &&
+             (cd "$RUNNER_TEMP/axis3-agc" && sha256sum -c SHA256SUMS); then
+            echo "PINNED_AGC_CACHE_VERIFIED"
+          else
+            bash review/axis3/build_agc_v324.sh "$RUNNER_TEMP/axis3-agc"
+          fi
       - name: Single-create t2t and noref native ranges
         run: |
           set -euo pipefail

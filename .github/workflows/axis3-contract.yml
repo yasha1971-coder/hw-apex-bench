@@ -16,7 +16,7 @@ jobs:
   synthetic:
     runs-on: ubuntu-24.04
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
       - name: Fast syntax gate
         run: |
           set -euo pipefail
@@ -211,6 +211,11 @@ jobs:
         run: |
           set -euo pipefail
           python3 review/axis3/test_ozseg_container.py
+      - name: Restore pinned OpenZL dependency cache
+        uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830
+        with:
+          path: ${{ runner.temp }}/openzl
+          key: axis3-openzl-32246b48faee46807f84183dac4db479089f5445-${{ runner.os }}-${{ hashFiles('review/axis3/build_openzl_v030.sh', 'review/axis3/openzl_lz_helper.c') }}
       - name: OpenZL v0.3.0 segmented random-access synthetic round-trip
         run: |
           set -euo pipefail

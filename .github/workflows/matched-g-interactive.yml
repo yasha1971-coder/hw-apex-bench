@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-24.04
     timeout-minutes: 180
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
 
       - name: Install prerequisites
         run: |
@@ -88,7 +88,7 @@ jobs:
 
       - name: Measure g=4096
         run: python3 review/matched_g_interactive/run_point.py --g 4096 --inputs .work/windows --build .work/build --native .work/native --out /tmp/matched-g-interactive/g4096
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
           name: matched-g-interactive-4096
@@ -100,7 +100,7 @@ jobs:
 
       - name: Measure g=8192
         run: python3 review/matched_g_interactive/run_point.py --g 8192 --inputs .work/windows --build .work/build --native .work/native --out /tmp/matched-g-interactive/g8192
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
           name: matched-g-interactive-8192
@@ -112,7 +112,7 @@ jobs:
 
       - name: Measure g=16384
         run: python3 review/matched_g_interactive/run_point.py --g 16384 --inputs .work/windows --build .work/build --native .work/native --out /tmp/matched-g-interactive/g16384
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
           name: matched-g-interactive-16384
@@ -124,7 +124,7 @@ jobs:
 
       - name: Measure g=32768
         run: python3 review/matched_g_interactive/run_point.py --g 32768 --inputs .work/windows --build .work/build --native .work/native --out /tmp/matched-g-interactive/g32768
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
           name: matched-g-interactive-32768
@@ -136,7 +136,7 @@ jobs:
 
       - name: Measure g=65280
         run: python3 review/matched_g_interactive/run_point.py --g 65280 --inputs .work/windows --build .work/build --native .work/native --out /tmp/matched-g-interactive/g65280
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
           name: matched-g-interactive-65280
@@ -148,7 +148,7 @@ jobs:
 
       - name: Build the five-point curve
         run: python3 review/matched_g_interactive/curve.py --root /tmp/matched-g-interactive --out /tmp/matched-g-interactive/curve
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
           name: matched-g-interactive-curve

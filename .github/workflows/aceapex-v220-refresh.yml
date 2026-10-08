@@ -13,7 +13,7 @@ jobs:
     runs-on: ubuntu-24.04
     timeout-minutes: 60
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
       - name: Install build prerequisites
         run: |
           sudo apt-get update -qq
@@ -26,7 +26,7 @@ jobs:
         run: python3 review/aceapex_v220/check_gpu_import.py
       - name: Retain qualification receipts
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
           name: aceapex-v220-adapter-receipts
           path: |
@@ -38,7 +38,7 @@ jobs:
     runs-on: ubuntu-24.04
     timeout-minutes: 300
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
       - name: Install prerequisites
         run: |
           sudo apt-get update -qq
@@ -99,7 +99,7 @@ jobs:
           PY
       - name: Retain complete CPU evidence
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
           name: aceapex-v220-cpu-refresh
           path: |
