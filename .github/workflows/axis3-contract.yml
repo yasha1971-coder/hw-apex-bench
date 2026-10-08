@@ -49,7 +49,7 @@ jobs:
           import unittest
 
           # Keep collection count strict; optional native cases are still collected.
-          expected_total = 173  # A2/S5: before=154; after=173; 19 runbook tests; native requirements unchanged
+          expected_total = 177  # A3/S3: before=173; after=177; four Q3 plan tests
           suite = unittest.defaultTestLoader.discover("tests")
           native_type = importlib.import_module("test_s2_native_readers").NativeAvailability
 
