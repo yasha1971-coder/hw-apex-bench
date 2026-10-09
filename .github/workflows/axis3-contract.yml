@@ -55,7 +55,7 @@ jobs:
           import unittest
 
           # Keep collection count strict; optional native cases are still collected.
-          expected_total = 431  # A11: 401 A10 + 30 compressed streaming truth tests
+          expected_total = 447  # A12.1: 431 A11 + 16 native-thread contract tests
           suite = unittest.defaultTestLoader.discover("tests")
           native_type = importlib.import_module("test_s2_native_readers").NativeAvailability
 

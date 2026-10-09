@@ -23,7 +23,7 @@ from tools.validate_axis3_evidence import validate_record
 from tools.silence_contract import judge
 
 SCHEMAS = {'axis3-evidence-v1', 'window-law-verdict-v1',
-           'axis4-evidence-v3', 'axis4-evidence-v4', 'axis5-evidence-v1'}
+           'axis4-evidence-v3', 'axis4-evidence-v4', 'axis4-evidence-v5', 'axis5-evidence-v1'}
 METRICS = ('verified', 'stored_bytes', 'bytes_per_assembly', 'window_bytes',
            'Q_actual_bytes', 'Q_bytes', 'D_Q_Bps', 'p50_us', 'p95_us', 'p99_us',
            'windows_per_second', 'seconds', 'build_seconds', 'peak_rss_bytes',
@@ -107,6 +107,8 @@ def axis4(data, path, root, record):
         'threads': data['decoder_threads'], 'protocol': prepared['protocol_sha256'],
         'domain': data['domain'], 'timing_boundary': data['timing_boundary'],
         'corpus': identity(corpus_identity(prepared)), 'requests': identity(prepared['groups'])}
+    if data['schema'] == 'axis4-evidence-v5':
+        condition.update(cpu_models=data['threading']['cpu_models'], affinity=data['threading']['affinity'])
     row = {'format': plan['reader']['family'], 'variant': plan['reader']['variant'],
            'status': data['status'], 'verified': data['verified'], 'stored_bytes': data['stored_bytes']}
     if data['performance_valid']:
@@ -174,7 +176,7 @@ def load_json_lines(path):
 
 def collect(directories):
     tables, seen, sources, snapshots = {}, set(), {}, []
-    adapters = {'axis3-evidence-v1': axis3, 'axis4-evidence-v3': axis4, 'axis4-evidence-v4': axis4,
+    adapters = {'axis3-evidence-v1': axis3, 'axis4-evidence-v3': axis4, 'axis4-evidence-v4': axis4, 'axis4-evidence-v5': axis4,
                 'axis5-evidence-v1': axis5, 'window-law-verdict-v1': window_law}
     for directory in directories:
         base = Path(directory).resolve(strict=True)
@@ -202,6 +204,8 @@ def collect(directories):
             pairs = {(r['format'], r['variant']) for r in rows}
             for family, variant in pairs:
                 key = (axis, family, variant)
+                if schema == 'axis4-evidence-v5':
+                    key += (data['decoder_threads'],)
                 if key in seen:
                     raise ValueError('duplicate format/variant evidence')
                 seen.add(key)
@@ -211,6 +215,8 @@ def collect(directories):
             automatic = table is None
             if automatic:
                 table = 'axis'+str(axis)
+                if schema == 'axis4-evidence-v5':
+                    table += '-threads-'+str(data['decoder_threads'])
                 if condition['machine'] is None:
                     table += '-'+sha  # Unknown hardware can never imply comparability.
             for r in rows:

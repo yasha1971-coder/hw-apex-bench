@@ -1,0 +1,1384 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Axis4 native decoder threads with legacy truth variants",
+  "oneOf": [
+    {
+      "$defs": {
+        "file": {
+          "type": "object",
+          "properties": {
+            "path": {
+              "type": "string",
+              "minLength": 1
+            },
+            "bytes": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "sha256": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            }
+          },
+          "required": [
+            "path",
+            "bytes",
+            "sha256"
+          ],
+          "additionalProperties": false
+        },
+        "canonical": {
+          "type": "object",
+          "properties": {
+            "assembly_id": {
+              "type": "string",
+              "minLength": 1
+            },
+            "contig_id": {
+              "type": "string",
+              "minLength": 1
+            },
+            "start0": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "end0": {
+              "type": "integer",
+              "minimum": 1
+            }
+          },
+          "required": [
+            "assembly_id",
+            "contig_id",
+            "start0",
+            "end0"
+          ],
+          "additionalProperties": false
+        },
+        "query": {
+          "type": "object",
+          "properties": {
+            "assembly_id": {
+              "type": "string",
+              "minLength": 1
+            },
+            "contig_id": {
+              "type": "string",
+              "minLength": 1
+            },
+            "start0": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "end0": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "sha256": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            }
+          },
+          "required": [
+            "assembly_id",
+            "contig_id",
+            "start0",
+            "end0",
+            "sha256"
+          ],
+          "additionalProperties": false
+        },
+        "row": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "group_id": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "assembly": {
+              "type": "string",
+              "minLength": 1
+            },
+            "canonical": {
+              "$ref": "#/oneOf/0/$defs/canonical"
+            },
+            "translated": {
+              "type": "object",
+              "minProperties": 1
+            },
+            "length": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "observed_sha256": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            },
+            "status": {
+              "enum": [
+                "PASS",
+                "FAILED"
+              ]
+            },
+            "response_file": {
+              "anyOf": [
+                {
+                  "$ref": "#/oneOf/0/$defs/file"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            }
+          },
+          "required": [
+            "id",
+            "group_id",
+            "assembly",
+            "canonical",
+            "translated",
+            "length",
+            "observed_sha256",
+            "status",
+            "response_file"
+          ],
+          "additionalProperties": false
+        },
+        "prepared": {
+          "type": "object",
+          "properties": {
+            "schema": {
+              "const": "axis4-prepared-v1"
+            },
+            "evidence_kind": {
+              "enum": [
+                "official",
+                "synthetic"
+              ]
+            },
+            "domain": {
+              "const": "uppercase-sequence-without-FASTA-framing"
+            },
+            "coordinate_convention": {
+              "const": "0-based-half-open"
+            },
+            "protocol_sha256": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            },
+            "sample_seed": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 18446744073709551615
+            },
+            "sample_algorithm": {
+              "const": "python.random.Random/MT19937/sample"
+            },
+            "sample_limit": {
+              "const": 32
+            },
+            "assemblies": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "assembly_id": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "fasta": {
+                    "$ref": "#/oneOf/0/$defs/file"
+                  },
+                  "source_url": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "source_sha256": {
+                    "type": "string",
+                    "pattern": "^[0-9a-f]{64}$"
+                  },
+                  "contigs": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "contig_id": {
+                          "type": "string",
+                          "minLength": 1
+                        },
+                        "length": {
+                          "type": "integer",
+                          "minimum": 0
+                        }
+                      },
+                      "required": [
+                        "contig_id",
+                        "length"
+                      ],
+                      "additionalProperties": false
+                    },
+                    "minItems": 1
+                  },
+                  "canonical_bytes": {
+                    "type": "integer",
+                    "minimum": 0
+                  },
+                  "canonical_sha256": {
+                    "type": "string",
+                    "pattern": "^[0-9a-f]{64}$"
+                  }
+                },
+                "required": [
+                  "assembly_id",
+                  "fasta",
+                  "source_url",
+                  "contigs",
+                  "canonical_bytes",
+                  "canonical_sha256"
+                ],
+                "additionalProperties": false
+              },
+              "minItems": 1
+            },
+            "groups": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "minProperties": 1,
+                "additionalProperties": {
+                  "$ref": "#/oneOf/0/$defs/query"
+                }
+              },
+              "minItems": 1
+            },
+            "input_files": {
+              "type": "array",
+              "items": {
+                "$ref": "#/oneOf/0/$defs/file"
+              },
+              "minItems": 1
+            }
+          },
+          "required": [
+            "schema",
+            "evidence_kind",
+            "domain",
+            "coordinate_convention",
+            "protocol_sha256",
+            "sample_seed",
+            "sample_algorithm",
+            "sample_limit",
+            "assemblies",
+            "groups",
+            "input_files"
+          ],
+          "additionalProperties": false
+        },
+        "evidence": {
+          "type": "object",
+          "properties": {
+            "schema": {
+              "const": "axis4-evidence-v5"
+            },
+            "axis": {
+              "const": 4
+            },
+            "status": {
+              "enum": [
+                "PASS",
+                "FAILED",
+                "NOT_SUPPORTED"
+              ]
+            },
+            "error": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "minLength": 1
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "evidence_kind": {
+              "enum": [
+                "official",
+                "synthetic"
+              ]
+            },
+            "performance_valid": {
+              "type": "boolean"
+            },
+            "domain": {
+              "const": "uppercase-sequence-without-FASTA-framing"
+            },
+            "timing_boundary": {
+              "const": "complete group: native fetch, uppercase normalization, SHA-256 judgement and translation; response file writes outside timer"
+            },
+            "scope": {
+              "const": "cpu-in-process"
+            },
+            "decoder_threads": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 256
+            },
+            "command": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1
+              },
+              "minItems": 1
+            },
+            "prepared": {
+              "$ref": "#/oneOf/0/$defs/file"
+            },
+            "plan": {
+              "$ref": "#/oneOf/0/$defs/file"
+            },
+            "input_files": {
+              "type": "array",
+              "items": {
+                "$ref": "#/oneOf/0/$defs/file"
+              },
+              "minItems": 1
+            },
+            "storage_files": {
+              "type": "array",
+              "items": {
+                "$ref": "#/oneOf/0/$defs/file"
+              },
+              "minItems": 1
+            },
+            "stored_bytes": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "sample_seed": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "sample_ids": {
+              "type": "array",
+              "items": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "minItems": 0,
+              "maxItems": 32,
+              "uniqueItems": true
+            },
+            "silence_before": {
+              "anyOf": [
+                {
+                  "$ref": "#/oneOf/0/$defs/file"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "silence_after": {
+              "anyOf": [
+                {
+                  "$ref": "#/oneOf/0/$defs/file"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "rows": {
+              "type": "array",
+              "items": {
+                "$ref": "#/oneOf/0/$defs/row"
+              },
+              "minItems": 0
+            },
+            "group_times": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "group_id": {
+                    "type": "integer",
+                    "minimum": 0
+                  },
+                  "elapsed_ns": {
+                    "type": "integer",
+                    "minimum": 1
+                  }
+                },
+                "required": [
+                  "group_id",
+                  "elapsed_ns"
+                ],
+                "additionalProperties": false
+              },
+              "minItems": 0
+            },
+            "seconds": {
+              "anyOf": [
+                {
+                  "type": "number",
+                  "exclusiveMinimum": 0
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "verified": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "reader_build": {
+              "anyOf": [
+                {
+                  "type": "object"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "implementation": {
+              "type": "object",
+              "minProperties": 1,
+              "additionalProperties": {
+                "type": "string",
+                "pattern": "^[0-9a-f]{64}$"
+              }
+            },
+            "threading": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "enum": [
+                    "SUPPORTED",
+                    "NOT_SUPPORTED"
+                  ]
+                },
+                "api": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                },
+                "reason": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                },
+                "cpu_models": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  },
+                  "uniqueItems": true
+                },
+                "affinity": {
+                  "type": [
+                    "array",
+                    "null"
+                  ],
+                  "items": {
+                    "type": "integer",
+                    "minimum": 0
+                  },
+                  "uniqueItems": true
+                }
+              },
+              "required": [
+                "status",
+                "api",
+                "reason",
+                "cpu_models",
+                "affinity"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "required": [
+            "schema",
+            "axis",
+            "status",
+            "error",
+            "evidence_kind",
+            "performance_valid",
+            "domain",
+            "timing_boundary",
+            "scope",
+            "decoder_threads",
+            "command",
+            "prepared",
+            "plan",
+            "input_files",
+            "storage_files",
+            "stored_bytes",
+            "sample_seed",
+            "sample_ids",
+            "silence_before",
+            "silence_after",
+            "rows",
+            "group_times",
+            "seconds",
+            "verified",
+            "reader_build",
+            "implementation",
+            "threading"
+          ],
+          "additionalProperties": false,
+          "allOf": [
+            {
+              "if": {
+                "properties": {
+                  "status": {
+                    "const": "PASS"
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "error": {
+                    "type": "null"
+                  },
+                  "seconds": {
+                    "type": "number",
+                    "exclusiveMinimum": 0
+                  },
+                  "silence_before": {
+                    "$ref": "#/oneOf/0/$defs/file"
+                  },
+                  "silence_after": {
+                    "$ref": "#/oneOf/0/$defs/file"
+                  },
+                  "reader_build": {
+                    "type": "object"
+                  },
+                  "rows": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/oneOf/0/$defs/row"
+                    },
+                    "minItems": 1
+                  },
+                  "group_times": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "group_id": {
+                          "type": "integer",
+                          "minimum": 0
+                        },
+                        "elapsed_ns": {
+                          "type": "integer",
+                          "minimum": 1
+                        }
+                      },
+                      "required": [
+                        "group_id",
+                        "elapsed_ns"
+                      ],
+                      "additionalProperties": false
+                    },
+                    "minItems": 1
+                  }
+                }
+              },
+              "else": {
+                "properties": {
+                  "seconds": {
+                    "type": "null"
+                  },
+                  "performance_valid": {
+                    "const": false
+                  },
+                  "error": {
+                    "type": "string",
+                    "minLength": 1
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "evidence_kind": {
+                    "const": "synthetic"
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "performance_valid": {
+                    "const": false
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "evidence_kind": {
+                    "const": "official"
+                  },
+                  "status": {
+                    "const": "PASS"
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "performance_valid": {
+                    "const": true
+                  }
+                }
+              }
+            }
+          ]
+        }
+      },
+      "$ref": "#/oneOf/0/$defs/evidence"
+    },
+    {
+      "$defs": {
+        "file": {
+          "type": "object",
+          "properties": {
+            "path": {
+              "type": "string",
+              "minLength": 1
+            },
+            "bytes": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "sha256": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            }
+          },
+          "required": [
+            "path",
+            "bytes",
+            "sha256"
+          ],
+          "additionalProperties": false
+        },
+        "canonical": {
+          "type": "object",
+          "properties": {
+            "assembly_id": {
+              "type": "string",
+              "minLength": 1
+            },
+            "contig_id": {
+              "type": "string",
+              "minLength": 1
+            },
+            "start0": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "end0": {
+              "type": "integer",
+              "minimum": 1
+            }
+          },
+          "required": [
+            "assembly_id",
+            "contig_id",
+            "start0",
+            "end0"
+          ],
+          "additionalProperties": false
+        },
+        "query": {
+          "type": "object",
+          "properties": {
+            "assembly_id": {
+              "type": "string",
+              "minLength": 1
+            },
+            "contig_id": {
+              "type": "string",
+              "minLength": 1
+            },
+            "start0": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "end0": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "sha256": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            }
+          },
+          "required": [
+            "assembly_id",
+            "contig_id",
+            "start0",
+            "end0",
+            "sha256"
+          ],
+          "additionalProperties": false
+        },
+        "row": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "group_id": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "assembly": {
+              "type": "string",
+              "minLength": 1
+            },
+            "canonical": {
+              "$ref": "#/oneOf/1/$defs/canonical"
+            },
+            "translated": {
+              "type": "object",
+              "minProperties": 1
+            },
+            "length": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "observed_sha256": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            },
+            "status": {
+              "enum": [
+                "PASS",
+                "FAILED"
+              ]
+            },
+            "response_file": {
+              "anyOf": [
+                {
+                  "$ref": "#/oneOf/1/$defs/file"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            }
+          },
+          "required": [
+            "id",
+            "group_id",
+            "assembly",
+            "canonical",
+            "translated",
+            "length",
+            "observed_sha256",
+            "status",
+            "response_file"
+          ],
+          "additionalProperties": false
+        },
+        "prepared": {
+          "type": "object",
+          "properties": {
+            "schema": {
+              "const": "axis4-prepared-v2"
+            },
+            "evidence_kind": {
+              "enum": [
+                "official",
+                "synthetic"
+              ]
+            },
+            "domain": {
+              "const": "uppercase-sequence-without-FASTA-framing"
+            },
+            "coordinate_convention": {
+              "const": "0-based-half-open"
+            },
+            "protocol_sha256": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            },
+            "sample_seed": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 18446744073709551615
+            },
+            "sample_algorithm": {
+              "const": "python.random.Random/MT19937/sample"
+            },
+            "sample_limit": {
+              "const": 32
+            },
+            "assemblies": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "assembly_id": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "fasta": {
+                    "$ref": "#/oneOf/1/$defs/file"
+                  },
+                  "source_url": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "source_sha256": {
+                    "type": "string",
+                    "pattern": "^[0-9a-f]{64}$"
+                  },
+                  "contigs": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "contig_id": {
+                          "type": "string",
+                          "minLength": 1
+                        },
+                        "length": {
+                          "type": "integer",
+                          "minimum": 0
+                        }
+                      },
+                      "required": [
+                        "contig_id",
+                        "length"
+                      ],
+                      "additionalProperties": false
+                    },
+                    "minItems": 1
+                  },
+                  "canonical_bytes": {
+                    "type": "integer",
+                    "minimum": 0
+                  },
+                  "canonical_sha256": {
+                    "type": "string",
+                    "pattern": "^[0-9a-f]{64}$"
+                  },
+                  "truth": {
+                    "$ref": "#/oneOf/1/$defs/truth"
+                  }
+                },
+                "required": [
+                  "assembly_id",
+                  "fasta",
+                  "source_url",
+                  "contigs",
+                  "canonical_bytes",
+                  "canonical_sha256",
+                  "truth"
+                ],
+                "additionalProperties": false
+              },
+              "minItems": 1
+            },
+            "groups": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "minProperties": 1,
+                "additionalProperties": {
+                  "$ref": "#/oneOf/1/$defs/query"
+                }
+              },
+              "minItems": 1
+            },
+            "input_files": {
+              "type": "array",
+              "items": {
+                "$ref": "#/oneOf/1/$defs/file"
+              },
+              "minItems": 1
+            },
+            "truth_version": {
+              "const": "1.1"
+            }
+          },
+          "required": [
+            "schema",
+            "evidence_kind",
+            "domain",
+            "coordinate_convention",
+            "protocol_sha256",
+            "sample_seed",
+            "sample_algorithm",
+            "sample_limit",
+            "assemblies",
+            "groups",
+            "input_files",
+            "truth_version"
+          ],
+          "additionalProperties": false
+        },
+        "evidence": {
+          "type": "object",
+          "properties": {
+            "schema": {
+              "const": "axis4-evidence-v5"
+            },
+            "axis": {
+              "const": 4
+            },
+            "status": {
+              "enum": [
+                "PASS",
+                "FAILED",
+                "NOT_SUPPORTED"
+              ]
+            },
+            "error": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "minLength": 1
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "evidence_kind": {
+              "enum": [
+                "official",
+                "synthetic"
+              ]
+            },
+            "performance_valid": {
+              "type": "boolean"
+            },
+            "domain": {
+              "const": "uppercase-sequence-without-FASTA-framing"
+            },
+            "timing_boundary": {
+              "const": "complete group: native fetch, uppercase normalization, SHA-256 judgement and translation; response file writes outside timer"
+            },
+            "scope": {
+              "const": "cpu-in-process"
+            },
+            "decoder_threads": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 256
+            },
+            "command": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1
+              },
+              "minItems": 1
+            },
+            "prepared": {
+              "$ref": "#/oneOf/1/$defs/file"
+            },
+            "plan": {
+              "$ref": "#/oneOf/1/$defs/file"
+            },
+            "input_files": {
+              "type": "array",
+              "items": {
+                "$ref": "#/oneOf/1/$defs/file"
+              },
+              "minItems": 1
+            },
+            "storage_files": {
+              "type": "array",
+              "items": {
+                "$ref": "#/oneOf/1/$defs/file"
+              },
+              "minItems": 1
+            },
+            "stored_bytes": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "sample_seed": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "sample_ids": {
+              "type": "array",
+              "items": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "minItems": 0,
+              "maxItems": 32,
+              "uniqueItems": true
+            },
+            "silence_before": {
+              "anyOf": [
+                {
+                  "$ref": "#/oneOf/1/$defs/file"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "silence_after": {
+              "anyOf": [
+                {
+                  "$ref": "#/oneOf/1/$defs/file"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "rows": {
+              "type": "array",
+              "items": {
+                "$ref": "#/oneOf/1/$defs/row"
+              },
+              "minItems": 0
+            },
+            "group_times": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "group_id": {
+                    "type": "integer",
+                    "minimum": 0
+                  },
+                  "elapsed_ns": {
+                    "type": "integer",
+                    "minimum": 1
+                  }
+                },
+                "required": [
+                  "group_id",
+                  "elapsed_ns"
+                ],
+                "additionalProperties": false
+              },
+              "minItems": 0
+            },
+            "seconds": {
+              "anyOf": [
+                {
+                  "type": "number",
+                  "exclusiveMinimum": 0
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "verified": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "reader_build": {
+              "anyOf": [
+                {
+                  "type": "object"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "implementation": {
+              "type": "object",
+              "minProperties": 1,
+              "additionalProperties": {
+                "type": "string",
+                "pattern": "^[0-9a-f]{64}$"
+              }
+            },
+            "truth_version": {
+              "const": "1.1"
+            },
+            "truth_sources": {
+              "type": "array",
+              "minItems": 1,
+              "items": {
+                "type": "object",
+                "properties": {
+                  "assembly_id": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "source": {
+                    "$ref": "#/oneOf/1/$defs/file"
+                  },
+                  "encoding": {
+                    "enum": [
+                      "plain",
+                      "gzip"
+                    ]
+                  },
+                  "uncompressed_bytes": {
+                    "type": "integer",
+                    "minimum": 0
+                  },
+                  "uncompressed_sha256": {
+                    "type": "string",
+                    "pattern": "^[0-9a-f]{64}$"
+                  },
+                  "chunk_bytes": {
+                    "const": 65536
+                  }
+                },
+                "required": [
+                  "assembly_id",
+                  "source",
+                  "encoding",
+                  "uncompressed_bytes",
+                  "uncompressed_sha256",
+                  "chunk_bytes"
+                ],
+                "additionalProperties": false
+              }
+            },
+            "threading": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "enum": [
+                    "SUPPORTED",
+                    "NOT_SUPPORTED"
+                  ]
+                },
+                "api": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                },
+                "reason": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                },
+                "cpu_models": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  },
+                  "uniqueItems": true
+                },
+                "affinity": {
+                  "type": [
+                    "array",
+                    "null"
+                  ],
+                  "items": {
+                    "type": "integer",
+                    "minimum": 0
+                  },
+                  "uniqueItems": true
+                }
+              },
+              "required": [
+                "status",
+                "api",
+                "reason",
+                "cpu_models",
+                "affinity"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "required": [
+            "schema",
+            "axis",
+            "status",
+            "error",
+            "evidence_kind",
+            "performance_valid",
+            "domain",
+            "timing_boundary",
+            "scope",
+            "decoder_threads",
+            "command",
+            "prepared",
+            "plan",
+            "input_files",
+            "storage_files",
+            "stored_bytes",
+            "sample_seed",
+            "sample_ids",
+            "silence_before",
+            "silence_after",
+            "rows",
+            "group_times",
+            "seconds",
+            "verified",
+            "reader_build",
+            "implementation",
+            "truth_version",
+            "truth_sources",
+            "threading"
+          ],
+          "additionalProperties": false,
+          "allOf": [
+            {
+              "if": {
+                "properties": {
+                  "status": {
+                    "const": "PASS"
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "error": {
+                    "type": "null"
+                  },
+                  "seconds": {
+                    "type": "number",
+                    "exclusiveMinimum": 0
+                  },
+                  "silence_before": {
+                    "$ref": "#/oneOf/1/$defs/file"
+                  },
+                  "silence_after": {
+                    "$ref": "#/oneOf/1/$defs/file"
+                  },
+                  "reader_build": {
+                    "type": "object"
+                  },
+                  "rows": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/oneOf/1/$defs/row"
+                    },
+                    "minItems": 1
+                  },
+                  "group_times": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "group_id": {
+                          "type": "integer",
+                          "minimum": 0
+                        },
+                        "elapsed_ns": {
+                          "type": "integer",
+                          "minimum": 1
+                        }
+                      },
+                      "required": [
+                        "group_id",
+                        "elapsed_ns"
+                      ],
+                      "additionalProperties": false
+                    },
+                    "minItems": 1
+                  }
+                }
+              },
+              "else": {
+                "properties": {
+                  "seconds": {
+                    "type": "null"
+                  },
+                  "performance_valid": {
+                    "const": false
+                  },
+                  "error": {
+                    "type": "string",
+                    "minLength": 1
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "evidence_kind": {
+                    "const": "synthetic"
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "performance_valid": {
+                    "const": false
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "evidence_kind": {
+                    "const": "official"
+                  },
+                  "status": {
+                    "const": "PASS"
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "performance_valid": {
+                    "const": true
+                  }
+                }
+              }
+            }
+          ]
+        },
+        "truth": {
+          "type": "object",
+          "properties": {
+            "encoding": {
+              "enum": [
+                "plain",
+                "gzip"
+              ]
+            },
+            "uncompressed_bytes": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "uncompressed_sha256": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            },
+            "chunk_bytes": {
+              "const": 65536
+            }
+          },
+          "required": [
+            "encoding",
+            "uncompressed_bytes",
+            "uncompressed_sha256",
+            "chunk_bytes"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "$ref": "#/oneOf/1/$defs/evidence"
+    }
+  ]
+}

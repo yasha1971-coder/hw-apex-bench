@@ -6,6 +6,10 @@ on:
       - 'review/axis3/build_bgzf_axis3.sh'
       - 'review/axis3/test_bgzf*'
       - '.github/workflows/axis3-bgzf.yml'
+      - 'tools/axis4.py'
+      - 'tools/axis4_evidence_verify.py'
+      - 'tools/axis4_threads*.py'
+      - 'schemas/axis4-evidence-v5.schema.json'
 permissions:
   contents: read
 jobs:
@@ -58,3 +62,37 @@ jobs:
               --library "$RUNNER_TEMP/axis3-bgzf/libhwa_bgzf.so" \
               --archive "$root/matched-g$g.bgz" --source "$root/truth.fa"
           done
+      - name: Axis4 genuine BGZF workers 1 2 8 16 and reordered requests x20
+        run: |
+          set -euo pipefail
+          python3 -m venv "$RUNNER_TEMP/axis4-thread-venv"
+          "$RUNNER_TEMP/axis4-thread-venv/bin/python" -m pip install -q jsonschema==4.26.0
+          "$RUNNER_TEMP/axis4-thread-venv/bin/python" - "$RUNNER_TEMP/axis3-bgzf/libhwa_bgzf.so" "$RUNNER_TEMP/axis4-thread-build.json" <<'PY'
+          import hashlib
+          import json
+          from pathlib import Path
+          import sys
+          library = Path(sys.argv[1])
+          receipt = {
+              "source_commit": "4b705e4fada8ee2b6b15746f725ee8ac51631803",
+              "codec_version": "1.24", "decoder_threads": 1,
+              "compiler": "not captured by legacy native build cache",
+              "flags": ["-O3", "-fPIC", "-shared"],
+              "dependencies": {"htslib": "1.24", "libdeflate_commit": "dd12ff2b36d603dbb7fa8838fe7e7176fcbd4f6f"},
+              "library_sha256": hashlib.sha256(library.read_bytes()).hexdigest(),
+              "provenance_scope": "synthetic runtime smoke; compiler identity unavailable; not official performance",
+              "evidence_kind": "synthetic",
+          }
+          Path(sys.argv[2]).write_text(json.dumps(receipt, sort_keys=True, indent=2)+chr(10))
+          PY
+          "$RUNNER_TEMP/axis4-thread-venv/bin/python" -m tools.axis4_threads_fixture \
+            --library "$RUNNER_TEMP/axis3-bgzf/libhwa_bgzf.so" \
+            --receipt "$RUNNER_TEMP/axis4-thread-build.json" \
+            --out "$RUNNER_TEMP/axis4-native-threads"
+      - name: Retain native decoder worker evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: axis4-native-bgzf-threads
+          path: ${{ runner.temp }}/axis4-native-threads
+          if-no-files-found: error

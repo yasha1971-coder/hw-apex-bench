@@ -28,6 +28,9 @@ def sample_ids(count, seed):
 def validate_schema(data):
     import jsonschema
     version = data.get('schema')
+    if version == 'axis4-evidence-v5':
+        jsonschema.Draft202012Validator(load_json(REPO/'schemas/axis4-evidence-v5.schema.json')).validate(data)
+        return
     schema = SCHEMA if version in ('axis4-prepared-v1', 'axis4-evidence-v3') else REPO/'schemas/axis4-evidence-v4.schema.json'
     jsonschema.Draft202012Validator(load_json(schema)).validate(data)
 
@@ -184,7 +187,7 @@ def verify(path, input_root, expected_prepared_sha256):
         raise ValueError('prepare SHA differs from external anchor')
     prepared = load_json(prepared_path)
     validate_schema(prepared)
-    streamed = data['schema'] == 'axis4-evidence-v4'
+    streamed = data['schema'] == 'axis4-evidence-v4' or (data['schema'] == 'axis4-evidence-v5' and 'truth_sources' in data)
     if streamed != (prepared['schema'] == 'axis4-prepared-v2'):
         raise ValueError('evidence/prepare schema version mismatch')
     if streamed and data['truth_sources'] != [
@@ -194,6 +197,16 @@ def verify(path, input_root, expected_prepared_sha256):
     plan = load_json(checked_file(root, data['plan']))
     if set(plan) != {'schema', 'prepared', 'reader'} or plan['schema'] != 'axis4-plan-v1':
         raise ValueError('plan schema')
+    if data['schema'] == 'axis4-evidence-v5':
+        from tools.axis4_threads import capability
+        expected_cap = capability(plan['reader']['family'], data['decoder_threads'])
+        if {k:data['threading'][k] for k in expected_cap} != expected_cap:
+            raise ValueError('decoder thread capability mismatch')
+        affinity = data['threading']['affinity']
+        if affinity is not None and (not affinity or affinity != sorted(affinity)):
+            raise ValueError('noncanonical CPU affinity')
+        if data['threading']['cpu_models'] != sorted(data['threading']['cpu_models']):
+            raise ValueError('noncanonical CPU models')
     if plan['prepared']['sha256'] != expected_prepared_sha256:
         raise ValueError('plan prepare SHA mismatch')
     if data['evidence_kind'] != prepared['evidence_kind']:

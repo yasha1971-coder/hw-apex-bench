@@ -263,7 +263,7 @@ def load_plan(root, plan_name):
     return path, plan, prepared, refs
 
 
-def run(root, plan_name, out_name, *, clock=time.perf_counter_ns):
+def run(root, plan_name, out_name, *, clock=time.perf_counter_ns, decoder_threads=None):
     root = Path(root).resolve(strict=True)
     plan_path, plan, prepared, inputs = load_plan(root, plan_name)
     out = new_output(root, out_name)
@@ -295,6 +295,14 @@ def run(root, plan_name, out_name, *, clock=time.perf_counter_ns):
             {'assembly_id': a['assembly_id'], 'source': a['fasta'], **a['truth']}
             for a in prepared['assemblies']])
         result['implementation']['tools/axis4_stream.py'] = file_ref(REPO, REPO/'tools/axis4_stream.py')['sha256']
+    threading = None
+    if decoder_threads is not None:
+        from tools import axis4_threads
+        threading = axis4_threads.capability(plan["reader"]["family"], decoder_threads)
+        result.update(schema="axis4-evidence-v5", decoder_threads=decoder_threads,
+                      threading={**threading, **axis4_threads.hardware()})
+        result["command"].extend(["--decoder-threads", str(decoder_threads)])
+        result["implementation"]["tools/axis4_threads.py"] = file_ref(REPO, REPO/"tools/axis4_threads.py")["sha256"]
     reader = None
 
     def gate(label):
@@ -307,10 +315,15 @@ def run(root, plan_name, out_name, *, clock=time.perf_counter_ns):
             raise ValueError('silence gate refused: ' + label)
 
     try:
+        if threading is not None and threading['status'] == 'NOT_SUPPORTED':
+            raise axis4_threads.NotSupported(threading['reason'])
         gate('before')
         reader = open_reader(root, plan['reader'], {'assemblies': prepared['assemblies']})
-        if reader.scope != 'cpu-in-process' or reader.decoder_threads != 1:
-            raise ValueError('persistent one-thread in-process reader required')
+        if decoder_threads is not None:
+            candidate, reader = reader, None
+            reader = axis4_threads.configure(candidate, plan['reader']['family'], decoder_threads)
+        if reader.scope != 'cpu-in-process' or reader.decoder_threads != (decoder_threads or 1):
+            raise ValueError('persistent in-process reader has wrong decoder thread count')
         result['reader_build'] = reader.build
         for gid, group in enumerate(prepared['groups']):
             samples = []
@@ -356,6 +369,9 @@ def run(root, plan_name, out_name, *, clock=time.perf_counter_ns):
         result['status'] = 'PASS'
         result['performance_valid'] = kind == 'official'
     except Exception as exc:
+        if threading is not None and isinstance(exc, axis4_threads.NotSupported):
+            result['status'] = 'NOT_SUPPORTED'
+            result['threading'].update(status='NOT_SUPPORTED', api=None, reason=str(exc))
         result['error'] = type(exc).__name__ + ': ' + str(exc)
         result['seconds'] = None
         result['performance_valid'] = False
@@ -385,6 +401,7 @@ def main():
     p.add_argument('--root', required=True)
     p.add_argument('--plan', required=True)
     p.add_argument('--out', required=True)
+    p.add_argument('--decoder-threads', type=int)
     p = sub.add_parser('verify')
     p.add_argument('--evidence', required=True)
     p.add_argument('--input-root', required=True)
@@ -394,7 +411,7 @@ def main():
         if args.operation == 'prepare':
             result = {'prepared': prepare(args.root, args.manifest, args.groups, args.out, args.sample_seed, args.truth_version)}
         elif args.operation == 'run':
-            data = run(args.root, args.plan, args.out)
+            data = run(args.root, args.plan, args.out, decoder_threads=args.decoder_threads)
             result = {k: data[k] for k in ('status', 'error', 'verified', 'evidence_kind')}
         else:
             result = verify(args.evidence, args.input_root, args.prepared_sha256)

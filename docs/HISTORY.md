@@ -1363,3 +1363,18 @@ measurements.
   A10 historical site snapshots stay immutable; protected AGC/RUN paths untouched.
 - Server owns applying, CI and official ace-core measurement. No live PR/CI state
   is claimed by this local handoff; final package includes exact tree/postimage hashes.
+
+### A12.1 local checkpoint — native decoder workers (2026-10-09)
+
+- Base A11 commit 015539257c99bef544059f4c32ab342f8f94e16b, tree
+  28df56231b4237bb260767e99aa331673b932dd7. No push/publication.
+- Axis4 evidence-v5 explicitly configures one shared pinned htslib BGZF pool,
+  records CPU models/affinity and decoder workers; scalar APIs above one worker
+  emit NOT_SUPPORTED without request-concurrency emulation.
+- Legacy prepare/evidence remain unchanged; independent truth verification handles
+  v5 plain/compressed sources. Leaderboard isolates count/model/affinity conditions.
+- 16 new contract tests passed. Native synthetic BGZF 1/2/8/16 x20 runs independently
+  verified 40 responses per run with identical response identities (see package
+  evidence/a12/axis4-native-threads.log and the preserved experiment).
+- Workflow expected_total=447 at this checkpoint. Full clean-clone acceptance and
+  Axis5 v2 integration remain pending until the final handoff receipt.
