@@ -1,0 +1,87 @@
+{
+  "collected": 306,
+  "errors": 0,
+  "expected_failures": 0,
+  "expected_skips": {
+    "test_s2_native_readers.NativeAvailability.test_native_agc_noref": "HWAPEX_AGC_SO not set: native tool/library unavailable in this environment",
+    "test_s2_native_readers.NativeAvailability.test_native_agc_t2t": "HWAPEX_AGC_SO not set: native tool/library unavailable in this environment",
+    "test_s2_native_readers.NativeAvailability.test_native_bgzf_default": "HWAPEX_BGZF_SO not set: native tool/library unavailable in this environment",
+    "test_s2_native_readers.NativeAvailability.test_native_bgzf_matched": "HWAPEX_BGZF_SO not set: native tool/library unavailable in this environment",
+    "test_s2_native_readers.NativeAvailability.test_native_fasta_faidx": "HWAPEX_HTSLIB_SO not set: native tool/library unavailable in this environment",
+    "test_s2_native_readers.NativeAvailability.test_native_lz4_indexed": "HWAPEX_LZ4_SO not set: native tool/library unavailable in this environment",
+    "test_s2_native_readers.NativeAvailability.test_native_ozseg_openzl": "HWAPEX_OPENZL_SO not set: native tool/library unavailable in this environment",
+    "test_s2_native_readers.NativeAvailability.test_native_refrel3_q16k": "HWAPEX_REFREL3_SO not set: native tool/library unavailable in this environment",
+    "test_s2_native_readers.NativeAvailability.test_native_refrel3_q4k": "HWAPEX_REFREL3_SO not set: native tool/library unavailable in this environment",
+    "test_s2_native_readers.NativeAvailability.test_native_zstd_seekable": "HWAPEX_ZSTD_SEEKABLE_SO not set: native tool/library unavailable in this environment"
+  },
+  "expected_total": 306,
+  "failures": 0,
+  "native_cases": [
+    {
+      "availability": "unset",
+      "env": "HWAPEX_AGC_SO",
+      "id": "test_s2_native_readers.NativeAvailability.test_native_agc_noref"
+    },
+    {
+      "availability": "unset",
+      "env": "HWAPEX_AGC_SO",
+      "id": "test_s2_native_readers.NativeAvailability.test_native_agc_t2t"
+    },
+    {
+      "availability": "unset",
+      "env": "HWAPEX_BGZF_SO",
+      "id": "test_s2_native_readers.NativeAvailability.test_native_bgzf_default"
+    },
+    {
+      "availability": "unset",
+      "env": "HWAPEX_BGZF_SO",
+      "id": "test_s2_native_readers.NativeAvailability.test_native_bgzf_matched"
+    },
+    {
+      "availability": "unset",
+      "env": "HWAPEX_HTSLIB_SO",
+      "id": "test_s2_native_readers.NativeAvailability.test_native_fasta_faidx"
+    },
+    {
+      "availability": "unset",
+      "env": "HWAPEX_LZ4_SO",
+      "id": "test_s2_native_readers.NativeAvailability.test_native_lz4_indexed"
+    },
+    {
+      "availability": "unset",
+      "env": "HWAPEX_OPENZL_SO",
+      "id": "test_s2_native_readers.NativeAvailability.test_native_ozseg_openzl"
+    },
+    {
+      "availability": "unset",
+      "env": "HWAPEX_REFREL3_SO",
+      "id": "test_s2_native_readers.NativeAvailability.test_native_refrel3_q16k"
+    },
+    {
+      "availability": "unset",
+      "env": "HWAPEX_REFREL3_SO",
+      "id": "test_s2_native_readers.NativeAvailability.test_native_refrel3_q4k"
+    },
+    {
+      "availability": "unset",
+      "env": "HWAPEX_ZSTD_SEEKABLE_SO",
+      "id": "test_s2_native_readers.NativeAvailability.test_native_zstd_seekable"
+    }
+  ],
+  "observed_skips": {
+    "test_s2_native_readers.NativeAvailability.test_native_agc_noref": "HWAPEX_AGC_SO not set: native tool/library unavailable in this environment",
+    "test_s2_native_readers.NativeAvailability.test_native_agc_t2t": "HWAPEX_AGC_SO not set: native tool/library unavailable in this environment",
+    "test_s2_native_readers.NativeAvailability.test_native_bgzf_default": "HWAPEX_BGZF_SO not set: native tool/library unavailable in this environment",
+    "test_s2_native_readers.NativeAvailability.test_native_bgzf_matched": "HWAPEX_BGZF_SO not set: native tool/library unavailable in this environment",
+    "test_s2_native_readers.NativeAvailability.test_native_fasta_faidx": "HWAPEX_HTSLIB_SO not set: native tool/library unavailable in this environment",
+    "test_s2_native_readers.NativeAvailability.test_native_lz4_indexed": "HWAPEX_LZ4_SO not set: native tool/library unavailable in this environment",
+    "test_s2_native_readers.NativeAvailability.test_native_ozseg_openzl": "HWAPEX_OPENZL_SO not set: native tool/library unavailable in this environment",
+    "test_s2_native_readers.NativeAvailability.test_native_refrel3_q16k": "HWAPEX_REFREL3_SO not set: native tool/library unavailable in this environment",
+    "test_s2_native_readers.NativeAvailability.test_native_refrel3_q4k": "HWAPEX_REFREL3_SO not set: native tool/library unavailable in this environment",
+    "test_s2_native_readers.NativeAvailability.test_native_zstd_seekable": "HWAPEX_ZSTD_SEEKABLE_SO not set: native tool/library unavailable in this environment"
+  },
+  "schema": "axis3-unit-gate-v1",
+  "status": "PASS",
+  "tests_run": 306,
+  "unexpected_successes": 0
+}

@@ -1,13 +1,12 @@
-name: Publish benchmark homepage
+name: v0.2.0 verified static results
 on:
   pull_request:
-    paths: ['web/**', 'results.jsonl', 'README.md', 'docs/RESULTS/BATCH_RESULTS.md', 'docs/METHOD.md', 'harness/**', 'evidence/published-results.json', 'evidence/matched-g-interactive-20260918/**', '.github/workflows/pages.yml']
+    paths: ['tools/**', 'schemas/**', 'tests/**', 'METHODOLOGY.md', 'CITATION.cff', '.zenodo.json', 'CHANGELOG.md', 'RELEASE_NOTES_v0.2.0.md', 'review/axis3/**', 'docs/SITE.md', '.github/workflows/pages.yml']
   push:
     branches: [main]
-    paths: ['web/**', 'results.jsonl', 'README.md', 'docs/RESULTS/BATCH_RESULTS.md', 'docs/METHOD.md', 'harness/**', 'evidence/published-results.json', 'evidence/matched-g-interactive-20260918/**', '.github/workflows/pages.yml']
+    paths: ['tools/**', 'schemas/**', 'tests/**', 'METHODOLOGY.md', 'CITATION.cff', '.zenodo.json', 'CHANGELOG.md', 'RELEASE_NOTES_v0.2.0.md', 'review/axis3/**', 'docs/SITE.md', '.github/workflows/pages.yml']
   workflow_dispatch:
-permissions:
-  contents: read
+permissions: {}
 concurrency:
   group: github-pages-${{ github.event_name }}-${{ github.ref }}
   cancel-in-progress: false
@@ -15,101 +14,47 @@ jobs:
   build:
     permissions:
       contents: read
-      pages: write
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
-      - name: Verify committed evidence and generate homepage
-        run: python3 web/build.py .pages/index.html
-      - name: Verify first-screen matched-g evidence is in the deploy artifact
-        run: |
-          grep -Fq 'Measured on thirty frozen 2 MiB T2T-CHM13v2.0 windows' .pages/index.html
-          grep -Fq 'ACEAPEX is written by the author of this benchmark.' .pages/index.html
-          grep -Fq 'SeqBench' .pages/index.html
-          grep -Fq '36641590388' .pages/index.html
-          grep -Fq '0.068290' .pages/index.html
-          grep -Fq '0.211221' .pages/index.html
-          grep -Fq '1.632%' .pages/index.html
-          grep -Fq '1.735%' .pages/index.html
-          grep -Fq '6.569%' .pages/index.html
-          grep -Fq 'GPU rows are measured on external Colab runners' .pages/index.html
-          grep -Fq '68.29' .pages/index.html
-          grep -Fq '118.15' .pages/index.html
-          grep -Fq '12,369.7' .pages/index.html
-          grep -Fq '869,088' .pages/index.html
-          grep -Fq '467,998' .pages/index.html
-          grep -Fq '64,722.7' .pages/index.html
-          grep -Fq '13,847.4' .pages/index.html
-          grep -Fq 'For batch-heavy workloads with any locality, interactive is the profile to pick.' .pages/index.html
-      - name: Verify Pages is configured for GitHub Actions
-        id: pages
-        uses: actions/configure-pages@983d7736d9b0ae728b81ab479565c72886d7745b
-      - name: Show Pages target
-        run: |
-          echo "base_url=${{ steps.pages.outputs.base_url }}"
-          echo "base_path=${{ steps.pages.outputs.base_path }}"
-      - uses: actions/upload-pages-artifact@7b1f4a764d45c48632c6b24a0339c27f5614fb0b
         with:
-          path: .pages
-
+          persist-credentials: false
+      - name: Install pinned offline-builder prerequisites
+        run: |
+          set -euo pipefail
+          python3 -m venv "$RUNNER_TEMP/site-venv"
+          "$RUNNER_TEMP/site-venv/bin/python" -m pip install \
+            jsonschema==4.26.0 PyYAML==6.0.3 html5lib==1.1 Markdown==3.8.2
+      - name: Verify synthetic release, build site, check HTML and exact golden bytes
+        run: |
+          set -euo pipefail
+          "$RUNNER_TEMP/site-venv/bin/python" -m tools.site_synthetic \
+            --out "$RUNNER_TEMP/site-acceptance"
+      - name: Retain PR and main evidence, release and static site
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: v020-site-synthetic
+          path: ${{ runner.temp }}/site-acceptance
+          if-no-files-found: error
+          include-hidden-files: true
+      - name: Package Pages artifact only on main
+        if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+        uses: actions/upload-pages-artifact@7b1f4a764d45c48632c6b24a0339c27f5614fb0b
+        with:
+          path: ${{ runner.temp }}/site-acceptance/first
   deploy:
+    if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+    needs: build
     permissions:
-      contents: read
       pages: write
       id-token: write
-      statuses: write
-    if: github.event_name != 'pull_request'
-    needs: build
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
     steps:
-      - name: Deploy public homepage
+      - name: Deploy verified site
         id: deployment
         uses: actions/deploy-pages@d6db90164ac5ed86f2b6aed7e0febac5b3c0c03e
-      - name: Verify the live homepage contains this release
-        env:
-          PAGE_URL: ${{ steps.deployment.outputs.page_url }}
-        run: |
-          set -euo pipefail
-          for attempt in $(seq 1 12); do
-            if html=$(curl -fsSL "${PAGE_URL}?sha=${GITHUB_SHA}&attempt=${attempt}"); then
-              if grep -Fq 'Measured on thirty frozen 2 MiB T2T-CHM13v2.0 windows' <<<"$html" \
-                 && grep -Fq 'ACEAPEX is written by the author of this benchmark.' <<<"$html" \
-                 && grep -Fq 'SeqBench' <<<"$html" \
-                 && grep -Fq '36641590388' <<<"$html" \
-                 && grep -Fq '0.068290' <<<"$html" \
-                 && grep -Fq '0.211221' <<<"$html" \
-                 && grep -Fq '1.632%' <<<"$html" \
-                 && grep -Fq '1.735%' <<<"$html" \
-                 && grep -Fq '6.569%' <<<"$html" \
-                 && grep -Fq 'GPU rows are measured on external Colab runners' <<<"$html" \
-                 && grep -Fq '68.29' <<<"$html" \
-                 && grep -Fq '118.15' <<<"$html" \
-                 && grep -Fq '12,369.7' <<<"$html" \
-                 && grep -Fq '869,088' <<<"$html" \
-                 && grep -Fq '467,998' <<<"$html" \
-                 && grep -Fq '64,722.7' <<<"$html" \
-                 && grep -Fq '13,847.4' <<<"$html" \
-                 && grep -Fq 'For batch-heavy workloads with any locality, interactive is the profile to pick.' <<<"$html"; then
-                echo "Live Pages verified at ${PAGE_URL}"
-                exit 0
-              fi
-            fi
-            sleep 5
-          done
-          echo "Live Pages did not expose the current matched-g release" >&2
-          exit 1
-      - name: Mark the commit as live on Pages
-        env:
-          GH_TOKEN: ${{ github.token }}
-          PAGE_URL: ${{ steps.deployment.outputs.page_url }}
-        run: |
-          curl --fail-with-body -L \
-            -X POST \
-            -H "Accept: application/vnd.github+json" \
-            -H "Authorization: Bearer $GH_TOKEN" \
-            -H "X-GitHub-Api-Version: 2022-11-28" \
-            "https://api.github.com/repos/${GITHUB_REPOSITORY}/statuses/${GITHUB_SHA}" \
-            -d "{\"state\":\"success\",\"context\":\"pages-live\",\"description\":\"Live Pages contains current matched-g evidence\",\"target_url\":\"${PAGE_URL}\"}"

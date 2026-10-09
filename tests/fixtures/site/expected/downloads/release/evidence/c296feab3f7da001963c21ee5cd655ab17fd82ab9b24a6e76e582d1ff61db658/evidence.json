@@ -1,0 +1,69 @@
+{
+  "axis": 3,
+  "build": {
+    "binary_sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+    "compiler": "unit",
+    "dependencies": {
+      "unit": "not-a-build"
+    },
+    "flags": []
+  },
+  "codec_commit": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+  "corpus_manifest": {
+    "bytes": 48,
+    "path": "fixture.txt",
+    "sha256": "f99069fa27b0ce25516559d876ac086b06e2263e096799e1f9ff016576c15bf0"
+  },
+  "error": null,
+  "format": "unit-contract-fixture",
+  "hardware": {
+    "cpu_model": "unit",
+    "frequency_policy": "unit",
+    "machine_id": "unit-contract-fixture"
+  },
+  "kind": "synthetic",
+  "metrics": {
+    "Q_actual_bytes": 4096,
+    "build_seconds": 1,
+    "bytes_per_assembly": 100,
+    "p50_us": 1,
+    "p95_us": 1,
+    "p99_us": 1,
+    "peak_rss_bytes": 1000,
+    "stored_bytes": 400,
+    "windows_per_second": 1000000
+  },
+  "n_assemblies": 4,
+  "protocol": {
+    "bytes": 48,
+    "path": "fixture.txt",
+    "sha256": "f99069fa27b0ce25516559d876ac086b06e2263e096799e1f9ff016576c15bf0"
+  },
+  "raw_logs": [
+    {
+      "bytes": 2568890,
+      "path": "raw.jsonl",
+      "sha256": "de0d3172e335dce017163e4dbd4a48bb4ca4f345547338338c06d97865f6b529"
+    }
+  ],
+  "requests": {
+    "bytes": 53,
+    "path": "requests.json",
+    "sha256": "35b7f86dc6e11db44ab56c49a949b6f3363241929940664e22c0c0bf71012d4b"
+  },
+  "run_id": "release-unit-contract",
+  "runbook": {
+    "bytes": 48,
+    "path": "fixture.txt",
+    "sha256": "f99069fa27b0ce25516559d876ac086b06e2263e096799e1f9ff016576c15bf0"
+  },
+  "samples": 10000,
+  "schema": "axis3-evidence-v1",
+  "scope": "cpu-in-process",
+  "silence_gate": null,
+  "status": "PASS",
+  "threads": 1,
+  "variant": "not-native",
+  "verified": 10000,
+  "window_bytes": 1024
+}

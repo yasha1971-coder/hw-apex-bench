@@ -1,0 +1,1307 @@
+{
+  "axis": 4,
+  "command": [
+    "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+    "-m",
+    "tools.axis4",
+    "run",
+    "--root",
+    "/workspace/scratch/bd7b0d2b828e/repo/.work/a7-refrel-q16k",
+    "--plan",
+    "plan.json",
+    "--out",
+    "evidence"
+  ],
+  "decoder_threads": 1,
+  "domain": "uppercase-sequence-without-FASTA-framing",
+  "error": null,
+  "evidence_kind": "synthetic",
+  "group_times": [
+    {
+      "elapsed_ns": 99415,
+      "group_id": 0
+    },
+    {
+      "elapsed_ns": 43717,
+      "group_id": 1
+    },
+    {
+      "elapsed_ns": 31884,
+      "group_id": 2
+    },
+    {
+      "elapsed_ns": 61351,
+      "group_id": 3
+    },
+    {
+      "elapsed_ns": 40516,
+      "group_id": 4
+    },
+    {
+      "elapsed_ns": 61058,
+      "group_id": 5
+    },
+    {
+      "elapsed_ns": 30906,
+      "group_id": 6
+    },
+    {
+      "elapsed_ns": 27118,
+      "group_id": 7
+    },
+    {
+      "elapsed_ns": 28969,
+      "group_id": 8
+    },
+    {
+      "elapsed_ns": 29612,
+      "group_id": 9
+    },
+    {
+      "elapsed_ns": 34692,
+      "group_id": 10
+    },
+    {
+      "elapsed_ns": 32498,
+      "group_id": 11
+    },
+    {
+      "elapsed_ns": 29904,
+      "group_id": 12
+    },
+    {
+      "elapsed_ns": 30172,
+      "group_id": 13
+    },
+    {
+      "elapsed_ns": 47073,
+      "group_id": 14
+    },
+    {
+      "elapsed_ns": 28702,
+      "group_id": 15
+    },
+    {
+      "elapsed_ns": 28615,
+      "group_id": 16
+    },
+    {
+      "elapsed_ns": 27413,
+      "group_id": 17
+    },
+    {
+      "elapsed_ns": 26105,
+      "group_id": 18
+    },
+    {
+      "elapsed_ns": 27848,
+      "group_id": 19
+    }
+  ],
+  "implementation": {
+    "review/axis3/native_readers.py": "a108a1ac9bf232a10de22053180fb01f9d8b2bfa25aba982e4d0ac98b0d4062c",
+    "review/axis3/verdict_data.py": "46282b5f022a864e45423a13a468103815908c77adccb2558e43f290936af5d7",
+    "review/axis3/verdict_readers.py": "2e9ced3c2e0d26553244ac681f00a7ce696e3371ce6202e93e4b3dbf2c658a62",
+    "tools/axis4.py": "8c179514cf57be935768370c2806359642d2a646b2e5fa06bfb45a39db06ec8b",
+    "tools/axis4_evidence_verify.py": "e956629e89625dfec146cb1878b78c4352b0b35a92f72ce77681e765d8a4f22f"
+  },
+  "input_files": [
+    {
+      "bytes": 1205,
+      "path": "plan.json",
+      "sha256": "189bc052442d4fcb8eabc6175acf273924453f7fe33afef068eafcc04613d008"
+    },
+    {
+      "bytes": 10955,
+      "path": "prepared/prepared.json",
+      "sha256": "4159d501dea82a4890a46ce2f8da4137bbe2ae0ad89e30cbcea0d8f5ce29e323"
+    },
+    {
+      "bytes": 219,
+      "path": "asm1.rr3",
+      "sha256": "a45ba2b1bc1bc152daf8d266e88270a398c51c3d65308e46d71829d52cee0b05"
+    },
+    {
+      "bytes": 292,
+      "path": "asm2.rr3",
+      "sha256": "27098e30e890e9e1981545bbdf4ec540af9323ca0f0fb166f6e7d3490e067094"
+    },
+    {
+      "bytes": 520,
+      "path": "build.json",
+      "sha256": "a2f90fa86ad887055cfea6c07d5f484e1e6dc9a70f7e8db02000b5028fd66292"
+    },
+    {
+      "bytes": 1448648,
+      "path": "libhwa_refrel3.so",
+      "sha256": "d2e3d438a524f01a0e1a5f749bf0550924ec91b4061b9f58aabb9ad99264be96"
+    },
+    {
+      "bytes": 12455,
+      "path": "asm1.fa",
+      "sha256": "4cad8128d61f62ee7bed58d6ba5155013a176f2a8fd983a95e15cad409d46048"
+    },
+    {
+      "bytes": 12455,
+      "path": "asm2.fa",
+      "sha256": "1a361040426bf4756f9c961fc8271919a3a5cf6207bd8bc46988306171e0c60e"
+    },
+    {
+      "bytes": 598,
+      "path": "cohort.json",
+      "sha256": "13b37c9d275922137ce18a932d269edf10677c7e8fbdf22fd8152439d76ed0d9"
+    },
+    {
+      "bytes": 4825,
+      "path": "groups.json",
+      "sha256": "d9691377e7670ff28d5adfda9c7f26c92099b190d1de52c66fc555e358c8b1df"
+    }
+  ],
+  "performance_valid": false,
+  "plan": {
+    "bytes": 1205,
+    "path": "plan.json",
+    "sha256": "189bc052442d4fcb8eabc6175acf273924453f7fe33afef068eafcc04613d008"
+  },
+  "prepared": {
+    "bytes": 10955,
+    "path": "prepared.json",
+    "sha256": "4159d501dea82a4890a46ce2f8da4137bbe2ae0ad89e30cbcea0d8f5ce29e323"
+  },
+  "reader_build": {
+    "codec_version": "frozen-v1",
+    "compiler": "g++ (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0",
+    "decoder_threads": 1,
+    "dependencies": {
+      "libzstd": "1.5.7"
+    },
+    "evidence_kind": "synthetic",
+    "flags": [
+      "-O3",
+      "-fPIC",
+      "-shared"
+    ],
+    "library_sha256": "d2e3d438a524f01a0e1a5f749bf0550924ec91b4061b9f58aabb9ad99264be96",
+    "provenance_scope": "clean source pin, loaded dependency versions, library SHA; build logs retained separately",
+    "source_commit": "5b6d5cec0f5962a561ac48822a1b5c48793a5b47"
+  },
+  "rows": [
+    {
+      "assembly": "asm1",
+      "canonical": {
+        "assembly_id": "asm1",
+        "contig_id": "tail",
+        "end0": 1024,
+        "start0": 0
+      },
+      "group_id": 0,
+      "id": 0,
+      "length": 1024,
+      "observed_sha256": "54396e127fd0953c425a300a122f7113300b994d63ab636a1bae21701f632a7a",
+      "response_file": {
+        "bytes": 1024,
+        "path": "responses/0.bin",
+        "sha256": "54396e127fd0953c425a300a122f7113300b994d63ab636a1bae21701f632a7a"
+      },
+      "status": "PASS",
+      "translated": {
+        "api": "hwa_rr3_fetch",
+        "assembly_id": "asm1",
+        "contig_id": "tail",
+        "convention": "0-based-half-open",
+        "end0": 1024,
+        "start0": 0
+      }
+    },
+    {
+      "assembly": "asm2",
+      "canonical": {
+        "assembly_id": "asm2",
+        "contig_id": "tail",
+        "end0": 1024,
+        "start0": 0
+      },
+      "group_id": 0,
+      "id": 1,
+      "length": 1024,
+      "observed_sha256": "21c40d5757b7c83b647bfe20c8d0af80fc1427cc981bff7bd6136e7a47e0aaa4",
+      "response_file": {
+        "bytes": 1024,
+        "path": "responses/1.bin",
+        "sha256": "21c40d5757b7c83b647bfe20c8d0af80fc1427cc981bff7bd6136e7a47e0aaa4"
+      },
+      "status": "PASS",
+      "translated": {
+        "api": "hwa_rr3_fetch",
+        "assembly_id": "asm2",
+        "contig_id": "tail",
+        "convention": "0-based-half-open",
+        "end0": 1024,
+        "start0": 0
+      }
+    },
+    {
+      "assembly": "asm1",
+      "canonical": {
+        "assembly_id": "asm1",
+        "contig_id": "chr",
+        "end0": 1107,
+        "start0": 83
+      },
+      "group_id": 1,
+      "id": 2,
+      "length": 1024,
+      "observed_sha256": "84cb63ab0531369e2d1e2cd88dc9f83254add98d44cc536f46bfaf3a5f3670e7",
+      "response_file": null,
+      "status": "PASS",
+      "translated": {
+        "api": "hwa_rr3_fetch",
+        "assembly_id": "asm1",
+        "contig_id": "chr",
+        "convention": "0-based-half-open",
+        "end0": 1107,
+        "start0": 83
+      }
+    },
+    {
+      "assembly": "asm2",
+      "canonical": {
+        "assembly_id": "asm2",
+        "contig_id": "chr",
+        "end0": 1107,
+        "start0": 83
+      },
+      "group_id": 1,
+      "id": 3,
+      "length": 1024,
+      "observed_sha256": "0a1f0240e5a6b4e88d22ffcd4d0876f664e9790d2dff94b74baef529fecc28b2",
+      "response_file": {
+        "bytes": 1024,
+        "path": "responses/3.bin",
+        "sha256": "0a1f0240e5a6b4e88d22ffcd4d0876f664e9790d2dff94b74baef529fecc28b2"
+      },
+      "status": "PASS",
+      "translated": {
+        "api": "hwa_rr3_fetch",
+        "assembly_id": "asm2",
+        "contig_id": "chr",
+        "convention": "0-based-half-open",
+        "end0": 1107,
+        "start0": 83
+      }
+    },
+    {
+      "assembly": "asm1",
+      "canonical": {
+        "assembly_id": "asm1",
+        "contig_id": "chr",
+        "end0": 1190,
+        "start0": 166
+      },
+      "group_id": 2,
+      "id": 4,
+      "length": 1024,
+      "observed_sha256": "b696c78f09d547b5cbf0f70d48b6e2d1ec104e80bbe98fc4ab21dd47f3ab328c",
+      "response_file": {
+        "bytes": 1024,
+        "path": "responses/4.bin",
+        "sha256": "b696c78f09d547b5cbf0f70d48b6e2d1ec104e80bbe98fc4ab21dd47f3ab328c"
+      },
+      "status": "PASS",
+      "translated": {
+        "api": "hwa_rr3_fetch",
+        "assembly_id": "asm1",
+        "contig_id": "chr",
+        "convention": "0-based-half-open",
+        "end0": 1190,
+        "start0": 166
+      }
+    },
+    {
+      "assembly": "asm2",
+      "canonical": {
+        "assembly_id": "asm2",
+        "contig_id": "chr",
+        "end0": 1190,
+        "start0": 166
+      },
+      "group_id": 2,
+      "id": 5,
+      "length": 1024,
+      "observed_sha256": "05c462f096acd2087b0ea1c4a5b83130a139726e53de4e3c8d3ed736b6989b86",
+      "response_file": {
+        "bytes": 1024,
+        "path": "responses/5.bin",
+        "sha256": "05c462f096acd2087b0ea1c4a5b83130a139726e53de4e3c8d3ed736b6989b86"
+      },
+      "status": "PASS",
+      "translated": {
+        "api": "hwa_rr3_fetch",
+        "assembly_id": "asm2",
+        "contig_id": "chr",
+        "convention": "0-based-half-open",
+        "end0": 1190,
+        "start0": 166
+      }
+    },
+    {
+      "assembly": "asm1",
+      "canonical": {
+        "assembly_id": "asm1",
+        "contig_id": "tail",
+        "end0": 1273,
+        "start0": 249
+      },
+      "group_id": 3,
+      "id": 6,
+      "length": 1024,
+      "observed_sha256": "464aa9fd25ae48bba3a1f9ba23628539f0d22c316dc6b1c0078c7888f6c9103a",
+      "response_file": {
+        "bytes": 1024,
+        "path": "responses/6.bin",
+        "sha256": "464aa9fd25ae48bba3a1f9ba23628539f0d22c316dc6b1c0078c7888f6c9103a"
+      },
+      "status": "PASS",
+      "translated": {
+        "api": "hwa_rr3_fetch",
+        "assembly_id": "asm1",
+        "contig_id": "tail",
+        "convention": "0-based-half-open",
+        "end0": 1273,
+        "start0": 249
+      }
+    },
+    {
+      "assembly": "asm2",
+      "canonical": {
+        "assembly_id": "asm2",
+        "contig_id": "tail",
+        "end0": 1273,
+        "start0": 249
+      },
+      "group_id": 3,
+      "id": 7,
+      "length": 1024,
+      "observed_sha256": "eef0b8148b711666ecd7b9cd8621597b929aaf37ff41accd951bb293c5eaf0a6",
+      "response_file": {
+        "bytes": 1024,
+        "path": "responses/7.bin",
+        "sha256": "eef0b8148b711666ecd7b9cd8621597b929aaf37ff41accd951bb293c5eaf0a6"
+      },
+      "status": "PASS",
+      "translated": {
+        "api": "hwa_rr3_fetch",
+        "assembly_id": "asm2",
+        "contig_id": "tail",
+        "convention": "0-based-half-open",
+        "end0": 1273,
+        "start0": 249
+      }
+    },
+    {
+      "assembly": "asm1",
+      "canonical": {
+        "assembly_id": "asm1",
+        "contig_id": "chr",
+        "end0": 1356,
+        "start0": 332
+      },
+      "group_id": 4,
+      "id": 8,
+      "length": 1024,
+      "observed_sha256": "6121433141c60ff5af30fc756cef4afb77333c26940ae135e23ffd923b9ca18b",
+      "response_file": null,
+      "status": "PASS",
+      "translated": {
+        "api": "hwa_rr3_fetch",
+        "assembly_id": "asm1",
+        "contig_id": "chr",
+        "convention": "0-based-half-open",
+        "end0": 1356,
+        "start0": 332
+      }
+    },
+    {
+      "assembly": "asm2",
+      "canonical": {
+        "assembly_id": "asm2",
+        "contig_id": "chr",
+        "end0": 1356,
+        "start0": 332
+      },
+      "group_id": 4,
+      "id": 9,
+      "length": 1024,
+      "observed_sha256": "a66a74424e802217efe4a9c99d7fdfde21f90c8610cfa0e66ff03661b63c43e0",
+      "response_file": {
+        "bytes": 1024,
+        "path": "responses/9.bin",
+        "sha256": "a66a74424e802217efe4a9c99d7fdfde21f90c8610cfa0e66ff03661b63c43e0"
+      },
+      "status": "PASS",
+      "translated": {
+        "api": "hwa_rr3_fetch",
+        "assembly_id": "asm2",
+        "contig_id": "chr",
+        "convention": "0-based-half-open",
+        "end0": 1356,
+        "start0": 332
+      }
+    },
+    {
+      "assembly": "asm1",
+      "canonical": {
+        "assembly_id": "asm1",
+        "contig_id": "chr",
+        "end0": 1439,
+        "start0": 415
+      },
+      "group_id": 5,
+      "id": 10,
+      "length": 1024,
+      "observed_sha256": "62a8205d9e261f3368db15bb9fc963a14eaa664ffcaec7cddb3ed038239a65c6",
+      "response_file": {
+        "bytes": 1024,
+        "path": "responses/10.bin",
+        "sha256": "62a8205d9e261f3368db15bb9fc963a14eaa664ffcaec7cddb3ed038239a65c6"
+      },
+      "status": "PASS",
+      "translated": {
+        "api": "hwa_rr3_fetch",
+        "assembly_id": "asm1",
+        "contig_id": "chr",
+        "convention": "0-based-half-open",
+        "end0": 1439,
+        "start0": 415
+      }
+    },
+    {
+      "assembly": "asm2",
+      "canonical": {
+        "assembly_id": "asm2",
+        "contig_id": "chr",
+        "end0": 1439,
+        "start0": 415
+      },
+      "group_id": 5,
+      "id": 11,
+      "length": 1024,
+      "observed_sha256": "bce41ac8a9416e9f43b378953318bcf3652d2d4cc9e504ef0978aa11621212a5",
+      "response_file": null,
+      "status": "PASS",
+      "translated": {
+        "api": "hwa_rr3_fetch",
+        "assembly_id": "asm2",
+        "contig_id": "chr",
+        "convention": "0-based-half-open",
+        "end0": 1439,
+        "start0": 415
+      }
+    },
+    {
+      "assembly": "asm1",
+      "canonical": {
+        "assembly_id": "asm1",
+        "contig_id": "tail",
+        "end0": 1522,
+        "start0": 498
+      },
+      "group_id": 6,
+      "id": 12,
+      "length": 1024,
+      "observed_sha256": "526f976b93af6dd2c5e08b8de42864e796d011928b3d73d98d9973bbd3a3cf7b",
+      "response_file": {
+        "bytes": 1024,
+        "path": "responses/12.bin",
+        "sha256": "526f976b93af6dd2c5e08b8de42864e796d011928b3d73d98d9973bbd3a3cf7b"
+      },
+      "status": "PASS",
+      "translated": {
+        "api": "hwa_rr3_fetch",
+        "assembly_id": "asm1",
+        "contig_id": "tail",
+        "convention": "0-based-half-open",
+        "end0": 1522,
+        "start0": 498
+      }
+    },
+    {
+      "assembly": "asm2",
+      "canonical": {
+        "assembly_id": "asm2",
+        "contig_id": "tail",
+        "end0": 1522,
+        "start0": 498
+      },
+      "group_id": 6,
+      "id": 13,
+      "length": 1024,
+      "observed_sha256": "d2479106af4280c9a3f95dc9197d00d7463b1b84f198c476abefabfe86de8018",
+      "response_file": {
+        "bytes": 1024,
+        "path": "responses/13.bin",
+        "sha256": "d2479106af4280c9a3f95dc9197d00d7463b1b84f198c476abefabfe86de8018"
+      },
+      "status": "PASS",
+      "translated": {
+        "api": "hwa_rr3_fetch",
+        "assembly_id": "asm2",
+        "contig_id": "tail",
+        "convention": "0-based-half-open",
+        "end0": 1522,
+        "start0": 498
+      }
+    },
+    {
+      "assembly": "asm1",
+      "canonical": {
+        "assembly_id": "asm1",
+        "contig_id": "chr",
+        "end0": 1605,
+        "start0": 581
+      },
+      "group_id": 7,
+      "id": 14,
+      "length": 1024,
+      "observed_sha256": "c444cec62ca2f223dd19b5affaaddf450bb68a2f62cc8102fa273224309c4cdd",
+      "response_file": null,
+      "status": "PASS",
+      "translated": {
+        "api": "hwa_rr3_fetch",
+        "assembly_id": "asm1",
+        "contig_id": "chr",
+        "convention": "0-based-half-open",
+        "end0": 1605,
+        "start0": 581
+      }
+    },
+    {
+      "assembly": "asm2",
+      "canonical": {
+        "assembly_id": "asm2",
+        "contig_id": "chr",
+        "end0": 1605,
+        "start0": 581
+      },
+      "group_id": 7,
+      "id": 15,
+      "length": 1024,
+      "observed_sha256": "7e726c5945d559e0fbda435ea721d8c477db16cdc0b43fce28b82443260284ac",
+      "response_file": {
+        "bytes": 1024,
+        "path": "responses/15.bin",
+        "sha256": "7e726c5945d559e0fbda435ea721d8c477db16cdc0b43fce28b82443260284ac"
+      },
+      "status": "PASS",
+      "translated": {
+        "api": "hwa_rr3_fetch",
+        "assembly_id": "asm2",
+        "contig_id": "chr",
+        "convention": "0-based-half-open",
+        "end0": 1605,
+        "start0": 581
+      }
+    },
+    {
+      "assembly": "asm1",
+      "canonical": {
+        "assembly_id": "asm1",
+        "contig_id": "chr",
+        "end0": 1688,
+        "start0": 664
+      },
+      "group_id": 8,
+      "id": 16,
+      "length": 1024,
+      "observed_sha256": "2f1f0ce2423785862e95294cc647b4c5711ff16f3eca7afe4a0207d3d2230d9f",
+      "response_file": {
+        "bytes": 1024,
+        "path": "responses/16.bin",
+        "sha256": "2f1f0ce2423785862e95294cc647b4c5711ff16f3eca7afe4a0207d3d2230d9f"
+      },
+      "status": "PASS",
+      "translated": {
+        "api": "hwa_rr3_fetch",
+        "assembly_id": "asm1",
+        "contig_id": "chr",
+        "convention": "0-based-half-open",
+        "end0": 1688,
+        "start0": 664
+      }
+    },
+    {
+      "assembly": "asm2",
+      "canonical": {
+        "assembly_id": "asm2",
+        "contig_id": "chr",
+        "end0": 1688,
+        "start0": 664
+      },
+      "group_id": 8,
+      "id": 17,
+      "length": 1024,
+      "observed_sha256": "c62c3219390fb2a9689d73091fd941da3c634705f46696aae0476007c0a77f9f",
+      "response_file": null,
+      "status": "PASS",
+      "translated": {
+        "api": "hwa_rr3_fetch",
+        "assembly_id": "asm2",
+        "contig_id": "chr",
+        "convention": "0-based-half-open",
+        "end0": 1688,
+        "start0": 664
+      }
+    },
+    {
+      "assembly": "asm1",
+      "canonical": {
+        "assembly_id": "asm1",
+        "contig_id": "tail",
+        "end0": 1771,
+        "start0": 747
+      },
+      "group_id": 9,
+      "id": 18,
+      "length": 1024,
+      "observed_sha256": "cdb297a043316ded04e6feb1b183b6e75b8fccaa697bd4719f8773ab40c3e114",
+      "response_file": {
+        "bytes": 1024,
+        "path": "responses/18.bin",
+        "sha256": "cdb297a043316ded04e6feb1b183b6e75b8fccaa697bd4719f8773ab40c3e114"
+      },
+      "status": "PASS",
+      "translated": {
+        "api": "hwa_rr3_fetch",
+        "assembly_id": "asm1",
+        "contig_id": "tail",
+        "convention": "0-based-half-open",
+        "end0": 1771,
+        "start0": 747
+      }
+    },
+    {
+      "assembly": "asm2",
+      "canonical": {
+        "assembly_id": "asm2",
+        "contig_id": "tail",
+        "end0": 1771,
+        "start0": 747
+      },
+      "group_id": 9,
+      "id": 19,
+      "length": 1024,
+      "observed_sha256": "ca7bc26bd823e200b2522a6e9ffabe8151711d038028e896ac661a96705aa5e2",
+      "response_file": {
+        "bytes": 1024,
+        "path": "responses/19.bin",
+        "sha256": "ca7bc26bd823e200b2522a6e9ffabe8151711d038028e896ac661a96705aa5e2"
+      },
+      "status": "PASS",
+      "translated": {
+        "api": "hwa_rr3_fetch",
+        "assembly_id": "asm2",
+        "contig_id": "tail",
+        "convention": "0-based-half-open",
+        "end0": 1771,
+        "start0": 747
+      }
+    },
+    {
+      "assembly": "asm1",
+      "canonical": {
+        "assembly_id": "asm1",
+        "contig_id": "chr",
+        "end0": 1854,
+        "start0": 830
+      },
+      "group_id": 10,
+      "id": 20,
+      "length": 1024,
+      "observed_sha256": "13e0a52b235f6b6ecd2d3bd6be2f2815cd49d7e657709dbe4256fa61b65a7a31",
+      "response_file": {
+        "bytes": 1024,
+        "path": "responses/20.bin",
+        "sha256": "13e0a52b235f6b6ecd2d3bd6be2f2815cd49d7e657709dbe4256fa61b65a7a31"
+      },
+      "status": "PASS",
+      "translated": {
+        "api": "hwa_rr3_fetch",
+        "assembly_id": "asm1",
+        "contig_id": "chr",
+        "convention": "0-based-half-open",
+        "end0": 1854,
+        "start0": 830
+      }
+    },
+    {
+      "assembly": "asm2",
+      "canonical": {
+        "assembly_id": "asm2",
+        "contig_id": "chr",
+        "end0": 1854,
+        "start0": 830
+      },
+      "group_id": 10,
+      "id": 21,
+      "length": 1024,
+      "observed_sha256": "9ba1a45c5cfada889e0256dc8380bbdbce81087d5a3bec7b61dd84cdc08cb951",
+      "response_file": {
+        "bytes": 1024,
+        "path": "responses/21.bin",
+        "sha256": "9ba1a45c5cfada889e0256dc8380bbdbce81087d5a3bec7b61dd84cdc08cb951"
+      },
+      "status": "PASS",
+      "translated": {
+        "api": "hwa_rr3_fetch",
+        "assembly_id": "asm2",
+        "contig_id": "chr",
+        "convention": "0-based-half-open",
+        "end0": 1854,
+        "start0": 830
+      }
+    },
+    {
+      "assembly": "asm1",
+      "canonical": {
+        "assembly_id": "asm1",
+        "contig_id": "chr",
+        "end0": 1937,
+        "start0": 913
+      },
+      "group_id": 11,
+      "id": 22,
+      "length": 1024,
+      "observed_sha256": "ab1ad8e48bf55cbd3a5df6168ed6f2474ffd732c4a0d3ce0472491d3e14fa1c0",
+      "response_file": {
+        "bytes": 1024,
+        "path": "responses/22.bin",
+        "sha256": "ab1ad8e48bf55cbd3a5df6168ed6f2474ffd732c4a0d3ce0472491d3e14fa1c0"
+      },
+      "status": "PASS",
+      "translated": {
+        "api": "hwa_rr3_fetch",
+        "assembly_id": "asm1",
+        "contig_id": "chr",
+        "convention": "0-based-half-open",
+        "end0": 1937,
+        "start0": 913
+      }
+    },
+    {
+      "assembly": "asm2",
+      "canonical": {
+        "assembly_id": "asm2",
+        "contig_id": "chr",
+        "end0": 1937,
+        "start0": 913
+      },
+      "group_id": 11,
+      "id": 23,
+      "length": 1024,
+      "observed_sha256": "41298f2012f38d6cf8a5ffd9ee3ba1827a1c54d4b5762ce85559d04fd87674e7",
+      "response_file": {
+        "bytes": 1024,
+        "path": "responses/23.bin",
+        "sha256": "41298f2012f38d6cf8a5ffd9ee3ba1827a1c54d4b5762ce85559d04fd87674e7"
+      },
+      "status": "PASS",
+      "translated": {
+        "api": "hwa_rr3_fetch",
+        "assembly_id": "asm2",
+        "contig_id": "chr",
+        "convention": "0-based-half-open",
+        "end0": 1937,
+        "start0": 913
+      }
+    },
+    {
+      "assembly": "asm1",
+      "canonical": {
+        "assembly_id": "asm1",
+        "contig_id": "tail",
+        "end0": 2020,
+        "start0": 996
+      },
+      "group_id": 12,
+      "id": 24,
+      "length": 1024,
+      "observed_sha256": "4e192e786880434459dadc59e8e2055b4d5d0db32403e7d29007888db9680394",
+      "response_file": {
+        "bytes": 1024,
+        "path": "responses/24.bin",
+        "sha256": "4e192e786880434459dadc59e8e2055b4d5d0db32403e7d29007888db9680394"
+      },
+      "status": "PASS",
+      "translated": {
+        "api": "hwa_rr3_fetch",
+        "assembly_id": "asm1",
+        "contig_id": "tail",
+        "convention": "0-based-half-open",
+        "end0": 2020,
+        "start0": 996
+      }
+    },
+    {
+      "assembly": "asm2",
+      "canonical": {
+        "assembly_id": "asm2",
+        "contig_id": "tail",
+        "end0": 2020,
+        "start0": 996
+      },
+      "group_id": 12,
+      "id": 25,
+      "length": 1024,
+      "observed_sha256": "30bb1f2259ddaa7bbf484d40b16fe53ed89170cb40c5f3412f7d67069d54eed0",
+      "response_file": {
+        "bytes": 1024,
+        "path": "responses/25.bin",
+        "sha256": "30bb1f2259ddaa7bbf484d40b16fe53ed89170cb40c5f3412f7d67069d54eed0"
+      },
+      "status": "PASS",
+      "translated": {
+        "api": "hwa_rr3_fetch",
+        "assembly_id": "asm2",
+        "contig_id": "tail",
+        "convention": "0-based-half-open",
+        "end0": 2020,
+        "start0": 996
+      }
+    },
+    {
+      "assembly": "asm1",
+      "canonical": {
+        "assembly_id": "asm1",
+        "contig_id": "chr",
+        "end0": 2103,
+        "start0": 1079
+      },
+      "group_id": 13,
+      "id": 26,
+      "length": 1024,
+      "observed_sha256": "4e2eed7835e30d7338cc0ba6e4b81450e9f51b2a2b12c17515065174c6c1bbd5",
+      "response_file": {
+        "bytes": 1024,
+        "path": "responses/26.bin",
+        "sha256": "4e2eed7835e30d7338cc0ba6e4b81450e9f51b2a2b12c17515065174c6c1bbd5"
+      },
+      "status": "PASS",
+      "translated": {
+        "api": "hwa_rr3_fetch",
+        "assembly_id": "asm1",
+        "contig_id": "chr",
+        "convention": "0-based-half-open",
+        "end0": 2103,
+        "start0": 1079
+      }
+    },
+    {
+      "assembly": "asm2",
+      "canonical": {
+        "assembly_id": "asm2",
+        "contig_id": "chr",
+        "end0": 2103,
+        "start0": 1079
+      },
+      "group_id": 13,
+      "id": 27,
+      "length": 1024,
+      "observed_sha256": "8e12f14e33b3d7a2668e9e86967b70351490588b6b38f6889bbbf767a52ee95a",
+      "response_file": {
+        "bytes": 1024,
+        "path": "responses/27.bin",
+        "sha256": "8e12f14e33b3d7a2668e9e86967b70351490588b6b38f6889bbbf767a52ee95a"
+      },
+      "status": "PASS",
+      "translated": {
+        "api": "hwa_rr3_fetch",
+        "assembly_id": "asm2",
+        "contig_id": "chr",
+        "convention": "0-based-half-open",
+        "end0": 2103,
+        "start0": 1079
+      }
+    },
+    {
+      "assembly": "asm1",
+      "canonical": {
+        "assembly_id": "asm1",
+        "contig_id": "chr",
+        "end0": 2186,
+        "start0": 1162
+      },
+      "group_id": 14,
+      "id": 28,
+      "length": 1024,
+      "observed_sha256": "9baa1f6091bad60265a737b1790f115931909a4d589d09764d42992c3b00acc9",
+      "response_file": {
+        "bytes": 1024,
+        "path": "responses/28.bin",
+        "sha256": "9baa1f6091bad60265a737b1790f115931909a4d589d09764d42992c3b00acc9"
+      },
+      "status": "PASS",
+      "translated": {
+        "api": "hwa_rr3_fetch",
+        "assembly_id": "asm1",
+        "contig_id": "chr",
+        "convention": "0-based-half-open",
+        "end0": 2186,
+        "start0": 1162
+      }
+    },
+    {
+      "assembly": "asm2",
+      "canonical": {
+        "assembly_id": "asm2",
+        "contig_id": "chr",
+        "end0": 2186,
+        "start0": 1162
+      },
+      "group_id": 14,
+      "id": 29,
+      "length": 1024,
+      "observed_sha256": "2dca707827b687120601bce8e7f5de09223f962cd89e465bd22daa6b11837f8e",
+      "response_file": null,
+      "status": "PASS",
+      "translated": {
+        "api": "hwa_rr3_fetch",
+        "assembly_id": "asm2",
+        "contig_id": "chr",
+        "convention": "0-based-half-open",
+        "end0": 2186,
+        "start0": 1162
+      }
+    },
+    {
+      "assembly": "asm1",
+      "canonical": {
+        "assembly_id": "asm1",
+        "contig_id": "tail",
+        "end0": 2269,
+        "start0": 1245
+      },
+      "group_id": 15,
+      "id": 30,
+      "length": 1024,
+      "observed_sha256": "e0fec14e67b566fcee2a154c956dce337f7ad866373ac0c546b907ed2ad49241",
+      "response_file": {
+        "bytes": 1024,
+        "path": "responses/30.bin",
+        "sha256": "e0fec14e67b566fcee2a154c956dce337f7ad866373ac0c546b907ed2ad49241"
+      },
+      "status": "PASS",
+      "translated": {
+        "api": "hwa_rr3_fetch",
+        "assembly_id": "asm1",
+        "contig_id": "tail",
+        "convention": "0-based-half-open",
+        "end0": 2269,
+        "start0": 1245
+      }
+    },
+    {
+      "assembly": "asm2",
+      "canonical": {
+        "assembly_id": "asm2",
+        "contig_id": "tail",
+        "end0": 2269,
+        "start0": 1245
+      },
+      "group_id": 15,
+      "id": 31,
+      "length": 1024,
+      "observed_sha256": "0f68a74589ea379a90bc75caef74b32caea960884b2df1143473090106cc185f",
+      "response_file": {
+        "bytes": 1024,
+        "path": "responses/31.bin",
+        "sha256": "0f68a74589ea379a90bc75caef74b32caea960884b2df1143473090106cc185f"
+      },
+      "status": "PASS",
+      "translated": {
+        "api": "hwa_rr3_fetch",
+        "assembly_id": "asm2",
+        "contig_id": "tail",
+        "convention": "0-based-half-open",
+        "end0": 2269,
+        "start0": 1245
+      }
+    },
+    {
+      "assembly": "asm1",
+      "canonical": {
+        "assembly_id": "asm1",
+        "contig_id": "chr",
+        "end0": 2352,
+        "start0": 1328
+      },
+      "group_id": 16,
+      "id": 32,
+      "length": 1024,
+      "observed_sha256": "cb42fd44bdd67dce3c7ae0f52bd62f9f93df7c24108c5abf96b2710c366de007",
+      "response_file": null,
+      "status": "PASS",
+      "translated": {
+        "api": "hwa_rr3_fetch",
+        "assembly_id": "asm1",
+        "contig_id": "chr",
+        "convention": "0-based-half-open",
+        "end0": 2352,
+        "start0": 1328
+      }
+    },
+    {
+      "assembly": "asm2",
+      "canonical": {
+        "assembly_id": "asm2",
+        "contig_id": "chr",
+        "end0": 2352,
+        "start0": 1328
+      },
+      "group_id": 16,
+      "id": 33,
+      "length": 1024,
+      "observed_sha256": "0070b7571095422cd01eeb07cff1c7d928d4540e8467b33f1064eada8af0ea98",
+      "response_file": {
+        "bytes": 1024,
+        "path": "responses/33.bin",
+        "sha256": "0070b7571095422cd01eeb07cff1c7d928d4540e8467b33f1064eada8af0ea98"
+      },
+      "status": "PASS",
+      "translated": {
+        "api": "hwa_rr3_fetch",
+        "assembly_id": "asm2",
+        "contig_id": "chr",
+        "convention": "0-based-half-open",
+        "end0": 2352,
+        "start0": 1328
+      }
+    },
+    {
+      "assembly": "asm1",
+      "canonical": {
+        "assembly_id": "asm1",
+        "contig_id": "chr",
+        "end0": 2435,
+        "start0": 1411
+      },
+      "group_id": 17,
+      "id": 34,
+      "length": 1024,
+      "observed_sha256": "7b557fecea53dbf69e8089b8ea4dd48627eb91f5ee8db148e6839bbc0a8a0f1b",
+      "response_file": null,
+      "status": "PASS",
+      "translated": {
+        "api": "hwa_rr3_fetch",
+        "assembly_id": "asm1",
+        "contig_id": "chr",
+        "convention": "0-based-half-open",
+        "end0": 2435,
+        "start0": 1411
+      }
+    },
+    {
+      "assembly": "asm2",
+      "canonical": {
+        "assembly_id": "asm2",
+        "contig_id": "chr",
+        "end0": 2435,
+        "start0": 1411
+      },
+      "group_id": 17,
+      "id": 35,
+      "length": 1024,
+      "observed_sha256": "54946dabf9d466b930fb700f3d11dd7a0025ab603039cea199cb9580a07179e2",
+      "response_file": {
+        "bytes": 1024,
+        "path": "responses/35.bin",
+        "sha256": "54946dabf9d466b930fb700f3d11dd7a0025ab603039cea199cb9580a07179e2"
+      },
+      "status": "PASS",
+      "translated": {
+        "api": "hwa_rr3_fetch",
+        "assembly_id": "asm2",
+        "contig_id": "chr",
+        "convention": "0-based-half-open",
+        "end0": 2435,
+        "start0": 1411
+      }
+    },
+    {
+      "assembly": "asm1",
+      "canonical": {
+        "assembly_id": "asm1",
+        "contig_id": "tail",
+        "end0": 2518,
+        "start0": 1494
+      },
+      "group_id": 18,
+      "id": 36,
+      "length": 1024,
+      "observed_sha256": "738fcc88e5ec04e0569bc5b9648b510b9c65eb902d3d50b97f7e5ed5e1a85815",
+      "response_file": {
+        "bytes": 1024,
+        "path": "responses/36.bin",
+        "sha256": "738fcc88e5ec04e0569bc5b9648b510b9c65eb902d3d50b97f7e5ed5e1a85815"
+      },
+      "status": "PASS",
+      "translated": {
+        "api": "hwa_rr3_fetch",
+        "assembly_id": "asm1",
+        "contig_id": "tail",
+        "convention": "0-based-half-open",
+        "end0": 2518,
+        "start0": 1494
+      }
+    },
+    {
+      "assembly": "asm2",
+      "canonical": {
+        "assembly_id": "asm2",
+        "contig_id": "tail",
+        "end0": 2518,
+        "start0": 1494
+      },
+      "group_id": 18,
+      "id": 37,
+      "length": 1024,
+      "observed_sha256": "70c71367e28be3c5bbbda6923d9e0a74e7c27f81c1b8666729ca8c5de21d87b9",
+      "response_file": {
+        "bytes": 1024,
+        "path": "responses/37.bin",
+        "sha256": "70c71367e28be3c5bbbda6923d9e0a74e7c27f81c1b8666729ca8c5de21d87b9"
+      },
+      "status": "PASS",
+      "translated": {
+        "api": "hwa_rr3_fetch",
+        "assembly_id": "asm2",
+        "contig_id": "tail",
+        "convention": "0-based-half-open",
+        "end0": 2518,
+        "start0": 1494
+      }
+    },
+    {
+      "assembly": "asm1",
+      "canonical": {
+        "assembly_id": "asm1",
+        "contig_id": "chr",
+        "end0": 2601,
+        "start0": 1577
+      },
+      "group_id": 19,
+      "id": 38,
+      "length": 1024,
+      "observed_sha256": "c6546a9e315a665169d1080b9870b855a83d833660d16925cb81e51479a12577",
+      "response_file": {
+        "bytes": 1024,
+        "path": "responses/38.bin",
+        "sha256": "c6546a9e315a665169d1080b9870b855a83d833660d16925cb81e51479a12577"
+      },
+      "status": "PASS",
+      "translated": {
+        "api": "hwa_rr3_fetch",
+        "assembly_id": "asm1",
+        "contig_id": "chr",
+        "convention": "0-based-half-open",
+        "end0": 2601,
+        "start0": 1577
+      }
+    },
+    {
+      "assembly": "asm2",
+      "canonical": {
+        "assembly_id": "asm2",
+        "contig_id": "chr",
+        "end0": 2601,
+        "start0": 1577
+      },
+      "group_id": 19,
+      "id": 39,
+      "length": 1024,
+      "observed_sha256": "375f23179258106d93e89bdcba4e175c6ef1ab5f779c410268247e4afec2c2c6",
+      "response_file": {
+        "bytes": 1024,
+        "path": "responses/39.bin",
+        "sha256": "375f23179258106d93e89bdcba4e175c6ef1ab5f779c410268247e4afec2c2c6"
+      },
+      "status": "PASS",
+      "translated": {
+        "api": "hwa_rr3_fetch",
+        "assembly_id": "asm2",
+        "contig_id": "chr",
+        "convention": "0-based-half-open",
+        "end0": 2601,
+        "start0": 1577
+      }
+    }
+  ],
+  "sample_ids": [
+    0,
+    1,
+    3,
+    4,
+    5,
+    6,
+    7,
+    9,
+    10,
+    12,
+    13,
+    15,
+    16,
+    18,
+    19,
+    20,
+    21,
+    22,
+    23,
+    24,
+    25,
+    26,
+    27,
+    28,
+    30,
+    31,
+    33,
+    35,
+    36,
+    37,
+    38,
+    39
+  ],
+  "sample_seed": 20261003,
+  "schema": "axis4-evidence-v3",
+  "scope": "cpu-in-process",
+  "seconds": 0.000767568,
+  "silence_after": {
+    "bytes": 75,
+    "path": "silence-after.json",
+    "sha256": "3a519ff864620c6f6e3c0c2ba9e3a8214c5a6d5f9b6da0e80d780e84756da9e0"
+  },
+  "silence_before": {
+    "bytes": 75,
+    "path": "silence-before.json",
+    "sha256": "3a519ff864620c6f6e3c0c2ba9e3a8214c5a6d5f9b6da0e80d780e84756da9e0"
+  },
+  "status": "PASS",
+  "storage_files": [
+    {
+      "bytes": 12455,
+      "path": "asm1.fa",
+      "sha256": "4cad8128d61f62ee7bed58d6ba5155013a176f2a8fd983a95e15cad409d46048"
+    },
+    {
+      "bytes": 219,
+      "path": "asm1.rr3",
+      "sha256": "a45ba2b1bc1bc152daf8d266e88270a398c51c3d65308e46d71829d52cee0b05"
+    },
+    {
+      "bytes": 292,
+      "path": "asm2.rr3",
+      "sha256": "27098e30e890e9e1981545bbdf4ec540af9323ca0f0fb166f6e7d3490e067094"
+    }
+  ],
+  "stored_bytes": 12966,
+  "timing_boundary": "complete group: native fetch, uppercase normalization, SHA-256 judgement and translation; response file writes outside timer",
+  "verified": 40
+}

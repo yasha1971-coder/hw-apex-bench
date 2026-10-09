@@ -1,0 +1,12 @@
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "/workspace/scratch/bd7b0d2b828e/repo/tools/axis5_native_worker.py", line 39, in <module>
+    decode(Path(sys.argv[1]), Path(sys.argv[2]), Path(sys.argv[3]))
+  File "/workspace/scratch/bd7b0d2b828e/repo/tools/axis5_native_worker.py", line 31, in decode
+    data = reader.fetch(q['assembly_id'], q['contig_id'], q['start0'], q['end0']).upper()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/scratch/bd7b0d2b828e/repo/review/axis3/native_readers.py", line 120, in fetch
+    if got!=e-s:raise ValueError('refrel3 short read')
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ValueError: refrel3 short read

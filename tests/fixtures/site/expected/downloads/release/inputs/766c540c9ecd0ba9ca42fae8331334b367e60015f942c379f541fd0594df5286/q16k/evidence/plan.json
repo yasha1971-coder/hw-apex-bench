@@ -1,0 +1,45 @@
+{
+  "prepared": {
+    "bytes": 10955,
+    "path": "prepared/prepared.json",
+    "sha256": "4159d501dea82a4890a46ce2f8da4137bbe2ae0ad89e30cbcea0d8f5ce29e323"
+  },
+  "reader": {
+    "archives": [
+      {
+        "archive": {
+          "bytes": 219,
+          "path": "asm1.rr3",
+          "sha256": "a45ba2b1bc1bc152daf8d266e88270a398c51c3d65308e46d71829d52cee0b05"
+        },
+        "assembly_id": "asm1"
+      },
+      {
+        "archive": {
+          "bytes": 292,
+          "path": "asm2.rr3",
+          "sha256": "27098e30e890e9e1981545bbdf4ec540af9323ca0f0fb166f6e7d3490e067094"
+        },
+        "assembly_id": "asm2"
+      }
+    ],
+    "build_receipt": {
+      "bytes": 520,
+      "path": "build.json",
+      "sha256": "a2f90fa86ad887055cfea6c07d5f484e1e6dc9a70f7e8db02000b5028fd66292"
+    },
+    "family": "refrel3",
+    "library": {
+      "bytes": 1448648,
+      "path": "libhwa_refrel3.so",
+      "sha256": "d2e3d438a524f01a0e1a5f749bf0550924ec91b4061b9f58aabb9ad99264be96"
+    },
+    "reference": {
+      "bytes": 12455,
+      "path": "asm1.fa",
+      "sha256": "4cad8128d61f62ee7bed58d6ba5155013a176f2a8fd983a95e15cad409d46048"
+    },
+    "variant": "q16k"
+  },
+  "schema": "axis4-plan-v1"
+}

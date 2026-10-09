@@ -1321,3 +1321,28 @@ measurements.
   Final clean-clone full-suite/native-skip, postimage and package receipts are
   supplied in HWAPEX_PR63_A9.zip; this handoff does not substitute for them.
   Server owns applying, CI and any later measurement/publication decision.
+
+### A10 local handoff — verified static v0.2.0 site (2026-10-09)
+
+- Base A9 commit 1d4e9500213edf51e903fb358b4f78bc70c4694e, tree
+  8e283ebfdcaae3505d081f2b3605558b3e5f3ae9. No push or publication.
+- tools/build_site.py verifies the complete A9 release before writing HTML,
+  preserves evidence/dependencies, links exact SHA-bound files, and checks HTML5,
+  internal files/fragments and source-bound numeric cells before output commit.
+- JS-free semantic tables, keyboard/skip/navigation support, local CSS, light/dark
+  color pairs checked for AA text contrast; no CDN or native decoder execution.
+- Complete synthetic golden includes Axis 3 unit-contract fixture and preserved
+  A6/A7 Axis 4/5 evidence, with immutable A9 methodology-link artifacts. Historical
+  RUN.md is SHA-pinned in the fixture; current server overlays are never edited.
+- Synthetic receipt records 10 HTML pages, 5 rows and 2146 checked links; repeated
+  complete byte tree matches golden. SITE_SHA256SUMS identifies all site bytes.
+- 43 new site/Pages-policy tests; actual suite collection 401. Unit workflow
+  expected_total=401, pinned html5lib/Markdown prerequisites added.
+- pages.yml PR build retains verified synthetic site as an artifact; Pages
+  artifact/deployment require main and non-PR event. Deny-default workflow token,
+  read-only checkout build, deploy only pages:write/id-token:write; all action pins
+  retained, persisted credentials/extra status publication/settings mutation removed.
+- Existing historical web builder/data/publication workflow unchanged. New Pages
+  root is explicitly synthetic; official ace-core performance remains pending.
+  Final package carries clean-base apply/am/tree/full-suite/native-skip receipts,
+  per-file postimages and workflow changes. No live GitHub CI/deployment is claimed.
