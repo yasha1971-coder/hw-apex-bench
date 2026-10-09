@@ -5,7 +5,10 @@ import argparse
 import hashlib
 import json
 from pathlib import Path
-from validate_axis3_evidence import loads, validate_record
+if __package__:
+    from .validate_axis3_evidence import loads, validate_record
+else:
+    from validate_axis3_evidence import loads, validate_record
 
 
 def recompute(record, root):

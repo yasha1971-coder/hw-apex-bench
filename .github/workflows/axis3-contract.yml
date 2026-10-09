@@ -50,7 +50,7 @@ jobs:
           import unittest
 
           # Keep collection count strict; optional native cases are still collected.
-          expected_total = 269  # A7: 236 A6 + 33 corruption harness/judge tests
+          expected_total = 306  # A8: 269 A7 + 37 leaderboard tests
           suite = unittest.defaultTestLoader.discover("tests")
           native_type = importlib.import_module("test_s2_native_readers").NativeAvailability
 
@@ -115,6 +115,18 @@ jobs:
           if not valid:
               raise SystemExit(1)
           PY
+      - name: Axis 3 4 5 leaderboard golden files and byte determinism
+        run: |
+          set -euo pipefail
+          "$RUNNER_TEMP/unit-venv/bin/python" -m tools.leaderboard_synthetic \
+            --out "$RUNNER_TEMP/leaderboard-synthetic"
+      - name: Retain leaderboard synthetic evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: leaderboard-native-evidence-synthetic
+          path: ${{ runner.temp }}/leaderboard-synthetic
+          if-no-files-found: error
       - name: Install synthetic adapter dependencies
         run: |
           set -euo pipefail

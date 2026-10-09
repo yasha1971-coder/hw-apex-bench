@@ -58,3 +58,27 @@ same results directory. Workflow expected_total is 269; synthetic CI invokes
 refrel3 q4k/q16k prepare/corrupt/run/verify and retains evidence. Other variants
 were executed locally with pinned native implementations. The existing OpenZL
 large-input regression remains enabled.
+
+## A8: verified deterministic leaderboard generation
+
+`tools/build_leaderboard.py` consumes anchored evidence catalogs for Axis 3
+(including the B-job window-law schema), Axis 4 and Axis 5. It invokes each
+axis's verifier, then emits LEADERBOARD.md, leaderboard.csv and leaderboard.json.
+Every row links an exact source JSON copy and its full SHA-256. No new decoder
+or timing measurements are performed; displayed values come from verified
+source evidence and its hash-bound companions.
+
+Duplicate variants and mixed requests/machines/scopes/protocols refuse. Synthetic
+A6/A7 has no machine ID: default tables are source-specific singletons, and
+forcing those sources into a common comparison refuses. Missing metrics remain
+empty/null. Synthetic timings are not presented as performance measurements.
+
+Preserved A6/A7 golden fixtures produce 4 tables/4 rows, byte-identical on rerun,
+relocation and input-order changes. The complete seven-variant A6/A7 input set
+produces 21 separate tables/rows after verification. Source logs, input catalogs,
+output hashes and complete tables are retained in HWAPEX_PR63_A8.zip.
+
+A8 adds 37 tests; actual collection is 306. Local full suite: 306 PASS with all
+native libraries; 296 PASS and 10 allowed skips without. NATIVE_SKIP_GATE PASS
+both. Workflow expected_total=306 and a golden/determinism synthetic step with
+artifact retention was added; GitHub CI execution is not claimed.

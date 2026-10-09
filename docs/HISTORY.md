@@ -1269,3 +1269,31 @@ measurements.
   matching tree, full suites in both native modes and offline evidence verify.
   Final acceptance receipts are supplied in HWAPEX_PR63_A7.zip, not inferred
   from this history entry. No official performance or GitHub CI result claimed.
+
+### A8 local handoff — verified deterministic leaderboard (2026-10-09)
+
+- Restored the accepted A7 ZIP from persistent storage; its SHA256 is
+  f58150e0d48134e45bf7104468af0704bb6784df569cfeee43341d71531bcaf3.
+  Reconstructed clone applied A6+A7; base tree exactly
+  deb571acd4b988cbd5e5d7fc7e2869844a14e715 (local base commit
+  141ff6ba89b53dc3dec7b7cd69fc21067c5ea174). No push/publication.
+- tools/build_leaderboard.py accepts externally anchored catalogs and verifies
+  Axis 3 evidence/B-job, Axis 4 FASTA, and Axis 5 corruption evidence before
+  writing MD/CSV/JSON. Every row links an exact source JSON copy and full SHA.
+- Refuses schema/verification/hash failures, duplicate format/variant within an
+  axis, mixed comparison conditions or forced comparison of unknown machines.
+  A6/A7 synthetic evidence lacks machine IDs: default source-specific tables
+  remain separate. No inferred hardware or synthetic performance headline.
+- Golden fixtures preserve 501 original A6/A7 dependency/evidence file bytes,
+  with q4k/q16k A4 and q4k A5. Golden acceptance: 4 tables/4 rows, repeated output
+  byte-identical. All seven A6/A7 native inputs produce 21 separate tables/rows;
+  existing 280 A4 responses and 1400 A5 observations are verified, not rerun.
+- Added 37 tests. Actual full collection 306: with .so 306 PASS, no skips;
+  without .so 296 PASS +10 allowed NativeAvailability skips. NATIVE_SKIP_GATE
+  PASS both. Workflow expected_total=306; golden synthetic step and artifact
+  upload added. Local workflow shell syntax: 16 blocks PASS.
+- Full gate uses retained A7 refrel3/BGZF/zstd/AGC shims and rebuilt pinned
+  LZ4 1.10.0/OpenZL 0.3.0 shims. Source pins/hashes and actual logs are retained.
+- Final delivery requires a fresh bundle+A6+A7 clone, A8 apply --check --index,
+  git am, exact postimage tree and complete suites in both native modes; the
+  final package receipts record those results. GitHub CI was not executed.
