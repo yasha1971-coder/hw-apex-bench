@@ -10,8 +10,8 @@ Authority: [PROTOCOL_AXIS3.md](PROTOCOL_AXIS3.md) and
 [PROTOCOL_FREEZE.json](PROTOCOL_FREEZE.json). Canonical protocol SHA-256:
 `4a0027fec59b3252dc07b29458a57a5a451957f1b64b36f3927765cbc6be7a5c`.
 [VERDICT_JOB.md](VERDICT_JOB.md) defines the B plan, receipts and reader paths.
-The older coordinate/model paragraphs in the root METHODOLOGY.md are not an
-alternative contract; their reconciliation is A5, not part of this patch.
+[METHODOLOGY.md](../../METHODOLOGY.md) is aligned with the frozen v1.1 contract.
+It explains the method without replacing the protocol or authorizing a run.
 
 ## 1. What actually runs
 
