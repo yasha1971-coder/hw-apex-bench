@@ -16,6 +16,8 @@ jobs:
       contents: read
     runs-on: ubuntu-24.04
     timeout-minutes: 15
+    outputs:
+      deploy: ${{ steps.deploy-gate.outputs.deploy }}
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
         with:
@@ -38,13 +40,19 @@ jobs:
           path: ${{ runner.temp }}/site-acceptance
           if-no-files-found: error
           include-hidden-files: true
+      - name: Deploy gate - only a release with measured or official evidence replaces the public homepage
+        id: deploy-gate
+        run: |
+          set -euo pipefail
+          "$RUNNER_TEMP/site-venv/bin/python" -m tools.pages_deploy_gate \
+            "$RUNNER_TEMP/site-acceptance/first" --github-output "$GITHUB_OUTPUT"
       - name: Package Pages artifact only on main
-        if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+        if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request' && steps.deploy-gate.outputs.deploy == 'true'
         uses: actions/upload-pages-artifact@7b1f4a764d45c48632c6b24a0339c27f5614fb0b
         with:
           path: ${{ runner.temp }}/site-acceptance/first
   deploy:
-    if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+    if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request' && needs.build.outputs.deploy == 'true'
     needs: build
     permissions:
       pages: write

@@ -356,7 +356,7 @@ class PagesPolicy(unittest.TestCase):
 
     def test_deploy_only_main_for_push_or_dispatch_never_PR(self):
         deploy = self.config['jobs']['deploy']
-        self.assertEqual(deploy['if'], "github.ref == 'refs/heads/main' && github.event_name != 'pull_request'")
+        self.assertEqual(deploy['if'], "github.ref == 'refs/heads/main' && github.event_name != 'pull_request' && needs.build.outputs.deploy == 'true'")
         self.assertEqual(deploy['needs'], 'build')
         self.assertEqual(deploy['permissions'], {'pages': 'write', 'id-token': 'write'})
         events = self.config.get('on', self.config.get(True))
@@ -370,7 +370,11 @@ class PagesPolicy(unittest.TestCase):
         self.assertNotIn('if', ordinary)
         self.assertTrue(ordinary['with']['include-hidden-files'])
         self.assertEqual(ordinary['with']['path'], '${{ runner.temp }}/site-acceptance')
-        self.assertEqual(pages['if'], self.config['jobs']['deploy']['if'])
+        self.assertEqual(pages['if'], "github.ref == 'refs/heads/main' && github.event_name != 'pull_request' && steps.deploy-gate.outputs.deploy == 'true'")
+        gate = next(s for s in steps if s.get('id') == 'deploy-gate')
+        self.assertNotIn('if', gate)
+        self.assertIn('tools.pages_deploy_gate', gate['run'])
+        self.assertEqual(self.config['jobs']['build']['outputs']['deploy'], '${{ steps.deploy-gate.outputs.deploy }}')
         self.assertIn('/first', pages['with']['path'])
 
     def test_all_actions_pinned_and_no_extra_write_or_status_POST(self):
@@ -393,9 +397,10 @@ class PagesPolicy(unittest.TestCase):
 
     def test_main_gate_event_ref_matrix(self):
         guard = self.config['jobs']['deploy']['if']
-        self.assertEqual(guard, "github.ref == 'refs/heads/main' && github.event_name != 'pull_request'")
+        self.assertEqual(guard, "github.ref == 'refs/heads/main' && github.event_name != 'pull_request' && needs.build.outputs.deploy == 'true'")
         cases = [('push', 'refs/heads/main', True), ('push', 'refs/heads/feature', False),
                  ('pull_request', 'refs/pull/63/merge', False), ('pull_request', 'refs/heads/main', False),
                  ('workflow_dispatch', 'refs/heads/main', True), ('workflow_dispatch', 'refs/heads/feature', False)]
         for event, ref, expected in cases:
-            self.assertEqual(ref == 'refs/heads/main' and event != 'pull_request', expected)
+            for measured in (True, False):  # deploy gate: synthetic-only releases never deploy
+                self.assertEqual(ref == 'refs/heads/main' and event != 'pull_request' and measured, expected and measured)
