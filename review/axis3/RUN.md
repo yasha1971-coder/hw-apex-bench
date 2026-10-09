@@ -78,7 +78,7 @@ full-decode exports to the refrel3/BGZF libraries; a window-only `.so` is refuse
 | BGZF default/matched-g | `review/axis3/build_bgzf_axis3.sh` | Argument: pinned build directory; produces `libhwa_bgzf.so` and `bgzip`. |
 | OpenZL native | `review/axis3/build_openzl_native.sh` | Argument: retained OpenZL directory; produces `libhwa_openzl.so`. Base CLI build is `build_openzl_v030.sh`; it is not permission to replace retained archives. |
 | LZ4 native | `review/axis3/build_lz4_native.sh` | Argument is the output `.so` **file**, not a directory; `LZ4_ROOT` names the retained 1.10.0 source tree. |
-| AGC | `review/axis3/build_agc_v324.sh` | Argument: build directory; produces `libhwa_agc.so` and `agc-cli`; creation must be one stock create, not append. |
+| AGC | `AGC_PLATFORM=native bash review/axis3/build_agc_v324.sh <dir>` | Argument: build directory; produces `libhwa_agc.so` and `agc-cli`; creation must be one stock create, not append. `AGC_PLATFORM` is required (sse2, avx, avx2 or native; CI uses avx2); local ace-core builds use `native` explicitly and the value is recorded in `<dir>/AGC_PLATFORM` for the evidence. |
 | zstd-seekable | `codecs/zstd_seekable.sh` | Use its retained pinned resident-context build. B does not construct canonical archives/indexes on import. |
 
 No build command in this runbook is part of a timed interval. Actual compiler,

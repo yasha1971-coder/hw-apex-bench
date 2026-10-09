@@ -59,7 +59,7 @@ jobs:
           else
             echo "AGC cache absent or rejected; building from source (platform=$AGC_PLATFORM)"
             rm -rf "$D"
-            bash review/axis3/build_agc_v324.sh "$D"
+            AGC_PLATFORM="$AGC_PLATFORM" bash review/axis3/build_agc_v324.sh "$D"
             smoke
             echo "AGC_BUILT_FROM_SOURCE platform=$AGC_PLATFORM smoke=PASS"
           fi
