@@ -1213,3 +1213,40 @@ publication digest verification, 197 local Markdown links, Pages export and
 manifest match the merged PR #45 base byte-for-byte; generated homepage matches
 its committed export. All workflow YAML parses. Fresh GitHub CI is the remaining
 delivery gate, not a request to rerun any benchmark.
+
+## A6 Axis 4 patch handoff — 2026-10-09
+
+Base is exactly 0cad8cce4797dc9a12e476b0f144f4206ef74169, tree
+dfd11245612d3d0398d1eb9167cb972874cee905.
+The named full bundle was not available in this session. The complete history
+was reconstructed from the retained 5469d00 bundle and six incremental bundles;
+all bundle prerequisites, final commit/tree and git fsck --full --strict passed.
+The WIP ZIP matched SHA-256
+258a6d7de3154a56302e64971c8109d5a4f9ba5896c61568b20c4f61dabf1dba.
+
+A6 adds tools.axis4 prepare/run/verify, the axis4-evidence-v3 JSON Schema,
+independent streaming FASTA verification and a real-native synthetic CLI driver.
+Prepare binds every FASTA and explicit cohort query. Run hashes every canonical
+response and retains only min(32, count) seeded response byte samples. Verify
+requires an externally retained prepare SHA, rehashes all source FASTA files,
+independently extracts all requested regions, and checks every observed SHA and
+sample byte. Native inputs, storage and build receipts remain hash-bound.
+Official run keeps ace-core silence gates; synthetic output is explicitly not
+performance evidence. No HPRC measurements or publication were performed.
+
+Local tests: 236 collected; all 236 pass with all native libraries configured.
+Without them, 226 pass and exactly 10 native-availability cases skip.
+NATIVE_SKIP_GATE passes both modes and rejects configured-missing libraries.
+Native synthetic CLI checks cover refrel3 q4k/q16k, zstd-seekable, BGZF,
+plain FASTA/faidx and AGC noref/t2t: 40 response hashes plus 32 byte samples per
+run; an unsampled forged SHA is rejected. Symbol tests for LZ4/OpenZL remain
+availability checks, not an Axis 4 round-trip claim for those families.
+
+Workflow: expected_total becomes 236, native refrel3 A6 synthetic CLI acceptance
+and its retained artifact are added. Existing timing/result publications stay
+unchanged. GitHub Actions has not run for this local patch; the ace-core agent
+owns push/CI and official measurements. Final package receipts record the fresh
+bundle clone, apply --check --index, git am, applied tree and post-apply tests.
+Nothing was pushed. Next bounded action: apply the package on the exact base,
+check its receipts and run the updated CI before scheduling any official cohort
+measurements.

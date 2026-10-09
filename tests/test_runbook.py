@@ -218,14 +218,16 @@ class RunbookTest(unittest.TestCase):
         with self.assertRaisesRegex(SystemExit, "tracked RUN.md"):
             self.readiness(wrong_book=True)
 
-    def test_axis4_command_is_unit_test_not_a_fake_measurement_cli(self):
+    def test_axis4_api_test_and_separate_accepted_cli_documentation(self):
         module, argv = module_command("axis4-tests")
         self.assertEqual(module, "unittest")
         self.assertEqual(argv, ["discover", "-s", "tests", "-p", "test_cohort_region_engine.py", "-v"])
-        self.assertIn("NO_OFFICIAL_CLI", TEXT)
+        self.assertNotIn("NO_OFFICIAL_CLI", TEXT)
+        self.assertIn("tools.axis4", TEXT)
+        self.assertIn("[AXIS4.md](AXIS4.md)", TEXT)
         self.assertIn("PREPARED_ONLY", TEXT)
         self.assertNotIn('"$PYTHON" -m tools.cohort_region_engine', TEXT)
-        self.assertIn("does not write a locked input/output", TEXT)
+        self.assertIn("32-response byte sample", TEXT)
 
     def test_every_documented_relative_target_exists(self):
         links = re.findall(r"\]\(([^)]+)\)", TEXT)

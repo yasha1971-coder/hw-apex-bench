@@ -18,7 +18,7 @@ It explains the method without replacing the protocol or authorizing a run.
 | Operation | Implemented interface | What it does / limitation |
 |---|---|---|
 | Axis 3 windows, c0, D_Q and model verdict | `python3 -m tools.verdict_refrel3 prepare/run/verify` | Complete B job: common requests, persistent native readers, full-output SHA, raw logs, table and integrity verification. |
-| Axis 4 cohort regions | `tools.cohort_region_engine.run_cohort` | Python API only; **NO_OFFICIAL_CLI**. It needs explicit per-assembly group mappings and a persistent reader. No complete input-plan/silence/evidence launcher exists at this revision. |
+| Axis 4 cohort regions | `tools.axis4` | A6 CLI: explicit cohort groups, prepare SHA, silence-gated native run and independent verification. See [Axis 4](AXIS4.md). |
 | Axis 5 single decoder case | `python3 -m review.axis3.native_d6_worker` | One subprocess, watchdog and byte/SHA classification. **SINGLE_CASE_ONLY**: not the complete 100-mutation experiment. |
 | Axis 5 mutation loop | `tools.application_corruption.run_probes` | Python API for clean-baseline verification and 100 one-bit cases. No hash-bound multi-format/silence/evidence CLI exists at this revision. |
 
@@ -346,25 +346,19 @@ Read `results.json.summary.comparison_verdict` for that conclusion. Neither run
 nor verify publishes anything. No performance value may be copied out of unit
 tests or synthetic acceptance evidence.
 
-## 5. Axis 4 — existing API, not a fabricated command
+## 5. Axis 4 — A6 CLI and explicit cohort mappings
 
-The existing entrypoint is `run_cohort(reader, groups, assemblies, storage_paths)`
-in `tools/cohort_region_engine.py`. Each group needs an explicit `Window` for
-**every** assembly. Do not infer contig homology or reuse Axis 3 independent
-random windows as homologous cohort groups. Coordinates and SHA must be frozen
-from FASTA before accessing compressed archives. Reader construction, verified
-storage accounting and the host gate are caller responsibilities.
+[AXIS4.md](AXIS4.md) documents the official `tools.axis4` prepare/run/verify
+commands, manifest and native-plan format, mandatory ace-core silence gate,
+32-response byte sample and independent FASTA verifier. It also documents
+synthetic acceptance, whose timings are never official measurements.
 
-The current API times each complete group including SHA judgement and translation
-bookkeeping; it is not comparable to decoder-only window timing. It returns a
-summary and raw per-answer records, but does not write a locked input/output
-manifest or retain group-by-group raw times. No official Axis 4 CLI/plan writer
-is supplied by this documentation patch. **NO_OFFICIAL_CLI** means no HPRC run
-command is advertised; a full launcher with the missing evidence/silence steps
-needs its own implementation and acceptance, not a no-op `python -m` invocation.
+The existing `run_cohort` API remains available. A6 has its own streaming runner
+so evidence includes complete-group raw times and bounded sample storage.
+Every group still explicitly maps every assembly; no homology is inferred.
 
-This existing command tests the API with tiny synthetic data/artificial clocks;
-it is **not** a cohort measurement or native adapter acceptance:
+This command tests the original API with tiny synthetic data/artificial clocks;
+use the A6 synthetic CLI acceptance for actual native reader coverage:
 
 <!-- runbook-command:axis4-tests -->
 ```sh
