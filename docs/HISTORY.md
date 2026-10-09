@@ -1346,3 +1346,20 @@ measurements.
   root is explicitly synthetic; official ace-core performance remains pending.
   Final package carries clean-base apply/am/tree/full-suite/native-skip receipts,
   per-file postimages and workflow changes. No live GitHub CI/deployment is claimed.
+
+### A11 local handoff — Axis 4 v1.1 streaming truth (2026-10-09)
+
+- Base A10 commit 67f53a1bdd3f3830b1ae921430763e166ec4c8cf, tree
+  c6cc36f456f3aaba0cd3d481238d012128e426ad. No push/publication.
+- New prepared-v2/evidence-v4 dispatch retains prepared-v1/evidence-v3 verification.
+  Compressed source identities are checked; complete decompressed FASTA and canonical
+  sequence identities are computed on the fly, without uncompressed FASTA spooling.
+- Separate prepare sweep and verify intersections; gzip/BGZF and concatenated members;
+  bounded long-line reads, complete CRC/trailer checks, fixed header length limit.
+- Streaming native zstd synthetic acceptance keeps zero plain FASTA files. Unit,
+  native, source-equivalence, memory and full clean-clone gate receipts are delivered
+  in HWAPEX_PR63_A11.zip; measurements are not inferred from historical runs.
+- 30 new tests; workflow expected_total=431. Offline streaming/memory CI steps added.
+  A10 historical site snapshots stay immutable; protected AGC/RUN paths untouched.
+- Server owns applying, CI and official ace-core measurement. No live PR/CI state
+  is claimed by this local handoff; final package includes exact tree/postimage hashes.

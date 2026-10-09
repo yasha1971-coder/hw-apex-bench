@@ -67,13 +67,15 @@ def new_output(root, name):
     return out
 
 
-def prepare(root, manifest_name, groups_name, out_name, seed=20261003):
+def prepare(root, manifest_name, groups_name, out_name, seed=20261003, truth_version=None):
+    if truth_version not in (None, '1.1'):
+        raise ValueError('unsupported truth version')
     root = Path(root).resolve(strict=True)
     manifest_path = resolve(root, manifest_name)
     groups_path = resolve(root, groups_name)
     manifest = load_json(manifest_path)
-    if manifest.get('schema') != 'axis4-corpus-v1':
-        raise ValueError('axis4-corpus-v1 manifest required')
+    if manifest.get('schema') not in ('axis4-corpus-v1', 'axis4-corpus-v1.1'):
+        raise ValueError('axis4-corpus-v1 or axis4-corpus-v1.1 manifest required')
     kind = manifest.get('evidence_kind')
     if kind not in ('official', 'synthetic'):
         raise ValueError('explicit evidence_kind required')
@@ -82,6 +84,9 @@ def prepare(root, manifest_name, groups_name, out_name, seed=20261003):
     rows = manifest['assemblies']
     if not rows:
         raise ValueError('empty cohort')
+    if (truth_version == '1.1' or manifest['schema'] == 'axis4-corpus-v1.1' or
+            any(Path(r['fasta']['path']).suffix.lower() in ('.gz', '.bgz', '.bgzf') for r in rows)):
+        return prepare_streamed(root, manifest_path, groups_path, rows, kind, out_name, seed)
     sources = []
     for row in rows:
         if not row.get('source_url') or not isinstance(row['source_url'], str):
@@ -134,6 +139,51 @@ def prepare(root, manifest_name, groups_name, out_name, seed=20261003):
         truth.close()
 
 
+def prepare_streamed(root, manifest_path, groups_path, rows, kind, out_name, seed):
+    from tools.axis4_stream import prepare_truth
+    aids = [r['assembly_id'] for r in rows]
+    if any(not isinstance(a, str) or not a for a in aids) or len(aids) != len(set(aids)):
+        raise ValueError('distinct nonempty assembly IDs required')
+    groups = load_json(groups_path)
+    if not isinstance(groups, list) or not groups:
+        raise ValueError('nonempty explicit cohort group list required')
+    frozen = []
+    for group in groups:
+        if not isinstance(group, dict) or set(group) != set(aids):
+            raise ValueError('every group must explicitly cover the cohort')
+        for aid in aids:
+            q = group[aid]
+            if set(q) != set(COORDS) or q['assembly_id'] != aid:
+                raise ValueError('canonical mapping must contain only the four coordinates')
+        frozen.append({aid: dict(group[aid]) for aid in aids})
+    assemblies = []
+    for row in rows:
+        if not isinstance(row.get('source_url'), str) or not row['source_url']:
+            raise ValueError('source URL required')
+        path = checked_file(root, row['fasta'])
+        aid = row['assembly_id']
+        identity, hashes = prepare_truth(path, [(i, g[aid]) for i, g in enumerate(groups)])
+        checked_file(root, row['fasta'])
+        assemblies.append({**row, **identity})
+        for gid, group in enumerate(frozen):
+            group[aid]['sha256'] = hashes[gid]
+    if kind == 'synthetic' and (sum(a['canonical_bytes'] for a in assemblies) > 8*1024*1024
+                               or len(frozen)*len(aids) > 1024):
+        raise ValueError('synthetic mode is bounded to 8 MiB and 1024 responses')
+    refs = unique_refs([file_ref(root, manifest_path), file_ref(root, groups_path), *[a['fasta'] for a in rows]])
+    prepared = {'schema': 'axis4-prepared-v2', 'truth_version': '1.1', 'evidence_kind': kind,
+        'domain': DOMAIN, 'coordinate_convention': '0-based-half-open',
+        'protocol_sha256': verify_protocol(REPO)['sha256'], 'sample_seed': seed,
+        'sample_algorithm': 'python.random.Random/MT19937/sample', 'sample_limit': 32,
+        'assemblies': assemblies, 'groups': frozen, 'input_files': refs}
+    validate_schema(prepared)
+    for ref in refs:
+        checked_file(root, ref)
+    out = new_output(root, out_name)
+    write_json(out/'prepared.json', prepared)
+    return file_ref(root, out/'prepared.json')
+
+
 def open_reader(root, spec, corpus):
     if spec['family'] == 'agc':
         # Axis 4 does not use Q or D_Q; do not demand B's instrumented geometry.
@@ -178,7 +228,7 @@ def open_reader(root, spec, corpus):
     try:
         for assembly, arc in zip(assemblies, spec['archives']):
             path = checked_file(root, arc['archive'])
-            if arc['archive'] != assembly['fasta']:
+            if 'truth' not in assembly and arc['archive'] != assembly['fasta']:
                 raise ValueError('plain faidx archive must be the frozen FASTA')
             if checked_file(root, arc['fai']) != Path(str(path) + '.fai'):
                 raise ValueError('faidx sidecar path mismatch')
@@ -203,7 +253,7 @@ def load_plan(root, plan_name):
     prepared_path = checked_file(root, plan['prepared'])
     prepared = load_json(prepared_path)
     validate_schema(prepared)
-    if prepared['schema'] != 'axis4-prepared-v1':
+    if prepared['schema'] not in ('axis4-prepared-v1', 'axis4-prepared-v2'):
         raise ValueError('not an Axis 4 prepare')
     if prepared['protocol_sha256'] != verify_protocol(REPO)['sha256']:
         raise ValueError('protocol drift')
@@ -240,6 +290,11 @@ def run(root, plan_name, out_name, *, clock=time.perf_counter_ns):
             'review/axis3/native_readers.py', 'review/axis3/verdict_readers.py',
             'review/axis3/verdict_data.py')},
     }
+    if prepared['schema'] == 'axis4-prepared-v2':
+        result.update(schema='axis4-evidence-v4', truth_version='1.1', truth_sources=[
+            {'assembly_id': a['assembly_id'], 'source': a['fasta'], **a['truth']}
+            for a in prepared['assemblies']])
+        result['implementation']['tools/axis4_stream.py'] = file_ref(REPO, REPO/'tools/axis4_stream.py')['sha256']
     reader = None
 
     def gate(label):
@@ -325,6 +380,7 @@ def main():
     p.add_argument('--groups', required=True)
     p.add_argument('--out', required=True)
     p.add_argument('--sample-seed', type=int, default=20261003)
+    p.add_argument('--truth-version', choices=['1.1'])
     p = sub.add_parser('run')
     p.add_argument('--root', required=True)
     p.add_argument('--plan', required=True)
@@ -336,7 +392,7 @@ def main():
     args = ap.parse_args()
     try:
         if args.operation == 'prepare':
-            result = {'prepared': prepare(args.root, args.manifest, args.groups, args.out, args.sample_seed)}
+            result = {'prepared': prepare(args.root, args.manifest, args.groups, args.out, args.sample_seed, args.truth_version)}
         elif args.operation == 'run':
             data = run(args.root, args.plan, args.out)
             result = {k: data[k] for k in ('status', 'error', 'verified', 'evidence_kind')}

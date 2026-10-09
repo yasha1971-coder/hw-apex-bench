@@ -27,7 +27,9 @@ def sample_ids(count, seed):
 
 def validate_schema(data):
     import jsonschema
-    jsonschema.Draft202012Validator(load_json(SCHEMA)).validate(data)
+    version = data.get('schema')
+    schema = SCHEMA if version in ('axis4-prepared-v1', 'axis4-evidence-v3') else REPO/'schemas/axis4-evidence-v4.schema.json'
+    jsonschema.Draft202012Validator(load_json(schema)).validate(data)
 
 
 def refs_in(value):
@@ -66,12 +68,14 @@ def verify_translation(translated, q, assemblies):
         raise ValueError('translation coordinates mismatch')
 
 
-def independent_truth(path, queries, sampled):
+def independent_truth(path, queries, sampled, identity=None):
     """Scan FASTA once, without FastaTruth, faidx, or a native reader.
 
     Memory is O(requests + sampled response bytes); no whole genome is loaded.
     Coordinates are intersected with sequence lines, independent of line width.
     """
+    if identity is not None:
+        return independent_stream_truth(path, queries, sampled, identity)
     pending = {}
     hashes, lengths, buffers = {}, {}, {}
     for rid, q in queries:
@@ -120,6 +124,54 @@ def independent_truth(path, queries, sampled):
     return {rid: h.hexdigest() for rid, h in hashes.items()}, buffers
 
 
+def independent_stream_truth(path, queries, sampled, identity):
+    """Independent coordinate intersection and complete source identity judge.
+
+    Shares only gzip transport/FASTA framing, never prepare_truth or its hashes.
+    Unlike prepare's active-window sweep, intersect each request with each piece.
+    """
+    from tools.axis4_stream import source_stream, segments, CHUNK
+    raw, canonical, count = hashlib.sha256(), hashlib.sha256(), [0]
+    hashes = {rid: hashlib.sha256() for rid, _ in queries}
+    lengths = {rid: 0 for rid, _ in queries}
+    buffers = {rid: bytearray() for rid, _ in queries if rid in sampled}
+    contigs, seen, offset, total, current = [], set(), 0, 0, None
+    with source_stream(path) as (stream, encoding):
+        for kind, value in segments(stream, raw, count):
+            if kind == 'header':
+                if value in seen:
+                    raise ValueError('duplicate FASTA contig')
+                seen.add(value)
+                current, offset = value, 0
+                contigs.append({'contig_id': value, 'length': 0})
+                continue
+            if current is None:
+                raise ValueError('FASTA sequence before header')
+            canonical.update(value)
+            total += len(value)
+            contigs[-1]['length'] += len(value)
+            for rid, q in queries:
+                if q['contig_id'] != current:
+                    continue
+                left, right = max(offset, q['start0']), min(offset+len(value), q['end0'])
+                if left < right:
+                    part = value[left-offset:right-offset]
+                    hashes[rid].update(part)
+                    lengths[rid] += len(part)
+                    if rid in buffers:
+                        buffers[rid].extend(part)
+            offset += len(value)
+    actual = {'encoding': encoding, 'uncompressed_bytes': count[0],
+              'uncompressed_sha256': raw.hexdigest(), 'chunk_bytes': CHUNK}
+    if (actual != identity['truth'] or contigs != identity['contigs'] or
+            total != identity['canonical_bytes'] or canonical.hexdigest() != identity['canonical_sha256']):
+        raise ValueError('decompressed FASTA identity differs from prepare')
+    for rid, q in queries:
+        if lengths[rid] != q['end0']-q['start0']:
+            raise ValueError('truth request outside FASTA')
+    return {rid: h.hexdigest() for rid, h in hashes.items()}, buffers
+
+
 def verify(path, input_root, expected_prepared_sha256):
     p = Path(path).resolve(strict=True)
     root = p.parent
@@ -132,6 +184,13 @@ def verify(path, input_root, expected_prepared_sha256):
         raise ValueError('prepare SHA differs from external anchor')
     prepared = load_json(prepared_path)
     validate_schema(prepared)
+    streamed = data['schema'] == 'axis4-evidence-v4'
+    if streamed != (prepared['schema'] == 'axis4-prepared-v2'):
+        raise ValueError('evidence/prepare schema version mismatch')
+    if streamed and data['truth_sources'] != [
+            {'assembly_id': a['assembly_id'], 'source': a['fasta'], **a['truth']}
+            for a in prepared['assemblies']]:
+        raise ValueError('truth source ledger differs from prepare')
     plan = load_json(checked_file(root, data['plan']))
     if set(plan) != {'schema', 'prepared', 'reader'} or plan['schema'] != 'axis4-plan-v1':
         raise ValueError('plan schema')
@@ -174,7 +233,7 @@ def verify(path, input_root, expected_prepared_sha256):
         by_assembly[aid].append((rid, q))
     for a in assemblies:
         source = checked_file(input_root, a['fasta'])
-        hashes, buffers = independent_truth(source, by_assembly[a['assembly_id']], set(chosen))
+        hashes, buffers = independent_truth(source, by_assembly[a['assembly_id']], set(chosen), a if streamed else None)
         for rid, q in by_assembly[a['assembly_id']]:
             row = data['rows'][rid]
             if q['sha256'] != hashes[rid] or row['observed_sha256'] != hashes[rid]:

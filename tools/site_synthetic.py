@@ -40,6 +40,13 @@ def prepare(root):
             path = GOLDEN/'downloads/release/metadata'/name
             if sha256_file(path) != PINNED_RUN_SHA:
                 raise ValueError('frozen A9 synthetic RUN.md SHA mismatch')
+        elif name in ('tools/axis4.py', 'tools/axis4_evidence_verify.py'):
+            # A11 code must not retroactively replace historical release metadata.
+            path = GOLDEN/'downloads/release/metadata'/name
+            expected = dict(line.split('  ', 1)[::-1] for line in
+                            (GOLDEN/'SITE_SHA256SUMS').read_text().splitlines())
+            if sha256_file(path) != expected['downloads/release/metadata/'+name]:
+                raise ValueError('frozen Axis 4 source SHA mismatch')
         if not path.is_file():
             raise ValueError('methodology link missing from source repository')
         if name not in names:

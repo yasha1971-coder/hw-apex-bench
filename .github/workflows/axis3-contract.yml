@@ -55,7 +55,7 @@ jobs:
           import unittest
 
           # Keep collection count strict; optional native cases are still collected.
-          expected_total = 401  # A10: 358 A9 + 43 static-site and Pages-policy tests
+          expected_total = 431  # A11: 401 A10 + 30 compressed streaming truth tests
           suite = unittest.defaultTestLoader.discover("tests")
           native_type = importlib.import_module("test_s2_native_readers").NativeAvailability
 
@@ -120,6 +120,23 @@ jobs:
           if not valid:
               raise SystemExit(1)
           PY
+      - name: Axis 4 v1.1 gzip-only truth and bounded synthetic memory
+        run: |
+          set -euo pipefail
+          "$RUNNER_TEMP/unit-venv/bin/python" -m tools.axis4_stream_synthetic \
+            --out "$RUNNER_TEMP/axis4-stream-synthetic"
+          "$RUNNER_TEMP/unit-venv/bin/python" -m tools.axis4_stream_memory \
+            --out "$RUNNER_TEMP/axis4-stream-memory"
+      - name: Retain compressed truth evidence and memory probe
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: axis4-v11-streaming-synthetic
+          path: |
+            ${{ runner.temp }}/axis4-stream-synthetic
+            ${{ runner.temp }}/axis4-stream-memory
+          if-no-files-found: error
+          include-hidden-files: true
       - name: Axis 3 4 5 leaderboard golden files and byte determinism
         run: |
           set -euo pipefail

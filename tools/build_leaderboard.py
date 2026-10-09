@@ -23,7 +23,7 @@ from tools.validate_axis3_evidence import validate_record
 from tools.silence_contract import judge
 
 SCHEMAS = {'axis3-evidence-v1', 'window-law-verdict-v1',
-           'axis4-evidence-v3', 'axis5-evidence-v1'}
+           'axis4-evidence-v3', 'axis4-evidence-v4', 'axis5-evidence-v1'}
 METRICS = ('verified', 'stored_bytes', 'bytes_per_assembly', 'window_bytes',
            'Q_actual_bytes', 'Q_bytes', 'D_Q_Bps', 'p50_us', 'p95_us', 'p99_us',
            'windows_per_second', 'seconds', 'build_seconds', 'peak_rss_bytes',
@@ -56,7 +56,7 @@ def relative(root, text):
 
 
 def corpus_identity(corpus):
-    return [{'assembly_id': a['assembly_id'], 'fasta_sha256': a['fasta']['sha256'],
+    return [{'assembly_id': a['assembly_id'], 'fasta_sha256': a.get('truth', {}).get('uncompressed_sha256', a['fasta']['sha256']),
              'contigs': a['contigs']} for a in corpus['assemblies']]
 
 
@@ -174,7 +174,7 @@ def load_json_lines(path):
 
 def collect(directories):
     tables, seen, sources, snapshots = {}, set(), {}, []
-    adapters = {'axis3-evidence-v1': axis3, 'axis4-evidence-v3': axis4,
+    adapters = {'axis3-evidence-v1': axis3, 'axis4-evidence-v3': axis4, 'axis4-evidence-v4': axis4,
                 'axis5-evidence-v1': axis5, 'window-law-verdict-v1': window_law}
     for directory in directories:
         base = Path(directory).resolve(strict=True)
