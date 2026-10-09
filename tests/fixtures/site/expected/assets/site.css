@@ -1,0 +1,26 @@
+:root {--background: #ffffff; --surface: #f0f4f8; --text: #182230; --muted: #465468; --link: #124b8b; --pass: #065f46; --fail: #991b1b; --border: #52667b; --focus: #92400e;}
+@media (prefers-color-scheme: dark) {:root {--background: #111827; --surface: #1f2937; --text: #f9fafb; --muted: #cbd5e1; --link: #93c5fd; --pass: #6ee7b7; --fail: #fca5a5; --border: #94a3b8; --focus: #fbbf24;}}
+:root {color-scheme: light dark; font-family: system-ui, sans-serif; line-height: 1.6;}
+body {margin: 0; color: var(--text); background: var(--background);}
+header, main, footer {max-width: 90rem; margin: auto; padding: 1.25rem;}
+header, footer {border-block: 1px solid var(--border);}
+nav ul {display: flex; flex-wrap: wrap; gap: 1.2rem; list-style: none; padding: 0;}
+a {color: var(--link); text-decoration: underline; text-underline-offset: .18em;}
+a:hover {text-decoration-thickness: .15em;}
+:focus-visible {outline: 3px solid var(--focus); outline-offset: 3px;}
+.skip {position: absolute; left: 1rem; top: 0; transform: translateY(-200%);}
+.skip:focus {transform: none; background: var(--background); padding: .6rem; z-index: 1;}
+.notice, details {background: var(--surface); border: 1px solid var(--border); padding: 1rem;}
+.muted {color: var(--muted);}
+.pass {color: var(--pass); font-weight: bold;}
+.fail {color: var(--fail); font-weight: bold;}
+.table-scroll {overflow-x: auto; margin-block: 1rem;}
+table {border-collapse: collapse; width: 100%; font-variant-numeric: tabular-nums;}
+caption {text-align: left; font-weight: bold; padding-block: .6rem;}
+th, td {padding: .55rem; border: 1px solid var(--border); vertical-align: top; text-align: left;}
+thead, th[scope=row] {background: var(--surface);}
+pre {overflow-x: auto; white-space: pre-wrap; overflow-wrap: anywhere; padding: 1rem; background: var(--surface);}
+code {font-family: ui-monospace, monospace; overflow-wrap: anywhere;}
+dt {font-weight: bold;} dd {margin-inline-start: 1.25rem; overflow-wrap: anywhere;}
+summary {cursor: pointer; font-weight: bold;} section {margin-block: 2rem;}
+@media (max-width: 40rem) {header, main, footer {padding: .8rem;} nav ul {gap: .8rem;} th, td {padding: .4rem;}}

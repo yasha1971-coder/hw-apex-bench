@@ -1,0 +1,6 @@
+Ran 269 tests in 29.966s
+
+OK (skipped=10)
+{"D_Q_Bps": 1000000.0, "Q_bytes": 100.0, "W_bytes": 4096, "c0_negative": false, "c0_us": 100.0, "coefficient_fitting": false, "model_status": "VALID", "primary_model": "c0+(W+Q-1)/D_Q", "primary_predicted_p50_us": 4295.0, "primary_signed_error_percent": 23182.863795110592, "probe_w1_p50_us": 200.0, "schema": "window-law-diagnostic-v2", "secondary_model": "(W+Q-1)/D_Q", "secondary_predicted_p50_us": 4195.0, "tolerance_percent": 20, "verdict": "DIAGNOSTIC_ONLY", "verdict_eligible": false, "w1_in_verdict_set": false, "window_role": "DIAGNOSTIC_ONLY"}
+{"D_Q_Bps": 1000000.0, "Q_bytes": 100.0, "W_bytes": 2, "c0_negative": true, "c0_us": -80.0, "coefficient_fitting": false, "model_status": "FAIL", "primary_model": "c0+(W+Q-1)/D_Q", "primary_predicted_p50_us": 21.0, "primary_signed_error_percent": -4.761904761904762, "probe_w1_p50_us": 20.0, "schema": "window-law-diagnostic-v2", "secondary_model": "(W+Q-1)/D_Q", "secondary_predicted_p50_us": 101.0, "tolerance_percent": 20, "verdict": "DIAGNOSTIC_ONLY", "verdict_eligible": false, "w1_in_verdict_set": false, "window_role": "DIAGNOSTIC_ONLY"}
+NATIVE_SKIP_GATE status=PASS collected=269 expected_skips=10 observed_skips=10

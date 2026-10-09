@@ -1,0 +1,402 @@
+name: Axis 3 cohort contracts
+on:
+  pull_request:
+    paths:
+      - 'review/axis3/**'
+      - 'tools/check_workflow_syntax.py'
+      - 'tools/cmp_bases.py'
+      - '.github/workflows/axis3-contract.yml'
+      - 'tests/**'
+      - 'tools/**'
+      - 'schemas/**'
+      - 'METHODOLOGY.md'
+      - 'PROTOCOL_AXIS5.md'
+      - 'reproduce_v020.sh'
+      - 'CITATION.cff'
+      - '.zenodo.json'
+      - 'CHANGELOG.md'
+      - 'RELEASE_NOTES_v0.2.0.md'
+permissions:
+  contents: read
+jobs:
+  synthetic:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+      - name: Fast syntax gate
+        run: |
+          set -euo pipefail
+          python3 -m py_compile review/axis3/*.py tools/check_workflow_syntax.py tools/cmp_bases.py
+          python3 tools/check_workflow_syntax.py .github/workflows/axis3-contract.yml
+          python3 -m unittest discover -s review/axis3 -p test_info_contract.py -v
+          python3 review/axis3/test_ozseg_container.py
+          if grep -nE 'b?["'"'"'][^"'"'"']*\\\\[nt][^"'"'"']*["'"'"']' review/axis3/*.py; then
+            echo 'forbidden escaped newline/tab string literal' >&2
+            exit 1
+          fi
+          for f in review/axis3/*.sh; do
+            bash -n "$f"
+          done
+      - name: Unit tests of the axis-3 tools (every test under tests/)
+        run: |
+          set -euo pipefail
+          python3 -m venv "$RUNNER_TEMP/unit-venv"
+          "$RUNNER_TEMP/unit-venv/bin/python" -m pip install -q jsonschema==4.26.0 PyYAML==6.0.3 html5lib==1.1 Markdown==3.8.2
+          "$RUNNER_TEMP/unit-venv/bin/python" -m py_compile tools/*.py tests/*.py
+          "$RUNNER_TEMP/unit-venv/bin/python" - "$RUNNER_TEMP/unit-result.json" <<'PY' 2>&1 | tee "$RUNNER_TEMP/unit.log"
+          import ast
+          import importlib
+          import inspect
+          import json
+          import os
+          from pathlib import Path
+          import sys
+          import textwrap
+          import unittest
+
+          # Keep collection count strict; optional native cases are still collected.
+          expected_total = 454  # 447 A12.1 + 7 Pages deploy-gate tests
+          suite = unittest.defaultTestLoader.discover("tests")
+          native_type = importlib.import_module("test_s2_native_readers").NativeAvailability
+
+          def cases(item):
+              if isinstance(item, unittest.TestSuite):
+                  for child in item:
+                      yield from cases(child)
+              else:
+                  yield item
+
+          collected = list(cases(suite))
+          expected_skips = {}
+          native_cases = []
+          for case in collected:
+              if not isinstance(case, native_type):
+                  continue
+              method = getattr(type(case), case._testMethodName)
+              tree = ast.parse(textwrap.dedent(inspect.getsource(method)))
+              calls = [node for node in ast.walk(tree)
+                       if isinstance(node, ast.Call)
+                       and isinstance(node.func, ast.Attribute)
+                       and isinstance(node.func.value, ast.Name)
+                       and node.func.value.id == "self" and node.func.attr == "need"]
+              # Discover each requirement from the real test body, not a duplicate list.
+              if len(calls) != 1 or not calls[0].args:
+                  raise SystemExit("Unrecognized native requirement: " + case.id())
+              argument = calls[0].args[0]
+              if not isinstance(argument, ast.Constant) or not isinstance(argument.value, str):
+                  raise SystemExit("Native environment key must be literal: " + case.id())
+              key = argument.value
+              if not (key.startswith("HWAPEX_") and key.endswith("_SO")):
+                  raise SystemExit("Invalid native environment key: " + case.id())
+              value = os.environ.get(key)
+              # Unset tool: optional. Configured but missing/broken tool: test must FAIL.
+              state = "unset" if not value else ("file" if Path(value).is_file() else "configured-missing-file")
+              native_cases.append({"id": case.id(), "env": key, "availability": state})
+              if not value:
+                  expected_skips[case.id()] = (
+                      key + " not set: native tool/library unavailable in this environment")
+
+          if not native_cases or len(collected) != expected_total:
+              raise SystemExit(f"Collection mismatch: collected={len(collected)} expected={expected_total}")
+          result = unittest.TextTestRunner(verbosity=2).run(suite)
+          observed_skips = {case.id(): reason for case, reason in result.skipped}
+          valid = (result.wasSuccessful() and not result.expectedFailures
+                   and result.testsRun == expected_total
+                   and len(result.skipped) == len(observed_skips)
+                   and observed_skips == expected_skips)
+          receipt = {
+              "schema": "axis3-unit-gate-v1", "expected_total": expected_total,
+              "collected": len(collected), "tests_run": result.testsRun,
+              "failures": len(result.failures), "errors": len(result.errors),
+              "unexpected_successes": len(result.unexpectedSuccesses),
+              "expected_failures": len(result.expectedFailures),
+              "native_cases": native_cases,
+              "expected_skips": expected_skips, "observed_skips": observed_skips,
+              "status": "PASS" if valid else "FAIL",
+          }
+          Path(sys.argv[1]).write_text(json.dumps(receipt, sort_keys=True, indent=2) + chr(10))
+          print(f"NATIVE_SKIP_GATE status={receipt['status']} collected={len(collected)} "
+                f"expected_skips={len(expected_skips)} observed_skips={len(result.skipped)}")
+          if not valid:
+              raise SystemExit(1)
+          PY
+      - name: Axis 4 v1.1 gzip-only truth and bounded synthetic memory
+        run: |
+          set -euo pipefail
+          "$RUNNER_TEMP/unit-venv/bin/python" -m tools.axis4_stream_synthetic \
+            --out "$RUNNER_TEMP/axis4-stream-synthetic"
+          "$RUNNER_TEMP/unit-venv/bin/python" -m tools.axis4_stream_memory \
+            --out "$RUNNER_TEMP/axis4-stream-memory"
+      - name: Retain compressed truth evidence and memory probe
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: axis4-v11-streaming-synthetic
+          path: |
+            ${{ runner.temp }}/axis4-stream-synthetic
+            ${{ runner.temp }}/axis4-stream-memory
+          if-no-files-found: error
+          include-hidden-files: true
+      - name: Axis 3 4 5 leaderboard golden files and byte determinism
+        run: |
+          set -euo pipefail
+          "$RUNNER_TEMP/unit-venv/bin/python" -m tools.leaderboard_synthetic \
+            --out "$RUNNER_TEMP/leaderboard-synthetic"
+      - name: Retain leaderboard synthetic evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: leaderboard-native-evidence-synthetic
+          path: ${{ runner.temp }}/leaderboard-synthetic
+          if-no-files-found: error
+      - name: v0.2.0 offline release and independent manifest verification
+        run: |
+          set -euo pipefail
+          PYTHON="$RUNNER_TEMP/unit-venv/bin/python" bash reproduce_v020.sh synthetic \
+            --out "$RUNNER_TEMP/release-v020-synthetic"
+          "$RUNNER_TEMP/unit-venv/bin/python" -m tools.release_v020 \
+            --verify "$RUNNER_TEMP/release-v020-synthetic/first"
+      - name: Retain v0.2.0 release synthetic artifacts
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: release-v020-synthetic
+          path: ${{ runner.temp }}/release-v020-synthetic
+          if-no-files-found: error
+      - name: Install synthetic adapter dependencies
+        run: |
+          set -euo pipefail
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq samtools tabix
+      - name: Create three related mini assemblies
+        run: |
+          set -euo pipefail
+          python3 review/axis3/make_synthetic.py "$RUNNER_TEMP/cohort"
+          : > "$RUNNER_TEMP/cohort/manifest.tsv"
+          printf 'assembly_id\tlocal_fasta\tsha256\n' >> "$RUNNER_TEMP/cohort/manifest.tsv"
+          for f in "$RUNNER_TEMP"/cohort/asm*.fa; do
+            samtools faidx "$f"
+            id=$(basename "$f" .fa)
+            h=$(sha256sum "$f" | cut -d' ' -f1)
+            printf '%s\t%s\t%s\n' "$id" "$f" "$h" >> "$RUNNER_TEMP/cohort/manifest.tsv"
+          done
+      - name: Deterministic window contract and FASTA truth
+        run: |
+          set -euo pipefail
+          for w in 256 4096 65536; do
+            python3 review/axis3/generate_windows.py --manifest "$RUNNER_TEMP/cohort/manifest.tsv" --n all --window "$w" --out-prefix "$RUNNER_TEMP/cohort/w$w"
+            python3 review/axis3/generate_windows.py --manifest "$RUNNER_TEMP/cohort/manifest.tsv" --n all --window "$w" --out-prefix "$RUNNER_TEMP/cohort/repeat$w"
+            cmp "$RUNNER_TEMP/cohort/w$w.tsv" "$RUNNER_TEMP/cohort/repeat$w.tsv"
+            cmp "$RUNNER_TEMP/cohort/w$w.sha256.tsv" "$RUNNER_TEMP/cohort/repeat$w.sha256.tsv"
+          done
+      - name: BGZF adapter bit-perfect synthetic windows
+        run: |
+          set -euo pipefail
+          for f in "$RUNNER_TEMP"/cohort/asm*.fa; do bgzip -c "$f" > "$f.bgz"; samtools faidx "$f.bgz"; done
+          python3 - "$RUNNER_TEMP/cohort" <<'PY'
+          import subprocess,sys
+          from pathlib import Path
+          root=Path(sys.argv[1]); req=root/"w4096.tsv"; out=root/"answers.hex"
+          rows=[]
+          for line in req.read_text().splitlines():
+            if not line or line.startswith("#") or line.startswith("assembly_id"): continue
+            a,c,s,e=line.split("\t")
+            cp=subprocess.run(["samtools","faidx",str(root/(a+".fa.bgz")),f"{c}:{s}-{e}"],capture_output=True,check=True)
+            seq=b"".join(x for x in cp.stdout.splitlines() if not x.startswith(b">"))
+            rows.append(seq.hex())
+          out.write_text("\n".join(rows)+"\n")
+          PY
+          python3 review/axis3/judge.py --references "$RUNNER_TEMP/cohort/w4096.sha256.tsv" --answers "$RUNNER_TEMP/cohort/answers.hex" --result "$RUNNER_TEMP/cohort/judge.json"
+      - name: Two-bit capacity baseline on synthetic cohort
+        run: |
+          set -euo pipefail
+          python3 review/axis3/two_bit_capacity.py "$RUNNER_TEMP/cohort" > "$RUNNER_TEMP/cohort/two-bit.json"
+          python3 review/axis3/check_info.py two-bit "$RUNNER_TEMP/cohort/two-bit.json"
+      - name: Judge must reject corruption
+        run: |
+          set -euo pipefail
+          cp "$RUNNER_TEMP/cohort/answers.hex" "$RUNNER_TEMP/cohort/bad.hex"
+          sed -i '1s/^../00/' "$RUNNER_TEMP/cohort/bad.hex"
+          if python3 review/axis3/judge.py --references "$RUNNER_TEMP/cohort/w4096.sha256.tsv" --answers "$RUNNER_TEMP/cohort/bad.hex" --result "$RUNNER_TEMP/cohort/bad.json"; then
+            echo 'judge accepted corrupted answer' >&2
+            exit 1
+          fi
+      - name: Refrel3 frozen-v1 q4k/q16k synthetic round-trip
+        run: |
+          set -euo pipefail
+          bash review/axis3/build_refrel3.sh "$RUNNER_TEMP/refrel3"
+          bash review/axis3/build_refrel3_native.sh "$RUNNER_TEMP/refrel3"
+          export RR3_BIN="$RUNNER_TEMP/refrel3/refrel3v1"
+          ref="$RUNNER_TEMP/cohort/asm1.fa"
+          for variant in q4k q16k; do
+            asm="$RUNNER_TEMP/cohort/asm2.fa"
+            arc="$RUNNER_TEMP/cohort/asm2.$variant.rr3"
+            out="$RUNNER_TEMP/cohort/asm2.$variant.out.fa"
+            bash review/axis3/refrel3_adapter.sh build "$ref" "$variant" 2 "$asm" "$arc"
+            bash review/axis3/refrel3_adapter.sh decode "$ref" "$arc" "$out"
+            cmp "$asm" "$out"
+            bash review/axis3/refrel3_adapter.sh info "$arc" > "$arc.info"
+            python3 review/axis3/check_info.py refrel3 "$arc.info" "$variant"
+            region='asm2:1001-5096'
+            bash review/axis3/refrel3_adapter.sh region "$ref" "$arc" "$region" > "$arc.fetch"
+            samtools faidx "$asm" "$region" > "$arc.truth"
+            python3 tools/cmp_bases.py --got "$arc.fetch" --want "$arc.truth" --variant "$variant" --expected-len 4096
+            python3 -m review.axis3.check_verdict_native --family refrel3 --variant "$variant" \
+              --library "$RUNNER_TEMP/refrel3/libhwa_refrel3.so" --reference "$ref" \
+              --archive "$arc" --source "$asm"
+          done
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          d=json.loads(Path("review/axis3/adapters/aceapex-refrel3.json").read_text())
+          assert d["upstream_commit"] == "5b6d5cec0f5962a561ac48822a1b5c48793a5b47"
+          assert d["freeze_status"] == "frozen-v1"
+          assert d["measurements_allowed"] is False
+          assert d["variants"]["q4k"]["Q_block"] == 4096
+          assert d["variants"]["q16k"]["Q_block"] == 16384
+          print("PASS: refrel3 frozen v1 q4k/q16k bit-perfect; enable gate satisfied by this run")
+          PY
+      - name: OZSEG container unit tests without OpenZL
+        run: |
+          set -euo pipefail
+          python3 review/axis3/test_ozseg_container.py
+      - name: Restore pinned OpenZL dependency cache
+        uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830
+        with:
+          path: ${{ runner.temp }}/openzl
+          key: axis3-openzl-32246b48faee46807f84183dac4db479089f5445-${{ runner.os }}-${{ hashFiles('review/axis3/build_openzl_v030.sh', 'review/axis3/openzl_lz_helper.c') }}
+      - name: OpenZL v0.3.0 segmented random-access synthetic round-trip
+        run: |
+          set -euo pipefail
+          set -x
+          bash review/axis3/build_openzl_v030.sh "$RUNNER_TEMP/openzl"
+          export OPENZL_HELPER="$RUNNER_TEMP/openzl/openzl-lz-helper"
+          src="$RUNNER_TEMP/cohort/asm1.fa"
+          for variant in l1_w64k l1_w1m l3_w64k l3_w1m; do
+            arc="$RUNNER_TEMP/cohort/$variant.ozseg"
+            out="$RUNNER_TEMP/cohort/$variant.out.bases"
+            echo "STAGE variant=$variant build"
+            bash review/axis3/openzl_adapter.sh build "$variant" "$src" "$arc"
+            printf 'writer_path=%s writer_size=%s\n' "$arc" "$(stat -c %s "$arc")"
+            xxd -l 32 "$arc"
+            reader_path="$arc"
+            printf 'reader_path=%s reader_size=%s\n' "$reader_path" "$(stat -c %s "$reader_path")"
+            xxd -l 32 "$reader_path"
+            echo "STAGE variant=$variant decode"
+            set +e
+            bash review/axis3/openzl_adapter.sh decode "$reader_path" "$out"; rc=$?
+            set -e
+            echo "EXIT variant=$variant stage=decode rc=$rc"; test "$rc" -eq 0
+            samtools faidx "$src" asm1 | tail -n +2 | tr -d '\n\r' > "$out.truth"
+            echo "STAGE variant=$variant cmp_full"
+            printf 'full got_size=%s want_size=%s got_sha256=%s want_sha256=%s\n' "$(stat -c %s "$out")" "$(stat -c %s "$out.truth")" "$(sha256sum "$out" | cut -d' ' -f1)" "$(sha256sum "$out.truth" | cut -d' ' -f1)"
+            set +e
+            cmp "$out" "$out.truth"; rc=$?
+            if [ "$rc" -ne 0 ]; then cmp -l "$out" "$out.truth" | head -20 || true; fi
+            set -e
+            echo "EXIT variant=$variant stage=cmp_full rc=$rc"; test "$rc" -eq 0
+            region='asm1:1001-66536'
+            echo "STAGE variant=$variant fetch region=$region"
+            set +e
+            bash review/axis3/openzl_adapter.sh fetch "$arc" "$region" > "$out.fetch"; rc=$?
+            set -e
+            echo "EXIT variant=$variant stage=fetch rc=$rc"; test "$rc" -eq 0
+            samtools faidx "$src" "$region" | tail -n +2 | tr -d '\n\r' > "$out.fetch.truth"
+            echo "STAGE variant=$variant cmp_fetch"
+            printf 'fetch got_size=%s want_size=%s got_sha256=%s want_sha256=%s\n' "$(stat -c %s "$out.fetch")" "$(stat -c %s "$out.fetch.truth")" "$(sha256sum "$out.fetch" | cut -d' ' -f1)" "$(sha256sum "$out.fetch.truth" | cut -d' ' -f1)"
+            set +e
+            cmp "$out.fetch" "$out.fetch.truth"; rc=$?
+            if [ "$rc" -ne 0 ]; then cmp -l "$out.fetch" "$out.fetch.truth" | head -20 || true; fi
+            set -e
+            echo "EXIT variant=$variant stage=cmp_fetch rc=$rc"; test "$rc" -eq 0
+            echo "STAGE variant=$variant info"
+            set +e
+            bash review/axis3/openzl_adapter.sh info "$arc" > "$arc.info"; rc=$?
+            set -e
+            echo "EXIT variant=$variant stage=info rc=$rc"; test "$rc" -eq 0
+            python3 review/axis3/check_info.py ozseg "$arc.info" "$variant" "$(stat -c %s "$out.truth")"
+            echo "EXIT variant=$variant stage=info_contract rc=0"
+          done
+      - name: Axis 4 native prepare run verify and unsampled SHA rejection
+        run: |
+          set -euo pipefail
+          for variant in q4k q16k; do
+            "$RUNNER_TEMP/unit-venv/bin/python" -m tools.axis4_synthetic \
+              --root "$RUNNER_TEMP/axis4-$variant" --family refrel3 --variant "$variant" \
+              --library "$RUNNER_TEMP/refrel3/libhwa_refrel3.so" \
+              --encoder "$RUNNER_TEMP/refrel3/refrel3v1" \
+              --source-root "$RUNNER_TEMP/refrel3/aceapex"
+          done
+      - name: Axis 5 native corruption and independent classification rejection
+        run: |
+          set -euo pipefail
+          for variant in q4k q16k; do
+            "$RUNNER_TEMP/unit-venv/bin/python" -m tools.axis5_synthetic \
+              --root "$RUNNER_TEMP/axis5-$variant" --family refrel3 --variant "$variant" \
+              --library "$RUNNER_TEMP/refrel3/libhwa_refrel3.so" \
+              --encoder "$RUNNER_TEMP/refrel3/refrel3v1" \
+              --source-root "$RUNNER_TEMP/refrel3/aceapex"
+          done
+      - name: Retain Axis 5 synthetic evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: axis5-native-synthetic
+          path: ${{ runner.temp }}/axis5-*
+          if-no-files-found: error
+      - name: Retain Axis 4 synthetic evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: axis4-native-synthetic
+          path: ${{ runner.temp }}/axis4-*
+          if-no-files-found: error
+      - name: OpenZL regression assembly larger than 1.6 GiB
+        run: |
+          set -euo pipefail
+          export OPENZL_HELPER="$RUNNER_TEMP/openzl/openzl-lz-helper"
+          big="$RUNNER_TEMP/big.fa"
+          python3 - "$big" <<'PY'
+          import sys
+          p=sys.argv[1]; block=(b"ACGT"*(1024*1024//4))
+          with open(p,"wb") as f:
+              f.write(b">big\n")
+              for _ in range(1640): f.write(block+b"\n")
+          PY
+          test "$(stat -c %s "$big")" -gt 1717986918
+          samtools faidx "$big"
+          arc="$RUNNER_TEMP/big.l1_w1m.ozseg"; out="$RUNNER_TEMP/big.out"
+          bash review/axis3/openzl_adapter.sh build l1_w1m "$big" "$arc"
+          bash review/axis3/openzl_adapter.sh decode "$arc" "$out"
+          got=$(sha256sum "$out" | cut -d' ' -f1)
+          want=$(samtools faidx "$big" big | tail -n +2 | tr -d '\n\r' | sha256sum | cut -d' ' -f1)
+          test "$got" = "$want"
+          bash review/axis3/openzl_adapter.sh info "$arc" > "$arc.info"
+          python3 review/axis3/check_info.py ozseg "$arc.info" l1_w1m "$(stat -c %s "$out")"
+          printf 'LARGE_FULL_PASS bases=%s sha256=%s\n' "$(stat -c %s "$out")" "$got"
+          region='big:1717000001-1717065536'
+          bash review/axis3/openzl_adapter.sh fetch "$arc" "$region" > "$RUNNER_TEMP/big.fetch"
+          samtools faidx "$big" "$region" | tail -n +2 | tr -d '\n\r' > "$RUNNER_TEMP/big.truth"
+          cmp "$RUNNER_TEMP/big.fetch" "$RUNNER_TEMP/big.truth"
+          echo "LARGE_FETCH_PASS region=$region"
+      - name: Contracts and path hygiene
+        run: |
+          set -euo pipefail
+          python3 -m py_compile review/axis3/generate_windows.py review/axis3/judge.py review/axis3/make_synthetic.py review/axis3/openzl_segmented.py tools/cmp_bases.py
+          bash -n review/axis3/run_axis3_ace_core.sh
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          p=Path("review/axis3/adapters/aceapex-refrel3.json")
+          d=json.loads(p.read_text())
+          assert d["freeze_contract"] == "research/refrel/FORMAT.md"
+          assert d["freeze_status"] == "frozen-v1"
+          assert d["upstream_commit"] == "5b6d5cec0f5962a561ac48822a1b5c48793a5b47"
+          assert d["variants"]["q4k"]["RR_BS"] == d["variants"]["q4k"]["Q_block"] == 4096
+          assert d["variants"]["q16k"]["RR_BS"] == d["variants"]["q16k"]["Q_block"] == 16384
+          print("PASS: refrel3 frozen-v1 contract pinned")
+          PY
+          if grep -R -F '/home/' review/axis3; then
+            echo 'absolute /home path in axis3 source' >&2
+            exit 1
+          fi

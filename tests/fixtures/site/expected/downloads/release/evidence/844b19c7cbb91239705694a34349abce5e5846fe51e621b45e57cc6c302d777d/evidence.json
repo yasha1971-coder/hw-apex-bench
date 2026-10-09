@@ -1,0 +1,5061 @@
+{
+  "baseline": {
+    "decoder_started": true,
+    "output": {
+      "bytes": 12288,
+      "path": "a7-run/baseline.output",
+      "sha256": "ccb56bbb8c5bab28393647cc701f2fa1bfab006c0abc5ae243ae1c079bbe27b1"
+    },
+    "returncode": 0,
+    "sidecars": [],
+    "signal": null,
+    "stderr": {
+      "bytes": 0,
+      "path": "a7-run/baseline.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "timed_out": false,
+    "validation": "disabled",
+    "worker_archive": {
+      "bytes": 245,
+      "path": "a7-run/baseline.archive",
+      "sha256": "914bbe59440ab51e4240214cb6254a3c23aeff4bc85b1986750bcd5166b54c2d"
+    }
+  },
+  "corrupt": {
+    "bytes": 20693,
+    "path": "a7-corrupt/corrupt.json",
+    "sha256": "a82ac37ba8748f388328062f7848d8119e87260c3710757e7aa54ed1661a8a4a"
+  },
+  "counts": {
+    "off": {
+      "crash": 0,
+      "detected": 0,
+      "hang": 0,
+      "harmless": 0,
+      "refusal": 100,
+      "silent_error": 0
+    },
+    "on": {
+      "crash": 0,
+      "detected": 100,
+      "hang": 0,
+      "harmless": 0,
+      "refusal": 0,
+      "silent_error": 0
+    }
+  },
+  "evidence_kind": "synthetic",
+  "integrity": {
+    "off": "PASS",
+    "on": "PASS"
+  },
+  "prepared": {
+    "bytes": 40897,
+    "path": "a7-prepared/prepared.json",
+    "sha256": "7432abac4601e9880be50c91b3efc32416e6b7580a4be9f2d6db652ead5b10a9"
+  },
+  "rows": [
+    {
+      "archive": {
+        "bytes": 245,
+        "path": "a7-corrupt/000.archive",
+        "sha256": "92f1950cf806b1be9e165c1f43390860248397aa28a9aa86af5abd465df940ad"
+      },
+      "classification": "detected",
+      "hash_enabled": true,
+      "id": 0,
+      "raw": {
+        "decoder_started": false,
+        "returncode": null,
+        "signal": null,
+        "timed_out": false,
+        "validation": "original_sha_mismatch"
+      }
+    },
+    {
+      "archive": {
+        "bytes": 245,
+        "path": "a7-corrupt/000.archive",
+        "sha256": "92f1950cf806b1be9e165c1f43390860248397aa28a9aa86af5abd465df940ad"
+      },
+      "classification": "refusal",
+      "hash_enabled": false,
+      "id": 0,
+      "raw": {
+        "decoder_started": true,
+        "output": {
+          "bytes": 0,
+          "path": "a7-run/000-off.output",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "returncode": 1,
+        "sidecars": [],
+        "signal": null,
+        "stderr": {
+          "bytes": 862,
+          "path": "a7-run/000-off.stderr",
+          "sha256": "27bc26b7656aca171c3fec52d267d6be13d8b797e066a73955337964cbea0fb5"
+        },
+        "timed_out": false,
+        "validation": "disabled",
+        "worker_archive": {
+          "bytes": 245,
+          "path": "a7-run/000-off.archive",
+          "sha256": "92f1950cf806b1be9e165c1f43390860248397aa28a9aa86af5abd465df940ad"
+        }
+      }
+    },
+    {
+      "archive": {
+        "bytes": 245,
+        "path": "a7-corrupt/001.archive",
+        "sha256": "6cb6395b2b30befc802dbbdb9324eef23e337644077b8cb0383a4b34b671d2c7"
+      },
+      "classification": "detected",
+      "hash_enabled": true,
+      "id": 1,
+      "raw": {
+        "decoder_started": false,
+        "returncode": null,
+        "signal": null,
+        "timed_out": false,
+        "validation": "original_sha_mismatch"
+      }
+    },
+    {
+      "archive": {
+        "bytes": 245,
+        "path": "a7-corrupt/001.archive",
+        "sha256": "6cb6395b2b30befc802dbbdb9324eef23e337644077b8cb0383a4b34b671d2c7"
+      },
+      "classification": "refusal",
+      "hash_enabled": false,
+      "id": 1,
+      "raw": {
+        "decoder_started": true,
+        "output": {
+          "bytes": 0,
+          "path": "a7-run/001-off.output",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "returncode": 1,
+        "sidecars": [],
+        "signal": null,
+        "stderr": {
+          "bytes": 862,
+          "path": "a7-run/001-off.stderr",
+          "sha256": "27bc26b7656aca171c3fec52d267d6be13d8b797e066a73955337964cbea0fb5"
+        },
+        "timed_out": false,
+        "validation": "disabled",
+        "worker_archive": {
+          "bytes": 245,
+          "path": "a7-run/001-off.archive",
+          "sha256": "6cb6395b2b30befc802dbbdb9324eef23e337644077b8cb0383a4b34b671d2c7"
+        }
+      }
+    },
+    {
+      "archive": {
+        "bytes": 245,
+        "path": "a7-corrupt/002.archive",
+        "sha256": "ae26a4dfb4c5b8ef1d1be2e634c4ae1defe772ccd581f68c68f05c697c19f242"
+      },
+      "classification": "detected",
+      "hash_enabled": true,
+      "id": 2,
+      "raw": {
+        "decoder_started": false,
+        "returncode": null,
+        "signal": null,
+        "timed_out": false,
+        "validation": "original_sha_mismatch"
+      }
+    },
+    {
+      "archive": {
+        "bytes": 245,
+        "path": "a7-corrupt/002.archive",
+        "sha256": "ae26a4dfb4c5b8ef1d1be2e634c4ae1defe772ccd581f68c68f05c697c19f242"
+      },
+      "classification": "refusal",
+      "hash_enabled": false,
+      "id": 2,
+      "raw": {
+        "decoder_started": true,
+        "output": {
+          "bytes": 0,
+          "path": "a7-run/002-off.output",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "returncode": 1,
+        "sidecars": [],
+        "signal": null,
+        "stderr": {
+          "bytes": 862,
+          "path": "a7-run/002-off.stderr",
+          "sha256": "27bc26b7656aca171c3fec52d267d6be13d8b797e066a73955337964cbea0fb5"
+        },
+        "timed_out": false,
+        "validation": "disabled",
+        "worker_archive": {
+          "bytes": 245,
+          "path": "a7-run/002-off.archive",
+          "sha256": "ae26a4dfb4c5b8ef1d1be2e634c4ae1defe772ccd581f68c68f05c697c19f242"
+        }
+      }
+    },
+    {
+      "archive": {
+        "bytes": 245,
+        "path": "a7-corrupt/003.archive",
+        "sha256": "e954984cd4939fc5974bc669dc3da2dc011d1cebc9b0f5b392a67a148f2bfe3b"
+      },
+      "classification": "detected",
+      "hash_enabled": true,
+      "id": 3,
+      "raw": {
+        "decoder_started": false,
+        "returncode": null,
+        "signal": null,
+        "timed_out": false,
+        "validation": "original_sha_mismatch"
+      }
+    },
+    {
+      "archive": {
+        "bytes": 245,
+        "path": "a7-corrupt/003.archive",
+        "sha256": "e954984cd4939fc5974bc669dc3da2dc011d1cebc9b0f5b392a67a148f2bfe3b"
+      },
+      "classification": "refusal",
+      "hash_enabled": false,
+      "id": 3,
+      "raw": {
+        "decoder_started": true,
+        "output": {
+          "bytes": 0,
+          "path": "a7-run/003-off.output",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "returncode": 1,
+        "sidecars": [],
+        "signal": null,
+        "stderr": {
+          "bytes": 862,
+          "path": "a7-run/003-off.stderr",
+          "sha256": "27bc26b7656aca171c3fec52d267d6be13d8b797e066a73955337964cbea0fb5"
+        },
+        "timed_out": false,
+        "validation": "disabled",
+        "worker_archive": {
+          "bytes": 245,
+          "path": "a7-run/003-off.archive",
+          "sha256": "e954984cd4939fc5974bc669dc3da2dc011d1cebc9b0f5b392a67a148f2bfe3b"
+        }
+      }
+    },
+    {
+      "archive": {
+        "bytes": 245,
+        "path": "a7-corrupt/004.archive",
+        "sha256": "e19c065980f2941f7f7145d719c5c4a9bcdae54135b87265d4c9ba9a17ea709b"
+      },
+      "classification": "detected",
+      "hash_enabled": true,
+      "id": 4,
+      "raw": {
+        "decoder_started": false,
+        "returncode": null,
+        "signal": null,
+        "timed_out": false,
+        "validation": "original_sha_mismatch"
+      }
+    },
+    {
+      "archive": {
+        "bytes": 245,
+        "path": "a7-corrupt/004.archive",
+        "sha256": "e19c065980f2941f7f7145d719c5c4a9bcdae54135b87265d4c9ba9a17ea709b"
+      },
+      "classification": "refusal",
+      "hash_enabled": false,
+      "id": 4,
+      "raw": {
+        "decoder_started": true,
+        "output": {
+          "bytes": 0,
+          "path": "a7-run/004-off.output",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "returncode": 1,
+        "sidecars": [],
+        "signal": null,
+        "stderr": {
+          "bytes": 862,
+          "path": "a7-run/004-off.stderr",
+          "sha256": "27bc26b7656aca171c3fec52d267d6be13d8b797e066a73955337964cbea0fb5"
+        },
+        "timed_out": false,
+        "validation": "disabled",
+        "worker_archive": {
+          "bytes": 245,
+          "path": "a7-run/004-off.archive",
+          "sha256": "e19c065980f2941f7f7145d719c5c4a9bcdae54135b87265d4c9ba9a17ea709b"
+        }
+      }
+    },
+    {
+      "archive": {
+        "bytes": 245,
+        "path": "a7-corrupt/005.archive",
+        "sha256": "3a2547e41c92d61683f1975c7a7deb48f343d46a1ce1837eeda701038a790ef9"
+      },
+      "classification": "detected",
+      "hash_enabled": true,
+      "id": 5,
+      "raw": {
+        "decoder_started": false,
+        "returncode": null,
+        "signal": null,
+        "timed_out": false,
+        "validation": "original_sha_mismatch"
+      }
+    },
+    {
+      "archive": {
+        "bytes": 245,
+        "path": "a7-corrupt/005.archive",
+        "sha256": "3a2547e41c92d61683f1975c7a7deb48f343d46a1ce1837eeda701038a790ef9"
+      },
+      "classification": "refusal",
+      "hash_enabled": false,
+      "id": 5,
+      "raw": {
+        "decoder_started": true,
+        "output": {
+          "bytes": 0,
+          "path": "a7-run/005-off.output",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "returncode": 1,
+        "sidecars": [],
+        "signal": null,
+        "stderr": {
+          "bytes": 862,
+          "path": "a7-run/005-off.stderr",
+          "sha256": "27bc26b7656aca171c3fec52d267d6be13d8b797e066a73955337964cbea0fb5"
+        },
+        "timed_out": false,
+        "validation": "disabled",
+        "worker_archive": {
+          "bytes": 245,
+          "path": "a7-run/005-off.archive",
+          "sha256": "3a2547e41c92d61683f1975c7a7deb48f343d46a1ce1837eeda701038a790ef9"
+        }
+      }
+    },
+    {
+      "archive": {
+        "bytes": 245,
+        "path": "a7-corrupt/006.archive",
+        "sha256": "c8f7b1accda4c81f8aa275e62f2cf0d851fa3b0f49f159a2cc3ceeb9e99042a2"
+      },
+      "classification": "detected",
+      "hash_enabled": true,
+      "id": 6,
+      "raw": {
+        "decoder_started": false,
+        "returncode": null,
+        "signal": null,
+        "timed_out": false,
+        "validation": "original_sha_mismatch"
+      }
+    },
+    {
+      "archive": {
+        "bytes": 245,
+        "path": "a7-corrupt/006.archive",
+        "sha256": "c8f7b1accda4c81f8aa275e62f2cf0d851fa3b0f49f159a2cc3ceeb9e99042a2"
+      },
+      "classification": "refusal",
+      "hash_enabled": false,
+      "id": 6,
+      "raw": {
+        "decoder_started": true,
+        "output": {
+          "bytes": 0,
+          "path": "a7-run/006-off.output",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "returncode": 1,
+        "sidecars": [],
+        "signal": null,
+        "stderr": {
+          "bytes": 862,
+          "path": "a7-run/006-off.stderr",
+          "sha256": "27bc26b7656aca171c3fec52d267d6be13d8b797e066a73955337964cbea0fb5"
+        },
+        "timed_out": false,
+        "validation": "disabled",
+        "worker_archive": {
+          "bytes": 245,
+          "path": "a7-run/006-off.archive",
+          "sha256": "c8f7b1accda4c81f8aa275e62f2cf0d851fa3b0f49f159a2cc3ceeb9e99042a2"
+        }
+      }
+    },
+    {
+      "archive": {
+        "bytes": 245,
+        "path": "a7-corrupt/007.archive",
+        "sha256": "10a59e0f629e75fd3391d26e31587010913b4f2cb39be12ec9eb0001365a48a3"
+      },
+      "classification": "detected",
+      "hash_enabled": true,
+      "id": 7,
+      "raw": {
+        "decoder_started": false,
+        "returncode": null,
+        "signal": null,
+        "timed_out": false,
+        "validation": "original_sha_mismatch"
+      }
+    },
+    {
+      "archive": {
+        "bytes": 245,
+        "path": "a7-corrupt/007.archive",
+        "sha256": "10a59e0f629e75fd3391d26e31587010913b4f2cb39be12ec9eb0001365a48a3"
+      },
+      "classification": "refusal",
+      "hash_enabled": false,
+      "id": 7,
+      "raw": {
+        "decoder_started": true,
+        "output": {
+          "bytes": 0,
+          "path": "a7-run/007-off.output",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "returncode": 1,
+        "sidecars": [],
+        "signal": null,
+        "stderr": {
+          "bytes": 862,
+          "path": "a7-run/007-off.stderr",
+          "sha256": "27bc26b7656aca171c3fec52d267d6be13d8b797e066a73955337964cbea0fb5"
+        },
+        "timed_out": false,
+        "validation": "disabled",
+        "worker_archive": {
+          "bytes": 245,
+          "path": "a7-run/007-off.archive",
+          "sha256": "10a59e0f629e75fd3391d26e31587010913b4f2cb39be12ec9eb0001365a48a3"
+        }
+      }
+    },
+    {
+      "archive": {
+        "bytes": 245,
+        "path": "a7-corrupt/008.archive",
+        "sha256": "1859afc59000868a822eafe4dfcc190cdbf9f19d5c2151fc2b576e6a87aec5d5"
+      },
+      "classification": "detected",
+      "hash_enabled": true,
+      "id": 8,
+      "raw": {
+        "decoder_started": false,
+        "returncode": null,
+        "signal": null,
+        "timed_out": false,
+        "validation": "original_sha_mismatch"
+      }
+    },
+    {
+      "archive": {
+        "bytes": 245,
+        "path": "a7-corrupt/008.archive",
+        "sha256": "1859afc59000868a822eafe4dfcc190cdbf9f19d5c2151fc2b576e6a87aec5d5"
+      },
+      "classification": "refusal",
+      "hash_enabled": false,
+      "id": 8,
+      "raw": {
+        "decoder_started": true,
+        "output": {
+          "bytes": 0,
+          "path": "a7-run/008-off.output",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "returncode": 1,
+        "sidecars": [],
+        "signal": null,
+        "stderr": {
+          "bytes": 862,
+          "path": "a7-run/008-off.stderr",
+          "sha256": "27bc26b7656aca171c3fec52d267d6be13d8b797e066a73955337964cbea0fb5"
+        },
+        "timed_out": false,
+        "validation": "disabled",
+        "worker_archive": {
+          "bytes": 245,
+          "path": "a7-run/008-off.archive",
+          "sha256": "1859afc59000868a822eafe4dfcc190cdbf9f19d5c2151fc2b576e6a87aec5d5"
+        }
+      }
+    },
+    {
+      "archive": {
+        "bytes": 245,
+        "path": "a7-corrupt/009.archive",
+        "sha256": "d2d86e78163e516b9ae153fc821d279a70978bcc74138e6759f3ba2349c702a7"
+      },
+      "classification": "detected",
+      "hash_enabled": true,
+      "id": 9,
+      "raw": {
+        "decoder_started": false,
+        "returncode": null,
+        "signal": null,
+        "timed_out": false,
+        "validation": "original_sha_mismatch"
+      }
+    },
+    {
+      "archive": {
+        "bytes": 245,
+        "path": "a7-corrupt/009.archive",
+        "sha256": "d2d86e78163e516b9ae153fc821d279a70978bcc74138e6759f3ba2349c702a7"
+      },
+      "classification": "refusal",
+      "hash_enabled": false,
+      "id": 9,
+      "raw": {
+        "decoder_started": true,
+        "output": {
+          "bytes": 0,
+          "path": "a7-run/009-off.output",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "returncode": 1,
+        "sidecars": [],
+        "signal": null,
+        "stderr": {
+          "bytes": 862,
+          "path": "a7-run/009-off.stderr",
+          "sha256": "27bc26b7656aca171c3fec52d267d6be13d8b797e066a73955337964cbea0fb5"
+        },
+        "timed_out": false,
+        "validation": "disabled",
+        "worker_archive": {
+          "bytes": 245,
+          "path": "a7-run/009-off.archive",
+          "sha256": "d2d86e78163e516b9ae153fc821d279a70978bcc74138e6759f3ba2349c702a7"
+        }
+      }
+    },
+    {
+      "archive": {
+        "bytes": 245,
+        "path": "a7-corrupt/010.archive",
+        "sha256": "bdf888dddd7f5fa943861eab020364ae6ada87da22ea3ade80ac4d9c670a6a05"
+      },
+      "classification": "detected",
+      "hash_enabled": true,
+      "id": 10,
+      "raw": {
+        "decoder_started": false,
+        "returncode": null,
+        "signal": null,
+        "timed_out": false,
+        "validation": "original_sha_mismatch"
+      }
+    },
+    {
+      "archive": {
+        "bytes": 245,
+        "path": "a7-corrupt/010.archive",
+        "sha256": "bdf888dddd7f5fa943861eab020364ae6ada87da22ea3ade80ac4d9c670a6a05"
+      },
+      "classification": "refusal",
+      "hash_enabled": false,
+      "id": 10,
+      "raw": {
+        "decoder_started": true,
+        "output": {
+          "bytes": 0,
+          "path": "a7-run/010-off.output",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "returncode": 1,
+        "sidecars": [],
+        "signal": null,
+        "stderr": {
+          "bytes": 862,
+          "path": "a7-run/010-off.stderr",
+          "sha256": "27bc26b7656aca171c3fec52d267d6be13d8b797e066a73955337964cbea0fb5"
+        },
+        "timed_out": false,
+        "validation": "disabled",
+        "worker_archive": {
+          "bytes": 245,
+          "path": "a7-run/010-off.archive",
+          "sha256": "bdf888dddd7f5fa943861eab020364ae6ada87da22ea3ade80ac4d9c670a6a05"
+        }
+      }
+    },
+    {
+      "archive": {
+        "bytes": 245,
+        "path": "a7-corrupt/011.archive",
+        "sha256": "81d1f04aa6f212034b6bc50f58ec8f225a3bfc8abd9a2a7b2e0c3cb4b2ac916b"
+      },
+      "classification": "detected",
+      "hash_enabled": true,
+      "id": 11,
+      "raw": {
+        "decoder_started": false,
+        "returncode": null,
+        "signal": null,
+        "timed_out": false,
+        "validation": "original_sha_mismatch"
+      }
+    },
+    {
+      "archive": {
+        "bytes": 245,
+        "path": "a7-corrupt/011.archive",
+        "sha256": "81d1f04aa6f212034b6bc50f58ec8f225a3bfc8abd9a2a7b2e0c3cb4b2ac916b"
+      },
+      "classification": "refusal",
+      "hash_enabled": false,
+      "id": 11,
+      "raw": {
+        "decoder_started": true,
+        "output": {
+          "bytes": 0,
+          "path": "a7-run/011-off.output",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "returncode": 1,
+        "sidecars": [],
+        "signal": null,
+        "stderr": {
+          "bytes": 862,
+          "path": "a7-run/011-off.stderr",
+          "sha256": "27bc26b7656aca171c3fec52d267d6be13d8b797e066a73955337964cbea0fb5"
+        },
+        "timed_out": false,
+        "validation": "disabled",
+        "worker_archive": {
+          "bytes": 245,
+          "path": "a7-run/011-off.archive",
+          "sha256": "81d1f04aa6f212034b6bc50f58ec8f225a3bfc8abd9a2a7b2e0c3cb4b2ac916b"
+        }
+      }
+    },
+    {
+      "archive": {
+        "bytes": 245,
+        "path": "a7-corrupt/012.archive",
+        "sha256": "907ab75b2edb5c72d92a5ca7642cde4490ac0d7839a9eeb88af6938440b114ec"
+      },
+      "classification": "detected",
+      "hash_enabled": true,
+      "id": 12,
+      "raw": {
+        "decoder_started": false,
+        "returncode": null,
+        "signal": null,
+        "timed_out": false,
+        "validation": "original_sha_mismatch"
+      }
+    },
+    {
+      "archive": {
+        "bytes": 245,
+        "path": "a7-corrupt/012.archive",
+        "sha256": "907ab75b2edb5c72d92a5ca7642cde4490ac0d7839a9eeb88af6938440b114ec"
+      },
+      "classification": "refusal",
+      "hash_enabled": false,
+      "id": 12,
+      "raw": {
+        "decoder_started": true,
+        "output": {
+          "bytes": 0,
+          "path": "a7-run/012-off.output",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "returncode": 1,
+        "sidecars": [],
+        "signal": null,
+        "stderr": {
+          "bytes": 862,
+          "path": "a7-run/012-off.stderr",
+          "sha256": "27bc26b7656aca171c3fec52d267d6be13d8b797e066a73955337964cbea0fb5"
+        },
+        "timed_out": false,
+        "validation": "disabled",
+        "worker_archive": {
+          "bytes": 245,
+          "path": "a7-run/012-off.archive",
+          "sha256": "907ab75b2edb5c72d92a5ca7642cde4490ac0d7839a9eeb88af6938440b114ec"
+        }
+      }
+    },
+    {
+      "archive": {
+        "bytes": 245,
+        "path": "a7-corrupt/013.archive",
+        "sha256": "d52186a23830ff0a9b10d19975fa1d9b0ad93746e1a091cfdb99c056b0a516a6"
+      },
+      "classification": "detected",
+      "hash_enabled": true,
+      "id": 13,
+      "raw": {
+        "decoder_started": false,
+        "returncode": null,
+        "signal": null,
+        "timed_out": false,
+        "validation": "original_sha_mismatch"
+      }
+    },
+    {
+      "archive": {
+        "bytes": 245,
+        "path": "a7-corrupt/013.archive",
+        "sha256": "d52186a23830ff0a9b10d19975fa1d9b0ad93746e1a091cfdb99c056b0a516a6"
+      },
+      "classification": "refusal",
+      "hash_enabled": false,
+      "id": 13,
+      "raw": {
+        "decoder_started": true,
+        "output": {
+          "bytes": 0,
+          "path": "a7-run/013-off.output",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "returncode": 1,
+        "sidecars": [],
+        "signal": null,
+        "stderr": {
+          "bytes": 862,
+          "path": "a7-run/013-off.stderr",
+          "sha256": "27bc26b7656aca171c3fec52d267d6be13d8b797e066a73955337964cbea0fb5"
+        },
+        "timed_out": false,
+        "validation": "disabled",
+        "worker_archive": {
+          "bytes": 245,
+          "path": "a7-run/013-off.archive",
+          "sha256": "d52186a23830ff0a9b10d19975fa1d9b0ad93746e1a091cfdb99c056b0a516a6"
+        }
+      }
+    },
+    {
+      "archive": {
+        "bytes": 245,
+        "path": "a7-corrupt/014.archive",
+        "sha256": "924971ef96553646f5dd8bf505e5af0c37828ce22b3f85f92f82b563a1eafb54"
+      },
+      "classification": "detected",
+      "hash_enabled": true,
+      "id": 14,
+      "raw": {
+        "decoder_started": false,
+        "returncode": null,
+        "signal": null,
+        "timed_out": false,
+        "validation": "original_sha_mismatch"
+      }
+    },
+    {
+      "archive": {
+        "bytes": 245,
+        "path": "a7-corrupt/014.archive",
+        "sha256": "924971ef96553646f5dd8bf505e5af0c37828ce22b3f85f92f82b563a1eafb54"
+      },
+      "classification": "refusal",
+      "hash_enabled": false,
+      "id": 14,
+      "raw": {
+        "decoder_started": true,
+        "output": {
+          "bytes": 0,
+          "path": "a7-run/014-off.output",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "returncode": 1,
+        "sidecars": [],
+        "signal": null,
+        "stderr": {
+          "bytes": 862,
+          "path": "a7-run/014-off.stderr",
+          "sha256": "27bc26b7656aca171c3fec52d267d6be13d8b797e066a73955337964cbea0fb5"
+        },
+        "timed_out": false,
+        "validation": "disabled",
+        "worker_archive": {
+          "bytes": 245,
+          "path": "a7-run/014-off.archive",
+          "sha256": "924971ef96553646f5dd8bf505e5af0c37828ce22b3f85f92f82b563a1eafb54"
+        }
+      }
+    },
+    {
+      "archive": {
+        "bytes": 245,
+        "path": "a7-corrupt/015.archive",
+        "sha256": "4617e745109edee7f7c17bad095011e8b764fbd19ecb8fd9e2cd52c66757a0c7"
+      },
+      "classification": "detected",
+      "hash_enabled": true,
+      "id": 15,
+      "raw": {
+        "decoder_started": false,
+        "returncode": null,
+        "signal": null,
+        "timed_out": false,
+        "validation": "original_sha_mismatch"
+      }
+    },
+    {
+      "archive": {
+        "bytes": 245,
+        "path": "a7-corrupt/015.archive",
+        "sha256": "4617e745109edee7f7c17bad095011e8b764fbd19ecb8fd9e2cd52c66757a0c7"
+      },
+      "classification": "refusal",
+      "hash_enabled": false,
+      "id": 15,
+      "raw": {
+        "decoder_started": true,
+        "output": {
+          "bytes": 0,
+          "path": "a7-run/015-off.output",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "returncode": 1,
+        "sidecars": [],
+        "signal": null,
+        "stderr": {
+          "bytes": 862,
+          "path": "a7-run/015-off.stderr",
+          "sha256": "27bc26b7656aca171c3fec52d267d6be13d8b797e066a73955337964cbea0fb5"
+        },
+        "timed_out": false,
+        "validation": "disabled",
+        "worker_archive": {
+          "bytes": 245,
+          "path": "a7-run/015-off.archive",
+          "sha256": "4617e745109edee7f7c17bad095011e8b764fbd19ecb8fd9e2cd52c66757a0c7"
+        }
+      }
+    },
+    {
+      "archive": {
+        "bytes": 245,
+        "path": "a7-corrupt/016.archive",
+        "sha256": "7c9a5b0cfb6513872286729eaeaacd6c768ad9765ed7deeb160bb70fb3424087"
+      },
+      "classification": "detected",
+      "hash_enabled": true,
+      "id": 16,
+      "raw": {
+        "decoder_started": false,
+        "returncode": null,
+        "signal": null,
+        "timed_out": false,
+        "validation": "original_sha_mismatch"
+      }
+    },
+    {
+      "archive": {
+        "bytes": 245,
+        "path": "a7-corrupt/016.archive",
+        "sha256": "7c9a5b0cfb6513872286729eaeaacd6c768ad9765ed7deeb160bb70fb3424087"
+      },
+      "classification": "refusal",
+      "hash_enabled": false,
+      "id": 16,
+      "raw": {
+        "decoder_started": true,
+        "output": {
+          "bytes": 0,
+          "path": "a7-run/016-off.output",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "returncode": 1,
+        "sidecars": [],
+        "signal": null,
+        "stderr": {
+          "bytes": 862,
+          "path": "a7-run/016-off.stderr",
+          "sha256": "27bc26b7656aca171c3fec52d267d6be13d8b797e066a73955337964cbea0fb5"
+        },
+        "timed_out": false,
+        "validation": "disabled",
+        "worker_archive": {
+          "bytes": 245,
+          "path": "a7-run/016-off.archive",
+          "sha256": "7c9a5b0cfb6513872286729eaeaacd6c768ad9765ed7deeb160bb70fb3424087"
+        }
+      }
+    },
+    {
+      "archive": {
+        "bytes": 245,
+        "path": "a7-corrupt/017.archive",
+        "sha256": "89b6abffcac785603969cf7322227f7596026563a4933680aca8178cd1c4ae6c"
+      },
+      "classification": "detected",
+      "hash_enabled": true,
+      "id": 17,
+      "raw": {
+        "decoder_started": false,
+        "returncode": null,
+        "signal": null,
+        "timed_out": false,
+        "validation": "original_sha_mismatch"
+      }
+    },
+    {
+      "archive": {
+        "bytes": 245,
+        "path": "a7-corrupt/017.archive",
+        "sha256": "89b6abffcac785603969cf7322227f7596026563a4933680aca8178cd1c4ae6c"
+      },
+      "classification": "refusal",
+      "hash_enabled": false,
+      "id": 17,
+      "raw": {
+        "decoder_started": true,
+        "output": {
+          "bytes": 0,
+          "path": "a7-run/017-off.output",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "returncode": 1,
+        "sidecars": [],
+        "signal": null,
+        "stderr": {
+          "bytes": 862,
+          "path": "a7-run/017-off.stderr",
+          "sha256": "27bc26b7656aca171c3fec52d267d6be13d8b797e066a73955337964cbea0fb5"
+        },
+        "timed_out": false,
+        "validation": "disabled",
+        "worker_archive": {
+          "bytes": 245,
+          "path": "a7-run/017-off.archive",
+          "sha256": "89b6abffcac785603969cf7322227f7596026563a4933680aca8178cd1c4ae6c"
+        }
+      }
+    },
+    {
+      "archive": {
+        "bytes": 245,
+        "path": "a7-corrupt/018.archive",
+        "sha256": "b1c7f44b518145eb50362192445bb3a41b23bcfde084435d84b96c9f1f41671a"
+      },
+      "classification": "detected",
+      "hash_enabled": true,
+      "id": 18,
+      "raw": {
+        "decoder_started": false,
+        "returncode": null,
+        "signal": null,
+        "timed_out": false,
+        "validation": "original_sha_mismatch"
+      }
+    },
+    {
+      "archive": {
+        "bytes": 245,
+        "path": "a7-corrupt/018.archive",
+        "sha256": "b1c7f44b518145eb50362192445bb3a41b23bcfde084435d84b96c9f1f41671a"
+      },
+      "classification": "refusal",
+      "hash_enabled": false,
+      "id": 18,
+      "raw": {
+        "decoder_started": true,
+        "output": {
+          "bytes": 0,
+          "path": "a7-run/018-off.output",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "returncode": 1,
+        "sidecars": [],
+        "signal": null,
+        "stderr": {
+          "bytes": 862,
+          "path": "a7-run/018-off.stderr",
+          "sha256": "27bc26b7656aca171c3fec52d267d6be13d8b797e066a73955337964cbea0fb5"
+        },
+        "timed_out": false,
+        "validation": "disabled",
+        "worker_archive": {
+          "bytes": 245,
+          "path": "a7-run/018-off.archive",
+          "sha256": "b1c7f44b518145eb50362192445bb3a41b23bcfde084435d84b96c9f1f41671a"
+        }
+      }
+    },
+    {
+      "archive": {
+        "bytes": 245,
+        "path": "a7-corrupt/019.archive",
+        "sha256": "33d18a301f0a108726e7d934d2013f067bf9f5fefd21abe029ed21bec654d1e5"
+      },
+      "classification": "detected",
+      "hash_enabled": true,
+      "id": 19,
+      "raw": {
+        "decoder_started": false,
+        "returncode": null,
+        "signal": null,
+        "timed_out": false,
+        "validation": "original_sha_mismatch"
+      }
+    },
+    {
+      "archive": {
+        "bytes": 245,
+        "path": "a7-corrupt/019.archive",
+        "sha256": "33d18a301f0a108726e7d934d2013f067bf9f5fefd21abe029ed21bec654d1e5"
+      },
+      "classification": "refusal",
+      "hash_enabled": false,
+      "id": 19,
+      "raw": {
+        "decoder_started": true,
+        "output": {
+          "bytes": 0,
+          "path": "a7-run/019-off.output",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "returncode": 1,
+        "sidecars": [],
+        "signal": null,
+        "stderr": {
+          "bytes": 862,
+          "path": "a7-run/019-off.stderr",
+          "sha256": "27bc26b7656aca171c3fec52d267d6be13d8b797e066a73955337964cbea0fb5"
+        },
+        "timed_out": false,
+        "validation": "disabled",
+        "worker_archive": {
+          "bytes": 245,
+          "path": "a7-run/019-off.archive",
+          "sha256": "33d18a301f0a108726e7d934d2013f067bf9f5fefd21abe029ed21bec654d1e5"
+        }
+      }
+    },
+    {
+      "archive": {
+        "bytes": 245,
+        "path": "a7-corrupt/020.archive",
+        "sha256": "419d5ab39b898c63add7eec3294ae9a900227b9322c26843d8d3bacde98eb873"
+      },
+      "classification": "detected",
+      "hash_enabled": true,
+      "id": 20,
+      "raw": {
+        "decoder_started": false,
+        "returncode": null,
+        "signal": null,
+        "timed_out": false,
+        "validation": "original_sha_mismatch"
+      }
+    },
+    {
+      "archive": {
+        "bytes": 245,
+        "path": "a7-corrupt/020.archive",
+        "sha256": "419d5ab39b898c63add7eec3294ae9a900227b9322c26843d8d3bacde98eb873"
+      },
+      "classification": "refusal",
+      "hash_enabled": false,
+      "id": 20,
+      "raw": {
+        "decoder_started": true,
+        "output": {
+          "bytes": 0,
+          "path": "a7-run/020-off.output",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "returncode": 1,
+        "sidecars": [],
+        "signal": null,
+        "stderr": {
+          "bytes": 862,
+          "path": "a7-run/020-off.stderr",
+          "sha256": "27bc26b7656aca171c3fec52d267d6be13d8b797e066a73955337964cbea0fb5"
+        },
+        "timed_out": false,
+        "validation": "disabled",
+        "worker_archive": {
+          "bytes": 245,
+          "path": "a7-run/020-off.archive",
+          "sha256": "419d5ab39b898c63add7eec3294ae9a900227b9322c26843d8d3bacde98eb873"
+        }
+      }
+    },
+    {
+      "archive": {
+        "bytes": 245,
+        "path": "a7-corrupt/021.archive",
+        "sha256": "131f9b2c7e5e5750224e2f5242f5aea746b8839286dba544ff4039e9cccac358"
+      },
+      "classification": "detected",
+      "hash_enabled": true,
+      "id": 21,
+      "raw": {
+        "decoder_started": false,
+        "returncode": null,
+        "signal": null,
+        "timed_out": false,
+        "validation": "original_sha_mismatch"
+      }
+    },
+    {
+      "archive": {
+        "bytes": 245,
+        "path": "a7-corrupt/021.archive",
+        "sha256": "131f9b2c7e5e5750224e2f5242f5aea746b8839286dba544ff4039e9cccac358"
+      },
+      "classification": "refusal",
+      "hash_enabled": false,
+      "id": 21,
+      "raw": {
+        "decoder_started": true,
+        "output": {
+          "bytes": 0,
+          "path": "a7-run/021-off.output",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "returncode": 1,
+        "sidecars": [],
+        "signal": null,
+        "stderr": {
+          "bytes": 862,
+          "path": "a7-run/021-off.stderr",
+          "sha256": "27bc26b7656aca171c3fec52d267d6be13d8b797e066a73955337964cbea0fb5"
+        },
+        "timed_out": false,
+        "validation": "disabled",
+        "worker_archive": {
+          "bytes": 245,
+          "path": "a7-run/021-off.archive",
+          "sha256": "131f9b2c7e5e5750224e2f5242f5aea746b8839286dba544ff4039e9cccac358"
+        }
+      }
+    },
+    {
+      "archive": {
+        "bytes": 245,
+        "path": "a7-corrupt/022.archive",
+        "sha256": "e677dbf09c1fbfdac6ce7b5bf5f921c0dc3462d171f1b80ca5bddac880762fee"
+      },
+      "classification": "detected",
+      "hash_enabled": true,
+      "id": 22,
+      "raw": {
+        "decoder_started": false,
+        "returncode": null,
+        "signal": null,
+        "timed_out": false,
+        "validation": "original_sha_mismatch"
+      }
+    },
+    {
+      "archive": {
+        "bytes": 245,
+        "path": "a7-corrupt/022.archive",
+        "sha256": "e677dbf09c1fbfdac6ce7b5bf5f921c0dc3462d171f1b80ca5bddac880762fee"
+      },
+      "classification": "refusal",
+      "hash_enabled": false,
+      "id": 22,
+      "raw": {
+        "decoder_started": true,
+        "output": {
+          "bytes": 0,
+          "path": "a7-run/022-off.output",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "returncode": 1,
+        "sidecars": [],
+        "signal": null,
+        "stderr": {
+          "bytes": 862,
+          "path": "a7-run/022-off.stderr",
+          "sha256": "27bc26b7656aca171c3fec52d267d6be13d8b797e066a73955337964cbea0fb5"
+        },
+        "timed_out": false,
+        "validation": "disabled",
+        "worker_archive": {
+          "bytes": 245,
+          "path": "a7-run/022-off.archive",
+          "sha256": "e677dbf09c1fbfdac6ce7b5bf5f921c0dc3462d171f1b80ca5bddac880762fee"
+        }
+      }
+    },
+    {
+      "archive": {
+        "bytes": 245,
+        "path": "a7-corrupt/023.archive",
+        "sha256": "7f853648cc275adfb6af88af562af6e89700985cec1f5ad080e5ca8703cef0f9"
+      },
+      "classification": "detected",
+      "hash_enabled": true,
+      "id": 23,
+      "raw": {
+        "decoder_started": false,
+        "returncode": null,
+        "signal": null,
+        "timed_out": false,
+        "validation": "original_sha_mismatch"
+      }
+    },
+    {
+      "archive": {
+        "bytes": 245,
+        "path": "a7-corrupt/023.archive",
+        "sha256": "7f853648cc275adfb6af88af562af6e89700985cec1f5ad080e5ca8703cef0f9"
+      },
+      "classification": "refusal",
+      "hash_enabled": false,
+      "id": 23,
+      "raw": {
+        "decoder_started": true,
+        "output": {
+          "bytes": 0,
+          "path": "a7-run/023-off.output",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "returncode": 1,
+        "sidecars": [],
+        "signal": null,
+        "stderr": {
+          "bytes": 862,
+          "path": "a7-run/023-off.stderr",
+          "sha256": "27bc26b7656aca171c3fec52d267d6be13d8b797e066a73955337964cbea0fb5"
+        },
+        "timed_out": false,
+        "validation": "disabled",
+        "worker_archive": {
+          "bytes": 245,
+          "path": "a7-run/023-off.archive",
+          "sha256": "7f853648cc275adfb6af88af562af6e89700985cec1f5ad080e5ca8703cef0f9"
+        }
+      }
+    },
+    {
+      "archive": {
+        "bytes": 245,
+        "path": "a7-corrupt/024.archive",
+        "sha256": "e1b873ca5d84cc6197b5b571df4b4c8b226dc593d60f9ab5d7e0b6f3236baf33"
+      },
+      "classification": "detected",
+      "hash_enabled": true,
+      "id": 24,
+      "raw": {
+        "decoder_started": false,
+        "returncode": null,
+        "signal": null,
+        "timed_out": false,
+        "validation": "original_sha_mismatch"
+      }
+    },
+    {
+      "archive": {
+        "bytes": 245,
+        "path": "a7-corrupt/024.archive",
+        "sha256": "e1b873ca5d84cc6197b5b571df4b4c8b226dc593d60f9ab5d7e0b6f3236baf33"
+      },
+      "classification": "refusal",
+      "hash_enabled": false,
+      "id": 24,
+      "raw": {
+        "decoder_started": true,
+        "output": {
+          "bytes": 0,
+          "path": "a7-run/024-off.output",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "returncode": 1,
+        "sidecars": [],
+        "signal": null,
+        "stderr": {
+          "bytes": 862,
+          "path": "a7-run/024-off.stderr",
+          "sha256": "27bc26b7656aca171c3fec52d267d6be13d8b797e066a73955337964cbea0fb5"
+        },
+        "timed_out": false,
+        "validation": "disabled",
+        "worker_archive": {
+          "bytes": 245,
+          "path": "a7-run/024-off.archive",
+          "sha256": "e1b873ca5d84cc6197b5b571df4b4c8b226dc593d60f9ab5d7e0b6f3236baf33"
+        }
+      }
+    },
+    {
+      "archive": {
+        "bytes": 245,
+        "path": "a7-corrupt/025.archive",
+        "sha256": "556ac5d6ccd3311761a602f538b0e853457aa328dc8fdd3f3c962b98f7ee6404"
+      },
+      "classification": "detected",
+      "hash_enabled": true,
+      "id": 25,
+      "raw": {
+        "decoder_started": false,
+        "returncode": null,
+        "signal": null,
+        "timed_out": false,
+        "validation": "original_sha_mismatch"
+      }
+    },
+    {
+      "archive": {
+        "bytes": 245,
+        "path": "a7-corrupt/025.archive",
+        "sha256": "556ac5d6ccd3311761a602f538b0e853457aa328dc8fdd3f3c962b98f7ee6404"
+      },
+      "classification": "refusal",
+      "hash_enabled": false,
+      "id": 25,
+      "raw": {
+        "decoder_started": true,
+        "output": {
+          "bytes": 0,
+          "path": "a7-run/025-off.output",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "returncode": 1,
+        "sidecars": [],
+        "signal": null,
+        "stderr": {
+          "bytes": 862,
+          "path": "a7-run/025-off.stderr",
+          "sha256": "27bc26b7656aca171c3fec52d267d6be13d8b797e066a73955337964cbea0fb5"
+        },
+        "timed_out": false,
+        "validation": "disabled",
+        "worker_archive": {
+          "bytes": 245,
+          "path": "a7-run/025-off.archive",
+          "sha256": "556ac5d6ccd3311761a602f538b0e853457aa328dc8fdd3f3c962b98f7ee6404"
+        }
+      }
+    },
+    {
+      "archive": {
+        "bytes": 245,
+        "path": "a7-corrupt/026.archive",
+        "sha256": "2135ca9078bc95a922322d18ae04927dd6c2a5504eed504cc0ddae9ee15ec750"
+      },
+      "classification": "detected",
+      "hash_enabled": true,
+      "id": 26,
+      "raw": {
+        "decoder_started": false,
+        "returncode": null,
+        "signal": null,
+        "timed_out": false,
+        "validation": "original_sha_mismatch"
+      }
+    },
+    {
+      "archive": {
+        "bytes": 245,
+        "path": "a7-corrupt/026.archive",
+        "sha256": "2135ca9078bc95a922322d18ae04927dd6c2a5504eed504cc0ddae9ee15ec750"
+      },
+      "classification": "refusal",
+      "hash_enabled": false,
+      "id": 26,
+      "raw": {
+        "decoder_started": true,
+        "output": {
+          "bytes": 0,
+          "path": "a7-run/026-off.output",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "returncode": 1,
+        "sidecars": [],
+        "signal": null,
+        "stderr": {
+          "bytes": 862,
+          "path": "a7-run/026-off.stderr",
+          "sha256": "27bc26b7656aca171c3fec52d267d6be13d8b797e066a73955337964cbea0fb5"
+        },
+        "timed_out": false,
+        "validation": "disabled",
+        "worker_archive": {
+          "bytes": 245,
+          "path": "a7-run/026-off.archive",
+          "sha256": "2135ca9078bc95a922322d18ae04927dd6c2a5504eed504cc0ddae9ee15ec750"
+        }
+      }
+    },
+    {
+      "archive": {
+        "bytes": 245,
+        "path": "a7-corrupt/027.archive",
+        "sha256": "b0aec879c7992dea2352f6473dea0fb37e48d071488ae4d5eeb86f9330e31a86"
+      },
+      "classification": "detected",
+      "hash_enabled": true,
+      "id": 27,
+      "raw": {
+        "decoder_started": false,
+        "returncode": null,
+        "signal": null,
+        "timed_out": false,
+        "validation": "original_sha_mismatch"
+      }
+    },
+    {
+      "archive": {
+        "bytes": 245,
+        "path": "a7-corrupt/027.archive",
+        "sha256": "b0aec879c7992dea2352f6473dea0fb37e48d071488ae4d5eeb86f9330e31a86"
+      },
+      "classification": "refusal",
+      "hash_enabled": false,
+      "id": 27,
+      "raw": {
+        "decoder_started": true,
+        "output": {
+          "bytes": 0,
+          "path": "a7-run/027-off.output",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "returncode": 1,
+        "sidecars": [],
+        "signal": null,
+        "stderr": {
+          "bytes": 862,
+          "path": "a7-run/027-off.stderr",
+          "sha256": "27bc26b7656aca171c3fec52d267d6be13d8b797e066a73955337964cbea0fb5"
+        },
+        "timed_out": false,
+        "validation": "disabled",
+        "worker_archive": {
+          "bytes": 245,
+          "path": "a7-run/027-off.archive",
+          "sha256": "b0aec879c7992dea2352f6473dea0fb37e48d071488ae4d5eeb86f9330e31a86"
+        }
+      }
+    },
+    {
+      "archive": {
+        "bytes": 245,
+        "path": "a7-corrupt/028.archive",
+        "sha256": "46473ba578174ea5ff650421db1572bab9576fce480d268e2a74c008c07626bc"
+      },
+      "classification": "detected",
+      "hash_enabled": true,
+      "id": 28,
+      "raw": {
+        "decoder_started": false,
+        "returncode": null,
+        "signal": null,
+        "timed_out": false,
+        "validation": "original_sha_mismatch"
+      }
+    },
+    {
+      "archive": {
+        "bytes": 245,
+        "path": "a7-corrupt/028.archive",
+        "sha256": "46473ba578174ea5ff650421db1572bab9576fce480d268e2a74c008c07626bc"
+      },
+      "classification": "refusal",
+      "hash_enabled": false,
+      "id": 28,
+      "raw": {
+        "decoder_started": true,
+        "output": {
+          "bytes": 0,
+          "path": "a7-run/028-off.output",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "returncode": 1,
+        "sidecars": [],
+        "signal": null,
+        "stderr": {
+          "bytes": 810,
+          "path": "a7-run/028-off.stderr",
+          "sha256": "4bc7438770aab66a54e252fb1302811750ec252f9d9814c2f21a87b7c8b41db8"
+        },
+        "timed_out": false,
+        "validation": "disabled",
+        "worker_archive": {
+          "bytes": 245,
+          "path": "a7-run/028-off.archive",
+          "sha256": "46473ba578174ea5ff650421db1572bab9576fce480d268e2a74c008c07626bc"
+        }
+      }
+    },
+    {
+      "archive": {
+        "bytes": 245,
+        "path": "a7-corrupt/029.archive",
+        "sha256": "cd4a23de89f37f7dacc02288038992784dc3f8a57b2b1a47422f579756d99316"
+      },
+      "classification": "detected",
+      "hash_enabled": true,
+      "id": 29,
+      "raw": {
+        "decoder_started": false,
+        "returncode": null,
+        "signal": null,
+        "timed_out": false,
+        "validation": "original_sha_mismatch"
+      }
+    },
+    {
+      "archive": {
+        "bytes": 245,
+        "path": "a7-corrupt/029.archive",
+        "sha256": "cd4a23de89f37f7dacc02288038992784dc3f8a57b2b1a47422f579756d99316"
+      },
+      "classification": "refusal",
+      "hash_enabled": false,
+      "id": 29,
+      "raw": {
+        "decoder_started": true,
+        "output": {
+          "bytes": 0,
+          "path": "a7-run/029-off.output",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "returncode": 1,
+        "sidecars": [],
+        "signal": null,
+        "stderr": {
+          "bytes": 862,
+          "path": "a7-run/029-off.stderr",
+          "sha256": "27bc26b7656aca171c3fec52d267d6be13d8b797e066a73955337964cbea0fb5"
+        },
+        "timed_out": false,
+        "validation": "disabled",
+        "worker_archive": {
+          "bytes": 245,
+          "path": "a7-run/029-off.archive",
+          "sha256": "cd4a23de89f37f7dacc02288038992784dc3f8a57b2b1a47422f579756d99316"
+        }
+      }
+    },
+    {
+      "archive": {
+        "bytes": 245,
+        "path": "a7-corrupt/030.archive",
+        "sha256": "487eb59c02525c33f43d07d6db2165299158cabd865ea850188bed752921e337"
+      },
+      "classification": "detected",
+      "hash_enabled": true,
+      "id": 30,
+      "raw": {
+        "decoder_started": false,
+        "returncode": null,
+        "signal": null,
+        "timed_out": false,
+        "validation": "original_sha_mismatch"
+      }
+    },
+    {
+      "archive": {
+        "bytes": 245,
+        "path": "a7-corrupt/030.archive",
+        "sha256": "487eb59c02525c33f43d07d6db2165299158cabd865ea850188bed752921e337"
+      },
+      "classification": "refusal",
+      "hash_enabled": false,
+      "id": 30,
+      "raw": {
+        "decoder_started": true,
+        "output": {
+          "bytes": 0,
+          "path": "a7-run/030-off.output",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "returncode": 1,
+        "sidecars": [],
+        "signal": null,
+        "stderr": {
+          "bytes": 862,
+          "path": "a7-run/030-off.stderr",
+          "sha256": "27bc26b7656aca171c3fec52d267d6be13d8b797e066a73955337964cbea0fb5"
+        },
+        "timed_out": false,
+        "validation": "disabled",
+        "worker_archive": {
+          "bytes": 245,
+          "path": "a7-run/030-off.archive",
+          "sha256": "487eb59c02525c33f43d07d6db2165299158cabd865ea850188bed752921e337"
+        }
+      }
+    },
+    {
+      "archive": {
+        "bytes": 245,
+        "path": "a7-corrupt/031.archive",
+        "sha256": "cc9423f6db4f4a3bc3854840dd215ed21022d622c3c0f65e37603bf5f63482d6"
+      },
+      "classification": "detected",
+      "hash_enabled": true,
+      "id": 31,
+      "raw": {
+        "decoder_started": false,
+        "returncode": null,
+        "signal": null,
+        "timed_out": false,
+        "validation": "original_sha_mismatch"
+      }
+    },
+    {
+      "archive": {
+        "bytes": 245,
+        "path": "a7-corrupt/031.archive",
+        "sha256": "cc9423f6db4f4a3bc3854840dd215ed21022d622c3c0f65e37603bf5f63482d6"
+      },
+      "classification": "refusal",
+      "hash_enabled": false,
+      "id": 31,
+      "raw": {
+        "decoder_started": true,
+        "output": {
+          "bytes": 0,
+          "path": "a7-run/031-off.output",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "returncode": 1,
+        "sidecars": [],
+        "signal": null,
+        "stderr": {
+          "bytes": 862,
+          "path": "a7-run/031-off.stderr",
+          "sha256": "27bc26b7656aca171c3fec52d267d6be13d8b797e066a73955337964cbea0fb5"
+        },
+        "timed_out": false,
+        "validation": "disabled",
+        "worker_archive": {
+          "bytes": 245,
+          "path": "a7-run/031-off.archive",
+          "sha256": "cc9423f6db4f4a3bc3854840dd215ed21022d622c3c0f65e37603bf5f63482d6"
+        }
+      }
+    },
+    {
+      "archive": {
+        "bytes": 245,
+        "path": "a7-corrupt/032.archive",
+        "sha256": "15be3fae5e0ecae1b9d873f682ed221e74d2ac0550a69fea8d69a0bcd035b345"
+      },
+      "classification": "detected",
+      "hash_enabled": true,
+      "id": 32,
+      "raw": {
+        "decoder_started": false,
+        "returncode": null,
+        "signal": null,
+        "timed_out": false,
+        "validation": "original_sha_mismatch"
+      }
+    },
+    {
+      "archive": {
+        "bytes": 245,
+        "path": "a7-corrupt/032.archive",
+        "sha256": "15be3fae5e0ecae1b9d873f682ed221e74d2ac0550a69fea8d69a0bcd035b345"
+      },
+      "classification": "refusal",
+      "hash_enabled": false,
+      "id": 32,
+      "raw": {
+        "decoder_started": true,
+        "output": {
+          "bytes": 0,
+          "path": "a7-run/032-off.output",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "returncode": 1,
+        "sidecars": [],
+        "signal": null,
+        "stderr": {
+          "bytes": 862,
+          "path": "a7-run/032-off.stderr",
+          "sha256": "27bc26b7656aca171c3fec52d267d6be13d8b797e066a73955337964cbea0fb5"
+        },
+        "timed_out": false,
+        "validation": "disabled",
+        "worker_archive": {
+          "bytes": 245,
+          "path": "a7-run/032-off.archive",
+          "sha256": "15be3fae5e0ecae1b9d873f682ed221e74d2ac0550a69fea8d69a0bcd035b345"
+        }
+      }
+    },
+    {
+      "archive": {
+        "bytes": 245,
+        "path": "a7-corrupt/033.archive",
+        "sha256": "d4d2cf7dd5a023508516b97c5d313be3e7f0a0a1f26b48ac4860ce21e48a5804"
+      },
+      "classification": "detected",
+      "hash_enabled": true,
+      "id": 33,
+      "raw": {
+        "decoder_started": false,
+        "returncode": null,
+        "signal": null,
+        "timed_out": false,
+        "validation": "original_sha_mismatch"
+      }
+    },
+    {
+      "archive": {
+        "bytes": 245,
+        "path": "a7-corrupt/033.archive",
+        "sha256": "d4d2cf7dd5a023508516b97c5d313be3e7f0a0a1f26b48ac4860ce21e48a5804"
+      },
+      "classification": "refusal",
+      "hash_enabled": false,
+      "id": 33,
+      "raw": {
+        "decoder_started": true,
+        "output": {
+          "bytes": 0,
+          "path": "a7-run/033-off.output",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "returncode": 1,
+        "sidecars": [],
+        "signal": null,
+        "stderr": {
+          "bytes": 862,
+          "path": "a7-run/033-off.stderr",
+          "sha256": "27bc26b7656aca171c3fec52d267d6be13d8b797e066a73955337964cbea0fb5"
+        },
+        "timed_out": false,
+        "validation": "disabled",
+        "worker_archive": {
+          "bytes": 245,
+          "path": "a7-run/033-off.archive",
+          "sha256": "d4d2cf7dd5a023508516b97c5d313be3e7f0a0a1f26b48ac4860ce21e48a5804"
+        }
+      }
+    },
+    {
+      "archive": {
+        "bytes": 245,
+        "path": "a7-corrupt/034.archive",
+        "sha256": "53fbc328dbb4445b4576bc274cb3688278a0589f4c9a042a82abb2e8bf266fe7"
+      },
+      "classification": "detected",
+      "hash_enabled": true,
+      "id": 34,
+      "raw": {
+        "decoder_started": false,
+        "returncode": null,
+        "signal": null,
+        "timed_out": false,
+        "validation": "original_sha_mismatch"
+      }
+    },
+    {
+      "archive": {
+        "bytes": 245,
+        "path": "a7-corrupt/034.archive",
+        "sha256": "53fbc328dbb4445b4576bc274cb3688278a0589f4c9a042a82abb2e8bf266fe7"
+      },
+      "classification": "refusal",
+      "hash_enabled": false,
+      "id": 34,
+      "raw": {
+        "decoder_started": true,
+        "output": {
+          "bytes": 0,
+          "path": "a7-run/034-off.output",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "returncode": 1,
+        "sidecars": [],
+        "signal": null,
+        "stderr": {
+          "bytes": 862,
+          "path": "a7-run/034-off.stderr",
+          "sha256": "27bc26b7656aca171c3fec52d267d6be13d8b797e066a73955337964cbea0fb5"
+        },
+        "timed_out": false,
+        "validation": "disabled",
+        "worker_archive": {
+          "bytes": 245,
+          "path": "a7-run/034-off.archive",
+          "sha256": "53fbc328dbb4445b4576bc274cb3688278a0589f4c9a042a82abb2e8bf266fe7"
+        }
+      }
+    },
+    {
+      "archive": {
+        "bytes": 245,
+        "path": "a7-corrupt/035.archive",
+        "sha256": "8219c070dfae09edcd20c0e1d94183e222724a859fced46708bf4033d91afa35"
+      },
+      "classification": "detected",
+      "hash_enabled": true,
+      "id": 35,
+      "raw": {
+        "decoder_started": false,
+        "returncode": null,
+        "signal": null,
+        "timed_out": false,
+        "validation": "original_sha_mismatch"
+      }
+    },
+    {
+      "archive": {
+        "bytes": 245,
+        "path": "a7-corrupt/035.archive",
+        "sha256": "8219c070dfae09edcd20c0e1d94183e222724a859fced46708bf4033d91afa35"
+      },
+      "classification": "refusal",
+      "hash_enabled": false,
+      "id": 35,
+      "raw": {
+        "decoder_started": true,
+        "output": {
+          "bytes": 0,
+          "path": "a7-run/035-off.output",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "returncode": 1,
+        "sidecars": [],
+        "signal": null,
+        "stderr": {
+          "bytes": 862,
+          "path": "a7-run/035-off.stderr",
+          "sha256": "27bc26b7656aca171c3fec52d267d6be13d8b797e066a73955337964cbea0fb5"
+        },
+        "timed_out": false,
+        "validation": "disabled",
+        "worker_archive": {
+          "bytes": 245,
+          "path": "a7-run/035-off.archive",
+          "sha256": "8219c070dfae09edcd20c0e1d94183e222724a859fced46708bf4033d91afa35"
+        }
+      }
+    },
+    {
+      "archive": {
+        "bytes": 245,
+        "path": "a7-corrupt/036.archive",
+        "sha256": "7182042ecf1be3d8b2644eeabc6f0351093001074973c03e883770a05c26ad23"
+      },
+      "classification": "detected",
+      "hash_enabled": true,
+      "id": 36,
+      "raw": {
+        "decoder_started": false,
+        "returncode": null,
+        "signal": null,
+        "timed_out": false,
+        "validation": "original_sha_mismatch"
+      }
+    },
+    {
+      "archive": {
+        "bytes": 245,
+        "path": "a7-corrupt/036.archive",
+        "sha256": "7182042ecf1be3d8b2644eeabc6f0351093001074973c03e883770a05c26ad23"
+      },
+      "classification": "refusal",
+      "hash_enabled": false,
+      "id": 36,
+      "raw": {
+        "decoder_started": true,
+        "output": {
+          "bytes": 0,
+          "path": "a7-run/036-off.output",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "returncode": 1,
+        "sidecars": [],
+        "signal": null,
+        "stderr": {
+          "bytes": 862,
+          "path": "a7-run/036-off.stderr",
+          "sha256": "27bc26b7656aca171c3fec52d267d6be13d8b797e066a73955337964cbea0fb5"
+        },
+        "timed_out": false,
+        "validation": "disabled",
+        "worker_archive": {
+          "bytes": 245,
+          "path": "a7-run/036-off.archive",
+          "sha256": "7182042ecf1be3d8b2644eeabc6f0351093001074973c03e883770a05c26ad23"
+        }
+      }
+    },
+    {
+      "archive": {
+        "bytes": 245,
+        "path": "a7-corrupt/037.archive",
+        "sha256": "c5c2fad8fbd0d9b5e998bc0c3bc994a9a3ceed0d0eae5542486876cf4f48c3e8"
+      },
+      "classification": "detected",
+      "hash_enabled": true,
+      "id": 37,
+      "raw": {
+        "decoder_started": false,
+        "returncode": null,
+        "signal": null,
+        "timed_out": false,
+        "validation": "original_sha_mismatch"
+      }
+    },
+    {
+      "archive": {
+        "bytes": 245,
+        "path": "a7-corrupt/037.archive",
+        "sha256": "c5c2fad8fbd0d9b5e998bc0c3bc994a9a3ceed0d0eae5542486876cf4f48c3e8"
+      },
+      "classification": "refusal",
+      "hash_enabled": false,
+      "id": 37,
+      "raw": {
+        "decoder_started": true,
+        "output": {
+          "bytes": 0,
+          "path": "a7-run/037-off.output",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "returncode": 1,
+        "sidecars": [],
+        "signal": null,
+        "stderr": {
+          "bytes": 862,
+          "path": "a7-run/037-off.stderr",
+          "sha256": "27bc26b7656aca171c3fec52d267d6be13d8b797e066a73955337964cbea0fb5"
+        },
+        "timed_out": false,
+        "validation": "disabled",
+        "worker_archive": {
+          "bytes": 245,
+          "path": "a7-run/037-off.archive",
+          "sha256": "c5c2fad8fbd0d9b5e998bc0c3bc994a9a3ceed0d0eae5542486876cf4f48c3e8"
+        }
+      }
+    },
+    {
+      "archive": {
+        "bytes": 245,
+        "path": "a7-corrupt/038.archive",
+        "sha256": "5e01c769073a772dddf65af02e02f86e3c1c1ff4987aa131ecb94d3a6c7743d5"
+      },
+      "classification": "detected",
+      "hash_enabled": true,
+      "id": 38,
+      "raw": {
+        "decoder_started": false,
+        "returncode": null,
+        "signal": null,
+        "timed_out": false,
+        "validation": "original_sha_mismatch"
+      }
+    },
+    {
+      "archive": {
+        "bytes": 245,
+        "path": "a7-corrupt/038.archive",
+        "sha256": "5e01c769073a772dddf65af02e02f86e3c1c1ff4987aa131ecb94d3a6c7743d5"
+      },
+      "classification": "refusal",
+      "hash_enabled": false,
+      "id": 38,
+      "raw": {
+        "decoder_started": true,
+        "output": {
+          "bytes": 0,
+          "path": "a7-run/038-off.output",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "returncode": 1,
+        "sidecars": [],
+        "signal": null,
+        "stderr": {
+          "bytes": 862,
+          "path": "a7-run/038-off.stderr",
+          "sha256": "27bc26b7656aca171c3fec52d267d6be13d8b797e066a73955337964cbea0fb5"
+        },
+        "timed_out": false,
+        "validation": "disabled",
+        "worker_archive": {
+          "bytes": 245,
+          "path": "a7-run/038-off.archive",
+          "sha256": "5e01c769073a772dddf65af02e02f86e3c1c1ff4987aa131ecb94d3a6c7743d5"
+        }
+      }
+    },
+    {
+      "archive": {
+        "bytes": 245,
+        "path": "a7-corrupt/039.archive",
+        "sha256": "5184cc0d6a3262ebedb40e8328b1fe89a4997ea9ef9660338d907ad578e42fc4"
+      },
+      "classification": "detected",
+      "hash_enabled": true,
+      "id": 39,
+      "raw": {
+        "decoder_started": false,
+        "returncode": null,
+        "signal": null,
+        "timed_out": false,
+        "validation": "original_sha_mismatch"
+      }
+    },
+    {
+      "archive": {
+        "bytes": 245,
+        "path": "a7-corrupt/039.archive",
+        "sha256": "5184cc0d6a3262ebedb40e8328b1fe89a4997ea9ef9660338d907ad578e42fc4"
+      },
+      "classification": "refusal",
+      "hash_enabled": false,
+      "id": 39,
+      "raw": {
+        "decoder_started": true,
+        "output": {
+          "bytes": 0,
+          "path": "a7-run/039-off.output",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "returncode": 1,
+        "sidecars": [],
+        "signal": null,
+        "stderr": {
+          "bytes": 862,
+          "path": "a7-run/039-off.stderr",
+          "sha256": "27bc26b7656aca171c3fec52d267d6be13d8b797e066a73955337964cbea0fb5"
+        },
+        "timed_out": false,
+        "validation": "disabled",
+        "worker_archive": {
+          "bytes": 245,
+          "path": "a7-run/039-off.archive",
+          "sha256": "5184cc0d6a3262ebedb40e8328b1fe89a4997ea9ef9660338d907ad578e42fc4"
+        }
+      }
+    },
+    {
+      "archive": {
+        "bytes": 38,
+        "path": "a7-corrupt/040.archive",
+        "sha256": "7fba140c6983b8425eeced7400da6045f80522a85b28dd8eaa054285933ae2a3"
+      },
+      "classification": "detected",
+      "hash_enabled": true,
+      "id": 40,
+      "raw": {
+        "decoder_started": false,
+        "returncode": null,
+        "signal": null,
+        "timed_out": false,
+        "validation": "original_sha_mismatch"
+      }
+    },
+    {
+      "archive": {
+        "bytes": 38,
+        "path": "a7-corrupt/040.archive",
+        "sha256": "7fba140c6983b8425eeced7400da6045f80522a85b28dd8eaa054285933ae2a3"
+      },
+      "classification": "refusal",
+      "hash_enabled": false,
+      "id": 40,
+      "raw": {
+        "decoder_started": true,
+        "output": {
+          "bytes": 0,
+          "path": "a7-run/040-off.output",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "returncode": 1,
+        "sidecars": [],
+        "signal": null,
+        "stderr": {
+          "bytes": 862,
+          "path": "a7-run/040-off.stderr",
+          "sha256": "27bc26b7656aca171c3fec52d267d6be13d8b797e066a73955337964cbea0fb5"
+        },
+        "timed_out": false,
+        "validation": "disabled",
+        "worker_archive": {
+          "bytes": 38,
+          "path": "a7-run/040-off.archive",
+          "sha256": "7fba140c6983b8425eeced7400da6045f80522a85b28dd8eaa054285933ae2a3"
+        }
+      }
+    },
+    {
+      "archive": {
+        "bytes": 98,
+        "path": "a7-corrupt/041.archive",
+        "sha256": "0f3f639ccfeb11f0430af087da02ff011933da69c93aa9b8aa443a9f0e36f8fb"
+      },
+      "classification": "detected",
+      "hash_enabled": true,
+      "id": 41,
+      "raw": {
+        "decoder_started": false,
+        "returncode": null,
+        "signal": null,
+        "timed_out": false,
+        "validation": "original_sha_mismatch"
+      }
+    },
+    {
+      "archive": {
+        "bytes": 98,
+        "path": "a7-corrupt/041.archive",
+        "sha256": "0f3f639ccfeb11f0430af087da02ff011933da69c93aa9b8aa443a9f0e36f8fb"
+      },
+      "classification": "refusal",
+      "hash_enabled": false,
+      "id": 41,
+      "raw": {
+        "decoder_started": true,
+        "output": {
+          "bytes": 0,
+          "path": "a7-run/041-off.output",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "returncode": 1,
+        "sidecars": [],
+        "signal": null,
+        "stderr": {
+          "bytes": 862,
+          "path": "a7-run/041-off.stderr",
+          "sha256": "27bc26b7656aca171c3fec52d267d6be13d8b797e066a73955337964cbea0fb5"
+        },
+        "timed_out": false,
+        "validation": "disabled",
+        "worker_archive": {
+          "bytes": 98,
+          "path": "a7-run/041-off.archive",
+          "sha256": "0f3f639ccfeb11f0430af087da02ff011933da69c93aa9b8aa443a9f0e36f8fb"
+        }
+      }
+    },
+    {
+      "archive": {
+        "bytes": 57,
+        "path": "a7-corrupt/042.archive",
+        "sha256": "7f4176bf860468270308a1d49bed07f3d1ff1f5e9aa9d3b85b8bbd780c6ca20e"
+      },
+      "classification": "detected",
+      "hash_enabled": true,
+      "id": 42,
+      "raw": {
+        "decoder_started": false,
+        "returncode": null,
+        "signal": null,
+        "timed_out": false,
+        "validation": "original_sha_mismatch"
+      }
+    },
+    {
+      "archive": {
+        "bytes": 57,
+        "path": "a7-corrupt/042.archive",
+        "sha256": "7f4176bf860468270308a1d49bed07f3d1ff1f5e9aa9d3b85b8bbd780c6ca20e"
+      },
+      "classification": "refusal",
+      "hash_enabled": false,
+      "id": 42,
+      "raw": {
+        "decoder_started": true,
+        "output": {
+          "bytes": 0,
+          "path": "a7-run/042-off.output",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "returncode": 1,
+        "sidecars": [],
+        "signal": null,
+        "stderr": {
+          "bytes": 862,
+          "path": "a7-run/042-off.stderr",
+          "sha256": "27bc26b7656aca171c3fec52d267d6be13d8b797e066a73955337964cbea0fb5"
+        },
+        "timed_out": false,
+        "validation": "disabled",
+        "worker_archive": {
+          "bytes": 57,
+          "path": "a7-run/042-off.archive",
+          "sha256": "7f4176bf860468270308a1d49bed07f3d1ff1f5e9aa9d3b85b8bbd780c6ca20e"
+        }
+      }
+    },
+    {
+      "archive": {
+        "bytes": 34,
+        "path": "a7-corrupt/043.archive",
+        "sha256": "382988573e4c82b58ddaa799daaf38f6092fdbc7e2081f9a0befe7fc17d30f17"
+      },
+      "classification": "detected",
+      "hash_enabled": true,
+      "id": 43,
+      "raw": {
+        "decoder_started": false,
+        "returncode": null,
+        "signal": null,
+        "timed_out": false,
+        "validation": "original_sha_mismatch"
+      }
+    },
+    {
+      "archive": {
+        "bytes": 34,
+        "path": "a7-corrupt/043.archive",
+        "sha256": "382988573e4c82b58ddaa799daaf38f6092fdbc7e2081f9a0befe7fc17d30f17"
+      },
+      "classification": "refusal",
+      "hash_enabled": false,
+      "id": 43,
+      "raw": {
+        "decoder_started": true,
+        "output": {
+          "bytes": 0,
+          "path": "a7-run/043-off.output",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "returncode": 1,
+        "sidecars": [],
+        "signal": null,
+        "stderr": {
+          "bytes": 862,
+          "path": "a7-run/043-off.stderr",
+          "sha256": "27bc26b7656aca171c3fec52d267d6be13d8b797e066a73955337964cbea0fb5"
+        },
+        "timed_out": false,
+        "validation": "disabled",
+        "worker_archive": {
+          "bytes": 34,
+          "path": "a7-run/043-off.archive",
+          "sha256": "382988573e4c82b58ddaa799daaf38f6092fdbc7e2081f9a0befe7fc17d30f17"
+        }
+      }
+    },
+    {
+      "archive": {
+        "bytes": 17,
+        "path": "a7-corrupt/044.archive",
+        "sha256": "25f46233785937d6f2b2b3459f1c3d4c6c1d12711d9eca2a185b36f7e5e06bb9"
+      },
+      "classification": "detected",
+      "hash_enabled": true,
+      "id": 44,
+      "raw": {
+        "decoder_started": false,
+        "returncode": null,
+        "signal": null,
+        "timed_out": false,
+        "validation": "original_sha_mismatch"
+      }
+    },
+    {
+      "archive": {
+        "bytes": 17,
+        "path": "a7-corrupt/044.archive",
+        "sha256": "25f46233785937d6f2b2b3459f1c3d4c6c1d12711d9eca2a185b36f7e5e06bb9"
+      },
+      "classification": "refusal",
+      "hash_enabled": false,
+      "id": 44,
+      "raw": {
+        "decoder_started": true,
+        "output": {
+          "bytes": 0,
+          "path": "a7-run/044-off.output",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "returncode": 1,
+        "sidecars": [],
+        "signal": null,
+        "stderr": {
+          "bytes": 862,
+          "path": "a7-run/044-off.stderr",
+          "sha256": "27bc26b7656aca171c3fec52d267d6be13d8b797e066a73955337964cbea0fb5"
+        },
+        "timed_out": false,
+        "validation": "disabled",
+        "worker_archive": {
+          "bytes": 17,
+          "path": "a7-run/044-off.archive",
+          "sha256": "25f46233785937d6f2b2b3459f1c3d4c6c1d12711d9eca2a185b36f7e5e06bb9"
+        }
+      }
+    },
+    {
+      "archive": {
+        "bytes": 220,
+        "path": "a7-corrupt/045.archive",
+        "sha256": "b01757b09149545886f7e0771650bb7fdc50cc89616d2c2a2b09661f525d56f7"
+      },
+      "classification": "detected",
+      "hash_enabled": true,
+      "id": 45,
+      "raw": {
+        "decoder_started": false,
+        "returncode": null,
+        "signal": null,
+        "timed_out": false,
+        "validation": "original_sha_mismatch"
+      }
+    },
+    {
+      "archive": {
+        "bytes": 220,
+        "path": "a7-corrupt/045.archive",
+        "sha256": "b01757b09149545886f7e0771650bb7fdc50cc89616d2c2a2b09661f525d56f7"
+      },
+      "classification": "refusal",
+      "hash_enabled": false,
+      "id": 45,
+      "raw": {
+        "decoder_started": true,
+        "output": {
+          "bytes": 0,
+          "path": "a7-run/045-off.output",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "returncode": 1,
+        "sidecars": [],
+        "signal": null,
+        "stderr": {
+          "bytes": 862,
+          "path": "a7-run/045-off.stderr",
+          "sha256": "27bc26b7656aca171c3fec52d267d6be13d8b797e066a73955337964cbea0fb5"
+        },
+        "timed_out": false,
+        "validation": "disabled",
+        "worker_archive": {
+          "bytes": 220,
+          "path": "a7-run/045-off.archive",
+          "sha256": "b01757b09149545886f7e0771650bb7fdc50cc89616d2c2a2b09661f525d56f7"
+        }
+      }
+    },
+    {
+      "archive": {
+        "bytes": 103,
+        "path": "a7-corrupt/046.archive",
+        "sha256": "f58a359ee7770d30547bc7724a9c4f72f1413bd4bbe52f082793455db717e1ef"
+      },
+      "classification": "detected",
+      "hash_enabled": true,
+      "id": 46,
+      "raw": {
+        "decoder_started": false,
+        "returncode": null,
+        "signal": null,
+        "timed_out": false,
+        "validation": "original_sha_mismatch"
+      }
+    },
+    {
+      "archive": {
+        "bytes": 103,
+        "path": "a7-corrupt/046.archive",
+        "sha256": "f58a359ee7770d30547bc7724a9c4f72f1413bd4bbe52f082793455db717e1ef"
+      },
+      "classification": "refusal",
+      "hash_enabled": false,
+      "id": 46,
+      "raw": {
+        "decoder_started": true,
+        "output": {
+          "bytes": 0,
+          "path": "a7-run/046-off.output",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "returncode": 1,
+        "sidecars": [],
+        "signal": null,
+        "stderr": {
+          "bytes": 862,
+          "path": "a7-run/046-off.stderr",
+          "sha256": "27bc26b7656aca171c3fec52d267d6be13d8b797e066a73955337964cbea0fb5"
+        },
+        "timed_out": false,
+        "validation": "disabled",
+        "worker_archive": {
+          "bytes": 103,
+          "path": "a7-run/046-off.archive",
+          "sha256": "f58a359ee7770d30547bc7724a9c4f72f1413bd4bbe52f082793455db717e1ef"
+        }
+      }
+    },
+    {
+      "archive": {
+        "bytes": 98,
+        "path": "a7-corrupt/047.archive",
+        "sha256": "0f3f639ccfeb11f0430af087da02ff011933da69c93aa9b8aa443a9f0e36f8fb"
+      },
+      "classification": "detected",
+      "hash_enabled": true,
+      "id": 47,
+      "raw": {
+        "decoder_started": false,
+        "returncode": null,
+        "signal": null,
+        "timed_out": false,
+        "validation": "original_sha_mismatch"
+      }
+    },
+    {
+      "archive": {
+        "bytes": 98,
+        "path": "a7-corrupt/047.archive",
+        "sha256": "0f3f639ccfeb11f0430af087da02ff011933da69c93aa9b8aa443a9f0e36f8fb"
+      },
+      "classification": "refusal",
+      "hash_enabled": false,
+      "id": 47,
+      "raw": {
+        "decoder_started": true,
+        "output": {
+          "bytes": 0,
+          "path": "a7-run/047-off.output",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "returncode": 1,
+        "sidecars": [],
+        "signal": null,
+        "stderr": {
+          "bytes": 862,
+          "path": "a7-run/047-off.stderr",
+          "sha256": "27bc26b7656aca171c3fec52d267d6be13d8b797e066a73955337964cbea0fb5"
+        },
+        "timed_out": false,
+        "validation": "disabled",
+        "worker_archive": {
+          "bytes": 98,
+          "path": "a7-run/047-off.archive",
+          "sha256": "0f3f639ccfeb11f0430af087da02ff011933da69c93aa9b8aa443a9f0e36f8fb"
+        }
+      }
+    },
+    {
+      "archive": {
+        "bytes": 163,
+        "path": "a7-corrupt/048.archive",
+        "sha256": "8cb310f733cd612907c061d04e3ddcd8cb3366d94194488cb603f04d6c4620dc"
+      },
+      "classification": "detected",
+      "hash_enabled": true,
+      "id": 48,
+      "raw": {
+        "decoder_started": false,
+        "returncode": null,
+        "signal": null,
+        "timed_out": false,
+        "validation": "original_sha_mismatch"
+      }
+    },
+    {
+      "archive": {
+        "bytes": 163,
+        "path": "a7-corrupt/048.archive",
+        "sha256": "8cb310f733cd612907c061d04e3ddcd8cb3366d94194488cb603f04d6c4620dc"
+      },
+      "classification": "refusal",
+      "hash_enabled": false,
+      "id": 48,
+      "raw": {
+        "decoder_started": true,
+        "output": {
+          "bytes": 0,
+          "path": "a7-run/048-off.output",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "returncode": 1,
+        "sidecars": [],
+        "signal": null,
+        "stderr": {
+          "bytes": 862,
+          "path": "a7-run/048-off.stderr",
+          "sha256": "27bc26b7656aca171c3fec52d267d6be13d8b797e066a73955337964cbea0fb5"
+        },
+        "timed_out": false,
+        "validation": "disabled",
+        "worker_archive": {
+          "bytes": 163,
+          "path": "a7-run/048-off.archive",
+          "sha256": "8cb310f733cd612907c061d04e3ddcd8cb3366d94194488cb603f04d6c4620dc"
+        }
+      }
+    },
+    {
+      "archive": {
+        "bytes": 134,
+        "path": "a7-corrupt/049.archive",
+        "sha256": "0b601aacd13f64e980fd42740646bb5d6c8283a291888ec7327d3bf5ee7ba7b0"
+      },
+      "classification": "detected",
+      "hash_enabled": true,
+      "id": 49,
+      "raw": {
+        "decoder_started": false,
+        "returncode": null,
+        "signal": null,
+        "timed_out": false,
+        "validation": "original_sha_mismatch"
+      }
+    },
+    {
+      "archive": {
+        "bytes": 134,
+        "path": "a7-corrupt/049.archive",
+        "sha256": "0b601aacd13f64e980fd42740646bb5d6c8283a291888ec7327d3bf5ee7ba7b0"
+      },
+      "classification": "refusal",
+      "hash_enabled": false,
+      "id": 49,
+      "raw": {
+        "decoder_started": true,
+        "output": {
+          "bytes": 0,
+          "path": "a7-run/049-off.output",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "returncode": 1,
+        "sidecars": [],
+        "signal": null,
+        "stderr": {
+          "bytes": 862,
+          "path": "a7-run/049-off.stderr",
+          "sha256": "27bc26b7656aca171c3fec52d267d6be13d8b797e066a73955337964cbea0fb5"
+        },
+        "timed_out": false,
+        "validation": "disabled",
+        "worker_archive": {
+          "bytes": 134,
+          "path": "a7-run/049-off.archive",
+          "sha256": "0b601aacd13f64e980fd42740646bb5d6c8283a291888ec7327d3bf5ee7ba7b0"
+        }
+      }
+    },
+    {
+      "archive": {
+        "bytes": 47,
+        "path": "a7-corrupt/050.archive",
+        "sha256": "b673da7a3ba0824a2eec5f3f768c4d1362c84a6345662d329ff80aef2148a7e2"
+      },
+      "classification": "detected",
+      "hash_enabled": true,
+      "id": 50,
+      "raw": {
+        "decoder_started": false,
+        "returncode": null,
+        "signal": null,
+        "timed_out": false,
+        "validation": "original_sha_mismatch"
+      }
+    },
+    {
+      "archive": {
+        "bytes": 47,
+        "path": "a7-corrupt/050.archive",
+        "sha256": "b673da7a3ba0824a2eec5f3f768c4d1362c84a6345662d329ff80aef2148a7e2"
+      },
+      "classification": "refusal",
+      "hash_enabled": false,
+      "id": 50,
+      "raw": {
+        "decoder_started": true,
+        "output": {
+          "bytes": 0,
+          "path": "a7-run/050-off.output",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "returncode": 1,
+        "sidecars": [],
+        "signal": null,
+        "stderr": {
+          "bytes": 862,
+          "path": "a7-run/050-off.stderr",
+          "sha256": "27bc26b7656aca171c3fec52d267d6be13d8b797e066a73955337964cbea0fb5"
+        },
+        "timed_out": false,
+        "validation": "disabled",
+        "worker_archive": {
+          "bytes": 47,
+          "path": "a7-run/050-off.archive",
+          "sha256": "b673da7a3ba0824a2eec5f3f768c4d1362c84a6345662d329ff80aef2148a7e2"
+        }
+      }
+    },
+    {
+      "archive": {
+        "bytes": 175,
+        "path": "a7-corrupt/051.archive",
+        "sha256": "1a91c67ff226ab851e208aab580fbb0502d609b0f708f977bf7dedf775b2d201"
+      },
+      "classification": "detected",
+      "hash_enabled": true,
+      "id": 51,
+      "raw": {
+        "decoder_started": false,
+        "returncode": null,
+        "signal": null,
+        "timed_out": false,
+        "validation": "original_sha_mismatch"
+      }
+    },
+    {
+      "archive": {
+        "bytes": 175,
+        "path": "a7-corrupt/051.archive",
+        "sha256": "1a91c67ff226ab851e208aab580fbb0502d609b0f708f977bf7dedf775b2d201"
+      },
+      "classification": "refusal",
+      "hash_enabled": false,
+      "id": 51,
+      "raw": {
+        "decoder_started": true,
+        "output": {
+          "bytes": 0,
+          "path": "a7-run/051-off.output",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "returncode": 1,
+        "sidecars": [],
+        "signal": null,
+        "stderr": {
+          "bytes": 862,
+          "path": "a7-run/051-off.stderr",
+          "sha256": "27bc26b7656aca171c3fec52d267d6be13d8b797e066a73955337964cbea0fb5"
+        },
+        "timed_out": false,
+        "validation": "disabled",
+        "worker_archive": {
+          "bytes": 175,
+          "path": "a7-run/051-off.archive",
+          "sha256": "1a91c67ff226ab851e208aab580fbb0502d609b0f708f977bf7dedf775b2d201"
+        }
+      }
+    },
+    {
+      "archive": {
+        "bytes": 151,
+        "path": "a7-corrupt/052.archive",
+        "sha256": "f10cc472ecb15b908b44784b91ba7d939a6335dd139997f27772e082069badf4"
+      },
+      "classification": "detected",
+      "hash_enabled": true,
+      "id": 52,
+      "raw": {
+        "decoder_started": false,
+        "returncode": null,
+        "signal": null,
+        "timed_out": false,
+        "validation": "original_sha_mismatch"
+      }
+    },
+    {
+      "archive": {
+        "bytes": 151,
+        "path": "a7-corrupt/052.archive",
+        "sha256": "f10cc472ecb15b908b44784b91ba7d939a6335dd139997f27772e082069badf4"
+      },
+      "classification": "refusal",
+      "hash_enabled": false,
+      "id": 52,
+      "raw": {
+        "decoder_started": true,
+        "output": {
+          "bytes": 0,
+          "path": "a7-run/052-off.output",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "returncode": 1,
+        "sidecars": [],
+        "signal": null,
+        "stderr": {
+          "bytes": 862,
+          "path": "a7-run/052-off.stderr",
+          "sha256": "27bc26b7656aca171c3fec52d267d6be13d8b797e066a73955337964cbea0fb5"
+        },
+        "timed_out": false,
+        "validation": "disabled",
+        "worker_archive": {
+          "bytes": 151,
+          "path": "a7-run/052-off.archive",
+          "sha256": "f10cc472ecb15b908b44784b91ba7d939a6335dd139997f27772e082069badf4"
+        }
+      }
+    },
+    {
+      "archive": {
+        "bytes": 59,
+        "path": "a7-corrupt/053.archive",
+        "sha256": "32e8375f43317e14fb4cf2f04e05bbaf3b926f239537d768a3db09262cde1cee"
+      },
+      "classification": "detected",
+      "hash_enabled": true,
+      "id": 53,
+      "raw": {
+        "decoder_started": false,
+        "returncode": null,
+        "signal": null,
+        "timed_out": false,
+        "validation": "original_sha_mismatch"
+      }
+    },
+    {
+      "archive": {
+        "bytes": 59,
+        "path": "a7-corrupt/053.archive",
+        "sha256": "32e8375f43317e14fb4cf2f04e05bbaf3b926f239537d768a3db09262cde1cee"
+      },
+      "classification": "refusal",
+      "hash_enabled": false,
+      "id": 53,
+      "raw": {
+        "decoder_started": true,
+        "output": {
+          "bytes": 0,
+          "path": "a7-run/053-off.output",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "returncode": 1,
+        "sidecars": [],
+        "signal": null,
+        "stderr": {
+          "bytes": 862,
+          "path": "a7-run/053-off.stderr",
+          "sha256": "27bc26b7656aca171c3fec52d267d6be13d8b797e066a73955337964cbea0fb5"
+        },
+        "timed_out": false,
+        "validation": "disabled",
+        "worker_archive": {
+          "bytes": 59,
+          "path": "a7-run/053-off.archive",
+          "sha256": "32e8375f43317e14fb4cf2f04e05bbaf3b926f239537d768a3db09262cde1cee"
+        }
+      }
+    },
+    {
+      "archive": {
+        "bytes": 46,
+        "path": "a7-corrupt/054.archive",
+        "sha256": "a91bf811444239b6af2e8da527622d1292cf1e3f8f149a015e0b32c366aefc75"
+      },
+      "classification": "detected",
+      "hash_enabled": true,
+      "id": 54,
+      "raw": {
+        "decoder_started": false,
+        "returncode": null,
+        "signal": null,
+        "timed_out": false,
+        "validation": "original_sha_mismatch"
+      }
+    },
+    {
+      "archive": {
+        "bytes": 46,
+        "path": "a7-corrupt/054.archive",
+        "sha256": "a91bf811444239b6af2e8da527622d1292cf1e3f8f149a015e0b32c366aefc75"
+      },
+      "classification": "refusal",
+      "hash_enabled": false,
+      "id": 54,
+      "raw": {
+        "decoder_started": true,
+        "output": {
+          "bytes": 0,
+          "path": "a7-run/054-off.output",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "returncode": 1,
+        "sidecars": [],
+        "signal": null,
+        "stderr": {
+          "bytes": 862,
+          "path": "a7-run/054-off.stderr",
+          "sha256": "27bc26b7656aca171c3fec52d267d6be13d8b797e066a73955337964cbea0fb5"
+        },
+        "timed_out": false,
+        "validation": "disabled",
+        "worker_archive": {
+          "bytes": 46,
+          "path": "a7-run/054-off.archive",
+          "sha256": "a91bf811444239b6af2e8da527622d1292cf1e3f8f149a015e0b32c366aefc75"
+        }
+      }
+    },
+    {
+      "archive": {
+        "bytes": 195,
+        "path": "a7-corrupt/055.archive",
+        "sha256": "08e98ac047c6410f58e7bea21b707c7ca523ccab5debf150c9e459e44f1a839b"
+      },
+      "classification": "detected",
+      "hash_enabled": true,
+      "id": 55,
+      "raw": {
+        "decoder_started": false,
+        "returncode": null,
+        "signal": null,
+        "timed_out": false,
+        "validation": "original_sha_mismatch"
+      }
+    },
+    {
+      "archive": {
+        "bytes": 195,
+        "path": "a7-corrupt/055.archive",
+        "sha256": "08e98ac047c6410f58e7bea21b707c7ca523ccab5debf150c9e459e44f1a839b"
+      },
+      "classification": "refusal",
+      "hash_enabled": false,
+      "id": 55,
+      "raw": {
+        "decoder_started": true,
+        "output": {
+          "bytes": 0,
+          "path": "a7-run/055-off.output",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "returncode": 1,
+        "sidecars": [],
+        "signal": null,
+        "stderr": {
+          "bytes": 862,
+          "path": "a7-run/055-off.stderr",
+          "sha256": "27bc26b7656aca171c3fec52d267d6be13d8b797e066a73955337964cbea0fb5"
+        },
+        "timed_out": false,
+        "validation": "disabled",
+        "worker_archive": {
+          "bytes": 195,
+          "path": "a7-run/055-off.archive",
+          "sha256": "08e98ac047c6410f58e7bea21b707c7ca523ccab5debf150c9e459e44f1a839b"
+        }
+      }
+    },
+    {
+      "archive": {
+        "bytes": 171,
+        "path": "a7-corrupt/056.archive",
+        "sha256": "2a946332561eaba5b9bada4768da5fca6c919412b8d32d8f1ca426cc4d087188"
+      },
+      "classification": "detected",
+      "hash_enabled": true,
+      "id": 56,
+      "raw": {
+        "decoder_started": false,
+        "returncode": null,
+        "signal": null,
+        "timed_out": false,
+        "validation": "original_sha_mismatch"
+      }
+    },
+    {
+      "archive": {
+        "bytes": 171,
+        "path": "a7-corrupt/056.archive",
+        "sha256": "2a946332561eaba5b9bada4768da5fca6c919412b8d32d8f1ca426cc4d087188"
+      },
+      "classification": "refusal",
+      "hash_enabled": false,
+      "id": 56,
+      "raw": {
+        "decoder_started": true,
+        "output": {
+          "bytes": 0,
+          "path": "a7-run/056-off.output",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "returncode": 1,
+        "sidecars": [],
+        "signal": null,
+        "stderr": {
+          "bytes": 862,
+          "path": "a7-run/056-off.stderr",
+          "sha256": "27bc26b7656aca171c3fec52d267d6be13d8b797e066a73955337964cbea0fb5"
+        },
+        "timed_out": false,
+        "validation": "disabled",
+        "worker_archive": {
+          "bytes": 171,
+          "path": "a7-run/056-off.archive",
+          "sha256": "2a946332561eaba5b9bada4768da5fca6c919412b8d32d8f1ca426cc4d087188"
+        }
+      }
+    },
+    {
+      "archive": {
+        "bytes": 85,
+        "path": "a7-corrupt/057.archive",
+        "sha256": "ce00eec9747b0aa561d7520279ffb775547957660b652cbc494daa4b243d41f2"
+      },
+      "classification": "detected",
+      "hash_enabled": true,
+      "id": 57,
+      "raw": {
+        "decoder_started": false,
+        "returncode": null,
+        "signal": null,
+        "timed_out": false,
+        "validation": "original_sha_mismatch"
+      }
+    },
+    {
+      "archive": {
+        "bytes": 85,
+        "path": "a7-corrupt/057.archive",
+        "sha256": "ce00eec9747b0aa561d7520279ffb775547957660b652cbc494daa4b243d41f2"
+      },
+      "classification": "refusal",
+      "hash_enabled": false,
+      "id": 57,
+      "raw": {
+        "decoder_started": true,
+        "output": {
+          "bytes": 0,
+          "path": "a7-run/057-off.output",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "returncode": 1,
+        "sidecars": [],
+        "signal": null,
+        "stderr": {
+          "bytes": 862,
+          "path": "a7-run/057-off.stderr",
+          "sha256": "27bc26b7656aca171c3fec52d267d6be13d8b797e066a73955337964cbea0fb5"
+        },
+        "timed_out": false,
+        "validation": "disabled",
+        "worker_archive": {
+          "bytes": 85,
+          "path": "a7-run/057-off.archive",
+          "sha256": "ce00eec9747b0aa561d7520279ffb775547957660b652cbc494daa4b243d41f2"
+        }
+      }
+    },
+    {
+      "archive": {
+        "bytes": 117,
+        "path": "a7-corrupt/058.archive",
+        "sha256": "fb2db53f55017d2d0cbd7b92a7875647ea6a861ce8e912e53df07f655f2fe740"
+      },
+      "classification": "detected",
+      "hash_enabled": true,
+      "id": 58,
+      "raw": {
+        "decoder_started": false,
+        "returncode": null,
+        "signal": null,
+        "timed_out": false,
+        "validation": "original_sha_mismatch"
+      }
+    },
+    {
+      "archive": {
+        "bytes": 117,
+        "path": "a7-corrupt/058.archive",
+        "sha256": "fb2db53f55017d2d0cbd7b92a7875647ea6a861ce8e912e53df07f655f2fe740"
+      },
+      "classification": "refusal",
+      "hash_enabled": false,
+      "id": 58,
+      "raw": {
+        "decoder_started": true,
+        "output": {
+          "bytes": 0,
+          "path": "a7-run/058-off.output",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "returncode": 1,
+        "sidecars": [],
+        "signal": null,
+        "stderr": {
+          "bytes": 862,
+          "path": "a7-run/058-off.stderr",
+          "sha256": "27bc26b7656aca171c3fec52d267d6be13d8b797e066a73955337964cbea0fb5"
+        },
+        "timed_out": false,
+        "validation": "disabled",
+        "worker_archive": {
+          "bytes": 117,
+          "path": "a7-run/058-off.archive",
+          "sha256": "fb2db53f55017d2d0cbd7b92a7875647ea6a861ce8e912e53df07f655f2fe740"
+        }
+      }
+    },
+    {
+      "archive": {
+        "bytes": 32,
+        "path": "a7-corrupt/059.archive",
+        "sha256": "b789059f0f48cfcb920ecaa9938ea32c4db36f582eafb9da0e12626e17753e22"
+      },
+      "classification": "detected",
+      "hash_enabled": true,
+      "id": 59,
+      "raw": {
+        "decoder_started": false,
+        "returncode": null,
+        "signal": null,
+        "timed_out": false,
+        "validation": "original_sha_mismatch"
+      }
+    },
+    {
+      "archive": {
+        "bytes": 32,
+        "path": "a7-corrupt/059.archive",
+        "sha256": "b789059f0f48cfcb920ecaa9938ea32c4db36f582eafb9da0e12626e17753e22"
+      },
+      "classification": "refusal",
+      "hash_enabled": false,
+      "id": 59,
+      "raw": {
+        "decoder_started": true,
+        "output": {
+          "bytes": 0,
+          "path": "a7-run/059-off.output",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "returncode": 1,
+        "sidecars": [],
+        "signal": null,
+        "stderr": {
+          "bytes": 862,
+          "path": "a7-run/059-off.stderr",
+          "sha256": "27bc26b7656aca171c3fec52d267d6be13d8b797e066a73955337964cbea0fb5"
+        },
+        "timed_out": false,
+        "validation": "disabled",
+        "worker_archive": {
+          "bytes": 32,
+          "path": "a7-run/059-off.archive",
+          "sha256": "b789059f0f48cfcb920ecaa9938ea32c4db36f582eafb9da0e12626e17753e22"
+        }
+      }
+    },
+    {
+      "archive": {
+        "bytes": 245,
+        "path": "a7-corrupt/060.archive",
+        "sha256": "f502a148ca81e4109eed5316500e76172f0cf525efdec2ce679837b845f745e2"
+      },
+      "classification": "detected",
+      "hash_enabled": true,
+      "id": 60,
+      "raw": {
+        "decoder_started": false,
+        "returncode": null,
+        "signal": null,
+        "timed_out": false,
+        "validation": "original_sha_mismatch"
+      }
+    },
+    {
+      "archive": {
+        "bytes": 245,
+        "path": "a7-corrupt/060.archive",
+        "sha256": "f502a148ca81e4109eed5316500e76172f0cf525efdec2ce679837b845f745e2"
+      },
+      "classification": "refusal",
+      "hash_enabled": false,
+      "id": 60,
+      "raw": {
+        "decoder_started": true,
+        "output": {
+          "bytes": 0,
+          "path": "a7-run/060-off.output",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "returncode": 1,
+        "sidecars": [],
+        "signal": null,
+        "stderr": {
+          "bytes": 862,
+          "path": "a7-run/060-off.stderr",
+          "sha256": "27bc26b7656aca171c3fec52d267d6be13d8b797e066a73955337964cbea0fb5"
+        },
+        "timed_out": false,
+        "validation": "disabled",
+        "worker_archive": {
+          "bytes": 245,
+          "path": "a7-run/060-off.archive",
+          "sha256": "f502a148ca81e4109eed5316500e76172f0cf525efdec2ce679837b845f745e2"
+        }
+      }
+    },
+    {
+      "archive": {
+        "bytes": 245,
+        "path": "a7-corrupt/061.archive",
+        "sha256": "f502a148ca81e4109eed5316500e76172f0cf525efdec2ce679837b845f745e2"
+      },
+      "classification": "detected",
+      "hash_enabled": true,
+      "id": 61,
+      "raw": {
+        "decoder_started": false,
+        "returncode": null,
+        "signal": null,
+        "timed_out": false,
+        "validation": "original_sha_mismatch"
+      }
+    },
+    {
+      "archive": {
+        "bytes": 245,
+        "path": "a7-corrupt/061.archive",
+        "sha256": "f502a148ca81e4109eed5316500e76172f0cf525efdec2ce679837b845f745e2"
+      },
+      "classification": "refusal",
+      "hash_enabled": false,
+      "id": 61,
+      "raw": {
+        "decoder_started": true,
+        "output": {
+          "bytes": 0,
+          "path": "a7-run/061-off.output",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "returncode": 1,
+        "sidecars": [],
+        "signal": null,
+        "stderr": {
+          "bytes": 862,
+          "path": "a7-run/061-off.stderr",
+          "sha256": "27bc26b7656aca171c3fec52d267d6be13d8b797e066a73955337964cbea0fb5"
+        },
+        "timed_out": false,
+        "validation": "disabled",
+        "worker_archive": {
+          "bytes": 245,
+          "path": "a7-run/061-off.archive",
+          "sha256": "f502a148ca81e4109eed5316500e76172f0cf525efdec2ce679837b845f745e2"
+        }
+      }
+    },
+    {
+      "archive": {
+        "bytes": 245,
+        "path": "a7-corrupt/062.archive",
+        "sha256": "f502a148ca81e4109eed5316500e76172f0cf525efdec2ce679837b845f745e2"
+      },
+      "classification": "detected",
+      "hash_enabled": true,
+      "id": 62,
+      "raw": {
+        "decoder_started": false,
+        "returncode": null,
+        "signal": null,
+        "timed_out": false,
+        "validation": "original_sha_mismatch"
+      }
+    },
+    {
+      "archive": {
+        "bytes": 245,
+        "path": "a7-corrupt/062.archive",
+        "sha256": "f502a148ca81e4109eed5316500e76172f0cf525efdec2ce679837b845f745e2"
+      },
+      "classification": "refusal",
+      "hash_enabled": false,
+      "id": 62,
+      "raw": {
+        "decoder_started": true,
+        "output": {
+          "bytes": 0,
+          "path": "a7-run/062-off.output",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "returncode": 1,
+        "sidecars": [],
+        "signal": null,
+        "stderr": {
+          "bytes": 862,
+          "path": "a7-run/062-off.stderr",
+          "sha256": "27bc26b7656aca171c3fec52d267d6be13d8b797e066a73955337964cbea0fb5"
+        },
+        "timed_out": false,
+        "validation": "disabled",
+        "worker_archive": {
+          "bytes": 245,
+          "path": "a7-run/062-off.archive",
+          "sha256": "f502a148ca81e4109eed5316500e76172f0cf525efdec2ce679837b845f745e2"
+        }
+      }
+    },
+    {
+      "archive": {
+        "bytes": 245,
+        "path": "a7-corrupt/063.archive",
+        "sha256": "f502a148ca81e4109eed5316500e76172f0cf525efdec2ce679837b845f745e2"
+      },
+      "classification": "detected",
+      "hash_enabled": true,
+      "id": 63,
+      "raw": {
+        "decoder_started": false,
+        "returncode": null,
+        "signal": null,
+        "timed_out": false,
+        "validation": "original_sha_mismatch"
+      }
+    },
+    {
+      "archive": {
+        "bytes": 245,
+        "path": "a7-corrupt/063.archive",
+        "sha256": "f502a148ca81e4109eed5316500e76172f0cf525efdec2ce679837b845f745e2"
+      },
+      "classification": "refusal",
+      "hash_enabled": false,
+      "id": 63,
+      "raw": {
+        "decoder_started": true,
+        "output": {
+          "bytes": 0,
+          "path": "a7-run/063-off.output",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "returncode": 1,
+        "sidecars": [],
+        "signal": null,
+        "stderr": {
+          "bytes": 862,
+          "path": "a7-run/063-off.stderr",
+          "sha256": "27bc26b7656aca171c3fec52d267d6be13d8b797e066a73955337964cbea0fb5"
+        },
+        "timed_out": false,
+        "validation": "disabled",
+        "worker_archive": {
+          "bytes": 245,
+          "path": "a7-run/063-off.archive",
+          "sha256": "f502a148ca81e4109eed5316500e76172f0cf525efdec2ce679837b845f745e2"
+        }
+      }
+    },
+    {
+      "archive": {
+        "bytes": 245,
+        "path": "a7-corrupt/064.archive",
+        "sha256": "f502a148ca81e4109eed5316500e76172f0cf525efdec2ce679837b845f745e2"
+      },
+      "classification": "detected",
+      "hash_enabled": true,
+      "id": 64,
+      "raw": {
+        "decoder_started": false,
+        "returncode": null,
+        "signal": null,
+        "timed_out": false,
+        "validation": "original_sha_mismatch"
+      }
+    },
+    {
+      "archive": {
+        "bytes": 245,
+        "path": "a7-corrupt/064.archive",
+        "sha256": "f502a148ca81e4109eed5316500e76172f0cf525efdec2ce679837b845f745e2"
+      },
+      "classification": "refusal",
+      "hash_enabled": false,
+      "id": 64,
+      "raw": {
+        "decoder_started": true,
+        "output": {
+          "bytes": 0,
+          "path": "a7-run/064-off.output",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "returncode": 1,
+        "sidecars": [],
+        "signal": null,
+        "stderr": {
+          "bytes": 862,
+          "path": "a7-run/064-off.stderr",
+          "sha256": "27bc26b7656aca171c3fec52d267d6be13d8b797e066a73955337964cbea0fb5"
+        },
+        "timed_out": false,
+        "validation": "disabled",
+        "worker_archive": {
+          "bytes": 245,
+          "path": "a7-run/064-off.archive",
+          "sha256": "f502a148ca81e4109eed5316500e76172f0cf525efdec2ce679837b845f745e2"
+        }
+      }
+    },
+    {
+      "archive": {
+        "bytes": 245,
+        "path": "a7-corrupt/065.archive",
+        "sha256": "f502a148ca81e4109eed5316500e76172f0cf525efdec2ce679837b845f745e2"
+      },
+      "classification": "detected",
+      "hash_enabled": true,
+      "id": 65,
+      "raw": {
+        "decoder_started": false,
+        "returncode": null,
+        "signal": null,
+        "timed_out": false,
+        "validation": "original_sha_mismatch"
+      }
+    },
+    {
+      "archive": {
+        "bytes": 245,
+        "path": "a7-corrupt/065.archive",
+        "sha256": "f502a148ca81e4109eed5316500e76172f0cf525efdec2ce679837b845f745e2"
+      },
+      "classification": "refusal",
+      "hash_enabled": false,
+      "id": 65,
+      "raw": {
+        "decoder_started": true,
+        "output": {
+          "bytes": 0,
+          "path": "a7-run/065-off.output",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "returncode": 1,
+        "sidecars": [],
+        "signal": null,
+        "stderr": {
+          "bytes": 862,
+          "path": "a7-run/065-off.stderr",
+          "sha256": "27bc26b7656aca171c3fec52d267d6be13d8b797e066a73955337964cbea0fb5"
+        },
+        "timed_out": false,
+        "validation": "disabled",
+        "worker_archive": {
+          "bytes": 245,
+          "path": "a7-run/065-off.archive",
+          "sha256": "f502a148ca81e4109eed5316500e76172f0cf525efdec2ce679837b845f745e2"
+        }
+      }
+    },
+    {
+      "archive": {
+        "bytes": 245,
+        "path": "a7-corrupt/066.archive",
+        "sha256": "f502a148ca81e4109eed5316500e76172f0cf525efdec2ce679837b845f745e2"
+      },
+      "classification": "detected",
+      "hash_enabled": true,
+      "id": 66,
+      "raw": {
+        "decoder_started": false,
+        "returncode": null,
+        "signal": null,
+        "timed_out": false,
+        "validation": "original_sha_mismatch"
+      }
+    },
+    {
+      "archive": {
+        "bytes": 245,
+        "path": "a7-corrupt/066.archive",
+        "sha256": "f502a148ca81e4109eed5316500e76172f0cf525efdec2ce679837b845f745e2"
+      },
+      "classification": "refusal",
+      "hash_enabled": false,
+      "id": 66,
+      "raw": {
+        "decoder_started": true,
+        "output": {
+          "bytes": 0,
+          "path": "a7-run/066-off.output",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "returncode": 1,
+        "sidecars": [],
+        "signal": null,
+        "stderr": {
+          "bytes": 862,
+          "path": "a7-run/066-off.stderr",
+          "sha256": "27bc26b7656aca171c3fec52d267d6be13d8b797e066a73955337964cbea0fb5"
+        },
+        "timed_out": false,
+        "validation": "disabled",
+        "worker_archive": {
+          "bytes": 245,
+          "path": "a7-run/066-off.archive",
+          "sha256": "f502a148ca81e4109eed5316500e76172f0cf525efdec2ce679837b845f745e2"
+        }
+      }
+    },
+    {
+      "archive": {
+        "bytes": 245,
+        "path": "a7-corrupt/067.archive",
+        "sha256": "f502a148ca81e4109eed5316500e76172f0cf525efdec2ce679837b845f745e2"
+      },
+      "classification": "detected",
+      "hash_enabled": true,
+      "id": 67,
+      "raw": {
+        "decoder_started": false,
+        "returncode": null,
+        "signal": null,
+        "timed_out": false,
+        "validation": "original_sha_mismatch"
+      }
+    },
+    {
+      "archive": {
+        "bytes": 245,
+        "path": "a7-corrupt/067.archive",
+        "sha256": "f502a148ca81e4109eed5316500e76172f0cf525efdec2ce679837b845f745e2"
+      },
+      "classification": "refusal",
+      "hash_enabled": false,
+      "id": 67,
+      "raw": {
+        "decoder_started": true,
+        "output": {
+          "bytes": 0,
+          "path": "a7-run/067-off.output",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "returncode": 1,
+        "sidecars": [],
+        "signal": null,
+        "stderr": {
+          "bytes": 862,
+          "path": "a7-run/067-off.stderr",
+          "sha256": "27bc26b7656aca171c3fec52d267d6be13d8b797e066a73955337964cbea0fb5"
+        },
+        "timed_out": false,
+        "validation": "disabled",
+        "worker_archive": {
+          "bytes": 245,
+          "path": "a7-run/067-off.archive",
+          "sha256": "f502a148ca81e4109eed5316500e76172f0cf525efdec2ce679837b845f745e2"
+        }
+      }
+    },
+    {
+      "archive": {
+        "bytes": 245,
+        "path": "a7-corrupt/068.archive",
+        "sha256": "f502a148ca81e4109eed5316500e76172f0cf525efdec2ce679837b845f745e2"
+      },
+      "classification": "detected",
+      "hash_enabled": true,
+      "id": 68,
+      "raw": {
+        "decoder_started": false,
+        "returncode": null,
+        "signal": null,
+        "timed_out": false,
+        "validation": "original_sha_mismatch"
+      }
+    },
+    {
+      "archive": {
+        "bytes": 245,
+        "path": "a7-corrupt/068.archive",
+        "sha256": "f502a148ca81e4109eed5316500e76172f0cf525efdec2ce679837b845f745e2"
+      },
+      "classification": "refusal",
+      "hash_enabled": false,
+      "id": 68,
+      "raw": {
+        "decoder_started": true,
+        "output": {
+          "bytes": 0,
+          "path": "a7-run/068-off.output",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "returncode": 1,
+        "sidecars": [],
+        "signal": null,
+        "stderr": {
+          "bytes": 862,
+          "path": "a7-run/068-off.stderr",
+          "sha256": "27bc26b7656aca171c3fec52d267d6be13d8b797e066a73955337964cbea0fb5"
+        },
+        "timed_out": false,
+        "validation": "disabled",
+        "worker_archive": {
+          "bytes": 245,
+          "path": "a7-run/068-off.archive",
+          "sha256": "f502a148ca81e4109eed5316500e76172f0cf525efdec2ce679837b845f745e2"
+        }
+      }
+    },
+    {
+      "archive": {
+        "bytes": 245,
+        "path": "a7-corrupt/069.archive",
+        "sha256": "f502a148ca81e4109eed5316500e76172f0cf525efdec2ce679837b845f745e2"
+      },
+      "classification": "detected",
+      "hash_enabled": true,
+      "id": 69,
+      "raw": {
+        "decoder_started": false,
+        "returncode": null,
+        "signal": null,
+        "timed_out": false,
+        "validation": "original_sha_mismatch"
+      }
+    },
+    {
+      "archive": {
+        "bytes": 245,
+        "path": "a7-corrupt/069.archive",
+        "sha256": "f502a148ca81e4109eed5316500e76172f0cf525efdec2ce679837b845f745e2"
+      },
+      "classification": "refusal",
+      "hash_enabled": false,
+      "id": 69,
+      "raw": {
+        "decoder_started": true,
+        "output": {
+          "bytes": 0,
+          "path": "a7-run/069-off.output",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "returncode": 1,
+        "sidecars": [],
+        "signal": null,
+        "stderr": {
+          "bytes": 862,
+          "path": "a7-run/069-off.stderr",
+          "sha256": "27bc26b7656aca171c3fec52d267d6be13d8b797e066a73955337964cbea0fb5"
+        },
+        "timed_out": false,
+        "validation": "disabled",
+        "worker_archive": {
+          "bytes": 245,
+          "path": "a7-run/069-off.archive",
+          "sha256": "f502a148ca81e4109eed5316500e76172f0cf525efdec2ce679837b845f745e2"
+        }
+      }
+    },
+    {
+      "archive": {
+        "bytes": 245,
+        "path": "a7-corrupt/070.archive",
+        "sha256": "f502a148ca81e4109eed5316500e76172f0cf525efdec2ce679837b845f745e2"
+      },
+      "classification": "detected",
+      "hash_enabled": true,
+      "id": 70,
+      "raw": {
+        "decoder_started": false,
+        "returncode": null,
+        "signal": null,
+        "timed_out": false,
+        "validation": "original_sha_mismatch"
+      }
+    },
+    {
+      "archive": {
+        "bytes": 245,
+        "path": "a7-corrupt/070.archive",
+        "sha256": "f502a148ca81e4109eed5316500e76172f0cf525efdec2ce679837b845f745e2"
+      },
+      "classification": "refusal",
+      "hash_enabled": false,
+      "id": 70,
+      "raw": {
+        "decoder_started": true,
+        "output": {
+          "bytes": 0,
+          "path": "a7-run/070-off.output",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "returncode": 1,
+        "sidecars": [],
+        "signal": null,
+        "stderr": {
+          "bytes": 862,
+          "path": "a7-run/070-off.stderr",
+          "sha256": "27bc26b7656aca171c3fec52d267d6be13d8b797e066a73955337964cbea0fb5"
+        },
+        "timed_out": false,
+        "validation": "disabled",
+        "worker_archive": {
+          "bytes": 245,
+          "path": "a7-run/070-off.archive",
+          "sha256": "f502a148ca81e4109eed5316500e76172f0cf525efdec2ce679837b845f745e2"
+        }
+      }
+    },
+    {
+      "archive": {
+        "bytes": 245,
+        "path": "a7-corrupt/071.archive",
+        "sha256": "f502a148ca81e4109eed5316500e76172f0cf525efdec2ce679837b845f745e2"
+      },
+      "classification": "detected",
+      "hash_enabled": true,
+      "id": 71,
+      "raw": {
+        "decoder_started": false,
+        "returncode": null,
+        "signal": null,
+        "timed_out": false,
+        "validation": "original_sha_mismatch"
+      }
+    },
+    {
+      "archive": {
+        "bytes": 245,
+        "path": "a7-corrupt/071.archive",
+        "sha256": "f502a148ca81e4109eed5316500e76172f0cf525efdec2ce679837b845f745e2"
+      },
+      "classification": "refusal",
+      "hash_enabled": false,
+      "id": 71,
+      "raw": {
+        "decoder_started": true,
+        "output": {
+          "bytes": 0,
+          "path": "a7-run/071-off.output",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "returncode": 1,
+        "sidecars": [],
+        "signal": null,
+        "stderr": {
+          "bytes": 862,
+          "path": "a7-run/071-off.stderr",
+          "sha256": "27bc26b7656aca171c3fec52d267d6be13d8b797e066a73955337964cbea0fb5"
+        },
+        "timed_out": false,
+        "validation": "disabled",
+        "worker_archive": {
+          "bytes": 245,
+          "path": "a7-run/071-off.archive",
+          "sha256": "f502a148ca81e4109eed5316500e76172f0cf525efdec2ce679837b845f745e2"
+        }
+      }
+    },
+    {
+      "archive": {
+        "bytes": 245,
+        "path": "a7-corrupt/072.archive",
+        "sha256": "f502a148ca81e4109eed5316500e76172f0cf525efdec2ce679837b845f745e2"
+      },
+      "classification": "detected",
+      "hash_enabled": true,
+      "id": 72,
+      "raw": {
+        "decoder_started": false,
+        "returncode": null,
+        "signal": null,
+        "timed_out": false,
+        "validation": "original_sha_mismatch"
+      }
+    },
+    {
+      "archive": {
+        "bytes": 245,
+        "path": "a7-corrupt/072.archive",
+        "sha256": "f502a148ca81e4109eed5316500e76172f0cf525efdec2ce679837b845f745e2"
+      },
+      "classification": "refusal",
+      "hash_enabled": false,
+      "id": 72,
+      "raw": {
+        "decoder_started": true,
+        "output": {
+          "bytes": 0,
+          "path": "a7-run/072-off.output",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "returncode": 1,
+        "sidecars": [],
+        "signal": null,
+        "stderr": {
+          "bytes": 862,
+          "path": "a7-run/072-off.stderr",
+          "sha256": "27bc26b7656aca171c3fec52d267d6be13d8b797e066a73955337964cbea0fb5"
+        },
+        "timed_out": false,
+        "validation": "disabled",
+        "worker_archive": {
+          "bytes": 245,
+          "path": "a7-run/072-off.archive",
+          "sha256": "f502a148ca81e4109eed5316500e76172f0cf525efdec2ce679837b845f745e2"
+        }
+      }
+    },
+    {
+      "archive": {
+        "bytes": 245,
+        "path": "a7-corrupt/073.archive",
+        "sha256": "f502a148ca81e4109eed5316500e76172f0cf525efdec2ce679837b845f745e2"
+      },
+      "classification": "detected",
+      "hash_enabled": true,
+      "id": 73,
+      "raw": {
+        "decoder_started": false,
+        "returncode": null,
+        "signal": null,
+        "timed_out": false,
+        "validation": "original_sha_mismatch"
+      }
+    },
+    {
+      "archive": {
+        "bytes": 245,
+        "path": "a7-corrupt/073.archive",
+        "sha256": "f502a148ca81e4109eed5316500e76172f0cf525efdec2ce679837b845f745e2"
+      },
+      "classification": "refusal",
+      "hash_enabled": false,
+      "id": 73,
+      "raw": {
+        "decoder_started": true,
+        "output": {
+          "bytes": 0,
+          "path": "a7-run/073-off.output",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "returncode": 1,
+        "sidecars": [],
+        "signal": null,
+        "stderr": {
+          "bytes": 862,
+          "path": "a7-run/073-off.stderr",
+          "sha256": "27bc26b7656aca171c3fec52d267d6be13d8b797e066a73955337964cbea0fb5"
+        },
+        "timed_out": false,
+        "validation": "disabled",
+        "worker_archive": {
+          "bytes": 245,
+          "path": "a7-run/073-off.archive",
+          "sha256": "f502a148ca81e4109eed5316500e76172f0cf525efdec2ce679837b845f745e2"
+        }
+      }
+    },
+    {
+      "archive": {
+        "bytes": 245,
+        "path": "a7-corrupt/074.archive",
+        "sha256": "f502a148ca81e4109eed5316500e76172f0cf525efdec2ce679837b845f745e2"
+      },
+      "classification": "detected",
+      "hash_enabled": true,
+      "id": 74,
+      "raw": {
+        "decoder_started": false,
+        "returncode": null,
+        "signal": null,
+        "timed_out": false,
+        "validation": "original_sha_mismatch"
+      }
+    },
+    {
+      "archive": {
+        "bytes": 245,
+        "path": "a7-corrupt/074.archive",
+        "sha256": "f502a148ca81e4109eed5316500e76172f0cf525efdec2ce679837b845f745e2"
+      },
+      "classification": "refusal",
+      "hash_enabled": false,
+      "id": 74,
+      "raw": {
+        "decoder_started": true,
+        "output": {
+          "bytes": 0,
+          "path": "a7-run/074-off.output",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "returncode": 1,
+        "sidecars": [],
+        "signal": null,
+        "stderr": {
+          "bytes": 862,
+          "path": "a7-run/074-off.stderr",
+          "sha256": "27bc26b7656aca171c3fec52d267d6be13d8b797e066a73955337964cbea0fb5"
+        },
+        "timed_out": false,
+        "validation": "disabled",
+        "worker_archive": {
+          "bytes": 245,
+          "path": "a7-run/074-off.archive",
+          "sha256": "f502a148ca81e4109eed5316500e76172f0cf525efdec2ce679837b845f745e2"
+        }
+      }
+    },
+    {
+      "archive": {
+        "bytes": 245,
+        "path": "a7-corrupt/075.archive",
+        "sha256": "f502a148ca81e4109eed5316500e76172f0cf525efdec2ce679837b845f745e2"
+      },
+      "classification": "detected",
+      "hash_enabled": true,
+      "id": 75,
+      "raw": {
+        "decoder_started": false,
+        "returncode": null,
+        "signal": null,
+        "timed_out": false,
+        "validation": "original_sha_mismatch"
+      }
+    },
+    {
+      "archive": {
+        "bytes": 245,
+        "path": "a7-corrupt/075.archive",
+        "sha256": "f502a148ca81e4109eed5316500e76172f0cf525efdec2ce679837b845f745e2"
+      },
+      "classification": "refusal",
+      "hash_enabled": false,
+      "id": 75,
+      "raw": {
+        "decoder_started": true,
+        "output": {
+          "bytes": 0,
+          "path": "a7-run/075-off.output",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "returncode": 1,
+        "sidecars": [],
+        "signal": null,
+        "stderr": {
+          "bytes": 862,
+          "path": "a7-run/075-off.stderr",
+          "sha256": "27bc26b7656aca171c3fec52d267d6be13d8b797e066a73955337964cbea0fb5"
+        },
+        "timed_out": false,
+        "validation": "disabled",
+        "worker_archive": {
+          "bytes": 245,
+          "path": "a7-run/075-off.archive",
+          "sha256": "f502a148ca81e4109eed5316500e76172f0cf525efdec2ce679837b845f745e2"
+        }
+      }
+    },
+    {
+      "archive": {
+        "bytes": 245,
+        "path": "a7-corrupt/076.archive",
+        "sha256": "f502a148ca81e4109eed5316500e76172f0cf525efdec2ce679837b845f745e2"
+      },
+      "classification": "detected",
+      "hash_enabled": true,
+      "id": 76,
+      "raw": {
+        "decoder_started": false,
+        "returncode": null,
+        "signal": null,
+        "timed_out": false,
+        "validation": "original_sha_mismatch"
+      }
+    },
+    {
+      "archive": {
+        "bytes": 245,
+        "path": "a7-corrupt/076.archive",
+        "sha256": "f502a148ca81e4109eed5316500e76172f0cf525efdec2ce679837b845f745e2"
+      },
+      "classification": "refusal",
+      "hash_enabled": false,
+      "id": 76,
+      "raw": {
+        "decoder_started": true,
+        "output": {
+          "bytes": 0,
+          "path": "a7-run/076-off.output",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "returncode": 1,
+        "sidecars": [],
+        "signal": null,
+        "stderr": {
+          "bytes": 862,
+          "path": "a7-run/076-off.stderr",
+          "sha256": "27bc26b7656aca171c3fec52d267d6be13d8b797e066a73955337964cbea0fb5"
+        },
+        "timed_out": false,
+        "validation": "disabled",
+        "worker_archive": {
+          "bytes": 245,
+          "path": "a7-run/076-off.archive",
+          "sha256": "f502a148ca81e4109eed5316500e76172f0cf525efdec2ce679837b845f745e2"
+        }
+      }
+    },
+    {
+      "archive": {
+        "bytes": 245,
+        "path": "a7-corrupt/077.archive",
+        "sha256": "f502a148ca81e4109eed5316500e76172f0cf525efdec2ce679837b845f745e2"
+      },
+      "classification": "detected",
+      "hash_enabled": true,
+      "id": 77,
+      "raw": {
+        "decoder_started": false,
+        "returncode": null,
+        "signal": null,
+        "timed_out": false,
+        "validation": "original_sha_mismatch"
+      }
+    },
+    {
+      "archive": {
+        "bytes": 245,
+        "path": "a7-corrupt/077.archive",
+        "sha256": "f502a148ca81e4109eed5316500e76172f0cf525efdec2ce679837b845f745e2"
+      },
+      "classification": "refusal",
+      "hash_enabled": false,
+      "id": 77,
+      "raw": {
+        "decoder_started": true,
+        "output": {
+          "bytes": 0,
+          "path": "a7-run/077-off.output",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "returncode": 1,
+        "sidecars": [],
+        "signal": null,
+        "stderr": {
+          "bytes": 862,
+          "path": "a7-run/077-off.stderr",
+          "sha256": "27bc26b7656aca171c3fec52d267d6be13d8b797e066a73955337964cbea0fb5"
+        },
+        "timed_out": false,
+        "validation": "disabled",
+        "worker_archive": {
+          "bytes": 245,
+          "path": "a7-run/077-off.archive",
+          "sha256": "f502a148ca81e4109eed5316500e76172f0cf525efdec2ce679837b845f745e2"
+        }
+      }
+    },
+    {
+      "archive": {
+        "bytes": 245,
+        "path": "a7-corrupt/078.archive",
+        "sha256": "f502a148ca81e4109eed5316500e76172f0cf525efdec2ce679837b845f745e2"
+      },
+      "classification": "detected",
+      "hash_enabled": true,
+      "id": 78,
+      "raw": {
+        "decoder_started": false,
+        "returncode": null,
+        "signal": null,
+        "timed_out": false,
+        "validation": "original_sha_mismatch"
+      }
+    },
+    {
+      "archive": {
+        "bytes": 245,
+        "path": "a7-corrupt/078.archive",
+        "sha256": "f502a148ca81e4109eed5316500e76172f0cf525efdec2ce679837b845f745e2"
+      },
+      "classification": "refusal",
+      "hash_enabled": false,
+      "id": 78,
+      "raw": {
+        "decoder_started": true,
+        "output": {
+          "bytes": 0,
+          "path": "a7-run/078-off.output",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "returncode": 1,
+        "sidecars": [],
+        "signal": null,
+        "stderr": {
+          "bytes": 862,
+          "path": "a7-run/078-off.stderr",
+          "sha256": "27bc26b7656aca171c3fec52d267d6be13d8b797e066a73955337964cbea0fb5"
+        },
+        "timed_out": false,
+        "validation": "disabled",
+        "worker_archive": {
+          "bytes": 245,
+          "path": "a7-run/078-off.archive",
+          "sha256": "f502a148ca81e4109eed5316500e76172f0cf525efdec2ce679837b845f745e2"
+        }
+      }
+    },
+    {
+      "archive": {
+        "bytes": 245,
+        "path": "a7-corrupt/079.archive",
+        "sha256": "f502a148ca81e4109eed5316500e76172f0cf525efdec2ce679837b845f745e2"
+      },
+      "classification": "detected",
+      "hash_enabled": true,
+      "id": 79,
+      "raw": {
+        "decoder_started": false,
+        "returncode": null,
+        "signal": null,
+        "timed_out": false,
+        "validation": "original_sha_mismatch"
+      }
+    },
+    {
+      "archive": {
+        "bytes": 245,
+        "path": "a7-corrupt/079.archive",
+        "sha256": "f502a148ca81e4109eed5316500e76172f0cf525efdec2ce679837b845f745e2"
+      },
+      "classification": "refusal",
+      "hash_enabled": false,
+      "id": 79,
+      "raw": {
+        "decoder_started": true,
+        "output": {
+          "bytes": 0,
+          "path": "a7-run/079-off.output",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "returncode": 1,
+        "sidecars": [],
+        "signal": null,
+        "stderr": {
+          "bytes": 862,
+          "path": "a7-run/079-off.stderr",
+          "sha256": "27bc26b7656aca171c3fec52d267d6be13d8b797e066a73955337964cbea0fb5"
+        },
+        "timed_out": false,
+        "validation": "disabled",
+        "worker_archive": {
+          "bytes": 245,
+          "path": "a7-run/079-off.archive",
+          "sha256": "f502a148ca81e4109eed5316500e76172f0cf525efdec2ce679837b845f745e2"
+        }
+      }
+    },
+    {
+      "archive": {
+        "bytes": 245,
+        "path": "a7-corrupt/080.archive",
+        "sha256": "1f2e4aef51fa83f36f30ef61455a4c5b20c1acac2fa1b90fa7e5daf367e6e8cf"
+      },
+      "classification": "detected",
+      "hash_enabled": true,
+      "id": 80,
+      "raw": {
+        "decoder_started": false,
+        "returncode": null,
+        "signal": null,
+        "timed_out": false,
+        "validation": "original_sha_mismatch"
+      }
+    },
+    {
+      "archive": {
+        "bytes": 245,
+        "path": "a7-corrupt/080.archive",
+        "sha256": "1f2e4aef51fa83f36f30ef61455a4c5b20c1acac2fa1b90fa7e5daf367e6e8cf"
+      },
+      "classification": "refusal",
+      "hash_enabled": false,
+      "id": 80,
+      "raw": {
+        "decoder_started": true,
+        "output": {
+          "bytes": 0,
+          "path": "a7-run/080-off.output",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "returncode": 1,
+        "sidecars": [],
+        "signal": null,
+        "stderr": {
+          "bytes": 862,
+          "path": "a7-run/080-off.stderr",
+          "sha256": "27bc26b7656aca171c3fec52d267d6be13d8b797e066a73955337964cbea0fb5"
+        },
+        "timed_out": false,
+        "validation": "disabled",
+        "worker_archive": {
+          "bytes": 245,
+          "path": "a7-run/080-off.archive",
+          "sha256": "1f2e4aef51fa83f36f30ef61455a4c5b20c1acac2fa1b90fa7e5daf367e6e8cf"
+        }
+      }
+    },
+    {
+      "archive": {
+        "bytes": 245,
+        "path": "a7-corrupt/081.archive",
+        "sha256": "ffc4579bf4b102783a51d68807f224b1a8cd545d07e13e1d578e5a527dab841a"
+      },
+      "classification": "detected",
+      "hash_enabled": true,
+      "id": 81,
+      "raw": {
+        "decoder_started": false,
+        "returncode": null,
+        "signal": null,
+        "timed_out": false,
+        "validation": "original_sha_mismatch"
+      }
+    },
+    {
+      "archive": {
+        "bytes": 245,
+        "path": "a7-corrupt/081.archive",
+        "sha256": "ffc4579bf4b102783a51d68807f224b1a8cd545d07e13e1d578e5a527dab841a"
+      },
+      "classification": "refusal",
+      "hash_enabled": false,
+      "id": 81,
+      "raw": {
+        "decoder_started": true,
+        "output": {
+          "bytes": 0,
+          "path": "a7-run/081-off.output",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "returncode": 1,
+        "sidecars": [],
+        "signal": null,
+        "stderr": {
+          "bytes": 862,
+          "path": "a7-run/081-off.stderr",
+          "sha256": "27bc26b7656aca171c3fec52d267d6be13d8b797e066a73955337964cbea0fb5"
+        },
+        "timed_out": false,
+        "validation": "disabled",
+        "worker_archive": {
+          "bytes": 245,
+          "path": "a7-run/081-off.archive",
+          "sha256": "ffc4579bf4b102783a51d68807f224b1a8cd545d07e13e1d578e5a527dab841a"
+        }
+      }
+    },
+    {
+      "archive": {
+        "bytes": 245,
+        "path": "a7-corrupt/082.archive",
+        "sha256": "0b83eee5b810d533e7969e5ef53b02abef0a62a3f2da027a367d7d15bf306f7d"
+      },
+      "classification": "detected",
+      "hash_enabled": true,
+      "id": 82,
+      "raw": {
+        "decoder_started": false,
+        "returncode": null,
+        "signal": null,
+        "timed_out": false,
+        "validation": "original_sha_mismatch"
+      }
+    },
+    {
+      "archive": {
+        "bytes": 245,
+        "path": "a7-corrupt/082.archive",
+        "sha256": "0b83eee5b810d533e7969e5ef53b02abef0a62a3f2da027a367d7d15bf306f7d"
+      },
+      "classification": "refusal",
+      "hash_enabled": false,
+      "id": 82,
+      "raw": {
+        "decoder_started": true,
+        "output": {
+          "bytes": 0,
+          "path": "a7-run/082-off.output",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "returncode": 1,
+        "sidecars": [],
+        "signal": null,
+        "stderr": {
+          "bytes": 862,
+          "path": "a7-run/082-off.stderr",
+          "sha256": "27bc26b7656aca171c3fec52d267d6be13d8b797e066a73955337964cbea0fb5"
+        },
+        "timed_out": false,
+        "validation": "disabled",
+        "worker_archive": {
+          "bytes": 245,
+          "path": "a7-run/082-off.archive",
+          "sha256": "0b83eee5b810d533e7969e5ef53b02abef0a62a3f2da027a367d7d15bf306f7d"
+        }
+      }
+    },
+    {
+      "archive": {
+        "bytes": 245,
+        "path": "a7-corrupt/083.archive",
+        "sha256": "0b83eee5b810d533e7969e5ef53b02abef0a62a3f2da027a367d7d15bf306f7d"
+      },
+      "classification": "detected",
+      "hash_enabled": true,
+      "id": 83,
+      "raw": {
+        "decoder_started": false,
+        "returncode": null,
+        "signal": null,
+        "timed_out": false,
+        "validation": "original_sha_mismatch"
+      }
+    },
+    {
+      "archive": {
+        "bytes": 245,
+        "path": "a7-corrupt/083.archive",
+        "sha256": "0b83eee5b810d533e7969e5ef53b02abef0a62a3f2da027a367d7d15bf306f7d"
+      },
+      "classification": "refusal",
+      "hash_enabled": false,
+      "id": 83,
+      "raw": {
+        "decoder_started": true,
+        "output": {
+          "bytes": 0,
+          "path": "a7-run/083-off.output",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "returncode": 1,
+        "sidecars": [],
+        "signal": null,
+        "stderr": {
+          "bytes": 862,
+          "path": "a7-run/083-off.stderr",
+          "sha256": "27bc26b7656aca171c3fec52d267d6be13d8b797e066a73955337964cbea0fb5"
+        },
+        "timed_out": false,
+        "validation": "disabled",
+        "worker_archive": {
+          "bytes": 245,
+          "path": "a7-run/083-off.archive",
+          "sha256": "0b83eee5b810d533e7969e5ef53b02abef0a62a3f2da027a367d7d15bf306f7d"
+        }
+      }
+    },
+    {
+      "archive": {
+        "bytes": 245,
+        "path": "a7-corrupt/084.archive",
+        "sha256": "1f2e4aef51fa83f36f30ef61455a4c5b20c1acac2fa1b90fa7e5daf367e6e8cf"
+      },
+      "classification": "detected",
+      "hash_enabled": true,
+      "id": 84,
+      "raw": {
+        "decoder_started": false,
+        "returncode": null,
+        "signal": null,
+        "timed_out": false,
+        "validation": "original_sha_mismatch"
+      }
+    },
+    {
+      "archive": {
+        "bytes": 245,
+        "path": "a7-corrupt/084.archive",
+        "sha256": "1f2e4aef51fa83f36f30ef61455a4c5b20c1acac2fa1b90fa7e5daf367e6e8cf"
+      },
+      "classification": "refusal",
+      "hash_enabled": false,
+      "id": 84,
+      "raw": {
+        "decoder_started": true,
+        "output": {
+          "bytes": 0,
+          "path": "a7-run/084-off.output",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "returncode": 1,
+        "sidecars": [],
+        "signal": null,
+        "stderr": {
+          "bytes": 862,
+          "path": "a7-run/084-off.stderr",
+          "sha256": "27bc26b7656aca171c3fec52d267d6be13d8b797e066a73955337964cbea0fb5"
+        },
+        "timed_out": false,
+        "validation": "disabled",
+        "worker_archive": {
+          "bytes": 245,
+          "path": "a7-run/084-off.archive",
+          "sha256": "1f2e4aef51fa83f36f30ef61455a4c5b20c1acac2fa1b90fa7e5daf367e6e8cf"
+        }
+      }
+    },
+    {
+      "archive": {
+        "bytes": 245,
+        "path": "a7-corrupt/085.archive",
+        "sha256": "0b83eee5b810d533e7969e5ef53b02abef0a62a3f2da027a367d7d15bf306f7d"
+      },
+      "classification": "detected",
+      "hash_enabled": true,
+      "id": 85,
+      "raw": {
+        "decoder_started": false,
+        "returncode": null,
+        "signal": null,
+        "timed_out": false,
+        "validation": "original_sha_mismatch"
+      }
+    },
+    {
+      "archive": {
+        "bytes": 245,
+        "path": "a7-corrupt/085.archive",
+        "sha256": "0b83eee5b810d533e7969e5ef53b02abef0a62a3f2da027a367d7d15bf306f7d"
+      },
+      "classification": "refusal",
+      "hash_enabled": false,
+      "id": 85,
+      "raw": {
+        "decoder_started": true,
+        "output": {
+          "bytes": 0,
+          "path": "a7-run/085-off.output",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "returncode": 1,
+        "sidecars": [],
+        "signal": null,
+        "stderr": {
+          "bytes": 862,
+          "path": "a7-run/085-off.stderr",
+          "sha256": "27bc26b7656aca171c3fec52d267d6be13d8b797e066a73955337964cbea0fb5"
+        },
+        "timed_out": false,
+        "validation": "disabled",
+        "worker_archive": {
+          "bytes": 245,
+          "path": "a7-run/085-off.archive",
+          "sha256": "0b83eee5b810d533e7969e5ef53b02abef0a62a3f2da027a367d7d15bf306f7d"
+        }
+      }
+    },
+    {
+      "archive": {
+        "bytes": 245,
+        "path": "a7-corrupt/086.archive",
+        "sha256": "485a750cf407ce01bb45dc9fe3dbeaf7f96ef9d31cc328ecd719cb9d4d5e7d42"
+      },
+      "classification": "detected",
+      "hash_enabled": true,
+      "id": 86,
+      "raw": {
+        "decoder_started": false,
+        "returncode": null,
+        "signal": null,
+        "timed_out": false,
+        "validation": "original_sha_mismatch"
+      }
+    },
+    {
+      "archive": {
+        "bytes": 245,
+        "path": "a7-corrupt/086.archive",
+        "sha256": "485a750cf407ce01bb45dc9fe3dbeaf7f96ef9d31cc328ecd719cb9d4d5e7d42"
+      },
+      "classification": "refusal",
+      "hash_enabled": false,
+      "id": 86,
+      "raw": {
+        "decoder_started": true,
+        "output": {
+          "bytes": 0,
+          "path": "a7-run/086-off.output",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "returncode": 1,
+        "sidecars": [],
+        "signal": null,
+        "stderr": {
+          "bytes": 862,
+          "path": "a7-run/086-off.stderr",
+          "sha256": "27bc26b7656aca171c3fec52d267d6be13d8b797e066a73955337964cbea0fb5"
+        },
+        "timed_out": false,
+        "validation": "disabled",
+        "worker_archive": {
+          "bytes": 245,
+          "path": "a7-run/086-off.archive",
+          "sha256": "485a750cf407ce01bb45dc9fe3dbeaf7f96ef9d31cc328ecd719cb9d4d5e7d42"
+        }
+      }
+    },
+    {
+      "archive": {
+        "bytes": 245,
+        "path": "a7-corrupt/087.archive",
+        "sha256": "0b83eee5b810d533e7969e5ef53b02abef0a62a3f2da027a367d7d15bf306f7d"
+      },
+      "classification": "detected",
+      "hash_enabled": true,
+      "id": 87,
+      "raw": {
+        "decoder_started": false,
+        "returncode": null,
+        "signal": null,
+        "timed_out": false,
+        "validation": "original_sha_mismatch"
+      }
+    },
+    {
+      "archive": {
+        "bytes": 245,
+        "path": "a7-corrupt/087.archive",
+        "sha256": "0b83eee5b810d533e7969e5ef53b02abef0a62a3f2da027a367d7d15bf306f7d"
+      },
+      "classification": "refusal",
+      "hash_enabled": false,
+      "id": 87,
+      "raw": {
+        "decoder_started": true,
+        "output": {
+          "bytes": 0,
+          "path": "a7-run/087-off.output",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "returncode": 1,
+        "sidecars": [],
+        "signal": null,
+        "stderr": {
+          "bytes": 862,
+          "path": "a7-run/087-off.stderr",
+          "sha256": "27bc26b7656aca171c3fec52d267d6be13d8b797e066a73955337964cbea0fb5"
+        },
+        "timed_out": false,
+        "validation": "disabled",
+        "worker_archive": {
+          "bytes": 245,
+          "path": "a7-run/087-off.archive",
+          "sha256": "0b83eee5b810d533e7969e5ef53b02abef0a62a3f2da027a367d7d15bf306f7d"
+        }
+      }
+    },
+    {
+      "archive": {
+        "bytes": 245,
+        "path": "a7-corrupt/088.archive",
+        "sha256": "1f2e4aef51fa83f36f30ef61455a4c5b20c1acac2fa1b90fa7e5daf367e6e8cf"
+      },
+      "classification": "detected",
+      "hash_enabled": true,
+      "id": 88,
+      "raw": {
+        "decoder_started": false,
+        "returncode": null,
+        "signal": null,
+        "timed_out": false,
+        "validation": "original_sha_mismatch"
+      }
+    },
+    {
+      "archive": {
+        "bytes": 245,
+        "path": "a7-corrupt/088.archive",
+        "sha256": "1f2e4aef51fa83f36f30ef61455a4c5b20c1acac2fa1b90fa7e5daf367e6e8cf"
+      },
+      "classification": "refusal",
+      "hash_enabled": false,
+      "id": 88,
+      "raw": {
+        "decoder_started": true,
+        "output": {
+          "bytes": 0,
+          "path": "a7-run/088-off.output",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "returncode": 1,
+        "sidecars": [],
+        "signal": null,
+        "stderr": {
+          "bytes": 862,
+          "path": "a7-run/088-off.stderr",
+          "sha256": "27bc26b7656aca171c3fec52d267d6be13d8b797e066a73955337964cbea0fb5"
+        },
+        "timed_out": false,
+        "validation": "disabled",
+        "worker_archive": {
+          "bytes": 245,
+          "path": "a7-run/088-off.archive",
+          "sha256": "1f2e4aef51fa83f36f30ef61455a4c5b20c1acac2fa1b90fa7e5daf367e6e8cf"
+        }
+      }
+    },
+    {
+      "archive": {
+        "bytes": 245,
+        "path": "a7-corrupt/089.archive",
+        "sha256": "0b83eee5b810d533e7969e5ef53b02abef0a62a3f2da027a367d7d15bf306f7d"
+      },
+      "classification": "detected",
+      "hash_enabled": true,
+      "id": 89,
+      "raw": {
+        "decoder_started": false,
+        "returncode": null,
+        "signal": null,
+        "timed_out": false,
+        "validation": "original_sha_mismatch"
+      }
+    },
+    {
+      "archive": {
+        "bytes": 245,
+        "path": "a7-corrupt/089.archive",
+        "sha256": "0b83eee5b810d533e7969e5ef53b02abef0a62a3f2da027a367d7d15bf306f7d"
+      },
+      "classification": "refusal",
+      "hash_enabled": false,
+      "id": 89,
+      "raw": {
+        "decoder_started": true,
+        "output": {
+          "bytes": 0,
+          "path": "a7-run/089-off.output",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "returncode": 1,
+        "sidecars": [],
+        "signal": null,
+        "stderr": {
+          "bytes": 862,
+          "path": "a7-run/089-off.stderr",
+          "sha256": "27bc26b7656aca171c3fec52d267d6be13d8b797e066a73955337964cbea0fb5"
+        },
+        "timed_out": false,
+        "validation": "disabled",
+        "worker_archive": {
+          "bytes": 245,
+          "path": "a7-run/089-off.archive",
+          "sha256": "0b83eee5b810d533e7969e5ef53b02abef0a62a3f2da027a367d7d15bf306f7d"
+        }
+      }
+    },
+    {
+      "archive": {
+        "bytes": 245,
+        "path": "a7-corrupt/090.archive",
+        "sha256": "0b83eee5b810d533e7969e5ef53b02abef0a62a3f2da027a367d7d15bf306f7d"
+      },
+      "classification": "detected",
+      "hash_enabled": true,
+      "id": 90,
+      "raw": {
+        "decoder_started": false,
+        "returncode": null,
+        "signal": null,
+        "timed_out": false,
+        "validation": "original_sha_mismatch"
+      }
+    },
+    {
+      "archive": {
+        "bytes": 245,
+        "path": "a7-corrupt/090.archive",
+        "sha256": "0b83eee5b810d533e7969e5ef53b02abef0a62a3f2da027a367d7d15bf306f7d"
+      },
+      "classification": "refusal",
+      "hash_enabled": false,
+      "id": 90,
+      "raw": {
+        "decoder_started": true,
+        "output": {
+          "bytes": 0,
+          "path": "a7-run/090-off.output",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "returncode": 1,
+        "sidecars": [],
+        "signal": null,
+        "stderr": {
+          "bytes": 862,
+          "path": "a7-run/090-off.stderr",
+          "sha256": "27bc26b7656aca171c3fec52d267d6be13d8b797e066a73955337964cbea0fb5"
+        },
+        "timed_out": false,
+        "validation": "disabled",
+        "worker_archive": {
+          "bytes": 245,
+          "path": "a7-run/090-off.archive",
+          "sha256": "0b83eee5b810d533e7969e5ef53b02abef0a62a3f2da027a367d7d15bf306f7d"
+        }
+      }
+    },
+    {
+      "archive": {
+        "bytes": 245,
+        "path": "a7-corrupt/091.archive",
+        "sha256": "485a750cf407ce01bb45dc9fe3dbeaf7f96ef9d31cc328ecd719cb9d4d5e7d42"
+      },
+      "classification": "detected",
+      "hash_enabled": true,
+      "id": 91,
+      "raw": {
+        "decoder_started": false,
+        "returncode": null,
+        "signal": null,
+        "timed_out": false,
+        "validation": "original_sha_mismatch"
+      }
+    },
+    {
+      "archive": {
+        "bytes": 245,
+        "path": "a7-corrupt/091.archive",
+        "sha256": "485a750cf407ce01bb45dc9fe3dbeaf7f96ef9d31cc328ecd719cb9d4d5e7d42"
+      },
+      "classification": "refusal",
+      "hash_enabled": false,
+      "id": 91,
+      "raw": {
+        "decoder_started": true,
+        "output": {
+          "bytes": 0,
+          "path": "a7-run/091-off.output",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "returncode": 1,
+        "sidecars": [],
+        "signal": null,
+        "stderr": {
+          "bytes": 862,
+          "path": "a7-run/091-off.stderr",
+          "sha256": "27bc26b7656aca171c3fec52d267d6be13d8b797e066a73955337964cbea0fb5"
+        },
+        "timed_out": false,
+        "validation": "disabled",
+        "worker_archive": {
+          "bytes": 245,
+          "path": "a7-run/091-off.archive",
+          "sha256": "485a750cf407ce01bb45dc9fe3dbeaf7f96ef9d31cc328ecd719cb9d4d5e7d42"
+        }
+      }
+    },
+    {
+      "archive": {
+        "bytes": 245,
+        "path": "a7-corrupt/092.archive",
+        "sha256": "1f2e4aef51fa83f36f30ef61455a4c5b20c1acac2fa1b90fa7e5daf367e6e8cf"
+      },
+      "classification": "detected",
+      "hash_enabled": true,
+      "id": 92,
+      "raw": {
+        "decoder_started": false,
+        "returncode": null,
+        "signal": null,
+        "timed_out": false,
+        "validation": "original_sha_mismatch"
+      }
+    },
+    {
+      "archive": {
+        "bytes": 245,
+        "path": "a7-corrupt/092.archive",
+        "sha256": "1f2e4aef51fa83f36f30ef61455a4c5b20c1acac2fa1b90fa7e5daf367e6e8cf"
+      },
+      "classification": "refusal",
+      "hash_enabled": false,
+      "id": 92,
+      "raw": {
+        "decoder_started": true,
+        "output": {
+          "bytes": 0,
+          "path": "a7-run/092-off.output",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "returncode": 1,
+        "sidecars": [],
+        "signal": null,
+        "stderr": {
+          "bytes": 862,
+          "path": "a7-run/092-off.stderr",
+          "sha256": "27bc26b7656aca171c3fec52d267d6be13d8b797e066a73955337964cbea0fb5"
+        },
+        "timed_out": false,
+        "validation": "disabled",
+        "worker_archive": {
+          "bytes": 245,
+          "path": "a7-run/092-off.archive",
+          "sha256": "1f2e4aef51fa83f36f30ef61455a4c5b20c1acac2fa1b90fa7e5daf367e6e8cf"
+        }
+      }
+    },
+    {
+      "archive": {
+        "bytes": 245,
+        "path": "a7-corrupt/093.archive",
+        "sha256": "485a750cf407ce01bb45dc9fe3dbeaf7f96ef9d31cc328ecd719cb9d4d5e7d42"
+      },
+      "classification": "detected",
+      "hash_enabled": true,
+      "id": 93,
+      "raw": {
+        "decoder_started": false,
+        "returncode": null,
+        "signal": null,
+        "timed_out": false,
+        "validation": "original_sha_mismatch"
+      }
+    },
+    {
+      "archive": {
+        "bytes": 245,
+        "path": "a7-corrupt/093.archive",
+        "sha256": "485a750cf407ce01bb45dc9fe3dbeaf7f96ef9d31cc328ecd719cb9d4d5e7d42"
+      },
+      "classification": "refusal",
+      "hash_enabled": false,
+      "id": 93,
+      "raw": {
+        "decoder_started": true,
+        "output": {
+          "bytes": 0,
+          "path": "a7-run/093-off.output",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "returncode": 1,
+        "sidecars": [],
+        "signal": null,
+        "stderr": {
+          "bytes": 862,
+          "path": "a7-run/093-off.stderr",
+          "sha256": "27bc26b7656aca171c3fec52d267d6be13d8b797e066a73955337964cbea0fb5"
+        },
+        "timed_out": false,
+        "validation": "disabled",
+        "worker_archive": {
+          "bytes": 245,
+          "path": "a7-run/093-off.archive",
+          "sha256": "485a750cf407ce01bb45dc9fe3dbeaf7f96ef9d31cc328ecd719cb9d4d5e7d42"
+        }
+      }
+    },
+    {
+      "archive": {
+        "bytes": 245,
+        "path": "a7-corrupt/094.archive",
+        "sha256": "ffc4579bf4b102783a51d68807f224b1a8cd545d07e13e1d578e5a527dab841a"
+      },
+      "classification": "detected",
+      "hash_enabled": true,
+      "id": 94,
+      "raw": {
+        "decoder_started": false,
+        "returncode": null,
+        "signal": null,
+        "timed_out": false,
+        "validation": "original_sha_mismatch"
+      }
+    },
+    {
+      "archive": {
+        "bytes": 245,
+        "path": "a7-corrupt/094.archive",
+        "sha256": "ffc4579bf4b102783a51d68807f224b1a8cd545d07e13e1d578e5a527dab841a"
+      },
+      "classification": "refusal",
+      "hash_enabled": false,
+      "id": 94,
+      "raw": {
+        "decoder_started": true,
+        "output": {
+          "bytes": 0,
+          "path": "a7-run/094-off.output",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "returncode": 1,
+        "sidecars": [],
+        "signal": null,
+        "stderr": {
+          "bytes": 862,
+          "path": "a7-run/094-off.stderr",
+          "sha256": "27bc26b7656aca171c3fec52d267d6be13d8b797e066a73955337964cbea0fb5"
+        },
+        "timed_out": false,
+        "validation": "disabled",
+        "worker_archive": {
+          "bytes": 245,
+          "path": "a7-run/094-off.archive",
+          "sha256": "ffc4579bf4b102783a51d68807f224b1a8cd545d07e13e1d578e5a527dab841a"
+        }
+      }
+    },
+    {
+      "archive": {
+        "bytes": 245,
+        "path": "a7-corrupt/095.archive",
+        "sha256": "0b83eee5b810d533e7969e5ef53b02abef0a62a3f2da027a367d7d15bf306f7d"
+      },
+      "classification": "detected",
+      "hash_enabled": true,
+      "id": 95,
+      "raw": {
+        "decoder_started": false,
+        "returncode": null,
+        "signal": null,
+        "timed_out": false,
+        "validation": "original_sha_mismatch"
+      }
+    },
+    {
+      "archive": {
+        "bytes": 245,
+        "path": "a7-corrupt/095.archive",
+        "sha256": "0b83eee5b810d533e7969e5ef53b02abef0a62a3f2da027a367d7d15bf306f7d"
+      },
+      "classification": "refusal",
+      "hash_enabled": false,
+      "id": 95,
+      "raw": {
+        "decoder_started": true,
+        "output": {
+          "bytes": 0,
+          "path": "a7-run/095-off.output",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "returncode": 1,
+        "sidecars": [],
+        "signal": null,
+        "stderr": {
+          "bytes": 862,
+          "path": "a7-run/095-off.stderr",
+          "sha256": "27bc26b7656aca171c3fec52d267d6be13d8b797e066a73955337964cbea0fb5"
+        },
+        "timed_out": false,
+        "validation": "disabled",
+        "worker_archive": {
+          "bytes": 245,
+          "path": "a7-run/095-off.archive",
+          "sha256": "0b83eee5b810d533e7969e5ef53b02abef0a62a3f2da027a367d7d15bf306f7d"
+        }
+      }
+    },
+    {
+      "archive": {
+        "bytes": 245,
+        "path": "a7-corrupt/096.archive",
+        "sha256": "485a750cf407ce01bb45dc9fe3dbeaf7f96ef9d31cc328ecd719cb9d4d5e7d42"
+      },
+      "classification": "detected",
+      "hash_enabled": true,
+      "id": 96,
+      "raw": {
+        "decoder_started": false,
+        "returncode": null,
+        "signal": null,
+        "timed_out": false,
+        "validation": "original_sha_mismatch"
+      }
+    },
+    {
+      "archive": {
+        "bytes": 245,
+        "path": "a7-corrupt/096.archive",
+        "sha256": "485a750cf407ce01bb45dc9fe3dbeaf7f96ef9d31cc328ecd719cb9d4d5e7d42"
+      },
+      "classification": "refusal",
+      "hash_enabled": false,
+      "id": 96,
+      "raw": {
+        "decoder_started": true,
+        "output": {
+          "bytes": 0,
+          "path": "a7-run/096-off.output",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "returncode": 1,
+        "sidecars": [],
+        "signal": null,
+        "stderr": {
+          "bytes": 862,
+          "path": "a7-run/096-off.stderr",
+          "sha256": "27bc26b7656aca171c3fec52d267d6be13d8b797e066a73955337964cbea0fb5"
+        },
+        "timed_out": false,
+        "validation": "disabled",
+        "worker_archive": {
+          "bytes": 245,
+          "path": "a7-run/096-off.archive",
+          "sha256": "485a750cf407ce01bb45dc9fe3dbeaf7f96ef9d31cc328ecd719cb9d4d5e7d42"
+        }
+      }
+    },
+    {
+      "archive": {
+        "bytes": 245,
+        "path": "a7-corrupt/097.archive",
+        "sha256": "485a750cf407ce01bb45dc9fe3dbeaf7f96ef9d31cc328ecd719cb9d4d5e7d42"
+      },
+      "classification": "detected",
+      "hash_enabled": true,
+      "id": 97,
+      "raw": {
+        "decoder_started": false,
+        "returncode": null,
+        "signal": null,
+        "timed_out": false,
+        "validation": "original_sha_mismatch"
+      }
+    },
+    {
+      "archive": {
+        "bytes": 245,
+        "path": "a7-corrupt/097.archive",
+        "sha256": "485a750cf407ce01bb45dc9fe3dbeaf7f96ef9d31cc328ecd719cb9d4d5e7d42"
+      },
+      "classification": "refusal",
+      "hash_enabled": false,
+      "id": 97,
+      "raw": {
+        "decoder_started": true,
+        "output": {
+          "bytes": 0,
+          "path": "a7-run/097-off.output",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "returncode": 1,
+        "sidecars": [],
+        "signal": null,
+        "stderr": {
+          "bytes": 862,
+          "path": "a7-run/097-off.stderr",
+          "sha256": "27bc26b7656aca171c3fec52d267d6be13d8b797e066a73955337964cbea0fb5"
+        },
+        "timed_out": false,
+        "validation": "disabled",
+        "worker_archive": {
+          "bytes": 245,
+          "path": "a7-run/097-off.archive",
+          "sha256": "485a750cf407ce01bb45dc9fe3dbeaf7f96ef9d31cc328ecd719cb9d4d5e7d42"
+        }
+      }
+    },
+    {
+      "archive": {
+        "bytes": 245,
+        "path": "a7-corrupt/098.archive",
+        "sha256": "ffc4579bf4b102783a51d68807f224b1a8cd545d07e13e1d578e5a527dab841a"
+      },
+      "classification": "detected",
+      "hash_enabled": true,
+      "id": 98,
+      "raw": {
+        "decoder_started": false,
+        "returncode": null,
+        "signal": null,
+        "timed_out": false,
+        "validation": "original_sha_mismatch"
+      }
+    },
+    {
+      "archive": {
+        "bytes": 245,
+        "path": "a7-corrupt/098.archive",
+        "sha256": "ffc4579bf4b102783a51d68807f224b1a8cd545d07e13e1d578e5a527dab841a"
+      },
+      "classification": "refusal",
+      "hash_enabled": false,
+      "id": 98,
+      "raw": {
+        "decoder_started": true,
+        "output": {
+          "bytes": 0,
+          "path": "a7-run/098-off.output",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "returncode": 1,
+        "sidecars": [],
+        "signal": null,
+        "stderr": {
+          "bytes": 862,
+          "path": "a7-run/098-off.stderr",
+          "sha256": "27bc26b7656aca171c3fec52d267d6be13d8b797e066a73955337964cbea0fb5"
+        },
+        "timed_out": false,
+        "validation": "disabled",
+        "worker_archive": {
+          "bytes": 245,
+          "path": "a7-run/098-off.archive",
+          "sha256": "ffc4579bf4b102783a51d68807f224b1a8cd545d07e13e1d578e5a527dab841a"
+        }
+      }
+    },
+    {
+      "archive": {
+        "bytes": 245,
+        "path": "a7-corrupt/099.archive",
+        "sha256": "0b83eee5b810d533e7969e5ef53b02abef0a62a3f2da027a367d7d15bf306f7d"
+      },
+      "classification": "detected",
+      "hash_enabled": true,
+      "id": 99,
+      "raw": {
+        "decoder_started": false,
+        "returncode": null,
+        "signal": null,
+        "timed_out": false,
+        "validation": "original_sha_mismatch"
+      }
+    },
+    {
+      "archive": {
+        "bytes": 245,
+        "path": "a7-corrupt/099.archive",
+        "sha256": "0b83eee5b810d533e7969e5ef53b02abef0a62a3f2da027a367d7d15bf306f7d"
+      },
+      "classification": "refusal",
+      "hash_enabled": false,
+      "id": 99,
+      "raw": {
+        "decoder_started": true,
+        "output": {
+          "bytes": 0,
+          "path": "a7-run/099-off.output",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "returncode": 1,
+        "sidecars": [],
+        "signal": null,
+        "stderr": {
+          "bytes": 862,
+          "path": "a7-run/099-off.stderr",
+          "sha256": "27bc26b7656aca171c3fec52d267d6be13d8b797e066a73955337964cbea0fb5"
+        },
+        "timed_out": false,
+        "validation": "disabled",
+        "worker_archive": {
+          "bytes": 245,
+          "path": "a7-run/099-off.archive",
+          "sha256": "0b83eee5b810d533e7969e5ef53b02abef0a62a3f2da027a367d7d15bf306f7d"
+        }
+      }
+    }
+  ],
+  "schema": "axis5-evidence-v1"
+}

@@ -1,0 +1,8 @@
+Exact original source: accepted HWAPEX_PR63_A7.zip
+ZIP SHA256 f58150e0d48134e45bf7104468af0704bb6784df569cfeee43341d71531bcaf3
+A7 tree deb571acd4b988cbd5e5d7fc7e2869844a14e715
+input/data: synthetic/a7-refrel-q4k
+input/q16k: synthetic/a7-refrel-q16k (A4 only)
+All 501 copied dependency/evidence files match their original ZIP bytes.
+leaderboard-input.json is new A8 metadata with external prepare/evidence SHA anchors.
+expected/ contains deterministic generator outputs; no decoder or timing run used.

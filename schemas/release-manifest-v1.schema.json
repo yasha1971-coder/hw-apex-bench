@@ -1,0 +1,114 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "artifacts": {
+      "items": {
+        "additionalProperties": false,
+        "properties": {
+          "axes": {
+            "items": {
+              "enum": [
+                3,
+                4,
+                5
+              ]
+            },
+            "type": "array",
+            "uniqueItems": true
+          },
+          "axis": {
+            "enum": [
+              null,
+              3,
+              4,
+              5
+            ]
+          },
+          "bytes": {
+            "minimum": 0,
+            "type": "integer"
+          },
+          "commit": {
+            "pattern": "^[0-9a-f]{40}$",
+            "type": "string"
+          },
+          "commit_scope": {
+            "const": "release-input"
+          },
+          "evidence_sha256": {
+            "items": {
+              "pattern": "^[0-9a-f]{64}$",
+              "type": "string"
+            },
+            "type": "array",
+            "uniqueItems": true
+          },
+          "machine_id": {
+            "minLength": 1,
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "path": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "role": {
+            "enum": [
+              "input",
+              "evidence",
+              "leaderboard",
+              "recipe",
+              "metadata"
+            ]
+          },
+          "sha256": {
+            "pattern": "^[0-9a-f]{64}$",
+            "type": "string"
+          }
+        },
+        "required": [
+          "path",
+          "bytes",
+          "sha256",
+          "axis",
+          "axes",
+          "machine_id",
+          "evidence_sha256",
+          "commit",
+          "commit_scope",
+          "role"
+        ],
+        "type": "object"
+      },
+      "minItems": 1,
+      "type": "array"
+    },
+    "commit": {
+      "pattern": "^[0-9a-f]{40}$",
+      "type": "string"
+    },
+    "mode": {
+      "enum": [
+        "synthetic",
+        "real"
+      ]
+    },
+    "schema": {
+      "const": "release-manifest-v1"
+    },
+    "version": {
+      "const": "0.2.0"
+    }
+  },
+  "required": [
+    "schema",
+    "version",
+    "commit",
+    "mode",
+    "artifacts"
+  ],
+  "type": "object"
+}

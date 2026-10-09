@@ -1,0 +1,17 @@
+{
+  "codec_version": "frozen-v1",
+  "compiler": "g++ (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0",
+  "decoder_threads": 1,
+  "dependencies": {
+    "libzstd": "1.5.7"
+  },
+  "evidence_kind": "synthetic",
+  "flags": [
+    "-O3",
+    "-fPIC",
+    "-shared"
+  ],
+  "library_sha256": "d2e3d438a524f01a0e1a5f749bf0550924ec91b4061b9f58aabb9ad99264be96",
+  "provenance_scope": "clean source pin, loaded dependency versions, library SHA; build logs retained separately",
+  "source_commit": "5b6d5cec0f5962a561ac48822a1b5c48793a5b47"
+}

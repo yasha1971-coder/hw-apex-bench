@@ -1,0 +1,184 @@
+{
+  "schema": "leaderboard-v1",
+  "tables": [
+    {
+      "conditions": {
+        "axis": 3,
+        "corpus": "f99069fa27b0ce25516559d876ac086b06e2263e096799e1f9ff016576c15bf0",
+        "hardware": {
+          "cpu_model": "unit",
+          "frequency_policy": "unit",
+          "machine_id": "unit-contract-fixture"
+        },
+        "kind": "synthetic",
+        "machine": "unit-contract-fixture",
+        "n_assemblies": 4,
+        "protocol": "f99069fa27b0ce25516559d876ac086b06e2263e096799e1f9ff016576c15bf0",
+        "requests": "35b7f86dc6e11db44ab56c49a949b6f3363241929940664e22c0c0bf71012d4b",
+        "runbook": "f99069fa27b0ce25516559d876ac086b06e2263e096799e1f9ff016576c15bf0",
+        "schema": "axis3-evidence-v1",
+        "scope": "cpu-in-process",
+        "threads": 1,
+        "window_bytes": 1024
+      },
+      "id": "axis3",
+      "rows": [
+        {
+          "Q_actual_bytes": 4096,
+          "axis": 3,
+          "bytes_per_assembly": 100,
+          "evidence": "evidence/c296feab3f7da001963c21ee5cd655ab17fd82ab9b24a6e76e582d1ff61db658/evidence.json",
+          "evidence_sha256": "c296feab3f7da001963c21ee5cd655ab17fd82ab9b24a6e76e582d1ff61db658",
+          "format": "unit-contract-fixture",
+          "kind": "synthetic",
+          "machine": "unit-contract-fixture",
+          "scope": "cpu-in-process",
+          "status": "PASS",
+          "stored_bytes": 400,
+          "table": "axis3",
+          "variant": "not-native",
+          "verified": 10000,
+          "window_bytes": 1024
+        }
+      ]
+    },
+    {
+      "conditions": {
+        "axis": 4,
+        "corpus": "cd9eae0813be8ef4f1fefe403c331279af143282ab385e6edf941003d0ce8a91",
+        "domain": "uppercase-sequence-without-FASTA-framing",
+        "kind": "synthetic",
+        "machine": null,
+        "protocol": "4a0027fec59b3252dc07b29458a57a5a451957f1b64b36f3927765cbc6be7a5c",
+        "requests": "361e011ed0c13c775997974d3fc617d3e1a353ce2f4f6891ba38f831183ba342",
+        "schema": "axis4-evidence-v3",
+        "scope": "cpu-in-process",
+        "threads": 1,
+        "timing_boundary": "complete group: native fetch, uppercase normalization, SHA-256 judgement and translation; response file writes outside timer"
+      },
+      "id": "axis4-3fc0f8dd3aab6135b8aba4b896c5d6c9bbd1571384173a6bccb0b8f59caa5889",
+      "rows": [
+        {
+          "axis": 4,
+          "evidence": "evidence/3fc0f8dd3aab6135b8aba4b896c5d6c9bbd1571384173a6bccb0b8f59caa5889/evidence.json",
+          "evidence_sha256": "3fc0f8dd3aab6135b8aba4b896c5d6c9bbd1571384173a6bccb0b8f59caa5889",
+          "format": "refrel3",
+          "kind": "synthetic",
+          "machine": null,
+          "scope": "cpu-in-process",
+          "status": "PASS",
+          "stored_bytes": 13032,
+          "table": "axis4-3fc0f8dd3aab6135b8aba4b896c5d6c9bbd1571384173a6bccb0b8f59caa5889",
+          "variant": "q4k",
+          "verified": 40
+        }
+      ]
+    },
+    {
+      "conditions": {
+        "axis": 4,
+        "corpus": "cd9eae0813be8ef4f1fefe403c331279af143282ab385e6edf941003d0ce8a91",
+        "domain": "uppercase-sequence-without-FASTA-framing",
+        "kind": "synthetic",
+        "machine": null,
+        "protocol": "4a0027fec59b3252dc07b29458a57a5a451957f1b64b36f3927765cbc6be7a5c",
+        "requests": "361e011ed0c13c775997974d3fc617d3e1a353ce2f4f6891ba38f831183ba342",
+        "schema": "axis4-evidence-v3",
+        "scope": "cpu-in-process",
+        "threads": 1,
+        "timing_boundary": "complete group: native fetch, uppercase normalization, SHA-256 judgement and translation; response file writes outside timer"
+      },
+      "id": "axis4-724dfd71a8159641eea56f7c398e23132934925d01deff8d42ec77260c81216b",
+      "rows": [
+        {
+          "axis": 4,
+          "evidence": "evidence/724dfd71a8159641eea56f7c398e23132934925d01deff8d42ec77260c81216b/evidence.json",
+          "evidence_sha256": "724dfd71a8159641eea56f7c398e23132934925d01deff8d42ec77260c81216b",
+          "format": "refrel3",
+          "kind": "synthetic",
+          "machine": null,
+          "scope": "cpu-in-process",
+          "status": "PASS",
+          "stored_bytes": 12966,
+          "table": "axis4-724dfd71a8159641eea56f7c398e23132934925d01deff8d42ec77260c81216b",
+          "variant": "q16k",
+          "verified": 40
+        }
+      ]
+    },
+    {
+      "conditions": {
+        "axis": 5,
+        "corpus": "cd9eae0813be8ef4f1fefe403c331279af143282ab385e6edf941003d0ce8a91",
+        "kind": "synthetic",
+        "machine": null,
+        "per_kind": 20,
+        "protocol": "e30f78ff89acad8386afb883c14d0e841ead5851ec3cd88a5c861c33723e811e",
+        "requests": "d59375f426974615ad39f16658d709c0617df16829855f86406dc53619a307b0",
+        "schema": "axis5-evidence-v1",
+        "scope": null,
+        "seed": 20261003,
+        "timeout_seconds": 10
+      },
+      "id": "axis5-844b19c7cbb91239705694a34349abce5e5846fe51e621b45e57cc6c302d777d-hash-off",
+      "rows": [
+        {
+          "axis": 5,
+          "crash": 0,
+          "detected": 0,
+          "evidence": "evidence/844b19c7cbb91239705694a34349abce5e5846fe51e621b45e57cc6c302d777d/evidence.json",
+          "evidence_sha256": "844b19c7cbb91239705694a34349abce5e5846fe51e621b45e57cc6c302d777d",
+          "format": "refrel3",
+          "hang": 0,
+          "harmless": 0,
+          "hash_mode": "off",
+          "kind": "synthetic",
+          "machine": null,
+          "refusal": 100,
+          "scope": null,
+          "silent_error": 0,
+          "status": "PASS",
+          "table": "axis5-844b19c7cbb91239705694a34349abce5e5846fe51e621b45e57cc6c302d777d-hash-off",
+          "variant": "q4k"
+        }
+      ]
+    },
+    {
+      "conditions": {
+        "axis": 5,
+        "corpus": "cd9eae0813be8ef4f1fefe403c331279af143282ab385e6edf941003d0ce8a91",
+        "kind": "synthetic",
+        "machine": null,
+        "per_kind": 20,
+        "protocol": "e30f78ff89acad8386afb883c14d0e841ead5851ec3cd88a5c861c33723e811e",
+        "requests": "d59375f426974615ad39f16658d709c0617df16829855f86406dc53619a307b0",
+        "schema": "axis5-evidence-v1",
+        "scope": null,
+        "seed": 20261003,
+        "timeout_seconds": 10
+      },
+      "id": "axis5-844b19c7cbb91239705694a34349abce5e5846fe51e621b45e57cc6c302d777d-hash-on",
+      "rows": [
+        {
+          "axis": 5,
+          "crash": 0,
+          "detected": 100,
+          "evidence": "evidence/844b19c7cbb91239705694a34349abce5e5846fe51e621b45e57cc6c302d777d/evidence.json",
+          "evidence_sha256": "844b19c7cbb91239705694a34349abce5e5846fe51e621b45e57cc6c302d777d",
+          "format": "refrel3",
+          "hang": 0,
+          "harmless": 0,
+          "hash_mode": "on",
+          "kind": "synthetic",
+          "machine": null,
+          "refusal": 0,
+          "scope": null,
+          "silent_error": 0,
+          "status": "PASS",
+          "table": "axis5-844b19c7cbb91239705694a34349abce5e5846fe51e621b45e57cc6c302d777d-hash-on",
+          "variant": "q4k"
+        }
+      ]
+    }
+  ]
+}

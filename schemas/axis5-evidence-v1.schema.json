@@ -1,0 +1,292 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aceapex.org/schemas/axis5-evidence-v1.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "evidence_kind",
+    "prepared",
+    "corrupt",
+    "baseline",
+    "rows",
+    "counts",
+    "integrity"
+  ],
+  "properties": {
+    "schema": {
+      "const": "axis5-evidence-v1"
+    },
+    "evidence_kind": {
+      "const": "synthetic"
+    },
+    "prepared": {
+      "$ref": "#/$defs/file"
+    },
+    "corrupt": {
+      "$ref": "#/$defs/file"
+    },
+    "baseline": {
+      "$ref": "#/$defs/raw"
+    },
+    "rows": {
+      "type": "array",
+      "minItems": 200,
+      "maxItems": 200,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "hash_enabled",
+          "archive",
+          "raw",
+          "classification"
+        ],
+        "properties": {
+          "id": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 99
+          },
+          "hash_enabled": {
+            "type": "boolean"
+          },
+          "archive": {
+            "$ref": "#/$defs/file"
+          },
+          "raw": {
+            "$ref": "#/$defs/raw"
+          },
+          "classification": {
+            "enum": [
+              "detected",
+              "silent_error",
+              "refusal",
+              "hang",
+              "crash",
+              "harmless"
+            ]
+          }
+        }
+      }
+    },
+    "counts": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "on",
+        "off"
+      ],
+      "properties": {
+        "on": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "detected",
+            "silent_error",
+            "refusal",
+            "hang",
+            "crash",
+            "harmless"
+          ],
+          "properties": {
+            "detected": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 100
+            },
+            "silent_error": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 100
+            },
+            "refusal": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 100
+            },
+            "hang": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 100
+            },
+            "crash": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 100
+            },
+            "harmless": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 100
+            }
+          }
+        },
+        "off": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "detected",
+            "silent_error",
+            "refusal",
+            "hang",
+            "crash",
+            "harmless"
+          ],
+          "properties": {
+            "detected": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 100
+            },
+            "silent_error": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 100
+            },
+            "refusal": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 100
+            },
+            "hang": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 100
+            },
+            "crash": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 100
+            },
+            "harmless": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 100
+            }
+          }
+        }
+      }
+    },
+    "integrity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "on",
+        "off"
+      ],
+      "properties": {
+        "on": {
+          "enum": [
+            "PASS",
+            "FAIL"
+          ]
+        },
+        "off": {
+          "enum": [
+            "PASS",
+            "FAIL"
+          ]
+        }
+      }
+    }
+  },
+  "$defs": {
+    "file": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "path",
+        "bytes",
+        "sha256"
+      ],
+      "properties": {
+        "path": {
+          "type": "string",
+          "minLength": 1
+        },
+        "bytes": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        }
+      }
+    },
+    "raw": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "decoder_started",
+        "timed_out",
+        "returncode",
+        "signal",
+        "validation"
+      ],
+      "properties": {
+        "decoder_started": {
+          "type": "boolean"
+        },
+        "timed_out": {
+          "type": "boolean"
+        },
+        "returncode": {
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "signal": {
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "validation": {
+          "enum": [
+            "disabled",
+            "original_sha_mismatch"
+          ]
+        },
+        "output": {
+          "$ref": "#/$defs/file"
+        },
+        "stderr": {
+          "$ref": "#/$defs/file"
+        },
+        "worker_archive": {
+          "$ref": "#/$defs/file"
+        },
+        "sidecars": {
+          "type": "array",
+          "maxItems": 2,
+          "items": {
+            "$ref": "#/$defs/file"
+          }
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "decoder_started": {
+                "const": true
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "output",
+              "stderr",
+              "worker_archive",
+              "sidecars"
+            ]
+          }
+        }
+      ]
+    }
+  }
+}

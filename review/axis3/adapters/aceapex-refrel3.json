@@ -1,0 +1,36 @@
+{
+  "schema": "axis3-adapter-v1",
+  "codec": "ACEAPEX-refrel3",
+  "upstream_repository": "yasha1971-coder/aceapex",
+  "upstream_branch": "refrel",
+  "freeze_contract": "research/refrel/FORMAT.md",
+  "freeze_status": "frozen-v1",
+  "measurements_allowed": false,
+  "variants": {
+    "q4k": {
+      "RR_BS": 4096,
+      "Q_block": 4096,
+      "Q_definition": "Q_block = RR_BS"
+    },
+    "q16k": {
+      "RR_BS": 16384,
+      "Q_block": 16384,
+      "Q_definition": "Q_block = RR_BS"
+    }
+  },
+  "scopes": [
+    "cli"
+  ],
+  "build": "refrel3v1 encode <ref.fa> <Q> <threads> <asm.fa> <out.rr3>",
+  "region": "refrel3v1 fetch <ref.fa> <archive.rr3> <contig:start-end>",
+  "window_law": {
+    "status": "n/a-until-format-freeze",
+    "Q_block": "RR_BS",
+    "D_Q": "must be measured after freeze on the same official runner/scope"
+  },
+  "upstream_commit": "5b6d5cec0f5962a561ac48822a1b5c48793a5b47",
+  "implementation": "research/refrel/refrel3v1.cpp",
+  "build_script": "review/axis3/build_refrel3.sh",
+  "adapter_script": "review/axis3/refrel3_adapter.sh",
+  "enable_gate": "synthetic encode/decode/fetch q4k+q16k must pass in CI before measurements_allowed=true"
+}

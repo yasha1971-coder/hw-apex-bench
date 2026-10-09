@@ -30,7 +30,7 @@ jobs:
     outputs:
       measure: ${{ steps.scope.outputs.measure }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
         with:
           fetch-depth: 0
       - name: Select timing checks only for measurement implementation changes
@@ -82,7 +82,7 @@ jobs:
       matrix:
         codec: [bgzip, bgzip_1_19, zstd_seekable, aceapex, aceapex_dense, xz]
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
       - name: Install build prerequisites
         run: sudo apt-get update -qq && sudo apt-get install -y -qq build-essential autoconf automake cmake zlib1g-dev
       - name: Check failure handling and external adapter
@@ -110,7 +110,7 @@ jobs:
         run: python3 review/verify_nine_axes.py ".work/native-${{ matrix.codec }}/manifest.json"
       - name: Retain receipts and diagnostics
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
           name: adapter-check-${{ matrix.codec }}
           path: |
@@ -132,14 +132,14 @@ jobs:
     runs-on: ubuntu-24.04
     timeout-minutes: 90
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
       - name: Install build prerequisites
         run: sudo apt-get update -qq && sudo apt-get install -y -qq build-essential autoconf automake cmake zlib1g-dev
       - name: Run the authorized full native comparison
         run: python3 harness/full_native_run.py
       - name: Preserve full candidate evidence
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
           name: native-full-comparison
           include-hidden-files: true

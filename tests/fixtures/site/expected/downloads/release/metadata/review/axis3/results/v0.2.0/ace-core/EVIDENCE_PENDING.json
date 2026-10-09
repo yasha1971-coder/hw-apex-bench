@@ -1,0 +1,7 @@
+{
+  "schema": "release-evidence-pending-v1",
+  "status": "PENDING",
+  "machine_id": "ace-core",
+  "measurement_claim": false,
+  "instruction": "Server must add actual supported Axis 3/4/5 evidence and hash-anchored leaderboard-input.json catalogs, with original inputs, logs and silence telemetry. This placeholder is never valid release evidence. Axis 5 v1 supports synthetic experiments only; official Axis 5 needs a separately frozen protocol/schema, not relabelling. No real measurements are present here."
+}

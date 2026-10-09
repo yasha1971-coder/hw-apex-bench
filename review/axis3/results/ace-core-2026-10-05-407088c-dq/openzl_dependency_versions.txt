@@ -1,0 +1,2 @@
+ZSTD_versionString=1.5.7
+LZ4_versionString=1.10.0
