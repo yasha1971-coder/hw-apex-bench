@@ -11,6 +11,11 @@ on:
       - 'schemas/**'
       - 'METHODOLOGY.md'
       - 'PROTOCOL_AXIS5.md'
+      - 'reproduce_v020.sh'
+      - 'CITATION.cff'
+      - '.zenodo.json'
+      - 'CHANGELOG.md'
+      - 'RELEASE_NOTES_v0.2.0.md'
 permissions:
   contents: read
 jobs:
@@ -36,7 +41,7 @@ jobs:
         run: |
           set -euo pipefail
           python3 -m venv "$RUNNER_TEMP/unit-venv"
-          "$RUNNER_TEMP/unit-venv/bin/python" -m pip install -q jsonschema==4.26.0
+          "$RUNNER_TEMP/unit-venv/bin/python" -m pip install -q jsonschema==4.26.0 PyYAML==6.0.3
           "$RUNNER_TEMP/unit-venv/bin/python" -m py_compile tools/*.py tests/*.py
           "$RUNNER_TEMP/unit-venv/bin/python" - "$RUNNER_TEMP/unit-result.json" <<'PY' 2>&1 | tee "$RUNNER_TEMP/unit.log"
           import ast
@@ -50,7 +55,7 @@ jobs:
           import unittest
 
           # Keep collection count strict; optional native cases are still collected.
-          expected_total = 306  # A8: 269 A7 + 37 leaderboard tests
+          expected_total = 358  # A9: 306 A8 + 52 release tests
           suite = unittest.defaultTestLoader.discover("tests")
           native_type = importlib.import_module("test_s2_native_readers").NativeAvailability
 
@@ -126,6 +131,20 @@ jobs:
         with:
           name: leaderboard-native-evidence-synthetic
           path: ${{ runner.temp }}/leaderboard-synthetic
+          if-no-files-found: error
+      - name: v0.2.0 offline release and independent manifest verification
+        run: |
+          set -euo pipefail
+          PYTHON="$RUNNER_TEMP/unit-venv/bin/python" bash reproduce_v020.sh synthetic \
+            --out "$RUNNER_TEMP/release-v020-synthetic"
+          "$RUNNER_TEMP/unit-venv/bin/python" -m tools.release_v020 \
+            --verify "$RUNNER_TEMP/release-v020-synthetic/first"
+      - name: Retain v0.2.0 release synthetic artifacts
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: release-v020-synthetic
+          path: ${{ runner.temp }}/release-v020-synthetic
           if-no-files-found: error
       - name: Install synthetic adapter dependencies
         run: |

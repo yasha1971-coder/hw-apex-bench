@@ -1,0 +1,94 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "description": "Locally enforced GitHub .zenodo.json subset; not a replacement for Zenodo server validation. Field semantics: https://developers.zenodo.org/ and https://help.zenodo.org/docs/github/describe-software/zenodo-json/",
+  "properties": {
+    "access_right": {
+      "const": "open"
+    },
+    "creators": {
+      "items": {
+        "additionalProperties": false,
+        "properties": {
+          "name": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "orcid": {
+            "pattern": "^[0-9]{4}-[0-9]{4}-[0-9]{4}-[0-9]{3}[0-9X]$",
+            "type": "string"
+          }
+        },
+        "required": [
+          "name",
+          "orcid"
+        ],
+        "type": "object"
+      },
+      "minItems": 1,
+      "type": "array"
+    },
+    "description": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "keywords": {
+      "items": {
+        "minLength": 1,
+        "type": "string"
+      },
+      "minItems": 1,
+      "type": "array",
+      "uniqueItems": true
+    },
+    "license": {
+      "const": "Apache-2.0"
+    },
+    "related_identifiers": {
+      "items": {
+        "additionalProperties": false,
+        "properties": {
+          "identifier": {
+            "format": "uri",
+            "type": "string"
+          },
+          "relation": {
+            "const": "isSupplementTo"
+          },
+          "scheme": {
+            "const": "url"
+          }
+        },
+        "required": [
+          "identifier",
+          "relation",
+          "scheme"
+        ],
+        "type": "object"
+      },
+      "type": "array"
+    },
+    "title": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "upload_type": {
+      "const": "software"
+    },
+    "version": {
+      "const": "0.2.0"
+    }
+  },
+  "required": [
+    "title",
+    "upload_type",
+    "description",
+    "version",
+    "access_right",
+    "license",
+    "creators",
+    "keywords",
+    "related_identifiers"
+  ],
+  "type": "object"
+}

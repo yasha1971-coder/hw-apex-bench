@@ -5,13 +5,12 @@ message: >-
   artifact hashes, codec configuration and host; results from distinct scopes
   are not interchangeable. Code is Apache-2.0; measurements are CC BY 4.0.
 type: software
-version: "0.1"
-doi: "10.5281/zenodo.22713364"
-date-released: "2026-09-11"
+version: "0.2.0"
 title: "hw-apex-bench: Compressed Access Benchmark"
 authors:
-  - name: "yasha1971-coder"
-    website: "https://github.com/yasha1971-coder"
+  - family-names: "Shavidze"
+    given-names: "Yakiv"
+    orcid: "https://orcid.org/0009-0008-3622-3448"
 repository-code: "https://github.com/yasha1971-coder/hw-apex-bench"
 url: "https://yasha1971-coder.github.io/hw-apex-bench/"
 license: Apache-2.0

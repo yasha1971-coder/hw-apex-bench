@@ -229,11 +229,13 @@ class MethodologyTest(unittest.TestCase):
     def test_stock_configuration_reference_accounting_and_other_axes(self):
         for clause in ("one create", "not a chain of append", "A shared reference is counted once, never omitted",
                        "Axis 4 maps each query group explicitly to every selected assembly",
-                       "100 independent one-bit mutations", "10-second watchdog",
+                       "bit flips, byte replacement, truncation", "10-second watchdog",
                        "Pre-decode refusal requires an explicit validation stage",
                        "A worker's successful process exit does not prove"):
             self.assertIn(clause, self.text)
-        self.assertIn("complete official CLI experiments that still need separate implementation", self.text)
+        self.assertIn("supports synthetic evidence only", self.text)
+        self.assertIn("regenerated mutations", self.text)
+        self.assertIn("Harness verification PASS does not imply integrity PASS", self.text)
 
     def test_guard_rejects_regression_to_one_based_common_coordinates(self):
         changed = self.method.replace("using zero-based half-open coordinates", "Common coordinates are 1-based inclusive")

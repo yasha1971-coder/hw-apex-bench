@@ -1297,3 +1297,27 @@ measurements.
 - Final delivery requires a fresh bundle+A6+A7 clone, A8 apply --check --index,
   git am, exact postimage tree and complete suites in both native modes; the
   final package receipts record those results. GitHub CI was not executed.
+
+### A9 local handoff — v0.2.0 release engineering (2026-10-09)
+
+- Base A8 commit 8ff1080e513d29d8a9ea35b80c81346a4a1ae73b; accepted tree
+  83d5edc4f86dc52f2b6efb454640e997fb7a69ab. No push/publication.
+- Release entry point verifies all supported Axis 3/4/5 evidence through A8,
+  stages complete catalog dependencies, emits deterministic leaderboard files,
+  exact evidence copies and a per-artifact SHA/size/provenance manifest.
+  Independent verification repeats axis checks and regenerates all tables.
+- Offline synthetic reproduction uses original A6/A7 native evidence and a
+  clearly marked Axis 3 unit-contract fixture, without native execution.
+  Real reproduction requires data/native paths and fresh ace-core silence
+  admission before/after assembly. Existing measured evidence gates remain
+  verified; synthetic Axis 5 cannot be relabelled as official data.
+- Methodology, prepared changelog/release notes, CFF 0.2.0 with supplied author
+  and ORCID, and Zenodo metadata are included. No new DOI/date/measurement is
+  invented. Original A8 final receipts/logs are copied unchanged for numeric
+  release-note provenance. Official ace-core evidence is explicitly PENDING.
+- Server AGC overlay targets are untouched, including the entire RUN.md.
+  The patch has no hunks for build_agc_v324.sh, axis3-agc.yml or RUN.md.
+- 52 new release tests; workflow expected_total=358 (306 A8 +52 A9).
+  Final clean-clone full-suite/native-skip, postimage and package receipts are
+  supplied in HWAPEX_PR63_A9.zip; this handoff does not substitute for them.
+  Server owns applying, CI and any later measurement/publication decision.

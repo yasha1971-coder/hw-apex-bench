@@ -5,8 +5,8 @@ authorize measurements, a release, a Pages update or an external publication.
 
 ## Authority and immutable comparison contract
 
-[PROTOCOL_AXIS3.md](review/axis3/PROTOCOL_AXIS3.md) is the canonical contract for
-axes 3–5. [PROTOCOL_FREEZE.json](review/axis3/PROTOCOL_FREEZE.json) identifies its
+[PROTOCOL_AXIS3.md](review/axis3/PROTOCOL_AXIS3.md) is the frozen Axis 3 contract.
+[PROTOCOL_AXIS5.md](PROTOCOL_AXIS5.md) fixes the A7 synthetic Axis 5 experiment. [PROTOCOL_FREEZE.json](review/axis3/PROTOCOL_FREEZE.json) identifies its
 exact bytes. This methodology explains that contract; it does not replace or
 amend it. [RUN.md](review/axis3/RUN.md) describes implemented commands and their
 remaining limitations. If any implementation or supporting document disagrees
@@ -193,14 +193,122 @@ commands and storage ledger; missing evidence is not a victory. Report memory
 only when the complete declared scope is captured. Do not invent times, peak
 memory or storage from estimates labelled as measurements.
 
-Axis 4 maps each query group explicitly to every selected assembly, verifies
-each canonical response by SHA and reports the timing boundary and total stored
-bytes. Do not infer contig homology or equate group timing including the SHA
-judge with decoder-only latency. Axis 5 requires a clean baseline, 100 independent
-one-bit mutations per format, the frozen seed rule, fresh process groups and the
-10-second watchdog with resource limits. Pre-decode refusal requires an explicit
-validation stage. A worker's successful process exit does not prove that its
-output is correct. RUN.md distinguishes the available APIs/single-case worker
-from complete official CLI experiments that still need separate implementation.
-No availability smoke test, unit suite or prepared Q3 generator proves that all
-native large-input, corruption or boundary checks have run.
+## Axis 4: cohort random access (A6)
+
+Axis 4 maps each query group explicitly to every selected assembly.
+The [CLI](tools/axis4.py) implements prepare, silence, native run, evidence and
+independent verify. Prepare binds each original FASTA SHA-256, contig order and
+length, the complete ordered query groups, protocol and native-reader plan.
+Coordinates and canonical bytes follow the definitions above. No homology is
+inferred between contigs of different assemblies.
+
+The timed group includes native fetch, uppercase normalization, SHA judgement
+and coordinate translation; response-file writes are outside timing. The
+recorded boundary is not interchangeable with decoder-only Axis 3 timing.
+Stored bytes charge archives and required indexes/references. Synthetic
+seconds are not official performance fields. Unsupported/missing values remain
+absent; the leaderboard never imputes zeros.
+
+[verify](tools/axis4_evidence_verify.py) requires an external prepare-SHA anchor,
+checks FASTA hashes against prepare, scans FASTA independently of the native
+reader, and compares the SHA of every answer. It independently reproduces the
+seed-selected sample IDs and compares retained answer bytes too. The sample
+limit is 32 responses, established by the A6 native
+[log](review/axis3/results/a7-synthetic/A6_NATIVE.log); hashes cover all responses.
+A changed FASTA, SHA, duplicate ID, altered coordinate, bad length or retained
+byte mismatch fails verification. Official evidence additionally requires
+passing before/after silence telemetry. SHA binds bytes, not authorship or
+continuous host quiescence.
+
+Schema: [axis4-evidence-v3](schemas/axis4-evidence-v3.schema.json).
+PASS requires every declared group/response to be represented and verified;
+reader/data failure cannot become a valid performance row. Native availability
+alone does not establish correctness, large-input coverage or a throughput win.
+
+## Axis 5: synthetic application corruption (A7)
+
+The [frozen protocol](PROTOCOL_AXIS5.md) was written before the retained native
+runs. It supersedes the older one-bit-only Axis 5 description for this experiment.
+Prepare freezes clean archives, donor archive, library and FASTA identities,
+full-contig queries and protocol. Corrupt creates bit flips, byte replacement,
+truncation, physical byte-block swaps and donor block substitution. Archive-byte
+blocks are not semantic codec frames. The seed, case count and limits are fixed
+in the protocol; the [actual native log](review/axis3/results/a7-synthetic/A7_NATIVE.log)
+records the executed experiment. Each mutation runs with application SHA guard
+ON and OFF; OFF does not disable codec-internal checksum validation.
+
+A clean baseline must match independent full-contig FASTA truth. A fresh native
+process group is used per OFF case; the frozen 10-second watchdog terminates the
+group at timeout. Address-space/output/archive limits and diagnostics are retained.
+Pre-decode refusal requires an explicit validation stage. A worker's successful
+process exit does not prove that its output is correct.
+Classification is disjoint and exhaustive:
+
+| Outcome | Definition |
+|---|---|
+| detected | ON guard rejects a changed archive SHA before starting the decoder |
+| silent_error | OFF worker exits successfully but output length/bytes differ from truth |
+| refusal | OFF worker exits with a positive nonzero return code |
+| hang | Watchdog reports timeout; takes priority over exit/signal classification |
+| crash | OFF worker exits by signal, without watchdog timeout |
+| harmless | OFF worker exits successfully with exact reference bytes |
+
+The [independent verifier](tools/axis5_evidence_verify.py) rechecks externally
+anchored prepare, every FASTA/library/archive/sidecar, clean baseline, regenerated
+mutations, raw return codes/signals/timeouts, output bytes, all classifications,
+aggregate counts and integrity verdicts. It does not open a codec. Integrity
+PASS means no silent_error in that hash mode; integrity FAIL remains a valid,
+faithful experiment. Harness verification PASS does not imply integrity PASS.
+Forged classifications or any inconsistent artifact make verification fail.
+
+The [v1 schema](schemas/axis5-evidence-v1.schema.json) supports synthetic evidence
+only and records neither machine ID nor scope. A7 cannot be relabelled as an
+official ace-core experiment or combined into a machine comparison. Observed
+counts describe the frozen physical mutations and resource limits, not universal
+codec guarantees. Hangs/crashes and harmless changes remain visible.
+
+## Deterministic v0.2.0 release assembly (A9)
+
+[release_v020](tools/release_v020.py) takes one externally anchored
+[release-input-v1](schemas/release-input-v1.schema.json) file. It requires evidence
+for all three axes, calls their verifiers through the A8 generator, stages whole
+catalog directories to preserve companion paths, writes tables and exact source
+JSON copies, copies specified metadata, and writes
+[RELEASE_MANIFEST](schemas/release-manifest-v1.schema.json). Each artifact records
+relative path, bytes, SHA-256, axis (null for shared files), axes, machine ID
+(null when unknown/mixed), source evidence SHAs and declared commit. Commit scope
+is **release-input**: no codec or measurement commit is inferred. Source evidence
+retains its original provenance. The manifest excludes its own SHA; retain an
+external manifest SHA to authenticate against subsequent self-consistent rewriting.
+
+The independent manifest verifier checks exact file coverage, size/SHA, schemas,
+metadata identity, every axis again and all three regenerated leaderboard bytes.
+It recomputes artifact provenance from verified sources. Verification exceptions,
+missing files, wrong schemas, duplicates and mixed conditions in a comparison
+are fatal. A model FAIL or Axis 5 integrity FAIL with valid evidence remains
+visible. Distinct conditions may occupy explicitly separate tables; unknown
+machines remain source-specific singleton tables, never comparative rankings.
+
+Use `bash reproduce_v020.sh synthetic --out NEW_DIRECTORY` offline. It performs
+no downloads, package installation, native decoding or new measurement. Python
+with jsonschema and PyYAML is a prerequisite. Axis 3 is an explicitly labelled
+unit-contract fixture; Axis 4/5 use preserved A6/A7 native evidence. Repeated
+release trees, including the manifest, must be byte-identical.
+
+Real mode takes `--input CONFIG --data-root ROOT --native-so SO` (repeat SO for
+all retained libraries), `--require-silence`, and `--out NEW_DIRECTORY`. ROOT
+must be CONFIG's parent. Catalog/artifact paths are relative to ROOT and bound by
+size/SHA. At least one measured/official source is required. Every retained .so
+must match a supplied library SHA. Before and after assembly, fresh ace-core
+telemetry must pass the silence judge; without the gate, real mode refuses.
+Existing official evidence's own gates are independently verified as well.
+This reproduces verified reports, not benchmark execution. Admission telemetry
+is printed in the receipt, outside deterministic release bytes; it does not
+retroactively assign a machine or measured status to synthetic sources.
+
+Output must be new and outside the input root. Catalog directories cannot overlap;
+symlinks and nonregular artifacts refuse. Assembly uses a temporary sibling and
+commits output only after verification and input-stability checks. No timestamp,
+absolute host path or runtime Git HEAD is added to release metadata. Original
+source evidence bytes, including their recorded paths/times, remain unchanged.
+Official measurements remain [pending](review/axis3/results/v0.2.0/ace-core/EVIDENCE_PENDING.json).

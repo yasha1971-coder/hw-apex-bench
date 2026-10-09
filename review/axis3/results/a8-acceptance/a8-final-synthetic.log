@@ -1,0 +1,1 @@
+{"golden": "MATCH", "rerun": "BYTE_IDENTICAL", "rows": 4, "sha256": {"LEADERBOARD.md": "0cefe81a940d5e5474ab53df578ab3550acb9de9055a8036a33f44886ff33edb", "leaderboard.csv": "0f8356360971221da5375f979a5bf76f73adb079bb6591beb61c2ead3b3564cd", "leaderboard.json": "ce4366e395d99e8be17b852519dd0bf3fd678355113c766d8c57bef543f1ee2c"}, "status": "PASS", "tables": 4}
