@@ -12,6 +12,8 @@ jobs:
   agc:
     runs-on: ubuntu-24.04
     timeout-minutes: 30
+    env:
+      AGC_PLATFORM: avx2   # explicit portable AGC build for hosted runners; never implicit -march=native
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
       - name: Syntax and production adapter mocks
@@ -21,26 +23,45 @@ jobs:
           for f in review/axis3/*.sh; do bash -n "$f"; done
           python3 tools/check_workflow_syntax.py .github/workflows/axis3-agc.yml
           python3 -m unittest discover -s review/axis3 -p test_agc_adapter.py -v
+          python3 -m unittest discover -s review/axis3 -p test_agc_build_script.py -v
       - name: Install native correctness prerequisites
         run: |
           set -euo pipefail
           sudo apt-get update -qq
           sudo apt-get install -y -qq samtools nasm cmake
+      - name: AGC build cache key
+        id: agc-key
+        run: |
+          set -euo pipefail
+          echo "script=$(sha256sum review/axis3/build_agc_v324.sh | cut -c1-64)" >> "$GITHUB_OUTPUT"
+          echo "shim=$(sha256sum review/axis3/agc_shim.cpp | cut -c1-64)" >> "$GITHUB_OUTPUT"
       - name: Restore pinned native build cache
         id: native-cache
         uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830
         with:
           path: ${{ runner.temp }}/axis3-agc
-          key: axis3-agc-e67e3fc865a459779118d3d4e9fbdf42c70ba75e-${{ runner.os }}-${{ hashFiles('review/axis3/build_agc_v324.sh', 'review/axis3/agc_shim.cpp') }}
-      - name: Build pinned libagc and native shim
+          key: axis3-agc-v3.2.4-e67e3fc865a459779118d3d4e9fbdf42c70ba75e-${{ env.AGC_PLATFORM }}-${{ runner.os }}-${{ runner.arch }}-script-${{ steps.agc-key.outputs.script }}-shim-${{ steps.agc-key.outputs.shim }}
+      - name: Build pinned libagc and native shim (cache used only after a smoke run)
         run: |
           set -euo pipefail
-          if test -f "$RUNNER_TEMP/axis3-agc/AGC_COMMIT" &&
-             test "$(cat "$RUNNER_TEMP/axis3-agc/AGC_COMMIT")" = e67e3fc865a459779118d3d4e9fbdf42c70ba75e &&
-             (cd "$RUNNER_TEMP/axis3-agc" && sha256sum -c SHA256SUMS); then
-            echo "PINNED_AGC_CACHE_VERIFIED"
+          D="$RUNNER_TEMP/axis3-agc"
+          smoke() {   # agc-cli create + getset on a tiny FASTA must reproduce it exactly
+            local s="$RUNNER_TEMP/agc-smoke"; rm -rf "$s"; mkdir -p "$s"
+            printf '>c1\nACGTACGTTTGACCAGTACGATCGATCGTAGCTAGCTAGGCTA\n>c2\nGGGTTTAAACCCGGGTTTAAACCCGATC\n' > "$s/s1.fa"
+            "$D/agc-cli" create -o "$s/smoke.agc" "$s/s1.fa" > "$s/create.log" 2>&1 || { echo "smoke create rc=$?"; return 1; }
+            "$D/agc-cli" getset "$s/smoke.agc" s1 > "$s/out.fa" 2> "$s/getset.log" || { echo "smoke getset rc=$?"; return 1; }
+            test "$(grep -v '^>' "$s/out.fa" | tr -d '\n')" = "$(grep -v '^>' "$s/s1.fa" | tr -d '\n')" || { echo "smoke output differs"; return 1; }
+          }
+          if test -f "$D/AGC_COMMIT" && test "$(cat "$D/AGC_COMMIT")" = e67e3fc865a459779118d3d4e9fbdf42c70ba75e &&
+             test -f "$D/AGC_PLATFORM" && test "$(cat "$D/AGC_PLATFORM")" = "$AGC_PLATFORM" &&
+             (cd "$D" && sha256sum -c SHA256SUMS) && smoke; then
+            echo "PINNED_AGC_CACHE_VERIFIED platform=$AGC_PLATFORM"
           else
-            bash review/axis3/build_agc_v324.sh "$RUNNER_TEMP/axis3-agc"
+            echo "AGC cache absent or rejected; building from source (platform=$AGC_PLATFORM)"
+            rm -rf "$D"
+            bash review/axis3/build_agc_v324.sh "$D"
+            smoke
+            echo "AGC_BUILT_FROM_SOURCE platform=$AGC_PLATFORM smoke=PASS"
           fi
       - name: Single-create t2t and noref native ranges
         run: |
