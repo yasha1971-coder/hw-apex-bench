@@ -10,6 +10,7 @@ on:
       - 'tools/**'
       - 'schemas/**'
       - 'METHODOLOGY.md'
+      - 'PROTOCOL_AXIS5.md'
 permissions:
   contents: read
 jobs:
@@ -49,7 +50,7 @@ jobs:
           import unittest
 
           # Keep collection count strict; optional native cases are still collected.
-          expected_total = 236  # A6: 199 existing + 37 evidence/CLI adversarial tests
+          expected_total = 269  # A7: 236 A6 + 33 corruption harness/judge tests
           suite = unittest.defaultTestLoader.discover("tests")
           native_type = importlib.import_module("test_s2_native_readers").NativeAvailability
 
@@ -278,6 +279,23 @@ jobs:
               --encoder "$RUNNER_TEMP/refrel3/refrel3v1" \
               --source-root "$RUNNER_TEMP/refrel3/aceapex"
           done
+      - name: Axis 5 native corruption and independent classification rejection
+        run: |
+          set -euo pipefail
+          for variant in q4k q16k; do
+            "$RUNNER_TEMP/unit-venv/bin/python" -m tools.axis5_synthetic \
+              --root "$RUNNER_TEMP/axis5-$variant" --family refrel3 --variant "$variant" \
+              --library "$RUNNER_TEMP/refrel3/libhwa_refrel3.so" \
+              --encoder "$RUNNER_TEMP/refrel3/refrel3v1" \
+              --source-root "$RUNNER_TEMP/refrel3/aceapex"
+          done
+      - name: Retain Axis 5 synthetic evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: axis5-native-synthetic
+          path: ${{ runner.temp }}/axis5-*
+          if-no-files-found: error
       - name: Retain Axis 4 synthetic evidence
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02

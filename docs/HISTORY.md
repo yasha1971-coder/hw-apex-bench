@@ -1250,3 +1250,22 @@ bundle clone, apply --check --index, git am, applied tree and post-apply tests.
 Nothing was pushed. Next bounded action: apply the package on the exact base,
 check its receipts and run the updated CI before scheduling any official cohort
 measurements.
+
+### A7 local handoff — Axis 5 corruption (2026-10-09)
+
+- Base A6 tree fdcad5f790ddeb3879d5b793b446b588f010bd13; no push/publication.
+- PROTOCOL_AXIS5.md frozen before corruption runs, SHA e30f78ff89acad8386afb883c14d0e841ead5851ec3cd88a5c861c33723e811e.
+- Native prepare/corrupt/run/evidence/verify CLI, independent full-contig FASTA
+  classification, external prepare anchor, regenerated mutations, JSON Schema.
+- Seven pinned native synthetic variants, 100 mutations x two hash modes each:
+  1400 verified observations; all seven classification-forgery checks rejected.
+  Hash-OFF silent errors: faidx 78, AGC noref 41, AGC t2t 56; full counts in
+  review/axis3/results/a7-synthetic/A7_NATIVE.log and release draft.
+- Local unit collection 269: with .so 269 PASS, without 259 PASS +10 allowed
+  NativeAvailability skips; NATIVE_SKIP_GATE PASS both. Added 33 tests.
+- Workflow expected_total=269, A7 native synthetic q4k/q16k step and artifact,
+  protocol-path trigger; OpenZL large-input regression unchanged.
+- Handoff requires clean bundle+A6 clone, A7 apply --check --index then git am,
+  matching tree, full suites in both native modes and offline evidence verify.
+  Final acceptance receipts are supplied in HWAPEX_PR63_A7.zip, not inferred
+  from this history entry. No official performance or GitHub CI result claimed.
