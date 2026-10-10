@@ -1,0 +1,14 @@
+refrel3_q4k {"open_wall_s": 170.364, "open_cpu_s": 170.361, "maxrss_kb_after": 60339048, "loadavg_after_open": ["0.97", "0.79", "0.92"]}
+refrel3_q16k {"open_wall_s": 173.364, "open_cpu_s": 173.261, "maxrss_kb_after": 89553644, "loadavg_after_open": ["1.12", "0.84", "0.90"]}
+Traceback (most recent call last):
+  File "/home/aeterna/pubrepo/.wk/axis4n10_tools/open_cost.py", line 13, in <module>
+    r = axis4.open_reader(root, plan['reader'], {'assemblies': prepared['assemblies']})
+  File "/home/aeterna/pubrepo/.wk/v020/tools/axis4.py", line 219, in open_reader
+    return native.open_reader(root, spec, corpus)
+  File "/home/aeterna/pubrepo/.wk/v020/review/axis3/verdict_readers.py", line 247, in open_reader
+    sizes = bgzf_canonical_sizes(path, source, aid)
+  File "/home/aeterna/pubrepo/.wk/v020/review/axis3/verdict_readers.py", line 38, in bgzf_canonical_sizes
+    truth = FastaTruth([(assembly, source)])
+  File "/home/aeterna/pubrepo/.wk/v020/review/axis3/verdict_data.py", line 146, in __init__
+    raise ValueError("FASTA sequence before header")
+ValueError: FASTA sequence before header
