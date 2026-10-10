@@ -306,6 +306,15 @@ This reproduces verified reports, not benchmark execution. Admission telemetry
 is printed in the receipt, outside deterministic release bytes; it does not
 retroactively assign a machine or measured status to synthetic sources.
 
+A real release does not copy catalog directories (A13c). Each catalog is copied
+alone beside a `DATA_ROOT.json` listing ([release-data-root-v1](schemas/release-data-root-v1.schema.json)):
+the catalog directory relative to ROOT and every file in it with path, bytes and
+SHA-256, bound through `RELEASE_INPUT.json` and the manifest. Independent
+verification of a real release requires `--verify DIR --data-root ROOT`: the
+listed directory must hold exactly the listed files with those hashes and the
+same catalog bytes; all evidence is then re-verified in place. Synthetic mode
+still copies catalog directories and verifies without a data root.
+
 Output must be new and outside the input root. Catalog directories cannot overlap;
 symlinks and nonregular artifacts refuse. Assembly uses a temporary sibling and
 commits output only after verification and input-stability checks. No timestamp,

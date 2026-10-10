@@ -311,7 +311,54 @@ class Release(unittest.TestCase):
         self.assertEqual(gather.call_count, 2)
         self.assertEqual(receipt['silence_before'], gate)
         self.assertEqual(receipt['silence_after'], gate)
-        self.assertEqual(job.verify(self.out)['status'], 'PASS')
+        self.assertEqual(job.verify(self.out, data_root=self.config.parent)['status'], 'PASS')
+
+    def real_build(self):
+        gate, native = self.measured_fixture()
+        with mock.patch.object(job, 'capture_silence', return_value=gate):
+            self.build(mode='real', data_root=self.config.parent, native_so=native, require_silence=True)
+
+    def test_real_references_data_roots_without_copying(self):
+        self.real_build()
+        recipe = load_json(self.out/'RELEASE_INPUT.json')
+        self.assertEqual(len(recipe['data_roots']), len(recipe['catalogs']))
+        for ref in recipe['catalogs']:
+            directory = (self.out/ref['path']).parent
+            self.assertEqual(sorted(p.name for p in directory.iterdir()), ['DATA_ROOT.json', 'leaderboard-input.json'])
+            listing = load_json(directory/'DATA_ROOT.json')
+            source = self.config.parent/listing['catalog_dir']
+            self.assertEqual(len(listing['files']), sum(1 for p in source.rglob('*') if p.is_file()))
+        with self.assertRaises(ValueError):
+            job.verify(self.out)
+        manifest = hashlib.sha256((self.out/'RELEASE_MANIFEST.json').read_bytes()).hexdigest()
+        self.assertEqual(job.verify(self.out, manifest, self.config.parent)['status'], 'PASS')
+
+    def test_real_verify_refuses_changed_referenced_file(self):
+        self.real_build()
+        listing = load_json(next(self.out.glob('inputs/*/DATA_ROOT.json')))
+        victim = self.config.parent/listing['catalog_dir']/listing['files'][-1]['path']
+        victim.write_bytes(victim.read_bytes() + b'x')
+        with self.assertRaises(ValueError):
+            job.verify(self.out, data_root=self.config.parent)
+
+    def test_real_verify_refuses_unlisted_or_missing_referenced_file(self):
+        self.real_build()
+        listing = load_json(next(self.out.glob('inputs/*/DATA_ROOT.json')))
+        extra = self.config.parent/listing['catalog_dir']/'unlisted.bin'
+        extra.write_bytes(b'not in the release listing')
+        with self.assertRaises(ValueError):
+            job.verify(self.out, data_root=self.config.parent)
+        extra.unlink()
+        (self.config.parent/listing['catalog_dir']/listing['files'][0]['path']).unlink()
+        with self.assertRaises((ValueError, FileNotFoundError)):
+            job.verify(self.out, data_root=self.config.parent)
+
+    def test_synthetic_release_still_copies_catalog_directories(self):
+        self.build()
+        recipe = load_json(self.out/'RELEASE_INPUT.json')
+        self.assertNotIn('data_roots', recipe)
+        self.assertFalse(list(self.out.glob('inputs/*/DATA_ROOT.json')))
+        self.assertTrue(all(len(list((self.out/r['path']).parent.rglob('*'))) > 1 for r in recipe['catalogs']))
 
     def test_real_failed_before_gate_refused(self):
         gate, native = self.measured_fixture()
