@@ -224,7 +224,8 @@ def collect(directories):
                 if schema == 'window-law-verdict-v1':
                     if automatic and condition['machine'] is None:
                         suffix += '-variant-'+identity([r['format'], r['variant']])
-                    suffix += '-W'+str(r['window_bytes'])
+                    # A13d: a family whose data failed has no window rows; it stays visible in its own -Wnone table.
+                    suffix += '-W'+(str(r['window_bytes']) if 'window_bytes' in r else 'none')
                 name = table+suffix
                 signature = {'axis': axis, 'schema': schema, **condition}
                 if name in tables:

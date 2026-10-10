@@ -302,6 +302,29 @@ class Leaderboard(unittest.TestCase):
         self.assertEqual(len(rows), 60)
         self.assertTrue(all('p50_us' not in r for r in rows))
 
+    def test_window_law_failed_family_stays_visible_without_window(self):
+        # A13d: window-law evidence with a data-FAILED family (no observations, no W) must not crash.
+        sys.path.insert(0, str(ROOT/'tests'))
+        from test_verdict_job import complete_report
+        root = self.inputs/'window'
+        root.mkdir()
+        complete_report(root)
+        record = {'evidence': file_ref(self.inputs, root/'results.json'), 'input_root': 'window'}
+        self.catalog(lambda d: d['records'].append(record))
+        original = job.window_law
+
+        def with_failed_family(*args):
+            axis, condition, rows = original(*args)
+            return axis, condition, rows + [{'format': 'agc-unit', 'variant': 'no-geometry', 'status': 'FAILED'}]
+        with mock.patch.object(job, 'window_law', side_effect=with_failed_family):
+            self.build()
+        tables = load_json(self.root/'out/leaderboard.json')['tables']
+        failed = [(t['id'], r) for t in tables for r in t['rows'] if r['format'] == 'agc-unit']
+        self.assertEqual(len(failed), 1)
+        self.assertTrue(failed[0][0].endswith('-Wnone'))
+        self.assertEqual(failed[0][1]['status'], 'FAILED')
+        self.assertNotIn('window_bytes', failed[0][1])
+
     def test_window_law_forged_summary_refused(self):
         sys.path.insert(0, str(ROOT/'tests'))
         from test_verdict_job import complete_report
