@@ -113,11 +113,17 @@ python3 -m tools.axis4 verify \
   --input-root "$INPUT_ROOT" --prepared-sha256 "$PREPARED_SHA256"
 ~~~
 
-Official runs require ace-core. Before native open and after native close,
-capture and retain the existing silence gate: load1 < 0.5, free disk >
-20,000,000,000 bytes, process CPU sample >= 1 second, no foreign process using
->=10% of a CPU. Two endpoint samples are not continuous monitoring. There is
-no skip-gate CLI flag. Inputs are checked before and after execution.
+Official runs require ace-core. Run order (A13): input hashing, native open,
+a bounded wait for a quiet host, gate before, timed groups, gate after, native
+close. The two retained silence gates therefore bracket only the timed groups:
+load1 < 0.5, free disk > 20,000,000,000 bytes, process CPU sample >= 1 second,
+no foreign process using >=10% of a CPU (thresholds unchanged). The wait polls
+the same gate every 15 s for at most 1800 s; each refused sample (load1 and
+reasons), the waited time, the input-check time and the native open time are
+recorded in evidence `admission`, outside the timed groups. A wait that ends
+without PASS fails the run without timing. Two endpoint samples are not
+continuous monitoring. There is no skip-gate CLI flag. Inputs are checked
+before and after execution.
 
 The timing boundary is one complete group: persistent in-process fetch,
 uppercase normalization, SHA-256 judgement and coordinate translation.

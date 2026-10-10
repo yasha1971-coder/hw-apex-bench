@@ -194,20 +194,85 @@ class TestAxis4Verify(unittest.TestCase):
         d=load_json(p);d['evidence_kind']='official';p.write_text(json.dumps(d))
         self.plan['prepared']=file_ref(self.root,p);self.write('plan.json',self.plan)
 
-    def test_failed_silence_gate_prevents_open_and_preserves_failure(self):
+    def gate_record(self, load1):
+        return judge({'host':'ace-core','load1':load1,'disk_available_bytes':30_000_000_000,
+                      'sampling_seconds':1.1,'processes':[]})
+
+    def test_failed_silence_gate_prevents_timing_and_preserves_failure(self):
         self.official()
-        bad=judge({'host':'ace-core','load1':1,'disk_available_bytes':30_000_000_000,
-                   'sampling_seconds':1.1,'processes':[]})
-        with mock.patch.object(job,'capture_silence',return_value=bad),mock.patch.object(job,'open_reader') as reader:
-            data=job.run(self.root,'plan.json','run')
-        reader.assert_not_called()
+        bad=self.gate_record(1)
+        reader=self.reader(); closed=[]
+        reader.close=lambda: closed.append(True)
+        reader.fetch=mock.Mock(side_effect=AssertionError('timed fetch after refused gate'))
+        with mock.patch.object(job,'capture_silence',return_value=bad),mock.patch.object(job,'open_reader',return_value=reader):
+            data=job.run(self.root,'plan.json','run',quiet_bound_seconds=0,sleep=lambda s:None)
+        reader.fetch.assert_not_called()
+        self.assertEqual(closed,[True])
         self.assertEqual(data['status'],'FAILED')
         self.assertIsNone(data['seconds'])
+        self.assertEqual(data['group_times'],[])
         self.assertTrue((self.root/'run/silence-before.json').exists())
+
+    def test_admission_order_open_wait_gates_bracket_timed_groups_then_close(self):
+        self.official()
+        events=[]
+        reader=self.reader()
+        fetch=reader.fetch
+        reader.fetch=lambda *a:(events.append('fetch'),fetch(*a))[1]
+        reader.close=lambda: events.append('close')
+        def opened(*a):
+            events.append('open'); return reader
+        def gate(*a):
+            events.append('gate'); return self.gate_record(0)
+        with mock.patch.object(job,'capture_silence',side_effect=gate),mock.patch.object(job,'open_reader',side_effect=opened):
+            data=job.run(self.root,'plan.json','run')
+        self.assertEqual(data['status'],'PASS',data['error'])
+        compact=[e for i,e in enumerate(events) if e!='fetch' or events[i-1]!='fetch']
+        self.assertEqual(compact,['open','gate','fetch','gate','close'])
+        self.assertEqual(data['admission']['order'],list(job.ADMISSION_ORDER))
+
+    def test_quiet_wait_retries_until_pass_and_is_recorded(self):
+        self.official()
+        records=[self.gate_record(0.9),self.gate_record(0.7),self.gate_record(0.1),self.gate_record(0.1)]
+        slept=[]
+        with mock.patch.object(job,'capture_silence',side_effect=records), \
+             mock.patch.object(job,'open_reader',side_effect=self.reader):
+            data=job.run(self.root,'plan.json','run',sleep=slept.append)
+        self.assertEqual(data['status'],'PASS',data['error'])
+        quiet=data['admission']['quiet_wait']
+        self.assertEqual([r['load1'] for r in quiet['refused']],[0.9,0.7])
+        self.assertEqual(slept,[job.QUIET_POLL_SECONDS]*2)
+        self.assertEqual(quiet['bound_seconds'],job.QUIET_WAIT_BOUND_SECONDS)
+        self.assertEqual(load_json(self.root/'run/silence-before.json')['snapshot']['load1'],0.1)
+
+    def test_quiet_wait_is_bounded(self):
+        self.official()
+        with mock.patch.object(job,'capture_silence',return_value=self.gate_record(1)), \
+             mock.patch.object(job,'open_reader',side_effect=self.reader):
+            data=job.run(self.root,'plan.json','run',quiet_bound_seconds=45,quiet_poll_seconds=15,sleep=lambda s:None)
+        self.assertEqual(data['status'],'FAILED')
+        self.assertIn('silence gate refused: before',data['error'])
+        self.assertEqual(len(data['admission']['quiet_wait']['refused']),3)
+        self.assertIsNone(data['seconds'])
+
+    def test_open_time_is_recorded_outside_timed_groups(self):
+        ticks=iter(range(0,10**12,10**9))
+        data=self.run_fixture(monotonic=lambda:next(ticks))
+        self.assertEqual(data['admission']['open_ns'],10**9)
+        self.assertEqual(data['seconds'],sum(g['elapsed_ns'] for g in data['group_times'])/1e9)
+        self.check()
+
+    def test_admission_tamper_is_rejected(self):
+        self.run_fixture()
+        self.mutate(lambda d:d['admission']['quiet_wait']['refused'].append({'load1':0.9,'reasons':['x']}))
+        self.rejects()
+        self.mutate(lambda d:d['admission']['quiet_wait']['refused'].clear() or d['admission'].update(extra=1))
+        self.rejects()
 
     def test_official_cli_cannot_bypass_wrong_host(self):
         self.official()
-        with mock.patch('review.axis3.verdict_data.socket.gethostname',return_value='unit-host'):
+        with mock.patch('review.axis3.verdict_data.socket.gethostname',return_value='unit-host'), \
+             mock.patch.object(job,'open_reader',side_effect=self.reader):
             data=job.run(self.root,'plan.json','run')
         self.assertEqual(data['status'],'FAILED')
         self.assertIn('ace-core',data['error'])

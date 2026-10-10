@@ -283,6 +283,15 @@ def verify(path, input_root, expected_prepared_sha256):
         raise ValueError('group timing sum')
     if [g['group_id'] for g in data['group_times']] != list(range(len(prepared['groups']))):
         raise ValueError('group timing coverage')
+    admission = data.get('admission')
+    if admission is not None:  # A13 order: open and bounded quiet wait outside the timed groups
+        quiet = admission['quiet_wait']
+        if admission['open_ns'] is None:
+            raise ValueError('admission open time missing for completed evidence')
+        if data['evidence_kind'] != 'official' and (quiet['refused'] or quiet['waited_ns']):
+            raise ValueError('synthetic evidence cannot record an admission wait')
+        if quiet['poll_seconds'] > 0 and len(quiet['refused']) > quiet['bound_seconds'] / quiet['poll_seconds'] + 1:
+            raise ValueError('admission wait exceeds its declared bound')
     for ref in (data['silence_before'], data['silence_after']):
         record = load_json(checked_file(root, ref))
         if data['evidence_kind'] == 'official':

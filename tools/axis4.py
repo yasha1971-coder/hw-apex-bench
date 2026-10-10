@@ -263,9 +263,21 @@ def load_plan(root, plan_name):
     return path, plan, prepared, refs
 
 
-def run(root, plan_name, out_name, *, clock=time.perf_counter_ns, decoder_threads=None):
+ADMISSION_ORDER = ('inputs-checked', 'reader-opened', 'quiet-wait', 'gate-before', 'timed-groups',
+                   'gate-after', 'reader-closed')
+QUIET_WAIT_BOUND_SECONDS = 1800
+QUIET_POLL_SECONDS = 15
+
+
+def run(root, plan_name, out_name, *, clock=time.perf_counter_ns, decoder_threads=None,
+        quiet_bound_seconds=QUIET_WAIT_BOUND_SECONDS, quiet_poll_seconds=QUIET_POLL_SECONDS,
+        sleep=time.sleep, monotonic=time.monotonic_ns):
+    """Input hashing and the native open happen before the admission gate, then a bounded,
+    recorded wait for a quiet host; the two gates bracket only the timed groups (A13 order)."""
     root = Path(root).resolve(strict=True)
+    checked_at = monotonic()
     plan_path, plan, prepared, inputs = load_plan(root, plan_name)
+    input_check_ns = monotonic() - checked_at
     out = new_output(root, out_name)
     shutil.copyfile(checked_file(root, plan['prepared']), out / 'prepared.json')
     shutil.copyfile(plan_path, out / 'plan.json')
@@ -285,6 +297,9 @@ def run(root, plan_name, out_name, *, clock=time.perf_counter_ns, decoder_thread
         'sample_seed': prepared['sample_seed'], 'sample_ids': chosen,
         'silence_before': None, 'silence_after': None, 'rows': [], 'group_times': [],
         'seconds': None, 'verified': 0, 'reader_build': None,
+        'admission': {'order': list(ADMISSION_ORDER), 'input_check_ns': input_check_ns, 'open_ns': None,
+                      'quiet_wait': {'bound_seconds': quiet_bound_seconds, 'poll_seconds': quiet_poll_seconds,
+                                     'waited_ns': 0, 'refused': []}},
         'implementation': {p: file_ref(REPO, REPO / p)['sha256'] for p in (
             'tools/axis4.py', 'tools/axis4_evidence_verify.py',
             'review/axis3/native_readers.py', 'review/axis3/verdict_readers.py',
@@ -305,9 +320,22 @@ def run(root, plan_name, out_name, *, clock=time.perf_counter_ns, decoder_thread
         result["implementation"]["tools/axis4_threads.py"] = file_ref(REPO, REPO/"tools/axis4_threads.py")["sha256"]
     reader = None
 
-    def gate(label):
-        record = capture_silence(out) if kind == 'official' else {
-            'status': 'NOT_APPLICABLE', 'reason': 'synthetic correctness only'}
+    def gate(label, wait=False):
+        if kind != 'official':
+            record = {'status': 'NOT_APPLICABLE', 'reason': 'synthetic correctness only'}
+        else:
+            quiet = result['admission']['quiet_wait']
+            started = monotonic()
+            while True:
+                record = capture_silence(out)
+                if record['status'] == 'PASS' or not wait:
+                    break
+                quiet['refused'].append({'load1': record['snapshot']['load1'], 'reasons': record['reasons']})
+                if quiet_poll_seconds <= 0 or len(quiet['refused']) * quiet_poll_seconds >= quiet_bound_seconds:
+                    break  # bounded by the declared number of polls, independent of clock skew
+                sleep(quiet_poll_seconds)
+            if wait:
+                quiet['waited_ns'] = monotonic() - started
         target = out / ('silence-' + label + '.json')
         write_json(target, record)
         result['silence_' + label] = file_ref(out, target)
@@ -317,14 +345,16 @@ def run(root, plan_name, out_name, *, clock=time.perf_counter_ns, decoder_thread
     try:
         if threading is not None and threading['status'] == 'NOT_SUPPORTED':
             raise axis4_threads.NotSupported(threading['reason'])
-        gate('before')
+        opened_at = monotonic()
         reader = open_reader(root, plan['reader'], {'assemblies': prepared['assemblies']})
         if decoder_threads is not None:
             candidate, reader = reader, None
             reader = axis4_threads.configure(candidate, plan['reader']['family'], decoder_threads)
         if reader.scope != 'cpu-in-process' or reader.decoder_threads != (decoder_threads or 1):
             raise ValueError('persistent in-process reader has wrong decoder thread count')
+        result['admission']['open_ns'] = monotonic() - opened_at
         result['reader_build'] = reader.build
+        gate('before', wait=True)
         for gid, group in enumerate(prepared['groups']):
             samples = []
             started = clock()
@@ -359,10 +389,10 @@ def run(root, plan_name, out_name, *, clock=time.perf_counter_ns, decoder_thread
                 with target.open('xb') as f:
                     f.write(answer)
                 row['response_file'] = file_ref(out, target)
+        # Sample host right after the timed groups, before close and final re-hashing.
+        gate('after')
         reader.close()
         reader = None
-        # Sample host before expensive final re-hashing, which itself consumes CPU.
-        gate('after')
         for ref in inputs:
             checked_file(root, ref)
         result['seconds'] = sum(g['elapsed_ns'] for g in result['group_times']) / 1e9
