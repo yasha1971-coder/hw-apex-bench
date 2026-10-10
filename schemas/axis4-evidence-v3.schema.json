@@ -297,7 +297,8 @@
         "status": {
           "enum": [
             "PASS",
-            "FAILED"
+            "FAILED",
+            "BLOCKED"
           ]
         },
         "error": {
@@ -539,6 +540,9 @@
                     ],
                     "additionalProperties": false
                   }
+                },
+                "blocked": {
+                  "type": "boolean"
                 }
               },
               "required": [
@@ -692,6 +696,28 @@
             "properties": {
               "performance_valid": {
                 "const": true
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "status": {
+                "const": "BLOCKED"
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "admission"
+            ],
+            "properties": {
+              "seconds": {
+                "type": "null"
+              },
+              "performance_valid": {
+                "const": false
               }
             }
           }

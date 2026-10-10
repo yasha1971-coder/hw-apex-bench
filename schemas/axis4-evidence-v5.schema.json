@@ -291,7 +291,8 @@
               "enum": [
                 "PASS",
                 "FAILED",
-                "NOT_SUPPORTED"
+                "NOT_SUPPORTED",
+                "BLOCKED"
               ]
             },
             "error": {
@@ -584,6 +585,9 @@
                         ],
                         "additionalProperties": false
                       }
+                    },
+                    "blocked": {
+                      "type": "boolean"
                     }
                   },
                   "required": [
@@ -738,6 +742,28 @@
                 "properties": {
                   "performance_valid": {
                     "const": true
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "status": {
+                    "const": "BLOCKED"
+                  }
+                }
+              },
+              "then": {
+                "required": [
+                  "admission"
+                ],
+                "properties": {
+                  "seconds": {
+                    "type": "null"
+                  },
+                  "performance_valid": {
+                    "const": false
                   }
                 }
               }
@@ -1044,7 +1070,8 @@
               "enum": [
                 "PASS",
                 "FAILED",
-                "NOT_SUPPORTED"
+                "NOT_SUPPORTED",
+                "BLOCKED"
               ]
             },
             "error": {
@@ -1382,6 +1409,9 @@
                         ],
                         "additionalProperties": false
                       }
+                    },
+                    "blocked": {
+                      "type": "boolean"
                     }
                   },
                   "required": [
@@ -1538,6 +1568,28 @@
                 "properties": {
                   "performance_valid": {
                     "const": true
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "status": {
+                    "const": "BLOCKED"
+                  }
+                }
+              },
+              "then": {
+                "required": [
+                  "admission"
+                ],
+                "properties": {
+                  "seconds": {
+                    "type": "null"
+                  },
+                  "performance_valid": {
+                    "const": false
                   }
                 }
               }

@@ -292,6 +292,12 @@ def verify(path, input_root, expected_prepared_sha256):
             raise ValueError('synthetic evidence cannot record an admission wait')
         if quiet['poll_seconds'] > 0 and len(quiet['refused']) > quiet['bound_seconds'] / quiet['poll_seconds'] + 1:
             raise ValueError('admission wait exceeds its declared bound')
+        # A13f: waited wall time within the bound and consistent with the recorded refusals
+        # (each refusal followed by one poll sleep before the PASS sample of completed evidence).
+        if quiet['waited_ns'] > quiet['bound_seconds'] * 1e9 or quiet.get('blocked'):
+            raise ValueError('admission wait exceeds its declared bound')
+        if quiet['waited_ns'] < len(quiet['refused']) * quiet['poll_seconds'] * 1e9:
+            raise ValueError('admission wait shorter than its recorded refusals')
     for ref in (data['silence_before'], data['silence_after']):
         record = load_json(checked_file(root, ref))
         if data['evidence_kind'] == 'official':

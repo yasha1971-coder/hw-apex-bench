@@ -205,10 +205,10 @@ class TestAxis4Verify(unittest.TestCase):
         reader.close=lambda: closed.append(True)
         reader.fetch=mock.Mock(side_effect=AssertionError('timed fetch after refused gate'))
         with mock.patch.object(job,'capture_silence',return_value=bad),mock.patch.object(job,'open_reader',return_value=reader):
-            data=job.run(self.root,'plan.json','run',quiet_bound_seconds=0,sleep=lambda s:None)
+            data=job.run(self.root,'plan.json','run',quiet_bound_seconds=0,sleep=lambda s:None,monotonic=lambda:0)
         reader.fetch.assert_not_called()
         self.assertEqual(closed,[True])
-        self.assertEqual(data['status'],'FAILED')
+        self.assertEqual(data['status'],'BLOCKED')
         self.assertIsNone(data['seconds'])
         self.assertEqual(data['group_times'],[])
         self.assertTrue((self.root/'run/silence-before.json').exists())
@@ -264,11 +264,44 @@ class TestAxis4Verify(unittest.TestCase):
         self.official()
         with mock.patch.object(job,'capture_silence',return_value=self.gate_record(1)), \
              mock.patch.object(job,'open_reader',side_effect=self.reader):
-            data=job.run(self.root,'plan.json','run',quiet_bound_seconds=45,quiet_poll_seconds=15,sleep=lambda s:None)
-        self.assertEqual(data['status'],'FAILED')
-        self.assertIn('silence gate refused: before',data['error'])
-        self.assertEqual(len(data['admission']['quiet_wait']['refused']),3)
+            now=[0]
+            data=job.run(self.root,'plan.json','run',quiet_bound_seconds=45,quiet_poll_seconds=15,
+                         sleep=lambda s:now.__setitem__(0,now[0]+int(s*1e9)),monotonic=lambda:now[0])
+        self.assertEqual(data['status'],'BLOCKED')
+        self.assertIn('quiet wait exceeded its bound',data['error'])
+        self.assertEqual(len(data['admission']['quiet_wait']['refused']),4)  # samples at 0, 15, 30, 45 s
         self.assertIsNone(data['seconds'])
+
+    def test_quiet_wait_bound_is_wall_clock_including_samples_and_blocks(self):
+        # A13f (HW repro): slow capture_silence samples count toward the bound; expiry -> BLOCKED.
+        self.official()
+        now=[0]
+        def clock():
+            return now[0]
+        def slow_capture(*a):
+            now[0]+=400*10**9  # each telemetry sample costs 400 s of wall time
+            return self.gate_record(1)
+        with mock.patch.object(job,'capture_silence',side_effect=slow_capture), \
+             mock.patch.object(job,'open_reader',side_effect=self.reader):
+            data=job.run(self.root,'plan.json','run',quiet_bound_seconds=1800,quiet_poll_seconds=15,
+                         sleep=lambda s:now.__setitem__(0,now[0]+int(s*1e9)),monotonic=clock)
+        quiet=data['admission']['quiet_wait']
+        self.assertEqual(data['status'],'BLOCKED')
+        self.assertTrue(quiet['blocked'])
+        self.assertLessEqual(len(quiet['refused']),5)
+        self.assertIsNone(data['seconds'])
+        self.assertEqual(data['group_times'],[])
+
+    def test_forged_waited_ns_is_refused(self):
+        self.run_fixture()
+        self.mutate(lambda d:d['admission']['quiet_wait'].update(waited_ns=10**18))
+        self.rejects()
+
+    def test_waited_ns_inconsistent_with_refusals_is_refused(self):
+        self.run_fixture()
+        self.mutate(lambda d:d['admission']['quiet_wait'].update(
+            refused=[{'load1':0.9,'reasons':['load1 is not below 0.5']}],waited_ns=0))
+        self.rejects()
 
     def test_open_time_is_recorded_outside_timed_groups(self):
         ticks=iter(range(0,10**12,10**9))

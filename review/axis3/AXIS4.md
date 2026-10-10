@@ -119,10 +119,12 @@ response files written, native close (A13e: the after gate runs immediately afte
 the last timed group; sampled bytes stay in memory until then). The two retained silence gates therefore bracket only the timed groups:
 load1 < 0.5, free disk > 20,000,000,000 bytes, process CPU sample >= 1 second,
 no foreign process using >=10% of a CPU (thresholds unchanged). The wait polls
-the same gate every 15 s for at most 1800 s; each refused sample (load1 and
+the same gate every 15 s for at most 1800 s of monotonic wall time, including
+the time spent in every telemetry sample (A13f); each refused sample (load1 and
 reasons), the waited time, the input-check time and the native open time are
-recorded in evidence `admission`, outside the timed groups. A wait that ends
-without PASS fails the run without timing. Two endpoint samples are not
+recorded in evidence `admission`, outside the timed groups. A wait that exceeds
+the bound ends the run as BLOCKED without timing; verify refuses a waited time
+above the bound or shorter than the recorded refusals' poll sleeps. Two endpoint samples are not
 continuous monitoring. There is no skip-gate CLI flag. Inputs are checked
 before and after execution.
 

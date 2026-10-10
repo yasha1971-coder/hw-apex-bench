@@ -268,6 +268,10 @@ ADMISSION_ORDER = ('inputs-checked', 'reader-opened', 'quiet-wait', 'gate-before
 ADMISSION_ORDER_V2 = ('inputs-checked', 'reader-opened', 'quiet-wait', 'gate-before', 'timed-groups',
                       'gate-after', 'sample-files-written', 'reader-closed')
 QUIET_WAIT_BOUND_SECONDS = 1800
+
+
+class AdmissionBlocked(ValueError):
+    """The bounded quiet wait expired: no timing, evidence status BLOCKED."""
 QUIET_POLL_SECONDS = 15
 
 
@@ -301,7 +305,7 @@ def run(root, plan_name, out_name, *, clock=time.perf_counter_ns, decoder_thread
         'seconds': None, 'verified': 0, 'reader_build': None,
         'admission': {'order': list(ADMISSION_ORDER_V2), 'input_check_ns': input_check_ns, 'open_ns': None,
                       'quiet_wait': {'bound_seconds': quiet_bound_seconds, 'poll_seconds': quiet_poll_seconds,
-                                     'waited_ns': 0, 'refused': []}},
+                                     'waited_ns': 0, 'blocked': False, 'refused': []}},
         'implementation': {p: file_ref(REPO, REPO / p)['sha256'] for p in (
             'tools/axis4.py', 'tools/axis4_evidence_verify.py',
             'review/axis3/native_readers.py', 'review/axis3/verdict_readers.py',
@@ -327,20 +331,29 @@ def run(root, plan_name, out_name, *, clock=time.perf_counter_ns, decoder_thread
             record = {'status': 'NOT_APPLICABLE', 'reason': 'synthetic correctness only'}
         else:
             quiet = result['admission']['quiet_wait']
+            bound_ns = int(quiet_bound_seconds * 1e9)
             started = monotonic()
+            blocked = False
             while True:
                 record = capture_silence(out)
                 if record['status'] == 'PASS' or not wait:
                     break
                 quiet['refused'].append({'load1': record['snapshot']['load1'], 'reasons': record['reasons']})
-                if quiet_poll_seconds <= 0 or len(quiet['refused']) * quiet_poll_seconds >= quiet_bound_seconds:
-                    break  # bounded by the declared number of polls, independent of clock skew
+                # A13f: the bound is monotonic wall time including every capture_silence sample.
+                if monotonic() - started + int(quiet_poll_seconds * 1e9) > bound_ns:
+                    blocked = True
+                    break
                 sleep(quiet_poll_seconds)
             if wait:
                 quiet['waited_ns'] = monotonic() - started
+                if quiet['waited_ns'] > bound_ns:
+                    blocked = True
+                quiet['blocked'] = blocked
         target = out / ('silence-' + label + '.json')
         write_json(target, record)
         result['silence_' + label] = file_ref(out, target)
+        if kind == 'official' and wait and result['admission']['quiet_wait']['blocked']:
+            raise AdmissionBlocked('quiet wait exceeded its bound before gate ' + label)
         if kind == 'official' and record['status'] != 'PASS':
             raise ValueError('silence gate refused: ' + label)
 
@@ -402,6 +415,8 @@ def run(root, plan_name, out_name, *, clock=time.perf_counter_ns, decoder_thread
         result['status'] = 'PASS'
         result['performance_valid'] = kind == 'official'
     except Exception as exc:
+        if isinstance(exc, AdmissionBlocked):
+            result['status'] = 'BLOCKED'
         if threading is not None and isinstance(exc, axis4_threads.NotSupported):
             result['status'] = 'NOT_SUPPORTED'
             result['threading'].update(status='NOT_SUPPORTED', api=None, reason=str(exc))
