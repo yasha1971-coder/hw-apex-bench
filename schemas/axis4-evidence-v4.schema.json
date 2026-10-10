@@ -517,14 +517,26 @@
           "type": "object",
           "properties": {
             "order": {
-              "const": [
-                "inputs-checked",
-                "reader-opened",
-                "quiet-wait",
-                "gate-before",
-                "timed-groups",
-                "gate-after",
-                "reader-closed"
+              "enum": [
+                [
+                  "inputs-checked",
+                  "reader-opened",
+                  "quiet-wait",
+                  "gate-before",
+                  "timed-groups",
+                  "gate-after",
+                  "reader-closed"
+                ],
+                [
+                  "inputs-checked",
+                  "reader-opened",
+                  "quiet-wait",
+                  "gate-before",
+                  "timed-groups",
+                  "gate-after",
+                  "sample-files-written",
+                  "reader-closed"
+                ]
               ]
             },
             "input_check_ns": {

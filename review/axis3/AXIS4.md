@@ -114,8 +114,9 @@ python3 -m tools.axis4 verify \
 ~~~
 
 Official runs require ace-core. Run order (A13): input hashing, native open,
-a bounded wait for a quiet host, gate before, timed groups, gate after, native
-close. The two retained silence gates therefore bracket only the timed groups:
+a bounded wait for a quiet host, gate before, timed groups, gate after, sample
+response files written, native close (A13e: the after gate runs immediately after
+the last timed group; sampled bytes stay in memory until then). The two retained silence gates therefore bracket only the timed groups:
 load1 < 0.5, free disk > 20,000,000,000 bytes, process CPU sample >= 1 second,
 no foreign process using >=10% of a CPU (thresholds unchanged). The wait polls
 the same gate every 15 s for at most 1800 s; each refused sample (load1 and

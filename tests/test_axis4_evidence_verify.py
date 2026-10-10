@@ -229,7 +229,22 @@ class TestAxis4Verify(unittest.TestCase):
         self.assertEqual(data['status'],'PASS',data['error'])
         compact=[e for i,e in enumerate(events) if e!='fetch' or events[i-1]!='fetch']
         self.assertEqual(compact,['open','gate','fetch','gate','close'])
-        self.assertEqual(data['admission']['order'],list(job.ADMISSION_ORDER))
+        self.assertEqual(data['admission']['order'],list(job.ADMISSION_ORDER_V2))
+
+    def test_after_gate_precedes_every_sample_write(self):
+        # A13e (HW repro): no response file may be written between the last fetch and the after gate.
+        self.official()
+        responses=self.root/'run/responses'
+        seen=[]
+        def gate(*a):
+            seen.append(sorted(p.name for p in responses.iterdir()) if responses.exists() else None)
+            return self.gate_record(0)
+        with mock.patch.object(job,'capture_silence',side_effect=gate),mock.patch.object(job,'open_reader',side_effect=self.reader):
+            data=job.run(self.root,'plan.json','run')
+        self.assertEqual(data['status'],'PASS',data['error'])
+        self.assertEqual(seen,[[],[]])
+        self.assertEqual(len(list(responses.iterdir())),len(data['sample_ids']))
+        self.assertTrue(all(r['response_file'] is not None for r in data['rows'] if r['id'] in data['sample_ids']))
 
     def test_quiet_wait_retries_until_pass_and_is_recorded(self):
         self.official()

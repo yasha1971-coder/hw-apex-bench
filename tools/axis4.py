@@ -265,6 +265,8 @@ def load_plan(root, plan_name):
 
 ADMISSION_ORDER = ('inputs-checked', 'reader-opened', 'quiet-wait', 'gate-before', 'timed-groups',
                    'gate-after', 'reader-closed')
+ADMISSION_ORDER_V2 = ('inputs-checked', 'reader-opened', 'quiet-wait', 'gate-before', 'timed-groups',
+                      'gate-after', 'sample-files-written', 'reader-closed')
 QUIET_WAIT_BOUND_SECONDS = 1800
 QUIET_POLL_SECONDS = 15
 
@@ -297,7 +299,7 @@ def run(root, plan_name, out_name, *, clock=time.perf_counter_ns, decoder_thread
         'sample_seed': prepared['sample_seed'], 'sample_ids': chosen,
         'silence_before': None, 'silence_after': None, 'rows': [], 'group_times': [],
         'seconds': None, 'verified': 0, 'reader_build': None,
-        'admission': {'order': list(ADMISSION_ORDER), 'input_check_ns': input_check_ns, 'open_ns': None,
+        'admission': {'order': list(ADMISSION_ORDER_V2), 'input_check_ns': input_check_ns, 'open_ns': None,
                       'quiet_wait': {'bound_seconds': quiet_bound_seconds, 'poll_seconds': quiet_poll_seconds,
                                      'waited_ns': 0, 'refused': []}},
         'implementation': {p: file_ref(REPO, REPO / p)['sha256'] for p in (
@@ -355,8 +357,8 @@ def run(root, plan_name, out_name, *, clock=time.perf_counter_ns, decoder_thread
         result['admission']['open_ns'] = monotonic() - opened_at
         result['reader_build'] = reader.build
         gate('before', wait=True)
+        samples = []  # sampled bytes stay in memory (<= 32 responses) until after the gate
         for gid, group in enumerate(prepared['groups']):
-            samples = []
             started = clock()
             for aid in aids:
                 q = group[aid]
@@ -384,13 +386,14 @@ def run(root, plan_name, out_name, *, clock=time.perf_counter_ns, decoder_thread
             if elapsed <= 0:
                 raise ValueError('nonpositive group interval')
             result['group_times'].append({'group_id': gid, 'elapsed_ns': elapsed})
-            for row, answer in samples:
-                target = out / 'responses' / (str(row['id']) + '.bin')
-                with target.open('xb') as f:
-                    f.write(answer)
-                row['response_file'] = file_ref(out, target)
-        # Sample host right after the timed groups, before close and final re-hashing.
+        # A13e: the after gate samples the host immediately after the last timed group, before
+        # any response file write, sample hashing, reader close or input re-hashing.
         gate('after')
+        for row, answer in samples:
+            target = out / 'responses' / (str(row['id']) + '.bin')
+            with target.open('xb') as f:
+                f.write(answer)
+            row['response_file'] = file_ref(out, target)
         reader.close()
         reader = None
         for ref in inputs:
