@@ -11,6 +11,7 @@ CITATION.cff and .zenodo.json keep their prepared version field unchanged.
   the unchanged silence gates bracket only the timed groups.
 - A13b: BGZF geometry under truth v1.1 from the BGZF archive and its `.fai`.
 - A13c: real release assembly references catalog data roots by per-file hashes.
+- A13d: leaderboard keeps a window-law family with failed data visible (`-Wnone` table).
 - Axis 4 N10 (protocol v1.2, ace-core): first official cohort-region measurements,
   [results](review/axis4_n10/results_v12/RESULTS_N10.md), [protocol](review/axis4_n10/PROTOCOL_AXIS4_N10.md).
 
