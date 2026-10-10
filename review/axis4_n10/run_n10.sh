@@ -73,19 +73,19 @@ row() {   # row NAME THREADS : 3 warm-ups + 9 recorded, under one lock hold
   local name=$1 thr=$2
   [ -e "$STATE/row_${name}_t$thr.done" ] && { log "skip row $name t$thr"; return 0; }
   log "row $name t$thr start"
-  flock "$LOCK" bash -c "source '$HERE/run_n10.sh' __lib__; for i in 1 2 3; do slot plans/$name.json runs/$name/t$thr/w\$i $thr; done; for i in 1 2 3 4 5 6 7 8 9; do slot plans/$name.json runs/$name/t$thr/r\$i $thr; done"
+  flock "$LOCK" bash -c "source '$HERE/run_n10.sh' __lib__; for i in 1 2 3; do slot plans/$name.json runs12/$name/t$thr/w\$i $thr; done; for i in 1 2 3 4 5 6 7 8 9; do slot plans/$name.json runs12/$name/t$thr/r\$i $thr; done"
   touch "$STATE/row_${name}_t$thr.done"; log "row $name t$thr done"
 }
 ns_row() {  # NOT_SUPPORTED row: one explicit run at 16 decoder threads (no decoder started)
   local name=$1
   [ -e "$STATE/ns_${name}.done" ] && return 0
-  flock "$LOCK" bash -c "source '$HERE/run_n10.sh' __lib__; rc=0; one_run plans/$name.json runs/$name/t16/not_supported 16 || rc=\$?; [ \$rc = 2 ]"
-  echo "runs/$name/t16/not_supported" >> "$LOGS/not_supported.txt"
+  flock "$LOCK" bash -c "source '$HERE/run_n10.sh' __lib__; rc=0; one_run plans/$name.json runs12/$name/t16/not_supported 16 || rc=\$?; [ \$rc = 2 ]"
+  echo "runs12/$name/t16/not_supported" >> "$LOGS/not_supported.txt"
   touch "$STATE/ns_${name}.done"; log "NOT_SUPPORTED row $name t16 recorded"
 }
 check() {
   [ -e "$STATE/check.done" ] && { log "skip check"; return 0; }
-  flock "$LOCK" bash -c "source '$HERE/run_n10.sh' __lib__; slot plans/check_refrel3_q4k.json runs/check/refrel3_q4k_t1 1"
+  flock "$LOCK" bash -c "source '$HERE/run_n10.sh' __lib__; slot plans/check_refrel3_q4k.json runs12/check/refrel3_q4k_t1 1"
   local ev; ev=$(tail -1 "$LOGS/accepted.txt")
   (cd "$REPO" && L python3 -m tools.axis4 verify --evidence "$ROOT/$ev/evidence.json" --input-root "$ROOT" \
      --prepared-sha256 "$(sha256sum "$ROOT/prepared-v11-check/prepared.json" | cut -d' ' -f1)") | tee "$LOGS/check_verify.json"
@@ -97,14 +97,17 @@ rows() {
   row bgzf_default 16
   for r in refrel3_q4k refrel3_q16k zstd_seekable faidx_plain agc_t2t agc_noref; do ns_row "$r"; done
 }
-verify_all() {
+verify_all() {   # independent verify of every accepted run, 8 in parallel inside one lock hold
   local P; P=$(sha256sum "$ROOT/prepared-v11/prepared.json" | cut -d' ' -f1)
-  grep -v '^runs/check/' "$LOGS/accepted.txt" | while read -r ev; do
-    [ -e "$STATE/verify_$(echo "$ev" | tr / _).done" ] && continue
-    (cd "$REPO" && L python3 -m tools.axis4 verify --evidence "$ROOT/$ev/evidence.json" --input-root "$ROOT" \
-       --prepared-sha256 "$P") > "$LOGS/verify_$(echo "$ev" | tr / _).json"
-    touch "$STATE/verify_$(echo "$ev" | tr / _).done"; log "verified $ev"
-  done
+  grep -v '^runs12/check/' "$LOGS/accepted.txt" > "$LOGS/verify_list.txt"
+  export ROOT LOGS REPO P
+  flock "$LOCK" nice -n 19 ionice -c3 xargs -P 8 -I{} bash -c '
+    ev={}; tag=$(echo "$ev" | tr / _)
+    [ -e "$LOGS/state/verify_$tag.done" ] && exit 0
+    (cd "$REPO" && python3 -m tools.axis4 verify --evidence "$ROOT/$ev/evidence.json" --input-root "$ROOT" \
+       --prepared-sha256 "$P") > "$LOGS/verify_$tag.json" 2> "$LOGS/verify_$tag.err" \
+      && touch "$LOGS/state/verify_$tag.done" || echo "VERIFY FAILED $ev"' < "$LOGS/verify_list.txt"
+  log "verified $(ls "$STATE"/verify_*.done 2>/dev/null | wc -l) of $(wc -l < "$LOGS/verify_list.txt")"
 }
 
 if [ "${1:-}" = __lib__ ]; then return 0 2>/dev/null || exit 0; fi

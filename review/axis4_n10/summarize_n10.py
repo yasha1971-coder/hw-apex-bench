@@ -24,10 +24,10 @@ def main():
     a = ap.parse_args()
     root, logs, out = Path(a.root), Path(a.logs), Path(a.out)
     out.mkdir(parents=True, exist_ok=False)
-    accepted = [l for l in (logs / 'accepted.txt').read_text().split() if not l.startswith('runs/check/')]
+    accepted = [l for l in (logs / 'accepted.txt').read_text().split() if not l.startswith('runs12/check/')]
     ns = sorted(set((logs / 'not_supported.txt').read_text().split())) if (logs / 'not_supported.txt').exists() else []
     attempts = {}
-    for d in sorted(root.glob('runs/*/t*/*_a*')):
+    for d in sorted(root.glob('runs12/*/t*/*_a*')):
         attempts.setdefault(str(d.relative_to(root)).rsplit('_a', 1)[0], []).append(d.name)
     rows = {}
     for rel in accepted:
