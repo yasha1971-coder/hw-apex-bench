@@ -112,6 +112,27 @@ class TestBgzfTruthV11Geometry(unittest.TestCase):
         with self.assertRaises(ValueError):
             bgzf_canonical_sizes_fai(archive, fai, shorter, len(self.fasta))
 
+    def shifted_fai(self, row, delta, field=2):
+        lines = (self.root / 'a.fa.bgz.fai').read_text().splitlines()
+        cols = lines[row].split('\t')
+        cols[field] = str(int(cols[field]) + delta)
+        lines[row] = '\t'.join(cols)
+        bad = self.root / 'shifted.fai'
+        bad.write_text('\n'.join(lines) + '\n')
+        return bad
+
+    def test_fai_offset_shift_against_bgzf_bytes_is_refused(self):
+        # A13g (HW repro): an offset shifted by 100 must be refused against the decompressed bytes.
+        for row in (0, 1, 2):
+            with self.assertRaises(ValueError):
+                bgzf_canonical_sizes_fai(self.root / 'a.fa.bgz', self.shifted_fai(row, 100), self.assembly,
+                                         len(self.fasta))
+
+    def test_fai_line_width_mismatch_is_refused(self):
+        with self.assertRaises(ValueError):
+            bgzf_canonical_sizes_fai(self.root / 'a.fa.bgz', self.shifted_fai(0, -1, field=3), self.assembly,
+                                     len(self.fasta))
+
     def test_fai_parser_refuses_duplicates_and_bad_widths(self):
         bad = self.root / 'bad.fai'
         bad.write_text('x\t10\t3\t60\t61\nx\t10\t20\t60\t61\n')

@@ -69,7 +69,11 @@ With truth v1.1 the corpus `fasta` reference is the compressed truth source, so 
 BGZF reader never derives geometry from it. Canonical geometry comes from the BGZF
 archive and its hash-pinned `.fai` sidecar from the plan: the `.fai` contig order and
 lengths must equal the prepared assembly identity, and the emitted BGZF raw bytes must
-equal the prepared `truth.uncompressed_bytes`. Truth v1 keeps the plain-FASTA path.
+equal the prepared `truth.uncompressed_bytes`. Every `.fai` row is also checked
+against the decompressed BGZF bytes (A13g): the `>` header line naming the contig
+ends exactly at the offset, every full line ends with its terminator at the indexed
+width, sequence lines hold no newline or `>`, and records do not overlap.
+Truth v1 keeps the plain-FASTA path.
 
 ## Memory criterion, frozen before acceptance
 

@@ -74,6 +74,63 @@ def fai_records(fai):
     return rows
 
 
+def bgzf_raw_bytes(archive):
+    """Decompress every BGZF member (raw DEFLATE payload, CRC32 and ISIZE checked)."""
+    import zlib
+    out = bytearray()
+    with Path(archive).open("rb") as f:
+        for member in blocks(archive):
+            f.seek(member["coff"])
+            block = f.read(member["clen"])
+            xlen = int.from_bytes(block[10:12], "little")
+            payload = block[12 + xlen:-8]
+            raw = zlib.decompress(payload, -15)
+            if len(raw) != member["ulen"] or zlib.crc32(raw) != int.from_bytes(block[-8:-4], "little"):
+                raise ValueError("BGZF member CRC/ISIZE mismatch")
+            out += raw
+    return out
+
+
+def check_fai_against_bytes(records, data):
+    """A13g: every .fai row must match the decompressed bytes: a '>' header line naming the contig
+    ends exactly at the offset, every full line ends with its terminator at the indexed width,
+    no newline or '>' inside sequence lines, and the next record (or EOF) follows the last line."""
+    rows = sorted(records.items(), key=lambda kv: kv[1]["offset"])
+    for index, (name, row) in enumerate(rows):
+        off, length, bases, width = row["offset"], row["length"], row["line_bases"], row["line_bytes"]
+        if off <= 0 or off > len(data) or data[off - 1] != 0x0A:
+            raise ValueError(".fai offset is not at a line start: " + name)
+        start = data.rfind(b"\n", 0, off - 1) + 1
+        header = bytes(data[start:off - 1]).rstrip(b"\r")
+        if not header.startswith(b">") or header[1:].split()[:1] != [name.encode()]:
+            raise ValueError(".fai offset does not follow the contig header: " + name)
+        if not length:
+            continue
+        term = width - bases
+        nlines = -(-length // bases)
+        end = off + (nlines - 1) * width + (length - (nlines - 1) * bases)
+        if end > len(data):
+            raise ValueError(".fai contig extends beyond decompressed BGZF bytes: " + name)
+        terminator = b"\r\n"[-term:] if term in (1, 2) else None
+        if terminator is None:
+            raise ValueError(".fai line terminator width unsupported: " + name)
+        for k in range(term):
+            column = data[off + bases + k:end:width]
+            if column.count(terminator[k:k + 1]) != len(column):
+                raise ValueError(".fai line geometry differs from BGZF bytes: " + name)
+        region = data[off:end]
+        if region.count(b"\n") != nlines - 1 or region.count(b">"):
+            raise ValueError(".fai line geometry differs from BGZF bytes: " + name)
+        tail = data[end:end + term]
+        following = rows[index + 1][1]["offset"] if index + 1 < len(rows) else None
+        if end != len(data) and bytes(tail) != terminator:
+            raise ValueError(".fai last line is not terminated where indexed: " + name)
+        if following is not None:
+            nxt = data.find(b">", end)
+            if nxt < 0 or data[end + term:nxt].strip() or nxt >= following:
+                raise ValueError(".fai records overlap or skip bytes: " + name)
+
+
 def bgzf_canonical_sizes_fai(archive, fai, assembly, raw_size):
     """Truth v1.1: geometry from the BGZF archive and its hash-pinned .fai, never from the
     compressed truth source. The .fai contigs must equal the prepared contig order and lengths,
@@ -81,6 +138,11 @@ def bgzf_canonical_sizes_fai(archive, fai, assembly, raw_size):
     records = fai_records(fai)
     if [(name, row["length"]) for name, row in records.items()] != _expected_contigs(assembly):
         raise ValueError(".fai contigs differ from the prepared assembly identity")
+    data = bgzf_raw_bytes(archive)
+    if len(data) != raw_size:
+        raise ValueError("BGZF raw bytes differ from the prepared decompressed source size")
+    check_fai_against_bytes(records, data)
+    del data
 
     def prefix(x):
         total = 0
