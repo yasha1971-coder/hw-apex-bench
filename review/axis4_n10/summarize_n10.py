@@ -44,7 +44,7 @@ def main():
             'attempts': len(attempts.get(rel.rsplit('_a', 1)[0], []))})
     result = {'schema': 'axis4-n10-results-v1', 'protocol_sha256': sha(Path(__file__).parent / 'PROTOCOL_AXIS4_N10.md'),
               'prepared_sha256': sha(root / 'prepared-v11/prepared.json'), 'rows': [], 'not_supported': []}
-    md = ['# Axis 4 N10 v1.1 results (ace-core)', '',
+    md = ['# Axis 4 N10 v1.2 results (ace-core)', '',
           f"Protocol SHA-256 {result['protocol_sha256']}; prepared-v2 SHA-256 {result['prepared_sha256']}.",
           '200 requests (20 groups x 10 assemblies); seconds = A6 sum of group times (fetch + upper-case + SHA-256 '
           '+ coordinate translation), one persistent in-process reader. 3 warm-ups + 9 recorded runs per row.', '',

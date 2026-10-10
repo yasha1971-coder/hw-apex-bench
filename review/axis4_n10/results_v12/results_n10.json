@@ -1,0 +1,547 @@
+{
+ "not_supported": [
+  {
+   "evidence": "runs12/agc_noref/t16/not_supported/evidence.json",
+   "evidence_sha256": "eac0da50cecd0a303657310823ec88ddfae680c7c2849b9d4e81fe645c14de5e",
+   "family": "agc",
+   "reason": "current pinned native reader exposes only a scalar decoder API",
+   "variant": "noref"
+  },
+  {
+   "evidence": "runs12/agc_t2t/t16/not_supported/evidence.json",
+   "evidence_sha256": "7fb6ff1c7ccf03b65171d252e412f21f275890364acf2c2db57800eea0a8f6c4",
+   "family": "agc",
+   "reason": "current pinned native reader exposes only a scalar decoder API",
+   "variant": "t2t"
+  },
+  {
+   "evidence": "runs12/faidx_plain/t16/not_supported/evidence.json",
+   "evidence_sha256": "2e5bb0d03f138709ce660500c38bb9f8e482d25d0b9dd4444095a9d987b05e9e",
+   "family": "fasta-faidx",
+   "reason": "current pinned native reader exposes only a scalar decoder API",
+   "variant": "plain"
+  },
+  {
+   "evidence": "runs12/refrel3_q16k/t16/not_supported/evidence.json",
+   "evidence_sha256": "0b1886b40a49a884fae31d9657408b6854eb649c9327c301bcbb817be53f9477",
+   "family": "refrel3",
+   "reason": "current pinned native reader exposes only a scalar decoder API",
+   "variant": "q16k"
+  },
+  {
+   "evidence": "runs12/refrel3_q4k/t16/not_supported/evidence.json",
+   "evidence_sha256": "48e632b5e781660586cbe94dc591afe4fa0c878f07a28f268c46bc3762c5b446",
+   "family": "refrel3",
+   "reason": "current pinned native reader exposes only a scalar decoder API",
+   "variant": "q4k"
+  },
+  {
+   "evidence": "runs12/zstd_seekable/t16/not_supported/evidence.json",
+   "evidence_sha256": "451d1bd1b161e7769fc3d5858e9362229ce53953d0dada35917afa75487e8681",
+   "family": "zstd-seekable",
+   "reason": "current pinned native reader exposes only a scalar decoder API",
+   "variant": "seekable_compression level 3, frame 16384 B"
+  }
+ ],
+ "prepared_sha256": "22006f26b783ea74625d512f960630424c8994b7f90e5a7de28bb2ed2f0104e2",
+ "protocol_sha256": "45a3862f0162a6bf0f5913468ee46071fa94de1379c4c61fb9e50961f6c07603",
+ "rows": [
+  {
+   "affinity": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15
+   ],
+   "answers_per_second_median": 1511.6413236723529,
+   "cpu_models": [
+    "AMD EPYC 4344P 8-Core Processor"
+   ],
+   "family": "agc",
+   "gate_retries": 0,
+   "leaderboard_evidence": "runs12/agc_noref/t1/r4_a1/evidence.json",
+   "leaderboard_evidence_sha256": "0c263bc79d5ab92c9d78cf82f7fbe86793a1f0d40f08228de36a431cd40b87e0",
+   "max_seconds": 0.150246224,
+   "median_seconds": 0.132306518,
+   "min_seconds": 0.131314994,
+   "raw_seconds": [
+    0.133344393,
+    0.146186981,
+    0.131314994,
+    0.132306518,
+    0.132047492,
+    0.148749914,
+    0.13208732,
+    0.13219365,
+    0.150246224
+   ],
+   "recorded": [
+    "runs12/agc_noref/t1/r1_a1/evidence.json",
+    "runs12/agc_noref/t1/r2_a1/evidence.json",
+    "runs12/agc_noref/t1/r3_a1/evidence.json",
+    "runs12/agc_noref/t1/r4_a1/evidence.json",
+    "runs12/agc_noref/t1/r5_a1/evidence.json",
+    "runs12/agc_noref/t1/r6_a1/evidence.json",
+    "runs12/agc_noref/t1/r7_a1/evidence.json",
+    "runs12/agc_noref/t1/r8_a1/evidence.json",
+    "runs12/agc_noref/t1/r9_a1/evidence.json"
+   ],
+   "row": "agc_noref",
+   "stored_bytes": 838558751,
+   "threads": 1,
+   "variant": "noref",
+   "warmups": [
+    "runs12/agc_noref/t1/w1_a1/evidence.json",
+    "runs12/agc_noref/t1/w2_a1/evidence.json",
+    "runs12/agc_noref/t1/w3_a1/evidence.json"
+   ]
+  },
+  {
+   "affinity": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15
+   ],
+   "answers_per_second_median": 1491.9213725807917,
+   "cpu_models": [
+    "AMD EPYC 4344P 8-Core Processor"
+   ],
+   "family": "agc",
+   "gate_retries": 0,
+   "leaderboard_evidence": "runs12/agc_t2t/t1/r2_a1/evidence.json",
+   "leaderboard_evidence_sha256": "9bf40998fbaede254ef6100f2303e57afc35ce54eead042656babb68b9e1d958",
+   "max_seconds": 0.150029826,
+   "median_seconds": 0.134055322,
+   "min_seconds": 0.132796353,
+   "raw_seconds": [
+    0.134324344,
+    0.134055322,
+    0.133725861,
+    0.150029826,
+    0.133849596,
+    0.135059756,
+    0.132796353,
+    0.135233339,
+    0.133641442
+   ],
+   "recorded": [
+    "runs12/agc_t2t/t1/r1_a1/evidence.json",
+    "runs12/agc_t2t/t1/r2_a1/evidence.json",
+    "runs12/agc_t2t/t1/r3_a1/evidence.json",
+    "runs12/agc_t2t/t1/r4_a1/evidence.json",
+    "runs12/agc_t2t/t1/r5_a1/evidence.json",
+    "runs12/agc_t2t/t1/r6_a1/evidence.json",
+    "runs12/agc_t2t/t1/r7_a1/evidence.json",
+    "runs12/agc_t2t/t1/r8_a1/evidence.json",
+    "runs12/agc_t2t/t1/r9_a1/evidence.json"
+   ],
+   "row": "agc_t2t",
+   "stored_bytes": 4005375194,
+   "threads": 1,
+   "variant": "t2t",
+   "warmups": [
+    "runs12/agc_t2t/t1/w1_a1/evidence.json",
+    "runs12/agc_t2t/t1/w2_a1/evidence.json",
+    "runs12/agc_t2t/t1/w3_a1/evidence.json"
+   ]
+  },
+  {
+   "affinity": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15
+   ],
+   "answers_per_second_median": 1553.1714942614856,
+   "cpu_models": [
+    "AMD EPYC 4344P 8-Core Processor"
+   ],
+   "family": "bgzf",
+   "gate_retries": 1,
+   "leaderboard_evidence": "runs12/bgzf_default/t1/r4_a1/evidence.json",
+   "leaderboard_evidence_sha256": "e7f2202e27efdb91731604e17fd469437d0039b9f9e3c14f1701b4194341e55e",
+   "max_seconds": 0.131441375,
+   "median_seconds": 0.128768781,
+   "min_seconds": 0.128519256,
+   "raw_seconds": [
+    0.128619936,
+    0.131441375,
+    0.128519256,
+    0.128768781,
+    0.129068478,
+    0.131030156,
+    0.128669652,
+    0.128803487,
+    0.128685847
+   ],
+   "recorded": [
+    "runs12/bgzf_default/t1/r1_a1/evidence.json",
+    "runs12/bgzf_default/t1/r2_a1/evidence.json",
+    "runs12/bgzf_default/t1/r3_a1/evidence.json",
+    "runs12/bgzf_default/t1/r4_a1/evidence.json",
+    "runs12/bgzf_default/t1/r5_a1/evidence.json",
+    "runs12/bgzf_default/t1/r6_a1/evidence.json",
+    "runs12/bgzf_default/t1/r7_a1/evidence.json",
+    "runs12/bgzf_default/t1/r8_a2/evidence.json",
+    "runs12/bgzf_default/t1/r9_a1/evidence.json"
+   ],
+   "row": "bgzf_default",
+   "stored_bytes": 7885365110,
+   "threads": 1,
+   "variant": "default",
+   "warmups": [
+    "runs12/bgzf_default/t1/w1_a1/evidence.json",
+    "runs12/bgzf_default/t1/w2_a1/evidence.json",
+    "runs12/bgzf_default/t1/w3_a1/evidence.json"
+   ]
+  },
+  {
+   "affinity": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15
+   ],
+   "answers_per_second_median": 1713.925270904314,
+   "cpu_models": [
+    "AMD EPYC 4344P 8-Core Processor"
+   ],
+   "family": "bgzf",
+   "gate_retries": 1,
+   "leaderboard_evidence": "runs12/bgzf_default/t16/r5_a2/evidence.json",
+   "leaderboard_evidence_sha256": "6914caced29d92f2a13489f2380fd3a5d79eba3422ecca5744caad201dce0cc2",
+   "max_seconds": 0.121602233,
+   "median_seconds": 0.116691202,
+   "min_seconds": 0.10674467,
+   "raw_seconds": [
+    0.107213603,
+    0.110316765,
+    0.108490782,
+    0.117143968,
+    0.116691202,
+    0.10674467,
+    0.117434031,
+    0.121602233,
+    0.118092655
+   ],
+   "recorded": [
+    "runs12/bgzf_default/t16/r1_a1/evidence.json",
+    "runs12/bgzf_default/t16/r2_a1/evidence.json",
+    "runs12/bgzf_default/t16/r3_a1/evidence.json",
+    "runs12/bgzf_default/t16/r4_a1/evidence.json",
+    "runs12/bgzf_default/t16/r5_a2/evidence.json",
+    "runs12/bgzf_default/t16/r6_a1/evidence.json",
+    "runs12/bgzf_default/t16/r7_a1/evidence.json",
+    "runs12/bgzf_default/t16/r8_a1/evidence.json",
+    "runs12/bgzf_default/t16/r9_a1/evidence.json"
+   ],
+   "row": "bgzf_default",
+   "stored_bytes": 7885365110,
+   "threads": 16,
+   "variant": "default",
+   "warmups": [
+    "runs12/bgzf_default/t16/w1_a1/evidence.json",
+    "runs12/bgzf_default/t16/w2_a1/evidence.json",
+    "runs12/bgzf_default/t16/w3_a1/evidence.json"
+   ]
+  },
+  {
+   "affinity": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15
+   ],
+   "answers_per_second_median": 3097.9449209247236,
+   "cpu_models": [
+    "AMD EPYC 4344P 8-Core Processor"
+   ],
+   "family": "fasta-faidx",
+   "gate_retries": 0,
+   "leaderboard_evidence": "runs12/faidx_plain/t1/r5_a1/evidence.json",
+   "leaderboard_evidence_sha256": "e2edddd6dbe75dee3666d97adf19a6fd0aeaf786169f947768e83f276a4e6508",
+   "max_seconds": 0.066194074,
+   "median_seconds": 0.064558927,
+   "min_seconds": 0.051206148,
+   "raw_seconds": [
+    0.05145151,
+    0.064609022,
+    0.051206148,
+    0.06440499,
+    0.064558927,
+    0.064866053,
+    0.064726243,
+    0.066194074,
+    0.064337405
+   ],
+   "recorded": [
+    "runs12/faidx_plain/t1/r1_a1/evidence.json",
+    "runs12/faidx_plain/t1/r2_a1/evidence.json",
+    "runs12/faidx_plain/t1/r3_a1/evidence.json",
+    "runs12/faidx_plain/t1/r4_a1/evidence.json",
+    "runs12/faidx_plain/t1/r5_a1/evidence.json",
+    "runs12/faidx_plain/t1/r6_a1/evidence.json",
+    "runs12/faidx_plain/t1/r7_a1/evidence.json",
+    "runs12/faidx_plain/t1/r8_a1/evidence.json",
+    "runs12/faidx_plain/t1/r9_a1/evidence.json"
+   ],
+   "row": "faidx_plain",
+   "stored_bytes": 30483628250,
+   "threads": 1,
+   "variant": "plain",
+   "warmups": [
+    "runs12/faidx_plain/t1/w1_a1/evidence.json",
+    "runs12/faidx_plain/t1/w2_a1/evidence.json",
+    "runs12/faidx_plain/t1/w3_a1/evidence.json"
+   ]
+  },
+  {
+   "affinity": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15
+   ],
+   "answers_per_second_median": 2426.3552061248192,
+   "cpu_models": [
+    "AMD EPYC 4344P 8-Core Processor"
+   ],
+   "family": "refrel3",
+   "gate_retries": 0,
+   "leaderboard_evidence": "runs12/refrel3_q16k/t1/r2_a1/evidence.json",
+   "leaderboard_evidence_sha256": "ed9ba12640c1b83ec59f0585e2712bb0ad8925e5392dbf4bc0b12db63a83c77f",
+   "max_seconds": 0.082761829,
+   "median_seconds": 0.082428162,
+   "min_seconds": 0.068364709,
+   "raw_seconds": [
+    0.068946602,
+    0.082428162,
+    0.068364709,
+    0.082509655,
+    0.082761829,
+    0.082648107,
+    0.082233,
+    0.082348597,
+    0.082492658
+   ],
+   "recorded": [
+    "runs12/refrel3_q16k/t1/r1_a1/evidence.json",
+    "runs12/refrel3_q16k/t1/r2_a1/evidence.json",
+    "runs12/refrel3_q16k/t1/r3_a1/evidence.json",
+    "runs12/refrel3_q16k/t1/r4_a1/evidence.json",
+    "runs12/refrel3_q16k/t1/r5_a1/evidence.json",
+    "runs12/refrel3_q16k/t1/r6_a1/evidence.json",
+    "runs12/refrel3_q16k/t1/r7_a1/evidence.json",
+    "runs12/refrel3_q16k/t1/r8_a1/evidence.json",
+    "runs12/refrel3_q16k/t1/r9_a1/evidence.json"
+   ],
+   "row": "refrel3_q16k",
+   "stored_bytes": 3294013072,
+   "threads": 1,
+   "variant": "q16k",
+   "warmups": [
+    "runs12/refrel3_q16k/t1/w1_a1/evidence.json",
+    "runs12/refrel3_q16k/t1/w2_a1/evidence.json",
+    "runs12/refrel3_q16k/t1/w3_a1/evidence.json"
+   ]
+  },
+  {
+   "affinity": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15
+   ],
+   "answers_per_second_median": 2522.091980971976,
+   "cpu_models": [
+    "AMD EPYC 4344P 8-Core Processor"
+   ],
+   "family": "refrel3",
+   "gate_retries": 1,
+   "leaderboard_evidence": "runs12/refrel3_q4k/t1/r6_a1/evidence.json",
+   "leaderboard_evidence_sha256": "7201a6646c77d633706d5707deca512249e0448f2014355098cbb8ed9cb3e234",
+   "max_seconds": 0.081746893,
+   "median_seconds": 0.079299249,
+   "min_seconds": 0.065024819,
+   "raw_seconds": [
+    0.079284757,
+    0.065024819,
+    0.079455863,
+    0.081746893,
+    0.079444705,
+    0.079299249,
+    0.079932634,
+    0.065118869,
+    0.067451126
+   ],
+   "recorded": [
+    "runs12/refrel3_q4k/t1/r1_a1/evidence.json",
+    "runs12/refrel3_q4k/t1/r2_a1/evidence.json",
+    "runs12/refrel3_q4k/t1/r3_a1/evidence.json",
+    "runs12/refrel3_q4k/t1/r4_a1/evidence.json",
+    "runs12/refrel3_q4k/t1/r5_a1/evidence.json",
+    "runs12/refrel3_q4k/t1/r6_a1/evidence.json",
+    "runs12/refrel3_q4k/t1/r7_a1/evidence.json",
+    "runs12/refrel3_q4k/t1/r8_a2/evidence.json",
+    "runs12/refrel3_q4k/t1/r9_a1/evidence.json"
+   ],
+   "row": "refrel3_q4k",
+   "stored_bytes": 3369426921,
+   "threads": 1,
+   "variant": "q4k",
+   "warmups": [
+    "runs12/refrel3_q4k/t1/w1_a1/evidence.json",
+    "runs12/refrel3_q4k/t1/w2_a1/evidence.json",
+    "runs12/refrel3_q4k/t1/w3_a1/evidence.json"
+   ]
+  },
+  {
+   "affinity": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15
+   ],
+   "answers_per_second_median": 1849.916103067373,
+   "cpu_models": [
+    "AMD EPYC 4344P 8-Core Processor"
+   ],
+   "family": "zstd-seekable",
+   "gate_retries": 0,
+   "leaderboard_evidence": "runs12/zstd_seekable/t1/r8_a1/evidence.json",
+   "leaderboard_evidence_sha256": "cf1a3e6a1737b3f7bea708cc4de630539864077baf3191cfed76b64865659b6b",
+   "max_seconds": 0.124059422,
+   "median_seconds": 0.108113011,
+   "min_seconds": 0.106196815,
+   "raw_seconds": [
+    0.123973035,
+    0.107503315,
+    0.107043214,
+    0.108658383,
+    0.108390891,
+    0.124059422,
+    0.106196815,
+    0.108113011,
+    0.106982517
+   ],
+   "recorded": [
+    "runs12/zstd_seekable/t1/r1_a1/evidence.json",
+    "runs12/zstd_seekable/t1/r2_a1/evidence.json",
+    "runs12/zstd_seekable/t1/r3_a1/evidence.json",
+    "runs12/zstd_seekable/t1/r4_a1/evidence.json",
+    "runs12/zstd_seekable/t1/r5_a1/evidence.json",
+    "runs12/zstd_seekable/t1/r6_a1/evidence.json",
+    "runs12/zstd_seekable/t1/r7_a1/evidence.json",
+    "runs12/zstd_seekable/t1/r8_a1/evidence.json",
+    "runs12/zstd_seekable/t1/r9_a1/evidence.json"
+   ],
+   "row": "zstd_seekable",
+   "stored_bytes": 9312682901,
+   "threads": 1,
+   "variant": "seekable_compression level 3, frame 16384 B",
+   "warmups": [
+    "runs12/zstd_seekable/t1/w1_a1/evidence.json",
+    "runs12/zstd_seekable/t1/w2_a1/evidence.json",
+    "runs12/zstd_seekable/t1/w3_a1/evidence.json"
+   ]
+  }
+ ],
+ "schema": "axis4-n10-results-v1"
+}

@@ -1,0 +1,6 @@
+runs12/refrel3_q4k/t16/not_supported
+runs12/refrel3_q16k/t16/not_supported
+runs12/zstd_seekable/t16/not_supported
+runs12/faidx_plain/t16/not_supported
+runs12/agc_t2t/t16/not_supported
+runs12/agc_noref/t16/not_supported
