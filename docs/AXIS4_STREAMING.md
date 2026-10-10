@@ -63,6 +63,14 @@ uncompressed FASTA spool, temporary FASTA or whole-assembly allocation is used b
 the streaming truth implementation. Variable wrapping and an absent final LF work.
 Empty/duplicate names, malformed sequence framing and oversized headers refuse.
 
+## BGZF readers under truth v1.1 (A13b)
+
+With truth v1.1 the corpus `fasta` reference is the compressed truth source, so the
+BGZF reader never derives geometry from it. Canonical geometry comes from the BGZF
+archive and its hash-pinned `.fai` sidecar from the plan: the `.fai` contig order and
+lengths must equal the prepared assembly identity, and the emitted BGZF raw bytes must
+equal the prepared `truth.uncompressed_bytes`. Truth v1 keeps the plain-FASTA path.
+
 ## Memory criterion, frozen before acceptance
 
 [axis4_stream.py](../tools/axis4_stream.py) bounds each read to 65536 bytes,

@@ -52,4 +52,13 @@ class NativeAvailability(unittest.TestCase):
  def test_native_agc_t2t(self):self.need('HWAPEX_AGC_SO',['hwa_agc_open','hwa_agc_fetch','hwa_agc_close'])
  def test_native_agc_noref(self):self.need('HWAPEX_AGC_SO',['hwa_agc_open','hwa_agc_fetch','hwa_agc_close'])
  def test_native_fasta_faidx(self):self.need('HWAPEX_HTSLIB_SO',['hwa_bgzf_open','hwa_bgzf_fetch','hwa_bgzf_close'])
+ def test_native_bgzf_truth_v11_open_run_verify(self):
+  self.need('HWAPEX_BGZF_SO',['hwa_bgzf_open','hwa_bgzf_fetch','hwa_bgzf_close','hwa_bgzf_index','fai_thread_pool'])
+  import tempfile
+  try:from test_bgzf_v11_geometry import native_v11_exercise
+  except ModuleNotFoundError:from tests.test_bgzf_v11_geometry import native_v11_exercise
+  with tempfile.TemporaryDirectory() as tmp:
+   results=native_v11_exercise(os.environ['HWAPEX_BGZF_SO'],tmp)
+  self.assertEqual([r['status'] for r in results],['PASS','PASS'])
+  self.assertEqual([r['verified'] for r in results],[6,6])
 if __name__=='__main__':unittest.main()

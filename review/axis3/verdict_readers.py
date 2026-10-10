@@ -60,6 +60,48 @@ def bgzf_canonical_sizes(archive, source, assembly):
         truth.close()
 
 
+def fai_records(fai):
+    """htslib .fai rows: name, length, offset, line bases, line bytes (fixed width per contig)."""
+    rows = {}
+    for line in Path(fai).read_text().splitlines():
+        fields = line.split("\t")
+        if len(fields) < 5 or fields[0] in rows:
+            raise ValueError("invalid or duplicate .fai row")
+        length, offset, bases, width = (int(x) for x in fields[1:5])
+        if length < 0 or offset < 0 or (length and not 0 < bases < width):
+            raise ValueError("invalid .fai geometry")
+        rows[fields[0]] = {"length": length, "offset": offset, "line_bases": bases, "line_bytes": width}
+    return rows
+
+
+def bgzf_canonical_sizes_fai(archive, fai, assembly, raw_size):
+    """Truth v1.1: geometry from the BGZF archive and its hash-pinned .fai, never from the
+    compressed truth source. The .fai contigs must equal the prepared contig order and lengths,
+    and the emitted raw bytes must equal the prepared decompressed source size."""
+    records = fai_records(fai)
+    if [(name, row["length"]) for name, row in records.items()] != _expected_contigs(assembly):
+        raise ValueError(".fai contigs differ from the prepared assembly identity")
+
+    def prefix(x):
+        total = 0
+        for row in records.values():
+            if not row["length"] or x <= row["offset"]:
+                continue
+            lines, rest = divmod(x - row["offset"], row["line_bytes"])
+            total += min(row["length"], lines * row["line_bases"] + min(rest, row["line_bases"]))
+        return total
+    raw, sizes = 0, []
+    for member in blocks(archive):
+        end = raw + member["ulen"]
+        sizes.append(prefix(end) - prefix(raw))
+        raw = end
+    if raw != raw_size:
+        raise ValueError("BGZF raw geometry differs from the prepared decompressed source size")
+    if sum(sizes) != sum(n for _, n in _expected_contigs(assembly)):
+        raise ValueError("BGZF canonical geometry mismatch")
+    return sizes
+
+
 def _expected_contigs(assembly):
     return [(c["contig_id"], c["length"]) for c in assembly["contigs"]]
 
@@ -209,7 +251,8 @@ def open_reader(root, spec, corpus):
             elif family == "bgzf":
                 if spec["variant"] not in ("default", "matched-g"):
                     raise ValueError("BGZF must be default or matched-g")
-                source = checked_file(root, assembly["fasta"])
+                streamed = "truth" in assembly  # truth v1.1: assembly fasta is the compressed source
+                source = None if streamed else checked_file(root, assembly["fasta"])
                 for suffix in (".fai", ".gzi"):
                     side = checked_file(root, arc["fai" if suffix == ".fai" else "gzi"])
                     if side != Path(str(path) + suffix):
@@ -231,7 +274,7 @@ def open_reader(root, spec, corpus):
                 if not handle:
                     inner.close()
                     raise ValueError("BGZF full-decode cursor refused archive")
-                raw_size = source.stat().st_size
+                raw_size = assembly["truth"]["uncompressed_bytes"] if streamed else source.stat().st_size
                 buf = ctypes.create_string_buffer(raw_size + 1)
 
                 def full(L=L, handle=handle, buf=buf, raw_size=raw_size):
@@ -244,10 +287,14 @@ def open_reader(root, spec, corpus):
                     inner.close()
                     L.hwa_bgzf_dq_close(handle)
                 singles.append(Single(assembly, r, full, close=close))
-                sizes = bgzf_canonical_sizes(path, source, aid)
+                if streamed:
+                    sizes = bgzf_canonical_sizes_fai(path, checked_file(root, arc["fai"]), assembly, raw_size)
+                    method = "BGZF-fai-intersection-with-emitted-BGZF-blocks"
+                else:
+                    sizes = bgzf_canonical_sizes(path, source, aid)
+                    method = "FASTA-index-intersection-with-emitted-BGZF-blocks"
                 all_sizes.extend(sizes)
-                geometries.append({"assembly_id": aid, "canonical_sizes": sizes,
-                                   "method": "FASTA-index-intersection-with-emitted-BGZF-blocks"})
+                geometries.append({"assembly_id": aid, "canonical_sizes": sizes, "method": method})
                 if spec["variant"] == "matched-g":
                     g = spec.get("granule_raw_bytes")
                     if type(g) is not int or not 1 <= g <= 65280:
