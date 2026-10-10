@@ -199,15 +199,37 @@ def file_refs(value, prefix='$'):
             yield from file_refs(child, prefix+'['+str(i)+']')
 
 
-def associated_files(row, evidence, manifest):
+def external_listings(root):
+    """A13h: real releases reference catalog data roots by DATA_ROOT.json listings (not copied)."""
+    result = {}
+    for listing_path in sorted(root.glob('inputs/*/DATA_ROOT.json')):
+        listing = load_json(listing_path)
+        catalog = load_json(listing_path.parent/'leaderboard-input.json')
+        for record in catalog['records']:
+            result.setdefault(record['evidence']['sha256'], []).append(listing)
+    return result
+
+
+def associated_files(row, evidence, manifest, listings=None):
+    """Manifest records for copied files; for a real release, the hash-bound external data-root
+    files of the evidence's catalog (path relative to the data root, bytes, SHA-256)."""
     sha = row['evidence_sha256']
     records = [r for r in manifest['artifacts'] if sha in r['evidence_sha256']]
+    external = []
+    for listing in (listings or {}).get(sha, []):
+        for f in listing['files']:
+            external.append({'path': listing['catalog_dir']+'/'+f['path'], 'bytes': f['bytes'], 'sha256': f['sha256']})
     for field, ref in file_refs(evidence):
-        matches = [r for r in records if (r['bytes'], r['sha256']) == (ref['bytes'], ref['sha256'])
+        matches = [r for r in records + external if (r['bytes'], r['sha256']) == (ref['bytes'], ref['sha256'])
                    and (r['path'] == ref['path'] or r['path'].endswith('/'+ref['path']))]
         if not matches:
             raise ValueError('missing evidence file link: '+field)
-    return records
+    if listings is None:
+        return records
+    used = {(e['path'], e['sha256']) for e in external
+            if any((e['bytes'], e['sha256']) == (ref['bytes'], ref['sha256']) and e['path'].endswith('/'+ref['path'])
+                   for _, ref in file_refs(evidence))}
+    return records, [e for e in external if (e['path'], e['sha256']) in used]
 
 
 def validate_site(directory):
@@ -269,13 +291,15 @@ def validate_site(directory):
     return {'html_pages': len(trees), 'links': len(links), 'HTML5': 'PASS', 'internal_links': 'PASS'}
 
 
-def build(directory, output='site', expected_manifest_sha256=None):
+def build(directory, output='site', expected_manifest_sha256=None, data_root=None):
     root = Path(directory).resolve(strict=True)
     out = Path(output).resolve()
     if out.exists() or out.is_relative_to(root) or root.is_relative_to(out):
         raise ValueError('output must be new and disjoint from release input')
     snapshots = {p.relative_to(root).as_posix(): sha256_file(p) for p in release_v020.files(root)}
-    receipt = release_v020.verify(root, expected_manifest_sha256)
+    receipt = release_v020.verify(root, expected_manifest_sha256, data_root)
+    listings = external_listings(root)
+    real = bool(listings)
     data = load_json(root/'leaderboard.json')
     manifest = load_json(root/'RELEASE_MANIFEST.json')
     method = (root/'metadata/METHODOLOGY.md').read_text(encoding='utf-8')
@@ -315,7 +339,7 @@ def build(directory, output='site', expected_manifest_sha256=None):
         for row in rows:
             page = 'rows/'+row_id(row)+'/index.html'
             source = load_json(root/row['evidence'])
-            records = associated_files(row, source, manifest)
+            records, external = associated_files(row, source, manifest, listings)
             body = warning+'<h2>Leaderboard row</h2><pre>'+esc(pretty(row))+'</pre><p>'
             body += anchor(page, 'downloads/release/'+row['evidence'], 'Exact evidence JSON')
             body += ' · SHA-256 <code>'+row['evidence_sha256']+'</code></p>'
@@ -323,9 +347,19 @@ def build(directory, output='site', expected_manifest_sha256=None):
             body += '<h2>Hash-bound files</h2><p>Shared input files retain their manifest associations; association is not a machine inference.</p><ul>'
             for record in records:
                 body += '<li>'+anchor(page, 'downloads/release/'+record['path'], record['path'])+' · <code>'+record['sha256']+'</code></li>'
-            body += '</ul><h2>Reproduce and independently verify</h2><p>Run in the applied benchmark clone, with this complete site at ./site. '
-            body += 'The output directory must be new. These commands verify existing evidence and regenerate HTML; they do not rerun measurements.</p><pre>'
-            command = 'set -euo pipefail\npython3 -m tools.release_v020 --verify site/downloads/release --manifest-sha256 '+receipt['manifest_sha256']+'\npython3 -m tools.build_site site/downloads/release --out rebuilt-site --manifest-sha256 '+receipt['manifest_sha256']
+            body += '</ul>'
+            if external:
+                body += '<h2>External data-root files (referenced by hash, not copied)</h2><ul>'
+                for record in external:
+                    body += '<li><code>DATA_ROOT/'+esc(record['path'])+'</code> · '+esc(str(record['bytes']))+' B · <code>'+record['sha256']+'</code></li>'
+                body += '</ul>'
+            body += '<h2>Reproduce and independently verify</h2><p>Run in the applied benchmark clone, with this complete site at ./site. '
+            body += 'The output directory must be new. These commands verify existing evidence and regenerate HTML; they do not rerun measurements.'
+            if real:
+                body += ' DATA_ROOT is the release-input root holding the referenced catalog directories with exactly the listed bytes.'
+            body += '</p><pre>'
+            root_arg = ' --data-root DATA_ROOT' if real else ''
+            command = 'set -euo pipefail\npython3 -m tools.release_v020 --verify site/downloads/release --manifest-sha256 '+receipt['manifest_sha256']+root_arg+'\npython3 -m tools.build_site site/downloads/release --out rebuilt-site --manifest-sha256 '+receipt['manifest_sha256']+root_arg
             body += esc(command)+'</pre>'
             pages[page] = document(page, row['format']+' / '+row['variant']+' / '+row.get('hash_mode', 'access'), body)
         page = 'downloads/index.html'
@@ -333,7 +367,10 @@ def build(directory, output='site', expected_manifest_sha256=None):
         for name in ('leaderboard.csv', 'leaderboard.json', 'RELEASE_MANIFEST.json'):
             body += '<li>'+anchor(page, 'downloads/'+name, name)+' · SHA-256 <code>'+sha256_file(root/name)+'</code></li>'
         body += '</ul><p>'+anchor(page, 'downloads/release/RELEASE_INPUT.json', 'Release recipe (not release-input-v1 CLI configuration)')+'</p>'
-        body += '<p>Full evidence and dependencies are included in the site artifact under downloads/release; keep that tree intact for reproduction.</p>'
+        if real:
+            body += '<p>Evidence JSON, catalogs and data-root listings are included under downloads/release; the data roots themselves are referenced by per-file SHA-256 (DATA_ROOT.json) and are not copied.</p>'
+        else:
+            body += '<p>Full evidence and dependencies are included in the site artifact under downloads/release; keep that tree intact for reproduction.</p>'
         pages[page] = document(page, 'Downloads', body)
         for name, blob in pages.items():
             target = staging/name
@@ -343,7 +380,7 @@ def build(directory, output='site', expected_manifest_sha256=None):
         (staging/'assets/site.css').write_bytes(css())
         (staging/'.nojekyll').write_bytes(b'')
         validation = validate_site(staging)
-        release_v020.verify(staging/'downloads/release', receipt['manifest_sha256'])
+        release_v020.verify(staging/'downloads/release', receipt['manifest_sha256'], data_root)
         after = {p.relative_to(root).as_posix(): sha256_file(p) for p in release_v020.files(root)}
         if snapshots != after:
             raise ValueError('release changed during site assembly')
@@ -362,9 +399,10 @@ def main():
     parser.add_argument('release', type=Path)
     parser.add_argument('--out', type=Path, default=Path('site'))
     parser.add_argument('--manifest-sha256')
+    parser.add_argument('--data-root', type=Path, help='real release: root holding the referenced catalog directories')
     args = parser.parse_args()
     try:
-        result = build(args.release, args.out, args.manifest_sha256)
+        result = build(args.release, args.out, args.manifest_sha256, args.data_root)
     except Exception as exc:
         parser.exit(1, 'SITE_FAILED '+type(exc).__name__+': '+str(exc)+'\n')
     print(json.dumps(result, sort_keys=True, allow_nan=False))

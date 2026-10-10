@@ -16,6 +16,14 @@ input, invented values, a bad manifest or missing file/fragment refuses without
 returning a partial site. An external manifest SHA guards against a subsequent
 consistent rewrite; hashes alone do not authenticate authorship.
 
+A real release (A13c) references its catalog data roots by `DATA_ROOT.json`
+listings instead of copying them. Build its site with
+`--data-root RELEASE_INPUT_ROOT` (A13h): verification, the final re-verification
+of the copied release and every row page use that root. Row pages list the
+evidence's hash-bound external files as `DATA_ROOT/<path>` with bytes and SHA-256
+(no download link) and print reproduction commands with `--data-root DATA_ROOT`.
+Without the data root a real release refuses.
+
 Overview, axis/methodology pages, individual row pages and downloads are included.
 Each row shows all original evidence fields as escaped JSON, source SHA, associated
 files and verify/reproduction commands. Scientific FAIL remains visible. Unknown

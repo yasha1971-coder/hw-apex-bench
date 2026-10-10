@@ -55,7 +55,7 @@ jobs:
           import unittest
 
           # Keep collection count strict; optional native cases are still collected.
-          expected_total = 474  # 447 A12.1 + 7 Pages deploy-gate + 5 A13a + 4 A13b + 4 A13c + 1 A13d + 1 A13e + 3 A13f + 2 A13g fai-vs-bytes tests
+          expected_total = 475  # 447 A12.1 + 7 Pages deploy-gate + 5 A13a + 4 A13b + 4 A13c + 1 A13d + 1 A13e + 3 A13f + 2 A13g + 1 A13h real-release site test
           suite = unittest.defaultTestLoader.discover("tests")
           native_type = importlib.import_module("test_s2_native_readers").NativeAvailability
 

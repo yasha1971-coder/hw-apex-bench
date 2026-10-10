@@ -353,6 +353,39 @@ class Release(unittest.TestCase):
         with self.assertRaises((ValueError, FileNotFoundError)):
             job.verify(self.out, data_root=self.config.parent)
 
+    def test_real_release_site_build_with_data_root(self):
+        # A13h (HW P1): real release with data_root -> site build -> verify, external refs consistent.
+        from tools import build_site
+        # The site renders METHODOLOGY; every document it links is a release artifact.
+        method = (job.REPO/'METHODOLOGY.md').read_text()
+        linked = sorted({unquote(urlsplit(link).path) for link in re.findall(r'\[[^\]]*\]\(([^)#]+)', method)
+                         if not urlsplit(link).scheme and (job.REPO/unquote(urlsplit(link).path)).is_file()})
+        for name in linked:
+            target = self.config.parent/name
+            if not target.exists():
+                target.parent.mkdir(parents=True, exist_ok=True)
+                shutil.copyfile(job.REPO/name, target)
+        self.edit_config(lambda d: d.update(artifacts=d['artifacts']+[
+            {'path': n, 'bytes': 0, 'sha256': '0'*64} for n in linked if n not in {r['path'] for r in d['artifacts']}]))
+        self.refresh()
+        self.real_build()
+        manifest = hashlib.sha256((self.out/'RELEASE_MANIFEST.json').read_bytes()).hexdigest()
+        with self.assertRaises(ValueError):
+            build_site.build(self.out, self.root/'site-without-root', manifest)
+        self.assertFalse((self.root/'site-without-root').exists())
+        receipt = build_site.build(self.out, self.root/'site', manifest, data_root=self.config.parent)
+        self.assertEqual(receipt['status'], 'PASS')
+        self.assertEqual(receipt['manifest_sha256'], manifest)
+        site = self.root/'site'
+        self.assertEqual(job.verify(site/'downloads/release', manifest, self.config.parent)['status'], 'PASS')
+        pages = [p.read_text() for p in site.glob('rows/*/index.html')]
+        self.assertTrue(pages and all('--data-root DATA_ROOT' in p for p in pages))
+        listings = [load_json(p) for p in self.out.glob('inputs/*/DATA_ROOT.json')]
+        shown = {f['sha256'] for l in listings for f in l['files']}
+        external = set(re.findall(r'<code>DATA_ROOT/[^<]+</code> · \d+ B · <code>([0-9a-f]{64})</code>', ''.join(pages)))
+        self.assertTrue(external and external <= shown)
+        self.assertFalse(list((site/'downloads/release').glob('inputs/*/data')))
+
     def test_synthetic_release_still_copies_catalog_directories(self):
         self.build()
         recipe = load_json(self.out/'RELEASE_INPUT.json')
