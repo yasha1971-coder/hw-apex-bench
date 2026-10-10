@@ -14,7 +14,8 @@ WK = Path.home() / 'pubrepo/.wk'
 N10 = WK / 'axis4n10'
 WLB_TAR = Path.home() / 'outgoing/window-law-B-0ace54d-2026-10-08.tar'
 WLB_TAR_SHA = '3fb7aa62d745e795f08e39049d68f3d51ee2494ff2a51400e0324b4ae30dd15a'
-WLB_DIR = WK / 'vB_evidence/window-law-B'
+WLB_BASE = WK / 'vB_evidence'           # the tar holds window-law-B/, rehearsal-small/ and logs
+WLB_DIR = WLB_BASE / 'window-law-B'
 A7_FIXTURE = REPO / 'tests/fixtures/leaderboard/input'
 METADATA = ['CITATION.cff', '.zenodo.json', 'METHODOLOGY.md', 'CHANGELOG.md', 'RELEASE_NOTES_v0.2.0.md',
             'PROTOCOL_AXIS5.md', 'review/axis4_n10/PROTOCOL_AXIS4_N10.md']
@@ -54,7 +55,7 @@ def link_tree(src, dst):
 
 
 def check_window_law_tree():
-    """The extracted window-law-B directory must equal the 3fb7aa62 tar member by member."""
+    """window-law-B/ in the extracted vB_evidence must equal the 3fb7aa62 tar member by member."""
     if sha(WLB_TAR) != WLB_TAR_SHA:
         raise SystemExit('window-law-B tar sha differs')
     seen = {}
@@ -65,7 +66,8 @@ def check_window_law_tree():
                 f = t.extractfile(m)
                 for b in iter(lambda: f.read(1 << 22), b''):
                     h.update(b)
-                seen[m.name.split('/', 1)[1]] = h.hexdigest()
+                if m.name.startswith('window-law-B/'):
+                    seen[m.name.split('/', 1)[1]] = h.hexdigest()
             elif not m.isdir():
                 raise SystemExit('unexpected tar member type ' + m.name)
     have = {p.relative_to(WLB_DIR).as_posix(): p for p in WLB_DIR.rglob('*') if p.is_file()}
@@ -92,7 +94,7 @@ def main():
     if missing or bad:
         c3.mkdir(parents=True)
         with tarfile.open(WLB_TAR) as t:
-            t.extractall(c3, filter='data')
+            t.extractall(c3, members=[m for m in t if m.name.startswith('window-law-B/')], filter='data')
         report['window_law_B']['source'] = 'extracted from tar'
     else:
         for n in sorted(seen):
