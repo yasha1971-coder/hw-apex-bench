@@ -1,15 +1,22 @@
-# PROTOCOL_AXIS4_N10 v1.2 - Axis 4 cohort region access on 10 HPRC assemblies (ace-core, CPU)
+# PROTOCOL_AXIS4_N10 v1.3 - Axis 4 cohort region access on 10 HPRC assemblies (ace-core, CPU)
 
-Status: FROZEN v1.2, before any Axis 4 N10 measurement. A file cannot contain its own hash: the SHA-256 of this
+Status: FROZEN v1.3, before any Axis 4 N10 v1.3 measurement. A file cannot contain its own hash: the SHA-256 of this
 file is recorded in the sidecar `PROTOCOL_AXIS4_N10.md.sha256` and in the freezing commit message.
-v1.2 changes ONLY the tool version (section "Tool"); cohort, requests, truth v1.1, inputs, rows, repetitions, gate
-thresholds and reporting are those of v1.1 (sha256 51989922...c479). Under v1.1 no timed row completed: the method
+v1.3 changes ONLY the tool version (section "Tool") relative to v1.2 (sha256 45a3862f...7603), after the HW review of
+the v1.2 tool (four defects: after gate after sample writes, quiet-wait bound by polls only, .fai trusted without the
+BGZF bytes, real-release site build). The v1.2 measurements are superseded and re-measured with the same archives
+(SHA-256 checked against the build records before the run, no rebuild). v1.2 itself changed only the tool relative to
+v1.1; cohort, requests, truth v1.1, inputs, rows, repetitions, gate thresholds and reporting are those of v1.1
+(sha256 51989922...c479). Under v1.1 no timed row completed: the method
 check was refused 6/6 by the old A6 after-gate (own reader-open CPU in load1) and the BGZF reader could not open
 under truth v1.1; both are tool defects fixed by A13a/A13b. v1 and v1.1 are superseded.
 This is a SEPARATE protocol. It does not replace, amend or reinterpret `PROTOCOL_COHORT_REGION` (M3, 20 x 558,
-`research/bench2610/PROTOCOL_COHORT_REGION.md`, SHA-256 888b5b54...a888). Results are labelled `axis4-n10-v1.2` and are
+`research/bench2610/PROTOCOL_COHORT_REGION.md`, SHA-256 888b5b54...a888). Results are labelled `axis4-n10-v1.3` and are
 never mixed with, scaled to or presented as 558-assembly results.
-Tool: hw-apex-bench `38cb566` = A6 `tools/axis4.py` with A11 (streaming truth, `docs/AXIS4_STREAMING.md`), A12.1
+Tool: hw-apex-bench `330272b` = the v1.2 tool `38cb566` plus A13d `e7b4cd1` (leaderboard window-law FAILED family),
+A13e `9988c51` (after gate immediately after the last timed group, before sample writes), A13f `6f22e64` (quiet wait
+bounded by monotonic wall time incl. telemetry samples, expiry BLOCKED), A13g `d60e36f` (.fai checked against the
+decompressed BGZF bytes) and A13h `330272b` (site build with release data roots). The v1.2 tool was: A6 `tools/axis4.py` with A11 (streaming truth, `docs/AXIS4_STREAMING.md`), A12.1
 (native decoder workers, `docs/AXIS4_THREADS.md`) at `34db4e2`, plus A13a `91b8b31` (run order: input hashing and
 native open, bounded recorded quiet wait, gate before, timed groups, gate after, close), A13b `b332e0b` (BGZF geometry
 from the BGZF archive and .fai under truth v1.1) and A13c `38cb566` (release references data roots by hash).
@@ -78,8 +85,9 @@ y1_HG00735.2, y1_HG00741.1, y1_HG00741.2. Provenance per assembly: `inputs/selec
 - Order: rows in the table order, threads 1 before 16. Strictly one run at a time.
 - Silence gate before and after the timed groups of every run (A6's own, thresholds unchanged): host ace-core,
   load1 < 0.5, available data-disk bytes > 20 000 000 000, CPU sample >= 1 s, no foreign process >= 10 % of one CPU.
-  A13a order: input hashing and native open, then a bounded wait (same gate every 15 s, at most 1800 s, every refused
-  sample recorded in evidence `admission`), gate before, timed groups, gate after, close. A run whose gate does not
+  Order (A13a/e/f): input hashing and native open, then a bounded wait (same gate every 15 s, at most 1800 s of
+  monotonic wall time including the telemetry samples, every refused sample recorded in evidence `admission`;
+  expiry ends the run as BLOCKED), gate before, timed groups, gate after, sample files written, close. A run whose gate does not
   PASS is retained and the slot is retried; the gate is never weakened or skipped. No run while refrel-v2 jobs exist
   (`pgrep -f "rv2 |rr3bench|run_law|run_bench|run_diag|perf stat"` empty for 5 minutes).
 
@@ -97,5 +105,5 @@ not fit, the protocol is BLOCKED; the executor deletes or moves no existing file
 
 ## 7. Reporting
 
-Release evidence is labelled `axis4-n10-v1.2` with this protocol's SHA-256, the prepared-v2 SHA-256, every input
+Release evidence is labelled `axis4-n10-v1.3` with this protocol's SHA-256, the prepared-v2 SHA-256, every input
 SHA-256, library SHA-256 and build receipts, all gate records and logs. Axis 5 stays synthetic-only in v0.2.0 (A9).
