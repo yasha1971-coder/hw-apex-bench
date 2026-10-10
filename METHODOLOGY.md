@@ -324,4 +324,5 @@ symlinks and nonregular artifacts refuse. Assembly uses a temporary sibling and
 commits output only after verification and input-stability checks. No timestamp,
 absolute host path or runtime Git HEAD is added to release metadata. Original
 source evidence bytes, including their recorded paths/times, remain unchanged.
-Official measurements remain [pending](review/axis3/results/v0.2.0/ace-core/EVIDENCE_PENDING.json).
+Official Axis 4 measurements: [N10 v1.2 results](review/axis4_n10/results_v12/RESULTS_N10.md); the
+[pending placeholder](review/axis3/results/v0.2.0/ace-core/EVIDENCE_PENDING.json) remains a refused negative input.
