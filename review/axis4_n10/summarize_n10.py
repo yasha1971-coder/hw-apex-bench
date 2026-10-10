@@ -21,13 +21,15 @@ def main():
     ap.add_argument('--root', required=True)
     ap.add_argument('--logs', required=True)
     ap.add_argument('--out', required=True)
+    ap.add_argument('--runs', default='runs12')
+    ap.add_argument('--version', default='v1.2')
     a = ap.parse_args()
     root, logs, out = Path(a.root), Path(a.logs), Path(a.out)
     out.mkdir(parents=True, exist_ok=False)
-    accepted = [l for l in (logs / 'accepted.txt').read_text().split() if not l.startswith('runs12/check/')]
+    accepted = [l for l in (logs / 'accepted.txt').read_text().split() if not l.startswith(a.runs + '/check/')]
     ns = sorted(set((logs / 'not_supported.txt').read_text().split())) if (logs / 'not_supported.txt').exists() else []
     attempts = {}
-    for d in sorted(root.glob('runs12/*/t*/*_a*')):
+    for d in sorted(root.glob(a.runs + '/*/t*/*_a*')):
         attempts.setdefault(str(d.relative_to(root)).rsplit('_a', 1)[0], []).append(d.name)
     rows = {}
     for rel in accepted:
@@ -44,7 +46,7 @@ def main():
             'attempts': len(attempts.get(rel.rsplit('_a', 1)[0], []))})
     result = {'schema': 'axis4-n10-results-v1', 'protocol_sha256': sha(Path(__file__).parent / 'PROTOCOL_AXIS4_N10.md'),
               'prepared_sha256': sha(root / 'prepared-v11/prepared.json'), 'rows': [], 'not_supported': []}
-    md = ['# Axis 4 N10 v1.2 results (ace-core)', '',
+    md = [f'# Axis 4 N10 {a.version} results (ace-core)', '',
           f"Protocol SHA-256 {result['protocol_sha256']}; prepared-v2 SHA-256 {result['prepared_sha256']}.",
           '200 requests (20 groups x 10 assemblies); seconds = A6 sum of group times (fetch + upper-case + SHA-256 '
           '+ coordinate translation), one persistent in-process reader. 3 warm-ups + 9 recorded runs per row.', '',
