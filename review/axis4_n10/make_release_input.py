@@ -43,6 +43,10 @@ def link_tree(src, dst):
     src, dst = Path(src), Path(dst)
     if src.is_file():
         dst.parent.mkdir(parents=True, exist_ok=True)
+        if dst.exists():
+            if os.stat(dst).st_ino != os.stat(src).st_ino:
+                raise SystemExit(f'{dst} exists and is not a hard link of {src}')
+            return  # the same file referenced twice (e.g. one receipt for two variants)
         os.link(src, dst)
         return
     for p in sorted(src.rglob('*')):
