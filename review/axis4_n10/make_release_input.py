@@ -126,7 +126,12 @@ def main():
     (c5 / 'leaderboard-input.json').write_bytes(encoded({'schema': 'leaderboard-input-v1', 'records': a7}))
     # metadata artifacts (copies; small)
     arts = []
-    for name in METADATA + ['RESULTS_N10.md']:
+    import re
+    from urllib.parse import unquote, urlsplit
+    method = (REPO / 'METHODOLOGY.md').read_text()
+    linked = sorted({unquote(urlsplit(x).path) for x in re.findall(r'\[[^\]]*\]\(([^)#]+)', method)
+                     if not urlsplit(x).scheme and (REPO / unquote(urlsplit(x).path)).is_file()})
+    for name in [n for n in linked if n not in METADATA] + METADATA + ['RESULTS_N10.md']:
         src = REPO / name if name != 'RESULTS_N10.md' else Path(a.results).parent / 'RESULTS_N10.md'
         dst = root / (name if name != 'RESULTS_N10.md' else 'review/axis4_n10/RESULTS_N10.md')
         dst.parent.mkdir(parents=True, exist_ok=True)
