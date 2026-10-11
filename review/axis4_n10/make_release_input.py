@@ -100,6 +100,19 @@ def main():
         for n in sorted(seen):
             link_tree(WLB_DIR / n, c3 / 'window-law-B' / n)
         report['window_law_B']['source'] = 'hard links of the tar-identical extracted directory (extra files not linked)'
+    # The verdict evidence references its inputs (plan, prepared, runbook, archives, libraries, reference,
+    # source FASTA) by path/bytes/sha256 relative to the original vB data root: hard-link each one, SHA-checked,
+    # so every evidence file reference is hash-bound in the release (DATA_ROOT listing) and on the site.
+    results = json.loads((c3 / 'window-law-B/results.json').read_text())
+    vb = WK / 'vB'
+    n_inputs = 0
+    for r in results['input_references']:
+        src = vb / r['path']
+        if src.is_symlink() or not src.is_file() or src.stat().st_size != r['bytes'] or sha(src) != r['sha256']:
+            raise SystemExit(f'window-law-B input reference changed or missing: {r["path"]}')
+        link_tree(src, c3 / 'vB' / r['path'])
+        n_inputs += 1
+    report['window_law_B']['input_references_linked'] = n_inputs
     (c3 / 'leaderboard-input.json').write_bytes(encoded({'schema': 'leaderboard-input-v1', 'records': [
         {'evidence': ref(c3, c3 / 'window-law-B/results.json'), 'input_root': '.'}]}))
     # axis 4: N10 v1.2 representatives
