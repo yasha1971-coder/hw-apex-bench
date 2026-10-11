@@ -231,8 +231,38 @@ def verify(directory, expected_manifest_sha256=None, data_root=None):
     return result
 
 
+QUIET_WAIT_BOUND_SECONDS = 1800
+QUIET_POLL_SECONDS = 15
+
+
+def admitted(directory, label, *, bound_seconds, poll_seconds, sleep, monotonic):
+    """A13i: the release gates follow its own input verification and hashing; wait (bounded by
+    monotonic wall time including every telemetry sample) until the unchanged judge passes.
+    Returns the PASS record and the wait log; refuses when the bound expires."""
+    started, refused = monotonic(), []
+    while True:
+        record = capture_silence(directory)
+        if record == judge(record['snapshot']) and record['status'] == 'PASS':
+            break
+        refused.append({'load1': record['snapshot'].get('load1'), 'reasons': record.get('reasons')})
+        if monotonic() - started + int(poll_seconds * 1e9) > int(bound_seconds * 1e9):
+            raise ValueError('real silence gate failed' + ('' if label == 'before' else ' after verification')
+                             + ': quiet wait bound expired')
+        sleep(poll_seconds)
+    waited = monotonic() - started
+    if waited > int(bound_seconds * 1e9):
+        raise ValueError('real silence gate failed: quiet wait bound expired')
+    return record, {'label': label, 'bound_seconds': bound_seconds, 'poll_seconds': poll_seconds,
+                    'waited_ns': waited, 'refused': refused}
+
+
 def release(config_path, output, *, mode='synthetic', data_root=None,
-            native_so=(), require_silence=False):
+            native_so=(), require_silence=False, quiet_bound_seconds=QUIET_WAIT_BOUND_SECONDS,
+            quiet_poll_seconds=QUIET_POLL_SECONDS, sleep=None, monotonic=None):
+    import time
+    sleep = sleep or time.sleep
+    monotonic = monotonic or time.monotonic_ns
+    waits = []
     config_path = Path(config_path).resolve(strict=True)
     config_sha = sha256_file(config_path)
     root, config, catalogs, artifacts, data, sources = inputs(config_path)
@@ -250,9 +280,9 @@ def release(config_path, output, *, mode='synthetic', data_root=None,
             raise ValueError('data-root must equal release config root')
         if not any(t['conditions']['kind'] in ('measured', 'official') for t in data['tables']):
             raise ValueError('real mode requires measured/official evidence; synthetic stays labelled')
-        before = capture_silence(out.parent)
-        if before != judge(before['snapshot']) or before['status'] != 'PASS':
-            raise ValueError('real silence gate failed')
+        before, wait = admitted(out.parent, 'before', bound_seconds=quiet_bound_seconds,
+                                poll_seconds=quiet_poll_seconds, sleep=sleep, monotonic=monotonic)
+        waits.append(wait)
     # Preflight snapshots include every dependency, not just top-level evidence.
     snapshots = {p: (p.stat().st_size, sha256_file(p)) for c in catalogs for p in files(c.parent)}
     snapshots.update({p: (p.stat().st_size, sha256_file(p)) for p in artifacts})
@@ -306,11 +336,12 @@ def release(config_path, output, *, mode='synthetic', data_root=None,
                 (p.stat().st_size, sha256_file(p)) != snapshot for p, snapshot in snapshots.items()):
             raise ValueError('input changed during release assembly')
         if mode == 'real':
-            after = capture_silence(out.parent)
-            if after != judge(after['snapshot']) or after['status'] != 'PASS':
-                raise ValueError('real silence gate failed after verification')
+            after, wait = admitted(out.parent, 'after', bound_seconds=quiet_bound_seconds,
+                                   poll_seconds=quiet_poll_seconds, sleep=sleep, monotonic=monotonic)
+            waits.append(wait)
             # Admission telemetry stays in the receipt, not deterministic release bytes.
             result['silence_before'], result['silence_after'] = before, after
+            result['silence_waits'] = waits
         built.rename(out)
         return result
     finally:

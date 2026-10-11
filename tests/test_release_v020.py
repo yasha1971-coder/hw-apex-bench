@@ -393,26 +393,56 @@ class Release(unittest.TestCase):
         self.assertFalse(list(self.out.glob('inputs/*/DATA_ROOT.json')))
         self.assertTrue(all(len(list((self.out/r['path']).parent.rglob('*'))) > 1 for r in recipe['catalogs']))
 
+    def fake_clock(self):
+        now = [0]
+        return dict(sleep=lambda s: now.__setitem__(0, now[0] + int(s * 1e9)), monotonic=lambda: now[0])
+
     def test_real_failed_before_gate_refused(self):
         gate, native = self.measured_fixture()
         gate = job.judge({**gate['snapshot'], 'load1': 0.5})
         with mock.patch.object(job, 'capture_silence', return_value=gate):
             self.rejects('silence gate failed', mode='real', data_root=self.config.parent,
-                         native_so=native, require_silence=True)
+                         native_so=native, require_silence=True, **self.fake_clock())
 
     def test_real_failed_after_gate_rolls_back(self):
         gate, native = self.measured_fixture()
         bad = job.judge({**gate['snapshot'], 'host': 'other'})
-        with mock.patch.object(job, 'capture_silence', side_effect=[gate, bad]):
+        with mock.patch.object(job, 'capture_silence', side_effect=[gate]+[bad]*500):
             self.rejects('after verification', mode='real', data_root=self.config.parent,
-                         native_so=native, require_silence=True)
+                         native_so=native, require_silence=True, **self.fake_clock())
 
     def test_real_forged_gate_refused(self):
         gate, native = self.measured_fixture()
         gate = {**gate, 'reasons': ['forged']}
         with mock.patch.object(job, 'capture_silence', return_value=gate):
             self.rejects('silence gate failed', mode='real', data_root=self.config.parent,
-                         native_so=native, require_silence=True)
+                         native_so=native, require_silence=True, **self.fake_clock())
+
+    def test_real_gates_wait_until_quiet_and_record_the_wait(self):
+        # A13i: release verification itself loads the host; gates wait (bounded) for quiet.
+        gate, native = self.measured_fixture()
+        busy = job.judge({**gate['snapshot'], 'load1': 0.9})
+        with mock.patch.object(job, 'capture_silence', side_effect=[busy, busy, gate, busy, gate]):
+            receipt = self.build(mode='real', data_root=self.config.parent, native_so=native,
+                                 require_silence=True, **self.fake_clock())
+        waits = receipt['silence_waits']
+        self.assertEqual([w['label'] for w in waits], ['before', 'after'])
+        self.assertEqual([len(w['refused']) for w in waits], [2, 1])
+        self.assertEqual([w['waited_ns'] for w in waits], [30 * 10**9, 15 * 10**9])
+        self.assertEqual(receipt['silence_before'], gate)
+
+    def test_real_gate_wait_bound_includes_sample_time(self):
+        gate, native = self.measured_fixture()
+        busy = job.judge({**gate['snapshot'], 'load1': 0.9})
+        clock = self.fake_clock()
+        now = clock['monotonic']
+        def slow(*args):
+            clock['sleep'](400)  # a 400 s telemetry sample counts toward the bound
+            return busy
+        with mock.patch.object(job, 'capture_silence', side_effect=slow):
+            self.rejects('bound expired', mode='real', data_root=self.config.parent, native_so=native,
+                         require_silence=True, **clock)
+        self.assertLessEqual(now(), (1800 + 400 + 15) * 10**9)
 
     def test_real_wrong_native_library_refused(self):
         gate, native = self.measured_fixture()

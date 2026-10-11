@@ -301,6 +301,10 @@ must be CONFIG's parent. Catalog/artifact paths are relative to ROOT and bound b
 size/SHA. At least one measured/official source is required. Every retained .so
 must match a supplied library SHA. Before and after assembly, fresh ace-core
 telemetry must pass the silence judge; without the gate, real mode refuses.
+Because input verification and hashing precede each gate, the gate waits for a
+quiet host (A13i): the unchanged judge is polled every 15 s for at most 1800 s of
+monotonic wall time including the telemetry samples; the wait log is printed in
+the receipt and an expired bound refuses the release.
 Existing official evidence's own gates are independently verified as well.
 This reproduces verified reports, not benchmark execution. Admission telemetry
 is printed in the receipt, outside deterministic release bytes; it does not
