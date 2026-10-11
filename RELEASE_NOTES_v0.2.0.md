@@ -107,10 +107,10 @@ record table counts and output hashes; all are bound by
 These are historical A8 results, not the current A9 suite count.
 
 Official ace-core HPRC measurements: Axis 4 N10 under
-[PROTOCOL_AXIS4_N10 v1.2](review/axis4_n10/PROTOCOL_AXIS4_N10.md) — 10 HPRC assemblies,
+[PROTOCOL_AXIS4_N10 v1.3](review/axis4_n10/PROTOCOL_AXIS4_N10.md) — 10 HPRC assemblies,
 200 requests, 3 warm-ups + 9 recorded runs per row, every accepted run independently
-verified; [results](review/axis4_n10/results_v12/RESULTS_N10.md) and
-[verify receipts](review/axis4_n10/results_v12/verify_all.jsonl). Axis 3 real evidence is
+verified; [results](review/axis4_n10/results_v13/RESULTS_N10.md) and
+[verify receipts](review/axis4_n10/results_v13/verify_all.jsonl). Axis 3 real evidence is
 the window-law B verdict job (evidence tar SHA-256 3fb7aa62…). The former
 [pending placeholder](review/axis3/results/v0.2.0/ace-core/EVIDENCE_PENDING.json) is
 retained only as a negative test input: a pending file fails release verification. Axis 5 v1 remains synthetic-only and lacks recorded machine/scope;
