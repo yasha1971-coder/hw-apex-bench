@@ -16,6 +16,7 @@ CITATION.cff and .zenodo.json keep their prepared version field unchanged.
 - A13f: quiet wait bounded by monotonic wall time incl. telemetry samples; expiry is BLOCKED.
 - A13g: BGZF `.fai` offsets and line geometry checked against the decompressed bytes.
 - A13h: site build for real releases with referenced data roots (`--data-root`).
+- A13i: real release gates wait (bounded, recorded) for a quiet host after the release's own verification.
 - Axis 4 N10 (protocol v1.3, ace-core; v1.2 superseded after HW review): first official cohort-region measurements,
   [results](review/axis4_n10/results_v13/RESULTS_N10.md), [protocol](review/axis4_n10/PROTOCOL_AXIS4_N10.md).
 
