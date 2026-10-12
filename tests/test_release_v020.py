@@ -1,6 +1,7 @@
 """A9 release integrity, adversarial inputs and independently rebuilt reports."""
 import copy
 import hashlib
+import os
 import json
 from pathlib import Path
 import re
@@ -443,6 +444,56 @@ class Release(unittest.TestCase):
             self.rejects('bound expired', mode='real', data_root=self.config.parent, native_so=native,
                          require_silence=True, **clock)
         self.assertLessEqual(now(), (1800 + 400 + 15) * 10**9)
+
+    def after_wait_hook(self, gate, action):
+        """capture_silence stand-in: the first call is the before gate; the after gate runs `action` first."""
+        calls = []
+        def hook(*args):
+            calls.append(1)
+            if len(calls) == 2:
+                action()
+            return gate
+        return hook
+
+    def test_real_pinned_file_mutated_during_after_wait_fails_without_output(self):
+        # A13j (HW review of 201d022, P1): a pinned file changed during the after-wait must not yield a release.
+        gate, native = self.measured_fixture()
+        target = self.config.parent/'PROTOCOL_AXIS5.md'
+        original_mode = target.stat().st_mode & 0o777
+        def mutate():
+            self.assertFalse(target.stat().st_mode & 0o222)   # read-only snapshot during the run
+            os.chmod(target, 0o644)                           # an external writer overriding the protection
+            target.write_bytes(target.read_bytes() + b'\nAFTER_SLEEP_MUTATION\n')
+        with mock.patch.object(job, 'capture_silence', side_effect=self.after_wait_hook(gate, mutate)):
+            self.rejects('frozen input changed during the quiet wait', mode='real',
+                         data_root=self.config.parent, native_so=native, require_silence=True,
+                         **self.fake_clock())
+        self.assertFalse(self.out.exists())
+        self.assertFalse(list(self.out.parent.glob('.release-v020-*')))
+        self.assertEqual(target.stat().st_mode & 0o777, original_mode)
+
+    def test_real_pinned_file_removed_during_after_wait_fails_without_output(self):
+        gate, native = self.measured_fixture()
+        target = self.config.parent/'PROTOCOL_AXIS5.md'
+        with mock.patch.object(job, 'capture_silence', side_effect=self.after_wait_hook(gate, target.unlink)):
+            self.rejects('frozen input removed during the quiet wait', mode='real',
+                         data_root=self.config.parent, native_so=native, require_silence=True,
+                         **self.fake_clock())
+        self.assertFalse(self.out.exists())
+
+    def test_real_inputs_read_only_during_run_and_restored(self):
+        gate, native = self.measured_fixture()
+        pinned = [self.config, self.config.parent/'PROTOCOL_AXIS5.md', native[0]]
+        before = {p: p.stat().st_mode & 0o777 for p in pinned}
+        seen = {}
+        def observe():
+            seen.update({p: p.stat().st_mode & 0o222 for p in pinned})
+        with mock.patch.object(job, 'capture_silence', side_effect=self.after_wait_hook(gate, observe)):
+            receipt = self.build(mode='real', data_root=self.config.parent, native_so=native,
+                                 require_silence=True, **self.fake_clock())
+        self.assertEqual(receipt['status'], 'PASS')
+        self.assertEqual(set(seen.values()), {0})                      # no write bit while running
+        self.assertEqual({p: p.stat().st_mode & 0o777 for p in pinned}, before)   # restored afterwards
 
     def test_real_wrong_native_library_refused(self):
         gate, native = self.measured_fixture()

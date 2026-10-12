@@ -17,6 +17,9 @@ CITATION.cff and .zenodo.json keep their prepared version field unchanged.
 - A13g: BGZF `.fai` offsets and line geometry checked against the decompressed bytes.
 - A13h: site build for real releases with referenced data roots (`--data-root`).
 - A13i: real release gates wait (bounded, recorded) for a quiet host after the release's own verification.
+- A13j: the real release's input snapshot is read-only for the whole run (modes restored afterwards) and every pinned
+  file is re-checked (size, mtime_ns, inode; SHA-256 up to 64 MB) after the after-wait, before the output is renamed into
+  place; a changed or removed pinned file is a FAIL with no output (HW review of 201d022, P1).
 - Axis 4 N10 (protocol v1.3, ace-core; v1.2 superseded after HW review): first official cohort-region measurements,
   [results](review/axis4_n10/results_v13/RESULTS_N10.md), [protocol](review/axis4_n10/PROTOCOL_AXIS4_N10.md).
 

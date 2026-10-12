@@ -10,6 +10,8 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import os
+import stat as statmod
 from pathlib import Path
 import shutil
 import tempfile
@@ -256,6 +258,43 @@ def admitted(directory, label, *, bound_seconds, poll_seconds, sleep, monotonic)
                     'waited_ns': waited, 'refused': refused}
 
 
+FROZEN_SHA256_LIMIT = 64 * 1024 * 1024
+
+
+def freeze_inputs(paths):
+    """A13j: the release's input snapshot is read-only for the whole real run. Returns {path: original mode};
+    the caller restores the modes in its finally."""
+    modes = {}
+    for path in paths:
+        mode = statmod.S_IMODE(path.stat().st_mode)
+        modes[path] = mode
+        os.chmod(path, mode & ~0o222)
+    return modes
+
+
+def pinned_state(paths):
+    """Identity of every pinned file: size, mtime_ns, inode, and SHA-256 for files up to 64 MB."""
+    state = {}
+    for path in paths:
+        st = path.stat()
+        state[path] = (st.st_size, st.st_mtime_ns, st.st_ino,
+                       sha256_file(path) if st.st_size <= FROZEN_SHA256_LIMIT else None)
+    return state
+
+
+def check_pinned(state, label):
+    """A13j: every pinned file must be exactly as pinned; a change or removal during `label` is a FAIL."""
+    for path, (size, mtime_ns, inode, sha) in state.items():
+        try:
+            st = path.stat()
+        except FileNotFoundError:
+            raise ValueError(f'frozen input removed during the {label}: {path.name}')
+        if (st.st_size, st.st_mtime_ns, st.st_ino) != (size, mtime_ns, inode):
+            raise ValueError(f'frozen input changed during the {label}: {path.name}')
+        if sha is not None and sha256_file(path) != sha:
+            raise ValueError(f'frozen input changed during the {label}: {path.name}')
+
+
 def release(config_path, output, *, mode='synthetic', data_root=None,
             native_so=(), require_silence=False, quiet_bound_seconds=QUIET_WAIT_BOUND_SECONDS,
             quiet_poll_seconds=QUIET_POLL_SECONDS, sleep=None, monotonic=None):
@@ -294,7 +333,12 @@ def release(config_path, output, *, mode='synthetic', data_root=None,
             raise ValueError('native-so must match every retained native library SHA')
     out.parent.mkdir(parents=True, exist_ok=True)
     staging = Path(tempfile.mkdtemp(prefix='.release-v020-', dir=out.parent))
+    frozen_modes, pinned = {}, {}
     try:
+        if mode == 'real':
+            # A13j: inputs are read-only for the whole run and re-checked after the after-wait, before rename.
+            frozen_modes = freeze_inputs(list(snapshots) + [config_path])
+            pinned = pinned_state(list(snapshots) + [config_path])
         # Use the public A8 builder, which repeats all verification before writing.
         leaderboard.build([p.parent for p in catalogs], staging/'built')
         built = staging/'built'
@@ -342,9 +386,14 @@ def release(config_path, output, *, mode='synthetic', data_root=None,
             # Admission telemetry stays in the receipt, not deterministic release bytes.
             result['silence_before'], result['silence_after'] = before, after
             result['silence_waits'] = waits
+            # A13j: a pinned file changed or removed during the quiet wait makes the release unverifiable.
+            check_pinned(pinned, 'quiet wait')
         built.rename(out)
         return result
     finally:
+        for path, original in frozen_modes.items():
+            if path.exists():
+                os.chmod(path, original)
         shutil.rmtree(staging)
 
 
