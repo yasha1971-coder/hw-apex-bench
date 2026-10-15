@@ -301,14 +301,28 @@ must be CONFIG's parent. Catalog/artifact paths are relative to ROOT and bound b
 size/SHA. At least one measured/official source is required. Every retained .so
 must match a supplied library SHA. Before and after assembly, fresh ace-core
 telemetry must pass the silence judge; without the gate, real mode refuses.
+Because input verification and hashing precede each gate, the gate waits for a
+quiet host (A13i): the unchanged judge is polled every 15 s for at most 1800 s of
+monotonic wall time including the telemetry samples; the wait log is printed in
+the receipt and an expired bound refuses the release.
 Existing official evidence's own gates are independently verified as well.
 This reproduces verified reports, not benchmark execution. Admission telemetry
 is printed in the receipt, outside deterministic release bytes; it does not
 retroactively assign a machine or measured status to synthetic sources.
+
+A real release does not copy catalog directories (A13c). Each catalog is copied
+alone beside a `DATA_ROOT.json` listing ([release-data-root-v1](schemas/release-data-root-v1.schema.json)):
+the catalog directory relative to ROOT and every file in it with path, bytes and
+SHA-256, bound through `RELEASE_INPUT.json` and the manifest. Independent
+verification of a real release requires `--verify DIR --data-root ROOT`: the
+listed directory must hold exactly the listed files with those hashes and the
+same catalog bytes; all evidence is then re-verified in place. Synthetic mode
+still copies catalog directories and verifies without a data root.
 
 Output must be new and outside the input root. Catalog directories cannot overlap;
 symlinks and nonregular artifacts refuse. Assembly uses a temporary sibling and
 commits output only after verification and input-stability checks. No timestamp,
 absolute host path or runtime Git HEAD is added to release metadata. Original
 source evidence bytes, including their recorded paths/times, remain unchanged.
-Official measurements remain [pending](review/axis3/results/v0.2.0/ace-core/EVIDENCE_PENDING.json).
+Official Axis 4 measurements: [N10 v1.3 results](review/axis4_n10/results_v13/RESULTS_N10.md); the
+[pending placeholder](review/axis3/results/v0.2.0/ace-core/EVIDENCE_PENDING.json) remains a refused negative input.

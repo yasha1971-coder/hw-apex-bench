@@ -1,6 +1,27 @@
 # Changelog
 
-## 0.2.0 — prepared release, not yet published
+## Unreleased
+
+Merged into main through PR #63 without a version: no tag, GitHub Release or Zenodo deposit.
+CITATION.cff and .zenodo.json keep their prepared version field unchanged.
+
+- A10–A12.1: Pages builder, Axis 4 streaming truth v1.1 from compressed sources, native
+  decoder worker configuration (BGZF thread pool; other readers NOT_SUPPORTED above one worker).
+- A13a: Axis 4 run order — input hashing and native open, bounded recorded quiet wait, then
+  the unchanged silence gates bracket only the timed groups.
+- A13b: BGZF geometry under truth v1.1 from the BGZF archive and its `.fai`.
+- A13c: real release assembly references catalog data roots by per-file hashes.
+- A13d: leaderboard keeps a window-law family with failed data visible (`-Wnone` table).
+- A13e: Axis 4 after gate immediately after the last timed group, before sample writes.
+- A13f: quiet wait bounded by monotonic wall time incl. telemetry samples; expiry is BLOCKED.
+- A13g: BGZF `.fai` offsets and line geometry checked against the decompressed bytes.
+- A13h: site build for real releases with referenced data roots (`--data-root`).
+- A13i: real release gates wait (bounded, recorded) for a quiet host after the release's own verification.
+- A13j: the real release's input snapshot is read-only for the whole run (modes restored afterwards) and every pinned
+  file is re-checked (size, mtime_ns, inode; SHA-256 up to 64 MB) after the after-wait, before the output is renamed into
+  place; a changed or removed pinned file is a FAIL with no output (HW review of 201d022, P1).
+- Axis 4 N10 (protocol v1.3, ace-core; v1.2 superseded after HW review): first official cohort-region measurements,
+  [results](review/axis4_n10/results_v13/RESULTS_N10.md), [protocol](review/axis4_n10/PROTOCOL_AXIS4_N10.md).
 
 - A6: Axis 4 native cohort queries with frozen FASTA/request hashes, independent
   verification of every answer SHA and seed-selected stored answer bytes.
@@ -12,4 +33,5 @@
   re-verification; reproduction entry point; citation and deposit metadata.
 
 Acceptance facts and limitations: [release notes](RELEASE_NOTES_v0.2.0.md).
-Official ace-core results: [pending evidence](review/axis3/results/v0.2.0/ace-core/EVIDENCE_PENDING.json).
+Official ace-core results: [Axis 4 N10 v1.3](review/axis4_n10/results_v13/RESULTS_N10.md) (independent verify 96/96 PASS);
+Axis 3 window-law B verdict evidence and Axis 5 (synthetic only) as listed in the release notes.

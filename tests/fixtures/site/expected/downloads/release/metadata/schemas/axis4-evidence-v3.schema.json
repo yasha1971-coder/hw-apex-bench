@@ -297,7 +297,8 @@
         "status": {
           "enum": [
             "PASS",
-            "FAILED"
+            "FAILED",
+            "BLOCKED"
           ]
         },
         "error": {
@@ -459,6 +460,107 @@
             "type": "string",
             "pattern": "^[0-9a-f]{64}$"
           }
+        },
+        "admission": {
+          "type": "object",
+          "properties": {
+            "order": {
+              "enum": [
+                [
+                  "inputs-checked",
+                  "reader-opened",
+                  "quiet-wait",
+                  "gate-before",
+                  "timed-groups",
+                  "gate-after",
+                  "reader-closed"
+                ],
+                [
+                  "inputs-checked",
+                  "reader-opened",
+                  "quiet-wait",
+                  "gate-before",
+                  "timed-groups",
+                  "gate-after",
+                  "sample-files-written",
+                  "reader-closed"
+                ]
+              ]
+            },
+            "input_check_ns": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "open_ns": {
+              "anyOf": [
+                {
+                  "type": "integer",
+                  "minimum": 0
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "quiet_wait": {
+              "type": "object",
+              "properties": {
+                "bound_seconds": {
+                  "type": "number",
+                  "minimum": 0
+                },
+                "poll_seconds": {
+                  "type": "number",
+                  "minimum": 0
+                },
+                "waited_ns": {
+                  "type": "integer",
+                  "minimum": 0
+                },
+                "refused": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "load1": {
+                        "type": "number"
+                      },
+                      "reasons": {
+                        "type": "array",
+                        "items": {
+                          "type": "string",
+                          "minLength": 1
+                        },
+                        "minItems": 1
+                      }
+                    },
+                    "required": [
+                      "load1",
+                      "reasons"
+                    ],
+                    "additionalProperties": false
+                  }
+                },
+                "blocked": {
+                  "type": "boolean"
+                }
+              },
+              "required": [
+                "bound_seconds",
+                "poll_seconds",
+                "waited_ns",
+                "refused"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "required": [
+            "order",
+            "input_check_ns",
+            "open_ns",
+            "quiet_wait"
+          ],
+          "additionalProperties": false
         }
       },
       "required": [
@@ -594,6 +696,28 @@
             "properties": {
               "performance_valid": {
                 "const": true
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "status": {
+                "const": "BLOCKED"
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "admission"
+            ],
+            "properties": {
+              "seconds": {
+                "type": "null"
+              },
+              "performance_valid": {
+                "const": false
               }
             }
           }

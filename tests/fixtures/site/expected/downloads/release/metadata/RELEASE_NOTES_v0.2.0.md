@@ -1,4 +1,6 @@
-# hw-apex-bench v0.2.0 — prepared release
+# hw-apex-bench — Unreleased (release notes; file name kept for tooling)
+
+This work is merged without a version: no tag, GitHub Release or Zenodo deposit.
 
 This release document records local acceptance facts from A6–A8. No GitHub CI run or official HPRC
 performance measurement is claimed. Synthetic outcomes do not establish
@@ -104,15 +106,18 @@ record table counts and output hashes; all are bound by
 [SHA256SUMS](review/axis3/results/a8-acceptance/SHA256SUMS).
 These are historical A8 results, not the current A9 suite count.
 
-Official ace-core HPRC measurements: **PENDING**, no numeric placeholder.
-The server must add real, supported evidence in place of the
-[pending evidence file](review/axis3/results/v0.2.0/ace-core/EVIDENCE_PENDING.json),
-with anchored catalogs and original artifacts. A pending file fails release
-verification. Axis 5 v1 remains synthetic-only and lacks recorded machine/scope;
+Official ace-core HPRC measurements: Axis 4 N10 under
+[PROTOCOL_AXIS4_N10 v1.3](review/axis4_n10/PROTOCOL_AXIS4_N10.md) — 10 HPRC assemblies,
+200 requests, 3 warm-ups + 9 recorded runs per row, every accepted run independently
+verified; [results](review/axis4_n10/results_v13/RESULTS_N10.md) and
+[verify receipts](review/axis4_n10/results_v13/verify_all.jsonl). Axis 3 real evidence is
+the window-law B verdict job (evidence tar SHA-256 3fb7aa62…). The former
+[pending placeholder](review/axis3/results/v0.2.0/ace-core/EVIDENCE_PENDING.json) is
+retained only as a negative test input: a pending file fails release verification. Axis 5 v1 remains synthetic-only and lacks recorded machine/scope;
 it needs a separately frozen protocol/schema before an official experiment.
 
 A9 adds offline release assembly and independent manifest verification;
 [methodology](METHODOLOGY.md) defines its provenance and reproduction contracts.
-Citation version and deposit metadata are prepared for v0.2.0, with no invented
+Citation version and deposit metadata stay as prepared (not bumped, not published), with no invented
 new DOI, publication date, upload or GitHub CI claim. A prior release's DOI is
 not assigned to this version. Nothing in this package authorizes publication.
