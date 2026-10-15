@@ -1,0 +1,1242 @@
+[
+ {
+  "y1_HG00438.1": {
+   "assembly_id": "y1_HG00438.1",
+   "contig_id": "HG00438#1#JAHBCB010000016.1",
+   "end0": 92725923,
+   "start0": 92605941
+  },
+  "y1_HG00438.2": {
+   "assembly_id": "y1_HG00438.2",
+   "contig_id": "HG00438#2#JAHBCA010000011.1",
+   "end0": 98335317,
+   "start0": 98215335
+  },
+  "y1_HG00621.1": {
+   "assembly_id": "y1_HG00621.1",
+   "contig_id": "HG00621#1#JAHBCD010000022.1",
+   "end0": 87755295,
+   "start0": 87635313
+  },
+  "y1_HG00621.2": {
+   "assembly_id": "y1_HG00621.2",
+   "contig_id": "HG00621#2#JAHBCC010000039.1",
+   "end0": 93158569,
+   "start0": 93038587
+  },
+  "y1_HG00673.1": {
+   "assembly_id": "y1_HG00673.1",
+   "contig_id": "HG00673#1#JAHBBZ010000015.1",
+   "end0": 58448152,
+   "start0": 58328170
+  },
+  "y1_HG00673.2": {
+   "assembly_id": "y1_HG00673.2",
+   "contig_id": "HG00673#2#JAHBBY010000105.1",
+   "end0": 56682521,
+   "start0": 56562539
+  },
+  "y1_HG00735.1": {
+   "assembly_id": "y1_HG00735.1",
+   "contig_id": "HG00735#1#JAHBCH010000002.1",
+   "end0": 118382660,
+   "start0": 118262678
+  },
+  "y1_HG00735.2": {
+   "assembly_id": "y1_HG00735.2",
+   "contig_id": "HG00735#2#JAHBCG010000040.1",
+   "end0": 98356200,
+   "start0": 98236218
+  },
+  "y1_HG00741.1": {
+   "assembly_id": "y1_HG00741.1",
+   "contig_id": "HG00741#1#JAHALY010000010.1",
+   "end0": 90506344,
+   "start0": 90386362
+  },
+  "y1_HG00741.2": {
+   "assembly_id": "y1_HG00741.2",
+   "contig_id": "HG00741#2#JAHALX010000001.1",
+   "end0": 78331829,
+   "start0": 78211847
+  }
+ },
+ {
+  "y1_HG00438.1": {
+   "assembly_id": "y1_HG00438.1",
+   "contig_id": "HG00438#1#JAHBCB010000018.1",
+   "end0": 97437668,
+   "start0": 97322055
+  },
+  "y1_HG00438.2": {
+   "assembly_id": "y1_HG00438.2",
+   "contig_id": "HG00438#2#JAHBCA010000002.1",
+   "end0": 97121777,
+   "start0": 97006164
+  },
+  "y1_HG00621.1": {
+   "assembly_id": "y1_HG00621.1",
+   "contig_id": "HG00621#1#JAHBCD010000010.1",
+   "end0": 75677641,
+   "start0": 75562028
+  },
+  "y1_HG00621.2": {
+   "assembly_id": "y1_HG00621.2",
+   "contig_id": "HG00621#2#JAHBCC010000006.1",
+   "end0": 101399591,
+   "start0": 101283978
+  },
+  "y1_HG00673.1": {
+   "assembly_id": "y1_HG00673.1",
+   "contig_id": "HG00673#1#JAHBBZ010000005.1",
+   "end0": 54740237,
+   "start0": 54624624
+  },
+  "y1_HG00673.2": {
+   "assembly_id": "y1_HG00673.2",
+   "contig_id": "HG00673#2#JAHBBY010000004.1",
+   "end0": 59315102,
+   "start0": 59199489
+  },
+  "y1_HG00735.1": {
+   "assembly_id": "y1_HG00735.1",
+   "contig_id": "HG00735#1#JAHBCH010000004.1",
+   "end0": 114168410,
+   "start0": 114052797
+  },
+  "y1_HG00735.2": {
+   "assembly_id": "y1_HG00735.2",
+   "contig_id": "HG00735#2#JAHBCG010000001.1",
+   "end0": 88499796,
+   "start0": 88384183
+  },
+  "y1_HG00741.1": {
+   "assembly_id": "y1_HG00741.1",
+   "contig_id": "HG00741#1#JAHALY010000019.1",
+   "end0": 104862076,
+   "start0": 104746463
+  },
+  "y1_HG00741.2": {
+   "assembly_id": "y1_HG00741.2",
+   "contig_id": "HG00741#2#JAHALX010000012.1",
+   "end0": 105723435,
+   "start0": 105607822
+  }
+ },
+ {
+  "y1_HG00438.1": {
+   "assembly_id": "y1_HG00438.1",
+   "contig_id": "HG00438#1#JAHBCB010000024.1",
+   "end0": 19721932,
+   "start0": 19595240
+  },
+  "y1_HG00438.2": {
+   "assembly_id": "y1_HG00438.2",
+   "contig_id": "HG00438#2#JAHBCA010000012.1",
+   "end0": 19307184,
+   "start0": 19180492
+  },
+  "y1_HG00621.1": {
+   "assembly_id": "y1_HG00621.1",
+   "contig_id": "HG00621#1#JAHBCD010000009.1",
+   "end0": 19567659,
+   "start0": 19440967
+  },
+  "y1_HG00621.2": {
+   "assembly_id": "y1_HG00621.2",
+   "contig_id": "HG00621#2#JAHBCC010000020.1",
+   "end0": 20328939,
+   "start0": 20202247
+  },
+  "y1_HG00673.1": {
+   "assembly_id": "y1_HG00673.1",
+   "contig_id": "HG00673#1#JAHBBZ010000030.1",
+   "end0": 12374445,
+   "start0": 12247753
+  },
+  "y1_HG00673.2": {
+   "assembly_id": "y1_HG00673.2",
+   "contig_id": "HG00673#2#JAHBBY010000029.1",
+   "end0": 11908856,
+   "start0": 11782164
+  },
+  "y1_HG00735.1": {
+   "assembly_id": "y1_HG00735.1",
+   "contig_id": "HG00735#1#JAHBCH010000014.1",
+   "end0": 24038510,
+   "start0": 23911818
+  },
+  "y1_HG00735.2": {
+   "assembly_id": "y1_HG00735.2",
+   "contig_id": "HG00735#2#JAHBCG010000031.1",
+   "end0": 20999547,
+   "start0": 20872855
+  },
+  "y1_HG00741.1": {
+   "assembly_id": "y1_HG00741.1",
+   "contig_id": "HG00741#1#JAHALY010000018.1",
+   "end0": 19921015,
+   "start0": 19794323
+  },
+  "y1_HG00741.2": {
+   "assembly_id": "y1_HG00741.2",
+   "contig_id": "HG00741#2#JAHALX010000005.1",
+   "end0": 17680415,
+   "start0": 17553723
+  }
+ },
+ {
+  "y1_HG00438.1": {
+   "assembly_id": "y1_HG00438.1",
+   "contig_id": "HG00438#1#JAHBCB010000015.1",
+   "end0": 2308534,
+   "start0": 2236523
+  },
+  "y1_HG00438.2": {
+   "assembly_id": "y1_HG00438.2",
+   "contig_id": "HG00438#2#JAHBCA010000035.1",
+   "end0": 2486567,
+   "start0": 2414556
+  },
+  "y1_HG00621.1": {
+   "assembly_id": "y1_HG00621.1",
+   "contig_id": "HG00621#1#JAHBCD010000016.1",
+   "end0": 2522264,
+   "start0": 2450253
+  },
+  "y1_HG00621.2": {
+   "assembly_id": "y1_HG00621.2",
+   "contig_id": "HG00621#2#JAHBCC010000018.1",
+   "end0": 2627469,
+   "start0": 2555458
+  },
+  "y1_HG00673.1": {
+   "assembly_id": "y1_HG00673.1",
+   "contig_id": "HG00673#1#JAHBBZ010000036.1",
+   "end0": 1605215,
+   "start0": 1533204
+  },
+  "y1_HG00673.2": {
+   "assembly_id": "y1_HG00673.2",
+   "contig_id": "HG00673#2#JAHBBY010000026.1",
+   "end0": 1539650,
+   "start0": 1467639
+  },
+  "y1_HG00735.1": {
+   "assembly_id": "y1_HG00735.1",
+   "contig_id": "HG00735#1#JAHBCH010000011.1",
+   "end0": 2912067,
+   "start0": 2840056
+  },
+  "y1_HG00735.2": {
+   "assembly_id": "y1_HG00735.2",
+   "contig_id": "HG00735#2#JAHBCG010000009.1",
+   "end0": 2595231,
+   "start0": 2523220
+  },
+  "y1_HG00741.1": {
+   "assembly_id": "y1_HG00741.1",
+   "contig_id": "HG00741#1#JAHALY010000065.1",
+   "end0": 2256325,
+   "start0": 2184314
+  },
+  "y1_HG00741.2": {
+   "assembly_id": "y1_HG00741.2",
+   "contig_id": "HG00741#2#JAHALX010000002.1",
+   "end0": 2292636,
+   "start0": 2220625
+  }
+ },
+ {
+  "y1_HG00438.1": {
+   "assembly_id": "y1_HG00438.1",
+   "contig_id": "HG00438#1#JAHBCB010000037.1",
+   "end0": 102250040,
+   "start0": 102100994
+  },
+  "y1_HG00438.2": {
+   "assembly_id": "y1_HG00438.2",
+   "contig_id": "HG00438#2#JAHBCA010000005.1",
+   "end0": 105597965,
+   "start0": 105448919
+  },
+  "y1_HG00621.1": {
+   "assembly_id": "y1_HG00621.1",
+   "contig_id": "HG00621#1#JAHBCD010000002.1",
+   "end0": 100403940,
+   "start0": 100254894
+  },
+  "y1_HG00621.2": {
+   "assembly_id": "y1_HG00621.2",
+   "contig_id": "HG00621#2#JAHBCC010000033.1",
+   "end0": 106956310,
+   "start0": 106807264
+  },
+  "y1_HG00673.1": {
+   "assembly_id": "y1_HG00673.1",
+   "contig_id": "HG00673#1#JAHBBZ010000041.1",
+   "end0": 67035508,
+   "start0": 66886462
+  },
+  "y1_HG00673.2": {
+   "assembly_id": "y1_HG00673.2",
+   "contig_id": "HG00673#2#JAHBBY010000034.1",
+   "end0": 63271681,
+   "start0": 63122635
+  },
+  "y1_HG00735.1": {
+   "assembly_id": "y1_HG00735.1",
+   "contig_id": "HG00735#1#JAHBCH010000007.1",
+   "end0": 130578068,
+   "start0": 130429022
+  },
+  "y1_HG00735.2": {
+   "assembly_id": "y1_HG00735.2",
+   "contig_id": "HG00735#2#JAHBCG010000005.1",
+   "end0": 102308673,
+   "start0": 102159627
+  },
+  "y1_HG00741.1": {
+   "assembly_id": "y1_HG00741.1",
+   "contig_id": "HG00741#1#JAHALY010000029.1",
+   "end0": 101544429,
+   "start0": 101395383
+  },
+  "y1_HG00741.2": {
+   "assembly_id": "y1_HG00741.2",
+   "contig_id": "HG00741#2#JAHALX010000022.1",
+   "end0": 92406147,
+   "start0": 92257101
+  }
+ },
+ {
+  "y1_HG00438.1": {
+   "assembly_id": "y1_HG00438.1",
+   "contig_id": "HG00438#1#JAHBCB010000018.1",
+   "end0": 111849185,
+   "start0": 111789358
+  },
+  "y1_HG00438.2": {
+   "assembly_id": "y1_HG00438.2",
+   "contig_id": "HG00438#2#JAHBCA010000002.1",
+   "end0": 111486485,
+   "start0": 111426658
+  },
+  "y1_HG00621.1": {
+   "assembly_id": "y1_HG00621.1",
+   "contig_id": "HG00621#1#JAHBCD010000010.1",
+   "end0": 86864684,
+   "start0": 86804857
+  },
+  "y1_HG00621.2": {
+   "assembly_id": "y1_HG00621.2",
+   "contig_id": "HG00621#2#JAHBCC010000006.1",
+   "end0": 116398199,
+   "start0": 116338372
+  },
+  "y1_HG00673.1": {
+   "assembly_id": "y1_HG00673.1",
+   "contig_id": "HG00673#1#JAHBBZ010000005.1",
+   "end0": 62824706,
+   "start0": 62764879
+  },
+  "y1_HG00673.2": {
+   "assembly_id": "y1_HG00673.2",
+   "contig_id": "HG00673#2#JAHBBY010000004.1",
+   "end0": 68077489,
+   "start0": 68017662
+  },
+  "y1_HG00735.1": {
+   "assembly_id": "y1_HG00735.1",
+   "contig_id": "HG00735#1#JAHBCH010000004.1",
+   "end0": 131059145,
+   "start0": 130999318
+  },
+  "y1_HG00735.2": {
+   "assembly_id": "y1_HG00735.2",
+   "contig_id": "HG00735#2#JAHBCG010000001.1",
+   "end0": 101586869,
+   "start0": 101527042
+  },
+  "y1_HG00741.1": {
+   "assembly_id": "y1_HG00741.1",
+   "contig_id": "HG00741#1#JAHALY010000019.1",
+   "end0": 120373767,
+   "start0": 120313940
+  },
+  "y1_HG00741.2": {
+   "assembly_id": "y1_HG00741.2",
+   "contig_id": "HG00741#2#JAHALX010000012.1",
+   "end0": 121362765,
+   "start0": 121302938
+  }
+ },
+ {
+  "y1_HG00438.1": {
+   "assembly_id": "y1_HG00438.1",
+   "contig_id": "HG00438#1#JAHBCB010000024.1",
+   "end0": 44395767,
+   "start0": 44276503
+  },
+  "y1_HG00438.2": {
+   "assembly_id": "y1_HG00438.2",
+   "contig_id": "HG00438#2#JAHBCA010000012.1",
+   "end0": 43458701,
+   "start0": 43339437
+  },
+  "y1_HG00621.1": {
+   "assembly_id": "y1_HG00621.1",
+   "contig_id": "HG00621#1#JAHBCD010000009.1",
+   "end0": 44047207,
+   "start0": 43927943
+  },
+  "y1_HG00621.2": {
+   "assembly_id": "y1_HG00621.2",
+   "contig_id": "HG00621#2#JAHBCC010000020.1",
+   "end0": 45767219,
+   "start0": 45647955
+  },
+  "y1_HG00673.1": {
+   "assembly_id": "y1_HG00673.1",
+   "contig_id": "HG00673#1#JAHBBZ010000030.1",
+   "end0": 27795098,
+   "start0": 27675834
+  },
+  "y1_HG00673.2": {
+   "assembly_id": "y1_HG00673.2",
+   "contig_id": "HG00673#2#JAHBBY010000029.1",
+   "end0": 26743163,
+   "start0": 26623899
+  },
+  "y1_HG00735.1": {
+   "assembly_id": "y1_HG00735.1",
+   "contig_id": "HG00735#1#JAHBCH010000014.1",
+   "end0": 54148500,
+   "start0": 54029236
+  },
+  "y1_HG00735.2": {
+   "assembly_id": "y1_HG00735.2",
+   "contig_id": "HG00735#2#JAHBCG010000031.1",
+   "end0": 47282368,
+   "start0": 47163104
+  },
+  "y1_HG00741.1": {
+   "assembly_id": "y1_HG00741.1",
+   "contig_id": "HG00741#1#JAHALY010000018.1",
+   "end0": 44845569,
+   "start0": 44726305
+  },
+  "y1_HG00741.2": {
+   "assembly_id": "y1_HG00741.2",
+   "contig_id": "HG00741#2#JAHALX010000005.1",
+   "end0": 39783231,
+   "start0": 39663967
+  }
+ },
+ {
+  "y1_HG00438.1": {
+   "assembly_id": "y1_HG00438.1",
+   "contig_id": "HG00438#1#JAHBCB010000018.1",
+   "end0": 109030972,
+   "start0": 108066291
+  },
+  "y1_HG00438.2": {
+   "assembly_id": "y1_HG00438.2",
+   "contig_id": "HG00438#2#JAHBCA010000002.1",
+   "end0": 108678007,
+   "start0": 107713326
+  },
+  "y1_HG00621.1": {
+   "assembly_id": "y1_HG00621.1",
+   "contig_id": "HG00621#1#JAHBCD010000010.1",
+   "end0": 84717007,
+   "start0": 83752326
+  },
+  "y1_HG00621.2": {
+   "assembly_id": "y1_HG00621.2",
+   "contig_id": "HG00621#2#JAHBCC010000006.1",
+   "end0": 113457900,
+   "start0": 112493219
+  },
+  "y1_HG00673.1": {
+   "assembly_id": "y1_HG00673.1",
+   "contig_id": "HG00673#1#JAHBBZ010000005.1",
+   "end0": 61322214,
+   "start0": 60357533
+  },
+  "y1_HG00673.2": {
+   "assembly_id": "y1_HG00673.2",
+   "contig_id": "HG00673#2#JAHBBY010000004.1",
+   "end0": 66434023,
+   "start0": 65469342
+  },
+  "y1_HG00735.1": {
+   "assembly_id": "y1_HG00735.1",
+   "contig_id": "HG00735#1#JAHBCH010000004.1",
+   "end0": 127725375,
+   "start0": 126760694
+  },
+  "y1_HG00735.2": {
+   "assembly_id": "y1_HG00735.2",
+   "contig_id": "HG00735#2#JAHBCG010000001.1",
+   "end0": 99044077,
+   "start0": 98079396
+  },
+  "y1_HG00741.1": {
+   "assembly_id": "y1_HG00741.1",
+   "contig_id": "HG00741#1#JAHALY010000019.1",
+   "end0": 117326772,
+   "start0": 116362091
+  },
+  "y1_HG00741.2": {
+   "assembly_id": "y1_HG00741.2",
+   "contig_id": "HG00741#2#JAHALX010000012.1",
+   "end0": 118289227,
+   "start0": 117324546
+  }
+ },
+ {
+  "y1_HG00438.1": {
+   "assembly_id": "y1_HG00438.1",
+   "contig_id": "HG00438#1#JAHBCB010000016.1",
+   "end0": 31493292,
+   "start0": 31430137
+  },
+  "y1_HG00438.2": {
+   "assembly_id": "y1_HG00438.2",
+   "contig_id": "HG00438#2#JAHBCA010000011.1",
+   "end0": 33395968,
+   "start0": 33332813
+  },
+  "y1_HG00621.1": {
+   "assembly_id": "y1_HG00621.1",
+   "contig_id": "HG00621#1#JAHBCD010000022.1",
+   "end0": 29807282,
+   "start0": 29744127
+  },
+  "y1_HG00621.2": {
+   "assembly_id": "y1_HG00621.2",
+   "contig_id": "HG00621#2#JAHBCC010000039.1",
+   "end0": 31640043,
+   "start0": 31576888
+  },
+  "y1_HG00673.1": {
+   "assembly_id": "y1_HG00673.1",
+   "contig_id": "HG00673#1#JAHBBZ010000015.1",
+   "end0": 19866456,
+   "start0": 19803301
+  },
+  "y1_HG00673.2": {
+   "assembly_id": "y1_HG00673.2",
+   "contig_id": "HG00673#2#JAHBBY010000105.1",
+   "end0": 19267564,
+   "start0": 19204409
+  },
+  "y1_HG00735.1": {
+   "assembly_id": "y1_HG00735.1",
+   "contig_id": "HG00735#1#JAHBCH010000002.1",
+   "end0": 40195919,
+   "start0": 40132764
+  },
+  "y1_HG00735.2": {
+   "assembly_id": "y1_HG00735.2",
+   "contig_id": "HG00735#2#JAHBCG010000040.1",
+   "end0": 33403052,
+   "start0": 33339897
+  },
+  "y1_HG00741.1": {
+   "assembly_id": "y1_HG00741.1",
+   "contig_id": "HG00741#1#JAHALY010000010.1",
+   "end0": 30740423,
+   "start0": 30677268
+  },
+  "y1_HG00741.2": {
+   "assembly_id": "y1_HG00741.2",
+   "contig_id": "HG00741#2#JAHALX010000001.1",
+   "end0": 26610893,
+   "start0": 26547738
+  }
+ },
+ {
+  "y1_HG00438.1": {
+   "assembly_id": "y1_HG00438.1",
+   "contig_id": "HG00438#1#JAHBCB010000024.1",
+   "end0": 28695534,
+   "start0": 28412664
+  },
+  "y1_HG00438.2": {
+   "assembly_id": "y1_HG00438.2",
+   "contig_id": "HG00438#2#JAHBCA010000012.1",
+   "end0": 28093110,
+   "start0": 27810240
+  },
+  "y1_HG00621.1": {
+   "assembly_id": "y1_HG00621.1",
+   "contig_id": "HG00621#1#JAHBCD010000009.1",
+   "end0": 28471451,
+   "start0": 28188581
+  },
+  "y1_HG00621.2": {
+   "assembly_id": "y1_HG00621.2",
+   "contig_id": "HG00621#2#JAHBCC010000020.1",
+   "end0": 29577217,
+   "start0": 29294347
+  },
+  "y1_HG00673.1": {
+   "assembly_id": "y1_HG00673.1",
+   "contig_id": "HG00673#1#JAHBBZ010000030.1",
+   "end0": 18023248,
+   "start0": 17740378
+  },
+  "y1_HG00673.2": {
+   "assembly_id": "y1_HG00673.2",
+   "contig_id": "HG00673#2#JAHBBY010000029.1",
+   "end0": 17346977,
+   "start0": 17064107
+  },
+  "y1_HG00735.1": {
+   "assembly_id": "y1_HG00735.1",
+   "contig_id": "HG00735#1#JAHBCH010000014.1",
+   "end0": 34965400,
+   "start0": 34682530
+  },
+  "y1_HG00735.2": {
+   "assembly_id": "y1_HG00735.2",
+   "contig_id": "HG00735#2#JAHBCG010000031.1",
+   "end0": 30551281,
+   "start0": 30268411
+  },
+  "y1_HG00741.1": {
+   "assembly_id": "y1_HG00741.1",
+   "contig_id": "HG00741#1#JAHALY010000018.1",
+   "end0": 28984704,
+   "start0": 28701834
+  },
+  "y1_HG00741.2": {
+   "assembly_id": "y1_HG00741.2",
+   "contig_id": "HG00741#2#JAHALX010000005.1",
+   "end0": 25730214,
+   "start0": 25447344
+  }
+ },
+ {
+  "y1_HG00438.1": {
+   "assembly_id": "y1_HG00438.1",
+   "contig_id": "HG00438#1#JAHBCB010000018.1",
+   "end0": 100323716,
+   "start0": 100181112
+  },
+  "y1_HG00438.2": {
+   "assembly_id": "y1_HG00438.2",
+   "contig_id": "HG00438#2#JAHBCA010000002.1",
+   "end0": 99998481,
+   "start0": 99855877
+  },
+  "y1_HG00621.1": {
+   "assembly_id": "y1_HG00621.1",
+   "contig_id": "HG00621#1#JAHBCD010000010.1",
+   "end0": 77919997,
+   "start0": 77777393
+  },
+  "y1_HG00621.2": {
+   "assembly_id": "y1_HG00621.2",
+   "contig_id": "HG00621#2#JAHBCC010000006.1",
+   "end0": 104402838,
+   "start0": 104260234
+  },
+  "y1_HG00673.1": {
+   "assembly_id": "y1_HG00673.1",
+   "contig_id": "HG00673#1#JAHBBZ010000005.1",
+   "end0": 56363234,
+   "start0": 56220630
+  },
+  "y1_HG00673.2": {
+   "assembly_id": "y1_HG00673.2",
+   "contig_id": "HG00673#2#JAHBBY010000004.1",
+   "end0": 61073430,
+   "start0": 60930826
+  },
+  "y1_HG00735.1": {
+   "assembly_id": "y1_HG00735.1",
+   "contig_id": "HG00735#1#JAHBCH010000004.1",
+   "end0": 117549378,
+   "start0": 117406774
+  },
+  "y1_HG00735.2": {
+   "assembly_id": "y1_HG00735.2",
+   "contig_id": "HG00735#2#JAHBCG010000001.1",
+   "end0": 91121449,
+   "start0": 90978845
+  },
+  "y1_HG00741.1": {
+   "assembly_id": "y1_HG00741.1",
+   "contig_id": "HG00741#1#JAHALY010000019.1",
+   "end0": 107967749,
+   "start0": 107825145
+  },
+  "y1_HG00741.2": {
+   "assembly_id": "y1_HG00741.2",
+   "contig_id": "HG00741#2#JAHALX010000012.1",
+   "end0": 108854588,
+   "start0": 108711984
+  }
+ },
+ {
+  "y1_HG00438.1": {
+   "assembly_id": "y1_HG00438.1",
+   "contig_id": "HG00438#1#JAHBCB010000037.1",
+   "end0": 92380079,
+   "start0": 92013442
+  },
+  "y1_HG00438.2": {
+   "assembly_id": "y1_HG00438.2",
+   "contig_id": "HG00438#2#JAHBCA010000005.1",
+   "end0": 95403661,
+   "start0": 95037024
+  },
+  "y1_HG00621.1": {
+   "assembly_id": "y1_HG00621.1",
+   "contig_id": "HG00621#1#JAHBCD010000002.1",
+   "end0": 90712827,
+   "start0": 90346190
+  },
+  "y1_HG00621.2": {
+   "assembly_id": "y1_HG00621.2",
+   "contig_id": "HG00621#2#JAHBCC010000033.1",
+   "end0": 96630412,
+   "start0": 96263775
+  },
+  "y1_HG00673.1": {
+   "assembly_id": "y1_HG00673.1",
+   "contig_id": "HG00673#1#JAHBBZ010000041.1",
+   "end0": 60577086,
+   "start0": 60210449
+  },
+  "y1_HG00673.2": {
+   "assembly_id": "y1_HG00673.2",
+   "contig_id": "HG00673#2#JAHBBY010000034.1",
+   "end0": 57177893,
+   "start0": 56811256
+  },
+  "y1_HG00735.1": {
+   "assembly_id": "y1_HG00735.1",
+   "contig_id": "HG00735#1#JAHBCH010000007.1",
+   "end0": 117963725,
+   "start0": 117597088
+  },
+  "y1_HG00735.2": {
+   "assembly_id": "y1_HG00735.2",
+   "contig_id": "HG00735#2#JAHBCG010000005.1",
+   "end0": 92433032,
+   "start0": 92066395
+  },
+  "y1_HG00741.1": {
+   "assembly_id": "y1_HG00741.1",
+   "contig_id": "HG00741#1#JAHALY010000029.1",
+   "end0": 91742827,
+   "start0": 91376190
+  },
+  "y1_HG00741.2": {
+   "assembly_id": "y1_HG00741.2",
+   "contig_id": "HG00741#2#JAHALX010000022.1",
+   "end0": 83489850,
+   "start0": 83123213
+  }
+ },
+ {
+  "y1_HG00438.1": {
+   "assembly_id": "y1_HG00438.1",
+   "contig_id": "HG00438#1#JAHBCB010000003.1",
+   "end0": 35342359,
+   "start0": 34807123
+  },
+  "y1_HG00438.2": {
+   "assembly_id": "y1_HG00438.2",
+   "contig_id": "HG00438#2#JAHBCA010000010.1",
+   "end0": 30659517,
+   "start0": 30124281
+  },
+  "y1_HG00621.1": {
+   "assembly_id": "y1_HG00621.1",
+   "contig_id": "HG00621#1#JAHBCD010000001.1",
+   "end0": 28010934,
+   "start0": 27475698
+  },
+  "y1_HG00621.2": {
+   "assembly_id": "y1_HG00621.2",
+   "contig_id": "HG00621#2#JAHBCC010000014.1",
+   "end0": 29892168,
+   "start0": 29356932
+  },
+  "y1_HG00673.1": {
+   "assembly_id": "y1_HG00673.1",
+   "contig_id": "HG00673#1#JAHBBZ010000075.1",
+   "end0": 20362809,
+   "start0": 19827573
+  },
+  "y1_HG00673.2": {
+   "assembly_id": "y1_HG00673.2",
+   "contig_id": "HG00673#2#JAHBBY010000039.1",
+   "end0": 19393479,
+   "start0": 18858243
+  },
+  "y1_HG00735.1": {
+   "assembly_id": "y1_HG00735.1",
+   "contig_id": "HG00735#1#JAHBCH010000020.1",
+   "end0": 38473815,
+   "start0": 37938579
+  },
+  "y1_HG00735.2": {
+   "assembly_id": "y1_HG00735.2",
+   "contig_id": "HG00735#2#JAHBCG010000017.1",
+   "end0": 29598081,
+   "start0": 29062845
+  },
+  "y1_HG00741.1": {
+   "assembly_id": "y1_HG00741.1",
+   "contig_id": "HG00741#1#JAHALY010000017.1",
+   "end0": 28827587,
+   "start0": 28292351
+  },
+  "y1_HG00741.2": {
+   "assembly_id": "y1_HG00741.2",
+   "contig_id": "HG00741#2#JAHALX010000006.1",
+   "end0": 30708597,
+   "start0": 30173361
+  }
+ },
+ {
+  "y1_HG00438.1": {
+   "assembly_id": "y1_HG00438.1",
+   "contig_id": "HG00438#1#JAHBCB010000015.1",
+   "end0": 1453312,
+   "start0": 1402492
+  },
+  "y1_HG00438.2": {
+   "assembly_id": "y1_HG00438.2",
+   "contig_id": "HG00438#2#JAHBCA010000035.1",
+   "end0": 1564925,
+   "start0": 1514105
+  },
+  "y1_HG00621.1": {
+   "assembly_id": "y1_HG00621.1",
+   "contig_id": "HG00621#1#JAHBCD010000016.1",
+   "end0": 1587304,
+   "start0": 1536484
+  },
+  "y1_HG00621.2": {
+   "assembly_id": "y1_HG00621.2",
+   "contig_id": "HG00621#2#JAHBCC010000018.1",
+   "end0": 1653259,
+   "start0": 1602439
+  },
+  "y1_HG00673.1": {
+   "assembly_id": "y1_HG00673.1",
+   "contig_id": "HG00673#1#JAHBBZ010000036.1",
+   "end0": 1012387,
+   "start0": 961567
+  },
+  "y1_HG00673.2": {
+   "assembly_id": "y1_HG00673.2",
+   "contig_id": "HG00673#2#JAHBBY010000026.1",
+   "end0": 971283,
+   "start0": 920463
+  },
+  "y1_HG00735.1": {
+   "assembly_id": "y1_HG00735.1",
+   "contig_id": "HG00735#1#JAHBCH010000011.1",
+   "end0": 1831680,
+   "start0": 1780860
+  },
+  "y1_HG00735.2": {
+   "assembly_id": "y1_HG00735.2",
+   "contig_id": "HG00735#2#JAHBCG010000009.1",
+   "end0": 1633049,
+   "start0": 1582229
+  },
+  "y1_HG00741.1": {
+   "assembly_id": "y1_HG00741.1",
+   "contig_id": "HG00741#1#JAHALY010000065.1",
+   "end0": 1420581,
+   "start0": 1369761
+  },
+  "y1_HG00741.2": {
+   "assembly_id": "y1_HG00741.2",
+   "contig_id": "HG00741#2#JAHALX010000002.1",
+   "end0": 1443345,
+   "start0": 1392525
+  }
+ },
+ {
+  "y1_HG00438.1": {
+   "assembly_id": "y1_HG00438.1",
+   "contig_id": "HG00438#1#JAHBCB010000018.1",
+   "end0": 71071463,
+   "start0": 70891147
+  },
+  "y1_HG00438.2": {
+   "assembly_id": "y1_HG00438.2",
+   "contig_id": "HG00438#2#JAHBCA010000002.1",
+   "end0": 70841254,
+   "start0": 70660938
+  },
+  "y1_HG00621.1": {
+   "assembly_id": "y1_HG00621.1",
+   "contig_id": "HG00621#1#JAHBCD010000010.1",
+   "end0": 55213528,
+   "start0": 55033212
+  },
+  "y1_HG00621.2": {
+   "assembly_id": "y1_HG00621.2",
+   "contig_id": "HG00621#2#JAHBCC010000006.1",
+   "end0": 73958772,
+   "start0": 73778456
+  },
+  "y1_HG00673.1": {
+   "assembly_id": "y1_HG00673.1",
+   "contig_id": "HG00673#1#JAHBBZ010000005.1",
+   "end0": 39955091,
+   "start0": 39774775
+  },
+  "y1_HG00673.2": {
+   "assembly_id": "y1_HG00673.2",
+   "contig_id": "HG00673#2#JAHBBY010000004.1",
+   "end0": 43289090,
+   "start0": 43108774
+  },
+  "y1_HG00735.1": {
+   "assembly_id": "y1_HG00735.1",
+   "contig_id": "HG00735#1#JAHBCH010000004.1",
+   "end0": 83264235,
+   "start0": 83083919
+  },
+  "y1_HG00735.2": {
+   "assembly_id": "y1_HG00735.2",
+   "contig_id": "HG00735#2#JAHBCG010000001.1",
+   "end0": 64557860,
+   "start0": 64377544
+  },
+  "y1_HG00741.1": {
+   "assembly_id": "y1_HG00741.1",
+   "contig_id": "HG00741#1#JAHALY010000019.1",
+   "end0": 76482109,
+   "start0": 76301793
+  },
+  "y1_HG00741.2": {
+   "assembly_id": "y1_HG00741.2",
+   "contig_id": "HG00741#2#JAHALX010000012.1",
+   "end0": 77109836,
+   "start0": 76929520
+  }
+ },
+ {
+  "y1_HG00438.1": {
+   "assembly_id": "y1_HG00438.1",
+   "contig_id": "HG00438#1#JAHBCB010000018.1",
+   "end0": 110320475,
+   "start0": 109824046
+  },
+  "y1_HG00438.2": {
+   "assembly_id": "y1_HG00438.2",
+   "contig_id": "HG00438#2#JAHBCA010000002.1",
+   "end0": 109963006,
+   "start0": 109466577
+  },
+  "y1_HG00621.1": {
+   "assembly_id": "y1_HG00621.1",
+   "contig_id": "HG00621#1#JAHBCD010000010.1",
+   "end0": 85696267,
+   "start0": 85199838
+  },
+  "y1_HG00621.2": {
+   "assembly_id": "y1_HG00621.2",
+   "contig_id": "HG00621#2#JAHBCC010000006.1",
+   "end0": 114803890,
+   "start0": 114307461
+  },
+  "y1_HG00673.1": {
+   "assembly_id": "y1_HG00673.1",
+   "contig_id": "HG00673#1#JAHBBZ010000005.1",
+   "end0": 62002960,
+   "start0": 61506531
+  },
+  "y1_HG00673.2": {
+   "assembly_id": "y1_HG00673.2",
+   "contig_id": "HG00673#2#JAHBBY010000004.1",
+   "end0": 67179995,
+   "start0": 66683566
+  },
+  "y1_HG00735.1": {
+   "assembly_id": "y1_HG00735.1",
+   "contig_id": "HG00735#1#JAHBCH010000004.1",
+   "end0": 129253415,
+   "start0": 128756986
+  },
+  "y1_HG00735.2": {
+   "assembly_id": "y1_HG00735.2",
+   "contig_id": "HG00735#2#JAHBCG010000001.1",
+   "end0": 100206149,
+   "start0": 99709720
+  },
+  "y1_HG00741.1": {
+   "assembly_id": "y1_HG00741.1",
+   "contig_id": "HG00741#1#JAHALY010000019.1",
+   "end0": 118722128,
+   "start0": 118225699
+  },
+  "y1_HG00741.2": {
+   "assembly_id": "y1_HG00741.2",
+   "contig_id": "HG00741#2#JAHALX010000012.1",
+   "end0": 119696863,
+   "start0": 119200434
+  }
+ },
+ {
+  "y1_HG00438.1": {
+   "assembly_id": "y1_HG00438.1",
+   "contig_id": "HG00438#1#JAHBCB010000016.1",
+   "end0": 71616190,
+   "start0": 71559411
+  },
+  "y1_HG00438.2": {
+   "assembly_id": "y1_HG00438.2",
+   "contig_id": "HG00438#2#JAHBCA010000011.1",
+   "end0": 75947870,
+   "start0": 75891091
+  },
+  "y1_HG00621.1": {
+   "assembly_id": "y1_HG00621.1",
+   "contig_id": "HG00621#1#JAHBCD010000022.1",
+   "end0": 67777777,
+   "start0": 67720998
+  },
+  "y1_HG00621.2": {
+   "assembly_id": "y1_HG00621.2",
+   "contig_id": "HG00621#2#JAHBCC010000039.1",
+   "end0": 71950288,
+   "start0": 71893509
+  },
+  "y1_HG00673.1": {
+   "assembly_id": "y1_HG00673.1",
+   "contig_id": "HG00673#1#JAHBBZ010000015.1",
+   "end0": 45146246,
+   "start0": 45089467
+  },
+  "y1_HG00673.2": {
+   "assembly_id": "y1_HG00673.2",
+   "contig_id": "HG00673#2#JAHBBY010000105.1",
+   "end0": 43782793,
+   "start0": 43726014
+  },
+  "y1_HG00735.1": {
+   "assembly_id": "y1_HG00735.1",
+   "contig_id": "HG00735#1#JAHBCH010000002.1",
+   "end0": 91428809,
+   "start0": 91372030
+  },
+  "y1_HG00735.2": {
+   "assembly_id": "y1_HG00735.2",
+   "contig_id": "HG00735#2#JAHBCG010000040.1",
+   "end0": 75963997,
+   "start0": 75907218
+  },
+  "y1_HG00741.1": {
+   "assembly_id": "y1_HG00741.1",
+   "contig_id": "HG00741#1#JAHALY010000010.1",
+   "end0": 69902189,
+   "start0": 69845410
+  },
+  "y1_HG00741.2": {
+   "assembly_id": "y1_HG00741.2",
+   "contig_id": "HG00741#2#JAHALX010000001.1",
+   "end0": 60500798,
+   "start0": 60444019
+  }
+ },
+ {
+  "y1_HG00438.1": {
+   "assembly_id": "y1_HG00438.1",
+   "contig_id": "HG00438#1#JAHBCB010000016.1",
+   "end0": 73230183,
+   "start0": 72828281
+  },
+  "y1_HG00438.2": {
+   "assembly_id": "y1_HG00438.2",
+   "contig_id": "HG00438#2#JAHBCA010000011.1",
+   "end0": 77654658,
+   "start0": 77252756
+  },
+  "y1_HG00621.1": {
+   "assembly_id": "y1_HG00621.1",
+   "contig_id": "HG00621#1#JAHBCD010000022.1",
+   "end0": 69309542,
+   "start0": 68907640
+  },
+  "y1_HG00621.2": {
+   "assembly_id": "y1_HG00621.2",
+   "contig_id": "HG00621#2#JAHBCC010000039.1",
+   "end0": 73571438,
+   "start0": 73169536
+  },
+  "y1_HG00673.1": {
+   "assembly_id": "y1_HG00673.1",
+   "contig_id": "HG00673#1#JAHBBZ010000015.1",
+   "end0": 46193194,
+   "start0": 45791292
+  },
+  "y1_HG00673.2": {
+   "assembly_id": "y1_HG00673.2",
+   "contig_id": "HG00673#2#JAHBBY010000105.1",
+   "end0": 44800532,
+   "start0": 44398630
+  },
+  "y1_HG00735.1": {
+   "assembly_id": "y1_HG00735.1",
+   "contig_id": "HG00735#1#JAHBCH010000002.1",
+   "end0": 93467232,
+   "start0": 93065330
+  },
+  "y1_HG00735.2": {
+   "assembly_id": "y1_HG00735.2",
+   "contig_id": "HG00735#2#JAHBCG010000040.1",
+   "end0": 77671130,
+   "start0": 77269228
+  },
+  "y1_HG00741.1": {
+   "assembly_id": "y1_HG00741.1",
+   "contig_id": "HG00741#1#JAHALY010000010.1",
+   "end0": 71479465,
+   "start0": 71077563
+  },
+  "y1_HG00741.2": {
+   "assembly_id": "y1_HG00741.2",
+   "contig_id": "HG00741#2#JAHALX010000001.1",
+   "end0": 61876674,
+   "start0": 61474772
+  }
+ },
+ {
+  "y1_HG00438.1": {
+   "assembly_id": "y1_HG00438.1",
+   "contig_id": "HG00438#1#JAHBCB010000011.1",
+   "end0": 9353343,
+   "start0": 9230929
+  },
+  "y1_HG00438.2": {
+   "assembly_id": "y1_HG00438.2",
+   "contig_id": "HG00438#2#JAHBCA010000003.1",
+   "end0": 10144855,
+   "start0": 10022441
+  },
+  "y1_HG00621.1": {
+   "assembly_id": "y1_HG00621.1",
+   "contig_id": "HG00621#1#JAHBCD010000024.1",
+   "end0": 10176627,
+   "start0": 10054213
+  },
+  "y1_HG00621.2": {
+   "assembly_id": "y1_HG00621.2",
+   "contig_id": "HG00621#2#JAHBCC010000028.1",
+   "end0": 9758098,
+   "start0": 9635684
+  },
+  "y1_HG00673.1": {
+   "assembly_id": "y1_HG00673.1",
+   "contig_id": "HG00673#1#JAHBBZ010000058.1",
+   "end0": 6330894,
+   "start0": 6208480
+  },
+  "y1_HG00673.2": {
+   "assembly_id": "y1_HG00673.2",
+   "contig_id": "HG00673#2#JAHBBY010000041.1",
+   "end0": 6168989,
+   "start0": 6046575
+  },
+  "y1_HG00735.1": {
+   "assembly_id": "y1_HG00735.1",
+   "contig_id": "HG00735#1#JAHBCH010000005.1",
+   "end0": 8444239,
+   "start0": 8321825
+  },
+  "y1_HG00735.2": {
+   "assembly_id": "y1_HG00735.2",
+   "contig_id": "HG00735#2#JAHBCG010000007.1",
+   "end0": 10321671,
+   "start0": 10199257
+  },
+  "y1_HG00741.1": {
+   "assembly_id": "y1_HG00741.1",
+   "contig_id": "HG00741#1#JAHALY010000005.1",
+   "end0": 8892771,
+   "start0": 8770357
+  },
+  "y1_HG00741.2": {
+   "assembly_id": "y1_HG00741.2",
+   "contig_id": "HG00741#2#JAHALX010000003.1",
+   "end0": 8838057,
+   "start0": 8715643
+  }
+ },
+ {
+  "y1_HG00438.1": {
+   "assembly_id": "y1_HG00438.1",
+   "contig_id": "HG00438#1#JAHBCB010000019.1",
+   "end0": 24772481,
+   "start0": 24273923
+  },
+  "y1_HG00438.2": {
+   "assembly_id": "y1_HG00438.2",
+   "contig_id": "HG00438#2#JAHBCA010000008.1",
+   "end0": 24918441,
+   "start0": 24419883
+  },
+  "y1_HG00621.1": {
+   "assembly_id": "y1_HG00621.1",
+   "contig_id": "HG00621#1#JAHBCD010000047.1",
+   "end0": 24020758,
+   "start0": 23522200
+  },
+  "y1_HG00621.2": {
+   "assembly_id": "y1_HG00621.2",
+   "contig_id": "HG00621#2#JAHBCC010000022.1",
+   "end0": 25610104,
+   "start0": 25111546
+  },
+  "y1_HG00673.1": {
+   "assembly_id": "y1_HG00673.1",
+   "contig_id": "HG00673#1#JAHBBZ010000007.1",
+   "end0": 15768937,
+   "start0": 15270379
+  },
+  "y1_HG00673.2": {
+   "assembly_id": "y1_HG00673.2",
+   "contig_id": "HG00673#2#JAHBBY010000017.1",
+   "end0": 14895849,
+   "start0": 14397291
+  },
+  "y1_HG00735.1": {
+   "assembly_id": "y1_HG00735.1",
+   "contig_id": "HG00735#1#JAHBCH010000003.1",
+   "end0": 30102160,
+   "start0": 29603602
+  },
+  "y1_HG00735.2": {
+   "assembly_id": "y1_HG00735.2",
+   "contig_id": "HG00735#2#JAHBCG010000023.1",
+   "end0": 24995126,
+   "start0": 24496568
+  },
+  "y1_HG00741.1": {
+   "assembly_id": "y1_HG00741.1",
+   "contig_id": "HG00741#1#JAHALY010000023.1",
+   "end0": 22906211,
+   "start0": 22407653
+  },
+  "y1_HG00741.2": {
+   "assembly_id": "y1_HG00741.2",
+   "contig_id": "HG00741#2#JAHALX010000010.1",
+   "end0": 20439917,
+   "start0": 19941359
+  }
+ }
+]

@@ -1,0 +1,541 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:hw-apex:window-law-verdict:v1",
+  "title": "B job raw-derived window-law evidence",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "run_id",
+    "kind",
+    "protocol_sha256",
+    "protocol_version",
+    "domain",
+    "scope",
+    "threads",
+    "seed",
+    "plan",
+    "prepared",
+    "input_references",
+    "windows_bytes",
+    "samples_per_window",
+    "entries",
+    "summary",
+    "immutable_input_error",
+    "silence_logs"
+  ],
+  "properties": {
+    "schema": {
+      "const": "window-law-verdict-v1"
+    },
+    "run_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "kind": {
+      "enum": [
+        "measured",
+        "synthetic"
+      ]
+    },
+    "protocol_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "protocol_version": {
+      "const": "1.1"
+    },
+    "domain": {
+      "const": "uppercase-sequence-without-FASTA-framing"
+    },
+    "scope": {
+      "const": "cpu-in-process"
+    },
+    "threads": {
+      "const": 1
+    },
+    "seed": {
+      "const": 20261003
+    },
+    "plan": {
+      "$ref": "#/$defs/file"
+    },
+    "prepared": {
+      "$ref": "#/$defs/file"
+    },
+    "input_references": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/file"
+      }
+    },
+    "windows_bytes": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "integer",
+        "minimum": 1,
+        "maximum": 65536
+      }
+    },
+    "samples_per_window": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "entries": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/entry"
+      }
+    },
+    "summary": {
+      "$ref": "#/$defs/summary"
+    },
+    "immutable_input_error": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "silence_logs": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/file"
+      }
+    },
+    "harness": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "commit",
+        "tree"
+      ],
+      "properties": {
+        "commit": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{40}$"
+        },
+        "tree": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{40}$"
+        }
+      }
+    }
+  },
+  "$defs": {
+    "file": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "path",
+        "bytes",
+        "sha256"
+      ],
+      "properties": {
+        "path": {
+          "type": "string",
+          "minLength": 1
+        },
+        "bytes": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        }
+      }
+    },
+    "dq": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "canonical_bytes",
+        "warmups",
+        "repeats",
+        "raw_ns",
+        "median_ns",
+        "min_ns",
+        "max_ns",
+        "D_Q_Bps",
+        "D_Q_exact",
+        "timed_boundary",
+        "normalization_and_sha_outside_timer",
+        "raw_log"
+      ],
+      "properties": {
+        "canonical_bytes": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "warmups": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "repeats": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "raw_ns": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "integer",
+            "minimum": 1
+          }
+        },
+        "median_ns": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "min_ns": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "max_ns": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "D_Q_Bps": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "D_Q_exact": {
+          "type": "string",
+          "minLength": 1
+        },
+        "timed_boundary": {
+          "type": "string",
+          "minLength": 1
+        },
+        "normalization_and_sha_outside_timer": {
+          "const": true
+        },
+        "raw_log": {
+          "$ref": "#/$defs/file"
+        }
+      }
+    },
+    "entry": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "family",
+        "variant",
+        "kind",
+        "data_status",
+        "verdict",
+        "error",
+        "Q_bytes",
+        "Q_exact",
+        "geometry",
+        "dq",
+        "observations",
+        "raw_logs",
+        "build"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.-]{0,99}$"
+        },
+        "family": {
+          "enum": [
+            "refrel3",
+            "bgzf",
+            "zstd-seekable",
+            "lz4-indexed",
+            "ozseg",
+            "agc"
+          ]
+        },
+        "variant": {
+          "type": "string",
+          "minLength": 1
+        },
+        "kind": {
+          "enum": [
+            "measured",
+            "synthetic"
+          ]
+        },
+        "data_status": {
+          "enum": [
+            "PASS",
+            "FAILED"
+          ]
+        },
+        "verdict": {
+          "enum": [
+            "PASS",
+            "FAIL"
+          ]
+        },
+        "error": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "Q_bytes": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "Q_exact": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "geometry": {
+          "type": "array",
+          "items": {
+            "type": "object"
+          }
+        },
+        "dq": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "$ref": "#/$defs/dq"
+            }
+          ]
+        },
+        "observations": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/observation"
+          }
+        },
+        "raw_logs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/file"
+          }
+        },
+        "build": {
+          "type": "object"
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "data_status": {
+                "const": "FAILED"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "Q_bytes": {
+                "type": "null"
+              },
+              "Q_exact": {
+                "type": "null"
+              },
+              "dq": {
+                "type": "null"
+              },
+              "observations": {
+                "maxItems": 0
+              },
+              "error": {
+                "type": "string",
+                "minLength": 1
+              }
+            }
+          },
+          "else": {
+            "properties": {
+              "Q_bytes": {
+                "type": "number",
+                "exclusiveMinimum": 0
+              },
+              "Q_exact": {
+                "type": "string",
+                "minLength": 1
+              },
+              "dq": {
+                "$ref": "#/$defs/dq"
+              },
+              "observations": {
+                "minItems": 4
+              },
+              "error": {
+                "type": "null"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "observation": {
+      "type": "object",
+      "required": [
+        "W_bytes",
+        "window_role",
+        "verdict_eligible",
+        "verdict",
+        "samples",
+        "verified",
+        "raw_log",
+        "c0_negative",
+        "model_status",
+        "primary_predicted_p50_us",
+        "secondary_predicted_p50_us",
+        "measured_p50_us"
+      ],
+      "properties": {
+        "W_bytes": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 65536
+        },
+        "window_role": {
+          "enum": [
+            "VERDICT",
+            "CALIBRATION_ONLY",
+            "DIAGNOSTIC_ONLY"
+          ]
+        },
+        "verdict_eligible": {
+          "type": "boolean"
+        },
+        "verdict": {
+          "enum": [
+            "PASS",
+            "FAIL",
+            "CALIBRATION_ONLY",
+            "DIAGNOSTIC_ONLY"
+          ]
+        },
+        "samples": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "verified": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "raw_log": {
+          "$ref": "#/$defs/file"
+        },
+        "c0_negative": {
+          "type": "boolean"
+        },
+        "c0_us": {
+          "type": "number"
+        },
+        "model_status": {
+          "enum": [
+            "VALID",
+            "FAIL"
+          ]
+        },
+        "primary_predicted_p50_us": {
+          "type": "number"
+        },
+        "secondary_predicted_p50_us": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "measured_p50_us": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "coefficient_fitting": {
+          "const": false
+        },
+        "tolerance_percent": {
+          "const": 20
+        },
+        "w1_in_verdict_set": {
+          "const": false
+        }
+      }
+    },
+    "summary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "data_status",
+        "coverage_complete",
+        "foreign_families",
+        "foreign_format_count",
+        "refrel3_verdict",
+        "comparison_verdict"
+      ],
+      "properties": {
+        "data_status": {
+          "enum": [
+            "PASS",
+            "FAILED"
+          ]
+        },
+        "coverage_complete": {
+          "type": "boolean"
+        },
+        "foreign_families": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "enum": [
+              "bgzf",
+              "zstd-seekable",
+              "lz4-indexed",
+              "ozseg",
+              "agc"
+            ]
+          }
+        },
+        "foreign_format_count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "refrel3_verdict": {
+          "enum": [
+            "PASS",
+            "FAIL"
+          ]
+        },
+        "comparison_verdict": {
+          "enum": [
+            "PASS",
+            "FAIL"
+          ]
+        }
+      }
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "kind": {
+            "const": "measured"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "samples_per_window": {
+            "const": 10000
+          },
+          "silence_logs": {
+            "minItems": 1
+          }
+        },
+        "required": [
+          "harness"
+        ]
+      }
+    }
+  ]
+}

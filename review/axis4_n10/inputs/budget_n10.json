@@ -1,0 +1,48 @@
+{
+ "schema": "axis4-n10-budget-v1",
+ "items_bytes": {
+  "fasta_uncompressed_new_exact": 18343739026,
+  "fasta_uncompressed_reused_hardlink": 0,
+  "faidx_fai_all10_upper": 149850,
+  "bgzf_default_new_upper": 4758630701,
+  "bgzf_default_reused_hardlink": 0,
+  "zstd_seekable_new_upper": 5621986451,
+  "zstd_seekable_reused_hardlink": 0,
+  "zstd_canonical_stream_fifo": 0,
+  "agc_t2t_10_upper": 853432686,
+  "agc_noref_10_upper": 853432686,
+  "agc_native_build_dir_upper": 210000000,
+  "refrel3_q4k_q16k_symlink": 0,
+  "t2t_reference_symlink": 0,
+  "evidence_and_logs_upper": 200000000
+ },
+ "new_bytes_total_upper": 30841371400,
+ "gate_disk_strictly_above_bytes": 20000000000,
+ "required_free_now_bytes": 50841371401,
+ "free_now_bytes": 14026399744,
+ "shortfall_bytes": 36814971657,
+ "fits": false,
+ "ratios_from_reused_4": {
+  "bgz": 0.25916415375199947,
+  "gzi": 0.00024537988670064715,
+  "zst": 0.3064671335985658
+ },
+ "agc_points_bytes": {
+  "t2t_4": 787595850,
+  "agc5_m6": 798568656
+ },
+ "reused": [
+  "y1_HG00438.1",
+  "y1_HG00438.2",
+  "y1_HG00621.1",
+  "y1_HG00621.2"
+ ],
+ "new": [
+  "y1_HG00673.1",
+  "y1_HG00673.2",
+  "y1_HG00735.1",
+  "y1_HG00735.2",
+  "y1_HG00741.1",
+  "y1_HG00741.2"
+ ]
+}

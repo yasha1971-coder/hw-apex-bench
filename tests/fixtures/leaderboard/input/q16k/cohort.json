@@ -1,0 +1,24 @@
+{
+  "assemblies": [
+    {
+      "assembly_id": "asm1",
+      "fasta": {
+        "bytes": 12455,
+        "path": "asm1.fa",
+        "sha256": "4cad8128d61f62ee7bed58d6ba5155013a176f2a8fd983a95e15cad409d46048"
+      },
+      "source_url": "synthetic:seed-20261003/asm1"
+    },
+    {
+      "assembly_id": "asm2",
+      "fasta": {
+        "bytes": 12455,
+        "path": "asm2.fa",
+        "sha256": "1a361040426bf4756f9c961fc8271919a3a5cf6207bd8bc46988306171e0c60e"
+      },
+      "source_url": "synthetic:seed-20261003/asm2"
+    }
+  ],
+  "evidence_kind": "synthetic",
+  "schema": "axis4-corpus-v1"
+}

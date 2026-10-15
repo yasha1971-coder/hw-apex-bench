@@ -1,0 +1,13 @@
+{
+  "codec": "BGZF+htslib",
+  "modes": [
+    "independent-per-assembly"
+  ],
+  "scopes": [
+    "cpu-in-process",
+    "cli"
+  ],
+  "build": "bgzip each FASTA; samtools faidx; retain .gzi/.fai",
+  "region": "htslib faidx_fetch_seq64 / samtools faidx",
+  "status": "ready-contract"
+}

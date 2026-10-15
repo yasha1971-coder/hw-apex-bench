@@ -1,0 +1,65 @@
+{
+  "collected": 306,
+  "errors": 0,
+  "expected_failures": 0,
+  "expected_skips": {},
+  "expected_total": 306,
+  "failures": 0,
+  "native_cases": [
+    {
+      "availability": "file",
+      "env": "HWAPEX_AGC_SO",
+      "id": "test_s2_native_readers.NativeAvailability.test_native_agc_noref"
+    },
+    {
+      "availability": "file",
+      "env": "HWAPEX_AGC_SO",
+      "id": "test_s2_native_readers.NativeAvailability.test_native_agc_t2t"
+    },
+    {
+      "availability": "file",
+      "env": "HWAPEX_BGZF_SO",
+      "id": "test_s2_native_readers.NativeAvailability.test_native_bgzf_default"
+    },
+    {
+      "availability": "file",
+      "env": "HWAPEX_BGZF_SO",
+      "id": "test_s2_native_readers.NativeAvailability.test_native_bgzf_matched"
+    },
+    {
+      "availability": "file",
+      "env": "HWAPEX_HTSLIB_SO",
+      "id": "test_s2_native_readers.NativeAvailability.test_native_fasta_faidx"
+    },
+    {
+      "availability": "file",
+      "env": "HWAPEX_LZ4_SO",
+      "id": "test_s2_native_readers.NativeAvailability.test_native_lz4_indexed"
+    },
+    {
+      "availability": "file",
+      "env": "HWAPEX_OPENZL_SO",
+      "id": "test_s2_native_readers.NativeAvailability.test_native_ozseg_openzl"
+    },
+    {
+      "availability": "file",
+      "env": "HWAPEX_REFREL3_SO",
+      "id": "test_s2_native_readers.NativeAvailability.test_native_refrel3_q16k"
+    },
+    {
+      "availability": "file",
+      "env": "HWAPEX_REFREL3_SO",
+      "id": "test_s2_native_readers.NativeAvailability.test_native_refrel3_q4k"
+    },
+    {
+      "availability": "file",
+      "env": "HWAPEX_ZSTD_SEEKABLE_SO",
+      "id": "test_s2_native_readers.NativeAvailability.test_native_zstd_seekable"
+    }
+  ],
+  "observed_skips": {},
+  "schema": "axis3-unit-gate-v1",
+  "status": "PASS",
+  "tests_run": 306,
+  "unexpected_successes": 0
+}

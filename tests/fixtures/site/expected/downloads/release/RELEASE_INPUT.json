@@ -1,0 +1,17 @@
+{
+  "catalogs": [
+    {
+      "bytes": 1011,
+      "path": "inputs/766c540c9ecd0ba9ca42fae8331334b367e60015f942c379f541fd0594df5286/leaderboard-input.json",
+      "sha256": "766c540c9ecd0ba9ca42fae8331334b367e60015f942c379f541fd0594df5286"
+    },
+    {
+      "bytes": 265,
+      "path": "inputs/e285b7cfd3b98ff428fa8588c87503ed654996d51f205df1842789c00168e8e1/leaderboard-input.json",
+      "sha256": "e285b7cfd3b98ff428fa8588c87503ed654996d51f205df1842789c00168e8e1"
+    }
+  ],
+  "commit": "8ff1080e513d29d8a9ea35b80c81346a4a1ae73b",
+  "mode": "synthetic",
+  "schema": "release-recipe-v1"
+}

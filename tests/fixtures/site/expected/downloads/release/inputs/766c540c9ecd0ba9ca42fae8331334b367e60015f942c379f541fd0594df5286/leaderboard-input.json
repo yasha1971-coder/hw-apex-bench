@@ -1,0 +1,32 @@
+{
+  "records": [
+    {
+      "evidence": {
+        "bytes": 34171,
+        "path": "data/evidence/evidence.json",
+        "sha256": "3fc0f8dd3aab6135b8aba4b896c5d6c9bbd1571384173a6bccb0b8f59caa5889"
+      },
+      "input_root": "data",
+      "prepared_sha256": "4159d501dea82a4890a46ce2f8da4137bbe2ae0ad89e30cbcea0d8f5ce29e323"
+    },
+    {
+      "evidence": {
+        "bytes": 148886,
+        "path": "data/a7-run/evidence.json",
+        "sha256": "844b19c7cbb91239705694a34349abce5e5846fe51e621b45e57cc6c302d777d"
+      },
+      "input_root": "data",
+      "prepared_sha256": "7432abac4601e9880be50c91b3efc32416e6b7580a4be9f2d6db652ead5b10a9"
+    },
+    {
+      "evidence": {
+        "bytes": 34172,
+        "path": "q16k/evidence/evidence.json",
+        "sha256": "724dfd71a8159641eea56f7c398e23132934925d01deff8d42ec77260c81216b"
+      },
+      "input_root": "q16k",
+      "prepared_sha256": "4159d501dea82a4890a46ce2f8da4137bbe2ae0ad89e30cbcea0d8f5ce29e323"
+    }
+  ],
+  "schema": "leaderboard-input-v1"
+}

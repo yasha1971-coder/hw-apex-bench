@@ -1,0 +1,11 @@
+{
+  "access_right": "open",
+  "creators": [{"name": "Shavidze, Yakiv", "orcid": "0009-0008-3622-3448"}],
+  "description": "hw-apex-bench v0.2.0 benchmark software: verified compressed random access, cohort queries, corruption experiments and deterministic evidence-derived releases. Synthetic acceptance is not an official performance measurement. Code is Apache-2.0; separately published measurement records retain their own licensing. No v0.2.0 DOI or publication date is asserted before deposit.",
+  "keywords": ["compression", "random access", "benchmark", "reproducibility", "bioinformatics"],
+  "license": "Apache-2.0",
+  "related_identifiers": [{"identifier": "https://github.com/yasha1971-coder/hw-apex-bench", "relation": "isSupplementTo", "scheme": "url"}],
+  "title": "hw-apex-bench: Compressed Access Benchmark",
+  "upload_type": "software",
+  "version": "0.2.0"
+}

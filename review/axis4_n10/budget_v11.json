@@ -1,0 +1,34 @@
+{
+ "schema": "axis4-n10-budget-v1.1",
+ "items_bytes": {
+  "truth_v11_stream_from_fa_gz_hardlinks": 0,
+  "fasta_plain_new_for_faidx_exact": 18343739026,
+  "fasta_plain_reused_hardlink_vB": 0,
+  "faidx_fai_all10_upper": 149850,
+  "bgzf_default_new_upper": 4758630701,
+  "zstd_seekable_new_upper_fifo": 5621986451,
+  "agc_t2t_10_upper": 853432686,
+  "agc_noref_10_upper": 853432686,
+  "agc_native_build_dir_upper": 210000000,
+  "refrel3_t2t_symlinks": 0,
+  "prepared_v2_and_evidence_upper": 200000000
+ },
+ "new_bytes_total_upper": 30841371400,
+ "gate_disk_strictly_above_bytes": 20000000000,
+ "required_free_now_bytes": 50841371401,
+ "free_now_bytes": 9867792384,
+ "shortfall_bytes": 40973579017,
+ "fits": false,
+ "plain_fasta_needed_by": {
+  "truth_v1.1": false,
+  "faidx_plain": true,
+  "bgzf_default": "adapter create() checks source.stat().st_size == BGZF total, so a FIFO source is refused; reads the materialised FASTA",
+  "zstd_seekable": false,
+  "agc_create": "AGC 3.2.4 accepts .fa.gz inputs (README); not needed separately",
+  "refrel3": false
+ },
+ "note_if_faidx_row_were_not_run": {
+  "new_bytes_upper": 12497482524,
+  "bgzf_requires_adapter_stream_support": true
+ }
+}

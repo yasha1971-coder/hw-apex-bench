@@ -1,0 +1,10 @@
+{
+  "codec": "2-bit-capacity",
+  "modes": [
+    "lossless-capacity-baseline"
+  ],
+  "scopes": [],
+  "build": "2 bits per A/C/G/T plus explicit exceptions and contig metadata",
+  "region": "n/a unless accessor implemented",
+  "status": "capacity-only"
+}

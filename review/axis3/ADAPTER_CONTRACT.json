@@ -1,0 +1,6 @@
+{
+  "schema": "axis3-adapter-v1",
+  "operations": ["build", "region", "version", "storage"],
+  "result_required": ["codec","version","scope","n","window_bytes","stored_bytes_total","bytes_per_assembly","build_seconds","build_threads","windows","windows_per_second","p50_us","p95_us","peak_rss_bytes","bit_perfect","status"],
+  "scopes": ["cpu-in-process","gpu-in-process","cli"]
+}

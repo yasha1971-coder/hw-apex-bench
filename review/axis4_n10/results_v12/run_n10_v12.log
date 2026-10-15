@@ -1,0 +1,130 @@
+[2026-10-10T11:15:27+00:00] run runs12/check/refrel3_q4k_t1_a1 status=PASS error=None
+[2026-10-10T11:27:13+00:00] method check PASS (runs12/check/refrel3_q4k_t1_a1, 20 verified)
+[2026-10-10T11:27:13+00:00] row refrel3_q4k t1 start
+[2026-10-10T11:32:22+00:00] run runs12/refrel3_q4k/t1/w1_a1 status=PASS error=None
+[2026-10-10T11:37:02+00:00] run runs12/refrel3_q4k/t1/w2_a1 status=PASS error=None
+[2026-10-10T11:41:56+00:00] run runs12/refrel3_q4k/t1/w3_a1 status=PASS error=None
+[2026-10-10T11:46:21+00:00] run runs12/refrel3_q4k/t1/r1_a1 status=PASS error=None
+[2026-10-10T11:50:44+00:00] run runs12/refrel3_q4k/t1/r2_a1 status=PASS error=None
+[2026-10-10T11:55:55+00:00] run runs12/refrel3_q4k/t1/r3_a1 status=PASS error=None
+[2026-10-10T12:01:08+00:00] run runs12/refrel3_q4k/t1/r4_a1 status=PASS error=None
+[2026-10-10T12:05:48+00:00] run runs12/refrel3_q4k/t1/r5_a1 status=PASS error=None
+[2026-10-10T12:10:44+00:00] run runs12/refrel3_q4k/t1/r6_a1 status=PASS error=None
+[2026-10-10T12:15:23+00:00] run runs12/refrel3_q4k/t1/r7_a1 status=PASS error=None
+[2026-10-10T12:20:12+00:00] run runs12/refrel3_q4k/t1/r8_a1 status=FAILED error=ValueError: silence gate refused: after
+[2026-10-10T12:25:05+00:00] run runs12/refrel3_q4k/t1/r8_a2 status=PASS error=None
+[2026-10-10T12:30:02+00:00] run runs12/refrel3_q4k/t1/r9_a1 status=PASS error=None
+[2026-10-10T12:30:02+00:00] row refrel3_q4k t1 done
+[2026-10-10T12:30:02+00:00] row refrel3_q16k t1 start
+[2026-10-10T12:35:13+00:00] run runs12/refrel3_q16k/t1/w1_a1 status=PASS error=None
+[2026-10-10T12:40:11+00:00] run runs12/refrel3_q16k/t1/w2_a1 status=PASS error=None
+[2026-10-10T12:44:50+00:00] run runs12/refrel3_q16k/t1/w3_a1 status=PASS error=None
+[2026-10-10T12:50:01+00:00] run runs12/refrel3_q16k/t1/r1_a1 status=PASS error=None
+[2026-10-10T12:54:57+00:00] run runs12/refrel3_q16k/t1/r2_a1 status=PASS error=None
+[2026-10-10T12:59:36+00:00] run runs12/refrel3_q16k/t1/r3_a1 status=PASS error=None
+[2026-10-10T13:04:15+00:00] run runs12/refrel3_q16k/t1/r4_a1 status=PASS error=None
+[2026-10-10T13:08:56+00:00] run runs12/refrel3_q16k/t1/r5_a1 status=PASS error=None
+[2026-10-10T13:14:24+00:00] run runs12/refrel3_q16k/t1/r6_a1 status=PASS error=None
+[2026-10-10T13:19:04+00:00] run runs12/refrel3_q16k/t1/r7_a1 status=PASS error=None
+[2026-10-10T13:23:59+00:00] run runs12/refrel3_q16k/t1/r8_a1 status=PASS error=None
+[2026-10-10T13:28:55+00:00] run runs12/refrel3_q16k/t1/r9_a1 status=PASS error=None
+[2026-10-10T13:28:55+00:00] row refrel3_q16k t1 done
+[2026-10-10T13:28:55+00:00] row bgzf_default t1 start
+[2026-10-10T13:31:18+00:00] run runs12/bgzf_default/t1/w1_a1 status=PASS error=None
+[2026-10-10T13:32:54+00:00] run runs12/bgzf_default/t1/w2_a1 status=PASS error=None
+[2026-10-10T13:34:45+00:00] run runs12/bgzf_default/t1/w3_a1 status=PASS error=None
+[2026-10-10T13:36:53+00:00] run runs12/bgzf_default/t1/r1_a1 status=PASS error=None
+[2026-10-10T13:38:29+00:00] run runs12/bgzf_default/t1/r2_a1 status=PASS error=None
+[2026-10-10T13:40:20+00:00] run runs12/bgzf_default/t1/r3_a1 status=PASS error=None
+[2026-10-10T13:42:27+00:00] run runs12/bgzf_default/t1/r4_a1 status=PASS error=None
+[2026-10-10T13:44:18+00:00] run runs12/bgzf_default/t1/r5_a1 status=PASS error=None
+[2026-10-10T13:46:09+00:00] run runs12/bgzf_default/t1/r6_a1 status=PASS error=None
+[2026-10-10T13:48:01+00:00] run runs12/bgzf_default/t1/r7_a1 status=PASS error=None
+[2026-10-10T13:49:59+00:00] run runs12/bgzf_default/t1/r8_a1 status=FAILED error=ValueError: silence gate refused: after
+[2026-10-10T13:52:05+00:00] run runs12/bgzf_default/t1/r8_a2 status=PASS error=None
+[2026-10-10T13:54:13+00:00] run runs12/bgzf_default/t1/r9_a1 status=PASS error=None
+[2026-10-10T13:54:13+00:00] row bgzf_default t1 done
+[2026-10-10T13:54:13+00:00] row zstd_seekable t1 start
+[2026-10-10T13:55:08+00:00] run runs12/zstd_seekable/t1/w1_a1 status=PASS error=None
+[2026-10-10T13:56:03+00:00] run runs12/zstd_seekable/t1/w2_a1 status=PASS error=None
+[2026-10-10T13:56:58+00:00] run runs12/zstd_seekable/t1/w3_a1 status=PASS error=None
+[2026-10-10T13:58:09+00:00] run runs12/zstd_seekable/t1/r1_a1 status=PASS error=None
+[2026-10-10T13:59:19+00:00] run runs12/zstd_seekable/t1/r2_a1 status=PASS error=None
+[2026-10-10T14:00:14+00:00] run runs12/zstd_seekable/t1/r3_a1 status=PASS error=None
+[2026-10-10T14:01:09+00:00] run runs12/zstd_seekable/t1/r4_a1 status=PASS error=None
+[2026-10-10T14:02:34+00:00] run runs12/zstd_seekable/t1/r5_a1 status=PASS error=None
+[2026-10-10T14:03:44+00:00] run runs12/zstd_seekable/t1/r6_a1 status=PASS error=None
+[2026-10-10T14:04:39+00:00] run runs12/zstd_seekable/t1/r7_a1 status=PASS error=None
+[2026-10-10T14:06:04+00:00] run runs12/zstd_seekable/t1/r8_a1 status=PASS error=None
+[2026-10-10T14:07:14+00:00] run runs12/zstd_seekable/t1/r9_a1 status=PASS error=None
+[2026-10-10T14:07:14+00:00] row zstd_seekable t1 done
+[2026-10-10T14:07:14+00:00] row faidx_plain t1 start
+[2026-10-10T14:09:55+00:00] run runs12/faidx_plain/t1/w1_a1 status=PASS error=None
+[2026-10-10T14:11:50+00:00] run runs12/faidx_plain/t1/w2_a1 status=PASS error=None
+[2026-10-10T14:13:45+00:00] run runs12/faidx_plain/t1/w3_a1 status=PASS error=None
+[2026-10-10T14:16:26+00:00] run runs12/faidx_plain/t1/r1_a1 status=PASS error=None
+[2026-10-10T14:18:51+00:00] run runs12/faidx_plain/t1/r2_a1 status=PASS error=None
+[2026-10-10T14:21:00+00:00] run runs12/faidx_plain/t1/r3_a1 status=PASS error=None
+[2026-10-10T14:23:40+00:00] run runs12/faidx_plain/t1/r4_a1 status=PASS error=None
+[2026-10-10T14:25:35+00:00] run runs12/faidx_plain/t1/r5_a1 status=PASS error=None
+[2026-10-10T14:27:30+00:00] run runs12/faidx_plain/t1/r6_a1 status=PASS error=None
+[2026-10-10T14:29:25+00:00] run runs12/faidx_plain/t1/r7_a1 status=PASS error=None
+[2026-10-10T14:31:36+00:00] run runs12/faidx_plain/t1/r8_a1 status=PASS error=None
+[2026-10-10T14:33:31+00:00] run runs12/faidx_plain/t1/r9_a1 status=PASS error=None
+[2026-10-10T14:33:31+00:00] row faidx_plain t1 done
+[2026-10-10T14:33:31+00:00] row agc_t2t t1 start
+[2026-10-10T14:34:33+00:00] run runs12/agc_t2t/t1/w1_a1 status=PASS error=None
+[2026-10-10T14:35:35+00:00] run runs12/agc_t2t/t1/w2_a1 status=PASS error=None
+[2026-10-10T14:36:38+00:00] run runs12/agc_t2t/t1/w3_a1 status=PASS error=None
+[2026-10-10T14:37:25+00:00] run runs12/agc_t2t/t1/r1_a1 status=PASS error=None
+[2026-10-10T14:38:27+00:00] run runs12/agc_t2t/t1/r2_a1 status=PASS error=None
+[2026-10-10T14:39:15+00:00] run runs12/agc_t2t/t1/r3_a1 status=PASS error=None
+[2026-10-10T14:40:02+00:00] run runs12/agc_t2t/t1/r4_a1 status=PASS error=None
+[2026-10-10T14:40:49+00:00] run runs12/agc_t2t/t1/r5_a1 status=PASS error=None
+[2026-10-10T14:41:21+00:00] run runs12/agc_t2t/t1/r6_a1 status=PASS error=None
+[2026-10-10T14:42:24+00:00] run runs12/agc_t2t/t1/r7_a1 status=PASS error=None
+[2026-10-10T14:42:56+00:00] run runs12/agc_t2t/t1/r8_a1 status=PASS error=None
+[2026-10-10T14:43:43+00:00] run runs12/agc_t2t/t1/r9_a1 status=PASS error=None
+[2026-10-10T14:43:43+00:00] row agc_t2t t1 done
+[2026-10-10T14:43:43+00:00] row agc_noref t1 start
+[2026-10-10T14:44:56+00:00] run runs12/agc_noref/t1/w1_a1 status=PASS error=None
+[2026-10-10T14:45:39+00:00] run runs12/agc_noref/t1/w2_a1 status=PASS error=None
+[2026-10-10T14:46:07+00:00] run runs12/agc_noref/t1/w3_a1 status=PASS error=None
+[2026-10-10T14:46:50+00:00] run runs12/agc_noref/t1/r1_a1 status=PASS error=None
+[2026-10-10T14:47:32+00:00] run runs12/agc_noref/t1/r2_a1 status=PASS error=None
+[2026-10-10T14:48:00+00:00] run runs12/agc_noref/t1/r3_a1 status=PASS error=None
+[2026-10-10T14:48:28+00:00] run runs12/agc_noref/t1/r4_a1 status=PASS error=None
+[2026-10-10T14:48:56+00:00] run runs12/agc_noref/t1/r5_a1 status=PASS error=None
+[2026-10-10T14:49:24+00:00] run runs12/agc_noref/t1/r6_a1 status=PASS error=None
+[2026-10-10T14:50:07+00:00] run runs12/agc_noref/t1/r7_a1 status=PASS error=None
+[2026-10-10T14:50:34+00:00] run runs12/agc_noref/t1/r8_a1 status=PASS error=None
+[2026-10-10T14:51:02+00:00] run runs12/agc_noref/t1/r9_a1 status=PASS error=None
+[2026-10-10T14:51:02+00:00] row agc_noref t1 done
+[2026-10-10T14:51:02+00:00] row bgzf_default t16 start
+[2026-10-10T14:52:38+00:00] run runs12/bgzf_default/t16/w1_a1 status=PASS error=None
+[2026-10-10T14:54:46+00:00] run runs12/bgzf_default/t16/w2_a1 status=PASS error=None
+[2026-10-10T14:56:38+00:00] run runs12/bgzf_default/t16/w3_a1 status=PASS error=None
+[2026-10-10T14:58:29+00:00] run runs12/bgzf_default/t16/r1_a1 status=PASS error=None
+[2026-10-10T15:01:06+00:00] run runs12/bgzf_default/t16/r2_a1 status=PASS error=None
+[2026-10-10T15:03:42+00:00] run runs12/bgzf_default/t16/r3_a1 status=PASS error=None
+[2026-10-10T15:05:50+00:00] run runs12/bgzf_default/t16/r4_a1 status=PASS error=None
+[2026-10-10T15:07:33+00:00] run runs12/bgzf_default/t16/r5_a1 status=FAILED error=ValueError: silence gate refused: after
+[2026-10-10T15:10:17+00:00] run runs12/bgzf_default/t16/r5_a2 status=PASS error=None
+[2026-10-10T15:12:09+00:00] run runs12/bgzf_default/t16/r6_a1 status=PASS error=None
+[2026-10-10T15:13:46+00:00] run runs12/bgzf_default/t16/r7_a1 status=PASS error=None
+[2026-10-10T15:15:37+00:00] run runs12/bgzf_default/t16/r8_a1 status=PASS error=None
+[2026-10-10T15:18:14+00:00] run runs12/bgzf_default/t16/r9_a1 status=PASS error=None
+[2026-10-10T15:18:14+00:00] row bgzf_default t16 done
+[2026-10-10T15:19:05+00:00] run runs12/refrel3_q4k/t16/not_supported status=NOT_SUPPORTED error=NotSupported: current pinned native reader exposes only a scalar decoder API
+[2026-10-10T15:19:05+00:00] NOT_SUPPORTED row refrel3_q4k t16 recorded
+[2026-10-10T15:19:26+00:00] run runs12/refrel3_q16k/t16/not_supported status=NOT_SUPPORTED error=NotSupported: current pinned native reader exposes only a scalar decoder API
+[2026-10-10T15:19:26+00:00] NOT_SUPPORTED row refrel3_q16k t16 recorded
+[2026-10-10T15:19:34+00:00] run runs12/zstd_seekable/t16/not_supported status=NOT_SUPPORTED error=NotSupported: current pinned native reader exposes only a scalar decoder API
+[2026-10-10T15:19:34+00:00] NOT_SUPPORTED row zstd_seekable t16 recorded
+[2026-10-10T15:20:38+00:00] run runs12/faidx_plain/t16/not_supported status=NOT_SUPPORTED error=NotSupported: current pinned native reader exposes only a scalar decoder API
+[2026-10-10T15:20:38+00:00] NOT_SUPPORTED row faidx_plain t16 recorded
+[2026-10-10T15:21:14+00:00] run runs12/agc_t2t/t16/not_supported status=NOT_SUPPORTED error=NotSupported: current pinned native reader exposes only a scalar decoder API
+[2026-10-10T15:21:14+00:00] NOT_SUPPORTED row agc_t2t t16 recorded
+[2026-10-10T15:21:34+00:00] run runs12/agc_noref/t16/not_supported status=NOT_SUPPORTED error=NotSupported: current pinned native reader exposes only a scalar decoder API
+[2026-10-10T15:21:34+00:00] NOT_SUPPORTED row agc_noref t16 recorded
+[2026-10-10T18:47:37+00:00] verified 96 of 96

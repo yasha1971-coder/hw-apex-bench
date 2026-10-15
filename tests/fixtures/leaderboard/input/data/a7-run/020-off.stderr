@@ -1,0 +1,12 @@
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "/workspace/scratch/bd7b0d2b828e/repo/tools/axis5_native_worker.py", line 39, in <module>
+    decode(Path(sys.argv[1]), Path(sys.argv[2]), Path(sys.argv[3]))
+  File "/workspace/scratch/bd7b0d2b828e/repo/tools/axis5_native_worker.py", line 19, in decode
+    reader = native.Refrel3Reader(library, checked_file(root, spec['reference']), target, aid)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/scratch/bd7b0d2b828e/repo/review/axis3/native_readers.py", line 109, in __init__
+    if not self.h:raise ValueError('refrel3 native open refused')
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ValueError: refrel3 native open refused

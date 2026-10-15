@@ -1,0 +1,13 @@
+{
+  "records": [
+    {
+      "evidence": {
+        "bytes": 1751,
+        "path": "evidence.json",
+        "sha256": "c296feab3f7da001963c21ee5cd655ab17fd82ab9b24a6e76e582d1ff61db658"
+      },
+      "input_root": "."
+    }
+  ],
+  "schema": "leaderboard-input-v1"
+}

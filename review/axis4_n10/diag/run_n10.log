@@ -1,0 +1,58 @@
+[2026-10-10T04:23:55+00:00] start agc_build: L env AGC_PLATFORM=native bash /home/aeterna/pubrepo/.wk/v020/review/axis3/build_agc_v324.sh /home/aeterna/pubrepo/.wk/agc_native_v020
+[2026-10-10T04:44:45+00:00] done agc_build
+[2026-10-10T04:44:45+00:00] start static: L bash -c cd '/home/aeterna/pubrepo/.wk/v020' && python3 '/home/aeterna/pubrepo/.wk/v020/review/axis4_n10/build_v11.py' --root '/home/aeterna/pubrepo/.wk/axis4n10' static
+[2026-10-10T04:44:57+00:00] done static
+[2026-10-10T04:44:57+00:00] start fasta_y1_HG00673.1: L bash -c cd '/home/aeterna/pubrepo/.wk/v020' && python3 '/home/aeterna/pubrepo/.wk/v020/review/axis4_n10/build_v11.py' --root '/home/aeterna/pubrepo/.wk/axis4n10' fasta y1_HG00673.1
+[2026-10-10T04:45:11+00:00] done fasta_y1_HG00673.1
+[2026-10-10T04:45:11+00:00] start fasta_y1_HG00673.2: L bash -c cd '/home/aeterna/pubrepo/.wk/v020' && python3 '/home/aeterna/pubrepo/.wk/v020/review/axis4_n10/build_v11.py' --root '/home/aeterna/pubrepo/.wk/axis4n10' fasta y1_HG00673.2
+[2026-10-10T04:45:25+00:00] done fasta_y1_HG00673.2
+[2026-10-10T04:45:25+00:00] start fasta_y1_HG00735.1: L bash -c cd '/home/aeterna/pubrepo/.wk/v020' && python3 '/home/aeterna/pubrepo/.wk/v020/review/axis4_n10/build_v11.py' --root '/home/aeterna/pubrepo/.wk/axis4n10' fasta y1_HG00735.1
+[2026-10-10T04:45:38+00:00] done fasta_y1_HG00735.1
+[2026-10-10T04:45:38+00:00] start fasta_y1_HG00735.2: L bash -c cd '/home/aeterna/pubrepo/.wk/v020' && python3 '/home/aeterna/pubrepo/.wk/v020/review/axis4_n10/build_v11.py' --root '/home/aeterna/pubrepo/.wk/axis4n10' fasta y1_HG00735.2
+[2026-10-10T04:45:53+00:00] done fasta_y1_HG00735.2
+[2026-10-10T04:45:53+00:00] start fasta_y1_HG00741.1: L bash -c cd '/home/aeterna/pubrepo/.wk/v020' && python3 '/home/aeterna/pubrepo/.wk/v020/review/axis4_n10/build_v11.py' --root '/home/aeterna/pubrepo/.wk/axis4n10' fasta y1_HG00741.1
+[2026-10-10T04:46:07+00:00] done fasta_y1_HG00741.1
+[2026-10-10T04:46:07+00:00] start fasta_y1_HG00741.2: L bash -c cd '/home/aeterna/pubrepo/.wk/v020' && python3 '/home/aeterna/pubrepo/.wk/v020/review/axis4_n10/build_v11.py' --root '/home/aeterna/pubrepo/.wk/axis4n10' fasta y1_HG00741.2
+[2026-10-10T04:46:21+00:00] done fasta_y1_HG00741.2
+[2026-10-10T04:46:21+00:00] start fai: L bash -c cd '/home/aeterna/pubrepo/.wk/v020' && python3 '/home/aeterna/pubrepo/.wk/v020/review/axis4_n10/build_v11.py' --root '/home/aeterna/pubrepo/.wk/axis4n10' fai
+[2026-10-10T04:47:12+00:00] done fai
+[2026-10-10T04:47:12+00:00] start bgzf_y1_HG00673.1: L bash -c cd '/home/aeterna/pubrepo/.wk/v020' && python3 '/home/aeterna/pubrepo/.wk/v020/review/axis4_n10/build_v11.py' --root '/home/aeterna/pubrepo/.wk/axis4n10' bgzf y1_HG00673.1
+[2026-10-10T04:51:27+00:00] done bgzf_y1_HG00673.1
+[2026-10-10T04:51:27+00:00] start bgzf_y1_HG00673.2: L bash -c cd '/home/aeterna/pubrepo/.wk/v020' && python3 '/home/aeterna/pubrepo/.wk/v020/review/axis4_n10/build_v11.py' --root '/home/aeterna/pubrepo/.wk/axis4n10' bgzf y1_HG00673.2
+[2026-10-10T04:55:54+00:00] done bgzf_y1_HG00673.2
+[2026-10-10T04:55:54+00:00] start bgzf_y1_HG00735.1: L bash -c cd '/home/aeterna/pubrepo/.wk/v020' && python3 '/home/aeterna/pubrepo/.wk/v020/review/axis4_n10/build_v11.py' --root '/home/aeterna/pubrepo/.wk/axis4n10' bgzf y1_HG00735.1
+[2026-10-10T05:00:21+00:00] done bgzf_y1_HG00735.1
+[2026-10-10T05:00:21+00:00] start bgzf_y1_HG00735.2: L bash -c cd '/home/aeterna/pubrepo/.wk/v020' && python3 '/home/aeterna/pubrepo/.wk/v020/review/axis4_n10/build_v11.py' --root '/home/aeterna/pubrepo/.wk/axis4n10' bgzf y1_HG00735.2
+[2026-10-10T05:04:48+00:00] done bgzf_y1_HG00735.2
+[2026-10-10T05:04:48+00:00] start bgzf_y1_HG00741.1: L bash -c cd '/home/aeterna/pubrepo/.wk/v020' && python3 '/home/aeterna/pubrepo/.wk/v020/review/axis4_n10/build_v11.py' --root '/home/aeterna/pubrepo/.wk/axis4n10' bgzf y1_HG00741.1
+[2026-10-10T05:09:17+00:00] done bgzf_y1_HG00741.1
+[2026-10-10T05:09:17+00:00] start bgzf_y1_HG00741.2: L bash -c cd '/home/aeterna/pubrepo/.wk/v020' && python3 '/home/aeterna/pubrepo/.wk/v020/review/axis4_n10/build_v11.py' --root '/home/aeterna/pubrepo/.wk/axis4n10' bgzf y1_HG00741.2
+[2026-10-10T05:13:43+00:00] done bgzf_y1_HG00741.2
+[2026-10-10T05:13:43+00:00] start zstd_y1_HG00673.1: L bash -c cd '/home/aeterna/pubrepo/.wk/v020' && python3 '/home/aeterna/pubrepo/.wk/v020/review/axis4_n10/build_v11.py' --root '/home/aeterna/pubrepo/.wk/axis4n10' zstd y1_HG00673.1
+[2026-10-10T05:13:56+00:00] done zstd_y1_HG00673.1
+[2026-10-10T05:13:56+00:00] start zstd_y1_HG00673.2: L bash -c cd '/home/aeterna/pubrepo/.wk/v020' && python3 '/home/aeterna/pubrepo/.wk/v020/review/axis4_n10/build_v11.py' --root '/home/aeterna/pubrepo/.wk/axis4n10' zstd y1_HG00673.2
+[2026-10-10T05:14:09+00:00] done zstd_y1_HG00673.2
+[2026-10-10T05:14:09+00:00] start zstd_y1_HG00735.1: L bash -c cd '/home/aeterna/pubrepo/.wk/v020' && python3 '/home/aeterna/pubrepo/.wk/v020/review/axis4_n10/build_v11.py' --root '/home/aeterna/pubrepo/.wk/axis4n10' zstd y1_HG00735.1
+[2026-10-10T05:14:22+00:00] done zstd_y1_HG00735.1
+[2026-10-10T05:14:22+00:00] start zstd_y1_HG00735.2: L bash -c cd '/home/aeterna/pubrepo/.wk/v020' && python3 '/home/aeterna/pubrepo/.wk/v020/review/axis4_n10/build_v11.py' --root '/home/aeterna/pubrepo/.wk/axis4n10' zstd y1_HG00735.2
+[2026-10-10T05:14:35+00:00] done zstd_y1_HG00735.2
+[2026-10-10T05:14:35+00:00] start zstd_y1_HG00741.1: L bash -c cd '/home/aeterna/pubrepo/.wk/v020' && python3 '/home/aeterna/pubrepo/.wk/v020/review/axis4_n10/build_v11.py' --root '/home/aeterna/pubrepo/.wk/axis4n10' zstd y1_HG00741.1
+[2026-10-10T05:14:48+00:00] done zstd_y1_HG00741.1
+[2026-10-10T05:14:48+00:00] start zstd_y1_HG00741.2: L bash -c cd '/home/aeterna/pubrepo/.wk/v020' && python3 '/home/aeterna/pubrepo/.wk/v020/review/axis4_n10/build_v11.py' --root '/home/aeterna/pubrepo/.wk/axis4n10' zstd y1_HG00741.2
+[2026-10-10T05:15:01+00:00] done zstd_y1_HG00741.2
+[2026-10-10T05:15:01+00:00] start agclib: L bash -c cd '/home/aeterna/pubrepo/.wk/v020' && python3 '/home/aeterna/pubrepo/.wk/v020/review/axis4_n10/build_v11.py' --root '/home/aeterna/pubrepo/.wk/axis4n10' --agc-build '/home/aeterna/pubrepo/.wk/agc_native_v020' agclib
+[2026-10-10T05:15:01+00:00] done agclib
+[2026-10-10T05:15:01+00:00] start agc_t2t: L bash -c cd '/home/aeterna/pubrepo/.wk/v020' && python3 '/home/aeterna/pubrepo/.wk/v020/review/axis4_n10/build_v11.py' --root '/home/aeterna/pubrepo/.wk/axis4n10' --agc-build '/home/aeterna/pubrepo/.wk/agc_native_v020' agc t2t
+[2026-10-10T05:16:30+00:00] done agc_t2t
+[2026-10-10T05:16:30+00:00] start agc_noref: L bash -c cd '/home/aeterna/pubrepo/.wk/v020' && python3 '/home/aeterna/pubrepo/.wk/v020/review/axis4_n10/build_v11.py' --root '/home/aeterna/pubrepo/.wk/axis4n10' --agc-build '/home/aeterna/pubrepo/.wk/agc_native_v020' agc noref
+[2026-10-10T05:17:48+00:00] done agc_noref
+[2026-10-10T05:17:48+00:00] start plans: L bash -c cd '/home/aeterna/pubrepo/.wk/v020' && python3 '/home/aeterna/pubrepo/.wk/v020/review/axis4_n10/build_v11.py' --root '/home/aeterna/pubrepo/.wk/axis4n10' plans
+[2026-10-10T05:18:16+00:00] done plans
+/dev/md3       941723856896 867549061120 26262425600  98% /
+[2026-10-10T05:24:47+00:00] run runs/check/refrel3_q4k_t1_a1 status=FAILED error=ValueError: silence gate refused: after
+[2026-10-10T05:29:17+00:00] run runs/check/refrel3_q4k_t1_a2 status=FAILED error=ValueError: silence gate refused: after
+[2026-10-10T05:33:47+00:00] run runs/check/refrel3_q4k_t1_a3 status=FAILED error=ValueError: silence gate refused: after
+[2026-10-10T05:38:18+00:00] run runs/check/refrel3_q4k_t1_a4 status=FAILED error=ValueError: silence gate refused: after
+[2026-10-10T05:42:32+00:00] run runs/check/refrel3_q4k_t1_a5 status=FAILED error=ValueError: silence gate refused: after
+[2026-10-10T05:46:47+00:00] run runs/check/refrel3_q4k_t1_a6 status=FAILED error=ValueError: silence gate refused: after
+[2026-10-10T05:47:47+00:00] slot runs/check/refrel3_q4k_t1 failed 6 attempts: STOP

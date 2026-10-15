@@ -1,0 +1,4 @@
+zstd_seekable {"open_wall_s": 4.717, "open_cpu_s": 4.717, "maxrss_kb_after": 93448, "loadavg_after_open": ["0.52", "0.63", "0.81"]}
+faidx_plain {"open_wall_s": 14.982, "open_cpu_s": 14.982, "maxrss_kb_after": 93448, "loadavg_after_open": ["0.65", "0.57", "0.76"]}
+agc_t2t {"open_wall_s": 2.165, "open_cpu_s": 2.164, "maxrss_kb_after": 898164, "loadavg_after_open": ["0.32", "0.47", "0.70"]}
+agc_noref {"open_wall_s": 0.676, "open_cpu_s": 0.676, "maxrss_kb_after": 898164, "loadavg_after_open": ["0.16", "0.36", "0.63"]}

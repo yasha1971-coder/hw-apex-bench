@@ -5,17 +5,20 @@ on:
     paths: ['release/v0.1.md']
   workflow_dispatch:
 permissions:
-  contents: write
+  contents: read
   actions: read
 concurrency:
   group: release-v0.1
   cancel-in-progress: false
 jobs:
   release:
+    permissions:
+      contents: write
+      actions: read
     if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-24.04
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
         with:
           fetch-depth: 0
       - name: Validate publication without measurements

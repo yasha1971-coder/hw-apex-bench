@@ -1213,3 +1213,168 @@ publication digest verification, 197 local Markdown links, Pages export and
 manifest match the merged PR #45 base byte-for-byte; generated homepage matches
 its committed export. All workflow YAML parses. Fresh GitHub CI is the remaining
 delivery gate, not a request to rerun any benchmark.
+
+## A6 Axis 4 patch handoff — 2026-10-09
+
+Base is exactly 0cad8cce4797dc9a12e476b0f144f4206ef74169, tree
+dfd11245612d3d0398d1eb9167cb972874cee905.
+The named full bundle was not available in this session. The complete history
+was reconstructed from the retained 5469d00 bundle and six incremental bundles;
+all bundle prerequisites, final commit/tree and git fsck --full --strict passed.
+The WIP ZIP matched SHA-256
+258a6d7de3154a56302e64971c8109d5a4f9ba5896c61568b20c4f61dabf1dba.
+
+A6 adds tools.axis4 prepare/run/verify, the axis4-evidence-v3 JSON Schema,
+independent streaming FASTA verification and a real-native synthetic CLI driver.
+Prepare binds every FASTA and explicit cohort query. Run hashes every canonical
+response and retains only min(32, count) seeded response byte samples. Verify
+requires an externally retained prepare SHA, rehashes all source FASTA files,
+independently extracts all requested regions, and checks every observed SHA and
+sample byte. Native inputs, storage and build receipts remain hash-bound.
+Official run keeps ace-core silence gates; synthetic output is explicitly not
+performance evidence. No HPRC measurements or publication were performed.
+
+Local tests: 236 collected; all 236 pass with all native libraries configured.
+Without them, 226 pass and exactly 10 native-availability cases skip.
+NATIVE_SKIP_GATE passes both modes and rejects configured-missing libraries.
+Native synthetic CLI checks cover refrel3 q4k/q16k, zstd-seekable, BGZF,
+plain FASTA/faidx and AGC noref/t2t: 40 response hashes plus 32 byte samples per
+run; an unsampled forged SHA is rejected. Symbol tests for LZ4/OpenZL remain
+availability checks, not an Axis 4 round-trip claim for those families.
+
+Workflow: expected_total becomes 236, native refrel3 A6 synthetic CLI acceptance
+and its retained artifact are added. Existing timing/result publications stay
+unchanged. GitHub Actions has not run for this local patch; the ace-core agent
+owns push/CI and official measurements. Final package receipts record the fresh
+bundle clone, apply --check --index, git am, applied tree and post-apply tests.
+Nothing was pushed. Next bounded action: apply the package on the exact base,
+check its receipts and run the updated CI before scheduling any official cohort
+measurements.
+
+### A7 local handoff — Axis 5 corruption (2026-10-09)
+
+- Base A6 tree fdcad5f790ddeb3879d5b793b446b588f010bd13; no push/publication.
+- PROTOCOL_AXIS5.md frozen before corruption runs, SHA e30f78ff89acad8386afb883c14d0e841ead5851ec3cd88a5c861c33723e811e.
+- Native prepare/corrupt/run/evidence/verify CLI, independent full-contig FASTA
+  classification, external prepare anchor, regenerated mutations, JSON Schema.
+- Seven pinned native synthetic variants, 100 mutations x two hash modes each:
+  1400 verified observations; all seven classification-forgery checks rejected.
+  Hash-OFF silent errors: faidx 78, AGC noref 41, AGC t2t 56; full counts in
+  review/axis3/results/a7-synthetic/A7_NATIVE.log and release draft.
+- Local unit collection 269: with .so 269 PASS, without 259 PASS +10 allowed
+  NativeAvailability skips; NATIVE_SKIP_GATE PASS both. Added 33 tests.
+- Workflow expected_total=269, A7 native synthetic q4k/q16k step and artifact,
+  protocol-path trigger; OpenZL large-input regression unchanged.
+- Handoff requires clean bundle+A6 clone, A7 apply --check --index then git am,
+  matching tree, full suites in both native modes and offline evidence verify.
+  Final acceptance receipts are supplied in HWAPEX_PR63_A7.zip, not inferred
+  from this history entry. No official performance or GitHub CI result claimed.
+
+### A8 local handoff — verified deterministic leaderboard (2026-10-09)
+
+- Restored the accepted A7 ZIP from persistent storage; its SHA256 is
+  f58150e0d48134e45bf7104468af0704bb6784df569cfeee43341d71531bcaf3.
+  Reconstructed clone applied A6+A7; base tree exactly
+  deb571acd4b988cbd5e5d7fc7e2869844a14e715 (local base commit
+  141ff6ba89b53dc3dec7b7cd69fc21067c5ea174). No push/publication.
+- tools/build_leaderboard.py accepts externally anchored catalogs and verifies
+  Axis 3 evidence/B-job, Axis 4 FASTA, and Axis 5 corruption evidence before
+  writing MD/CSV/JSON. Every row links an exact source JSON copy and full SHA.
+- Refuses schema/verification/hash failures, duplicate format/variant within an
+  axis, mixed comparison conditions or forced comparison of unknown machines.
+  A6/A7 synthetic evidence lacks machine IDs: default source-specific tables
+  remain separate. No inferred hardware or synthetic performance headline.
+- Golden fixtures preserve 501 original A6/A7 dependency/evidence file bytes,
+  with q4k/q16k A4 and q4k A5. Golden acceptance: 4 tables/4 rows, repeated output
+  byte-identical. All seven A6/A7 native inputs produce 21 separate tables/rows;
+  existing 280 A4 responses and 1400 A5 observations are verified, not rerun.
+- Added 37 tests. Actual full collection 306: with .so 306 PASS, no skips;
+  without .so 296 PASS +10 allowed NativeAvailability skips. NATIVE_SKIP_GATE
+  PASS both. Workflow expected_total=306; golden synthetic step and artifact
+  upload added. Local workflow shell syntax: 16 blocks PASS.
+- Full gate uses retained A7 refrel3/BGZF/zstd/AGC shims and rebuilt pinned
+  LZ4 1.10.0/OpenZL 0.3.0 shims. Source pins/hashes and actual logs are retained.
+- Final delivery requires a fresh bundle+A6+A7 clone, A8 apply --check --index,
+  git am, exact postimage tree and complete suites in both native modes; the
+  final package receipts record those results. GitHub CI was not executed.
+
+### A9 local handoff — v0.2.0 release engineering (2026-10-09)
+
+- Base A8 commit 8ff1080e513d29d8a9ea35b80c81346a4a1ae73b; accepted tree
+  83d5edc4f86dc52f2b6efb454640e997fb7a69ab. No push/publication.
+- Release entry point verifies all supported Axis 3/4/5 evidence through A8,
+  stages complete catalog dependencies, emits deterministic leaderboard files,
+  exact evidence copies and a per-artifact SHA/size/provenance manifest.
+  Independent verification repeats axis checks and regenerates all tables.
+- Offline synthetic reproduction uses original A6/A7 native evidence and a
+  clearly marked Axis 3 unit-contract fixture, without native execution.
+  Real reproduction requires data/native paths and fresh ace-core silence
+  admission before/after assembly. Existing measured evidence gates remain
+  verified; synthetic Axis 5 cannot be relabelled as official data.
+- Methodology, prepared changelog/release notes, CFF 0.2.0 with supplied author
+  and ORCID, and Zenodo metadata are included. No new DOI/date/measurement is
+  invented. Original A8 final receipts/logs are copied unchanged for numeric
+  release-note provenance. Official ace-core evidence is explicitly PENDING.
+- Server AGC overlay targets are untouched, including the entire RUN.md.
+  The patch has no hunks for build_agc_v324.sh, axis3-agc.yml or RUN.md.
+- 52 new release tests; workflow expected_total=358 (306 A8 +52 A9).
+  Final clean-clone full-suite/native-skip, postimage and package receipts are
+  supplied in HWAPEX_PR63_A9.zip; this handoff does not substitute for them.
+  Server owns applying, CI and any later measurement/publication decision.
+
+### A10 local handoff — verified static v0.2.0 site (2026-10-09)
+
+- Base A9 commit 1d4e9500213edf51e903fb358b4f78bc70c4694e, tree
+  8e283ebfdcaae3505d081f2b3605558b3e5f3ae9. No push or publication.
+- tools/build_site.py verifies the complete A9 release before writing HTML,
+  preserves evidence/dependencies, links exact SHA-bound files, and checks HTML5,
+  internal files/fragments and source-bound numeric cells before output commit.
+- JS-free semantic tables, keyboard/skip/navigation support, local CSS, light/dark
+  color pairs checked for AA text contrast; no CDN or native decoder execution.
+- Complete synthetic golden includes Axis 3 unit-contract fixture and preserved
+  A6/A7 Axis 4/5 evidence, with immutable A9 methodology-link artifacts. Historical
+  RUN.md is SHA-pinned in the fixture; current server overlays are never edited.
+- Synthetic receipt records 10 HTML pages, 5 rows and 2146 checked links; repeated
+  complete byte tree matches golden. SITE_SHA256SUMS identifies all site bytes.
+- 43 new site/Pages-policy tests; actual suite collection 401. Unit workflow
+  expected_total=401, pinned html5lib/Markdown prerequisites added.
+- pages.yml PR build retains verified synthetic site as an artifact; Pages
+  artifact/deployment require main and non-PR event. Deny-default workflow token,
+  read-only checkout build, deploy only pages:write/id-token:write; all action pins
+  retained, persisted credentials/extra status publication/settings mutation removed.
+- Existing historical web builder/data/publication workflow unchanged. New Pages
+  root is explicitly synthetic; official ace-core performance remains pending.
+  Final package carries clean-base apply/am/tree/full-suite/native-skip receipts,
+  per-file postimages and workflow changes. No live GitHub CI/deployment is claimed.
+
+### A11 local handoff — Axis 4 v1.1 streaming truth (2026-10-09)
+
+- Base A10 commit 67f53a1bdd3f3830b1ae921430763e166ec4c8cf, tree
+  c6cc36f456f3aaba0cd3d481238d012128e426ad. No push/publication.
+- New prepared-v2/evidence-v4 dispatch retains prepared-v1/evidence-v3 verification.
+  Compressed source identities are checked; complete decompressed FASTA and canonical
+  sequence identities are computed on the fly, without uncompressed FASTA spooling.
+- Separate prepare sweep and verify intersections; gzip/BGZF and concatenated members;
+  bounded long-line reads, complete CRC/trailer checks, fixed header length limit.
+- Streaming native zstd synthetic acceptance keeps zero plain FASTA files. Unit,
+  native, source-equivalence, memory and full clean-clone gate receipts are delivered
+  in HWAPEX_PR63_A11.zip; measurements are not inferred from historical runs.
+- 30 new tests; workflow expected_total=431. Offline streaming/memory CI steps added.
+  A10 historical site snapshots stay immutable; protected AGC/RUN paths untouched.
+- Server owns applying, CI and official ace-core measurement. No live PR/CI state
+  is claimed by this local handoff; final package includes exact tree/postimage hashes.
+
+### A12.1 local checkpoint — native decoder workers (2026-10-09)
+
+- Base A11 commit 015539257c99bef544059f4c32ab342f8f94e16b, tree
+  28df56231b4237bb260767e99aa331673b932dd7. No push/publication.
+- Axis4 evidence-v5 explicitly configures one shared pinned htslib BGZF pool,
+  records CPU models/affinity and decoder workers; scalar APIs above one worker
+  emit NOT_SUPPORTED without request-concurrency emulation.
+- Legacy prepare/evidence remain unchanged; independent truth verification handles
+  v5 plain/compressed sources. Leaderboard isolates count/model/affinity conditions.
+- 16 new contract tests passed. Native synthetic BGZF 1/2/8/16 x20 runs independently
+  verified 40 responses per run with identical response identities (see package
+  evidence/a12/axis4-native-threads.log and the preserved experiment).
+- Workflow expected_total=447 at this checkpoint. Full clean-clone acceptance and
+  Axis5 v2 integration remain pending until the final handoff receipt.

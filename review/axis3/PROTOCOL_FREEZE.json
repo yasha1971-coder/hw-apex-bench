@@ -1,0 +1,21 @@
+{
+  "schema": "hwapex-protocol-freeze-v1",
+  "protocol_path": "review/axis3/PROTOCOL_AXIS3.md",
+  "sha256": "4a0027fec59b3252dc07b29458a57a5a451957f1b64b36f3927765cbc6be7a5c",
+  "status": "frozen-before-measurement",
+  "change_rule": "semantic change requires new protocol version and complete rerun",
+  "window_law_primary": "B",
+  "window_law_secondary": "A",
+  "protocol_version": "1.1",
+  "supersedes_sha256": "0510e0fceaaf6e6eba291e440606a504ff61342e79e652f765eab1d0d1622646",
+  "coordinate_convention": "0-based-half-open",
+  "byte_domain": "uppercase-sequence-without-FASTA-framing",
+  "clarifies_sha256": "f0bb442a804d5989a6e6262304e46250cdf7a93c815038729a1ad21e8927402a",
+  "clarification": "verdict-window-scope",
+  "verdict_windows_bytes": [
+    1024,
+    8192,
+    65536
+  ],
+  "calibration_window_bytes": 1
+}

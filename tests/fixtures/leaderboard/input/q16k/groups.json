@@ -1,0 +1,282 @@
+[
+  {
+    "asm1": {
+      "assembly_id": "asm1",
+      "contig_id": "tail",
+      "end0": 1024,
+      "start0": 0
+    },
+    "asm2": {
+      "assembly_id": "asm2",
+      "contig_id": "tail",
+      "end0": 1024,
+      "start0": 0
+    }
+  },
+  {
+    "asm1": {
+      "assembly_id": "asm1",
+      "contig_id": "chr",
+      "end0": 1107,
+      "start0": 83
+    },
+    "asm2": {
+      "assembly_id": "asm2",
+      "contig_id": "chr",
+      "end0": 1107,
+      "start0": 83
+    }
+  },
+  {
+    "asm1": {
+      "assembly_id": "asm1",
+      "contig_id": "chr",
+      "end0": 1190,
+      "start0": 166
+    },
+    "asm2": {
+      "assembly_id": "asm2",
+      "contig_id": "chr",
+      "end0": 1190,
+      "start0": 166
+    }
+  },
+  {
+    "asm1": {
+      "assembly_id": "asm1",
+      "contig_id": "tail",
+      "end0": 1273,
+      "start0": 249
+    },
+    "asm2": {
+      "assembly_id": "asm2",
+      "contig_id": "tail",
+      "end0": 1273,
+      "start0": 249
+    }
+  },
+  {
+    "asm1": {
+      "assembly_id": "asm1",
+      "contig_id": "chr",
+      "end0": 1356,
+      "start0": 332
+    },
+    "asm2": {
+      "assembly_id": "asm2",
+      "contig_id": "chr",
+      "end0": 1356,
+      "start0": 332
+    }
+  },
+  {
+    "asm1": {
+      "assembly_id": "asm1",
+      "contig_id": "chr",
+      "end0": 1439,
+      "start0": 415
+    },
+    "asm2": {
+      "assembly_id": "asm2",
+      "contig_id": "chr",
+      "end0": 1439,
+      "start0": 415
+    }
+  },
+  {
+    "asm1": {
+      "assembly_id": "asm1",
+      "contig_id": "tail",
+      "end0": 1522,
+      "start0": 498
+    },
+    "asm2": {
+      "assembly_id": "asm2",
+      "contig_id": "tail",
+      "end0": 1522,
+      "start0": 498
+    }
+  },
+  {
+    "asm1": {
+      "assembly_id": "asm1",
+      "contig_id": "chr",
+      "end0": 1605,
+      "start0": 581
+    },
+    "asm2": {
+      "assembly_id": "asm2",
+      "contig_id": "chr",
+      "end0": 1605,
+      "start0": 581
+    }
+  },
+  {
+    "asm1": {
+      "assembly_id": "asm1",
+      "contig_id": "chr",
+      "end0": 1688,
+      "start0": 664
+    },
+    "asm2": {
+      "assembly_id": "asm2",
+      "contig_id": "chr",
+      "end0": 1688,
+      "start0": 664
+    }
+  },
+  {
+    "asm1": {
+      "assembly_id": "asm1",
+      "contig_id": "tail",
+      "end0": 1771,
+      "start0": 747
+    },
+    "asm2": {
+      "assembly_id": "asm2",
+      "contig_id": "tail",
+      "end0": 1771,
+      "start0": 747
+    }
+  },
+  {
+    "asm1": {
+      "assembly_id": "asm1",
+      "contig_id": "chr",
+      "end0": 1854,
+      "start0": 830
+    },
+    "asm2": {
+      "assembly_id": "asm2",
+      "contig_id": "chr",
+      "end0": 1854,
+      "start0": 830
+    }
+  },
+  {
+    "asm1": {
+      "assembly_id": "asm1",
+      "contig_id": "chr",
+      "end0": 1937,
+      "start0": 913
+    },
+    "asm2": {
+      "assembly_id": "asm2",
+      "contig_id": "chr",
+      "end0": 1937,
+      "start0": 913
+    }
+  },
+  {
+    "asm1": {
+      "assembly_id": "asm1",
+      "contig_id": "tail",
+      "end0": 2020,
+      "start0": 996
+    },
+    "asm2": {
+      "assembly_id": "asm2",
+      "contig_id": "tail",
+      "end0": 2020,
+      "start0": 996
+    }
+  },
+  {
+    "asm1": {
+      "assembly_id": "asm1",
+      "contig_id": "chr",
+      "end0": 2103,
+      "start0": 1079
+    },
+    "asm2": {
+      "assembly_id": "asm2",
+      "contig_id": "chr",
+      "end0": 2103,
+      "start0": 1079
+    }
+  },
+  {
+    "asm1": {
+      "assembly_id": "asm1",
+      "contig_id": "chr",
+      "end0": 2186,
+      "start0": 1162
+    },
+    "asm2": {
+      "assembly_id": "asm2",
+      "contig_id": "chr",
+      "end0": 2186,
+      "start0": 1162
+    }
+  },
+  {
+    "asm1": {
+      "assembly_id": "asm1",
+      "contig_id": "tail",
+      "end0": 2269,
+      "start0": 1245
+    },
+    "asm2": {
+      "assembly_id": "asm2",
+      "contig_id": "tail",
+      "end0": 2269,
+      "start0": 1245
+    }
+  },
+  {
+    "asm1": {
+      "assembly_id": "asm1",
+      "contig_id": "chr",
+      "end0": 2352,
+      "start0": 1328
+    },
+    "asm2": {
+      "assembly_id": "asm2",
+      "contig_id": "chr",
+      "end0": 2352,
+      "start0": 1328
+    }
+  },
+  {
+    "asm1": {
+      "assembly_id": "asm1",
+      "contig_id": "chr",
+      "end0": 2435,
+      "start0": 1411
+    },
+    "asm2": {
+      "assembly_id": "asm2",
+      "contig_id": "chr",
+      "end0": 2435,
+      "start0": 1411
+    }
+  },
+  {
+    "asm1": {
+      "assembly_id": "asm1",
+      "contig_id": "tail",
+      "end0": 2518,
+      "start0": 1494
+    },
+    "asm2": {
+      "assembly_id": "asm2",
+      "contig_id": "tail",
+      "end0": 2518,
+      "start0": 1494
+    }
+  },
+  {
+    "asm1": {
+      "assembly_id": "asm1",
+      "contig_id": "chr",
+      "end0": 2601,
+      "start0": 1577
+    },
+    "asm2": {
+      "assembly_id": "asm2",
+      "contig_id": "chr",
+      "end0": 2601,
+      "start0": 1577
+    }
+  }
+]
