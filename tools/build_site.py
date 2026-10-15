@@ -219,16 +219,23 @@ def associated_files(row, evidence, manifest, listings=None):
     for listing in (listings or {}).get(sha, []):
         for f in listing['files']:
             external.append({'path': listing['catalog_dir']+'/'+f['path'], 'bytes': f['bytes'], 'sha256': f['sha256']})
-    for field, ref in file_refs(evidence):
-        matches = [r for r in records + external if (r['bytes'], r['sha256']) == (ref['bytes'], ref['sha256'])
-                   and (r['path'] == ref['path'] or r['path'].endswith('/'+ref['path']))]
-        if not matches:
+    # One traversal of the evidence and (bytes, sha256) indexes: the former per-candidate re-traversal was
+    # O(external files x evidence size) per row and dominated real-release builds.
+    refs = list(file_refs(evidence))
+    candidates = {}
+    for r in records + external:
+        candidates.setdefault((r['bytes'], r['sha256']), []).append(r)
+    for field, ref in refs:
+        if not any(r['path'] == ref['path'] or r['path'].endswith('/'+ref['path'])
+                   for r in candidates.get((ref['bytes'], ref['sha256']), ())):
             raise ValueError('missing evidence file link: '+field)
     if listings is None:
         return records
+    ref_paths = {}
+    for _, ref in refs:
+        ref_paths.setdefault((ref['bytes'], ref['sha256']), []).append(ref['path'])
     used = {(e['path'], e['sha256']) for e in external
-            if any((e['bytes'], e['sha256']) == (ref['bytes'], ref['sha256']) and e['path'].endswith('/'+ref['path'])
-                   for _, ref in file_refs(evidence))}
+            if any(e['path'].endswith('/'+path) for path in ref_paths.get((e['bytes'], e['sha256']), ()))}
     return records, [e for e in external if (e['path'], e['sha256']) in used]
 
 
@@ -336,10 +343,14 @@ def build(directory, output='site', expected_manifest_sha256=None, data_root=Non
             body += ' · SHA-256 <code>'+sha256_file(root/'metadata/METHODOLOGY.md')+'</code></p>'
             body += method_fragment(method_sections(method, axis), root, page)+'</section>'
             pages[page] = document(page, 'Axis '+str(axis)+' · '+title, body)
+        evidence_cache = {}
         for row in rows:
             page = 'rows/'+row_id(row)+'/index.html'
-            source = load_json(root/row['evidence'])
-            records, external = associated_files(row, source, manifest, listings)
+            key = (row['evidence'], row['evidence_sha256'])
+            if key not in evidence_cache:  # rows sharing one evidence file parse and associate it once
+                source = load_json(root/row['evidence'])
+                evidence_cache[key] = (source, *associated_files(row, source, manifest, listings))
+            source, records, external = evidence_cache[key]
             body = warning+'<h2>Leaderboard row</h2><pre>'+esc(pretty(row))+'</pre><p>'
             body += anchor(page, 'downloads/release/'+row['evidence'], 'Exact evidence JSON')
             body += ' · SHA-256 <code>'+row['evidence_sha256']+'</code></p>'
