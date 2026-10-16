@@ -55,7 +55,7 @@ jobs:
           import unittest
 
           # Keep collection count strict; optional native cases are still collected.
-          expected_total = 480  # 477 + 3 A13j frozen-input tests (read-only snapshot, re-check after the quiet wait)
+          expected_total = 486  # 480 + 2 site tests + 2 parallel truth tests + 2 manual real-site deploy tests
           suite = unittest.defaultTestLoader.discover("tests")
           native_type = importlib.import_module("test_s2_native_readers").NativeAvailability
 

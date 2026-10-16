@@ -79,6 +79,26 @@ class TestAxis4Verify(unittest.TestCase):
         with self.assertRaises((ValueError, jsonschema.ValidationError)):
             self.check()
 
+    def test_parallel_truth_one_corrupted_assembly_fails(self):
+        self.run_fixture()
+        def corrupt(d):
+            row = next(r for r in d['rows'] if r['assembly'] == 'b')
+            row['observed_sha256'] = '0' * 64
+        self.mutate(corrupt)
+        with mock.patch.object(verifier, 'truth_workers', return_value=2) as workers:
+            with self.assertRaisesRegex(ValueError, 'response SHA differs'):
+                self.check()
+        workers.assert_called_once_with(2)
+
+    def test_parallel_truth_matches_serial(self):
+        self.run_fixture()
+        with mock.patch.object(verifier, 'truth_workers', return_value=2):
+            parallel = self.check()
+        with mock.patch.object(verifier, 'truth_workers', return_value=1):
+            serial = self.check()
+        self.assertEqual(parallel, serial)
+        self.assertEqual(parallel['status'], 'PASS')
+
     def test_good_all_hashes_and_32_bytes(self):
         data = self.run_fixture()
         self.assertEqual(self.check()['verified'],40)

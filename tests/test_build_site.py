@@ -134,7 +134,7 @@ class Site(unittest.TestCase):
                     a, b = sorted([luminance(colors[bg]), luminance(colors[fg])])
                     self.assertGreaterEqual((b+0.05)/(a+0.05), 3, (theme, bg, fg))
 
-    def test_every_row_page_preserves_all_evidence_fields(self):
+    def test_every_row_page_links_its_exact_evidence_once_stored(self):
         self.build()
         board = load_json(self.release/'leaderboard.json')
         for table in board['tables']:
@@ -142,7 +142,12 @@ class Site(unittest.TestCase):
                 page = self.out/'rows'/job.row_id(row)/'index.html'
                 tree = html5lib.parse(page.read_text(), namespaceHTMLElements=False)
                 source = load_json(self.release/row['evidence'])
-                self.assertIn(job.pretty(source), [''.join(e.itertext()) for e in tree.iter('pre')])
+                self.assertNotIn(job.pretty(source), [''.join(e.itertext()) for e in tree.iter('pre')])
+                links = {a.get('href') for a in tree.iter('a')}
+                self.assertIn('../../downloads/release/'+row['evidence'], links)
+                linked = self.out/'downloads/release'/row['evidence']
+                self.assertEqual(hashlib.sha256(linked.read_bytes()).hexdigest(), row['evidence_sha256'])
+                self.assertEqual(load_json(linked), source)
                 self.assertIn(row['evidence_sha256'], ''.join(tree.itertext()))
                 self.assertIn('python3 -m tools.release_v020 --verify site/downloads/release', page.read_text())
                 self.assertIn('python3 -m tools.build_site', page.read_text())
@@ -174,6 +179,19 @@ class Site(unittest.TestCase):
     def test_missing_artifact_refused(self):
         (self.release/'leaderboard.csv').unlink()
         self.rejects('missing/extra artifact')
+
+    def test_changed_evidence_bytes_refused(self):
+        board = load_json(self.release/'leaderboard.json')
+        evidence = self.release/board['tables'][0]['rows'][0]['evidence']
+        evidence.write_bytes(evidence.read_bytes().replace(b'"', b'"', 1)+b' ')
+        self.rejects('frozen file changed')
+
+    def test_site_budget_gate(self):
+        with mock.patch.object(job, 'SITE_MAX_BYTES', 1000):
+            self.rejects('site budget')
+        with mock.patch.object(job, 'GENERATED_MAX_BYTES', 1000):
+            self.rejects('site budget: generated file')
+        self.assertLessEqual(job.check_budget(GOLDEN), job.SITE_MAX_BYTES)
 
     def test_changed_manifest_hash_refused(self):
         self.edit(self.release/'RELEASE_MANIFEST.json', lambda d: d['artifacts'][0].update(sha256='0'*64))

@@ -10141,14 +10141,14 @@
     {
       "axes": [],
       "axis": null,
-      "bytes": 21155,
+      "bytes": 21455,
       "commit": "8ff1080e513d29d8a9ea35b80c81346a4a1ae73b",
       "commit_scope": "release-input",
       "evidence_sha256": [],
       "machine_id": null,
       "path": "metadata/tools/release_v020.py",
       "role": "metadata",
-      "sha256": "402cbed00e4a035bf72767018693cb7d0bd042a341e455b434b4d3017ce39ea9"
+      "sha256": "8ca8670583cc935749d7121342bf281edeaea2df5ccc4cf984a114fb7684b163"
     },
     {
       "axes": [],

@@ -22,7 +22,7 @@ import xml.etree.ElementTree as ET
 import html5lib
 import markdown
 
-from review.axis3.verdict_data import load_json, sha256_file
+from review.axis3.verdict_data import hash_once, load_json, sha256_file
 from tools import release_v020
 from tools.build_leaderboard import COLUMNS, METRICS, number
 
@@ -219,16 +219,23 @@ def associated_files(row, evidence, manifest, listings=None):
     for listing in (listings or {}).get(sha, []):
         for f in listing['files']:
             external.append({'path': listing['catalog_dir']+'/'+f['path'], 'bytes': f['bytes'], 'sha256': f['sha256']})
-    for field, ref in file_refs(evidence):
-        matches = [r for r in records + external if (r['bytes'], r['sha256']) == (ref['bytes'], ref['sha256'])
-                   and (r['path'] == ref['path'] or r['path'].endswith('/'+ref['path']))]
-        if not matches:
+    # One traversal of the evidence and (bytes, sha256) indexes: the former per-candidate re-traversal was
+    # O(external files x evidence size) per row and dominated real-release builds.
+    refs = list(file_refs(evidence))
+    candidates = {}
+    for r in records + external:
+        candidates.setdefault((r['bytes'], r['sha256']), []).append(r)
+    for field, ref in refs:
+        if not any(r['path'] == ref['path'] or r['path'].endswith('/'+ref['path'])
+                   for r in candidates.get((ref['bytes'], ref['sha256']), ())):
             raise ValueError('missing evidence file link: '+field)
     if listings is None:
         return records
+    ref_paths = {}
+    for _, ref in refs:
+        ref_paths.setdefault((ref['bytes'], ref['sha256']), []).append(ref['path'])
     used = {(e['path'], e['sha256']) for e in external
-            if any((e['bytes'], e['sha256']) == (ref['bytes'], ref['sha256']) and e['path'].endswith('/'+ref['path'])
-                   for _, ref in file_refs(evidence))}
+            if any(e['path'].endswith('/'+path) for path in ref_paths.get((e['bytes'], e['sha256']), ()))}
     return records, [e for e in external if (e['path'], e['sha256']) in used]
 
 
@@ -291,7 +298,31 @@ def validate_site(directory):
     return {'html_pages': len(trees), 'links': len(links), 'HTML5': 'PASS', 'internal_links': 'PASS'}
 
 
+SITE_MAX_BYTES = 1_000_000_000      # whole site, release copy included
+GENERATED_MAX_BYTES = 50_000_000    # any generated file (outside the hash-bound release copy)
+
+
+def check_budget(directory):
+    """Size gate: the site above 1 GB, or a generated file above 50 MB, fails the build.
+    Files of the verified release copy are hash-bound inputs and count only toward the site total."""
+    root = Path(directory)
+    total = 0
+    for p in release_v020.files(root):
+        size = p.stat().st_size
+        total += size
+        if size > GENERATED_MAX_BYTES and not p.is_relative_to(root/'downloads/release'):
+            raise ValueError(f'site budget: generated file {p.relative_to(root).as_posix()} has {size} B > {GENERATED_MAX_BYTES}')
+    if total > SITE_MAX_BYTES:
+        raise ValueError(f'site budget: {total} B > {SITE_MAX_BYTES}')
+    return total
+
+
 def build(directory, output='site', expected_manifest_sha256=None, data_root=None):
+    with hash_once():  # B3: one SHA-256 per file for both release verifications and the snapshots
+        return _build(directory, output, expected_manifest_sha256, data_root)
+
+
+def _build(directory, output='site', expected_manifest_sha256=None, data_root=None):
     root = Path(directory).resolve(strict=True)
     out = Path(output).resolve()
     if out.exists() or out.is_relative_to(root) or root.is_relative_to(out):
@@ -336,14 +367,21 @@ def build(directory, output='site', expected_manifest_sha256=None, data_root=Non
             body += ' · SHA-256 <code>'+sha256_file(root/'metadata/METHODOLOGY.md')+'</code></p>'
             body += method_fragment(method_sections(method, axis), root, page)+'</section>'
             pages[page] = document(page, 'Axis '+str(axis)+' · '+title, body)
+        evidence_cache = {}
         for row in rows:
             page = 'rows/'+row_id(row)+'/index.html'
-            source = load_json(root/row['evidence'])
-            records, external = associated_files(row, source, manifest, listings)
+            key = (row['evidence'], row['evidence_sha256'])
+            if key not in evidence_cache:  # rows sharing one evidence file parse and associate it once
+                source = load_json(root/row['evidence'])
+                evidence_cache[key] = (source, *associated_files(row, source, manifest, listings))
+            source, records, external = evidence_cache[key]
             body = warning+'<h2>Leaderboard row</h2><pre>'+esc(pretty(row))+'</pre><p>'
             body += anchor(page, 'downloads/release/'+row['evidence'], 'Exact evidence JSON')
             body += ' · SHA-256 <code>'+row['evidence_sha256']+'</code></p>'
-            body += '<h2>All evidence fields</h2><pre>'+esc(pretty(source))+'</pre>'
+            # Evidence is linked, not embedded: the exact JSON is stored once under downloads/release and bound by SHA-256.
+            body += '<h2>All evidence fields</h2><p>Every evidence field is in the '
+            body += anchor(page, 'downloads/release/'+row['evidence'], 'exact evidence JSON')
+            body += ' (SHA-256 <code>'+row['evidence_sha256']+'</code>, '+esc(str((root/row['evidence']).stat().st_size))+' B), stored once and shared by every row of that evidence.</p>'
             body += '<h2>Hash-bound files</h2><p>Shared input files retain their manifest associations; association is not a machine inference.</p><ul>'
             for record in records:
                 body += '<li>'+anchor(page, 'downloads/release/'+record['path'], record['path'])+' · <code>'+record['sha256']+'</code></li>'
@@ -379,6 +417,7 @@ def build(directory, output='site', expected_manifest_sha256=None, data_root=Non
         (staging/'assets').mkdir()
         (staging/'assets/site.css').write_bytes(css())
         (staging/'.nojekyll').write_bytes(b'')
+        check_budget(staging)
         validation = validate_site(staging)
         release_v020.verify(staging/'downloads/release', receipt['manifest_sha256'], data_root)
         after = {p.relative_to(root).as_posix(): sha256_file(p) for p in release_v020.files(root)}

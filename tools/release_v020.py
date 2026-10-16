@@ -19,7 +19,7 @@ import tempfile
 import jsonschema
 import yaml
 
-from review.axis3.verdict_data import checked_file, file_ref, load_json, sha256_file, capture_silence
+from review.axis3.verdict_data import checked_file, file_ref, load_json, sha256_file, capture_silence, hash_once, prefetch_hashes
 from tools import build_leaderboard as leaderboard
 from tools.silence_contract import judge
 
@@ -178,6 +178,7 @@ def referenced_catalogs(root, recipe, data_root):
             raise ValueError('data-root listing must be unique')
         if names != [p.relative_to(base).as_posix() for p in files(base)]:
             raise ValueError('referenced data root has missing or unlisted files')
+        prefetch_hashes(files(base))
         for ref in listing['files']:
             checked_file(base, ref)
         directories.append(base)
@@ -185,6 +186,12 @@ def referenced_catalogs(root, recipe, data_root):
 
 
 def verify(directory, expected_manifest_sha256=None, data_root=None):
+    with hash_once():
+        prefetch_hashes(files(Path(directory).resolve(strict=True)))
+        return _verify(directory, expected_manifest_sha256, data_root)
+
+
+def _verify(directory, expected_manifest_sha256=None, data_root=None):
     root = Path(directory).resolve(strict=True)
     path = root/'RELEASE_MANIFEST.json'
     if expected_manifest_sha256 is not None and sha256_file(path) != expected_manifest_sha256:
