@@ -20,12 +20,79 @@ DOMAIN = "uppercase-sequence-without-FASTA-framing"
 PROTOCOL_PATH = "review/axis3/PROTOCOL_AXIS3.md"
 
 
-def sha256_file(path):
+CHUNK = 8 << 20  # 8 MiB reads
+_HASH_CACHE = None  # dict while hash_once() is active: one SHA-256 per file and stat identity per run
+
+
+def _sha256_path(path):
     h = hashlib.sha256()
     with Path(path).open("rb") as f:
-        for chunk in iter(lambda: f.read(1048576), b""):
+        for chunk in iter(lambda: f.read(CHUNK), b""):
             h.update(chunk)
     return h.hexdigest()
+
+
+def _stat_key(p):
+    st = p.stat()
+    return (str(p), st.st_dev, st.st_ino, st.st_size, st.st_mtime_ns, st.st_ctime_ns)
+
+
+def _hash_job(path):
+    p = Path(path)
+    before = _stat_key(p)
+    digest = _sha256_path(p)
+    return before, digest, _stat_key(p)
+
+
+def sha256_file(path):
+    if _HASH_CACHE is None:
+        return _sha256_path(path)
+    p = Path(path).resolve(strict=True)
+    key = _stat_key(p)
+    digest = _HASH_CACHE.get(key)
+    if digest is None:
+        digest = _sha256_path(p)
+        if _stat_key(p) == key:  # a file changed while hashing is never cached
+            _HASH_CACHE[key] = digest
+    return digest
+
+
+def prefetch_hashes(paths, workers=16):
+    """B3: hash files not yet cached in parallel processes (no-op unless hash_once() is active)."""
+    if _HASH_CACHE is None:
+        return
+    todo = []
+    for path in paths:
+        p = Path(path).resolve(strict=True)
+        if p.is_file() and _stat_key(p) not in _HASH_CACHE and p not in todo:
+            todo.append(p)
+    if len(todo) < 2 or workers < 2:
+        for p in todo:
+            sha256_file(p)
+        return
+    from concurrent.futures import ProcessPoolExecutor
+    todo.sort(key=lambda p: -p.stat().st_size)  # largest first for balance
+    with ProcessPoolExecutor(max_workers=min(workers, len(todo))) as pool:
+        for before, digest, after in pool.map(_hash_job, [str(p) for p in todo]):
+            if before == after:
+                _HASH_CACHE[before] = digest
+
+
+class hash_once:
+    """Context manager: within it each file is hashed once per (path, inode, size, mtime, ctime); nested uses share it.
+    In memory only; nothing is written to disk."""
+    def __enter__(self):
+        global _HASH_CACHE
+        self.owner = _HASH_CACHE is None
+        if self.owner:
+            _HASH_CACHE = {}
+        return self
+
+    def __exit__(self, *exc):
+        global _HASH_CACHE
+        if self.owner:
+            _HASH_CACHE = None
+        return False
 
 
 def load_json(path):
