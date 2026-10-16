@@ -1,0 +1,83 @@
+name: Real release static site (manual deploy)
+# The real-release site is built and fully verified (release_v020 --verify with the data root) on the measuring
+# machine; CI has no data root. This workflow deploys such a prebuilt site from a GitHub Release asset only after
+# the tarball SHA-256 matches the dispatch input and the offline site checks pass (tools.verify_site:
+# SITE_SHA256SUMS, size budget, strict HTML5, internal links, numeric provenance, real-release deploy gate).
+on:
+  workflow_dispatch:
+    inputs:
+      release_tag:
+        description: GitHub Release tag holding site_real7d.tar.gz
+        required: true
+        type: string
+      site_sha256:
+        description: SHA-256 of site_real7d.tar.gz
+        required: true
+        type: string
+permissions: {}
+concurrency:
+  group: github-pages-real
+  cancel-in-progress: false
+jobs:
+  build:
+    if: github.ref == 'refs/heads/main'
+    permissions:
+      contents: read
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - name: Install pinned offline-checker prerequisites
+        run: |
+          set -euo pipefail
+          python3 -m venv "$RUNNER_TEMP/site-venv"
+          "$RUNNER_TEMP/site-venv/bin/python" -m pip install \
+            jsonschema==4.26.0 PyYAML==6.0.3 html5lib==1.1 Markdown==3.8.2
+      - name: Download the site asset and check its SHA-256
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RELEASE_TAG: ${{ inputs.release_tag }}
+          SITE_SHA256: ${{ inputs.site_sha256 }}
+        run: |
+          set -euo pipefail
+          [[ "$SITE_SHA256" =~ ^[0-9a-f]{64}$ ]] || { echo "site_sha256 must be 64 lowercase hex"; exit 1; }
+          mkdir -p "$RUNNER_TEMP/dl"
+          gh release download "$RELEASE_TAG" --repo "$GITHUB_REPOSITORY" --pattern site_real7d.tar.gz --dir "$RUNNER_TEMP/dl"
+          echo "$SITE_SHA256  $RUNNER_TEMP/dl/site_real7d.tar.gz" | sha256sum -c -
+      - name: Extract safely (no absolute paths, links or devices)
+        run: |
+          set -euo pipefail
+          "$RUNNER_TEMP/site-venv/bin/python" - "$RUNNER_TEMP/dl/site_real7d.tar.gz" "$RUNNER_TEMP/site" <<'PY'
+          import sys, tarfile
+          with tarfile.open(sys.argv[1], 'r:gz') as t:
+              for m in t.getmembers():
+                  if not (m.isfile() or m.isdir()):
+                      raise SystemExit('refused tar member type: ' + m.name)
+              t.extractall(sys.argv[2], filter='data')
+          PY
+          test -f "$RUNNER_TEMP/site/site_real7d/SITE_SHA256SUMS"
+      - name: Verify the prebuilt site offline
+        run: |
+          set -euo pipefail
+          "$RUNNER_TEMP/site-venv/bin/python" -m tools.verify_site "$RUNNER_TEMP/site/site_real7d"
+      - name: Package Pages artifact
+        uses: actions/upload-pages-artifact@7b1f4a764d45c48632c6b24a0339c27f5614fb0b
+        with:
+          path: ${{ runner.temp }}/site/site_real7d
+  deploy:
+    if: github.ref == 'refs/heads/main'
+    needs: build
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - name: Deploy verified real-release site
+        id: deployment
+        uses: actions/deploy-pages@d6db90164ac5ed86f2b6aed7e0febac5b3c0c03e
