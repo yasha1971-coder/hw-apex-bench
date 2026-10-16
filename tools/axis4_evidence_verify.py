@@ -175,6 +175,42 @@ def independent_stream_truth(path, queries, sampled, identity):
     return {rid: h.hexdigest() for rid, h in hashes.items()}, buffers
 
 
+TRUTH_RSS_BYTES = 43636 * 1024  # peak RSS of one truth process, measured on release real7 axis4-n10 (ru_maxrss 43636 KiB)
+TRUTH_RAM_RESERVE = 16 << 30
+TRUTH_MAX_WORKERS = 16
+
+
+def truth_workers(jobs):
+    """N = min(16, (available RAM - 16 GiB) / per-process peak RSS, jobs), at least 1; logged to stderr."""
+    try:
+        with open('/proc/meminfo') as f:
+            avail = next(int(line.split()[1]) * 1024 for line in f if line.startswith('MemAvailable:'))
+    except (OSError, StopIteration):
+        avail = 0
+    n = max(1, min(TRUTH_MAX_WORKERS, (avail - TRUTH_RAM_RESERVE) // TRUTH_RSS_BYTES, jobs))
+    import sys
+    print(f'TRUTH_WORKERS n={n} jobs={jobs} mem_available={avail} rss_per_process={TRUTH_RSS_BYTES}', file=sys.stderr)
+    return n
+
+
+def _truth_job(job):
+    path, queries, sampled, identity = job
+    return independent_truth(Path(path), queries, sampled, identity)
+
+
+def truth_results(jobs):
+    """Independent truth per assembly, one assembly per process; results are yielded in the original order, so the
+    first failing assembly in order raises first and the checks after it are unchanged."""
+    n = truth_workers(len(jobs)) if len(jobs) > 1 else 1
+    if n == 1:
+        for job in jobs:
+            yield _truth_job(job)
+        return
+    from concurrent.futures import ProcessPoolExecutor
+    with ProcessPoolExecutor(max_workers=n) as pool:
+        yield from pool.map(_truth_job, jobs)
+
+
 def verify(path, input_root, expected_prepared_sha256):
     p = Path(path).resolve(strict=True)
     root = p.parent
@@ -244,9 +280,10 @@ def verify(path, input_root, expected_prepared_sha256):
         if (row['response_file'] is not None) != (rid in chosen):
             raise ValueError('sample byte coverage')
         by_assembly[aid].append((rid, q))
-    for a in assemblies:
-        source = checked_file(input_root, a['fasta'])
-        hashes, buffers = independent_truth(source, by_assembly[a['assembly_id']], set(chosen), a if streamed else None)
+    sources = [checked_file(input_root, a['fasta']) for a in assemblies]
+    jobs = [(str(source), by_assembly[a['assembly_id']], set(chosen), a if streamed else None)
+            for a, source in zip(assemblies, sources)]
+    for a, (hashes, buffers) in zip(assemblies, truth_results(jobs)):
         for rid, q in by_assembly[a['assembly_id']]:
             row = data['rows'][rid]
             if q['sha256'] != hashes[rid] or row['observed_sha256'] != hashes[rid]:
