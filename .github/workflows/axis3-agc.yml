@@ -37,7 +37,7 @@ jobs:
           echo "shim=$(sha256sum review/axis3/agc_shim.cpp | cut -c1-64)" >> "$GITHUB_OUTPUT"
       - name: Restore pinned native build cache
         id: native-cache
-        uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830
+        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9
         with:
           path: ${{ runner.temp }}/axis3-agc
           key: axis3-agc-v3.2.4-e67e3fc865a459779118d3d4e9fbdf42c70ba75e-${{ env.AGC_PLATFORM }}-${{ runner.os }}-${{ runner.arch }}-script-${{ steps.agc-key.outputs.script }}-shim-${{ steps.agc-key.outputs.shim }}
