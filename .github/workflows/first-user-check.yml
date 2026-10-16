@@ -22,7 +22,7 @@ jobs:
         run: |
           apt-get update -qq
           apt-get install -y -qq ca-certificates build-essential cmake autoconf automake zlib1g-dev git python3
-      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
       - name: Record environment and frozen data identity
         run: |
           mkdir -p /tmp/first-user
