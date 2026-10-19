@@ -1,0 +1,19 @@
+# ace-core official run 2026-10-03, hw-apex-bench c92956140def6a92ed499fdc5ffa4f00677f6fe1 (contract CI on this commit: success), scripts unchanged
+quiet before-region 2026-10-03T11:43:54Z: load 0.04 0.06 0.07, procs>5% 0
+region start 2026-10-03T11:43:54Z
+region end 2026-10-03T11:46:12Z
+quiet before-corruption 2026-10-03T11:46:12Z: load 2.13 0.90 0.39, procs>5% 0
+corruption start 2026-10-03T11:46:12Z
+corruption end 2026-10-03T12:39:05Z
+aceapex 091bb1e75aca7691e8b87db7f0fd8505e74739a0; C++ shim CXXFLAGS = CLI Makefile (-std=c++17 -O3 -march=native -funroll-loops -DACEAPEX_CLI)
+htslib 1.13+ds (libhts-dev 1.13+ds-2build1), samtools 1.13, zstd 1.4.8, lz4 1.9.3, gcc/g++ 11.4.0
+htslib links: libdeflate.so.0 libz.so.1 (ldd libhts.so.3 | grep -E 'deflate|libz')
+region lists sha256 == CI: chr1 9d392b18edae7f146c124ef9b125120b7bf36ab13f28b43919ca47a67632193f (refs aa322f5c5ad2038058b538864a8dcfe7b958f6fd28e12b0cb7b44c2d33debd31), t2t ffcd908681e571524350b84a125440c2cdcb9a277e474e3b37ffc5720b301e96 (refs 9afe989c8d6d2595bf61bcbf4a5f582a8890f06e6e920197e5dee3c29c7420c2); 10 rows x 10 000 regions, all verified
+axis 1 input: chr1 [104857600,121634816), sha256 29a01276c5d4f40d15e6deab7841853d04e55459a3ebe68c77113336ae76fea1 == INPUT_MANIFEST.json, recomputed independently with dd from the source FASTA
+corruption: 7 adapters x 10 000, kinds 1667 x4 / 1666 x2; 0 hang, 0 crash, 0 refused in every row
+bgzip-crc case 867 (truncation at byte 602642 = a BGZF block boundary): bgzip -d warns 'EOF marker is absent' and exits 0 with a shorter output -> SILENT by the harness rule (output differs, exit 0)
+== file sizes (bytes) and ratio = FASTA / total
+chr1: FASTA 253935557; bgzip .gz 76769694 + .fai 23 + .gzi 62232 = 76831949 (ratio 3.3051); aceapex open .aet 63091473 + .fai 23 = 63091496 (ratio 4.0249)
+chr1: BGZF 3890 data blocks (.gzi 3889 entries + first): mean 65279 B uncompressed / 19735 B compressed; aceapex 15499 blocks of 16384 B: mean 4071 B compressed (a region also decodes the 64 KiB literal chunk and 16 KiB token chunks of its blocks)
+t2t: FASTA 3156259565; bgzip .gz 977981967 + .fai 925 + .gzi 773592 = 978756484 (ratio 3.2248); aceapex open .aet 853265321 + .fai 925 = 853266246 (ratio 3.6990)
+t2t: BGZF 48350 data blocks (.gzi 48349 entries + first): mean 65279 B uncompressed / 20227 B compressed; aceapex 192643 blocks of 16384 B: mean 4429 B compressed (a region also decodes the 64 KiB literal chunk and 16 KiB token chunks of its blocks)

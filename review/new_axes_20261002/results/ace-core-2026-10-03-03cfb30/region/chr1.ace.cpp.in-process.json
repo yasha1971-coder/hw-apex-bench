@@ -1,0 +1,14 @@
+{
+  "schema": "single-region-latency-v1",
+  "codec": "aceapex-open-cpp-region",
+  "version": "091bb1e75aca7691e8b87db7f0fd8505e74739a0",
+  "corpus": "chr1",
+  "mode": "ace-cpp-in-process",
+  "device": "CPU",
+  "samples": 10000,
+  "region_bases": 5000,
+  "p50_us": 40.396,
+  "p95_us": 70.092,
+  "p99_us": 76.303,
+  "bit_perfect": true
+}

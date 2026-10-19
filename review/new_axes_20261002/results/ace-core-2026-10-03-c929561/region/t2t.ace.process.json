@@ -1,0 +1,14 @@
+{
+  "schema": "single-region-latency-v1",
+  "codec": "aceapex-open-cli-faidx",
+  "version": "091bb1e75aca7691e8b87db7f0fd8505e74739a0",
+  "corpus": "t2t",
+  "mode": "process",
+  "device": "CPU",
+  "samples": 10000,
+  "region_bases": 5000,
+  "p50_us": 1068.694,
+  "p95_us": 1287.754,
+  "p99_us": 1357.064,
+  "bit_perfect": true
+}

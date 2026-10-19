@@ -1,0 +1,14 @@
+{
+  "schema": "single-region-latency-v1",
+  "codec": "aceapex-open-c99-decoder",
+  "version": "091bb1e75aca7691e8b87db7f0fd8505e74739a0",
+  "corpus": "t2t",
+  "mode": "ace-c99-in-process",
+  "device": "CPU",
+  "samples": 10000,
+  "region_bases": 5000,
+  "p50_us": 47.569,
+  "p95_us": 89.468,
+  "p99_us": 114.415,
+  "bit_perfect": true
+}

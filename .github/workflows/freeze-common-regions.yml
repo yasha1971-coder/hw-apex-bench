@@ -1,0 +1,77 @@
+name: Freeze common region lists
+on:
+  workflow_dispatch:
+  push:
+    branches: [axes/corruption-region-latency]
+    paths:
+      - 'review/new_axes_20261002/generate_regions.py'
+      - '.github/workflows/freeze-common-regions.yml'
+permissions:
+  contents: write
+jobs:
+  regions:
+    if: github.ref == 'refs/heads/axes/corruption-region-latency'
+    runs-on: ubuntu-24.04
+    env:
+      DEBIAN_FRONTEND: noninteractive
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install FASTA indexer
+        run: |
+          set -euo pipefail
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq samtools
+      - name: Download pinned FASTA sources
+        run: |
+          set -euo pipefail
+          mkdir -p .work/regions
+          curl --fail --location --retry 3 https://hgdownload.soe.ucsc.edu/goldenPath/hg38/chromosomes/chr1.fa.gz -o .work/regions/chr1.fa.gz
+          gzip -dc .work/regions/chr1.fa.gz > .work/regions/chr1.fa
+          printf '%s  %s\n' 9465e0f0df6e2c6eb39729c39cee5465 .work/regions/chr1.fa | md5sum -c -
+          curl --fail --location --retry 3 https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/009/914/755/GCA_009914755.4_T2T-CHM13v2.0/GCA_009914755.4_T2T-CHM13v2.0_genomic.fna.gz -o .work/regions/t2t.fa.gz
+          printf '%s  %s\n' 9280657210e4161147cbe13b022225b9 .work/regions/t2t.fa.gz | md5sum -c -
+          gzip -dc .work/regions/t2t.fa.gz > .work/regions/t2t.fa
+          printf '%s  %s\n' cd1e52ce400c027ed0b7ab4b9d613f5a .work/regions/t2t.fa | md5sum -c -
+          samtools faidx .work/regions/chr1.fa
+          samtools faidx .work/regions/t2t.fa
+      - name: Generate identical deterministic request sets
+        run: |
+          set -euo pipefail
+          python3 review/new_axes_20261002/generate_regions.py --fasta .work/regions/chr1.fa --corpus chr1 --outdir regions
+          python3 review/new_axes_20261002/generate_regions.py --fasta .work/regions/t2t.fa --corpus t2t --outdir regions
+          python3 review/new_axes_20261002/generate_regions.py --fasta .work/regions/chr1.fa --corpus chr1 --outdir .work/repeat
+          python3 review/new_axes_20261002/generate_regions.py --fasta .work/regions/t2t.fa --corpus t2t --outdir .work/repeat
+          cmp regions/chr1-10000x5000.tsv .work/repeat/chr1-10000x5000.tsv
+          cmp regions/chr1-10000x5000.sha256.tsv .work/repeat/chr1-10000x5000.sha256.tsv
+          cmp regions/t2t-10000x5000.tsv .work/repeat/t2t-10000x5000.tsv
+          cmp regions/t2t-10000x5000.sha256.tsv .work/repeat/t2t-10000x5000.sha256.tsv
+      - name: Write axis receipt
+        run: |
+          set -euo pipefail
+          {
+            echo '# Frozen common region lists'
+            echo
+            echo 'Seed: `20261002`. PRNG: Python Random / MT19937.'
+            echo
+            echo '| file | sha256 |'
+            echo '|---|---|'
+            for f in regions/chr1-10000x5000.tsv regions/chr1-10000x5000.sha256.tsv regions/t2t-10000x5000.tsv regions/t2t-10000x5000.sha256.tsv; do
+              h=$(sha256sum "$f" | cut -d' ' -f1)
+              printf '| `%s` | `%s` |\n' "$f" "$h"
+            done
+            echo
+            echo 'Coordinates are 1-based inclusive. Each reference digest is SHA-256 over uppercase FASTA bases with line breaks removed.'
+          } > regions/README.md
+      - name: Commit only frozen region evidence
+        run: |
+          set -euo pipefail
+          git config user.name github-actions
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git add -- regions/chr1-10000x5000.tsv regions/chr1-10000x5000.sha256.tsv regions/t2t-10000x5000.tsv regions/t2t-10000x5000.sha256.tsv regions/README.md
+          if git diff --cached --quiet; then
+            echo 'Region evidence already frozen'
+          else
+            git commit -m 'Freeze common 10k region request lists'
+            git push origin HEAD:axes/corruption-region-latency
+          fi

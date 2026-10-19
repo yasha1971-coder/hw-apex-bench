@@ -1,0 +1,34 @@
+{
+  "codec": "aceapex-cpu-open",
+  "version": "091bb1e75aca7691e8b87db7f0fd8505e74739a0",
+  "version_command": [
+    "cat",
+    ".work/axes-20261002/ace/ACEAPEX_COMMIT"
+  ],
+  "region": {
+    "supported": true,
+    "modes": [
+      "in-process",
+      "process-per-request"
+    ],
+    "gpu_placeholder": "next stage"
+  },
+  "checksum_mode": "no-xxh3",
+  "compress": [
+    "python3",
+    "review/new_axes_20261002/ace_cpu_adapter.py",
+    "compress",
+    "no-xxh3",
+    "{input}",
+    "{archive}"
+  ],
+  "decompress": [
+    ".work/axes-20261002/ace/aceapex-no-xxh3",
+    "d",
+    "--in",
+    "{archive}",
+    "--out",
+    "{output}"
+  ],
+  "preflight": null
+}

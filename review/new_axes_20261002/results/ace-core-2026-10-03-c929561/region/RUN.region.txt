@@ -1,0 +1,5 @@
+aceapex_commit=091bb1e75aca7691e8b87db7f0fd8505e74739a0
+ace_cpp_cxxflags=-std=c++17 -O3 -march=native -funroll-loops -DACEAPEX_CLI
+ace_cli_makefile_cxxflags=-std=c++17 -O3 -march=native -funroll-loops -DACEAPEX_CLI
+ace_cpp_link_flags=-fPIC -shared -pthread -lzstd
+g++ (Ubuntu 11.4.0-1ubuntu1~22.04.3) 11.4.0

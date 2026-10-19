@@ -1,0 +1,8 @@
+# ace-core official run, 2026-10-03
+hw-apex-bench 45338ee (axes/corruption-region-latency), run_region_ace_core.sh unchanged, WORK=.work/axes-20261002, sources = symlinks to ~/golden (md5 checked by the script)
+htslib 1.13+ds (libhts-dev 1.13+ds-2build1, pkg-config 1.13+ds), samtools 1.13, aceapex 207bf0042dfd410f908f3b8eeb7bc8701bdbf3ee (pinned by build_ace_cpu.sh)
+region lists sha256 == CI: chr1 9d392b18edae7f146c124ef9b125120b7bf36ab13f28b43919ca47a67632193f, t2t ffcd908681e571524350b84a125440c2cdcb9a277e474e3b37ffc5720b301e96
+region start 2026-10-03T08:51:46Z
+region end 2026-10-03T08:54:02Z rc=0
+corruption start 2026-10-03T08:54:02Z
+axis 1 (corruption): NOT RUN - harness/corruption.py line 75 calls prepare(), not defined on 45338ee (NameError), first adapter ace-cpu-xxh3

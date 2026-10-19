@@ -1,0 +1,60 @@
+{
+  "adapter": {
+    "checksum_mode": "xxh3",
+    "codec": "aceapex-cpu-open",
+    "compress": [
+      "python3",
+      "review/new_axes_20261002/ace_cpu_adapter.py",
+      "compress",
+      "xxh3",
+      "{input}",
+      "{archive}"
+    ],
+    "decompress": [
+      ".work/axes-20261002/ace/aceapex-xxh3",
+      "d",
+      "--in",
+      "{archive}",
+      "--out",
+      "{output}"
+    ],
+    "preflight": null,
+    "region": {
+      "gpu_placeholder": "next stage",
+      "modes": [
+        "in-process",
+        "process-per-request"
+      ],
+      "supported": true
+    },
+    "version": "091bb1e75aca7691e8b87db7f0fd8505e74739a0",
+    "version_command": [
+      "cat",
+      ".work/axes-20261002/ace/ACEAPEX_COMMIT"
+    ]
+  },
+  "archive_bytes": 4386241,
+  "archive_sha256": "3af14bacf011e76d66abdb4b3b01d3cb3933ef205c12cc9ab3161c2fdeddfdf1",
+  "cases": 10000,
+  "checksum_mode": "xxh3",
+  "codec": "aceapex-cpu-open",
+  "input_bytes": 16777216,
+  "input_sha256": "3ff02f2320d2456038fcdac081ad33d8180d3e60d0b63fb5a658c7670a851731",
+  "kind_counts": {
+    "bit_flip": 1667,
+    "header": 1666,
+    "payload": 1666,
+    "random_bytes": 1667,
+    "truncation": 1667,
+    "zeroed_run": 1667
+  },
+  "memory_limit_mib": 2048,
+  "outcomes": {
+    "caught": 9905,
+    "harmless": 95
+  },
+  "schema": "corruption-robustness-v1",
+  "seed": 20261002,
+  "version": "091bb1e75aca7691e8b87db7f0fd8505e74739a0",
+  "watchdog_seconds": 10
+}

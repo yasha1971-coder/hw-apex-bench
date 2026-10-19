@@ -1,0 +1,96 @@
+# pre-run receipt 2026-10-03T08:51:34Z, host ace-core
+hw-apex-bench 45338ee12fd16b4847f7a6791e64e78e5d085a60 branch axes/corruption-region-latency
+uptime:  08:51:34 up 298 days, 23 min,  5 users,  load average: 0.22, 0.16, 0.11
+== other processes: none measuring; 6 top samples at 08:52 showed no process above 19 % of one CPU (process list kept off the public record)
+== lscpu
+Architecture:                            x86_64
+CPU op-mode(s):                          32-bit, 64-bit
+Address sizes:                           46 bits physical, 48 bits virtual
+Byte Order:                              Little Endian
+CPU(s):                                  16
+On-line CPU(s) list:                     0-15
+Vendor ID:                               AuthenticAMD
+Model name:                              AMD EPYC 4344P 8-Core Processor
+CPU family:                              25
+Model:                                   97
+Thread(s) per core:                      2
+Core(s) per socket:                      8
+Socket(s):                               1
+Stepping:                                2
+Frequency boost:                         enabled
+CPU max MHz:                             5389.6992
+CPU min MHz:                             3000.0000
+BogoMIPS:                                7585.97
+Flags:                                   fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush mmx fxsr sse sse2 ht syscall nx mmxext fxsr_opt pdpe1gb rdtscp lm constant_tsc rep_good nopl nonstop_tsc cpuid extd_apicid aperfmperf rapl pni pclmulqdq monitor ssse3 fma cx16 sse4_1 sse4_2 movbe popcnt aes xsave avx f16c rdrand lahf_lm cmp_legacy svm extapic cr8_legacy abm sse4a misalignsse 3dnowprefetch osvw ibs skinit wdt tce topoext perfctr_core perfctr_nb bpext perfctr_llc mwaitx cpb cat_l3 cdp_l3 hw_pstate ssbd mba ibrs ibpb stibp ibrs_enhanced vmmcall fsgsbase bmi1 avx2 smep bmi2 erms invpcid cqm rdt_a avx512f avx512dq rdseed adx smap avx512ifma clflushopt clwb avx512cd sha_ni avx512bw avx512vl xsaveopt xsavec xgetbv1 xsaves cqm_llc cqm_occup_llc cqm_mbm_total cqm_mbm_local avx512_bf16 clzero irperf xsaveerptr rdpru wbnoinvd cppc arat npt lbrv svm_lock nrip_save tsc_scale vmcb_clean flushbyasid decodeassists pausefilter pfthreshold avic v_vmsave_vmload vgif v_spec_ctrl avx512vbmi umip pku ospke avx512_vbmi2 gfni vaes vpclmulqdq avx512_vnni avx512_bitalg avx512_vpopcntdq rdpid overflow_recov succor smca fsrm flush_l1d sme ibpb_exit_to_user
+Virtualization:                          AMD-V
+L1d cache:                               256 KiB (8 instances)
+L1i cache:                               256 KiB (8 instances)
+L2 cache:                                8 MiB (8 instances)
+L3 cache:                                32 MiB (1 instance)
+NUMA node(s):                            1
+NUMA node0 CPU(s):                       0-15
+Vulnerability Gather data sampling:      Not affected
+Vulnerability Indirect target selection: Not affected
+Vulnerability Itlb multihit:             Not affected
+Vulnerability L1tf:                      Not affected
+Vulnerability Mds:                       Not affected
+Vulnerability Meltdown:                  Not affected
+Vulnerability Mmio stale data:           Not affected
+Vulnerability Reg file data sampling:    Not affected
+Vulnerability Retbleed:                  Not affected
+Vulnerability Spec rstack overflow:      Mitigation; safe RET
+Vulnerability Spec store bypass:         Mitigation; Speculative Store Bypass disabled via prctl and seccomp
+Vulnerability Spectre v1:                Mitigation; usercopy/swapgs barriers and __user pointer sanitization
+Vulnerability Spectre v2:                Mitigation; Enhanced / Automatic IBRS; IBPB conditional; STIBP always-on; PBRSB-eIBRS Not affected; BHI Not affected
+Vulnerability Srbds:                     Not affected
+Vulnerability Tsa:                       Mitigation; Clear CPU buffers
+Vulnerability Tsx async abort:           Not affected
+Vulnerability Vmscape:                   Mitigation; IBPB before exit to userspace
+== frequencies
+governor schedutil
+/sys/devices/system/cpu/cpu15/cpufreq/scaling_cur_freq:4497445
+/sys/devices/system/cpu/cpu10/cpufreq/scaling_cur_freq:3965843
+/sys/devices/system/cpu/cpu14/cpufreq/scaling_cur_freq:3892906
+/sys/devices/system/cpu/cpu4/cpufreq/scaling_cur_freq:3802887
+/sys/devices/system/cpu/cpu8/cpufreq/scaling_cur_freq:3872968
+/sys/devices/system/cpu/cpu5/cpufreq/scaling_cur_freq:3598898
+/sys/devices/system/cpu/cpu12/cpufreq/scaling_cur_freq:3751576
+/sys/devices/system/cpu/cpu2/cpufreq/scaling_cur_freq:3631466
+/sys/devices/system/cpu/cpu3/cpufreq/scaling_cur_freq:3604283
+/sys/devices/system/cpu/cpu1/cpufreq/scaling_cur_freq:4132245
+/sys/devices/system/cpu/cpu11/cpufreq/scaling_cur_freq:4293214
+/sys/devices/system/cpu/cpu0/cpufreq/scaling_cur_freq:3780707
+/sys/devices/system/cpu/cpu6/cpufreq/scaling_cur_freq:3792173
+/sys/devices/system/cpu/cpu13/cpufreq/scaling_cur_freq:3883693
+/sys/devices/system/cpu/cpu9/cpufreq/scaling_cur_freq:3453534
+/sys/devices/system/cpu/cpu7/cpufreq/scaling_cur_freq:3450246
+cpu MHz		: 3800.000
+cpu MHz		: 4763.265
+cpu MHz		: 3800.000
+cpu MHz		: 3800.000
+cpu MHz		: 3800.000
+cpu MHz		: 3800.000
+cpu MHz		: 3800.000
+cpu MHz		: 3000.000
+cpu MHz		: 3800.000
+cpu MHz		: 3000.000
+cpu MHz		: 3000.000
+cpu MHz		: 3000.000
+cpu MHz		: 3800.000
+cpu MHz		: 3000.000
+cpu MHz		: 3800.000
+cpu MHz		: 3800.000
+== versions
+*** zstd command line interface 64-bits v1.4.8, by Yann Collet ***
+*** LZ4 command line interface 64-bits v1.9.3, by Yann Collet ***
+bgzip (htslib) 1.13+ds
+samtools 1.13
+Using htslib 1.13+ds
+htslib (pkg-config) 1.13+ds
+ii  libhts-dev:amd64 1.13+ds-2build1 amd64        development files fo
+ii  libhts3:amd64    1.13+ds-2build1 amd64        C library for high-t
+gcc (Ubuntu 11.4.0-1ubuntu1~22.04.3) 11.4.0
+Python 3.10.12
+aceapex pinned by build_ace_cpu.sh: 207bf0042dfd410f908f3b8eeb7bc8701bdbf3ee
+corpora: symlinks to ~/golden/genome (md5 chr1 9465e0f0df6e2c6eb39729c39cee5465, t2t cd1e52ce400c027ed0b7ab4b9d613f5a)
+note: another user's server process started 08:49 was idle (0 % CPU) in 6 samples at 08:52; load 0.21

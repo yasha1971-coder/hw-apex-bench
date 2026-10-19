@@ -1,0 +1,14 @@
+{
+  "schema": "single-region-latency-v1",
+  "codec": "bgzip-samtools",
+  "version": "samtools 1.13",
+  "corpus": "chr1",
+  "mode": "process",
+  "device": "CPU",
+  "samples": 10000,
+  "region_bases": 5000,
+  "p50_us": 1242.765,
+  "p95_us": 1459.262,
+  "p99_us": 1542.509,
+  "bit_perfect": true
+}
