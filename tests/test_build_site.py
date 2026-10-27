@@ -101,7 +101,10 @@ class Site(unittest.TestCase):
             self.build()
         for p in self.out.rglob('*.html'):
             tree = html5lib.parse(p.read_text(), namespaceHTMLElements=False)
-            self.assertFalse(list(tree.iter('script')))
+            scripts = list(tree.iter('script'))
+            self.assertEqual(len(scripts), 1)
+            self.assertEqual(scripts[0].attrib, {'type': 'application/ld+json'})
+            self.assertEqual(json.loads(scripts[0].text), job.site_seo.dataset())
             for e in tree.iter():
                 self.assertFalse(any(k.startswith('on') for k in e.attrib))
         self.assertFalse(list(self.out.rglob('*.js')))

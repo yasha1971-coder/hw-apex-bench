@@ -97,3 +97,19 @@ repository settings. Local acceptance performs no push or deployment.
 Protected `review/axis3/build_agc_v324.sh`, `.github/workflows/axis3-agc.yml` and
 the entire `review/axis3/RUN.md` are never edited. RUN.md is only copied unchanged
 as a hash-bound methodology-link artifact. Server overlays remain outside A10.
+
+## SEO metadata
+
+`tools/site_seo.py` supplies the shared title, description, canonical URLs,
+Open Graph card and Dataset JSON-LD. The Dataset DOI uses CC BY 4.0 as recorded
+by Zenodo 22713364; this does not change the software's Apache-2.0 license.
+The local PNG is a title card without benchmark numbers. Its dimensions are
+1200 by 630. `sitemap.xml` enumerates exactly the generated HTML pages, with
+stable canonical URLs under https://yasha1971-coder.github.io/hw-apex-bench/.
+`robots.txt`, the card and sitemap enter `SITE_SHA256SUMS` through the ordinary
+builder hashing path before publication. All release verification stays enabled.
+Only the exact generated JSON-LD object and canonical URL are admitted by the
+validator; executable scripts and arbitrary external resources remain forbidden.
+The CSP still forbids script execution. Synthetic golden pages receive the same
+metadata without changing their evidence or visible benchmark values.
+A PR does not update the public sitemap until an authorized deployment.

@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://yasha1971-coder.github.io/hw-apex-bench/sitemap.xml
