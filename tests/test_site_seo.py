@@ -9,7 +9,7 @@ from tools import site_seo
 class SEO(unittest.TestCase):
     def test_generated_metadata_and_sitemap(self):
         root=Path(__file__).parent/'fixtures/site/expected'
-        pages=sorted(root.rglob('*.html'))
+        pages=sorted(p for p in root.rglob('*.html') if p.name!=site_seo.GOOGLE_VERIFICATION)
         urls=[e.text for e in ET.parse(root/'sitemap.xml').findall('.//{*}loc')]
         self.assertEqual(urls,[site_seo.canonical(p.relative_to(root).as_posix()) for p in pages])
         self.assertLessEqual(len(site_seo.DESCRIPTION),160)
@@ -22,6 +22,7 @@ class SEO(unittest.TestCase):
             for _,url in site_seo.LINKS:
                 self.assertIsNotNone(t.find('.//footer//a[@href="'+url+'"]'))
         self.assertIn('Sitemap: '+site_seo.BASE+'sitemap.xml',(root/'robots.txt').read_text())
+        self.assertEqual((root/site_seo.GOOGLE_VERIFICATION).read_bytes(),b'google-site-verification: googlecb044b428b198ccc.html\n')
         image=(root/'assets/social-card.png').read_bytes()
         self.assertEqual(image[:8],b'\x89PNG\r\n\x1a\n')
         self.assertEqual(struct.unpack('>II',image[16:24]),(1200,630))

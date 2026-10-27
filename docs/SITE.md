@@ -113,3 +113,6 @@ validator; executable scripts and arbitrary external resources remain forbidden.
 The CSP still forbids script execution. Synthetic golden pages receive the same
 metadata without changing their evidence or visible benchmark values.
 A PR does not update the public sitemap until an authorized deployment.
+`googlecb044b428b198ccc.html` is the Google Search Console ownership file: exact name and one line of content
+as Google issues it, written by `site_seo.write` and hashed like the other generated files. It is plain text, not
+a page: the validator admits it only with exactly those bytes and does not list it in the sitemap.
