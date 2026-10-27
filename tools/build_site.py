@@ -23,7 +23,7 @@ import html5lib
 import markdown
 
 from review.axis3.verdict_data import hash_once, load_json, sha256_file
-from tools import release_v020
+from tools import release_v020, site_seo
 from tools.build_leaderboard import COLUMNS, METRICS, number
 
 AXES = {3: 'Random access and the window law', 4: 'Cohort random access',
@@ -100,13 +100,13 @@ def document(page, title, body):
         '<meta name="viewport" content="width=device-width, initial-scale=1">'
         '<meta http-equiv="Content-Security-Policy" content="default-src &#39;self&#39;; '
         'script-src &#39;none&#39;; style-src &#39;self&#39;; img-src &#39;self&#39;; '
-        'connect-src &#39;none&#39;; object-src &#39;none&#39;; base-uri &#39;none&#39;; form-action &#39;none&#39;">'
-        '<title>'+esc(title)+' — hw-apex-bench</title><link rel="stylesheet" href="'+esc(href(page, 'assets/site.css'))+'">'
+        'connect-src &#39;none&#39;; object-src &#39;none&#39;; base-uri &#39;none&#39;; form-action &#39;none&#39;">'+
+        site_seo.head(page)+'<link rel="stylesheet" href="'+esc(href(page, 'assets/site.css'))+'">'
         '</head><body><a class="skip" href="#main">Skip to content</a>'
         '<header><p>hw-apex-bench v0.2.0 · Evidence, not estimates</p>'+nav+'</header>'
         '<main id="main"><h1>'+esc(title)+'</h1>'+body+'</main>'
         '<footer><p>Source hashes identify bytes, not authorship. A verified scientific FAIL remains visible. '
-        'No build timestamp or inferred machine is added.</p></footer></body></html>\n').encode('utf-8')
+        'No build timestamp or inferred machine is added.</p>'+site_seo.footer()+'</footer></body></html>\n').encode('utf-8')
 
 
 def table(page, data):
@@ -256,6 +256,14 @@ def validate_site(directory):
             raise ValueError('duplicate HTML id')
         trees[path] = set(ids)
         for element in tree.iter():
+            if element.tag == 'script' and element.attrib == {'type': 'application/ld+json'}:
+                if json.loads(element.text or '') != site_seo.dataset():
+                    raise ValueError('unexpected dataset metadata')
+                continue
+            if element.tag == 'link' and element.get('rel') == 'canonical':
+                if element.attrib != {'rel': 'canonical', 'href': site_seo.canonical(path.relative_to(root).as_posix())}:
+                    raise ValueError('unexpected canonical URL')
+                continue
             if element.tag in ('script', 'iframe', 'object', 'embed', 'base', 'form'):
                 raise ValueError('active element refused')
             if any(k.lower().startswith('on') for k in element.attrib):
@@ -417,6 +425,7 @@ def _build(directory, output='site', expected_manifest_sha256=None, data_root=No
         (staging/'assets').mkdir()
         (staging/'assets/site.css').write_bytes(css())
         (staging/'.nojekyll').write_bytes(b'')
+        site_seo.write(staging, pages)
         check_budget(staging)
         validation = validate_site(staging)
         release_v020.verify(staging/'downloads/release', receipt['manifest_sha256'], data_root)

@@ -55,7 +55,7 @@ jobs:
           import unittest
 
           # Keep collection count strict; optional native cases are still collected.
-          expected_total = 486  # 480 + 2 site tests + 2 parallel truth tests + 2 manual real-site deploy tests
+          expected_total = 487  # 486 existing cases + SEO metadata/sitemap test
           suite = unittest.defaultTestLoader.discover("tests")
           native_type = importlib.import_module("test_s2_native_readers").NativeAvailability
 
