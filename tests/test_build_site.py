@@ -80,6 +80,8 @@ class Site(unittest.TestCase):
     def test_all_generated_html5_documents_have_no_parser_errors(self):
         self.build()
         for p in self.out.rglob('*.html'):
+            if p.name == job.site_seo.GOOGLE_VERIFICATION:   # plain-text ownership file, not a page
+                continue
             parser = html5lib.HTMLParser(namespaceHTMLElements=False)
             tree = parser.parse(p.read_text())
             self.assertFalse(parser.errors, (p.name, parser.errors))
@@ -100,6 +102,9 @@ class Site(unittest.TestCase):
              mock.patch('tools.axis4.open_reader', side_effect=AssertionError('native')):
             self.build()
         for p in self.out.rglob('*.html'):
+            if p.name == job.site_seo.GOOGLE_VERIFICATION:
+                self.assertEqual(p.read_text(), job.site_seo.GOOGLE_VERIFICATION_TEXT)
+                continue
             tree = html5lib.parse(p.read_text(), namespaceHTMLElements=False)
             scripts = list(tree.iter('script'))
             self.assertEqual(len(scripts), 1)

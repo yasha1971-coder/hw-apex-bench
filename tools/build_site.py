@@ -248,6 +248,11 @@ def validate_site(directory):
     for path in sorted(root.rglob('*.html')):
         if path.is_relative_to(root/'downloads/release'):
             raise ValueError('active HTML artifact refused')
+        if path == root/site_seo.GOOGLE_VERIFICATION:
+            # the search-console ownership file is not a page: exact bytes, no parsing, no links
+            if path.read_text(encoding='utf-8') != site_seo.GOOGLE_VERIFICATION_TEXT:
+                raise ValueError('unexpected site verification file')
+            continue
         parser = html5lib.HTMLParser(strict=True, namespaceHTMLElements=False)
         tree = parser.parse(path.read_text(encoding='utf-8'))
         parents = {child: parent for parent in tree.iter() for child in parent}

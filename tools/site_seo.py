@@ -6,6 +6,9 @@ from urllib.parse import quote
 
 BASE = 'https://yasha1971-coder.github.io/hw-apex-bench/'
 TITLE = 'hw-apex-bench — random access into compressed data: bgzip, zstd-seekable, ACEAPEX, measured'
+# Google Search Console ownership file: exact name and content Google expects; a plain-text file, not a page.
+GOOGLE_VERIFICATION = 'googlecb044b428b198ccc.html'
+GOOGLE_VERIFICATION_TEXT = 'google-site-verification: googlecb044b428b198ccc.html\n'
 DESCRIPTION = 'Compressed-data benchmarks: window law, cohort access and corruption; hardware recorded per evidence. Evidence, not estimates.'
 LINKS = [('hw-apex-bench', 'https://github.com/yasha1971-coder/hw-apex-bench'),
          ('aceapex', 'https://github.com/yasha1971-coder/aceapex'),
@@ -48,3 +51,4 @@ def write(root, pages):
     (root/'sitemap.xml').write_text('<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">'+entries+'</urlset>\n',encoding='utf-8')
     (root/'robots.txt').write_text('User-agent: *\nAllow: /\nSitemap: '+BASE+'sitemap.xml\n',encoding='utf-8')
     (root/'assets/social-card.png').write_bytes((Path(__file__).parent/'assets/social-card.png').read_bytes())
+    (root/GOOGLE_VERIFICATION).write_text(GOOGLE_VERIFICATION_TEXT, encoding='utf-8')
