@@ -19,3 +19,21 @@ First visit? Complete [one small correctness check](docs/GETTING_STARTED.md) bef
 - Absolute timings are `declared` because they depend on the host; compare against a baseline measured in the same run, and require a plateau for throughput headlines.
 - Retain raw samples, hashes and reproduction commands; generate reports from JSONL, never edit the published 435 rows or tables by hand.
 - Submit a PR with the check receipt and scope of changes; code is Apache-2.0, measurements CC BY 4.0, and citation metadata is in CITATION.cff.
+
+## Refresh publication digests
+
+After an intentional presentation edit, regenerate reports from retained evidence,
+then refresh existing manifest entries and independently validate the publication:
+
+```sh
+python3 harness/report.py
+python3 web/refresh_manifest.py
+python3 web/validate_publication.py
+```
+
+Edit the README template in `harness/presentation.py`, not generated tables.
+The refresh command updates only bytes and SHA-256 for paths already listed in
+`evidence/published-results.json`; it does not add files or modify results.
+It is not evidence validation or authorization to change measurements. Review the
+diff and retain the independent validation step. Unchanged inputs leave the
+manifest byte-identical, including on a second invocation.

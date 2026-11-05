@@ -42,3 +42,21 @@ The separate full-run artifact contains 236 native rows; the untimed BGZF audit
 closes its three backend-dependent differences without rewriting that run.
 
 [Complete report](RESULTS/FULL_REPORT.md) · [Audits](AUDITS/README.md)
+
+## Refresh publication digests
+
+After an intentional presentation edit, regenerate reports from retained evidence,
+then refresh existing manifest entries and independently validate the publication:
+
+```sh
+python3 harness/report.py
+python3 web/refresh_manifest.py
+python3 web/validate_publication.py
+```
+
+Edit the README template in `harness/presentation.py`, not generated tables.
+The refresh command updates only bytes and SHA-256 for paths already listed in
+`evidence/published-results.json`; it does not add files or modify results.
+It is not evidence validation or authorization to change measurements. Review the
+diff and retain the independent validation step. Unchanged inputs leave the
+manifest byte-identical, including on a second invocation.
