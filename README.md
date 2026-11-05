@@ -22,8 +22,6 @@ Each cell is **ratio · p50 / p99 ms**.
 | 32 KiB | 4.643726 · 0.062581 / 0.142081 | 5.344308 · 0.156778 / 0.303165 | 5.344308 · 0.083464 / 0.180311 | 5.307601 · 0.216979 / 0.529897 |
 | 65,280 B | 4.810834 · 0.108651 / 0.244448 | 5.412621 · 0.210062 / 0.438012 | 5.412621 · 0.124668 / 0.277486 | 5.395254 · 0.271045 / 0.757243 |
 
-ACEAPEX is developed by the author of this benchmark.
-
 The modern rows use a persistent C99 decoder handle; the legacy row retains the historical one-shot path as a same-run control. v2.1.0 interactive cuts legacy p50 by 40.7–52.6% and leaves only a 9.2–20.9 µs p50 gap to BGZF. Main open does **not** remove that remainder: it is slower than v2.1.0 interactive at all 5 points and is also less dense at all 5 points.
 
 [ACEAPEX v2.1.0 / open refresh report →](docs/RESULTS/ACEAPEX_UPGRADE_20260930.md)  
