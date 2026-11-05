@@ -2,6 +2,8 @@ name: Committed publication integrity
 on:
   pull_request:
   workflow_dispatch:
+  push:
+    branches: [main]
 permissions:
   contents: read
 jobs:
