@@ -50,8 +50,16 @@ def table(rows):
     return '\n'.join(lines) + '\n'
 
 
+def verify_artifacts(state):
+    for path, expected in state["artifacts"].items():
+        p = Path(path)
+        if p.stat().st_size != expected["bytes"] or digest(p) != expected["sha256"]:
+            raise ValueError("archive artifact SHA mismatch: " + str(p))
+
+
 def verify_regions(state, original, raw_samples):
     """Independent SHA oracle outside the measurement timer."""
+    verify_artifacts(state)
     ctx = Context(state['library'], state['archive'].read_bytes(), sidecar=state['sidecar'])
     receipt = []
     try:
@@ -69,6 +77,7 @@ def verify_regions(state, original, raw_samples):
                 receipt.append(dict(offset=offset, length=length, sha256=actual))
     finally:
         ctx.close()
+    verify_artifacts(state)
     return receipt
 
 
@@ -98,6 +107,7 @@ def main():
                      str(ROOT/'harness/native_measure.c'),'-ldl','-o',str(worker)],
                     stdout=log, stderr=log, timeout=120)
         rows = []
+        codec_seconds = {}
         for codec in ('bgzip', 'zstd_seekable', 'xz'):
             adapter = resolve_adapter(codec)
             work = work_directory(adapter, args.work)
@@ -106,6 +116,7 @@ def main():
                 for g in (4096,16384,65280 if codec == 'bgzip' else 65536):
                     rows.append(dict(codec=codec,g=g,status='n/a',reason=reason))
                 continue
+            codec_started = time.monotonic()
             plan = plan_adapter(adapter, work, AXES)
             def measure(checked):
                 points = []
@@ -124,6 +135,10 @@ def main():
                     amp = runner.amplification(point)
                     be = runner.break_even(point)
                     state = runner.prepare(point)
+                    (directory/'archive-state.json').write_text(json.dumps(
+                        {key: str(value) if isinstance(value, Path) else value
+                         for key, value in state.items() if key in
+                         ('archive', 'library', 'sidecar', 'artifacts')}, indent=2)+'\n')
                     raw = [json.loads(s) for s in (directory/region['raw_samples']).read_text().splitlines()]
                     hashes = verify_regions(state, source, raw)
                     (directory/'answers.json').write_text(json.dumps(hashes, indent=2)+'\n')
@@ -137,13 +152,14 @@ def main():
             # the backend's compression granularity, as adapter_curve does.
             result = dispatch_adapter(plan, {axis: (measure if axis == 'ratio' else lambda p: None) for axis in AXES})
             rows.extend(next(r['value'] for r in result if r['axis'] == 'ratio'))
+            codec_seconds[codec] = time.monotonic() - codec_started
         if digest(source) != initial:
             raise ValueError('input changed during pick')
         if not any(r['status'] == 'measured' for r in rows):
             raise ValueError('no qualified measurements; run --check first')
         select(rows, args.max_p50, args.min_ratio)
         receipt = dict(schema='cabench-pick-v1',input_sha256=initial,
-                       elapsed_seconds=time.monotonic()-started,rows=rows)
+                       elapsed_seconds=time.monotonic()-started,codec_seconds=codec_seconds,rows=rows)
         (out/'pick.json').write_text(json.dumps(receipt,indent=2,allow_nan=False)+'\n')
         rendered = table(rows)
         (out/'pick.md').write_text(rendered)
