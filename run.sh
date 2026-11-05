@@ -27,6 +27,10 @@ if [[ "${1:-}" == --measure ]]; then
   shift
   exec python3 harness/native_execution.py "$@"
 fi
+if [[ "${1:-}" == --pick ]]; then
+  shift
+  exec python3 harness/pick.py "$@"
+fi
 if [[ "${1:-}" == --plan ]]; then
   shift
   exec python3 harness/axis_planner.py "$@"
