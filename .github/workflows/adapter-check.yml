@@ -4,6 +4,8 @@ on:
     paths:
       - 'codecs/**'
       - 'harness/check*'
+      - 'harness/*pick*'
+      - 'docs/PICK.md'
       - 'harness/qualification.py'
       - 'harness/axis_planner.py'
       - 'harness/native_measure.c'
@@ -149,5 +151,58 @@ jobs:
             .work/native-full/**/*.jsonl
             .work/native-full/**/*.ranges
             .work/native-full/**/*.log
+            .work/adapter-check/**/check.json
+            .work/adapter-check/**/check.log
+
+  pick-acceptance:
+    needs: check
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          fetch-depth: 0
+      - name: Install existing build and full-suite prerequisites
+        run: |
+          set -euo pipefail
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq build-essential autoconf automake cmake zlib1g-dev
+          python3 -m venv "$RUNNER_TEMP/pick-tests"
+          "$RUNNER_TEMP/pick-tests/bin/pip" install jsonschema==4.26.0 PyYAML==6.0.3 html5lib==1.1 Markdown==3.8.2
+      - name: Full suite before and after
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha || '5b488ba36af6755917ce0428063cfefdee2689b7' }}
+        run: |
+          set -euo pipefail
+          git worktree add --detach "$RUNNER_TEMP/pick-base" "$BASE_SHA"
+          # Run both suites even when one fails, then fail the gate.
+          before=0
+          after=0
+          "$RUNNER_TEMP/pick-tests/bin/python" harness/pick_suite.py "$RUNNER_TEMP/pick-base" .work/pick-suite-before || before=$?
+          "$RUNNER_TEMP/pick-tests/bin/python" harness/pick_suite.py . .work/pick-suite-after || after=$?
+          test "$before" -eq 0
+          test "$after" -eq 0
+      - name: Picker tests with stdlib Python
+        run: python3 -m unittest discover -s harness -p test_pick.py -v
+      - name: Qualify adapters in this runner
+        run: |
+          set -euo pipefail
+          for codec in bgzip zstd_seekable xz; do
+            ./run.sh --check "codecs/$codec.sh"
+          done
+      - name: Pick 100 MB and reject 1000 archive corruptions
+        run: |
+          set -euo pipefail
+          python3 harness/pick_acceptance.py .work/pick-acceptance 2>&1 | tee .work/pick-acceptance.log
+      - name: Retain acceptance evidence
+        if: always()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9
+        with:
+          name: pick-acceptance
+          include-hidden-files: true
+          path: |
+            .work/pick-suite-*/**
+            .work/pick-acceptance.log
+            .work/pick-acceptance/pick/**
             .work/adapter-check/**/check.json
             .work/adapter-check/**/check.log
