@@ -33,5 +33,16 @@
     "verified_prefix_bytes": 5368709120,
     "verified_prefix_md5": "d628e1c9fb9466fcbd82109c3c7f9f10",
     "verification_receipt": "review/err174310-prefix-5gib.json"
+  },
+  "enwik8": {
+    "id": "enwik8",
+    "url": "https://mattmahoney.net/dc/enwik8.zip",
+    "download_sha256": "547994d9980ebed1288380d652999f38a14fe291a6247c157c3d33d4932534bc",
+    "download_bytes": 36445475,
+    "preparation": "unzip only; the single member enwik8",
+    "uncompressed_bytes": 100000000,
+    "sha256": "2b49720ec4d78c3c9fabaee6e4179a5e997302b3a70029f30f2d582218c024a8",
+    "sha256_scope": "uncompressed enwik8",
+    "verification_status": "official enwik8.zip downloaded 2026-11-05, unzipped; sha256 equal to the ace-core copy"
   }
 }
