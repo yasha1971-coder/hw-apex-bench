@@ -1,0 +1,301 @@
+{
+  "status": "pass",
+  "check_protocol": "cabench-check-v2",
+  "qualification": {
+    "codec": "zstd-seekable",
+    "version": "1.5.7",
+    "capabilities": {
+      "amplification": "available",
+      "batch": "n/a \u2014 no batch API",
+      "break_even": "available",
+      "c_g": "available",
+      "decode": "available",
+      "encode": "available",
+      "h_alpha": "available",
+      "ratio": "available",
+      "region": "available"
+    },
+    "constraints": {
+      "granularity": 16384,
+      "min_input_bytes": 0
+    },
+    "configuration": {
+      "level": 3,
+      "encoder_threads": 1,
+      "decoder_threads": 1,
+      "granularity": 16384
+    },
+    "protocol": "cabench-check-v2",
+    "files": {
+      "/home/aeterna/pubrepo/.wk/hwab-pick2/codecs/zstd_seekable.sh": "c7721075b00b106ae7b85cd34cfa419072007ed124fae17eadd2d48bb48c8c3e",
+      "/home/aeterna/pubrepo/.wk/hwab-pick2/harness/check_adapter.py": "803213045e9ee94e2f3f92aa83966aa349809ae7527620ca313827a8f9722ac3",
+      "/home/aeterna/pubrepo/.wk/hwab-pick2/harness/check_common.sh": "df11d994850cd721308e1ecba4474dd665734916e68bf6372fd8124ebe7dc341",
+      "/home/aeterna/pubrepo/.wk/hwab-pick2/harness/check_region.py": "f63aea3605ccc950a1666b7582febacf5f3a2ba9b1ba174d2a39d440955b48fd",
+      "/home/aeterna/pubrepo/.wk/hwab-pick2/harness/resident_probe.py": "cec517b3087119968d7219c592ffd9579de6de9eb61260dbe557e248cdfdfcfc",
+      "/home/aeterna/pubrepo/.wk/hwab-pick2/harness/resident_context.h": "299ba195dc8092d27d8dfb0613fcbdbc063852454e3f71a654c189881caaf20f",
+      "/home/aeterna/pubrepo/.wk/hwab-pick2/harness/resident_fixture.py": "23ffefe0da758c13d9fd6e960fc82efbb9ba4a116b00a990f78ae972c3e4a994",
+      "/home/aeterna/pubrepo/.wk/hwab-pick2/harness/qualification.py": "8d85cef43a1ac4c1cc2cfc05eab33ba20fc89b960e84a7f69cf9d435c9a681c2",
+      "/home/aeterna/pubrepo/.wk/hwab-pick2/harness/verify_context_sources.py": "6a484d205e5129c7e5fcd37ccd5773b07bfed27329ab8dd9706187ea373a90b6",
+      "/home/aeterna/pubrepo/.wk/hwab-pick2/harness/context-ace-sources.json": "483266fb3b1bad62f408874ed32278deab7599ee2318ee18650ab0e03f50fa3c",
+      "/home/aeterna/pubrepo/.wk/hwab-pick2/harness/reader_environment.py": "a2aabb9093d67da641306ef792b4b27020a18cb2925f0a7fd43844371929e8a4",
+      "/home/aeterna/pubrepo/.wk/hwab-pick2/codecs/native/zstd_seekable.c": "e077315773eade4fa8417845ce2caa4d669a01d94721153d596fe953d83638d3",
+      "/home/aeterna/pubrepo/.wk/hwab-pick2/codecs/counters.py": "b919d4bce9b759976cecb60b610f09fa97bb5fe76abdbd5e45e9454ee7fff9ad",
+      "/home/aeterna/pubrepo/.wk/hwab-pick2/harness/build_counters.py": "aeb3d6bba01ab2beeab25fc5c690ecaa9140c2562d159c180a9e9586a45db52e",
+      "/home/aeterna/pubrepo/.wk/hwab-pick2/.work/adapter-check/zstd_seekable-efa4044683/context.so": "b39251dc874a2152c844ee220693e4ebaba71e3be2e011c48ab7534641cd0115",
+      "/home/aeterna/pubrepo/.wk/hwab-pick2/.work/adapter-check/zstd_seekable-efa4044683/counter-context.so": "ab5d76f493c18c80b92be993b68a0e16469ab3884fd7e3f6196bbf2724ca3b50",
+      "/home/aeterna/pubrepo/.wk/hwab-pick2/.work/adapter-check/zstd_seekable-efa4044683/counter-sources.json": "e52ddfe51bda25981351938ee36c0d7a4dc5ea9781870a1c847eee9bc463385c",
+      "/home/aeterna/pubrepo/.wk/hwab-pick2/.work/adapter-check/zstd_seekable-efa4044683/deps/zstd/contrib/seekable_format/examples/seekable_compression": "0bf737fec15c9eabf26d1a6885c94aa009535067d7e4f76370578cf1c89afd6a",
+      "/home/aeterna/pubrepo/.wk/hwab-pick2/.work/adapter-check/zstd_seekable-efa4044683/deps/zstd/programs/zstd": "2d44881d003181d652d50f56665f39c7260a7b675734483ce5dc53c88fc9c726"
+    },
+    "linked_libraries": {
+      "/usr/lib/x86_64-linux-gnu/libc.so.6": "b2cf6c33b74d2f22543b7a469a75b538911e690f769d0b238843a49465b83793",
+      "/usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2": "41daf7836f7fce21a40ca63a00c5caf21b05a35a76ccc075d86f1716212cdf01",
+      "/usr/lib/x86_64-linux-gnu/libz.so.1.2.11": "64c206f0146cc58bbddc4f22054436f4ff278f5a554aa3ce6921ddf7e9133370",
+      "/usr/lib/x86_64-linux-gnu/liblzma.so.5.2.5": "3147e2cb512d17a4064d34f61e69591b6473543db2ec63cd797f766cd3b09037"
+    },
+    "sources": [
+      {
+        "directory": "zstd",
+        "commit": "f8745da6ff1ad1e7bab384bd1f9d742439278e99",
+        "submodules": ""
+      }
+    ],
+    "build_artifacts": [
+      "/home/aeterna/pubrepo/.wk/hwab-pick2/.work/adapter-check/zstd_seekable-efa4044683/context.so",
+      "/home/aeterna/pubrepo/.wk/hwab-pick2/.work/adapter-check/zstd_seekable-efa4044683/counter-context.so",
+      "/home/aeterna/pubrepo/.wk/hwab-pick2/.work/adapter-check/zstd_seekable-efa4044683/counter-sources.json",
+      "/home/aeterna/pubrepo/.wk/hwab-pick2/.work/adapter-check/zstd_seekable-efa4044683/deps/zstd/contrib/seekable_format/examples/seekable_compression",
+      "/home/aeterna/pubrepo/.wk/hwab-pick2/.work/adapter-check/zstd_seekable-efa4044683/deps/zstd/programs/zstd"
+    ],
+    "host": {
+      "system": "Linux",
+      "machine": "x86_64"
+    },
+    "loader_environment": {
+      "PATH": "/home/aeterna/.local/bin:/home/aeterna/.vscode-server/cli/servers/Stable-04c0d99f4fb0d8afe6ce4f0c58e31e183ac3e4b1/server/bin/remote-cli:/home/aeterna/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin",
+      "LD_LIBRARY_PATH": "",
+      "GLIBC_TUNABLES": ""
+    }
+  },
+  "qualification_sha256": "f13f1ead0af584be4b4d8890fd9e3cb319bb011c63684ccedf13a3ab7d289a39",
+  "codec": "zstd-seekable",
+  "version": "1.5.7",
+  "adapter_sha256": "c7721075b00b106ae7b85cd34cfa419072007ed124fae17eadd2d48bb48c8c3e",
+  "command": "./run.sh --check codecs/zstd_seekable.sh",
+  "capabilities": {
+    "amplification": "available",
+    "batch": "n/a \u2014 no batch API",
+    "break_even": "available",
+    "c_g": "available",
+    "decode": "available",
+    "encode": "available",
+    "h_alpha": "available",
+    "ratio": "available",
+    "region": "available"
+  },
+  "native_library_sha256": "b39251dc874a2152c844ee220693e4ebaba71e3be2e011c48ab7534641cd0115",
+  "sources": [
+    {
+      "directory": "zstd",
+      "commit": "f8745da6ff1ad1e7bab384bd1f9d742439278e99",
+      "submodules": ""
+    }
+  ],
+  "cases": [
+    {
+      "fixture": "mixed",
+      "input_bytes": 5593136,
+      "input_sha256": "2ec2d7b3f1eb6adaff8a26e9da919a97fedb2b9e2fc97304d858d0031def8819",
+      "archive_sha256": "3203cd8ef7893ae4c661ae8417cfd6fa4131f26ea367c2c5c174dd9a63fda0d5",
+      "artifacts": {
+        "mixed.archive": "3203cd8ef7893ae4c661ae8417cfd6fa4131f26ea367c2c5c174dd9a63fda0d5"
+      },
+      "full_restore": "byte-exact",
+      "status": "pass",
+      "native": {
+        "capabilities": {
+          "amplification": "available",
+          "batch": "n/a \u2014 no batch API",
+          "break_even": "available",
+          "c_g": "available",
+          "decode": "available",
+          "encode": "available",
+          "h_alpha": "available",
+          "ratio": "available",
+          "region": "available"
+        },
+        "corpus_sha256": "2ec2d7b3f1eb6adaff8a26e9da919a97fedb2b9e2fc97304d858d0031def8819",
+        "full_restore": "byte-exact",
+        "invalid_ranges": 3,
+        "region_checks": 4200,
+        "timings_collected": false,
+        "version": "1.5.7"
+      }
+    },
+    {
+      "fixture": "one-byte",
+      "input_bytes": 1,
+      "input_sha256": "4b68ab3847feda7d6c62c1fbcbeebfa35eab7351ed5e78f4ddadea5df64b8015",
+      "archive_sha256": "fa1b9e3101aae58b146a6c222d95755f9573630d958c2df51dff63663cca8bf6",
+      "artifacts": {
+        "one-byte.archive": "fa1b9e3101aae58b146a6c222d95755f9573630d958c2df51dff63663cca8bf6"
+      },
+      "full_restore": "byte-exact",
+      "status": "pass",
+      "native": {
+        "capabilities": {
+          "amplification": "available",
+          "batch": "n/a \u2014 no batch API",
+          "break_even": "available",
+          "c_g": "available",
+          "decode": "available",
+          "encode": "available",
+          "h_alpha": "available",
+          "ratio": "available",
+          "region": "available"
+        },
+        "corpus_sha256": "4b68ab3847feda7d6c62c1fbcbeebfa35eab7351ed5e78f4ddadea5df64b8015",
+        "full_restore": "byte-exact",
+        "invalid_ranges": 3,
+        "region_checks": 3,
+        "timings_collected": false,
+        "version": "1.5.7"
+      }
+    },
+    {
+      "fixture": "empty",
+      "input_bytes": 0,
+      "input_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive_sha256": "0989764aadd3b9fddeb50570c7b987bdb9c774bc3392bb6be59c4f40817c4e10",
+      "artifacts": {
+        "empty.archive": "0989764aadd3b9fddeb50570c7b987bdb9c774bc3392bb6be59c4f40817c4e10"
+      },
+      "full_restore": "byte-exact",
+      "status": "pass",
+      "native": {
+        "capabilities": {
+          "amplification": "available",
+          "batch": "n/a \u2014 no batch API",
+          "break_even": "available",
+          "c_g": "available",
+          "decode": "available",
+          "encode": "available",
+          "h_alpha": "available",
+          "ratio": "available",
+          "region": "available"
+        },
+        "corpus_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "full_restore": "byte-exact",
+        "invalid_ranges": 3,
+        "region_checks": 1,
+        "timings_collected": false,
+        "version": "1.5.7"
+      }
+    },
+    {
+      "fixture": "exact-block",
+      "input_bytes": 16384,
+      "input_sha256": "4348e3b98e8a327b34ced39c1da9e67cdb4cd5e48e4d7960607a3ae403d35f0c",
+      "archive_sha256": "1e9f1cfcacff83ae9f9676fd25f01af00bd3491d56ed4175dc2851fd23ab36b2",
+      "artifacts": {
+        "exact-block.archive": "1e9f1cfcacff83ae9f9676fd25f01af00bd3491d56ed4175dc2851fd23ab36b2"
+      },
+      "full_restore": "byte-exact",
+      "status": "pass",
+      "native": {
+        "capabilities": {
+          "amplification": "available",
+          "batch": "n/a \u2014 no batch API",
+          "break_even": "available",
+          "c_g": "available",
+          "decode": "available",
+          "encode": "available",
+          "h_alpha": "available",
+          "ratio": "available",
+          "region": "available"
+        },
+        "corpus_sha256": "4348e3b98e8a327b34ced39c1da9e67cdb4cd5e48e4d7960607a3ae403d35f0c",
+        "full_restore": "byte-exact",
+        "invalid_ranges": 3,
+        "region_checks": 108,
+        "timings_collected": false,
+        "version": "1.5.7"
+      }
+    },
+    {
+      "fixture": "cross-block",
+      "input_bytes": 49169,
+      "input_sha256": "845cc9aa7bbecbc4a662afc37127d84cf53f41672ba8b2a6a7881e6a6c29b287",
+      "archive_sha256": "6c2e29c34c4dc178a0f270ce3e7a86765987e9e5b695058b92806e93184fdf00",
+      "artifacts": {
+        "cross-block.archive": "6c2e29c34c4dc178a0f270ce3e7a86765987e9e5b695058b92806e93184fdf00"
+      },
+      "full_restore": "byte-exact",
+      "status": "pass",
+      "native": {
+        "capabilities": {
+          "amplification": "available",
+          "batch": "n/a \u2014 no batch API",
+          "break_even": "available",
+          "c_g": "available",
+          "decode": "available",
+          "encode": "available",
+          "h_alpha": "available",
+          "ratio": "available",
+          "region": "available"
+        },
+        "corpus_sha256": "845cc9aa7bbecbc4a662afc37127d84cf53f41672ba8b2a6a7881e6a6c29b287",
+        "full_restore": "byte-exact",
+        "invalid_ranges": 3,
+        "region_checks": 142,
+        "timings_collected": false,
+        "version": "1.5.7"
+      }
+    }
+  ],
+  "commands": [
+    "bash -c 'source \"$1\"; shift; for fn in \"$@\"; do declare -F \"$fn\" >/dev/null || exit 2; done' contract /home/aeterna/pubrepo/.wk/hwab-pick2/codecs/zstd_seekable.sh codec_name codec_version codec_build codec_compress codec_decompress codec_region codec_supports",
+    "bash /home/aeterna/pubrepo/.wk/hwab-pick2/codecs/zstd_seekable.sh _call codec_name",
+    "bash /home/aeterna/pubrepo/.wk/hwab-pick2/codecs/zstd_seekable.sh _call codec_version",
+    "bash /home/aeterna/pubrepo/.wk/hwab-pick2/codecs/zstd_seekable.sh _call codec_constraints",
+    "bash /home/aeterna/pubrepo/.wk/hwab-pick2/codecs/zstd_seekable.sh _call codec_configuration",
+    "bash /home/aeterna/pubrepo/.wk/hwab-pick2/codecs/zstd_seekable.sh _call codec_build",
+    "git -C /home/aeterna/pubrepo/.wk/hwab-pick2/.work/adapter-check/zstd_seekable-efa4044683/deps/zstd rev-parse HEAD",
+    "git -C /home/aeterna/pubrepo/.wk/hwab-pick2/.work/adapter-check/zstd_seekable-efa4044683/deps/zstd status --porcelain --untracked-files=no",
+    "git -C /home/aeterna/pubrepo/.wk/hwab-pick2/.work/adapter-check/zstd_seekable-efa4044683/deps/zstd submodule status --recursive",
+    "git -C /home/aeterna/pubrepo/.wk/hwab-pick2/.work/adapter-check/zstd_seekable-efa4044683/deps/zstd submodule foreach --quiet --recursive 'test -z \"$(git status --porcelain --untracked-files=no)\"'",
+    "bash /home/aeterna/pubrepo/.wk/hwab-pick2/codecs/zstd_seekable.sh _call codec_library",
+    "/usr/bin/python3 /home/aeterna/pubrepo/.wk/hwab-pick2/harness/resident_fixture.py /home/aeterna/pubrepo/.wk/hwab-pick2/.work/adapter-check/zstd_seekable-efa4044683/fixtures-79qobugv/corpus",
+    "bash /home/aeterna/pubrepo/.wk/hwab-pick2/codecs/zstd_seekable.sh _call codec_compress /home/aeterna/pubrepo/.wk/hwab-pick2/.work/adapter-check/zstd_seekable-efa4044683/fixtures-79qobugv/mixed.input /home/aeterna/pubrepo/.wk/hwab-pick2/.work/adapter-check/zstd_seekable-efa4044683/fixtures-79qobugv/mixed.archive 16384",
+    "bash /home/aeterna/pubrepo/.wk/hwab-pick2/codecs/zstd_seekable.sh _call codec_artifacts /home/aeterna/pubrepo/.wk/hwab-pick2/.work/adapter-check/zstd_seekable-efa4044683/fixtures-79qobugv/mixed.archive",
+    "bash /home/aeterna/pubrepo/.wk/hwab-pick2/codecs/zstd_seekable.sh _call codec_decompress /home/aeterna/pubrepo/.wk/hwab-pick2/.work/adapter-check/zstd_seekable-efa4044683/fixtures-79qobugv/mixed.archive /home/aeterna/pubrepo/.wk/hwab-pick2/.work/adapter-check/zstd_seekable-efa4044683/fixtures-79qobugv/mixed.restored",
+    "bash /home/aeterna/pubrepo/.wk/hwab-pick2/codecs/zstd_seekable.sh _call codec_sidecar /home/aeterna/pubrepo/.wk/hwab-pick2/.work/adapter-check/zstd_seekable-efa4044683/fixtures-79qobugv/mixed.archive",
+    "/usr/bin/python3 /home/aeterna/pubrepo/.wk/hwab-pick2/harness/resident_probe.py --adapter /home/aeterna/pubrepo/.wk/hwab-pick2/codecs/zstd_seekable.sh --library /home/aeterna/pubrepo/.wk/hwab-pick2/.work/adapter-check/zstd_seekable-efa4044683/context.so --archive /home/aeterna/pubrepo/.wk/hwab-pick2/.work/adapter-check/zstd_seekable-efa4044683/fixtures-79qobugv/mixed.archive --original /home/aeterna/pubrepo/.wk/hwab-pick2/.work/adapter-check/zstd_seekable-efa4044683/fixtures-79qobugv/mixed.input --granularity 16384",
+    "bash /home/aeterna/pubrepo/.wk/hwab-pick2/codecs/zstd_seekable.sh _call codec_region /home/aeterna/pubrepo/.wk/hwab-pick2/.work/adapter-check/zstd_seekable-efa4044683/fixtures-79qobugv/mixed.archive 16383 32779 /home/aeterna/pubrepo/.wk/hwab-pick2/.work/adapter-check/zstd_seekable-efa4044683/fixtures-79qobugv/region.out",
+    "bash /home/aeterna/pubrepo/.wk/hwab-pick2/codecs/zstd_seekable.sh _call codec_compress /home/aeterna/pubrepo/.wk/hwab-pick2/.work/adapter-check/zstd_seekable-efa4044683/fixtures-79qobugv/one-byte.input /home/aeterna/pubrepo/.wk/hwab-pick2/.work/adapter-check/zstd_seekable-efa4044683/fixtures-79qobugv/one-byte.archive 16384",
+    "bash /home/aeterna/pubrepo/.wk/hwab-pick2/codecs/zstd_seekable.sh _call codec_artifacts /home/aeterna/pubrepo/.wk/hwab-pick2/.work/adapter-check/zstd_seekable-efa4044683/fixtures-79qobugv/one-byte.archive",
+    "bash /home/aeterna/pubrepo/.wk/hwab-pick2/codecs/zstd_seekable.sh _call codec_decompress /home/aeterna/pubrepo/.wk/hwab-pick2/.work/adapter-check/zstd_seekable-efa4044683/fixtures-79qobugv/one-byte.archive /home/aeterna/pubrepo/.wk/hwab-pick2/.work/adapter-check/zstd_seekable-efa4044683/fixtures-79qobugv/one-byte.restored",
+    "bash /home/aeterna/pubrepo/.wk/hwab-pick2/codecs/zstd_seekable.sh _call codec_sidecar /home/aeterna/pubrepo/.wk/hwab-pick2/.work/adapter-check/zstd_seekable-efa4044683/fixtures-79qobugv/one-byte.archive",
+    "/usr/bin/python3 /home/aeterna/pubrepo/.wk/hwab-pick2/harness/resident_probe.py --adapter /home/aeterna/pubrepo/.wk/hwab-pick2/codecs/zstd_seekable.sh --library /home/aeterna/pubrepo/.wk/hwab-pick2/.work/adapter-check/zstd_seekable-efa4044683/context.so --archive /home/aeterna/pubrepo/.wk/hwab-pick2/.work/adapter-check/zstd_seekable-efa4044683/fixtures-79qobugv/one-byte.archive --original /home/aeterna/pubrepo/.wk/hwab-pick2/.work/adapter-check/zstd_seekable-efa4044683/fixtures-79qobugv/one-byte.input --granularity 16384",
+    "bash /home/aeterna/pubrepo/.wk/hwab-pick2/codecs/zstd_seekable.sh _call codec_region /home/aeterna/pubrepo/.wk/hwab-pick2/.work/adapter-check/zstd_seekable-efa4044683/fixtures-79qobugv/one-byte.archive 1 0 /home/aeterna/pubrepo/.wk/hwab-pick2/.work/adapter-check/zstd_seekable-efa4044683/fixtures-79qobugv/region.out",
+    "bash /home/aeterna/pubrepo/.wk/hwab-pick2/codecs/zstd_seekable.sh _call codec_compress /home/aeterna/pubrepo/.wk/hwab-pick2/.work/adapter-check/zstd_seekable-efa4044683/fixtures-79qobugv/empty.input /home/aeterna/pubrepo/.wk/hwab-pick2/.work/adapter-check/zstd_seekable-efa4044683/fixtures-79qobugv/empty.archive 16384",
+    "bash /home/aeterna/pubrepo/.wk/hwab-pick2/codecs/zstd_seekable.sh _call codec_artifacts /home/aeterna/pubrepo/.wk/hwab-pick2/.work/adapter-check/zstd_seekable-efa4044683/fixtures-79qobugv/empty.archive",
+    "bash /home/aeterna/pubrepo/.wk/hwab-pick2/codecs/zstd_seekable.sh _call codec_decompress /home/aeterna/pubrepo/.wk/hwab-pick2/.work/adapter-check/zstd_seekable-efa4044683/fixtures-79qobugv/empty.archive /home/aeterna/pubrepo/.wk/hwab-pick2/.work/adapter-check/zstd_seekable-efa4044683/fixtures-79qobugv/empty.restored",
+    "bash /home/aeterna/pubrepo/.wk/hwab-pick2/codecs/zstd_seekable.sh _call codec_sidecar /home/aeterna/pubrepo/.wk/hwab-pick2/.work/adapter-check/zstd_seekable-efa4044683/fixtures-79qobugv/empty.archive",
+    "/usr/bin/python3 /home/aeterna/pubrepo/.wk/hwab-pick2/harness/resident_probe.py --adapter /home/aeterna/pubrepo/.wk/hwab-pick2/codecs/zstd_seekable.sh --library /home/aeterna/pubrepo/.wk/hwab-pick2/.work/adapter-check/zstd_seekable-efa4044683/context.so --archive /home/aeterna/pubrepo/.wk/hwab-pick2/.work/adapter-check/zstd_seekable-efa4044683/fixtures-79qobugv/empty.archive --original /home/aeterna/pubrepo/.wk/hwab-pick2/.work/adapter-check/zstd_seekable-efa4044683/fixtures-79qobugv/empty.input --granularity 16384",
+    "bash /home/aeterna/pubrepo/.wk/hwab-pick2/codecs/zstd_seekable.sh _call codec_region /home/aeterna/pubrepo/.wk/hwab-pick2/.work/adapter-check/zstd_seekable-efa4044683/fixtures-79qobugv/empty.archive 0 0 /home/aeterna/pubrepo/.wk/hwab-pick2/.work/adapter-check/zstd_seekable-efa4044683/fixtures-79qobugv/region.out",
+    "bash /home/aeterna/pubrepo/.wk/hwab-pick2/codecs/zstd_seekable.sh _call codec_compress /home/aeterna/pubrepo/.wk/hwab-pick2/.work/adapter-check/zstd_seekable-efa4044683/fixtures-79qobugv/exact-block.input /home/aeterna/pubrepo/.wk/hwab-pick2/.work/adapter-check/zstd_seekable-efa4044683/fixtures-79qobugv/exact-block.archive 16384",
+    "bash /home/aeterna/pubrepo/.wk/hwab-pick2/codecs/zstd_seekable.sh _call codec_artifacts /home/aeterna/pubrepo/.wk/hwab-pick2/.work/adapter-check/zstd_seekable-efa4044683/fixtures-79qobugv/exact-block.archive",
+    "bash /home/aeterna/pubrepo/.wk/hwab-pick2/codecs/zstd_seekable.sh _call codec_decompress /home/aeterna/pubrepo/.wk/hwab-pick2/.work/adapter-check/zstd_seekable-efa4044683/fixtures-79qobugv/exact-block.archive /home/aeterna/pubrepo/.wk/hwab-pick2/.work/adapter-check/zstd_seekable-efa4044683/fixtures-79qobugv/exact-block.restored",
+    "bash /home/aeterna/pubrepo/.wk/hwab-pick2/codecs/zstd_seekable.sh _call codec_sidecar /home/aeterna/pubrepo/.wk/hwab-pick2/.work/adapter-check/zstd_seekable-efa4044683/fixtures-79qobugv/exact-block.archive",
+    "/usr/bin/python3 /home/aeterna/pubrepo/.wk/hwab-pick2/harness/resident_probe.py --adapter /home/aeterna/pubrepo/.wk/hwab-pick2/codecs/zstd_seekable.sh --library /home/aeterna/pubrepo/.wk/hwab-pick2/.work/adapter-check/zstd_seekable-efa4044683/context.so --archive /home/aeterna/pubrepo/.wk/hwab-pick2/.work/adapter-check/zstd_seekable-efa4044683/fixtures-79qobugv/exact-block.archive --original /home/aeterna/pubrepo/.wk/hwab-pick2/.work/adapter-check/zstd_seekable-efa4044683/fixtures-79qobugv/exact-block.input --granularity 16384",
+    "bash /home/aeterna/pubrepo/.wk/hwab-pick2/codecs/zstd_seekable.sh _call codec_region /home/aeterna/pubrepo/.wk/hwab-pick2/.work/adapter-check/zstd_seekable-efa4044683/fixtures-79qobugv/exact-block.archive 16383 1 /home/aeterna/pubrepo/.wk/hwab-pick2/.work/adapter-check/zstd_seekable-efa4044683/fixtures-79qobugv/region.out",
+    "bash /home/aeterna/pubrepo/.wk/hwab-pick2/codecs/zstd_seekable.sh _call codec_compress /home/aeterna/pubrepo/.wk/hwab-pick2/.work/adapter-check/zstd_seekable-efa4044683/fixtures-79qobugv/cross-block.input /home/aeterna/pubrepo/.wk/hwab-pick2/.work/adapter-check/zstd_seekable-efa4044683/fixtures-79qobugv/cross-block.archive 16384",
+    "bash /home/aeterna/pubrepo/.wk/hwab-pick2/codecs/zstd_seekable.sh _call codec_artifacts /home/aeterna/pubrepo/.wk/hwab-pick2/.work/adapter-check/zstd_seekable-efa4044683/fixtures-79qobugv/cross-block.archive",
+    "bash /home/aeterna/pubrepo/.wk/hwab-pick2/codecs/zstd_seekable.sh _call codec_decompress /home/aeterna/pubrepo/.wk/hwab-pick2/.work/adapter-check/zstd_seekable-efa4044683/fixtures-79qobugv/cross-block.archive /home/aeterna/pubrepo/.wk/hwab-pick2/.work/adapter-check/zstd_seekable-efa4044683/fixtures-79qobugv/cross-block.restored",
+    "bash /home/aeterna/pubrepo/.wk/hwab-pick2/codecs/zstd_seekable.sh _call codec_sidecar /home/aeterna/pubrepo/.wk/hwab-pick2/.work/adapter-check/zstd_seekable-efa4044683/fixtures-79qobugv/cross-block.archive",
+    "/usr/bin/python3 /home/aeterna/pubrepo/.wk/hwab-pick2/harness/resident_probe.py --adapter /home/aeterna/pubrepo/.wk/hwab-pick2/codecs/zstd_seekable.sh --library /home/aeterna/pubrepo/.wk/hwab-pick2/.work/adapter-check/zstd_seekable-efa4044683/context.so --archive /home/aeterna/pubrepo/.wk/hwab-pick2/.work/adapter-check/zstd_seekable-efa4044683/fixtures-79qobugv/cross-block.archive --original /home/aeterna/pubrepo/.wk/hwab-pick2/.work/adapter-check/zstd_seekable-efa4044683/fixtures-79qobugv/cross-block.input --granularity 16384",
+    "bash /home/aeterna/pubrepo/.wk/hwab-pick2/codecs/zstd_seekable.sh _call codec_region /home/aeterna/pubrepo/.wk/hwab-pick2/.work/adapter-check/zstd_seekable-efa4044683/fixtures-79qobugv/cross-block.archive 16383 32779 /home/aeterna/pubrepo/.wk/hwab-pick2/.work/adapter-check/zstd_seekable-efa4044683/fixtures-79qobugv/region.out"
+  ],
+  "timings_collected": false
+}
