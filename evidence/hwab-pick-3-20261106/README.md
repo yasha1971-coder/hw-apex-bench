@@ -41,3 +41,23 @@ Prediction: 7/7 rows on the predicted side — hit. xz 16 KiB is on the front by
 
 Secondary observation (not a prediction): against chr1 (PR #78) every chrX row has ratio -3.3 … -5.3 % and p50
 -2.1 … +3.3 %, inside ±10 % / ±25 %.
+
+## Post-acceptance disclosure — 2026-11-06
+
+Повтор недействительного прогона предусмотрен пререгом; ограничение числа повторов заранее не зафиксировано; исход попытки 1 до приёмки попытки 2 не смотрелся.
+
+The last statement records the runner's reported procedure (also stated above); it is not an independently audited access history. The retry limit is a clarification after HWAB-PICK-3b, applicable to future runs, not a retroactive preregistration condition.
+
+After acceptance of attempt 2, attempt 1 chrX was compared with the original prediction. Source: [attempt1-invalid/t2t_chrX.fa/pick.json](attempt1-invalid/t2t_chrX.fa/pick.json), committed in 12107ea60ef6d68c694b06a8852b973ef9830d42. The global frontier was recomputed from unrounded ratio and p50_ms over all measured rows; n/a rows were excluded. Recomputed membership agrees with stored on_front for every measured row.
+
+| codec | g (B) | ratio | p50 (ms) | recomputed on_front | predicted |
+|---|---:|---:|---:|---|---|
+| bgzip | 65280 | 3.17 | 0.0694 | yes | yes |
+| zstd_seekable | 4096 | 2.69 | 0.0308 | yes | yes |
+| zstd_seekable | 16384 | 2.80 | 0.0419 | yes | yes |
+| zstd_seekable | 65536 | 2.94 | 0.0574 | yes | yes |
+| xz | 4096 | 2.81 | 0.222 | no | no |
+| xz | 16384 | 3.18 | 0.314 | yes | yes |
+| xz | 65536 | 3.41 | 0.555 | yes | yes |
+
+Result: 7/7 rows match the prediction. This is additional descriptive corroboration, not a second valid confirmatory run: attempt 1 remains invalid because gate c failed on the control corpus. No measurements were rerun and no raw evidence was changed.
