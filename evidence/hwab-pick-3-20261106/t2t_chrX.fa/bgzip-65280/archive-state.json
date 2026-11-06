@@ -1,0 +1,15 @@
+{
+  "archive": "/tmp/hwref/p3b/t2t_chrX.fa/bgzip-65280/bgzip-311890ff6a/archive",
+  "sidecar": "/tmp/hwref/p3b/t2t_chrX.fa/bgzip-65280/bgzip-311890ff6a/archive.gzi",
+  "library": "/home/aeterna/pubrepo/.wk/hwab-pick2/.work/adapter-check/bgzip-311890ff6a/context.so",
+  "artifacts": {
+    "/tmp/hwref/p3b/t2t_chrX.fa/bgzip-65280/bgzip-311890ff6a/archive": {
+      "bytes": 49228944,
+      "sha256": "7d7afb49741f8bbc900914f8a8cedff302389b608ba2498caff98d5cb44cd611"
+    },
+    "/tmp/hwref/p3b/t2t_chrX.fa/bgzip-65280/bgzip-311890ff6a/archive.gzi": {
+      "bytes": 38328,
+      "sha256": "c521e9e14dae2cf91ea26b1c1a3801f106b044b7f8d71f8ceda82091e9e1b0df"
+    }
+  }
+}

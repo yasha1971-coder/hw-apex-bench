@@ -1,0 +1,4 @@
+bgzip+htslib: build pinned dependencies
+bgzip+htslib: PASS; 5 restores; 1382 native region checks
+Axes: amplification: available, batch: n/a — no batch API, break_even: available, c_g: n/a — no comparable single-parameter baseline, decode: available, encode: available, h_alpha: available, ratio: available, region: available
+Receipt: /home/aeterna/pubrepo/.wk/hwab-pick2/.work/adapter-check/bgzip-311890ff6a/check.json
