@@ -1,0 +1,11 @@
+{
+  "archive": "/tmp/hwref/pick/t2t_chr1.fa/xz-16384/xz-08e1daad81/archive",
+  "sidecar": "",
+  "library": "/home/aeterna/pubrepo/.wk/hwab-pick2/.work/adapter-check/xz-08e1daad81/context.so",
+  "artifacts": {
+    "/tmp/hwref/pick/t2t_chr1.fa/xz-16384/xz-08e1daad81/archive": {
+      "bytes": 75115688,
+      "sha256": "7edbc3059ffdcd9e2216458341a40c5d2eddf8181213ba0bd15453454677a6c7"
+    }
+  }
+}
