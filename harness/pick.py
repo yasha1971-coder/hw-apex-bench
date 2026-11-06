@@ -18,8 +18,15 @@ AXES = ['ratio', 'region', 'amplification', 'break_even']
 
 
 def select(rows, max_p50=None, min_ratio=None):
+    measured = [(i, r) for i, r in enumerate(rows) if r['status'] == 'measured']
     for row in rows:
         row['selected'] = False
+        row['dominated_by'] = [i for i, other in measured
+            if row['status'] == 'measured'
+            and other['ratio'] >= row['ratio'] and other['p50_ms'] <= row['p50_ms']
+            and (other['ratio'] > row['ratio'] or other['p50_ms'] < row['p50_ms'])]
+        row['on_front'] = row['status'] == 'measured' and not row['dominated_by']
+        row['p99_ms'] = row.get('evidence', {}).get('region', {}).get('region_p99_ms', row.get('p99_ms'))
     for codec in sorted({r['codec'] for r in rows}):
         available = [r for r in rows if r['codec'] == codec and r['status'] == 'measured']
         if max_p50 is not None:
@@ -34,8 +41,7 @@ def select(rows, max_p50=None, min_ratio=None):
             min(eligible, key=lambda r: (r['p50_ms'], -r['ratio'], r['g']))['selected'] = True
         else:
             for r in available:
-                r['selected'] = not any(s['ratio'] >= r['ratio'] and s['p50_ms'] <= r['p50_ms']
-                    and (s['ratio'] > r['ratio'] or s['p50_ms'] < r['p50_ms']) for s in available)
+                r['selected'] = r['on_front']
 
 
 def table(rows):
