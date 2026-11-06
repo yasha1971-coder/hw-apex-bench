@@ -11,8 +11,18 @@ BGZF uses only its adapter ceiling of 65 280 B, labelled “≤64 KiB, 65 280 B�
 4/16 KiB are n/a: “BGZF block size fixed by adapter”. Missing qualifications
 produce n/a. Invalid/stale receipts or failed adapters stop with nonzero exit.
 
-The default stars the Pareto frontier separately for each codec (ratio higher,
-p50 lower). `--max-p50 X` selects the largest ratio with p50 at most X ms;
+The default stars the Pareto frontier across all measured rows of this corpus,
+including all codecs and block sizes together. A row is on the frontier exactly
+when no other measured row has ratio >= and p50 <= with at least one strict
+inequality. Ratios use absolute units without normalization. Rows equal on both
+metrics are both on the frontier; n/a rows are excluded.
+This follows HW-APEX-BENCH/CALIBRATION.md at yasha-context commit b648b6c.
+
+Every JSON row includes `on_front` (bool), `dominated_by` (zero-based indices into
+this JSON's rows array, or []), and `p99_ms` (harness region p99 in ms, or null).
+An n/a row has on_front=false and dominated_by=[]. The constraint flags retain
+their existing per-codec selection; selected/★ may then differ from on_front.
+ `--max-p50 X` selects the largest ratio with p50 at most X ms;
 `--min-ratio R` selects the smallest p50 with input/archive ratio at least R.
 These options are mutually exclusive; an unsatisfied constraint fails.
 There is no single universal best block size.

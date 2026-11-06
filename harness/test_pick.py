@@ -37,6 +37,60 @@ class PickTests(unittest.TestCase):
         self.assertEqual(rows[0]['amplification'],1.23456)
 
 
+class GlobalFrontTests(unittest.TestCase):
+    def row(self, codec, ratio, latency):
+        return dict(codec=codec, g=4096, status='measured', ratio=ratio, p50_ms=latency)
+
+    def test_cross_codec_domination(self):
+        rows=[self.row('a',2,1),self.row('b',3,1)]
+        select(rows)
+        self.assertEqual([r['on_front'] for r in rows],[False,True])
+        self.assertEqual(rows[0]['dominated_by'],[1])
+        self.assertEqual(rows[1]['dominated_by'],[])
+
+    def test_equal_rows_both_on_front(self):
+        rows=[self.row('a',2,1),self.row('b',2,1)]
+        select(rows)
+        self.assertTrue(all(r['on_front'] and r['selected'] for r in rows))
+
+    def test_na_excluded(self):
+        rows=[dict(codec='a',g=4096,status='n/a'),self.row('b',2,1)]
+        select(rows)
+        self.assertFalse(rows[0]['on_front'])
+        self.assertEqual(rows[0]['dominated_by'],[])
+        self.assertIsNone(rows[0]['p99_ms'])
+        self.assertTrue(rows[1]['on_front'])
+
+    def test_single_row_and_p99(self):
+        rows=[self.row('a',2,1)]
+        rows[0]['evidence']={'region':{'region_p99_ms':1.5}}
+        select(rows)
+        self.assertTrue(rows[0]['on_front'])
+        self.assertEqual(rows[0]['p99_ms'],1.5)
+
+    def test_constraint_selection_still_per_codec(self):
+        rows=[self.row('a',2,1),self.row('b',3,1)]
+        for kwargs in ({'max_p50':2},{'min_ratio':1}):
+            select(rows,**kwargs)
+            self.assertTrue(all(r['selected'] for r in rows))
+            self.assertFalse(rows[0]['on_front'])
+
+    def test_pr78_fixed_fronts(self):
+        import json
+        common={('bgzip',65280),('zstd_seekable',4096),
+                ('zstd_seekable',16384),('zstd_seekable',65536),('xz',65536)}
+        expected={'enwik8':common,'silesia.tar':common|{('xz',16384)},
+                  't2t_chr1.fa':common|{('xz',16384)}}
+        root=Path(__file__).resolve().parents[1]/'evidence/hwab-pick-2-20261105'
+        for corpus, wanted in expected.items():
+            with self.subTest(corpus=corpus):
+                rows=json.loads((root/corpus/'pick.json').read_text())['rows']
+                select(rows)
+                actual={(r['codec'],r['g']) for r in rows if r['selected']}
+                self.assertEqual(actual,wanted)
+                print('FIXED_FRONT',corpus,sorted(actual))
+
+
 class IntegrityTests(unittest.TestCase):
     def test_mutation_and_removal_refused_before_decoder(self):
         with tempfile.TemporaryDirectory() as tmp:

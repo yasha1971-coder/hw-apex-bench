@@ -128,5 +128,15 @@
     "sha256": "d8838e0bc755ebbd3ba35fbbfd6d3970e74684a6906a5b0612b5c07cd7e56136",
     "preparation": "bytes [offset, offset+bytes) of the uncompressed t2t_chm13v2_0 FASTA: the first record, from its header line to the byte before the next \">\"; no changes",
     "verification_status": "source md5 cd1e52ce400c027ed0b7ab4b9d613f5a checked 2026-11-05"
+  },
+  "t2t_chm13v2_0_chrX_record": {
+    "id": "t2t-chm13v2.0-chrX-record",
+    "source": "t2t_chm13v2_0",
+    "header": ">CP068255.2 Homo sapiens isolate CHM13 chromosome X",
+    "offset": 2936814021,
+    "bytes": 156187863,
+    "sha256": "46acaa7859fc66ed3069eee62dc4c9121139dafc88572d32d0194e57ad3eb240",
+    "preparation": "bytes [offset, offset+bytes) of the uncompressed t2t_chm13v2_0 FASTA: the record with header \"... chromosome X\", from its header line to the byte before the next \">\"; no changes",
+    "verification_status": "source md5 cd1e52ce400c027ed0b7ab4b9d613f5a checked 2026-11-06"
   }
 }

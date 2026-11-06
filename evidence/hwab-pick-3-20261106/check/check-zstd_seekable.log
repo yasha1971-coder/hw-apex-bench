@@ -1,0 +1,4 @@
+zstd-seekable: build pinned dependencies
+zstd-seekable: PASS; 5 restores; 4454 native region checks
+Axes: amplification: available, batch: n/a — no batch API, break_even: available, c_g: available, decode: available, encode: available, h_alpha: available, ratio: available, region: available
+Receipt: /home/aeterna/pubrepo/.wk/hwab-pick2/.work/adapter-check/zstd_seekable-efa4044683/check.json

@@ -1,0 +1,15 @@
+silesia.tar  bgzip-65280          ratio 3.029061 == 3.029061 | archives == (2 files) | p50 0.0548 vs 0.0557 ms (-1.7 %) ok
+silesia.tar  xz-4096              ratio 2.551506 == 2.551506 | archives == (1 files) | p50 0.2542 vs 0.2484 ms (+2.3 %) ok
+silesia.tar  xz-16384             ratio 3.075486 == 3.075486 | archives == (1 files) | p50 0.3314 vs 0.3338 ms (-0.7 %) ok
+silesia.tar  xz-65536             ratio 3.499503 == 3.499503 | archives == (1 files) | p50 0.5791 vs 0.5650 ms (+2.5 %) ok
+silesia.tar  zstd_seekable-4096   ratio 2.337156 == 2.337156 | archives == (1 files) | p50 0.0219 vs 0.0220 ms (-0.5 %) ok
+silesia.tar  zstd_seekable-16384  ratio 2.668778 == 2.668778 | archives == (1 files) | p50 0.0263 vs 0.0263 ms (-0.1 %) ok
+silesia.tar  zstd_seekable-65536  ratio 2.880193 == 2.880193 | archives == (1 files) | p50 0.0421 vs 0.0427 ms (-1.4 %) ok
+enwik8       bgzip-65280          ratio 2.632263 == 2.632263 | archives == (2 files) | p50 0.0662 vs 0.0662 ms (+0.1 %) ok
+enwik8       xz-4096              ratio 2.126027 == 2.126027 | archives == (1 files) | p50 0.3005 vs 0.3085 ms (-2.6 %) ok
+enwik8       xz-16384             ratio 2.520953 == 2.520953 | archives == (1 files) | p50 0.4097 vs 0.4173 ms (-1.8 %) ok
+enwik8       xz-65536             ratio 2.841728 == 2.841728 | archives == (1 files) | p50 0.7123 vs 0.7109 ms (+0.2 %) ok
+enwik8       zstd_seekable-4096   ratio 2.079994 == 2.079994 | archives == (1 files) | p50 0.0236 vs 0.0235 ms (+0.5 %) ok
+enwik8       zstd_seekable-16384  ratio 2.328860 == 2.328860 | archives == (1 files) | p50 0.0300 vs 0.0300 ms (+0.1 %) ok
+enwik8       zstd_seekable-65536  ratio 2.521780 == 2.521780 | archives == (1 files) | p50 0.0471 vs 0.0467 ms (+0.8 %) ok
+gates b, c: PASS
