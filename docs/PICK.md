@@ -56,3 +56,22 @@ per-case corruption records and before/after full unittest suite logs.
 Qualifications are rebuilt in the acceptance job because their receipts bind
 absolute paths and build artifacts; copying receipts between runners is unsafe.
 README publication tables and committed results are not updated by this command.
+
+## Getting started and entry points
+
+Choose a codec and block size for small reads; compare density, latency and decoded work.
+Start with the [copy-and-run guide](GETTING_STARTED.md): prerequisites,
+a small generated input, expected outputs and troubleshooting. Linux required.
+The correctness check builds pinned dependencies; it does not collect timings.
+
+```bash
+git clone https://github.com/yasha1971-coder/hw-apex-bench.git
+cd hw-apex-bench
+./run.sh --check codecs/xz.sh     # first success: byte-exact correctness, not speed
+```
+
+The no-argument `./run.sh` starts the expensive historical runner; it is not the quick start.
+Native subsets use `--measure`; bare `--codec` is not a supported entry point.
+Use `--plan` to inspect capability decisions without starting measurements.
+The documented corpus URLs and checksums are in [corpora.json](../corpora.json).
+
