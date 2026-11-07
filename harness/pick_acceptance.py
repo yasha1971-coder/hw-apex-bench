@@ -8,6 +8,7 @@ import random
 import subprocess
 import sys
 import tempfile
+import time
 
 from native_execution import digest
 from pick import table, verify_regions
@@ -93,6 +94,23 @@ def main():
     out = root/'pick'
     subprocess.run(['bash', 'run.sh', '--pick', str(source), '--output-dir', str(out)], check=True)
     campaign(out, source)
+    extended = root/'pick-extended'
+    started = time.monotonic()
+    subprocess.run(['bash', 'run.sh', '--pick', str(source), '--g', '64K,1M,16M',
+                    '--output-dir', str(extended)], check=True)
+    elapsed = time.monotonic() - started
+    result = json.loads((extended/'pick.json').read_text())
+    expected = {('bgzip', 65280)} | {(c, g) for c in ('xz', 'zstd_seekable')
+                                   for g in (65536, 1048576, 16777216)}
+    if (result['g_set'] != [65536, 1048576, 16777216]
+            or len(result['rows']) != 7
+            or {(r['codec'], r['g']) for r in result['rows'] if r['status'] == 'measured'} != expected
+            or result['input_sha256'] != digest(source)
+            or (extended/'pick.md').read_text() != table(result['rows'])):
+        raise ValueError('extended grid acceptance failed')
+    print(f'EXTENDED_PICK_SECONDS g=64K,1M,16M seconds={elapsed:.9f}', flush=True)
+    for codec, seconds in sorted(result['codec_seconds'].items()):
+        print(f'EXTENDED_CODEC_SECONDS codec={codec} seconds={seconds:.9f}', flush=True)
 
 
 if __name__ == '__main__':

@@ -4,6 +4,7 @@ import copy
 import hashlib
 import json
 import math
+import re
 from pathlib import Path
 import subprocess
 import sys
@@ -15,6 +16,32 @@ from qualification import ROOT, work_directory
 from resident_probe import Context
 
 AXES = ['ratio', 'region', 'amplification', 'break_even']
+
+
+DEFAULT_G = (4096, 16384, 65536)
+# Pinned zstd 1.5.7 contrib/seekable_format/zstd_seekable.h:
+# ZSTD_SEEKABLE_MAX_FRAME_DECOMPRESSED_SIZE. XZ's --block-size accepts
+# these positive byte counts too; this shared grid uses the intersection.
+MAX_G = 0x40000000
+
+
+def parse_g(value):
+    sizes = []
+    for token in value.split(','):
+        match = re.fullmatch(r'([0-9]+)([KM]?)', token)
+        if not match:
+            raise argparse.ArgumentTypeError('--g: expected comma-separated positive bytes or K/M sizes')
+        size = int(match[1]) * {'': 1, 'K': 1024, 'M': 1024**2}[match[2]]
+        if not 1 <= size <= MAX_G:
+            raise argparse.ArgumentTypeError('--g: size outside adapter range 1..1073741824 B (zstd-seekable limit)')
+        if size in sizes:
+            raise argparse.ArgumentTypeError('--g: duplicate size ' + str(size))
+        sizes.append(size)
+    return sizes
+
+
+def codec_grid(codec, sizes):
+    return (65280,) if codec == 'bgzip' else tuple(sizes)
 
 
 def select(rows, max_p50=None, min_ratio=None):
@@ -48,7 +75,8 @@ def table(rows):
     lines = ['| Codec | g | ratio | p50 ms | amplification | break-even N | selection / reason |',
              '|---|---|---:|---:|---:|---:|---|']
     for r in rows:
-        label = '≤64 KiB, 65 280 B' if r['g'] == 65280 else str(r['g']//1024) + ' KiB'
+        label = ('65 280 B (fixed, not matched to g)' if r['codec'] == 'bgzip'
+                 else (str(r['g']//1024) + ' KiB' if r['g'] % 1024 == 0 else str(r['g']) + ' B'))
         values = [format(r[k], '.3g') if r.get(k) is not None else 'n/a'
                   for k in ('ratio', 'p50_ms', 'amplification', 'break_even_N')]
         lines.append('| ' + ' | '.join([r['codec'], label, *values,
@@ -92,6 +120,8 @@ def main():
     parser.add_argument('input', type=Path)
     parser.add_argument('--work', type=Path, default=ROOT/'.work/adapter-check')
     parser.add_argument('--output-dir', type=Path)
+    parser.add_argument('--g', type=parse_g, default=list(DEFAULT_G),
+                        help='comma-separated byte sizes, K=KiB, M=MiB; default 4K,16K,64K')
     limits = parser.add_mutually_exclusive_group()
     limits.add_argument('--max-p50', type=float)
     limits.add_argument('--min-ratio', type=float)
@@ -119,19 +149,15 @@ def main():
             work = work_directory(adapter, args.work)
             if not (work/'check.json').is_file():
                 reason = 'adapter has no --check receipt'
-                for g in (4096,16384,65280 if codec == 'bgzip' else 65536):
+                for g in codec_grid(codec, args.g):
                     rows.append(dict(codec=codec,g=g,status='n/a',reason=reason))
                 continue
             codec_started = time.monotonic()
             plan = plan_adapter(adapter, work, AXES)
             def measure(checked):
                 points = []
-                for g in (4096,16384,65280 if codec == 'bgzip' else 65536):
+                for g in codec_grid(codec, args.g):
                     row = dict(codec=codec,g=g,status='n/a')
-                    if codec == 'bgzip' and g != 65280:
-                        row['reason'] = 'BGZF block size fixed by adapter'
-                        points.append(row)
-                        continue
                     directory = out/(codec+'-'+str(g)); directory.mkdir()
                     point = copy.deepcopy(checked)
                     point['configuration']['granularity'] = g
@@ -164,7 +190,7 @@ def main():
         if not any(r['status'] == 'measured' for r in rows):
             raise ValueError('no qualified measurements; run --check first')
         select(rows, args.max_p50, args.min_ratio)
-        receipt = dict(schema='cabench-pick-v1',input_sha256=initial,
+        receipt = dict(schema='cabench-pick-v1',input_sha256=initial,g_set=args.g,
                        elapsed_seconds=time.monotonic()-started,codec_seconds=codec_seconds,rows=rows)
         (out/'pick.json').write_text(json.dumps(receipt,indent=2,allow_nan=False)+'\n')
         rendered = table(rows)

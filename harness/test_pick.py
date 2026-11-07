@@ -118,5 +118,72 @@ class IntegrityTests(unittest.TestCase):
                 decoder.return_value.close.assert_called_once()
 
 
+class GridTests(unittest.TestCase):
+    def test_parse_units_and_order(self):
+        from pick import parse_g
+        self.assertEqual(parse_g('64K,256K,1M,2M,4M,8M,16M'),
+                         [65536,262144,1048576,2097152,4194304,8388608,16777216])
+        self.assertEqual(parse_g('17,1M,64K'), [17,1048576,65536])
+
+    def test_invalid_grid_before_any_work(self):
+        import contextlib, io
+        from pick import main
+        for value in ('', '0', '-1', '0K', '1k', '1KiB', '1.5M', '1K,',
+                      '1,,2', '1K,1024', '1M,1024K', '1025M', '1073741825'):
+            with self.subTest(value=value), patch('sys.argv', ['pick', 'unused', '--g='+value]), \
+                 patch('pick.execute') as execute, patch('pick.digest') as digest_source, \
+                 contextlib.redirect_stderr(io.StringIO()) as err:
+                with self.assertRaises(SystemExit) as exc:
+                    main()
+                self.assertNotEqual(exc.exception.code, 0)
+                self.assertIn('--g', err.getvalue())
+                execute.assert_not_called(); digest_source.assert_not_called()
+
+    def test_default_and_bgzf_once(self):
+        from pick import DEFAULT_G, codec_grid, parse_g
+        self.assertEqual(DEFAULT_G, (4096,16384,65536))
+        for grid in (DEFAULT_G, parse_g('64K,1M,16M'), parse_g('65280,1')):
+            pairs=[(c,g) for c in ('bgzip','zstd_seekable','xz') for g in codec_grid(c,grid)]
+            self.assertEqual([x for x in pairs if x[0]=='bgzip'], [('bgzip',65280)])
+            self.assertEqual(len(pairs), 1+2*len(grid))
+
+    def test_adapter_limit_boundary(self):
+        from pick import parse_g, MAX_G
+        self.assertEqual(parse_g(str(MAX_G)), [MAX_G])
+        self.assertEqual(parse_g('1'), [1])
+
+    def test_labels_do_not_round_bytes_or_mislabel_non_bgzf(self):
+        rows=[dict(codec=c,g=g,status='n/a') for c,g in [('bgzip',65280),('xz',65280),('xz',17)]]
+        rendered=table(rows)
+        self.assertEqual(rendered.count('fixed, not matched to g'),1)
+        self.assertIn('| xz | 65280 B |',rendered)
+        self.assertIn('| xz | 17 B |',rendered)
+
+    def test_historical_fields_and_fronts_preserved(self):
+        import copy, json
+        from pick import DEFAULT_G, codec_grid
+        root=Path(__file__).resolve().parents[1]/'evidence'
+        paths=[root/'hwab-pick-2-20261105'/c/'pick.json' for c in ('enwik8','silesia.tar','t2t_chr1.fa')]
+        paths += [root/'hwab-pick-3-20261106'/p/'t2t_chrX.fa/pick.json' for p in ('','attempt1-invalid')]
+        common={('bgzip',65280),('zstd_seekable',4096),('zstd_seekable',16384),('zstd_seekable',65536),('xz',65536)}
+        for path in paths:
+            with self.subTest(path=path):
+                original=json.loads(path.read_text())['rows']
+                select(original)
+                by_pair={(r['codec'],r['g']):r for r in original if r['status']=='measured'}
+                rows=[copy.deepcopy(by_pair[c,g]) for c in ('bgzip','zstd_seekable','xz') for g in codec_grid(c,DEFAULT_G)]
+                before=json.dumps([{k:v for k,v in r.items() if k not in ('selected','on_front','dominated_by')} for r in rows],sort_keys=True)
+                select(rows)
+                after=json.dumps([{k:v for k,v in r.items() if k not in ('selected','on_front','dominated_by')} for r in rows],sort_keys=True)
+                self.assertEqual(before,after)
+                self.assertEqual(len(rows),7)
+                expected=common if path.parent.name=='enwik8' else common|{('xz',16384)}
+                self.assertEqual({(r['codec'],r['g']) for r in rows if r['on_front']},expected)
+                for row in rows:
+                    for i in row['dominated_by']:
+                        self.assertGreaterEqual(rows[i]['ratio'],row['ratio'])
+                        self.assertLessEqual(rows[i]['p50_ms'],row['p50_ms'])
+
+
 if __name__ == '__main__':
     unittest.main()
