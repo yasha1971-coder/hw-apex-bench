@@ -204,5 +204,6 @@ jobs:
             .work/pick-suite-*/**
             .work/pick-acceptance.log
             .work/pick-acceptance/pick/**
+            .work/pick-acceptance/pick-extended/**
             .work/adapter-check/**/check.json
             .work/adapter-check/**/check.log

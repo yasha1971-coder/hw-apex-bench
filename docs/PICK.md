@@ -6,10 +6,25 @@ adapters after `./run.sh --check codecs/bgzip.sh` (and similarly for
 Build prerequisites and source pins are those of the existing harness.
 The output directory must not exist. No real corpus is downloaded by pick.
 
-The candidates are 4, 16 and 64 KiB for zstd-seekable and blocked XZ.
-BGZF uses only its adapter ceiling of 65 280 B, labelled “≤64 KiB, 65 280 B”;
-4/16 KiB are n/a: “BGZF block size fixed by adapter”. Missing qualifications
-produce n/a. Invalid/stale receipts or failed adapters stop with nonzero exit.
+Without `--g`, zstd-seekable and blocked XZ use 4, 16 and 64 KiB.
+`--g` accepts a comma-separated ordered list of positive byte counts, optionally
+with uppercase K (KiB) or M (MiB). Example:
+
+```bash
+./run.sh --pick input.bin --g 64K,256K,1M,2M,4M,8M,16M --output-dir pick-large
+```
+
+BGZF always contributes exactly one row at 65 280 B, labelled
+“fixed, not matched to g”; it is independent of the requested grid.
+The default thus contains seven rows, without the former two BGZF n/a rows.
+Missing qualifications still produce n/a for the applicable configurations.
+Invalid syntax, zero/negative sizes, equivalent duplicates (e.g. 1M,1024K),
+and sizes outside 1..1 073 741 824 bytes fail before any measurement.
+The common upper limit comes from `ZSTD_SEEKABLE_MAX_FRAME_DECOMPRESSED_SIZE`
+in [the pinned zstd header](https://github.com/facebook/zstd/blob/f8745da6ff1ad1e7bab384bd1f9d742439278e99/contrib/seekable_format/zstd_seekable.h);
+XZ accepts this range too. No powers-of-two restriction is imposed.
+`pick.json` records requested byte sizes in run-level `g_set`, preserving order.
+Invalid/stale receipts or failed adapters stop with nonzero exit.
 
 The default stars the Pareto frontier across all measured rows of this corpus,
 including all codecs and block sizes together. A row is on the frontier exactly
@@ -74,4 +89,3 @@ The no-argument `./run.sh` starts the expensive historical runner; it is not the
 Native subsets use `--measure`; bare `--codec` is not a supported entry point.
 Use `--plan` to inspect capability decisions without starting measurements.
 The documented corpus URLs and checksums are in [corpora.json](../corpora.json).
-
