@@ -185,5 +185,25 @@ class GridTests(unittest.TestCase):
                         self.assertLessEqual(rows[i]['p50_ms'],row['p50_ms'])
 
 
+class RegionSizeTests(unittest.TestCase):
+    def test_parse_region_size(self):
+        from pick import parse_region_size
+        for value, expected in [('4K',4096),('64K',65536),('2M',2097152),('17',17)]:
+            self.assertEqual(parse_region_size(value), expected)
+
+    def test_invalid_region_and_unknown_options_before_measurement(self):
+        import contextlib, io
+        from pick import main
+        options=[['--region-size='+v] for v in ('0','-1','1KiB','1k','1,2','1.5M','',str(1<<64))]
+        options += [['--codec-opt','zstd_seekable:level=19'],['--codec-opt','unknown:option=3']]
+        for option in options:
+            with self.subTest(option=option), patch('sys.argv',['pick','unused',*option]), \
+                 patch('pick.execute') as execute, patch('pick.digest') as digest_source, \
+                 contextlib.redirect_stderr(io.StringIO()):
+                with self.assertRaises(SystemExit) as exc: main()
+                self.assertNotEqual(exc.exception.code,0)
+                execute.assert_not_called(); digest_source.assert_not_called()
+
+
 if __name__ == '__main__':
     unittest.main()

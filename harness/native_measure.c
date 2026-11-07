@@ -5,6 +5,7 @@
  */
 #include "resident_context.h"
 #include <dlfcn.h>
+#include <errno.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -35,19 +36,28 @@ static uint64_t rng(uint64_t *s) {
     return *s;
 }
 int main(int argc,char **argv) {
-    if(argc!=6 && argc!=7) die("usage: native_measure LIB ARCHIVE ORIGINAL region|decode SIDECAR [REPEATS]");
+    if(argc!=6 && argc!=7) die("usage: native_measure LIB ARCHIVE ORIGINAL region|decode SIDECAR [REPEATS or REGION_BYTES]");
     int counts=!strcmp(argv[4],"amplification");
     int region=!strcmp(argv[4],"region") || counts;
     if(!region && strcmp(argv[4],"decode")) die("unknown phase");
     int repeats=5;
+    size_t region_bytes=16384;
     if(argc==7) {
-        char *end; long n=strtol(argv[6],&end,10);
-        if(!*argv[6] || *end || n<0 || n>20 || region) die("invalid repeats");
-        repeats=(int)n;
+        char *end; errno=0;
+        for(const char *p=argv[6];*p;p++) if(*p<'0' || *p>'9') die("invalid numeric argument");
+        unsigned long long n=strtoull(argv[6],&end,10);
+        if(!*argv[6] || *end || errno) die("invalid numeric argument");
+        if(region) {
+            if(!n || n>SIZE_MAX-32 || n>INT64_MAX) die("invalid region size");
+            region_bytes=(size_t)n;
+        } else {
+            if(n>20) die("invalid repeats");
+            repeats=(int)n;
+        }
     }
     size_t an,fn;
     unsigned char *arc=readall(argv[2],&an),*original=readall(argv[3],&fn);
-    if(region && fn<16384) die("region corpus must contain at least 16384 bytes");
+    if(region && fn<region_bytes) die("region exceeds corpus size");
     void *lib=dlopen(argv[1],RTLD_NOW|RTLD_LOCAL); if(!lib) die("load context library");
     unsigned (*abi)(void)=symbol(lib,"hc_abi");
     void *(*open_ctx)(const void*,size_t,const char*,uint64_t)=symbol(lib,"hc_open");
@@ -60,7 +70,7 @@ int main(int argc,char **argv) {
     if(abi()!=2) die("unsupported context ABI");
     void *ctx=open_ctx(arc,an,*argv[5]?argv[5]:NULL,UINT64_MAX);
     if(!ctx || size_ctx(ctx)!=fn) die("archive size mismatch");
-    size_t length=region?16384:fn;
+    size_t length=region?region_bytes:fn;
     if(length>SIZE_MAX-32) die("output size overflow");
     unsigned char *guard=alloc(length+32),*out=guard+16;
     memset(guard,0xa5,length+32); /* prefault and guards outside timing */
@@ -79,8 +89,8 @@ int main(int argc,char **argv) {
         for(unsigned i=0;i<16;i++)
             if(guard[i]!=0xa5 || guard[16+length+i]!=0xa5) die("destination guard overwritten");
         if(q<0) continue;
-        if(counts) printf("{\"query\":%d,\"byte_offset\":%llu,\"requested_bytes\":16384,\"verified\":true,\"decoded_bytes\":%llu}\n",q,(unsigned long long)start,(unsigned long long)count_bytes(ctx));
-        else if(region) printf("{\"query\":%d,\"byte_offset\":%llu,\"requested_bytes\":16384,\"verified\":true,\"latency_ms\":%.9f}\n",q,(unsigned long long)start,elapsed);
+        if(counts) printf("{\"query\":%d,\"byte_offset\":%llu,\"requested_bytes\":%zu,\"verified\":true,\"decoded_bytes\":%llu}\n",q,(unsigned long long)start,length,(unsigned long long)count_bytes(ctx));
+        else if(region) printf("{\"query\":%d,\"byte_offset\":%llu,\"requested_bytes\":%zu,\"verified\":true,\"latency_ms\":%.9f}\n",q,(unsigned long long)start,length,elapsed);
         else printf("{\"repeat\":%d,\"wall_ms\":%.9f,\"verified_bytes\":%zu,\"verified\":true}\n",q,elapsed,fn);
     }
     close_ctx(ctx); dlclose(lib); free(guard); free(original); free(arc);
