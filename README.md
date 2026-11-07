@@ -52,23 +52,15 @@ This is the preserved chr1 CPU snapshot: three formats, four configurations, 200
 [Explore the measurements →](https://yasha1971-coder.github.io/hw-apex-bench/)
 [Add your codec →](CONTRIBUTING.md)
 
-## Try it
+## Quick start
 
-Choose a codec and block size for small reads; compare density, latency and decoded work.
-Start with the [copy-and-run guide](docs/GETTING_STARTED.md): prerequisites,
-a small generated input, expected outputs and troubleshooting. Linux required.
-The correctness check builds pinned dependencies; it does not collect timings.
+From the repository root on Ubuntu, this prints the Pareto frontier of ratio/p50 across codecs and block sizes g; see [pick options](docs/PICK.md).
 
 ```bash
-git clone https://github.com/yasha1971-coder/hw-apex-bench.git
-cd hw-apex-bench
-./run.sh --check codecs/xz.sh     # first success: byte-exact correctness, not speed
+sudo apt-get update -qq && sudo apt-get install -y -qq build-essential autoconf automake cmake zlib1g-dev && python3 harness/quickstart.py download
+for codec in bgzip zstd_seekable xz; do ./run.sh --check "codecs/$codec.sh" || exit; done
+./run.sh --pick enwik8 --output-dir .work/quickstart-pick
 ```
-
-The no-argument `./run.sh` starts the expensive historical runner; it is not the quick start.
-Native subsets use `--measure`; bare `--codec` is not a supported entry point.
-Use `--plan` to inspect capability decisions without starting measurements.
-The documented corpus URLs and checksums are in [corpora.json](corpora.json).
 
 ## Nine axes
 
