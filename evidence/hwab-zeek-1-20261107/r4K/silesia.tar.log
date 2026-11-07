@@ -1,0 +1,21 @@
+| Codec | g | ratio | p50 ms | amplification | break-even N | selection / reason |
+|---|---|---:|---:|---:|---:|---|
+| bgzip | 65 280 B (fixed, not matched to g) | 3.03 | 0.0524 | 16.7 | 3.47e+03 | ★ |
+| zstd_seekable | 64 KiB | 2.88 | 0.0407 | 17.2 | 3.4e+03 | ★ |
+| zstd_seekable | 256 KiB | 3.04 | 0.112 | 45.9 | 1.32e+03 | ★ |
+| zstd_seekable | 1024 KiB | 3.14 | 0.314 | 144 | 419 | ★ |
+| zstd_seekable | 2048 KiB | 3.16 | 0.58 | 272 | 235 |  |
+| zstd_seekable | 4096 KiB | 3.17 | 1.07 | 485 | 128 |  |
+| zstd_seekable | 8192 KiB | 3.18 | 2.06 | 980 | 66 |  |
+| zstd_seekable | 16384 KiB | 3.19 | 4.84 | 1.96e+03 | 30 |  |
+| xz | 64 KiB | 3.5 | 0.559 | 17.2 | 3.6e+03 | ★ |
+| xz | 256 KiB | 3.79 | 1.94 | 64.6 | 913 | ★ |
+| xz | 1024 KiB | 4 | 6.94 | 256 | 240 | ★ |
+| xz | 2048 KiB | 4.08 | 13.5 | 512 | 119 | ★ |
+| xz | 4096 KiB | 4.16 | 29.2 | 1.01e+03 | 54 | ★ |
+| xz | 8192 KiB | 4.22 | 64.9 | 2.02e+03 | 24 | ★ |
+| xz | 16384 KiB | 4.27 | 119 | 3.96e+03 | 13 | ★ |
+
+real	8m10.532s
+user	7m55.354s
+sys	0m13.939s

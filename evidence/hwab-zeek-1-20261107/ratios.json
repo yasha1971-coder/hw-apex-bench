@@ -1,0 +1,29 @@
+{
+ "results": {
+  "silesia.tar": {
+   "p50_2M_over_256K_4K": 5.179817571670975,
+   "p50_2M_over_256K_64K": 3.5907411526843127,
+   "ratio_loss_256K_vs_2M": 0.04043714441869928,
+   "hit1": false,
+   "hit2": true,
+   "hit3": true
+  },
+  "enwik8": {
+   "p50_2M_over_256K_4K": 3.884541242896298,
+   "p50_2M_over_256K_64K": 3.554396640173715,
+   "ratio_loss_256K_vs_2M": 0.0620538020248762,
+   "hit1": false,
+   "hit2": true,
+   "hit3": false
+  },
+  "t2t_chrX.fa": {
+   "p50_2M_over_256K_4K": 4.336606125222802,
+   "p50_2M_over_256K_64K": 4.282065267226111,
+   "ratio_loss_256K_vs_2M": 0.05444876784821395,
+   "hit1": false,
+   "hit2": true,
+   "hit3": true
+  }
+ },
+ "hit": false
+}
