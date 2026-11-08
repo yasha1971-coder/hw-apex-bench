@@ -1,0 +1,11 @@
+{
+  "archive": "/tmp/hwref/z1/main/r4K/t2t_chrX.fa/zstd_seekable-2097152/zstd_seekable-efa4044683/archive",
+  "sidecar": "",
+  "library": "/home/aeterna/pubrepo/.wk/hwab-pick2/.work/adapter-check/zstd_seekable-efa4044683/context.so",
+  "artifacts": {
+    "/tmp/hwref/z1/main/r4K/t2t_chrX.fa/zstd_seekable-2097152/zstd_seekable-efa4044683/archive": {
+      "bytes": 51034378,
+      "sha256": "6cbbe7d1f9e6afd84b4f53910f985a29c190e1dc7684f35161d640ec2ffc9005"
+    }
+  }
+}

@@ -1,0 +1,68 @@
+a) default grid 7/7 measured rows on silesia_tar and enwik8, one host ['ace-core']: PASS
+   silesia.tar  bgzip-65280          ratio/archives == | p50 0.0557 vs 0.0557 (-0.1 %, tol 10 %) ok
+   silesia.tar  xz-4096              ratio/archives == | p50 0.2516 vs 0.2484 (+1.3 %, tol 10 %) ok
+   silesia.tar  xz-16384             ratio/archives == | p50 0.3262 vs 0.3338 (-2.3 %, tol 10 %) ok
+   silesia.tar  xz-65536             ratio/archives == | p50 0.5866 vs 0.5650 (+3.8 %, tol 10 %) ok
+   silesia.tar  zstd_seekable-4096   ratio/archives == | p50 0.0220 vs 0.0220 (-0.1 %, tol 10 %) ok
+   silesia.tar  zstd_seekable-16384  ratio/archives == | p50 0.0266 vs 0.0263 (+1.1 %, tol 10 %) ok
+   silesia.tar  zstd_seekable-65536  ratio/archives == | p50 0.0430 vs 0.0427 (+0.8 %, tol 10 %) ok
+   enwik8       bgzip-65280          ratio/archives == | p50 0.0663 vs 0.0662 (+0.2 %, tol 10 %) ok
+   enwik8       xz-4096              ratio/archives == | p50 0.3072 vs 0.3085 (-0.4 %, tol 10 %) ok
+   enwik8       xz-16384             ratio/archives == | p50 0.4091 vs 0.4173 (-2.0 %, tol 10 %) ok
+   enwik8       xz-65536             ratio/archives == | p50 0.7014 vs 0.7109 (-1.3 %, tol 10 %) ok
+   enwik8       zstd_seekable-4096   ratio/archives == | p50 0.0237 vs 0.0235 (+0.9 %, tol 10 %) ok
+   enwik8       zstd_seekable-16384  ratio/archives == | p50 0.0302 vs 0.0300 (+0.8 %, tol 10 %) ok
+   enwik8       zstd_seekable-65536  ratio/archives == | p50 0.0460 vs 0.0467 (-1.6 %, tol 10 %) ok
+b) ratio and archive sha256 of the default grid == PR #78: PASS
+c) default p50 within max(10 %, 2 x spread) of PR #78: PASS
+   default/enwik8.silence.json: PASS load1 0.288
+   default/silesia.tar.silence.json: PASS load1 0.273
+   r4K/enwik8.silence.json: PASS load1 0.213
+   r4K/silesia.tar.silence.json: PASS load1 0.241
+   r4K/t2t_chrX.fa.silence.json: PASS load1 0.284
+   r64K/enwik8.silence.json: PASS load1 0.288
+   r64K/silesia.tar.silence.json: PASS load1 0.250
+   r64K/t2t_chrX.fa.silence.json: PASS load1 0.232
+d) silence gate PASS before every corpus run: PASS
+   r4K/enwik8: zstd_level 3 region_size_bytes 4096 ok
+   r4K/silesia.tar: zstd_level 3 region_size_bytes 4096 ok
+   r4K/t2t_chrX.fa: zstd_level 3 region_size_bytes 4096 ok
+   r64K/enwik8: zstd_level 3 region_size_bytes 65536 ok
+   r64K/silesia.tar: zstd_level 3 region_size_bytes 65536 ok
+   r64K/t2t_chrX.fa: zstd_level 3 region_size_bytes 65536 ok
+   default/enwik8: zstd_level 3 region_size_bytes 16384 ok
+   default/silesia.tar: zstd_level 3 region_size_bytes 16384 ok
+e) zstd level 3 and read size recorded: PASS
+GATES: ALL PASS
+
+silesia.tar: zstd_seekable g | p50 4K ms | p50 64K ms | p99 4K ms | ratio (4K run / 64K run)
+      64 KiB | 0.0407 | 0.0821 | 0.0953 | 2.8802 / 2.8802
+     256 KiB | 0.1119 | 0.1674 | 0.2845 | 3.0419 / 3.0419
+    1024 KiB | 0.3144 | 0.3392 | 0.8888 | 3.1401 / 3.1401
+    2048 KiB | 0.5796 | 0.6010 | 1.5961 | 3.1649 / 3.1649
+    4096 KiB | 1.0656 | 1.1336 | 3.0244 | 3.1748 / 3.1748
+    8192 KiB | 2.0591 | 2.2711 | 5.6986 | 3.1843 / 3.1843
+   16384 KiB | 4.8388 | 4.4044 | 10.8789 | 3.1859 / 3.1859
+  ratios: 4K 5.18 [5.5, 8.5] OUT | 64K 3.59 [3.5, 6.5] in | ratio loss 4.04 % [1.0, 6.0] in
+
+enwik8: zstd_seekable g | p50 4K ms | p50 64K ms | p99 4K ms | ratio (4K run / 64K run)
+      64 KiB | 0.0447 | 0.0912 | 0.0916 | 2.5218 / 2.5218
+     256 KiB | 0.1894 | 0.2007 | 0.2966 | 2.6361 / 2.6361
+    1024 KiB | 0.3550 | 0.4351 | 0.7591 | 2.7763 / 2.7763
+    2048 KiB | 0.7356 | 0.7135 | 1.4404 | 2.7997 / 2.7997
+    4096 KiB | 1.4715 | 1.5838 | 2.9146 | 2.8050 / 2.8050
+    8192 KiB | 2.8357 | 2.8882 | 5.8733 | 2.8080 / 2.8080
+   16384 KiB | 5.8832 | 5.2936 | 11.4118 | 2.8097 / 2.8097
+  ratios: 4K 3.88 [5.5, 8.5] OUT | 64K 3.55 [3.5, 6.5] in | ratio loss 6.21 % [1.0, 6.0] OUT
+
+t2t_chrX.fa: zstd_seekable g | p50 4K ms | p50 64K ms | p99 4K ms | ratio (4K run / 64K run)
+      64 KiB | 0.0571 | 0.1114 | 0.1132 | 2.9399 / 2.9399
+     256 KiB | 0.2022 | 0.2255 | 0.3441 | 2.9024 / 2.9024
+    1024 KiB | 0.4757 | 0.4878 | 0.7909 | 3.0572 / 3.0572
+    2048 KiB | 0.8770 | 0.9655 | 1.5643 | 3.0604 / 3.0604
+    4096 KiB | 1.3623 | 1.7728 | 3.2252 | 3.0514 / 3.0514
+    8192 KiB | 2.9017 | 3.3486 | 6.2984 | 3.0467 / 3.0467
+   16384 KiB | 6.6241 | 6.6285 | 12.9267 | 3.0455 / 3.0455
+  ratios: 4K 4.34 [5.5, 8.5] OUT | 64K 4.28 [3.5, 6.5] in | ratio loss 5.44 % [1.0, 6.0] in
+
+PREDICTION: MISS

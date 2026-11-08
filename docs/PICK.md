@@ -89,3 +89,23 @@ The no-argument `./run.sh` starts the expensive historical runner; it is not the
 Native subsets use `--measure`; bare `--codec` is not a supported entry point.
 Use `--plan` to inspect capability decisions without starting measurements.
 The documented corpus URLs and checksums are in [corpora.json](../corpora.json).
+
+## Region size
+
+`--region-size SIZE` accepts positive bytes or uppercase binary K/M units.
+The default is 16 KiB; the default seven configurations and table format stay
+unchanged. Reads may cross any number of blocks, including when the requested
+region is larger than g. A region larger than the input is rejected before
+measurement. The native worker compares every answer with the source; pick
+independently checks SHA256 of each complete answer outside the timer.
+
+```bash
+./run.sh --pick input.bin --g 256K,2M --region-size 4K
+```
+
+`pick.json` records `region_size_bytes` and `zstd_level` at run level. The latter
+comes from the qualified adapter configuration (currently 3, matching its
+compression command); it is null if zstd was not qualified/measured. There is
+no `--codec-opt` override. Row fields are unchanged. Amplification divides
+counted decoded bytes by the actual total requested bytes. Latency, counters
+and break-even use the same requested region size and query schedule.

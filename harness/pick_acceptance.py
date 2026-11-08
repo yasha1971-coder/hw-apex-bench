@@ -112,6 +112,38 @@ def main():
     for codec, seconds in sorted(result['codec_seconds'].items()):
         print(f'EXTENDED_CODEC_SECONDS codec={codec} seconds={seconds:.9f}', flush=True)
 
+    region_runs = {}
+    for length in (4096, 65536):
+        dest = root/('pick-region-'+str(length))
+        subprocess.run(['bash','run.sh','--pick',str(source),'--g','4K,256K,2M',
+                        '--region-size',str(length),'--output-dir',str(dest)],check=True)
+        receipt = json.loads((dest/'pick.json').read_text())
+        if (receipt['region_size_bytes'] != length or receipt['zstd_level'] != 3
+                or len(receipt['rows']) != 7 or any(r['status'] != 'measured' for r in receipt['rows'])
+                or (dest/'pick.md').read_text() != table(receipt['rows'])):
+            raise ValueError('region-size receipt mismatch')
+        totals = {}
+        for row in receipt['rows']:
+            point = dest/(row['codec']+'-'+str(row['g']))
+            answers = json.loads((point/'answers.json').read_text())
+            if len(answers)!=200 or any(a['length']!=length for a in answers):
+                raise ValueError('region SHA oracle workload mismatch')
+            counters = [json.loads(line) for line in (point/row['evidence']['amplification']['raw_samples']).read_text().splitlines()]
+            if len(counters)!=200 or any(c['requested_bytes']!=length for c in counters):
+                raise ValueError('counter workload mismatch')
+            total = sum(c['decoded_bytes'] for c in counters)
+            if row['amplification'] != total/(200*length):
+                raise ValueError('amplification denominator mismatch')
+            totals[row['codec'],row['g']] = (total,row['amplification'])
+        region_runs[length] = totals
+        print('REGION_SIZE_PASS bytes='+str(length)+' rows=7 sha_answers=1400 zstd_level=3',flush=True)
+    for codec in ('xz','zstd_seekable'):
+        small = region_runs[4096][codec,4096]
+        large = region_runs[65536][codec,4096]
+        if large[0] <= small[0] or large[1] == small[1]:
+            raise ValueError('region size did not change decoded work and amplification')
+        print(f'REGION_WORK codec={codec} g=4096 small={small} large={large}',flush=True)
+
 
 if __name__ == '__main__':
     main()

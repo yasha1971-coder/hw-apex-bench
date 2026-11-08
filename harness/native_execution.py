@@ -42,7 +42,7 @@ def digest(path, algorithm='sha256'):
     return h.hexdigest()
 
 
-def samples(path, phase, size):
+def samples(path, phase, size, region_size=16384):
     rows=[json.loads(line) for line in Path(path).read_text().splitlines()]
     expected=200 if phase=='region' else 5
     if len(rows)!=expected: raise ValueError('incomplete native samples')
@@ -55,8 +55,8 @@ def samples(path, phase, size):
             raise ValueError('invalid native duration')
         if phase=='region':
             seed=(seed*6364136223846793005+1442695040888963407)&((1<<64)-1)
-            if (row.get('query')!=i or row.get('requested_bytes')!=16384
-                    or row.get('byte_offset')!=seed%(size-16384+1)):
+            if (row.get('query')!=i or row.get('requested_bytes')!=region_size
+                    or row.get('byte_offset')!=seed%(size-region_size+1)):
                 raise ValueError('native region workload differs')
         elif row.get('repeat')!=i or row.get('verified_bytes')!=size:
             raise ValueError('native decode workload differs')
@@ -64,7 +64,7 @@ def samples(path, phase, size):
 
 
 class NativeExecution:
-    def __init__(self, worker, original, directory, copies=(1,2,4,8), plateau=False, batch_sizes=(100,600,2000,5000)):
+    def __init__(self, worker, original, directory, copies=(1,2,4,8), plateau=False, batch_sizes=(100,600,2000,5000), region_size=16384):
         self.worker=Path(worker).resolve()
         self.original=Path(original).resolve()
         self.directory=Path(directory).resolve()
@@ -72,6 +72,9 @@ class NativeExecution:
         self.copies=copies
         self.plateau=plateau
         self.batch_sizes=batch_sizes
+        if type(region_size) is not int or region_size <= 0:
+            raise ValueError("invalid region size")
+        self.region_size=region_size
 
     def environment(self,plan):
         from reader_environment import parameters
@@ -112,10 +115,12 @@ class NativeExecution:
         if phase in state: return state[phase]
         raw=state['directory']/(phase+'.jsonl')
         command=[str(self.worker),state['library'],str(state['archive']),str(self.original),phase,state['sidecar']]
+        if phase=='region' and self.region_size!=16384:
+            command.append(str(self.region_size))
         with raw.open('w') as out, (state['directory']/(phase+'.log')).open('w') as log:
             execute(command,stdout=out,stderr=log,check=True,timeout=3600,
                            env=self.environment(plan))
-        rows=samples(raw,phase,self.original.stat().st_size)
+        rows=samples(raw,phase,self.original.stat().st_size,self.region_size)
         # Ensure reads did not mutate archive or mandatory sidecar.
         if any(digest(p)!=v['sha256'] for p,v in state['artifacts'].items()):
             raise ValueError('native reader modified archive artifacts')
@@ -173,6 +178,8 @@ class NativeExecution:
         library=self.call(plan,'codec_counter_library')
         raw=state['directory']/'amplification.jsonl'
         command=[str(self.worker),library,str(state['archive']),str(self.original),'amplification',state['sidecar']]
+        if self.region_size!=16384:
+            command.append(str(self.region_size))
         with raw.open('w') as out, (state['directory']/'amplification.log').open('w') as log:
             execute(command,stdout=out,stderr=log,env=self.environment(plan),timeout=1800)
         rows=[json.loads(line) for line in raw.read_text().splitlines()]
@@ -181,13 +188,13 @@ class NativeExecution:
         if len(rows)!=200: raise ValueError('incomplete counter samples')
         for i,r in enumerate(rows):
             seed=(seed*6364136223846793005+1442695040888963407)&((1<<64)-1)
-            if (r.get('query')!=i or r.get('byte_offset')!=seed%(self.original.stat().st_size-16384+1)
-                or r.get('requested_bytes')!=16384 or r.get('verified') is not True
+            if (r.get('query')!=i or r.get('byte_offset')!=seed%(self.original.stat().st_size-self.region_size+1)
+                or r.get('requested_bytes')!=self.region_size or r.get('verified') is not True
                 or type(r.get('decoded_bytes')) is not int or r['decoded_bytes']<0):
                 raise ValueError('invalid counter sample')
         if any(digest(p)!=v['sha256'] for p,v in state['artifacts'].items()):
             raise ValueError('counter reader modified archive')
-        return {'value':sum(r['decoded_bytes'] for r in rows)/(200*16384),'unit':'bytes/byte',
+        return {'value':sum(r['decoded_bytes'] for r in rows)/(200*self.region_size),'unit':'bytes/byte',
                 'n_samples':200,'verified':'byte-exact','command':self.command(plan,command),
                 'raw_samples':str(raw.relative_to(self.directory)),'raw_sha256':digest(raw),
                 'counter_library_sha256':digest(library),'timings_collected':False}

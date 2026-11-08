@@ -1,0 +1,11 @@
+{
+  "archive": "/tmp/hwref/z1/main/default/silesia.tar/zstd_seekable-16384/zstd_seekable-efa4044683/archive",
+  "sidecar": "",
+  "library": "/home/aeterna/pubrepo/.wk/hwab-pick2/.work/adapter-check/zstd_seekable-efa4044683/context.so",
+  "artifacts": {
+    "/tmp/hwref/z1/main/default/silesia.tar/zstd_seekable-16384/zstd_seekable-efa4044683/archive": {
+      "bytes": 79417442,
+      "sha256": "492988d5e8a588b4700a57a2b2cf465a2504e61cd814cdaeee005ccc27b27c8f"
+    }
+  }
+}

@@ -205,5 +205,6 @@ jobs:
             .work/pick-acceptance.log
             .work/pick-acceptance/pick/**
             .work/pick-acceptance/pick-extended/**
+            .work/pick-acceptance/pick-region-*/**
             .work/adapter-check/**/check.json
             .work/adapter-check/**/check.log

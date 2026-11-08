@@ -40,6 +40,15 @@ def parse_g(value):
     return sizes
 
 
+def parse_region_size(value):
+    if not re.fullmatch(r'[0-9]+[KM]?', value):
+        raise argparse.ArgumentTypeError('expected positive bytes or K/M size')
+    size = int(value.rstrip('KM')) * (1024 if value.endswith('K') else 1024**2 if value.endswith('M') else 1)
+    if not 1 <= size <= (1 << 63) - 33:
+        raise argparse.ArgumentTypeError('region size outside native size range')
+    return size
+
+
 def codec_grid(codec, sizes):
     return (65280,) if codec == 'bgzip' else tuple(sizes)
 
@@ -122,6 +131,7 @@ def main():
     parser.add_argument('--output-dir', type=Path)
     parser.add_argument('--g', type=parse_g, default=list(DEFAULT_G),
                         help='comma-separated byte sizes, K=KiB, M=MiB; default 4K,16K,64K')
+    parser.add_argument('--region-size', type=parse_region_size, default=16384)
     limits = parser.add_mutually_exclusive_group()
     limits.add_argument('--max-p50', type=float)
     limits.add_argument('--min-ratio', type=float)
@@ -133,8 +143,8 @@ def main():
                 raise ValueError('selection limit must be finite and positive')
         source = args.input.resolve()
         initial = digest(source)
-        if source.stat().st_size < 16384:
-            raise ValueError('input requires at least 16384 bytes')
+        if source.stat().st_size < args.region_size:
+            raise ValueError('region size exceeds input size')
         out = (args.output_dir or Path(str(source)+'.pick')).resolve()
         out.mkdir(parents=True, exist_ok=False)
         worker = out/'native-measure'
@@ -144,6 +154,7 @@ def main():
                     stdout=log, stderr=log, timeout=120)
         rows = []
         codec_seconds = {}
+        zstd_level = None
         for codec in ('bgzip', 'zstd_seekable', 'xz'):
             adapter = resolve_adapter(codec)
             work = work_directory(adapter, args.work)
@@ -154,6 +165,8 @@ def main():
                 continue
             codec_started = time.monotonic()
             plan = plan_adapter(adapter, work, AXES)
+            if codec == 'zstd_seekable':
+                zstd_level = plan['configuration']['level']
             def measure(checked):
                 points = []
                 for g in codec_grid(codec, args.g):
@@ -161,7 +174,7 @@ def main():
                     directory = out/(codec+'-'+str(g)); directory.mkdir()
                     point = copy.deepcopy(checked)
                     point['configuration']['granularity'] = g
-                    runner = NativeExecution(worker, source, directory)
+                    runner = NativeExecution(worker, source, directory, region_size=args.region_size)
                     ratio = runner.ratio(point)
                     region = runner.measure(point, 'region')
                     amp = runner.amplification(point)
@@ -191,6 +204,7 @@ def main():
             raise ValueError('no qualified measurements; run --check first')
         select(rows, args.max_p50, args.min_ratio)
         receipt = dict(schema='cabench-pick-v1',input_sha256=initial,g_set=args.g,
+                       region_size_bytes=args.region_size,zstd_level=zstd_level,
                        elapsed_seconds=time.monotonic()-started,codec_seconds=codec_seconds,rows=rows)
         (out/'pick.json').write_text(json.dumps(receipt,indent=2,allow_nan=False)+'\n')
         rendered = table(rows)

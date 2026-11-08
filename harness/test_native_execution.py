@@ -47,6 +47,18 @@ class NativeWorkerTest(unittest.TestCase):
             run=self.run_worker(phase);self.assertEqual(run.returncode,0,run.stderr)
             path=self.d/(phase+'.jsonl');path.write_text(run.stdout)
             self.assertEqual(len(samples(path,phase,self.original.stat().st_size)),count)
+    def test_variable_region_sizes_and_workload_binding(self):
+        for length in (4096,65536):
+            run=self.run_worker('region',extra=(str(length),))
+            self.assertEqual(run.returncode,0,run.stderr)
+            path=self.d/'variable.jsonl';path.write_text(run.stdout)
+            rows=samples(path,'region',self.original.stat().st_size,length)
+            self.assertTrue(all(r['requested_bytes']==length for r in rows))
+            with self.assertRaisesRegex(ValueError,'workload'):
+                samples(path,'region',self.original.stat().st_size)
+        for value in ('0','-1','garbage','99999999999999999999999','1048576'):
+            self.assertNotEqual(self.run_worker('region',extra=(value,)).returncode,0)
+
     def test_wrong_bytes_and_guard_are_fatal(self):
         import os
         for flag in ('BAD_BYTES','BAD_GUARD'):

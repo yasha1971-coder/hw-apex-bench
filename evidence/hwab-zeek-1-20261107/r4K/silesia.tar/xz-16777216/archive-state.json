@@ -1,0 +1,11 @@
+{
+  "archive": "/tmp/hwref/z1/main/r4K/silesia.tar/xz-16777216/xz-08e1daad81/archive",
+  "sidecar": "",
+  "library": "/home/aeterna/pubrepo/.wk/hwab-pick2/.work/adapter-check/xz-08e1daad81/context.so",
+  "artifacts": {
+    "/tmp/hwref/z1/main/r4K/silesia.tar/xz-16777216/xz-08e1daad81/archive": {
+      "bytes": 49634556,
+      "sha256": "baffdc4e30adb0c124f0f93e168d1af0cb5f2a6d22b647aa346e6158f0b9f0ed"
+    }
+  }
+}

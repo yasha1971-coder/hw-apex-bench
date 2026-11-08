@@ -1,0 +1,332 @@
+{
+  "status": "pass",
+  "check_protocol": "cabench-check-v2",
+  "qualification": {
+    "codec": "bgzip+htslib",
+    "version": "1.24",
+    "capabilities": {
+      "amplification": "available",
+      "batch": "n/a \u2014 no batch API",
+      "break_even": "available",
+      "c_g": "n/a \u2014 no comparable single-parameter baseline",
+      "decode": "available",
+      "encode": "available",
+      "h_alpha": "available",
+      "ratio": "available",
+      "region": "available"
+    },
+    "constraints": {
+      "granularity": 65280,
+      "min_input_bytes": 0
+    },
+    "configuration": {
+      "level": 6,
+      "compression_backend": {
+        "name": "libdeflate",
+        "version": "1.19",
+        "commit": "dd12ff2b36d603dbb7fa8838fe7e7176fcbd4f6f",
+        "configure_option": "--with-libdeflate",
+        "effective_level": 7
+      },
+      "encoder_threads": 1,
+      "decoder_threads": 1,
+      "granularity": 65280,
+      "granularity_note": "BGZF CLI ceiling; actual blocks may be shorter"
+    },
+    "protocol": "cabench-check-v2",
+    "files": {
+      "/home/aeterna/pubrepo/.wk/hwab-pick2/codecs/bgzip.sh": "fafdadbcf8a856c1b8254ccc19c81f9008dfa78497ed6f875d749ae42803ae10",
+      "/home/aeterna/pubrepo/.wk/hwab-pick2/harness/check_adapter.py": "803213045e9ee94e2f3f92aa83966aa349809ae7527620ca313827a8f9722ac3",
+      "/home/aeterna/pubrepo/.wk/hwab-pick2/harness/check_common.sh": "df11d994850cd721308e1ecba4474dd665734916e68bf6372fd8124ebe7dc341",
+      "/home/aeterna/pubrepo/.wk/hwab-pick2/harness/check_region.py": "f63aea3605ccc950a1666b7582febacf5f3a2ba9b1ba174d2a39d440955b48fd",
+      "/home/aeterna/pubrepo/.wk/hwab-pick2/harness/resident_probe.py": "cec517b3087119968d7219c592ffd9579de6de9eb61260dbe557e248cdfdfcfc",
+      "/home/aeterna/pubrepo/.wk/hwab-pick2/harness/resident_context.h": "299ba195dc8092d27d8dfb0613fcbdbc063852454e3f71a654c189881caaf20f",
+      "/home/aeterna/pubrepo/.wk/hwab-pick2/harness/resident_fixture.py": "23ffefe0da758c13d9fd6e960fc82efbb9ba4a116b00a990f78ae972c3e4a994",
+      "/home/aeterna/pubrepo/.wk/hwab-pick2/harness/qualification.py": "8d85cef43a1ac4c1cc2cfc05eab33ba20fc89b960e84a7f69cf9d435c9a681c2",
+      "/home/aeterna/pubrepo/.wk/hwab-pick2/harness/verify_context_sources.py": "6a484d205e5129c7e5fcd37ccd5773b07bfed27329ab8dd9706187ea373a90b6",
+      "/home/aeterna/pubrepo/.wk/hwab-pick2/harness/context-ace-sources.json": "483266fb3b1bad62f408874ed32278deab7599ee2318ee18650ab0e03f50fa3c",
+      "/home/aeterna/pubrepo/.wk/hwab-pick2/harness/reader_environment.py": "a2aabb9093d67da641306ef792b4b27020a18cb2925f0a7fd43844371929e8a4",
+      "/home/aeterna/pubrepo/.wk/hwab-pick2/codecs/native/bgzip.c": "99c0e35b02a48fdc8b29323024be615ad1eadabb38aacdc9b6e92b73b4df2475",
+      "/home/aeterna/pubrepo/.wk/hwab-pick2/codecs/native/bgzip_build.sh": "835173e69af402ace3fe355878c3aab1e0617d472bd9b68211cf96f1ae610810",
+      "/home/aeterna/pubrepo/.wk/hwab-pick2/codecs/bgzip_provenance.py": "9669981dd666f1038635540ac61a9aa108704ea1fbeda3bbe8d968d013a5f354",
+      "/home/aeterna/pubrepo/.wk/hwab-pick2/codecs/counters.py": "b919d4bce9b759976cecb60b610f09fa97bb5fe76abdbd5e45e9454ee7fff9ad",
+      "/home/aeterna/pubrepo/.wk/hwab-pick2/harness/build_counters.py": "aeb3d6bba01ab2beeab25fc5c690ecaa9140c2562d159c180a9e9586a45db52e",
+      "/home/aeterna/pubrepo/.wk/hwab-pick2/.work/adapter-check/bgzip-311890ff6a/context.so": "ffac93c4391027100133db8051337514228e98a9e58678de9844e486a8c4d5b1",
+      "/home/aeterna/pubrepo/.wk/hwab-pick2/.work/adapter-check/bgzip-311890ff6a/counter-context.so": "06e9c183409e6d415c22dae5f766f5c9c60f5054c9ea7e0acace17435d8d6058",
+      "/home/aeterna/pubrepo/.wk/hwab-pick2/.work/adapter-check/bgzip-311890ff6a/counter-sources.json": "2873e820b3c44ceedc0f6d5227992ec8560498f50c49f3dbe04202d4f6767d89",
+      "/home/aeterna/pubrepo/.wk/hwab-pick2/.work/adapter-check/bgzip-311890ff6a/deps/htslib/bgzip": "e1a49019d282f8746ef783c1770e67b3eeb8e83e17661dd1cebcf5985ed473d5",
+      "/home/aeterna/pubrepo/.wk/hwab-pick2/.work/adapter-check/bgzip-311890ff6a/bgzip-build.json": "d0fb38a4bb7e14df4fa7d6978c29c4501a4c80c24586b94851addb7de1fdfbfe",
+      "/home/aeterna/pubrepo/.wk/hwab-pick2/.work/adapter-check/bgzip-311890ff6a/libdeflate-build/libdeflate.a": "e9024a517d925305db28c584dd4ecb2fc2ebb20cd55c1e5cb3ff5ac218d11077"
+    },
+    "linked_libraries": {
+      "/usr/lib/x86_64-linux-gnu/libz.so.1.2.11": "64c206f0146cc58bbddc4f22054436f4ff278f5a554aa3ce6921ddf7e9133370",
+      "/usr/lib/x86_64-linux-gnu/libm.so.6": "3dd5511ae94785c9f921429b0f2b2f7aabb461b6f0e6de6dfdbef15f24bdfee6",
+      "/usr/lib/x86_64-linux-gnu/libc.so.6": "b2cf6c33b74d2f22543b7a469a75b538911e690f769d0b238843a49465b83793",
+      "/usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2": "41daf7836f7fce21a40ca63a00c5caf21b05a35a76ccc075d86f1716212cdf01"
+    },
+    "sources": [
+      {
+        "directory": "htslib",
+        "commit": "4b705e4fada8ee2b6b15746f725ee8ac51631803",
+        "submodules": "b9fc194f772e45bb0a1f44b08cbf8697a1384bae htscodecs (b9fc194)"
+      },
+      {
+        "directory": "libdeflate",
+        "commit": "dd12ff2b36d603dbb7fa8838fe7e7176fcbd4f6f",
+        "submodules": ""
+      }
+    ],
+    "build_artifacts": [
+      "/home/aeterna/pubrepo/.wk/hwab-pick2/.work/adapter-check/bgzip-311890ff6a/context.so",
+      "/home/aeterna/pubrepo/.wk/hwab-pick2/.work/adapter-check/bgzip-311890ff6a/counter-context.so",
+      "/home/aeterna/pubrepo/.wk/hwab-pick2/.work/adapter-check/bgzip-311890ff6a/counter-sources.json",
+      "/home/aeterna/pubrepo/.wk/hwab-pick2/.work/adapter-check/bgzip-311890ff6a/deps/htslib/bgzip",
+      "/home/aeterna/pubrepo/.wk/hwab-pick2/.work/adapter-check/bgzip-311890ff6a/bgzip-build.json",
+      "/home/aeterna/pubrepo/.wk/hwab-pick2/.work/adapter-check/bgzip-311890ff6a/libdeflate-build/libdeflate.a"
+    ],
+    "host": {
+      "system": "Linux",
+      "machine": "x86_64"
+    },
+    "loader_environment": {
+      "PATH": "/home/aeterna/.local/bin:/home/aeterna/.vscode-server/cli/servers/Stable-04c0d99f4fb0d8afe6ce4f0c58e31e183ac3e4b1/server/bin/remote-cli:/home/aeterna/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin",
+      "LD_LIBRARY_PATH": "",
+      "GLIBC_TUNABLES": ""
+    }
+  },
+  "qualification_sha256": "c2e2f5bcd78324eeb617c78499f33b87bfecdda58b6576380d38313009ad8a7c",
+  "codec": "bgzip+htslib",
+  "version": "1.24",
+  "adapter_sha256": "fafdadbcf8a856c1b8254ccc19c81f9008dfa78497ed6f875d749ae42803ae10",
+  "command": "./run.sh --check codecs/bgzip.sh",
+  "capabilities": {
+    "amplification": "available",
+    "batch": "n/a \u2014 no batch API",
+    "break_even": "available",
+    "c_g": "n/a \u2014 no comparable single-parameter baseline",
+    "decode": "available",
+    "encode": "available",
+    "h_alpha": "available",
+    "ratio": "available",
+    "region": "available"
+  },
+  "native_library_sha256": "ffac93c4391027100133db8051337514228e98a9e58678de9844e486a8c4d5b1",
+  "sources": [
+    {
+      "directory": "htslib",
+      "commit": "4b705e4fada8ee2b6b15746f725ee8ac51631803",
+      "submodules": "b9fc194f772e45bb0a1f44b08cbf8697a1384bae htscodecs (b9fc194)"
+    },
+    {
+      "directory": "libdeflate",
+      "commit": "dd12ff2b36d603dbb7fa8838fe7e7176fcbd4f6f",
+      "submodules": ""
+    }
+  ],
+  "cases": [
+    {
+      "fixture": "mixed",
+      "input_bytes": 5593136,
+      "input_sha256": "2ec2d7b3f1eb6adaff8a26e9da919a97fedb2b9e2fc97304d858d0031def8819",
+      "archive_sha256": "94baf2310a4e272985407111e2dff846a599d3ee70364ddfa4d7fa066891b1ed",
+      "artifacts": {
+        "mixed.archive": "94baf2310a4e272985407111e2dff846a599d3ee70364ddfa4d7fa066891b1ed",
+        "mixed.archive.gzi": "8800f30fca57cb685f299f563ffabc80f92c7a2738172fad332e3f9a8b1e77b0"
+      },
+      "full_restore": "byte-exact",
+      "status": "pass",
+      "native": {
+        "capabilities": {
+          "amplification": "available",
+          "batch": "n/a \u2014 no batch API",
+          "break_even": "available",
+          "c_g": "n/a \u2014 no comparable single-parameter baseline",
+          "decode": "available",
+          "encode": "available",
+          "h_alpha": "available",
+          "ratio": "available",
+          "region": "available"
+        },
+        "corpus_sha256": "2ec2d7b3f1eb6adaff8a26e9da919a97fedb2b9e2fc97304d858d0031def8819",
+        "full_restore": "byte-exact",
+        "invalid_ranges": 3,
+        "region_checks": 1128,
+        "timings_collected": false,
+        "version": "1.24"
+      }
+    },
+    {
+      "fixture": "one-byte",
+      "input_bytes": 1,
+      "input_sha256": "4b68ab3847feda7d6c62c1fbcbeebfa35eab7351ed5e78f4ddadea5df64b8015",
+      "archive_sha256": "e2a07e4b834f097ebb3f2494a30cc8e6cf40bfe57872f8c2d596e7b572a64da8",
+      "artifacts": {
+        "one-byte.archive": "e2a07e4b834f097ebb3f2494a30cc8e6cf40bfe57872f8c2d596e7b572a64da8",
+        "one-byte.archive.gzi": "af5570f5a1810b7af78caf4bc70a660f0df51e42baf91d4de5b2328de0e83dfc"
+      },
+      "full_restore": "byte-exact",
+      "status": "pass",
+      "native": {
+        "capabilities": {
+          "amplification": "available",
+          "batch": "n/a \u2014 no batch API",
+          "break_even": "available",
+          "c_g": "n/a \u2014 no comparable single-parameter baseline",
+          "decode": "available",
+          "encode": "available",
+          "h_alpha": "available",
+          "ratio": "available",
+          "region": "available"
+        },
+        "corpus_sha256": "4b68ab3847feda7d6c62c1fbcbeebfa35eab7351ed5e78f4ddadea5df64b8015",
+        "full_restore": "byte-exact",
+        "invalid_ranges": 3,
+        "region_checks": 3,
+        "timings_collected": false,
+        "version": "1.24"
+      }
+    },
+    {
+      "fixture": "empty",
+      "input_bytes": 0,
+      "input_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive_sha256": "d079906378251d29409f7f0f691113fd3b0049b5927b713e2704ca44ac743d48",
+      "artifacts": {
+        "empty.archive": "d079906378251d29409f7f0f691113fd3b0049b5927b713e2704ca44ac743d48",
+        "empty.archive.gzi": "af5570f5a1810b7af78caf4bc70a660f0df51e42baf91d4de5b2328de0e83dfc"
+      },
+      "full_restore": "byte-exact",
+      "status": "pass",
+      "native": {
+        "capabilities": {
+          "amplification": "available",
+          "batch": "n/a \u2014 no batch API",
+          "break_even": "available",
+          "c_g": "n/a \u2014 no comparable single-parameter baseline",
+          "decode": "available",
+          "encode": "available",
+          "h_alpha": "available",
+          "ratio": "available",
+          "region": "available"
+        },
+        "corpus_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "full_restore": "byte-exact",
+        "invalid_ranges": 3,
+        "region_checks": 1,
+        "timings_collected": false,
+        "version": "1.24"
+      }
+    },
+    {
+      "fixture": "exact-block",
+      "input_bytes": 65280,
+      "input_sha256": "218da22426f9259c2bd8bad291c6f70c5ca96a5f402c503f5700e2f7ba2a0ba7",
+      "archive_sha256": "b52c0ed05a95668d8e9909dccd29ac70345bd23ab60dd632ba88f730d1eaec42",
+      "artifacts": {
+        "exact-block.archive": "b52c0ed05a95668d8e9909dccd29ac70345bd23ab60dd632ba88f730d1eaec42",
+        "exact-block.archive.gzi": "af5570f5a1810b7af78caf4bc70a660f0df51e42baf91d4de5b2328de0e83dfc"
+      },
+      "full_restore": "byte-exact",
+      "status": "pass",
+      "native": {
+        "capabilities": {
+          "amplification": "available",
+          "batch": "n/a \u2014 no batch API",
+          "break_even": "available",
+          "c_g": "n/a \u2014 no comparable single-parameter baseline",
+          "decode": "available",
+          "encode": "available",
+          "h_alpha": "available",
+          "ratio": "available",
+          "region": "available"
+        },
+        "corpus_sha256": "218da22426f9259c2bd8bad291c6f70c5ca96a5f402c503f5700e2f7ba2a0ba7",
+        "full_restore": "byte-exact",
+        "invalid_ranges": 3,
+        "region_checks": 108,
+        "timings_collected": false,
+        "version": "1.24"
+      }
+    },
+    {
+      "fixture": "cross-block",
+      "input_bytes": 195857,
+      "input_sha256": "5ed815cb1b3d2dddf2b5303602a24f0d155f0b844ad820a3dcf37897f8aa427e",
+      "archive_sha256": "abe9d333b9f65db7caf61a7d430c7dfccf9dbd41ec74b8064ea905ebff53d68a",
+      "artifacts": {
+        "cross-block.archive": "abe9d333b9f65db7caf61a7d430c7dfccf9dbd41ec74b8064ea905ebff53d68a",
+        "cross-block.archive.gzi": "0db54c26f81b0287efe4a7c29144de925019e9a88e389b1a1e8501fc119856e4"
+      },
+      "full_restore": "byte-exact",
+      "status": "pass",
+      "native": {
+        "capabilities": {
+          "amplification": "available",
+          "batch": "n/a \u2014 no batch API",
+          "break_even": "available",
+          "c_g": "n/a \u2014 no comparable single-parameter baseline",
+          "decode": "available",
+          "encode": "available",
+          "h_alpha": "available",
+          "ratio": "available",
+          "region": "available"
+        },
+        "corpus_sha256": "5ed815cb1b3d2dddf2b5303602a24f0d155f0b844ad820a3dcf37897f8aa427e",
+        "full_restore": "byte-exact",
+        "invalid_ranges": 3,
+        "region_checks": 142,
+        "timings_collected": false,
+        "version": "1.24"
+      }
+    }
+  ],
+  "commands": [
+    "bash -c 'source \"$1\"; shift; for fn in \"$@\"; do declare -F \"$fn\" >/dev/null || exit 2; done' contract /home/aeterna/pubrepo/.wk/hwab-pick2/codecs/bgzip.sh codec_name codec_version codec_build codec_compress codec_decompress codec_region codec_supports",
+    "bash /home/aeterna/pubrepo/.wk/hwab-pick2/codecs/bgzip.sh _call codec_name",
+    "bash /home/aeterna/pubrepo/.wk/hwab-pick2/codecs/bgzip.sh _call codec_version",
+    "bash /home/aeterna/pubrepo/.wk/hwab-pick2/codecs/bgzip.sh _call codec_constraints",
+    "bash /home/aeterna/pubrepo/.wk/hwab-pick2/codecs/bgzip.sh _call codec_configuration",
+    "bash /home/aeterna/pubrepo/.wk/hwab-pick2/codecs/bgzip.sh _call codec_build",
+    "git -C /home/aeterna/pubrepo/.wk/hwab-pick2/.work/adapter-check/bgzip-311890ff6a/deps/htslib rev-parse HEAD",
+    "git -C /home/aeterna/pubrepo/.wk/hwab-pick2/.work/adapter-check/bgzip-311890ff6a/deps/htslib status --porcelain --untracked-files=no",
+    "git -C /home/aeterna/pubrepo/.wk/hwab-pick2/.work/adapter-check/bgzip-311890ff6a/deps/htslib submodule status --recursive",
+    "git -C /home/aeterna/pubrepo/.wk/hwab-pick2/.work/adapter-check/bgzip-311890ff6a/deps/htslib submodule foreach --quiet --recursive 'test -z \"$(git status --porcelain --untracked-files=no)\"'",
+    "git -C /home/aeterna/pubrepo/.wk/hwab-pick2/.work/adapter-check/bgzip-311890ff6a/deps/libdeflate rev-parse HEAD",
+    "git -C /home/aeterna/pubrepo/.wk/hwab-pick2/.work/adapter-check/bgzip-311890ff6a/deps/libdeflate status --porcelain --untracked-files=no",
+    "git -C /home/aeterna/pubrepo/.wk/hwab-pick2/.work/adapter-check/bgzip-311890ff6a/deps/libdeflate submodule status --recursive",
+    "git -C /home/aeterna/pubrepo/.wk/hwab-pick2/.work/adapter-check/bgzip-311890ff6a/deps/libdeflate submodule foreach --quiet --recursive 'test -z \"$(git status --porcelain --untracked-files=no)\"'",
+    "bash /home/aeterna/pubrepo/.wk/hwab-pick2/codecs/bgzip.sh _call codec_library",
+    "/usr/bin/python3 /home/aeterna/pubrepo/.wk/hwab-pick2/harness/resident_fixture.py /home/aeterna/pubrepo/.wk/hwab-pick2/.work/adapter-check/bgzip-311890ff6a/fixtures-tum0bi_4/corpus",
+    "bash /home/aeterna/pubrepo/.wk/hwab-pick2/codecs/bgzip.sh _call codec_compress /home/aeterna/pubrepo/.wk/hwab-pick2/.work/adapter-check/bgzip-311890ff6a/fixtures-tum0bi_4/mixed.input /home/aeterna/pubrepo/.wk/hwab-pick2/.work/adapter-check/bgzip-311890ff6a/fixtures-tum0bi_4/mixed.archive 65280",
+    "bash /home/aeterna/pubrepo/.wk/hwab-pick2/codecs/bgzip.sh _call codec_artifacts /home/aeterna/pubrepo/.wk/hwab-pick2/.work/adapter-check/bgzip-311890ff6a/fixtures-tum0bi_4/mixed.archive",
+    "bash /home/aeterna/pubrepo/.wk/hwab-pick2/codecs/bgzip.sh _call codec_decompress /home/aeterna/pubrepo/.wk/hwab-pick2/.work/adapter-check/bgzip-311890ff6a/fixtures-tum0bi_4/mixed.archive /home/aeterna/pubrepo/.wk/hwab-pick2/.work/adapter-check/bgzip-311890ff6a/fixtures-tum0bi_4/mixed.restored",
+    "bash /home/aeterna/pubrepo/.wk/hwab-pick2/codecs/bgzip.sh _call codec_sidecar /home/aeterna/pubrepo/.wk/hwab-pick2/.work/adapter-check/bgzip-311890ff6a/fixtures-tum0bi_4/mixed.archive",
+    "/usr/bin/python3 /home/aeterna/pubrepo/.wk/hwab-pick2/harness/resident_probe.py --adapter /home/aeterna/pubrepo/.wk/hwab-pick2/codecs/bgzip.sh --library /home/aeterna/pubrepo/.wk/hwab-pick2/.work/adapter-check/bgzip-311890ff6a/context.so --archive /home/aeterna/pubrepo/.wk/hwab-pick2/.work/adapter-check/bgzip-311890ff6a/fixtures-tum0bi_4/mixed.archive --original /home/aeterna/pubrepo/.wk/hwab-pick2/.work/adapter-check/bgzip-311890ff6a/fixtures-tum0bi_4/mixed.input --granularity 65280 --sidecar /home/aeterna/pubrepo/.wk/hwab-pick2/.work/adapter-check/bgzip-311890ff6a/fixtures-tum0bi_4/mixed.archive.gzi",
+    "bash /home/aeterna/pubrepo/.wk/hwab-pick2/codecs/bgzip.sh _call codec_region /home/aeterna/pubrepo/.wk/hwab-pick2/.work/adapter-check/bgzip-311890ff6a/fixtures-tum0bi_4/mixed.archive 65279 130571 /home/aeterna/pubrepo/.wk/hwab-pick2/.work/adapter-check/bgzip-311890ff6a/fixtures-tum0bi_4/region.out",
+    "bash /home/aeterna/pubrepo/.wk/hwab-pick2/codecs/bgzip.sh _call codec_compress /home/aeterna/pubrepo/.wk/hwab-pick2/.work/adapter-check/bgzip-311890ff6a/fixtures-tum0bi_4/one-byte.input /home/aeterna/pubrepo/.wk/hwab-pick2/.work/adapter-check/bgzip-311890ff6a/fixtures-tum0bi_4/one-byte.archive 65280",
+    "bash /home/aeterna/pubrepo/.wk/hwab-pick2/codecs/bgzip.sh _call codec_artifacts /home/aeterna/pubrepo/.wk/hwab-pick2/.work/adapter-check/bgzip-311890ff6a/fixtures-tum0bi_4/one-byte.archive",
+    "bash /home/aeterna/pubrepo/.wk/hwab-pick2/codecs/bgzip.sh _call codec_decompress /home/aeterna/pubrepo/.wk/hwab-pick2/.work/adapter-check/bgzip-311890ff6a/fixtures-tum0bi_4/one-byte.archive /home/aeterna/pubrepo/.wk/hwab-pick2/.work/adapter-check/bgzip-311890ff6a/fixtures-tum0bi_4/one-byte.restored",
+    "bash /home/aeterna/pubrepo/.wk/hwab-pick2/codecs/bgzip.sh _call codec_sidecar /home/aeterna/pubrepo/.wk/hwab-pick2/.work/adapter-check/bgzip-311890ff6a/fixtures-tum0bi_4/one-byte.archive",
+    "/usr/bin/python3 /home/aeterna/pubrepo/.wk/hwab-pick2/harness/resident_probe.py --adapter /home/aeterna/pubrepo/.wk/hwab-pick2/codecs/bgzip.sh --library /home/aeterna/pubrepo/.wk/hwab-pick2/.work/adapter-check/bgzip-311890ff6a/context.so --archive /home/aeterna/pubrepo/.wk/hwab-pick2/.work/adapter-check/bgzip-311890ff6a/fixtures-tum0bi_4/one-byte.archive --original /home/aeterna/pubrepo/.wk/hwab-pick2/.work/adapter-check/bgzip-311890ff6a/fixtures-tum0bi_4/one-byte.input --granularity 65280 --sidecar /home/aeterna/pubrepo/.wk/hwab-pick2/.work/adapter-check/bgzip-311890ff6a/fixtures-tum0bi_4/one-byte.archive.gzi",
+    "bash /home/aeterna/pubrepo/.wk/hwab-pick2/codecs/bgzip.sh _call codec_region /home/aeterna/pubrepo/.wk/hwab-pick2/.work/adapter-check/bgzip-311890ff6a/fixtures-tum0bi_4/one-byte.archive 1 0 /home/aeterna/pubrepo/.wk/hwab-pick2/.work/adapter-check/bgzip-311890ff6a/fixtures-tum0bi_4/region.out",
+    "bash /home/aeterna/pubrepo/.wk/hwab-pick2/codecs/bgzip.sh _call codec_compress /home/aeterna/pubrepo/.wk/hwab-pick2/.work/adapter-check/bgzip-311890ff6a/fixtures-tum0bi_4/empty.input /home/aeterna/pubrepo/.wk/hwab-pick2/.work/adapter-check/bgzip-311890ff6a/fixtures-tum0bi_4/empty.archive 65280",
+    "bash /home/aeterna/pubrepo/.wk/hwab-pick2/codecs/bgzip.sh _call codec_artifacts /home/aeterna/pubrepo/.wk/hwab-pick2/.work/adapter-check/bgzip-311890ff6a/fixtures-tum0bi_4/empty.archive",
+    "bash /home/aeterna/pubrepo/.wk/hwab-pick2/codecs/bgzip.sh _call codec_decompress /home/aeterna/pubrepo/.wk/hwab-pick2/.work/adapter-check/bgzip-311890ff6a/fixtures-tum0bi_4/empty.archive /home/aeterna/pubrepo/.wk/hwab-pick2/.work/adapter-check/bgzip-311890ff6a/fixtures-tum0bi_4/empty.restored",
+    "bash /home/aeterna/pubrepo/.wk/hwab-pick2/codecs/bgzip.sh _call codec_sidecar /home/aeterna/pubrepo/.wk/hwab-pick2/.work/adapter-check/bgzip-311890ff6a/fixtures-tum0bi_4/empty.archive",
+    "/usr/bin/python3 /home/aeterna/pubrepo/.wk/hwab-pick2/harness/resident_probe.py --adapter /home/aeterna/pubrepo/.wk/hwab-pick2/codecs/bgzip.sh --library /home/aeterna/pubrepo/.wk/hwab-pick2/.work/adapter-check/bgzip-311890ff6a/context.so --archive /home/aeterna/pubrepo/.wk/hwab-pick2/.work/adapter-check/bgzip-311890ff6a/fixtures-tum0bi_4/empty.archive --original /home/aeterna/pubrepo/.wk/hwab-pick2/.work/adapter-check/bgzip-311890ff6a/fixtures-tum0bi_4/empty.input --granularity 65280 --sidecar /home/aeterna/pubrepo/.wk/hwab-pick2/.work/adapter-check/bgzip-311890ff6a/fixtures-tum0bi_4/empty.archive.gzi",
+    "bash /home/aeterna/pubrepo/.wk/hwab-pick2/codecs/bgzip.sh _call codec_region /home/aeterna/pubrepo/.wk/hwab-pick2/.work/adapter-check/bgzip-311890ff6a/fixtures-tum0bi_4/empty.archive 0 0 /home/aeterna/pubrepo/.wk/hwab-pick2/.work/adapter-check/bgzip-311890ff6a/fixtures-tum0bi_4/region.out",
+    "bash /home/aeterna/pubrepo/.wk/hwab-pick2/codecs/bgzip.sh _call codec_compress /home/aeterna/pubrepo/.wk/hwab-pick2/.work/adapter-check/bgzip-311890ff6a/fixtures-tum0bi_4/exact-block.input /home/aeterna/pubrepo/.wk/hwab-pick2/.work/adapter-check/bgzip-311890ff6a/fixtures-tum0bi_4/exact-block.archive 65280",
+    "bash /home/aeterna/pubrepo/.wk/hwab-pick2/codecs/bgzip.sh _call codec_artifacts /home/aeterna/pubrepo/.wk/hwab-pick2/.work/adapter-check/bgzip-311890ff6a/fixtures-tum0bi_4/exact-block.archive",
+    "bash /home/aeterna/pubrepo/.wk/hwab-pick2/codecs/bgzip.sh _call codec_decompress /home/aeterna/pubrepo/.wk/hwab-pick2/.work/adapter-check/bgzip-311890ff6a/fixtures-tum0bi_4/exact-block.archive /home/aeterna/pubrepo/.wk/hwab-pick2/.work/adapter-check/bgzip-311890ff6a/fixtures-tum0bi_4/exact-block.restored",
+    "bash /home/aeterna/pubrepo/.wk/hwab-pick2/codecs/bgzip.sh _call codec_sidecar /home/aeterna/pubrepo/.wk/hwab-pick2/.work/adapter-check/bgzip-311890ff6a/fixtures-tum0bi_4/exact-block.archive",
+    "/usr/bin/python3 /home/aeterna/pubrepo/.wk/hwab-pick2/harness/resident_probe.py --adapter /home/aeterna/pubrepo/.wk/hwab-pick2/codecs/bgzip.sh --library /home/aeterna/pubrepo/.wk/hwab-pick2/.work/adapter-check/bgzip-311890ff6a/context.so --archive /home/aeterna/pubrepo/.wk/hwab-pick2/.work/adapter-check/bgzip-311890ff6a/fixtures-tum0bi_4/exact-block.archive --original /home/aeterna/pubrepo/.wk/hwab-pick2/.work/adapter-check/bgzip-311890ff6a/fixtures-tum0bi_4/exact-block.input --granularity 65280 --sidecar /home/aeterna/pubrepo/.wk/hwab-pick2/.work/adapter-check/bgzip-311890ff6a/fixtures-tum0bi_4/exact-block.archive.gzi",
+    "bash /home/aeterna/pubrepo/.wk/hwab-pick2/codecs/bgzip.sh _call codec_region /home/aeterna/pubrepo/.wk/hwab-pick2/.work/adapter-check/bgzip-311890ff6a/fixtures-tum0bi_4/exact-block.archive 65279 1 /home/aeterna/pubrepo/.wk/hwab-pick2/.work/adapter-check/bgzip-311890ff6a/fixtures-tum0bi_4/region.out",
+    "bash /home/aeterna/pubrepo/.wk/hwab-pick2/codecs/bgzip.sh _call codec_compress /home/aeterna/pubrepo/.wk/hwab-pick2/.work/adapter-check/bgzip-311890ff6a/fixtures-tum0bi_4/cross-block.input /home/aeterna/pubrepo/.wk/hwab-pick2/.work/adapter-check/bgzip-311890ff6a/fixtures-tum0bi_4/cross-block.archive 65280",
+    "bash /home/aeterna/pubrepo/.wk/hwab-pick2/codecs/bgzip.sh _call codec_artifacts /home/aeterna/pubrepo/.wk/hwab-pick2/.work/adapter-check/bgzip-311890ff6a/fixtures-tum0bi_4/cross-block.archive",
+    "bash /home/aeterna/pubrepo/.wk/hwab-pick2/codecs/bgzip.sh _call codec_decompress /home/aeterna/pubrepo/.wk/hwab-pick2/.work/adapter-check/bgzip-311890ff6a/fixtures-tum0bi_4/cross-block.archive /home/aeterna/pubrepo/.wk/hwab-pick2/.work/adapter-check/bgzip-311890ff6a/fixtures-tum0bi_4/cross-block.restored",
+    "bash /home/aeterna/pubrepo/.wk/hwab-pick2/codecs/bgzip.sh _call codec_sidecar /home/aeterna/pubrepo/.wk/hwab-pick2/.work/adapter-check/bgzip-311890ff6a/fixtures-tum0bi_4/cross-block.archive",
+    "/usr/bin/python3 /home/aeterna/pubrepo/.wk/hwab-pick2/harness/resident_probe.py --adapter /home/aeterna/pubrepo/.wk/hwab-pick2/codecs/bgzip.sh --library /home/aeterna/pubrepo/.wk/hwab-pick2/.work/adapter-check/bgzip-311890ff6a/context.so --archive /home/aeterna/pubrepo/.wk/hwab-pick2/.work/adapter-check/bgzip-311890ff6a/fixtures-tum0bi_4/cross-block.archive --original /home/aeterna/pubrepo/.wk/hwab-pick2/.work/adapter-check/bgzip-311890ff6a/fixtures-tum0bi_4/cross-block.input --granularity 65280 --sidecar /home/aeterna/pubrepo/.wk/hwab-pick2/.work/adapter-check/bgzip-311890ff6a/fixtures-tum0bi_4/cross-block.archive.gzi",
+    "bash /home/aeterna/pubrepo/.wk/hwab-pick2/codecs/bgzip.sh _call codec_region /home/aeterna/pubrepo/.wk/hwab-pick2/.work/adapter-check/bgzip-311890ff6a/fixtures-tum0bi_4/cross-block.archive 65279 130571 /home/aeterna/pubrepo/.wk/hwab-pick2/.work/adapter-check/bgzip-311890ff6a/fixtures-tum0bi_4/region.out"
+  ],
+  "timings_collected": false
+}
