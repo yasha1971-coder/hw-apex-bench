@@ -76,7 +76,9 @@ def validate(root=ROOT):
         raise ValueError('Full report differs from retained results')
     if not 120 <= len(render(rows).splitlines()) <= 150:
         raise ValueError('README outside 120–150 line presentation contract')
-    from presentation import render_axes_intro
+    from presentation import render_axes_intro, render_snapshots
+    if (root/"docs/RESULTS/ACEAPEX_SNAPSHOTS.md").read_text() != render_snapshots(rows):
+        raise ValueError("ACEAPEX snapshots differ from retained presentation")
     if (root/'docs/AXES.md').read_text() != render_axes_intro(rows):
         raise ValueError('Axis examples differ from retained results')
     from table_cells import validate_tables

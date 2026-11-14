@@ -154,6 +154,8 @@ def write_reports(rows):
         from default_refresh import render as default_render
         defaults=[json.loads(l) for l in default_path.read_text().splitlines()]
         (ROOT/'docs/RESULTS/DEFAULT_RESULTS.md').write_text(externalize(default_render(defaults),write=True))
+    from presentation import render_snapshots
+    (ROOT/"docs/RESULTS/ACEAPEX_SNAPSHOTS.md").write_text(render_snapshots(rows))
     result=render(rows)
     (ROOT/"docs/RESULTS/FULL_REPORT.md").write_text(render_full(rows))
     (ROOT/"docs/AXES.md").write_text(render_axes_intro(rows))

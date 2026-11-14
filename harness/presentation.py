@@ -7,7 +7,7 @@ def one(rows, codec, metric):
         raise ValueError((codec, metric, len(found)))
     return found[0]
 
-def render_readme(rows):
+def render_legacy_readme(rows):
     table = ['| Codec | Granularity | Ratio | p50 ms | p99 ms | Amplification |',
              '|---|---:|---:|---:|---:|---:|']
     for c in CODECS:
@@ -154,6 +154,46 @@ Cite version 0.1 using [CITATION.cff](CITATION.cff), and identify the measured r
 DOI: [10.5281/zenodo.22713364](https://doi.org/10.5281/zenodo.22713364).
 '''
     return text.replace('published 435 records', f'published {len(rows)} records')
+
+
+def render_snapshots(rows):
+    import re
+    import posixpath
+    legacy = render_legacy_readme(rows)
+    body = legacy.split('## Matched-g refresh:', 1)[1].split('[All nine axes', 1)[0]
+    body = '## Matched-g refresh:' + body
+    def rebase(match):
+        target = match.group(1)
+        if re.match(r'(?:[a-z]+:|#|/)', target):
+            return match.group(0)
+        return '](' + posixpath.relpath(target, 'docs/RESULTS') + ')'
+    return 'ACEAPEX is developed by the author of this benchmark.\n\n' + re.sub(r'\]\(([^\s)]+)\)', rebase, body)
+
+
+def render_readme(rows):
+    from pathlib import Path
+    legacy = render_legacy_readme(rows)
+    quick = legacy.split('## Quick start', 1)[1].split('## Nine axes', 1)[0]
+    rest = '## Nine axes' + legacy.split('## Nine axes', 1)[1]
+    evidence = 'evidence/hwab-pick-3-20261106/t2t_chrX.fa/pick.md'
+    table = (Path(__file__).resolve().parents[1] / evidence).read_text()
+    table = '\n'.join(line.replace('|  |', '| dominated |') for line in table.splitlines() if '| n/a |' not in line) + '\n'
+    return ("# hw-apex-bench — Compressed Access Benchmark\n\n"
+            "Measure random access into compressed data: density, region latency and decoded work, alongside full-file and batch costs.\n\n"
+            "## Quick start" + quick +
+            "## Limitations\n\n"
+            "- One host per run; absolute times are declared for that host.\n"
+            "- pick supports CPU measurements only.\n"
+            "- BGZF g ≤ 65 280 B in the current pick adapter.\n"
+            "- Four development corpora; results do not establish general workload coverage.\n"
+            "- No concurrent workload is measured.\n"
+            "- ACEAPEX is developed by the author of this benchmark.\n\n"
+            "## Example pick frontier — chrX\n\n"
+            "Retained PR #79 evidence (accepted attempt 2), CPU, 16 KiB reads; not a new benchmark.\n"
+            "★ marks nondominated rows across all codecs: higher ratio and lower p50. It is not a universal winner.\n\n"
+            + table + "\n[Source table](" + evidence + ") · [Raw values](" + evidence.replace('.md', '.json') + ")\n\n"
+            "[Results](docs/RESULTS/README.md) · [ACEAPEX snapshots](docs/RESULTS/ACEAPEX_SNAPSHOTS.md) · "
+            "[Interactive results](https://hw-apex-bench.yasha1971.chatgpt.site/)\n\n" + rest)
 
 
 def render_axes_intro(rows):

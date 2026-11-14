@@ -1,56 +1,6 @@
 # hw-apex-bench — Compressed Access Benchmark
 
-Measure access to a region of a compressed file without decoding the rest: nine measurement axes, with adapters for BGZF, zstd-seekable, ACEAPEX and blocked XZ.
-
-Interactive results: https://hw-apex-bench.yasha1971.chatgpt.site/
-
-When a genome, column store or cache stays compressed, a request reads only a piece. hw-apex-bench adds region latency, decoded work and access-pattern measurements alongside full-file costs, with explicit reproduction and verification evidence.
-
-[lzbench](https://github.com/inikep/lzbench) and [TurboBench](https://github.com/powturbo/TurboBench) rank compressors by density and bulk throughput; [SeqBench](https://dl.acm.org/doi/10.1145/3698587.3701386) covers sequence compression; per-format seekable readers exist for gzip ([rapidgzip](https://pypi.org/project/rapidgzip/)), zstd ([zstdra](https://github.com/derijkp/zstdra), [seekable-zstd](https://github.com/3leaps/seekable-zstd)) and BGZF ([htslib bgzip](https://www.htslib.org/doc/bgzip.html)). None of them compares the cost of reading one region across formats at matched block sizes. That is what this measures.
-
-## Matched-g refresh: ACEAPEX v2.1.0 / main open vs BGZF — 2026-09-30
-
-Measured on thirty frozen 2 MiB T2T-CHM13v2.0 windows, not the chr1 snapshot below; ratios are not comparable between the two tables. ACEAPEX is written by the author of this benchmark. Its density advantage and its latency penalty are both reported below; the harness, corpora and raw samples are in the repository.
-
-Each cell is **ratio · p50 / p99 ms**.
-
-| exact g | BGZF | ACE 1b13df3 legacy | ACE v2.1.0 interactive | ACE main open |
-|---:|---:|---:|---:|---:|
-| 4 KiB | 3.794020 · 0.052949 / 0.067827 | 4.682708 · 0.136184 / 0.269816 | 4.682708 · 0.068290 / 0.135201 | 4.455378 · 0.211221 / 0.458329 |
-| 8 KiB | 4.139526 · 0.054550 / 0.071012 | 5.010591 · 0.141694 / 0.263842 | 5.010591 · 0.067162 / 0.139417 | 4.879676 · 0.153141 / 0.467160 |
-| 16 KiB | 4.406650 · 0.065482 / 0.083762 | 5.219838 · 0.143850 / 0.272584 | 5.219838 · 0.074632 / 0.149201 | 5.148826 · 0.176257 / 0.482423 |
-| 32 KiB | 4.643726 · 0.062581 / 0.142081 | 5.344308 · 0.156778 / 0.303165 | 5.344308 · 0.083464 / 0.180311 | 5.307601 · 0.216979 / 0.529897 |
-| 65,280 B | 4.810834 · 0.108651 / 0.244448 | 5.412621 · 0.210062 / 0.438012 | 5.412621 · 0.124668 / 0.277486 | 5.395254 · 0.271045 / 0.757243 |
-
-The modern rows use a persistent C99 decoder handle; the legacy row retains the historical one-shot path as a same-run control. v2.1.0 interactive cuts legacy p50 by 40.7–52.6% and leaves only a 9.2–20.9 µs p50 gap to BGZF. Main open does **not** remove that remainder: it is slower than v2.1.0 interactive at all 5 points and is also less dense at all 5 points.
-
-[ACEAPEX v2.1.0 / open refresh report →](docs/RESULTS/ACEAPEX_UPGRADE_20260930.md)  
-[GitHub Actions run 36641590388 →](https://github.com/yasha1971-coder/hw-apex-bench/actions/runs/36641590388) · [historical 2026-09-18 matched-g report →](docs/RESULTS/MATCHED_G_INTERACTIVE_20260918.md)
-
-**Independence cost at 16 KiB (separate full-chr1 `c_file(g)` scopes):** historical ACEAPEX default @ ee5a37e is **1.632%**; current main-open @ ec347787 is **1.735%**; matched zstd-seekable is **6.569%**. BGZF is **n/a** because no same-encoder whole-input baseline exists. These ACE values use different revisions/profiles and are shown as separate measured scopes, not as a one-variable profile delta. [Current refresh →](docs/RESULTS/ACEAPEX_UPGRADE_20260930.md) · [Scope definitions →](docs/CG_SCOPES.md)
-
-**Batch sweep scope (2026-09-19):** hg38 chr1, N=5000, 16 KiB ranges, workers=1, Actions run 35427975099.
-
-A native batch API is what makes the dense profile usable at all for region reads: it moves from 659.6 to 12,369.7 ranges/s under uniform access. But dense leads interactive only under uniform access. Once requests concentrate, interactive overtakes it somewhere between 12 and 8 bits of access entropy and keeps the lead: at Hα ≈ 2 bits, interactive reaches 869,088 ranges/s against 467,998 for dense. For batch-heavy workloads with any locality, interactive is the profile to pick.
-
-Concentration helps BGZF more than it helps ACEAPEX in the single-request path. Under uniform access bgzip runs 10,040.6 ranges/s against ACEAPEX interactive at 9,086.4, a 1.1× gap. At Hα ≈ 2 bits bgzip reaches 64,722.7 against 13,847.4, a 4.7× gap. The batch API is where ACEAPEX answers locality; the loop path is not.
-
-[Access-entropy sweep →](docs/RESULTS/ACCESS_ENTROPY_20260919.md)
-
-| Codec | Granularity | Ratio | p50 ms | p99 ms | Amplification |
-|---|---:|---:|---:|---:|---:|
-| bgzip+htslib | ≤ 64 KiB | 3.383 | 0.102 | 0.212 | 4.82 |
-| zstd-seekable | 16 KiB | 3.026 | 0.046 | 0.0594 | 2 |
-| aceapex-interactive | 16 KiB | 3.658 | 0.13 | 0.24 | 6.22 |
-| aceapex-dense | 256 KiB | 3.781 | 1.33 | 2.52 | 83.4 |
-
-ACEAPEX dense has the highest ratio; zstd-seekable has the lowest p50, p99 and amplification. Both ACEAPEX profiles trade slower regions for greater density.
-
-This is the preserved chr1 CPU snapshot: three formats, four configurations, 200 resident 16 KiB byte reads per configuration; absolute times belong to its host. BGZF granularity is a ceiling; actual blocks vary. XZ has separate qualification and small-corpus evidence, not an invented row in this historical comparison.
-
-[All nine axes and full results →](docs/RESULTS/README.md)
-[Explore the measurements →](https://yasha1971-coder.github.io/hw-apex-bench/)
-[Add your codec →](CONTRIBUTING.md)
+Measure random access into compressed data: density, region latency and decoded work, alongside full-file and batch costs.
 
 ## Quick start
 
@@ -61,6 +11,34 @@ sudo apt-get update -qq && sudo apt-get install -y -qq build-essential autoconf 
 for codec in bgzip zstd_seekable xz; do ./run.sh --check "codecs/$codec.sh" || exit; done
 ./run.sh --pick enwik8 --output-dir .work/quickstart-pick
 ```
+
+## Limitations
+
+- One host per run; absolute times are declared for that host.
+- pick supports CPU measurements only.
+- BGZF g ≤ 65 280 B in the current pick adapter.
+- Four development corpora; results do not establish general workload coverage.
+- No concurrent workload is measured.
+- ACEAPEX is developed by the author of this benchmark.
+
+## Example pick frontier — chrX
+
+Retained PR #79 evidence (accepted attempt 2), CPU, 16 KiB reads; not a new benchmark.
+★ marks nondominated rows across all codecs: higher ratio and lower p50. It is not a universal winner.
+
+| Codec | g | ratio | p50 ms | amplification | break-even N | selection / reason |
+|---|---|---:|---:|---:|---:|---|
+| bgzip | ≤64 KiB, 65 280 B | 3.17 | 0.0711 | 5.09 | 2.35e+03 | ★ |
+| zstd_seekable | 4 KiB | 2.69 | 0.0317 | 1.25 | 7.62e+03 | ★ |
+| zstd_seekable | 16 KiB | 2.8 | 0.0417 | 2 | 4.78e+03 | ★ |
+| zstd_seekable | 64 KiB | 2.94 | 0.0568 | 4.96 | 2.52e+03 | ★ |
+| xz | 4 KiB | 2.81 | 0.222 | 1.25 | 7.68e+03 | dominated |
+| xz | 16 KiB | 3.18 | 0.314 | 2 | 4.8e+03 | ★ |
+| xz | 64 KiB | 3.41 | 0.564 | 4.96 | 2.32e+03 | ★ |
+
+[Source table](evidence/hwab-pick-3-20261106/t2t_chrX.fa/pick.md) · [Raw values](evidence/hwab-pick-3-20261106/t2t_chrX.fa/pick.json)
+
+[Results](docs/RESULTS/README.md) · [ACEAPEX snapshots](docs/RESULTS/ACEAPEX_SNAPSHOTS.md) · [Interactive results](https://hw-apex-bench.yasha1971.chatgpt.site/)
 
 ## Nine axes
 
