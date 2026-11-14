@@ -65,11 +65,17 @@ class ManifestRefreshTests(unittest.TestCase):
             data = (clone / "results.jsonl").read_bytes()
             source = clone / "harness/presentation.py"
             text = source.read_text()
-            self.assertIn("Measure access to a region", text)
-            source.write_text(text.replace("Measure access to a region",
-                                          "Measure byte access to a region", 1))
+            readme = clone / "README.md"
+            original_readme = readme.read_bytes()
+            phrase = "Measure random access into compressed data:"
+            replacement = "Measure verified random access into compressed data:"
+            self.assertIn(phrase.encode(), original_readme)
+            self.assertEqual(text.count(phrase), 1)
+            source.write_text(text.replace(phrase, replacement, 1))
             report = run("harness/report.py")
             self.assertEqual(report.returncode, 0, report.stderr)
+            self.assertNotEqual(readme.read_bytes(), original_readme)
+            self.assertIn(replacement.encode(), readme.read_bytes())
             refused = run("web/validate_publication.py")
             self.assertNotEqual(refused.returncode, 0)
             self.assertIn("Publication integrity mismatch: README.md", refused.stderr)
