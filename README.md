@@ -2,6 +2,8 @@
 
 Measure random access into compressed data: density, region latency and decoded work, alongside full-file and batch costs.
 
+[lzbench](https://github.com/inikep/lzbench) and [TurboBench](https://github.com/powturbo/TurboBench) rank compressors by density and bulk throughput; [SeqBench](https://dl.acm.org/doi/10.1145/3698587.3701386) covers sequence compression; per-format seekable readers exist for gzip ([rapidgzip](https://pypi.org/project/rapidgzip/)), zstd ([zstdra](https://github.com/derijkp/zstdra), [seekable-zstd](https://github.com/3leaps/seekable-zstd)) and BGZF ([htslib bgzip](https://www.htslib.org/doc/bgzip.html)). None of them compares the cost of reading one region across formats at matched block sizes. That is what this measures.
+
 ## Quick start
 
 From the repository root on Ubuntu, this prints the Pareto frontier of ratio/p50 across codecs and block sizes g; see [pick options](docs/PICK.md).
