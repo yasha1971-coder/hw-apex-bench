@@ -1,0 +1,105 @@
+[2026-11-21T11:49:18Z] CALIBRATION gate OK for 'HWAB-NBD-1c/2' — опора/потолок/вероятность present
+[2026-11-21T11:49:18Z] START 'HWAB-NBD-1c/2': bash /home/aeterna/pubrepo/.wk/hwab-nbd1/evidence/hwab-nbd-1-20261121/main.sh
+silence PASS [] load1 0.0322265625 attempts 1
+silence PASS [] load1 0.17236328125 attempts 1
+silence PASS [] load1 0.2470703125 attempts 1
+silence PASS [] load1 0.22705078125 attempts 1
+silence PASS [] load1 0.2490234375 attempts 1
+{'corpus': 'silesia.tar', 'g': 1048576, 'ratio_new': 3.997894926660075, 'ratio_ref': 3.997894926660075, 'sha_equal': True, 'p50_new_ms': 6.892714649, 'p50_ref_ms': 6.935250014, 'p50_delta': -0.006133212921543563, 'pass': True}
+{'corpus': 'silesia.tar', 'g': 16777216, 'ratio_new': 4.270160490606584, 'ratio_ref': 4.270160490606584, 'sha_equal': True, 'p50_new_ms': 119.294617325, 'p50_ref_ms': 118.579551578, 'p50_delta': 0.006030261857835173, 'pass': True}
+{'corpus': 'enwik8', 'g': 1048576, 'ratio_new': 3.329303987693827, 'ratio_ref': 3.329303987693827, 'sha_equal': True, 'p50_new_ms': 8.726023138, 'p50_ref_ms': 8.634198457, 'p50_delta': 0.010634997731092888, 'pass': True}
+{'corpus': 'enwik8', 'g': 16777216, 'ratio_new': 3.7230486645647822, 'ratio_ref': 3.7230486645647822, 'sha_equal': True, 'p50_new_ms': 116.361424327, 'p50_ref_ms': 115.422576666, 'p50_delta': 0.008134003659585165, 'pass': True}
+GATES PASS
+silence PASS [] load1 0.26416015625 attempts 1
+[11:59:26] g1M r0: A p50 27.080 ms C p50 0.024 ms B p50 1.907 ms, rss 16616 KiB, bad 0, 26 s
+silence PASS [] load1 0.263671875 attempts 1
+[12:01:21] g2M r0: A p50 57.485 ms C p50 0.023 ms B p50 3.755 ms, rss 26760 KiB, bad 0, 54 s
+silence PASS [] load1 0.2744140625 attempts 1
+[12:04:03] g4M r0: A p50 110.239 ms C p50 0.024 ms B p50 7.274 ms, rss 49384 KiB, bad 0, 101 s
+silence PASS [] load1 0.21826171875 attempts 1
+[12:08:46] g8M r0: A p50 193.619 ms C p50 0.025 ms B p50 15.568 ms, rss 118920 KiB, bad 0, 191 s
+silence PASS [] load1 0.2666015625 attempts 1
+[12:16:48] g16M r0: A p50 206.157 ms C p50 0.025 ms B p50 28.727 ms, rss 161124 KiB, bad 0, 391 s
+silence PASS [] load1 0.28759765625 attempts 1
+[12:26:56] g24M r0: A p50 259.961 ms C p50 0.029 ms B p50 42.962 ms, rss 267548 KiB, bad 0, 532 s
+silence PASS [] load1 0.27490234375 attempts 1
+[12:40:05] g32M r0: A p50 332.061 ms C p50 0.029 ms B p50 73.750 ms, rss 308552 KiB, bad 0, 698 s
+silence PASS [] load1 0.26953125 attempts 1
+[13:02:33] g64M r0: A p50 591.804 ms C p50 0.029 ms B p50 139.863 ms, rss 603360 KiB, bad 0, 1256 s
+silence PASS [] load1 0.2568359375 attempts 1
+[13:05:20] file r0: A p50 0.014 ms C p50 0.013 ms B p50 0.014 ms, rss 4748 KiB, bad 0, 0 s
+silence PASS [] load1 0.2568359375 attempts 1
+[13:05:48] g1M r1: A p50 28.131 ms C p50 0.023 ms B p50 2.001 ms, rss 16664 KiB, bad 0, 27 s
+silence PASS [] load1 0.236328125 attempts 1
+[13:07:55] g2M r1: A p50 51.522 ms C p50 0.024 ms B p50 3.696 ms, rss 26832 KiB, bad 0, 51 s
+silence PASS [] load1 0.2578125 attempts 1
+[13:12:18] g4M r1: A p50 117.943 ms C p50 0.024 ms B p50 7.275 ms, rss 49444 KiB, bad 0, 112 s
+silence PASS [] load1 0.2626953125 attempts 1
+[13:17:17] g8M r1: A p50 143.142 ms C p50 0.023 ms B p50 15.545 ms, rss 118820 KiB, bad 0, 192 s
+silence PASS [] load1 0.26318359375 attempts 1
+[13:25:13] g16M r1: A p50 226.951 ms C p50 0.026 ms B p50 28.872 ms, rss 161108 KiB, bad 0, 370 s
+silence PASS [] load1 0.2353515625 attempts 1
+[13:35:48] g24M r1: A p50 275.527 ms C p50 0.029 ms B p50 43.095 ms, rss 259308 KiB, bad 0, 514 s
+silence PASS [] load1 0.29443359375 attempts 1
+[13:49:37] g32M r1: A p50 337.692 ms C p50 0.029 ms B p50 74.225 ms, rss 308536 KiB, bad 0, 708 s
+silence PASS [] load1 0.33251953125 attempts 1
+[14:11:51] g64M r1: A p50 597.096 ms C p50 0.030 ms B p50 141.237 ms, rss 603436 KiB, bad 0, 1242 s
+silence PASS [] load1 0.24755859375 attempts 1
+[14:13:38] file r1: A p50 0.014 ms C p50 0.013 ms B p50 0.014 ms, rss 4628 KiB, bad 0, 0 s
+silence PASS [] load1 0.24755859375 attempts 1
+[14:14:05] g1M r2: A p50 26.111 ms C p50 0.023 ms B p50 1.940 ms, rss 16668 KiB, bad 0, 26 s
+silence PASS [] load1 0.23291015625 attempts 1
+[14:15:58] g2M r2: A p50 50.670 ms C p50 0.024 ms B p50 3.697 ms, rss 26736 KiB, bad 0, 51 s
+silence PASS [] load1 0.24609375 attempts 1
+[14:19:04] g4M r2: A p50 112.413 ms C p50 0.024 ms B p50 7.602 ms, rss 49424 KiB, bad 0, 110 s
+silence PASS [] load1 0.33251953125 attempts 1
+[14:27:18] g8M r2: A p50 143.541 ms C p50 0.025 ms B p50 15.636 ms, rss 118932 KiB, bad 0, 193 s
+silence PASS [] load1 0.251953125 attempts 1
+[14:34:44] g16M r2: A p50 224.021 ms C p50 0.025 ms B p50 28.973 ms, rss 161236 KiB, bad 0, 355 s
+silence PASS [] load1 0.27880859375 attempts 1
+[14:45:12] g24M r2: A p50 263.402 ms C p50 0.027 ms B p50 42.978 ms, rss 259312 KiB, bad 0, 521 s
+silence PASS [] load1 0.29150390625 attempts 1
+[15:00:08] g32M r2: A p50 360.148 ms C p50 0.028 ms B p50 74.091 ms, rss 308612 KiB, bad 0, 700 s
+silence PASS [] load1 0.2392578125 attempts 1
+[15:22:37] g64M r2: A p50 597.251 ms C p50 0.029 ms B p50 139.687 ms, rss 603420 KiB, bad 0, 1258 s
+silence PASS [] load1 0.2392578125 attempts 1
+[15:32:53] file r2: A p50 0.014 ms C p50 0.013 ms B p50 0.014 ms, rss 4932 KiB, bad 0, 0 s
+silence PASS [] load1 0.2197265625 attempts 1
+[15:33:21] g1M r3: A p50 27.391 ms C p50 0.024 ms B p50 1.935 ms, rss 16596 KiB, bad 0, 27 s
+silence PASS [] load1 0.29345703125 attempts 1
+[15:34:45] g2M r3: A p50 50.046 ms C p50 0.022 ms B p50 3.724 ms, rss 26756 KiB, bad 0, 52 s
+silence PASS [] load1 0.2626953125 attempts 1
+[15:37:28] g4M r3: A p50 99.590 ms C p50 0.023 ms B p50 7.303 ms, rss 49460 KiB, bad 0, 102 s
+silence PASS [] load1 0.349609375 attempts 1
+[15:41:58] g8M r3: A p50 141.167 ms C p50 0.026 ms B p50 15.624 ms, rss 118908 KiB, bad 0, 194 s
+silence PASS [] load1 0.25390625 attempts 1
+[15:49:03] g16M r3: A p50 205.525 ms C p50 0.026 ms B p50 28.727 ms, rss 161028 KiB, bad 0, 348 s
+silence PASS [] load1 0.291015625 attempts 1
+[15:58:55] g24M r3: A p50 275.769 ms C p50 0.028 ms B p50 42.964 ms, rss 267508 KiB, bad 0, 516 s
+silence PASS [] load1 0.26416015625 attempts 1
+[16:19:12] g32M r3: A p50 412.968 ms C p50 0.029 ms B p50 74.473 ms, rss 308576 KiB, bad 0, 811 s
+silence PASS [] load1 0.26611328125 attempts 1
+[16:42:46] g64M r3: A p50 596.242 ms C p50 0.029 ms B p50 140.861 ms, rss 603364 KiB, bad 0, 1292 s
+silence PASS [] load1 0.26123046875 attempts 1
+[16:44:03] file r3: A p50 0.014 ms C p50 0.014 ms B p50 0.014 ms, rss 4668 KiB, bad 0, 0 s
+silence PASS [] load1 0.26123046875 attempts 1
+[16:44:30] g1M r4: A p50 25.875 ms C p50 0.024 ms B p50 1.922 ms, rss 16604 KiB, bad 0, 26 s
+silence PASS [] load1 0.2744140625 attempts 1
+[16:46:24] g2M r4: A p50 56.007 ms C p50 0.023 ms B p50 3.719 ms, rss 26752 KiB, bad 0, 53 s
+silence PASS [] load1 0.236328125 attempts 1
+[16:49:34] g4M r4: A p50 105.940 ms C p50 0.024 ms B p50 7.280 ms, rss 49420 KiB, bad 0, 98 s
+silence PASS [] load1 0.26318359375 attempts 1
+[16:54:24] g8M r4: A p50 195.347 ms C p50 0.025 ms B p50 15.629 ms, rss 118932 KiB, bad 0, 199 s
+silence PASS [] load1 0.27978515625 attempts 1
+[17:01:58] g16M r4: A p50 229.103 ms C p50 0.027 ms B p50 28.722 ms, rss 161104 KiB, bad 0, 362 s
+silence PASS [] load1 0.25341796875 attempts 1
+[17:12:18] g24M r4: A p50 278.283 ms C p50 0.027 ms B p50 42.907 ms, rss 259476 KiB, bad 0, 528 s
+silence PASS [] load1 0.2578125 attempts 1
+[17:25:42] g32M r4: A p50 367.185 ms C p50 0.028 ms B p50 74.281 ms, rss 308576 KiB, bad 0, 713 s
+silence PASS [] load1 0.2841796875 attempts 1
+[17:48:24] g64M r4: A p50 596.642 ms C p50 0.029 ms B p50 140.969 ms, rss 603424 KiB, bad 0, 1285 s
+silence PASS [] load1 0.240234375 attempts 1
+[17:49:55] file r4: A p50 0.019 ms C p50 0.019 ms B p50 0.020 ms, rss 4640 KiB, bad 0, 0 s
+MISMATCHES 0
+ALL DONE
+[2026-11-21T17:49:55Z] DONE 'HWAB-NBD-1c/2' rc=0

@@ -1,0 +1,15 @@
+{
+  "archive": "/tmp/hwab-nbd/run/gates/enwik8/bgzip-65280/bgzip-da52cede3a/archive",
+  "sidecar": "/tmp/hwab-nbd/run/gates/enwik8/bgzip-65280/bgzip-da52cede3a/archive.gzi",
+  "library": "/home/aeterna/pubrepo/.wk/hwab-nbd1/.work/adapter-check/bgzip-da52cede3a/context.so",
+  "artifacts": {
+    "/tmp/hwab-nbd/run/gates/enwik8/bgzip-65280/bgzip-da52cede3a/archive": {
+      "bytes": 37965489,
+      "sha256": "b0971ff160c2140cc6654fa22420dfd92e9822a7921336c65ec4902b99ffa68d"
+    },
+    "/tmp/hwab-nbd/run/gates/enwik8/bgzip-65280/bgzip-da52cede3a/archive.gzi": {
+      "bytes": 24632,
+      "sha256": "8d39670af80acf4f6b60fdf169a10d38cc67e31e26867c1c4999e2bcdce2e0f7"
+    }
+  }
+}

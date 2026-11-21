@@ -1,0 +1,3 @@
+[2026-11-21T10:25:48Z] CALIBRATION gate OK for 'HWAB-NBD-1c/2' — опора/потолок/вероятность present
+[2026-11-21T10:25:48Z] START 'HWAB-NBD-1c/2': bash /home/aeterna/pubrepo/.wk/hwab-nbd1/evidence/hwab-nbd-1-20261121/main.sh
+[2026-11-21T10:25:49Z] STOP: 'HWAB-NBD-1c/2' exited rc=2

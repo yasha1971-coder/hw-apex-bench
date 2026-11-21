@@ -1,0 +1,7 @@
+| Codec | g | ratio | p50 ms | amplification | break-even N | selection / reason |
+|---|---|---:|---:|---:|---:|---|
+| bgzip | 65 280 B (fixed, not matched to g) | 2.63 | 0.0651 | 16.4 | 1.56e+03 | ★ |
+| zstd_seekable | 1024 KiB | 2.78 | 0.352 | 144 | 202 | ★ |
+| zstd_seekable | 16384 KiB | 2.81 | 5.93 | 2.03e+03 | 14 | ★ |
+| xz | 1024 KiB | 3.33 | 8.73 | 258 | 95 | ★ |
+| xz | 16384 KiB | 3.72 | 116 | 4.07e+03 | 6 | ★ |
