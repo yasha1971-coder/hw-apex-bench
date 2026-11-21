@@ -1,0 +1,49 @@
+{
+ "rows": [
+  {
+   "corpus": "silesia.tar",
+   "g": 1048576,
+   "ratio_new": 3.997894926660075,
+   "ratio_ref": 3.997894926660075,
+   "sha_equal": true,
+   "p50_new_ms": 6.854560226,
+   "p50_ref_ms": 6.935250014,
+   "p50_delta": -0.01163473383614344,
+   "pass": true
+  },
+  {
+   "corpus": "silesia.tar",
+   "g": 16777216,
+   "ratio_new": 4.270160490606584,
+   "ratio_ref": 4.270160490606584,
+   "sha_equal": true,
+   "p50_new_ms": 118.537116796,
+   "p50_ref_ms": 118.579551578,
+   "p50_delta": -0.0003578591876531867,
+   "pass": true
+  },
+  {
+   "corpus": "enwik8",
+   "g": 1048576,
+   "ratio_new": 3.329303987693827,
+   "ratio_ref": 3.329303987693827,
+   "sha_equal": true,
+   "p50_new_ms": 8.653704077,
+   "p50_ref_ms": 8.634198457,
+   "p50_delta": 0.002259111844271633,
+   "pass": true
+  },
+  {
+   "corpus": "enwik8",
+   "g": 16777216,
+   "ratio_new": 3.7230486645647822,
+   "ratio_ref": 3.7230486645647822,
+   "sha_equal": true,
+   "p50_new_ms": 116.367291659,
+   "p50_ref_ms": 115.422576666,
+   "p50_delta": 0.00818483714614815,
+   "pass": true
+  }
+ ],
+ "pass": true
+}

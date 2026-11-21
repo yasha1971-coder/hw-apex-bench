@@ -1,0 +1,15 @@
+{
+  "archive": "/tmp/hwab-nbd/run/gates/silesia.tar/bgzip-65280/bgzip-da52cede3a/archive",
+  "sidecar": "/tmp/hwab-nbd/run/gates/silesia.tar/bgzip-65280/bgzip-da52cede3a/archive.gzi",
+  "library": "/home/aeterna/pubrepo/.wk/hwab-nbd1/.work/adapter-check/bgzip-da52cede3a/context.so",
+  "artifacts": {
+    "/tmp/hwab-nbd/run/gates/silesia.tar/bgzip-65280/bgzip-da52cede3a/archive": {
+      "bytes": 69919420,
+      "sha256": "8ba8e1ce12797e86fc3d282f8c439af8e38727bf157b1c58d69b526c568e0aa4"
+    },
+    "/tmp/hwab-nbd/run/gates/silesia.tar/bgzip-65280/bgzip-da52cede3a/archive.gzi": {
+      "bytes": 51944,
+      "sha256": "f17fdc684745ffd754d3f5fb3601b07db3165bf99dddc39855f0e197778ea166"
+    }
+  }
+}

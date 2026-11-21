@@ -1,0 +1,78 @@
+{
+ "meta": {
+  "raw": "/tmp/hwab-nbd/fedora45.raw",
+  "raw_bytes": 5368709120,
+  "granule": 1048576,
+  "data_granules": 861,
+  "n": 5,
+  "repeats": 1,
+  "seed": 20261121,
+  "read": 4096,
+  "cold_depth": 8,
+  "series": "AC,B",
+  "nbdkit": "nbdkit 1.24.1",
+  "libnbd": "1.10.5",
+  "archives": {
+   "1": {
+    "path": "/tmp/hwab-nbd/fedora45-g1M.raw.xz",
+    "bytes": 622662840
+   },
+   "64": {
+    "path": "/tmp/hwab-nbd/fedora45-g64M.raw.xz",
+    "bytes": 602547976
+   }
+  },
+  "data_blocks": {
+   "1": 861,
+   "64": 19
+  }
+ },
+ "rows": {
+  "g1M": [
+   {
+    "g_mib": 1,
+    "repeat": 0,
+    "wall_s": 0.10771918296813965,
+    "peak_rss_kib": 15528,
+    "mismatches": 0,
+    "A_p50_ms": 17.637362,
+    "C_p50_ms": 0.022603,
+    "B_p50_ms": 2.345082,
+    "A_p99_ms": 33.47195548,
+    "C_p99_ms": 0.02705248,
+    "B_p99_ms": 2.532168
+   }
+  ],
+  "g64M": [
+   {
+    "g_mib": 64,
+    "repeat": 0,
+    "wall_s": 7.9222798347473145,
+    "peak_rss_kib": 603420,
+    "mismatches": 0,
+    "A_p50_ms": 1893.336428,
+    "C_p50_ms": 0.028955,
+    "B_p50_ms": 137.875629,
+    "A_p99_ms": 2025.8454150799998,
+    "C_p99_ms": 0.04320572,
+    "B_p99_ms": 567.35034416
+   }
+  ],
+  "file": [
+   {
+    "g_mib": 0,
+    "repeat": 0,
+    "wall_s": 0.0007915496826171875,
+    "peak_rss_kib": 4796,
+    "mismatches": 0,
+    "A_p50_ms": 0.033093,
+    "C_p50_ms": 0.042941,
+    "B_p50_ms": 0.028584,
+    "A_p99_ms": 0.11838664,
+    "C_p99_ms": 0.058501080000000004,
+    "B_p99_ms": 0.03250596
+   }
+  ]
+ },
+ "mismatches": 0
+}

@@ -1,0 +1,35 @@
+[2026-11-21T10:26:29Z] CALIBRATION gate OK for 'HWAB-NBD-1c/2' — опора/потолок/вероятность present
+[2026-11-21T10:26:29Z] START 'HWAB-NBD-1c/2': bash /home/aeterna/pubrepo/.wk/hwab-nbd1/evidence/hwab-nbd-1-20261121/main.sh
+silence PASS [] load1 0.1357421875 attempts 2
+silence PASS [] load1 0.26416015625 attempts 1
+silence PASS [] load1 0.2314453125 attempts 1
+silence PASS [] load1 0.26025390625 attempts 1
+silence PASS [] load1 0.28564453125 attempts 1
+{'corpus': 'silesia.tar', 'g': 1048576, 'ratio_new': 3.997894926660075, 'ratio_ref': 3.997894926660075, 'sha_equal': True, 'p50_new_ms': 6.854560226, 'p50_ref_ms': 6.935250014, 'p50_delta': -0.01163473383614344, 'pass': True}
+{'corpus': 'silesia.tar', 'g': 16777216, 'ratio_new': 4.270160490606584, 'ratio_ref': 4.270160490606584, 'sha_equal': True, 'p50_new_ms': 118.537116796, 'p50_ref_ms': 118.579551578, 'p50_delta': -0.0003578591876531867, 'pass': True}
+{'corpus': 'enwik8', 'g': 1048576, 'ratio_new': 3.329303987693827, 'ratio_ref': 3.329303987693827, 'sha_equal': True, 'p50_new_ms': 8.653704077, 'p50_ref_ms': 8.634198457, 'p50_delta': 0.002259111844271633, 'pass': True}
+{'corpus': 'enwik8', 'g': 16777216, 'ratio_new': 3.7230486645647822, 'ratio_ref': 3.7230486645647822, 'sha_equal': True, 'p50_new_ms': 116.367291659, 'p50_ref_ms': 115.422576666, 'p50_delta': 0.00818483714614815, 'pass': True}
+GATES PASS
+silence PASS [] load1 0.21630859375 attempts 1
+[10:40:16] g1M r0: A p50 26.878 ms C p50 0.024 ms B p50 1.916 ms, rss 16668 KiB, bad 0, 26 s
+silence PASS [] load1 0.29150390625 attempts 1
+[10:41:56] g2M r0: A p50 56.833 ms C p50 0.023 ms B p50 3.728 ms, rss 26740 KiB, bad 0, 53 s
+silence PASS [] load1 0.23486328125 attempts 1
+[10:45:23] g4M r0: A p50 109.781 ms C p50 0.024 ms B p50 7.266 ms, rss 49500 KiB, bad 0, 101 s
+silence PASS [] load1 0.2744140625 attempts 1
+[10:50:09] g8M r0: A p50 197.456 ms C p50 0.024 ms B p50 15.404 ms, rss 119044 KiB, bad 0, 194 s
+silence PASS [] load1 0.31689453125 attempts 1
+[10:57:47] g16M r0: A p50 184.004 ms C p50 0.027 ms B p50 28.714 ms, rss 161120 KiB, bad 0, 351 s
+silence PASS [] load1 0.26513671875 attempts 1
+Traceback (most recent call last):
+  File "/home/aeterna/pubrepo/.wk/hwab-nbd1/harness/nbd_xz_probe.py", line 144, in <module>
+    main()
+  File "/home/aeterna/pubrepo/.wk/hwab-nbd1/harness/nbd_xz_probe.py", line 130, in main
+    t0 = time.time(); lat, bad = run_series(h, raw_f, plan); wall = time.time() - t0
+  File "/home/aeterna/pubrepo/.wk/hwab-nbd1/harness/nbd_xz_probe.py", line 75, in run_series
+    t0 = time.perf_counter_ns(); buf = h.pread(READ, off); t1 = time.perf_counter_ns()
+  File "/usr/lib/python3/dist-packages/nbd.py", line 1505, in pread
+    return libnbdmod.pread(self._o, count, offset, flags)
+nbd.Error: nbd_pread: request out of bounds: Invalid argument (EINVAL)
+STOP: probe failed
+[2026-11-21T10:59:21Z] STOP: 'HWAB-NBD-1c/2' exited rc=5

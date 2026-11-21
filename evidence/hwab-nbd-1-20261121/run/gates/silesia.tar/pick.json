@@ -1,0 +1,539 @@
+{
+  "schema": "cabench-pick-v1",
+  "input_sha256": "a667bac80089b3d04d5496772149e632f0758974b0579d743cd8d6e5e0d63eb2",
+  "g_set": [
+    1048576,
+    16777216
+  ],
+  "region_size_bytes": 4096,
+  "zstd_level": 3,
+  "elapsed_seconds": 183.19949903711677,
+  "codec_seconds": {
+    "bgzip": 4.887386105954647,
+    "zstd_seekable": 8.98024932667613,
+    "xz": 169.06774715706706
+  },
+  "rows": [
+    {
+      "codec": "bgzip",
+      "g": 65280,
+      "status": "measured",
+      "ratio": 3.0290608598111652,
+      "p50_ms": 0.052269548,
+      "amplification": 16.734375,
+      "break_even_N": 3526,
+      "qualification_sha256": "42358c2a6eebcc05e3a0717aeeed9eb050c6c4979ef9cc12255a7580a45b0362",
+      "evidence": {
+        "ratio": {
+          "ratio": 3.0290608598111652,
+          "archive_bytes": 69971364,
+          "archive_artifacts": {
+            "/tmp/hwab-nbd/run/gates/silesia.tar/bgzip-65280/bgzip-da52cede3a/archive": {
+              "bytes": 69919420,
+              "sha256": "8ba8e1ce12797e86fc3d282f8c439af8e38727bf157b1c58d69b526c568e0aa4"
+            },
+            "/tmp/hwab-nbd/run/gates/silesia.tar/bgzip-65280/bgzip-da52cede3a/archive.gzi": {
+              "bytes": 51944,
+              "sha256": "f17fdc684745ffd754d3f5fb3601b07db3165bf99dddc39855f0e197778ea166"
+            }
+          },
+          "verified": "byte-exact",
+          "n_samples": 1,
+          "compress_command": "bash /home/aeterna/pubrepo/.wk/hwab-nbd1/codecs/bgzip.sh _call codec_compress /tmp/hwref/corpus/silesia.tar /tmp/hwab-nbd/run/gates/silesia.tar/bgzip-65280/bgzip-da52cede3a/archive 65280",
+          "verification_command": "bash /home/aeterna/pubrepo/.wk/hwab-nbd1/codecs/bgzip.sh _call codec_decompress /tmp/hwab-nbd/run/gates/silesia.tar/bgzip-65280/bgzip-da52cede3a/archive /tmp/hwab-nbd/run/gates/silesia.tar/bgzip-65280/bgzip-da52cede3a/ratio-restored"
+        },
+        "region": {
+          "raw_samples": "bgzip-da52cede3a/region.jsonl",
+          "raw_sha256": "3c83decab7a49a1d56a531fe914ab0c66ff110dd866c168e798c269d0c6f2001",
+          "command": "/tmp/hwab-nbd/run/gates/silesia.tar/native-measure /home/aeterna/pubrepo/.wk/hwab-nbd1/.work/adapter-check/bgzip-da52cede3a/context.so /tmp/hwab-nbd/run/gates/silesia.tar/bgzip-65280/bgzip-da52cede3a/archive /tmp/hwref/corpus/silesia.tar region /tmp/hwab-nbd/run/gates/silesia.tar/bgzip-65280/bgzip-da52cede3a/archive.gzi 4096",
+          "n_samples": 200,
+          "verified": "byte-exact",
+          "timer": "CLOCK_MONOTONIC; resident context; native callback only",
+          "archive_artifacts": {
+            "/tmp/hwab-nbd/run/gates/silesia.tar/bgzip-65280/bgzip-da52cede3a/archive": {
+              "bytes": 69919420,
+              "sha256": "8ba8e1ce12797e86fc3d282f8c439af8e38727bf157b1c58d69b526c568e0aa4"
+            },
+            "/tmp/hwab-nbd/run/gates/silesia.tar/bgzip-65280/bgzip-da52cede3a/archive.gzi": {
+              "bytes": 51944,
+              "sha256": "f17fdc684745ffd754d3f5fb3601b07db3165bf99dddc39855f0e197778ea166"
+            }
+          },
+          "compress_command": "bash /home/aeterna/pubrepo/.wk/hwab-nbd1/codecs/bgzip.sh _call codec_compress /tmp/hwref/corpus/silesia.tar /tmp/hwab-nbd/run/gates/silesia.tar/bgzip-65280/bgzip-da52cede3a/archive 65280",
+          "region_p50_ms": 0.052269548,
+          "region_p99_ms": 0.137537718
+        },
+        "amplification": {
+          "value": 16.734375,
+          "unit": "bytes/byte",
+          "n_samples": 200,
+          "verified": "byte-exact",
+          "command": "/tmp/hwab-nbd/run/gates/silesia.tar/native-measure /home/aeterna/pubrepo/.wk/hwab-nbd1/.work/adapter-check/bgzip-da52cede3a/counter-context.so /tmp/hwab-nbd/run/gates/silesia.tar/bgzip-65280/bgzip-da52cede3a/archive /tmp/hwref/corpus/silesia.tar amplification /tmp/hwab-nbd/run/gates/silesia.tar/bgzip-65280/bgzip-da52cede3a/archive.gzi 4096",
+          "raw_samples": "bgzip-da52cede3a/amplification.jsonl",
+          "raw_sha256": "fb9883fc6c6ad26173a0d8860cc6c2241142e88ea6426638e274cf71e972dedd",
+          "counter_library_sha256": "e84e9b307e7a2b88393a0cb204a1d78a5a4a8cd4e64ecaac590e005f86853e91",
+          "timings_collected": false
+        },
+        "break_even": {
+          "intersection_requests": 3525.7070891831704,
+          "break_even_N": 3526,
+          "definition": "first integer N for which N * region p50 exceeds median full decode",
+          "model": "independent single calls; excludes preparation and amortization",
+          "region": {
+            "raw_samples": "bgzip-da52cede3a/region.jsonl",
+            "raw_sha256": "3c83decab7a49a1d56a531fe914ab0c66ff110dd866c168e798c269d0c6f2001",
+            "command": "/tmp/hwab-nbd/run/gates/silesia.tar/native-measure /home/aeterna/pubrepo/.wk/hwab-nbd1/.work/adapter-check/bgzip-da52cede3a/context.so /tmp/hwab-nbd/run/gates/silesia.tar/bgzip-65280/bgzip-da52cede3a/archive /tmp/hwref/corpus/silesia.tar region /tmp/hwab-nbd/run/gates/silesia.tar/bgzip-65280/bgzip-da52cede3a/archive.gzi 4096",
+            "n_samples": 200,
+            "verified": "byte-exact",
+            "timer": "CLOCK_MONOTONIC; resident context; native callback only",
+            "archive_artifacts": {
+              "/tmp/hwab-nbd/run/gates/silesia.tar/bgzip-65280/bgzip-da52cede3a/archive": {
+                "bytes": 69919420,
+                "sha256": "8ba8e1ce12797e86fc3d282f8c439af8e38727bf157b1c58d69b526c568e0aa4"
+              },
+              "/tmp/hwab-nbd/run/gates/silesia.tar/bgzip-65280/bgzip-da52cede3a/archive.gzi": {
+                "bytes": 51944,
+                "sha256": "f17fdc684745ffd754d3f5fb3601b07db3165bf99dddc39855f0e197778ea166"
+              }
+            },
+            "compress_command": "bash /home/aeterna/pubrepo/.wk/hwab-nbd1/codecs/bgzip.sh _call codec_compress /tmp/hwref/corpus/silesia.tar /tmp/hwab-nbd/run/gates/silesia.tar/bgzip-65280/bgzip-da52cede3a/archive 65280",
+            "region_p50_ms": 0.052269548,
+            "region_p99_ms": 0.137537718
+          },
+          "decode": {
+            "raw_samples": "bgzip-da52cede3a/decode.jsonl",
+            "raw_sha256": "cd255a01473ff7ee9012d27fc51928b2401d155226d72c3741dfb1353f8c7309",
+            "command": "/tmp/hwab-nbd/run/gates/silesia.tar/native-measure /home/aeterna/pubrepo/.wk/hwab-nbd1/.work/adapter-check/bgzip-da52cede3a/context.so /tmp/hwab-nbd/run/gates/silesia.tar/bgzip-65280/bgzip-da52cede3a/archive /tmp/hwref/corpus/silesia.tar decode /tmp/hwab-nbd/run/gates/silesia.tar/bgzip-65280/bgzip-da52cede3a/archive.gzi",
+            "n_samples": 5,
+            "verified": "byte-exact",
+            "timer": "CLOCK_MONOTONIC; resident context; native callback only",
+            "archive_artifacts": {
+              "/tmp/hwab-nbd/run/gates/silesia.tar/bgzip-65280/bgzip-da52cede3a/archive": {
+                "bytes": 69919420,
+                "sha256": "8ba8e1ce12797e86fc3d282f8c439af8e38727bf157b1c58d69b526c568e0aa4"
+              },
+              "/tmp/hwab-nbd/run/gates/silesia.tar/bgzip-65280/bgzip-da52cede3a/archive.gzi": {
+                "bytes": 51944,
+                "sha256": "f17fdc684745ffd754d3f5fb3601b07db3165bf99dddc39855f0e197778ea166"
+              }
+            },
+            "compress_command": "bash /home/aeterna/pubrepo/.wk/hwab-nbd1/codecs/bgzip.sh _call codec_compress /tmp/hwref/corpus/silesia.tar /tmp/hwab-nbd/run/gates/silesia.tar/bgzip-65280/bgzip-da52cede3a/archive 65280",
+            "full_decode_median_ms": 184.287115932,
+            "sample_MB_s": 1150.0940742824712,
+            "plateau_status": "data_edge",
+            "plateau_reason": "single input size; a throughput plateau has not been established"
+          },
+          "verified": "byte-exact"
+        }
+      },
+      "selected": true,
+      "dominated_by": [],
+      "on_front": true,
+      "p99_ms": 0.137537718
+    },
+    {
+      "codec": "zstd_seekable",
+      "g": 1048576,
+      "status": "measured",
+      "ratio": 3.1401429684783295,
+      "p50_ms": 0.312395394,
+      "amplification": 144.42,
+      "break_even_N": 433,
+      "qualification_sha256": "53c943392fd36be6cf3043839811cfaa4b1677d7d6ad9a0c7cb8e608da2d10af",
+      "evidence": {
+        "ratio": {
+          "ratio": 3.1401429684783295,
+          "archive_bytes": 67496137,
+          "archive_artifacts": {
+            "/tmp/hwab-nbd/run/gates/silesia.tar/zstd_seekable-1048576/zstd_seekable-aaa6bf53b3/archive": {
+              "bytes": 67496137,
+              "sha256": "75338317566c28682d81226fb45d444525bcc8c75b5e709e2ab1d7afcb2e6e70"
+            }
+          },
+          "verified": "byte-exact",
+          "n_samples": 1,
+          "compress_command": "bash /home/aeterna/pubrepo/.wk/hwab-nbd1/codecs/zstd_seekable.sh _call codec_compress /tmp/hwref/corpus/silesia.tar /tmp/hwab-nbd/run/gates/silesia.tar/zstd_seekable-1048576/zstd_seekable-aaa6bf53b3/archive 1048576",
+          "verification_command": "bash /home/aeterna/pubrepo/.wk/hwab-nbd1/codecs/zstd_seekable.sh _call codec_decompress /tmp/hwab-nbd/run/gates/silesia.tar/zstd_seekable-1048576/zstd_seekable-aaa6bf53b3/archive /tmp/hwab-nbd/run/gates/silesia.tar/zstd_seekable-1048576/zstd_seekable-aaa6bf53b3/ratio-restored"
+        },
+        "region": {
+          "raw_samples": "zstd_seekable-aaa6bf53b3/region.jsonl",
+          "raw_sha256": "090aff799558c5138b0d5a5b2030e31fc7965bca5c5bce2d134dd3fcf6aa7f3a",
+          "command": "/tmp/hwab-nbd/run/gates/silesia.tar/native-measure /home/aeterna/pubrepo/.wk/hwab-nbd1/.work/adapter-check/zstd_seekable-aaa6bf53b3/context.so /tmp/hwab-nbd/run/gates/silesia.tar/zstd_seekable-1048576/zstd_seekable-aaa6bf53b3/archive /tmp/hwref/corpus/silesia.tar region '' 4096",
+          "n_samples": 200,
+          "verified": "byte-exact",
+          "timer": "CLOCK_MONOTONIC; resident context; native callback only",
+          "archive_artifacts": {
+            "/tmp/hwab-nbd/run/gates/silesia.tar/zstd_seekable-1048576/zstd_seekable-aaa6bf53b3/archive": {
+              "bytes": 67496137,
+              "sha256": "75338317566c28682d81226fb45d444525bcc8c75b5e709e2ab1d7afcb2e6e70"
+            }
+          },
+          "compress_command": "bash /home/aeterna/pubrepo/.wk/hwab-nbd1/codecs/zstd_seekable.sh _call codec_compress /tmp/hwref/corpus/silesia.tar /tmp/hwab-nbd/run/gates/silesia.tar/zstd_seekable-1048576/zstd_seekable-aaa6bf53b3/archive 1048576",
+          "region_p50_ms": 0.312395394,
+          "region_p99_ms": 0.867947936
+        },
+        "amplification": {
+          "value": 144.42,
+          "unit": "bytes/byte",
+          "n_samples": 200,
+          "verified": "byte-exact",
+          "command": "/tmp/hwab-nbd/run/gates/silesia.tar/native-measure /home/aeterna/pubrepo/.wk/hwab-nbd1/.work/adapter-check/zstd_seekable-aaa6bf53b3/counter-context.so /tmp/hwab-nbd/run/gates/silesia.tar/zstd_seekable-1048576/zstd_seekable-aaa6bf53b3/archive /tmp/hwref/corpus/silesia.tar amplification '' 4096",
+          "raw_samples": "zstd_seekable-aaa6bf53b3/amplification.jsonl",
+          "raw_sha256": "408740dbd1887566df990775a894504fad477c5188e922a325809d51a4244264",
+          "counter_library_sha256": "126b751356bfa5eddcedd812cea62047c3a559bc51d4d715d3f110d492db4eb6",
+          "timings_collected": false
+        },
+        "break_even": {
+          "intersection_requests": 432.2897872879649,
+          "break_even_N": 433,
+          "definition": "first integer N for which N * region p50 exceeds median full decode",
+          "model": "independent single calls; excludes preparation and amortization",
+          "region": {
+            "raw_samples": "zstd_seekable-aaa6bf53b3/region.jsonl",
+            "raw_sha256": "090aff799558c5138b0d5a5b2030e31fc7965bca5c5bce2d134dd3fcf6aa7f3a",
+            "command": "/tmp/hwab-nbd/run/gates/silesia.tar/native-measure /home/aeterna/pubrepo/.wk/hwab-nbd1/.work/adapter-check/zstd_seekable-aaa6bf53b3/context.so /tmp/hwab-nbd/run/gates/silesia.tar/zstd_seekable-1048576/zstd_seekable-aaa6bf53b3/archive /tmp/hwref/corpus/silesia.tar region '' 4096",
+            "n_samples": 200,
+            "verified": "byte-exact",
+            "timer": "CLOCK_MONOTONIC; resident context; native callback only",
+            "archive_artifacts": {
+              "/tmp/hwab-nbd/run/gates/silesia.tar/zstd_seekable-1048576/zstd_seekable-aaa6bf53b3/archive": {
+                "bytes": 67496137,
+                "sha256": "75338317566c28682d81226fb45d444525bcc8c75b5e709e2ab1d7afcb2e6e70"
+              }
+            },
+            "compress_command": "bash /home/aeterna/pubrepo/.wk/hwab-nbd1/codecs/zstd_seekable.sh _call codec_compress /tmp/hwref/corpus/silesia.tar /tmp/hwab-nbd/run/gates/silesia.tar/zstd_seekable-1048576/zstd_seekable-aaa6bf53b3/archive 1048576",
+            "region_p50_ms": 0.312395394,
+            "region_p99_ms": 0.867947936
+          },
+          "decode": {
+            "raw_samples": "zstd_seekable-aaa6bf53b3/decode.jsonl",
+            "raw_sha256": "9d82efecf90dd64c2a81fc37c773e832aca0065ec416c72fc20764b1817c7524",
+            "command": "/tmp/hwab-nbd/run/gates/silesia.tar/native-measure /home/aeterna/pubrepo/.wk/hwab-nbd1/.work/adapter-check/zstd_seekable-aaa6bf53b3/context.so /tmp/hwab-nbd/run/gates/silesia.tar/zstd_seekable-1048576/zstd_seekable-aaa6bf53b3/archive /tmp/hwref/corpus/silesia.tar decode ''",
+            "n_samples": 5,
+            "verified": "byte-exact",
+            "timer": "CLOCK_MONOTONIC; resident context; native callback only",
+            "archive_artifacts": {
+              "/tmp/hwab-nbd/run/gates/silesia.tar/zstd_seekable-1048576/zstd_seekable-aaa6bf53b3/archive": {
+                "bytes": 67496137,
+                "sha256": "75338317566c28682d81226fb45d444525bcc8c75b5e709e2ab1d7afcb2e6e70"
+              }
+            },
+            "compress_command": "bash /home/aeterna/pubrepo/.wk/hwab-nbd1/codecs/zstd_seekable.sh _call codec_compress /tmp/hwref/corpus/silesia.tar /tmp/hwab-nbd/run/gates/silesia.tar/zstd_seekable-1048576/zstd_seekable-aaa6bf53b3/archive 1048576",
+            "full_decode_median_ms": 135.045338422,
+            "sample_MB_s": 1569.4545437598904,
+            "plateau_status": "data_edge",
+            "plateau_reason": "single input size; a throughput plateau has not been established"
+          },
+          "verified": "byte-exact"
+        }
+      },
+      "selected": true,
+      "dominated_by": [],
+      "on_front": true,
+      "p99_ms": 0.867947936
+    },
+    {
+      "codec": "zstd_seekable",
+      "g": 16777216,
+      "status": "measured",
+      "ratio": 3.1859064372131813,
+      "p50_ms": 4.745323211,
+      "amplification": 1955.16,
+      "break_even_N": 30,
+      "qualification_sha256": "53c943392fd36be6cf3043839811cfaa4b1677d7d6ad9a0c7cb8e608da2d10af",
+      "evidence": {
+        "ratio": {
+          "ratio": 3.1859064372131813,
+          "archive_bytes": 66526599,
+          "archive_artifacts": {
+            "/tmp/hwab-nbd/run/gates/silesia.tar/zstd_seekable-16777216/zstd_seekable-aaa6bf53b3/archive": {
+              "bytes": 66526599,
+              "sha256": "9b11d6324586c984cf0863755a244071433cb7ba74b23091e7159b10470ae487"
+            }
+          },
+          "verified": "byte-exact",
+          "n_samples": 1,
+          "compress_command": "bash /home/aeterna/pubrepo/.wk/hwab-nbd1/codecs/zstd_seekable.sh _call codec_compress /tmp/hwref/corpus/silesia.tar /tmp/hwab-nbd/run/gates/silesia.tar/zstd_seekable-16777216/zstd_seekable-aaa6bf53b3/archive 16777216",
+          "verification_command": "bash /home/aeterna/pubrepo/.wk/hwab-nbd1/codecs/zstd_seekable.sh _call codec_decompress /tmp/hwab-nbd/run/gates/silesia.tar/zstd_seekable-16777216/zstd_seekable-aaa6bf53b3/archive /tmp/hwab-nbd/run/gates/silesia.tar/zstd_seekable-16777216/zstd_seekable-aaa6bf53b3/ratio-restored"
+        },
+        "region": {
+          "raw_samples": "zstd_seekable-aaa6bf53b3/region.jsonl",
+          "raw_sha256": "723dc9f672fdb0d5897654e5b79c160053342cc64af622e30e59e74f05085c9e",
+          "command": "/tmp/hwab-nbd/run/gates/silesia.tar/native-measure /home/aeterna/pubrepo/.wk/hwab-nbd1/.work/adapter-check/zstd_seekable-aaa6bf53b3/context.so /tmp/hwab-nbd/run/gates/silesia.tar/zstd_seekable-16777216/zstd_seekable-aaa6bf53b3/archive /tmp/hwref/corpus/silesia.tar region '' 4096",
+          "n_samples": 200,
+          "verified": "byte-exact",
+          "timer": "CLOCK_MONOTONIC; resident context; native callback only",
+          "archive_artifacts": {
+            "/tmp/hwab-nbd/run/gates/silesia.tar/zstd_seekable-16777216/zstd_seekable-aaa6bf53b3/archive": {
+              "bytes": 66526599,
+              "sha256": "9b11d6324586c984cf0863755a244071433cb7ba74b23091e7159b10470ae487"
+            }
+          },
+          "compress_command": "bash /home/aeterna/pubrepo/.wk/hwab-nbd1/codecs/zstd_seekable.sh _call codec_compress /tmp/hwref/corpus/silesia.tar /tmp/hwab-nbd/run/gates/silesia.tar/zstd_seekable-16777216/zstd_seekable-aaa6bf53b3/archive 16777216",
+          "region_p50_ms": 4.745323211,
+          "region_p99_ms": 10.652218014
+        },
+        "amplification": {
+          "value": 1955.16,
+          "unit": "bytes/byte",
+          "n_samples": 200,
+          "verified": "byte-exact",
+          "command": "/tmp/hwab-nbd/run/gates/silesia.tar/native-measure /home/aeterna/pubrepo/.wk/hwab-nbd1/.work/adapter-check/zstd_seekable-aaa6bf53b3/counter-context.so /tmp/hwab-nbd/run/gates/silesia.tar/zstd_seekable-16777216/zstd_seekable-aaa6bf53b3/archive /tmp/hwref/corpus/silesia.tar amplification '' 4096",
+          "raw_samples": "zstd_seekable-aaa6bf53b3/amplification.jsonl",
+          "raw_sha256": "62fc601acf5f44f066eaca043c754567bb0394f85a10aabd7d4f6b518cb4eff3",
+          "counter_library_sha256": "126b751356bfa5eddcedd812cea62047c3a559bc51d4d715d3f110d492db4eb6",
+          "timings_collected": false
+        },
+        "break_even": {
+          "intersection_requests": 29.604523583630773,
+          "break_even_N": 30,
+          "definition": "first integer N for which N * region p50 exceeds median full decode",
+          "model": "independent single calls; excludes preparation and amortization",
+          "region": {
+            "raw_samples": "zstd_seekable-aaa6bf53b3/region.jsonl",
+            "raw_sha256": "723dc9f672fdb0d5897654e5b79c160053342cc64af622e30e59e74f05085c9e",
+            "command": "/tmp/hwab-nbd/run/gates/silesia.tar/native-measure /home/aeterna/pubrepo/.wk/hwab-nbd1/.work/adapter-check/zstd_seekable-aaa6bf53b3/context.so /tmp/hwab-nbd/run/gates/silesia.tar/zstd_seekable-16777216/zstd_seekable-aaa6bf53b3/archive /tmp/hwref/corpus/silesia.tar region '' 4096",
+            "n_samples": 200,
+            "verified": "byte-exact",
+            "timer": "CLOCK_MONOTONIC; resident context; native callback only",
+            "archive_artifacts": {
+              "/tmp/hwab-nbd/run/gates/silesia.tar/zstd_seekable-16777216/zstd_seekable-aaa6bf53b3/archive": {
+                "bytes": 66526599,
+                "sha256": "9b11d6324586c984cf0863755a244071433cb7ba74b23091e7159b10470ae487"
+              }
+            },
+            "compress_command": "bash /home/aeterna/pubrepo/.wk/hwab-nbd1/codecs/zstd_seekable.sh _call codec_compress /tmp/hwref/corpus/silesia.tar /tmp/hwab-nbd/run/gates/silesia.tar/zstd_seekable-16777216/zstd_seekable-aaa6bf53b3/archive 16777216",
+            "region_p50_ms": 4.745323211,
+            "region_p99_ms": 10.652218014
+          },
+          "decode": {
+            "raw_samples": "zstd_seekable-aaa6bf53b3/decode.jsonl",
+            "raw_sha256": "cb504f3dd9c47ccbf56458ed17503f87c35ff738b82dc65e25ce13d5edb43ccf",
+            "command": "/tmp/hwab-nbd/run/gates/silesia.tar/native-measure /home/aeterna/pubrepo/.wk/hwab-nbd1/.work/adapter-check/zstd_seekable-aaa6bf53b3/context.so /tmp/hwab-nbd/run/gates/silesia.tar/zstd_seekable-16777216/zstd_seekable-aaa6bf53b3/archive /tmp/hwref/corpus/silesia.tar decode ''",
+            "n_samples": 5,
+            "verified": "byte-exact",
+            "timer": "CLOCK_MONOTONIC; resident context; native callback only",
+            "archive_artifacts": {
+              "/tmp/hwab-nbd/run/gates/silesia.tar/zstd_seekable-16777216/zstd_seekable-aaa6bf53b3/archive": {
+                "bytes": 66526599,
+                "sha256": "9b11d6324586c984cf0863755a244071433cb7ba74b23091e7159b10470ae487"
+              }
+            },
+            "compress_command": "bash /home/aeterna/pubrepo/.wk/hwab-nbd1/codecs/zstd_seekable.sh _call codec_compress /tmp/hwref/corpus/silesia.tar /tmp/hwab-nbd/run/gates/silesia.tar/zstd_seekable-16777216/zstd_seekable-aaa6bf53b3/archive 16777216",
+            "full_decode_median_ms": 140.483032912,
+            "sample_MB_s": 1508.7054686010806,
+            "plateau_status": "data_edge",
+            "plateau_reason": "single input size; a throughput plateau has not been established"
+          },
+          "verified": "byte-exact"
+        }
+      },
+      "selected": true,
+      "dominated_by": [],
+      "on_front": true,
+      "p99_ms": 10.652218014
+    },
+    {
+      "codec": "xz",
+      "g": 1048576,
+      "status": "measured",
+      "ratio": 3.997894926660075,
+      "p50_ms": 6.892714649,
+      "amplification": 256.0,
+      "break_even_N": 240,
+      "qualification_sha256": "7448b726e49e07ea0205a552c2b668689b5c06408799b53ba899eeec2c1d7028",
+      "evidence": {
+        "ratio": {
+          "ratio": 3.997894926660075,
+          "archive_bytes": 53014780,
+          "archive_artifacts": {
+            "/tmp/hwab-nbd/run/gates/silesia.tar/xz-1048576/xz-63c8bcb907/archive": {
+              "bytes": 53014780,
+              "sha256": "b568cf620bb3c3cb0d7718509cf8733aa7c454316fe02095bcd912db9c4fd5d4"
+            }
+          },
+          "verified": "byte-exact",
+          "n_samples": 1,
+          "compress_command": "bash /home/aeterna/pubrepo/.wk/hwab-nbd1/codecs/xz.sh _call codec_compress /tmp/hwref/corpus/silesia.tar /tmp/hwab-nbd/run/gates/silesia.tar/xz-1048576/xz-63c8bcb907/archive 1048576",
+          "verification_command": "bash /home/aeterna/pubrepo/.wk/hwab-nbd1/codecs/xz.sh _call codec_decompress /tmp/hwab-nbd/run/gates/silesia.tar/xz-1048576/xz-63c8bcb907/archive /tmp/hwab-nbd/run/gates/silesia.tar/xz-1048576/xz-63c8bcb907/ratio-restored"
+        },
+        "region": {
+          "raw_samples": "xz-63c8bcb907/region.jsonl",
+          "raw_sha256": "805dfef10592737b8403714f44ad5ca7338bbd4dc84dcbaeba8d4625e05f9999",
+          "command": "/tmp/hwab-nbd/run/gates/silesia.tar/native-measure /home/aeterna/pubrepo/.wk/hwab-nbd1/.work/adapter-check/xz-63c8bcb907/context.so /tmp/hwab-nbd/run/gates/silesia.tar/xz-1048576/xz-63c8bcb907/archive /tmp/hwref/corpus/silesia.tar region '' 4096",
+          "n_samples": 200,
+          "verified": "byte-exact",
+          "timer": "CLOCK_MONOTONIC; resident context; native callback only",
+          "archive_artifacts": {
+            "/tmp/hwab-nbd/run/gates/silesia.tar/xz-1048576/xz-63c8bcb907/archive": {
+              "bytes": 53014780,
+              "sha256": "b568cf620bb3c3cb0d7718509cf8733aa7c454316fe02095bcd912db9c4fd5d4"
+            }
+          },
+          "compress_command": "bash /home/aeterna/pubrepo/.wk/hwab-nbd1/codecs/xz.sh _call codec_compress /tmp/hwref/corpus/silesia.tar /tmp/hwab-nbd/run/gates/silesia.tar/xz-1048576/xz-63c8bcb907/archive 1048576",
+          "region_p50_ms": 6.892714649,
+          "region_p99_ms": 26.318415999
+        },
+        "amplification": {
+          "value": 256.0,
+          "unit": "bytes/byte",
+          "n_samples": 200,
+          "verified": "byte-exact",
+          "command": "/tmp/hwab-nbd/run/gates/silesia.tar/native-measure /home/aeterna/pubrepo/.wk/hwab-nbd1/.work/adapter-check/xz-63c8bcb907/counter-context.so /tmp/hwab-nbd/run/gates/silesia.tar/xz-1048576/xz-63c8bcb907/archive /tmp/hwref/corpus/silesia.tar amplification '' 4096",
+          "raw_samples": "xz-63c8bcb907/amplification.jsonl",
+          "raw_sha256": "aabe593d6db58aaf44f825d9f0553b3b2922c733655c7ea2becbb973fc04e35d",
+          "counter_library_sha256": "06c19ee8b5a1da9475d535712a8e59861b5e47044dcbc480fd0b8a94387d1f5f",
+          "timings_collected": false
+        },
+        "break_even": {
+          "intersection_requests": 239.9519324308532,
+          "break_even_N": 240,
+          "definition": "first integer N for which N * region p50 exceeds median full decode",
+          "model": "independent single calls; excludes preparation and amortization",
+          "region": {
+            "raw_samples": "xz-63c8bcb907/region.jsonl",
+            "raw_sha256": "805dfef10592737b8403714f44ad5ca7338bbd4dc84dcbaeba8d4625e05f9999",
+            "command": "/tmp/hwab-nbd/run/gates/silesia.tar/native-measure /home/aeterna/pubrepo/.wk/hwab-nbd1/.work/adapter-check/xz-63c8bcb907/context.so /tmp/hwab-nbd/run/gates/silesia.tar/xz-1048576/xz-63c8bcb907/archive /tmp/hwref/corpus/silesia.tar region '' 4096",
+            "n_samples": 200,
+            "verified": "byte-exact",
+            "timer": "CLOCK_MONOTONIC; resident context; native callback only",
+            "archive_artifacts": {
+              "/tmp/hwab-nbd/run/gates/silesia.tar/xz-1048576/xz-63c8bcb907/archive": {
+                "bytes": 53014780,
+                "sha256": "b568cf620bb3c3cb0d7718509cf8733aa7c454316fe02095bcd912db9c4fd5d4"
+              }
+            },
+            "compress_command": "bash /home/aeterna/pubrepo/.wk/hwab-nbd1/codecs/xz.sh _call codec_compress /tmp/hwref/corpus/silesia.tar /tmp/hwab-nbd/run/gates/silesia.tar/xz-1048576/xz-63c8bcb907/archive 1048576",
+            "region_p50_ms": 6.892714649,
+            "region_p99_ms": 26.318415999
+          },
+          "decode": {
+            "raw_samples": "xz-63c8bcb907/decode.jsonl",
+            "raw_sha256": "194a02b48cef1ac7fcbe6def3b347a5a2a13058f7435651003d9e70b5436a4d9",
+            "command": "/tmp/hwab-nbd/run/gates/silesia.tar/native-measure /home/aeterna/pubrepo/.wk/hwab-nbd1/.work/adapter-check/xz-63c8bcb907/context.so /tmp/hwab-nbd/run/gates/silesia.tar/xz-1048576/xz-63c8bcb907/archive /tmp/hwref/corpus/silesia.tar decode ''",
+            "n_samples": 5,
+            "verified": "byte-exact",
+            "timer": "CLOCK_MONOTONIC; resident context; native callback only",
+            "archive_artifacts": {
+              "/tmp/hwab-nbd/run/gates/silesia.tar/xz-1048576/xz-63c8bcb907/archive": {
+                "bytes": 53014780,
+                "sha256": "b568cf620bb3c3cb0d7718509cf8733aa7c454316fe02095bcd912db9c4fd5d4"
+              }
+            },
+            "compress_command": "bash /home/aeterna/pubrepo/.wk/hwab-nbd1/codecs/xz.sh _call codec_compress /tmp/hwref/corpus/silesia.tar /tmp/hwab-nbd/run/gates/silesia.tar/xz-1048576/xz-63c8bcb907/archive 1048576",
+            "full_decode_median_ms": 1653.920199722,
+            "sample_MB_s": 128.14857696013706,
+            "plateau_status": "data_edge",
+            "plateau_reason": "single input size; a throughput plateau has not been established"
+          },
+          "verified": "byte-exact"
+        }
+      },
+      "selected": true,
+      "dominated_by": [],
+      "on_front": true,
+      "p99_ms": 26.318415999
+    },
+    {
+      "codec": "xz",
+      "g": 16777216,
+      "status": "measured",
+      "ratio": 4.270160490606584,
+      "p50_ms": 119.294617325,
+      "amplification": 3960.73,
+      "break_even_N": 13,
+      "qualification_sha256": "7448b726e49e07ea0205a552c2b668689b5c06408799b53ba899eeec2c1d7028",
+      "evidence": {
+        "ratio": {
+          "ratio": 4.270160490606584,
+          "archive_bytes": 49634556,
+          "archive_artifacts": {
+            "/tmp/hwab-nbd/run/gates/silesia.tar/xz-16777216/xz-63c8bcb907/archive": {
+              "bytes": 49634556,
+              "sha256": "baffdc4e30adb0c124f0f93e168d1af0cb5f2a6d22b647aa346e6158f0b9f0ed"
+            }
+          },
+          "verified": "byte-exact",
+          "n_samples": 1,
+          "compress_command": "bash /home/aeterna/pubrepo/.wk/hwab-nbd1/codecs/xz.sh _call codec_compress /tmp/hwref/corpus/silesia.tar /tmp/hwab-nbd/run/gates/silesia.tar/xz-16777216/xz-63c8bcb907/archive 16777216",
+          "verification_command": "bash /home/aeterna/pubrepo/.wk/hwab-nbd1/codecs/xz.sh _call codec_decompress /tmp/hwab-nbd/run/gates/silesia.tar/xz-16777216/xz-63c8bcb907/archive /tmp/hwab-nbd/run/gates/silesia.tar/xz-16777216/xz-63c8bcb907/ratio-restored"
+        },
+        "region": {
+          "raw_samples": "xz-63c8bcb907/region.jsonl",
+          "raw_sha256": "bae0ac3062ee696a797ed3631c12136a1a0742f0d50a52990116696db1969037",
+          "command": "/tmp/hwab-nbd/run/gates/silesia.tar/native-measure /home/aeterna/pubrepo/.wk/hwab-nbd1/.work/adapter-check/xz-63c8bcb907/context.so /tmp/hwab-nbd/run/gates/silesia.tar/xz-16777216/xz-63c8bcb907/archive /tmp/hwref/corpus/silesia.tar region '' 4096",
+          "n_samples": 200,
+          "verified": "byte-exact",
+          "timer": "CLOCK_MONOTONIC; resident context; native callback only",
+          "archive_artifacts": {
+            "/tmp/hwab-nbd/run/gates/silesia.tar/xz-16777216/xz-63c8bcb907/archive": {
+              "bytes": 49634556,
+              "sha256": "baffdc4e30adb0c124f0f93e168d1af0cb5f2a6d22b647aa346e6158f0b9f0ed"
+            }
+          },
+          "compress_command": "bash /home/aeterna/pubrepo/.wk/hwab-nbd1/codecs/xz.sh _call codec_compress /tmp/hwref/corpus/silesia.tar /tmp/hwab-nbd/run/gates/silesia.tar/xz-16777216/xz-63c8bcb907/archive 16777216",
+          "region_p50_ms": 119.294617325,
+          "region_p99_ms": 193.642277271
+        },
+        "amplification": {
+          "value": 3960.73,
+          "unit": "bytes/byte",
+          "n_samples": 200,
+          "verified": "byte-exact",
+          "command": "/tmp/hwab-nbd/run/gates/silesia.tar/native-measure /home/aeterna/pubrepo/.wk/hwab-nbd1/.work/adapter-check/xz-63c8bcb907/counter-context.so /tmp/hwab-nbd/run/gates/silesia.tar/xz-16777216/xz-63c8bcb907/archive /tmp/hwref/corpus/silesia.tar amplification '' 4096",
+          "raw_samples": "xz-63c8bcb907/amplification.jsonl",
+          "raw_sha256": "3d1c6227c91022dc988547042f8533f9ed57464a6092dccd617a006d3d40e746",
+          "counter_library_sha256": "06c19ee8b5a1da9475d535712a8e59861b5e47044dcbc480fd0b8a94387d1f5f",
+          "timings_collected": false
+        },
+        "break_even": {
+          "intersection_requests": 12.642044530318879,
+          "break_even_N": 13,
+          "definition": "first integer N for which N * region p50 exceeds median full decode",
+          "model": "independent single calls; excludes preparation and amortization",
+          "region": {
+            "raw_samples": "xz-63c8bcb907/region.jsonl",
+            "raw_sha256": "bae0ac3062ee696a797ed3631c12136a1a0742f0d50a52990116696db1969037",
+            "command": "/tmp/hwab-nbd/run/gates/silesia.tar/native-measure /home/aeterna/pubrepo/.wk/hwab-nbd1/.work/adapter-check/xz-63c8bcb907/context.so /tmp/hwab-nbd/run/gates/silesia.tar/xz-16777216/xz-63c8bcb907/archive /tmp/hwref/corpus/silesia.tar region '' 4096",
+            "n_samples": 200,
+            "verified": "byte-exact",
+            "timer": "CLOCK_MONOTONIC; resident context; native callback only",
+            "archive_artifacts": {
+              "/tmp/hwab-nbd/run/gates/silesia.tar/xz-16777216/xz-63c8bcb907/archive": {
+                "bytes": 49634556,
+                "sha256": "baffdc4e30adb0c124f0f93e168d1af0cb5f2a6d22b647aa346e6158f0b9f0ed"
+              }
+            },
+            "compress_command": "bash /home/aeterna/pubrepo/.wk/hwab-nbd1/codecs/xz.sh _call codec_compress /tmp/hwref/corpus/silesia.tar /tmp/hwab-nbd/run/gates/silesia.tar/xz-16777216/xz-63c8bcb907/archive 16777216",
+            "region_p50_ms": 119.294617325,
+            "region_p99_ms": 193.642277271
+          },
+          "decode": {
+            "raw_samples": "xz-63c8bcb907/decode.jsonl",
+            "raw_sha256": "847a3f12e2249f9114245c242ca7a4cfcf0cbef2287b3229e4bc7ff3a75fa3cf",
+            "command": "/tmp/hwab-nbd/run/gates/silesia.tar/native-measure /home/aeterna/pubrepo/.wk/hwab-nbd1/.work/adapter-check/xz-63c8bcb907/context.so /tmp/hwab-nbd/run/gates/silesia.tar/xz-16777216/xz-63c8bcb907/archive /tmp/hwref/corpus/silesia.tar decode ''",
+            "n_samples": 5,
+            "verified": "byte-exact",
+            "timer": "CLOCK_MONOTONIC; resident context; native callback only",
+            "archive_artifacts": {
+              "/tmp/hwab-nbd/run/gates/silesia.tar/xz-16777216/xz-63c8bcb907/archive": {
+                "bytes": 49634556,
+                "sha256": "baffdc4e30adb0c124f0f93e168d1af0cb5f2a6d22b647aa346e6158f0b9f0ed"
+              }
+            },
+            "compress_command": "bash /home/aeterna/pubrepo/.wk/hwab-nbd1/codecs/xz.sh _call codec_compress /tmp/hwref/corpus/silesia.tar /tmp/hwab-nbd/run/gates/silesia.tar/xz-16777216/xz-63c8bcb907/archive 16777216",
+            "full_decode_median_ms": 1508.12786445,
+            "sample_MB_s": 140.5368370919234,
+            "plateau_status": "data_edge",
+            "plateau_reason": "single input size; a throughput plateau has not been established"
+          },
+          "verified": "byte-exact"
+        }
+      },
+      "selected": true,
+      "dominated_by": [],
+      "on_front": true,
+      "p99_ms": 193.642277271
+    }
+  ]
+}
