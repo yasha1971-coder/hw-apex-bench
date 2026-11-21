@@ -40,7 +40,7 @@ Retained PR #79 evidence (accepted attempt 2), CPU, 16 KiB reads; not a new benc
 
 [Source table](evidence/hwab-pick-3-20261106/t2t_chrX.fa/pick.md) · [Raw values](evidence/hwab-pick-3-20261106/t2t_chrX.fa/pick.json)
 
-[Results](docs/RESULTS/README.md) · [ACEAPEX snapshots](docs/RESULTS/ACEAPEX_SNAPSHOTS.md) · [Interactive results](https://hw-apex-bench.yasha1971.chatgpt.site/)
+[Results](docs/RESULTS/README.md) · [ACEAPEX snapshots](docs/RESULTS/ACEAPEX_SNAPSHOTS.md) · [Explore the measurements](https://yasha1971-coder.github.io/hw-apex-bench/)
 
 ## Nine axes
 
