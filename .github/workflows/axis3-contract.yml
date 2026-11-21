@@ -55,9 +55,10 @@ jobs:
           import unittest
 
           # Keep collection count strict; optional native cases are still collected.
-          expected_total = 487  # 486 existing cases + SEO metadata/sitemap test
+          expected_total = 490  # 487 existing cases + 3 NBD/xz integration tests
           suite = unittest.defaultTestLoader.discover("tests")
           native_type = importlib.import_module("test_s2_native_readers").NativeAvailability
+          nbd_tests = importlib.import_module("test_nbd_xz_probe")
 
           def cases(item):
               if isinstance(item, unittest.TestSuite):
@@ -68,6 +69,11 @@ jobs:
 
           collected = list(cases(suite))
           expected_skips = {}
+          if not nbd_tests.have_tools():
+              for case in collected:
+                  if isinstance(case, nbd_tests.NbdXzProbe):
+                      expected_skips[case.id()] = (
+                          "nbdkit with the xz filter, python3-libnbd, xz and /usr/bin/time needed")
           native_cases = []
           for case in collected:
               if not isinstance(case, native_type):
