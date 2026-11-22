@@ -1,0 +1,45 @@
+[2026-11-22T22:56:34Z] CALIBRATION gate OK for 'HWAB-NBD-2b' — опора/потолок/вероятность present
+[2026-11-22T22:56:35Z] silesia reference OK (/tmp/hwref/corpus/silesia.tar sha a667bac8)
+[2026-11-22T22:56:35Z] START 'HWAB-NBD-2b': bash /tmp/hwab-nbd2/all.sh
+silence PASS [] load1 0.27880859375 attempts 1
+silence PASS [] load1 0.2392578125 attempts 1
+silence PASS [] load1 0.29443359375 attempts 1
+silence PASS [] load1 0.24853515625 attempts 1
+silence PASS [] load1 0.23388671875 attempts 1
+{'corpus': 'silesia.tar', 'g': 1048576, 'ratio_new': 3.997894926660075, 'ratio_ref': 3.997894926660075, 'sha_equal': True, 'p50_new_ms': 6.841670722, 'p50_ref_ms': 6.935250014, 'p50_delta': -0.013493283127658628, 'pass': True}
+{'corpus': 'silesia.tar', 'g': 16777216, 'ratio_new': 4.270160490606584, 'ratio_ref': 4.270160490606584, 'sha_equal': True, 'p50_new_ms': 119.051404297, 'p50_ref_ms': 118.579551578, 'p50_delta': 0.003979208157905978, 'pass': True}
+{'corpus': 'enwik8', 'g': 1048576, 'ratio_new': 3.329303987693827, 'ratio_ref': 3.329303987693827, 'sha_equal': True, 'p50_new_ms': 8.715115488, 'p50_ref_ms': 8.634198457, 'p50_delta': 0.00937168996091331, 'pass': True}
+{'corpus': 'enwik8', 'g': 16777216, 'ratio_new': 3.7230486645647822, 'ratio_ref': 3.7230486645647822, 'sha_equal': True, 'p50_new_ms': 114.916592836, 'p50_ref_ms': 115.422576666, 'p50_delta': -0.004383750949037979, 'pass': True}
+GATES PASS
+silence PASS [] load1 0.24560546875 attempts 1
+[23:08:19] qcow2-zstd r0: A p50 0.036 ms C p50 0.030 ms, rss 9128 KiB, bad 0, 0 s
+silence PASS [] load1 0.30615234375 attempts 1
+[23:08:21] qcow2-zlib r0: A p50 0.156 ms C p50 0.148 ms, rss 9204 KiB, bad 0, 0 s
+silence PASS [] load1 0.259765625 attempts 1
+[23:09:22] file r0: A p50 0.014 ms C p50 0.014 ms, rss 4636 KiB, bad 0, 0 s
+silence PASS [] load1 0.259765625 attempts 1
+[23:09:24] qcow2-zstd r1: A p50 0.041 ms C p50 0.035 ms, rss 9156 KiB, bad 0, 0 s
+silence PASS [] load1 0.23876953125 attempts 1
+[23:09:26] qcow2-zlib r1: A p50 0.161 ms C p50 0.154 ms, rss 8732 KiB, bad 0, 0 s
+silence PASS [] load1 0.23876953125 attempts 1
+[23:09:27] file r1: A p50 0.014 ms C p50 0.014 ms, rss 4844 KiB, bad 0, 0 s
+silence PASS [] load1 0.23876953125 attempts 1
+[23:09:29] qcow2-zstd r2: A p50 0.043 ms C p50 0.038 ms, rss 9476 KiB, bad 0, 0 s
+silence PASS [] load1 0.21923828125 attempts 1
+[23:09:30] qcow2-zlib r2: A p50 0.159 ms C p50 0.153 ms, rss 9136 KiB, bad 0, 0 s
+silence PASS [] load1 0.21923828125 attempts 1
+[23:09:32] file r2: A p50 0.014 ms C p50 0.014 ms, rss 4828 KiB, bad 0, 0 s
+silence PASS [] load1 0.21923828125 attempts 1
+[23:09:33] qcow2-zstd r3: A p50 0.038 ms C p50 0.031 ms, rss 9172 KiB, bad 0, 0 s
+silence PASS [] load1 0.21923828125 attempts 1
+[23:09:35] qcow2-zlib r3: A p50 0.160 ms C p50 0.153 ms, rss 8952 KiB, bad 0, 0 s
+silence PASS [] load1 0.15625 attempts 2
+[23:09:53] file r3: A p50 0.014 ms C p50 0.014 ms, rss 4860 KiB, bad 0, 0 s
+silence PASS [] load1 0.15625 attempts 1
+[23:09:54] qcow2-zstd r4: A p50 0.041 ms C p50 0.034 ms, rss 9440 KiB, bad 0, 0 s
+silence PASS [] load1 0.1435546875 attempts 1
+[23:09:56] qcow2-zlib r4: A p50 0.174 ms C p50 0.170 ms, rss 8984 KiB, bad 0, 0 s
+silence PASS [] load1 0.1435546875 attempts 1
+[23:09:57] file r4: A p50 0.014 ms C p50 0.014 ms, rss 4640 KiB, bad 0, 0 s
+MISMATCHES 0
+ALL DONE

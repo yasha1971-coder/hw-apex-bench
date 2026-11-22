@@ -1,0 +1,539 @@
+{
+  "schema": "cabench-pick-v1",
+  "input_sha256": "2b49720ec4d78c3c9fabaee6e4179a5e997302b3a70029f30f2d582218c024a8",
+  "g_set": [
+    1048576,
+    16777216
+  ],
+  "region_size_bytes": 4096,
+  "zstd_level": 3,
+  "elapsed_seconds": 142.12853726744652,
+  "codec_seconds": {
+    "bgzip": 2.957244887948036,
+    "zstd_seekable": 7.391797222197056,
+    "xz": 131.6195831783116
+  },
+  "rows": [
+    {
+      "codec": "bgzip",
+      "g": 65280,
+      "status": "measured",
+      "ratio": 2.6322632665476373,
+      "p50_ms": 0.065844506,
+      "amplification": 16.43930908203125,
+      "break_even_N": 1543,
+      "qualification_sha256": "7a69ce5fa1a9fdf463b9e323eac33a4d808c686cce196c5f4c90f9eb4e5b9f4f",
+      "evidence": {
+        "ratio": {
+          "ratio": 2.6322632665476373,
+          "archive_bytes": 37990121,
+          "archive_artifacts": {
+            "/tmp/hwab-nbd2/run/gates/enwik8/bgzip-65280/bgzip-d08b4bc00b/archive": {
+              "bytes": 37965489,
+              "sha256": "b0971ff160c2140cc6654fa22420dfd92e9822a7921336c65ec4902b99ffa68d"
+            },
+            "/tmp/hwab-nbd2/run/gates/enwik8/bgzip-65280/bgzip-d08b4bc00b/archive.gzi": {
+              "bytes": 24632,
+              "sha256": "8d39670af80acf4f6b60fdf169a10d38cc67e31e26867c1c4999e2bcdce2e0f7"
+            }
+          },
+          "verified": "byte-exact",
+          "n_samples": 1,
+          "compress_command": "bash /home/aeterna/pubrepo/.wk/hwab-nbd2/codecs/bgzip.sh _call codec_compress /tmp/hwref/corpus/enwik8 /tmp/hwab-nbd2/run/gates/enwik8/bgzip-65280/bgzip-d08b4bc00b/archive 65280",
+          "verification_command": "bash /home/aeterna/pubrepo/.wk/hwab-nbd2/codecs/bgzip.sh _call codec_decompress /tmp/hwab-nbd2/run/gates/enwik8/bgzip-65280/bgzip-d08b4bc00b/archive /tmp/hwab-nbd2/run/gates/enwik8/bgzip-65280/bgzip-d08b4bc00b/ratio-restored"
+        },
+        "region": {
+          "raw_samples": "bgzip-d08b4bc00b/region.jsonl",
+          "raw_sha256": "10e5378d1268f93979f2e212665f4b0e72c0f276cf4cba6908e4d5e40ecf496d",
+          "command": "/tmp/hwab-nbd2/run/gates/enwik8/native-measure /home/aeterna/pubrepo/.wk/hwab-nbd2/.work/adapter-check/bgzip-d08b4bc00b/context.so /tmp/hwab-nbd2/run/gates/enwik8/bgzip-65280/bgzip-d08b4bc00b/archive /tmp/hwref/corpus/enwik8 region /tmp/hwab-nbd2/run/gates/enwik8/bgzip-65280/bgzip-d08b4bc00b/archive.gzi 4096",
+          "n_samples": 200,
+          "verified": "byte-exact",
+          "timer": "CLOCK_MONOTONIC; resident context; native callback only",
+          "archive_artifacts": {
+            "/tmp/hwab-nbd2/run/gates/enwik8/bgzip-65280/bgzip-d08b4bc00b/archive": {
+              "bytes": 37965489,
+              "sha256": "b0971ff160c2140cc6654fa22420dfd92e9822a7921336c65ec4902b99ffa68d"
+            },
+            "/tmp/hwab-nbd2/run/gates/enwik8/bgzip-65280/bgzip-d08b4bc00b/archive.gzi": {
+              "bytes": 24632,
+              "sha256": "8d39670af80acf4f6b60fdf169a10d38cc67e31e26867c1c4999e2bcdce2e0f7"
+            }
+          },
+          "compress_command": "bash /home/aeterna/pubrepo/.wk/hwab-nbd2/codecs/bgzip.sh _call codec_compress /tmp/hwref/corpus/enwik8 /tmp/hwab-nbd2/run/gates/enwik8/bgzip-65280/bgzip-d08b4bc00b/archive 65280",
+          "region_p50_ms": 0.065844506,
+          "region_p99_ms": 0.131625682
+        },
+        "amplification": {
+          "value": 16.43930908203125,
+          "unit": "bytes/byte",
+          "n_samples": 200,
+          "verified": "byte-exact",
+          "command": "/tmp/hwab-nbd2/run/gates/enwik8/native-measure /home/aeterna/pubrepo/.wk/hwab-nbd2/.work/adapter-check/bgzip-d08b4bc00b/counter-context.so /tmp/hwab-nbd2/run/gates/enwik8/bgzip-65280/bgzip-d08b4bc00b/archive /tmp/hwref/corpus/enwik8 amplification /tmp/hwab-nbd2/run/gates/enwik8/bgzip-65280/bgzip-d08b4bc00b/archive.gzi 4096",
+          "raw_samples": "bgzip-d08b4bc00b/amplification.jsonl",
+          "raw_sha256": "8179b6eb149f5463265607f138d10839c29f3902ec3e141439f81db7a80d5c2f",
+          "counter_library_sha256": "7750fc5662f895eb673ed0b3d9d55445ca262363ad9e9a09594ebd1a0f7cd720",
+          "timings_collected": false
+        },
+        "break_even": {
+          "intersection_requests": 1542.4562382167467,
+          "break_even_N": 1543,
+          "definition": "first integer N for which N * region p50 exceeds median full decode",
+          "model": "independent single calls; excludes preparation and amortization",
+          "region": {
+            "raw_samples": "bgzip-d08b4bc00b/region.jsonl",
+            "raw_sha256": "10e5378d1268f93979f2e212665f4b0e72c0f276cf4cba6908e4d5e40ecf496d",
+            "command": "/tmp/hwab-nbd2/run/gates/enwik8/native-measure /home/aeterna/pubrepo/.wk/hwab-nbd2/.work/adapter-check/bgzip-d08b4bc00b/context.so /tmp/hwab-nbd2/run/gates/enwik8/bgzip-65280/bgzip-d08b4bc00b/archive /tmp/hwref/corpus/enwik8 region /tmp/hwab-nbd2/run/gates/enwik8/bgzip-65280/bgzip-d08b4bc00b/archive.gzi 4096",
+            "n_samples": 200,
+            "verified": "byte-exact",
+            "timer": "CLOCK_MONOTONIC; resident context; native callback only",
+            "archive_artifacts": {
+              "/tmp/hwab-nbd2/run/gates/enwik8/bgzip-65280/bgzip-d08b4bc00b/archive": {
+                "bytes": 37965489,
+                "sha256": "b0971ff160c2140cc6654fa22420dfd92e9822a7921336c65ec4902b99ffa68d"
+              },
+              "/tmp/hwab-nbd2/run/gates/enwik8/bgzip-65280/bgzip-d08b4bc00b/archive.gzi": {
+                "bytes": 24632,
+                "sha256": "8d39670af80acf4f6b60fdf169a10d38cc67e31e26867c1c4999e2bcdce2e0f7"
+              }
+            },
+            "compress_command": "bash /home/aeterna/pubrepo/.wk/hwab-nbd2/codecs/bgzip.sh _call codec_compress /tmp/hwref/corpus/enwik8 /tmp/hwab-nbd2/run/gates/enwik8/bgzip-65280/bgzip-d08b4bc00b/archive 65280",
+            "region_p50_ms": 0.065844506,
+            "region_p99_ms": 0.131625682
+          },
+          "decode": {
+            "raw_samples": "bgzip-d08b4bc00b/decode.jsonl",
+            "raw_sha256": "cb17e348563418a82733d1ccbf29565ecc3cbcf0ac48fc552fb2d34367ed30b5",
+            "command": "/tmp/hwab-nbd2/run/gates/enwik8/native-measure /home/aeterna/pubrepo/.wk/hwab-nbd2/.work/adapter-check/bgzip-d08b4bc00b/context.so /tmp/hwab-nbd2/run/gates/enwik8/bgzip-65280/bgzip-d08b4bc00b/archive /tmp/hwref/corpus/enwik8 decode /tmp/hwab-nbd2/run/gates/enwik8/bgzip-65280/bgzip-d08b4bc00b/archive.gzi",
+            "n_samples": 5,
+            "verified": "byte-exact",
+            "timer": "CLOCK_MONOTONIC; resident context; native callback only",
+            "archive_artifacts": {
+              "/tmp/hwab-nbd2/run/gates/enwik8/bgzip-65280/bgzip-d08b4bc00b/archive": {
+                "bytes": 37965489,
+                "sha256": "b0971ff160c2140cc6654fa22420dfd92e9822a7921336c65ec4902b99ffa68d"
+              },
+              "/tmp/hwab-nbd2/run/gates/enwik8/bgzip-65280/bgzip-d08b4bc00b/archive.gzi": {
+                "bytes": 24632,
+                "sha256": "8d39670af80acf4f6b60fdf169a10d38cc67e31e26867c1c4999e2bcdce2e0f7"
+              }
+            },
+            "compress_command": "bash /home/aeterna/pubrepo/.wk/hwab-nbd2/codecs/bgzip.sh _call codec_compress /tmp/hwref/corpus/enwik8 /tmp/hwab-nbd2/run/gates/enwik8/bgzip-65280/bgzip-d08b4bc00b/archive 65280",
+            "full_decode_median_ms": 101.562269032,
+            "sample_MB_s": 984.6176237800697,
+            "plateau_status": "data_edge",
+            "plateau_reason": "single input size; a throughput plateau has not been established"
+          },
+          "verified": "byte-exact"
+        }
+      },
+      "selected": true,
+      "dominated_by": [],
+      "on_front": true,
+      "p99_ms": 0.131625682
+    },
+    {
+      "codec": "zstd_seekable",
+      "g": 1048576,
+      "status": "measured",
+      "ratio": 2.7762906885181473,
+      "p50_ms": 0.35764277,
+      "amplification": 143.79,
+      "break_even_N": 201,
+      "qualification_sha256": "fd291c569d1862caed02398bad38dbdfb749b8d1a4a34b588c848ce6ce7e297b",
+      "evidence": {
+        "ratio": {
+          "ratio": 2.7762906885181473,
+          "archive_bytes": 36019283,
+          "archive_artifacts": {
+            "/tmp/hwab-nbd2/run/gates/enwik8/zstd_seekable-1048576/zstd_seekable-42b8facd97/archive": {
+              "bytes": 36019283,
+              "sha256": "0b6ee0de973d8417a36b327df3a4c12016200beeda3ab9b5fc913081b03302ec"
+            }
+          },
+          "verified": "byte-exact",
+          "n_samples": 1,
+          "compress_command": "bash /home/aeterna/pubrepo/.wk/hwab-nbd2/codecs/zstd_seekable.sh _call codec_compress /tmp/hwref/corpus/enwik8 /tmp/hwab-nbd2/run/gates/enwik8/zstd_seekable-1048576/zstd_seekable-42b8facd97/archive 1048576",
+          "verification_command": "bash /home/aeterna/pubrepo/.wk/hwab-nbd2/codecs/zstd_seekable.sh _call codec_decompress /tmp/hwab-nbd2/run/gates/enwik8/zstd_seekable-1048576/zstd_seekable-42b8facd97/archive /tmp/hwab-nbd2/run/gates/enwik8/zstd_seekable-1048576/zstd_seekable-42b8facd97/ratio-restored"
+        },
+        "region": {
+          "raw_samples": "zstd_seekable-42b8facd97/region.jsonl",
+          "raw_sha256": "e417bb2f7802af37a518aa826e55f4f76370cfa12a12cc6905aa0de6ad6c4a45",
+          "command": "/tmp/hwab-nbd2/run/gates/enwik8/native-measure /home/aeterna/pubrepo/.wk/hwab-nbd2/.work/adapter-check/zstd_seekable-42b8facd97/context.so /tmp/hwab-nbd2/run/gates/enwik8/zstd_seekable-1048576/zstd_seekable-42b8facd97/archive /tmp/hwref/corpus/enwik8 region '' 4096",
+          "n_samples": 200,
+          "verified": "byte-exact",
+          "timer": "CLOCK_MONOTONIC; resident context; native callback only",
+          "archive_artifacts": {
+            "/tmp/hwab-nbd2/run/gates/enwik8/zstd_seekable-1048576/zstd_seekable-42b8facd97/archive": {
+              "bytes": 36019283,
+              "sha256": "0b6ee0de973d8417a36b327df3a4c12016200beeda3ab9b5fc913081b03302ec"
+            }
+          },
+          "compress_command": "bash /home/aeterna/pubrepo/.wk/hwab-nbd2/codecs/zstd_seekable.sh _call codec_compress /tmp/hwref/corpus/enwik8 /tmp/hwab-nbd2/run/gates/enwik8/zstd_seekable-1048576/zstd_seekable-42b8facd97/archive 1048576",
+          "region_p50_ms": 0.35764277,
+          "region_p99_ms": 0.756207854
+        },
+        "amplification": {
+          "value": 143.79,
+          "unit": "bytes/byte",
+          "n_samples": 200,
+          "verified": "byte-exact",
+          "command": "/tmp/hwab-nbd2/run/gates/enwik8/native-measure /home/aeterna/pubrepo/.wk/hwab-nbd2/.work/adapter-check/zstd_seekable-42b8facd97/counter-context.so /tmp/hwab-nbd2/run/gates/enwik8/zstd_seekable-1048576/zstd_seekable-42b8facd97/archive /tmp/hwref/corpus/enwik8 amplification '' 4096",
+          "raw_samples": "zstd_seekable-42b8facd97/amplification.jsonl",
+          "raw_sha256": "7df2ce407734c0ae10b425974287d6f8756302b735867dc59e3322d1896bda92",
+          "counter_library_sha256": "e2e129c2ea7d0ff23170344734c96ecdfcde335a888d6b648fe1378ad9af1125",
+          "timings_collected": false
+        },
+        "break_even": {
+          "intersection_requests": 200.21099110433576,
+          "break_even_N": 201,
+          "definition": "first integer N for which N * region p50 exceeds median full decode",
+          "model": "independent single calls; excludes preparation and amortization",
+          "region": {
+            "raw_samples": "zstd_seekable-42b8facd97/region.jsonl",
+            "raw_sha256": "e417bb2f7802af37a518aa826e55f4f76370cfa12a12cc6905aa0de6ad6c4a45",
+            "command": "/tmp/hwab-nbd2/run/gates/enwik8/native-measure /home/aeterna/pubrepo/.wk/hwab-nbd2/.work/adapter-check/zstd_seekable-42b8facd97/context.so /tmp/hwab-nbd2/run/gates/enwik8/zstd_seekable-1048576/zstd_seekable-42b8facd97/archive /tmp/hwref/corpus/enwik8 region '' 4096",
+            "n_samples": 200,
+            "verified": "byte-exact",
+            "timer": "CLOCK_MONOTONIC; resident context; native callback only",
+            "archive_artifacts": {
+              "/tmp/hwab-nbd2/run/gates/enwik8/zstd_seekable-1048576/zstd_seekable-42b8facd97/archive": {
+                "bytes": 36019283,
+                "sha256": "0b6ee0de973d8417a36b327df3a4c12016200beeda3ab9b5fc913081b03302ec"
+              }
+            },
+            "compress_command": "bash /home/aeterna/pubrepo/.wk/hwab-nbd2/codecs/zstd_seekable.sh _call codec_compress /tmp/hwref/corpus/enwik8 /tmp/hwab-nbd2/run/gates/enwik8/zstd_seekable-1048576/zstd_seekable-42b8facd97/archive 1048576",
+            "region_p50_ms": 0.35764277,
+            "region_p99_ms": 0.756207854
+          },
+          "decode": {
+            "raw_samples": "zstd_seekable-42b8facd97/decode.jsonl",
+            "raw_sha256": "8285dc9aa542673b68ee055b0aa05ca1ed97455ed3582b3296fd0a1d4f187df4",
+            "command": "/tmp/hwab-nbd2/run/gates/enwik8/native-measure /home/aeterna/pubrepo/.wk/hwab-nbd2/.work/adapter-check/zstd_seekable-42b8facd97/context.so /tmp/hwab-nbd2/run/gates/enwik8/zstd_seekable-1048576/zstd_seekable-42b8facd97/archive /tmp/hwref/corpus/enwik8 decode ''",
+            "n_samples": 5,
+            "verified": "byte-exact",
+            "timer": "CLOCK_MONOTONIC; resident context; native callback only",
+            "archive_artifacts": {
+              "/tmp/hwab-nbd2/run/gates/enwik8/zstd_seekable-1048576/zstd_seekable-42b8facd97/archive": {
+                "bytes": 36019283,
+                "sha256": "0b6ee0de973d8417a36b327df3a4c12016200beeda3ab9b5fc913081b03302ec"
+              }
+            },
+            "compress_command": "bash /home/aeterna/pubrepo/.wk/hwab-nbd2/codecs/zstd_seekable.sh _call codec_compress /tmp/hwref/corpus/enwik8 /tmp/hwab-nbd2/run/gates/enwik8/zstd_seekable-1048576/zstd_seekable-42b8facd97/archive 1048576",
+            "full_decode_median_ms": 71.604013443,
+            "sample_MB_s": 1396.5697618277288,
+            "plateau_status": "data_edge",
+            "plateau_reason": "single input size; a throughput plateau has not been established"
+          },
+          "verified": "byte-exact"
+        }
+      },
+      "selected": true,
+      "dominated_by": [],
+      "on_front": true,
+      "p99_ms": 0.756207854
+    },
+    {
+      "codec": "zstd_seekable",
+      "g": 16777216,
+      "status": "measured",
+      "ratio": 2.8096536891104145,
+      "p50_ms": 5.884993821,
+      "amplification": 2031.06,
+      "break_even_N": 14,
+      "qualification_sha256": "fd291c569d1862caed02398bad38dbdfb749b8d1a4a34b588c848ce6ce7e297b",
+      "evidence": {
+        "ratio": {
+          "ratio": 2.8096536891104145,
+          "archive_bytes": 35591575,
+          "archive_artifacts": {
+            "/tmp/hwab-nbd2/run/gates/enwik8/zstd_seekable-16777216/zstd_seekable-42b8facd97/archive": {
+              "bytes": 35591575,
+              "sha256": "ba35a0bde92f8ef76bfc55babaab0f3d76ffe0d8506598d280706ab40f010c26"
+            }
+          },
+          "verified": "byte-exact",
+          "n_samples": 1,
+          "compress_command": "bash /home/aeterna/pubrepo/.wk/hwab-nbd2/codecs/zstd_seekable.sh _call codec_compress /tmp/hwref/corpus/enwik8 /tmp/hwab-nbd2/run/gates/enwik8/zstd_seekable-16777216/zstd_seekable-42b8facd97/archive 16777216",
+          "verification_command": "bash /home/aeterna/pubrepo/.wk/hwab-nbd2/codecs/zstd_seekable.sh _call codec_decompress /tmp/hwab-nbd2/run/gates/enwik8/zstd_seekable-16777216/zstd_seekable-42b8facd97/archive /tmp/hwab-nbd2/run/gates/enwik8/zstd_seekable-16777216/zstd_seekable-42b8facd97/ratio-restored"
+        },
+        "region": {
+          "raw_samples": "zstd_seekable-42b8facd97/region.jsonl",
+          "raw_sha256": "aa9ab794f6f64ab5db885e95100b221026adc44060be474b41f5205953acd99c",
+          "command": "/tmp/hwab-nbd2/run/gates/enwik8/native-measure /home/aeterna/pubrepo/.wk/hwab-nbd2/.work/adapter-check/zstd_seekable-42b8facd97/context.so /tmp/hwab-nbd2/run/gates/enwik8/zstd_seekable-16777216/zstd_seekable-42b8facd97/archive /tmp/hwref/corpus/enwik8 region '' 4096",
+          "n_samples": 200,
+          "verified": "byte-exact",
+          "timer": "CLOCK_MONOTONIC; resident context; native callback only",
+          "archive_artifacts": {
+            "/tmp/hwab-nbd2/run/gates/enwik8/zstd_seekable-16777216/zstd_seekable-42b8facd97/archive": {
+              "bytes": 35591575,
+              "sha256": "ba35a0bde92f8ef76bfc55babaab0f3d76ffe0d8506598d280706ab40f010c26"
+            }
+          },
+          "compress_command": "bash /home/aeterna/pubrepo/.wk/hwab-nbd2/codecs/zstd_seekable.sh _call codec_compress /tmp/hwref/corpus/enwik8 /tmp/hwab-nbd2/run/gates/enwik8/zstd_seekable-16777216/zstd_seekable-42b8facd97/archive 16777216",
+          "region_p50_ms": 5.884993821,
+          "region_p99_ms": 11.383004487
+        },
+        "amplification": {
+          "value": 2031.06,
+          "unit": "bytes/byte",
+          "n_samples": 200,
+          "verified": "byte-exact",
+          "command": "/tmp/hwab-nbd2/run/gates/enwik8/native-measure /home/aeterna/pubrepo/.wk/hwab-nbd2/.work/adapter-check/zstd_seekable-42b8facd97/counter-context.so /tmp/hwab-nbd2/run/gates/enwik8/zstd_seekable-16777216/zstd_seekable-42b8facd97/archive /tmp/hwref/corpus/enwik8 amplification '' 4096",
+          "raw_samples": "zstd_seekable-42b8facd97/amplification.jsonl",
+          "raw_sha256": "99fa65ea3474faabe4d92e12e74c5b7f5d25f2f92cbff8f2d2bbecb2f0807d7b",
+          "counter_library_sha256": "e2e129c2ea7d0ff23170344734c96ecdfcde335a888d6b648fe1378ad9af1125",
+          "timings_collected": false
+        },
+        "break_even": {
+          "intersection_requests": 13.010442851916123,
+          "break_even_N": 14,
+          "definition": "first integer N for which N * region p50 exceeds median full decode",
+          "model": "independent single calls; excludes preparation and amortization",
+          "region": {
+            "raw_samples": "zstd_seekable-42b8facd97/region.jsonl",
+            "raw_sha256": "aa9ab794f6f64ab5db885e95100b221026adc44060be474b41f5205953acd99c",
+            "command": "/tmp/hwab-nbd2/run/gates/enwik8/native-measure /home/aeterna/pubrepo/.wk/hwab-nbd2/.work/adapter-check/zstd_seekable-42b8facd97/context.so /tmp/hwab-nbd2/run/gates/enwik8/zstd_seekable-16777216/zstd_seekable-42b8facd97/archive /tmp/hwref/corpus/enwik8 region '' 4096",
+            "n_samples": 200,
+            "verified": "byte-exact",
+            "timer": "CLOCK_MONOTONIC; resident context; native callback only",
+            "archive_artifacts": {
+              "/tmp/hwab-nbd2/run/gates/enwik8/zstd_seekable-16777216/zstd_seekable-42b8facd97/archive": {
+                "bytes": 35591575,
+                "sha256": "ba35a0bde92f8ef76bfc55babaab0f3d76ffe0d8506598d280706ab40f010c26"
+              }
+            },
+            "compress_command": "bash /home/aeterna/pubrepo/.wk/hwab-nbd2/codecs/zstd_seekable.sh _call codec_compress /tmp/hwref/corpus/enwik8 /tmp/hwab-nbd2/run/gates/enwik8/zstd_seekable-16777216/zstd_seekable-42b8facd97/archive 16777216",
+            "region_p50_ms": 5.884993821,
+            "region_p99_ms": 11.383004487
+          },
+          "decode": {
+            "raw_samples": "zstd_seekable-42b8facd97/decode.jsonl",
+            "raw_sha256": "e6ed4bf7cd2e53864fef304b2b0c87fc54d241900c321cb7c389c999c01f26df",
+            "command": "/tmp/hwab-nbd2/run/gates/enwik8/native-measure /home/aeterna/pubrepo/.wk/hwab-nbd2/.work/adapter-check/zstd_seekable-42b8facd97/context.so /tmp/hwab-nbd2/run/gates/enwik8/zstd_seekable-16777216/zstd_seekable-42b8facd97/archive /tmp/hwref/corpus/enwik8 decode ''",
+            "n_samples": 5,
+            "verified": "byte-exact",
+            "timer": "CLOCK_MONOTONIC; resident context; native callback only",
+            "archive_artifacts": {
+              "/tmp/hwab-nbd2/run/gates/enwik8/zstd_seekable-16777216/zstd_seekable-42b8facd97/archive": {
+                "bytes": 35591575,
+                "sha256": "ba35a0bde92f8ef76bfc55babaab0f3d76ffe0d8506598d280706ab40f010c26"
+              }
+            },
+            "compress_command": "bash /home/aeterna/pubrepo/.wk/hwab-nbd2/codecs/zstd_seekable.sh _call codec_compress /tmp/hwref/corpus/enwik8 /tmp/hwab-nbd2/run/gates/enwik8/zstd_seekable-16777216/zstd_seekable-42b8facd97/archive 16777216",
+            "full_decode_median_ms": 76.566375792,
+            "sample_MB_s": 1306.0563330261277,
+            "plateau_status": "data_edge",
+            "plateau_reason": "single input size; a throughput plateau has not been established"
+          },
+          "verified": "byte-exact"
+        }
+      },
+      "selected": true,
+      "dominated_by": [],
+      "on_front": true,
+      "p99_ms": 11.383004487
+    },
+    {
+      "codec": "xz",
+      "g": 1048576,
+      "status": "measured",
+      "ratio": 3.329303987693827,
+      "p50_ms": 8.715115488,
+      "amplification": 257.7503125,
+      "break_even_N": 94,
+      "qualification_sha256": "390c66e321d8c9ba6b4fc174be15e4eab25a72cad2d62c31ae7965e97a99c662",
+      "evidence": {
+        "ratio": {
+          "ratio": 3.329303987693827,
+          "archive_bytes": 30036308,
+          "archive_artifacts": {
+            "/tmp/hwab-nbd2/run/gates/enwik8/xz-1048576/xz-f7c9858a40/archive": {
+              "bytes": 30036308,
+              "sha256": "5accb59ef511e210cf8b8f9365acffd0a616df585e369e43ed0cd5e9686671b0"
+            }
+          },
+          "verified": "byte-exact",
+          "n_samples": 1,
+          "compress_command": "bash /home/aeterna/pubrepo/.wk/hwab-nbd2/codecs/xz.sh _call codec_compress /tmp/hwref/corpus/enwik8 /tmp/hwab-nbd2/run/gates/enwik8/xz-1048576/xz-f7c9858a40/archive 1048576",
+          "verification_command": "bash /home/aeterna/pubrepo/.wk/hwab-nbd2/codecs/xz.sh _call codec_decompress /tmp/hwab-nbd2/run/gates/enwik8/xz-1048576/xz-f7c9858a40/archive /tmp/hwab-nbd2/run/gates/enwik8/xz-1048576/xz-f7c9858a40/ratio-restored"
+        },
+        "region": {
+          "raw_samples": "xz-f7c9858a40/region.jsonl",
+          "raw_sha256": "b13ecd95e6177d014c8e58fc9c17be0b8498969125e502c08dbed66b7ce6d8e6",
+          "command": "/tmp/hwab-nbd2/run/gates/enwik8/native-measure /home/aeterna/pubrepo/.wk/hwab-nbd2/.work/adapter-check/xz-f7c9858a40/context.so /tmp/hwab-nbd2/run/gates/enwik8/xz-1048576/xz-f7c9858a40/archive /tmp/hwref/corpus/enwik8 region '' 4096",
+          "n_samples": 200,
+          "verified": "byte-exact",
+          "timer": "CLOCK_MONOTONIC; resident context; native callback only",
+          "archive_artifacts": {
+            "/tmp/hwab-nbd2/run/gates/enwik8/xz-1048576/xz-f7c9858a40/archive": {
+              "bytes": 30036308,
+              "sha256": "5accb59ef511e210cf8b8f9365acffd0a616df585e369e43ed0cd5e9686671b0"
+            }
+          },
+          "compress_command": "bash /home/aeterna/pubrepo/.wk/hwab-nbd2/codecs/xz.sh _call codec_compress /tmp/hwref/corpus/enwik8 /tmp/hwab-nbd2/run/gates/enwik8/xz-1048576/xz-f7c9858a40/archive 1048576",
+          "region_p50_ms": 8.715115488,
+          "region_p99_ms": 8.962482214
+        },
+        "amplification": {
+          "value": 257.7503125,
+          "unit": "bytes/byte",
+          "n_samples": 200,
+          "verified": "byte-exact",
+          "command": "/tmp/hwab-nbd2/run/gates/enwik8/native-measure /home/aeterna/pubrepo/.wk/hwab-nbd2/.work/adapter-check/xz-f7c9858a40/counter-context.so /tmp/hwab-nbd2/run/gates/enwik8/xz-1048576/xz-f7c9858a40/archive /tmp/hwref/corpus/enwik8 amplification '' 4096",
+          "raw_samples": "xz-f7c9858a40/amplification.jsonl",
+          "raw_sha256": "72bc571597825b096cd0336f6fb769f2c210aa13981e36d9fbe59f7a66aa710f",
+          "counter_library_sha256": "06c19ee8b5a1da9475d535712a8e59861b5e47044dcbc480fd0b8a94387d1f5f",
+          "timings_collected": false
+        },
+        "break_even": {
+          "intersection_requests": 93.43289863894458,
+          "break_even_N": 94,
+          "definition": "first integer N for which N * region p50 exceeds median full decode",
+          "model": "independent single calls; excludes preparation and amortization",
+          "region": {
+            "raw_samples": "xz-f7c9858a40/region.jsonl",
+            "raw_sha256": "b13ecd95e6177d014c8e58fc9c17be0b8498969125e502c08dbed66b7ce6d8e6",
+            "command": "/tmp/hwab-nbd2/run/gates/enwik8/native-measure /home/aeterna/pubrepo/.wk/hwab-nbd2/.work/adapter-check/xz-f7c9858a40/context.so /tmp/hwab-nbd2/run/gates/enwik8/xz-1048576/xz-f7c9858a40/archive /tmp/hwref/corpus/enwik8 region '' 4096",
+            "n_samples": 200,
+            "verified": "byte-exact",
+            "timer": "CLOCK_MONOTONIC; resident context; native callback only",
+            "archive_artifacts": {
+              "/tmp/hwab-nbd2/run/gates/enwik8/xz-1048576/xz-f7c9858a40/archive": {
+                "bytes": 30036308,
+                "sha256": "5accb59ef511e210cf8b8f9365acffd0a616df585e369e43ed0cd5e9686671b0"
+              }
+            },
+            "compress_command": "bash /home/aeterna/pubrepo/.wk/hwab-nbd2/codecs/xz.sh _call codec_compress /tmp/hwref/corpus/enwik8 /tmp/hwab-nbd2/run/gates/enwik8/xz-1048576/xz-f7c9858a40/archive 1048576",
+            "region_p50_ms": 8.715115488,
+            "region_p99_ms": 8.962482214
+          },
+          "decode": {
+            "raw_samples": "xz-f7c9858a40/decode.jsonl",
+            "raw_sha256": "6136ba500551512755c908335bdd98ac80babf686cc3534bc8436d2a86aaa469",
+            "command": "/tmp/hwab-nbd2/run/gates/enwik8/native-measure /home/aeterna/pubrepo/.wk/hwab-nbd2/.work/adapter-check/xz-f7c9858a40/context.so /tmp/hwab-nbd2/run/gates/enwik8/xz-1048576/xz-f7c9858a40/archive /tmp/hwref/corpus/enwik8 decode ''",
+            "n_samples": 5,
+            "verified": "byte-exact",
+            "timer": "CLOCK_MONOTONIC; resident context; native callback only",
+            "archive_artifacts": {
+              "/tmp/hwab-nbd2/run/gates/enwik8/xz-1048576/xz-f7c9858a40/archive": {
+                "bytes": 30036308,
+                "sha256": "5accb59ef511e210cf8b8f9365acffd0a616df585e369e43ed0cd5e9686671b0"
+              }
+            },
+            "compress_command": "bash /home/aeterna/pubrepo/.wk/hwab-nbd2/codecs/xz.sh _call codec_compress /tmp/hwref/corpus/enwik8 /tmp/hwab-nbd2/run/gates/enwik8/xz-1048576/xz-f7c9858a40/archive 1048576",
+            "full_decode_median_ms": 814.278502017,
+            "sample_MB_s": 122.808105276384,
+            "plateau_status": "data_edge",
+            "plateau_reason": "single input size; a throughput plateau has not been established"
+          },
+          "verified": "byte-exact"
+        }
+      },
+      "selected": true,
+      "dominated_by": [],
+      "on_front": true,
+      "p99_ms": 8.962482214
+    },
+    {
+      "codec": "xz",
+      "g": 16777216,
+      "status": "measured",
+      "ratio": 3.7230486645647822,
+      "p50_ms": 114.916592836,
+      "amplification": 4067.6609375,
+      "break_even_N": 6,
+      "qualification_sha256": "390c66e321d8c9ba6b4fc174be15e4eab25a72cad2d62c31ae7965e97a99c662",
+      "evidence": {
+        "ratio": {
+          "ratio": 3.7230486645647822,
+          "archive_bytes": 26859708,
+          "archive_artifacts": {
+            "/tmp/hwab-nbd2/run/gates/enwik8/xz-16777216/xz-f7c9858a40/archive": {
+              "bytes": 26859708,
+              "sha256": "fea3ccfc481031ec0953dabbbd4f583d75b863d612a3883798c112c6fc5c5038"
+            }
+          },
+          "verified": "byte-exact",
+          "n_samples": 1,
+          "compress_command": "bash /home/aeterna/pubrepo/.wk/hwab-nbd2/codecs/xz.sh _call codec_compress /tmp/hwref/corpus/enwik8 /tmp/hwab-nbd2/run/gates/enwik8/xz-16777216/xz-f7c9858a40/archive 16777216",
+          "verification_command": "bash /home/aeterna/pubrepo/.wk/hwab-nbd2/codecs/xz.sh _call codec_decompress /tmp/hwab-nbd2/run/gates/enwik8/xz-16777216/xz-f7c9858a40/archive /tmp/hwab-nbd2/run/gates/enwik8/xz-16777216/xz-f7c9858a40/ratio-restored"
+        },
+        "region": {
+          "raw_samples": "xz-f7c9858a40/region.jsonl",
+          "raw_sha256": "c102a2f0cb7f20040e45ab3a99304593f6488a690dee01b4fd4c740ac83a5954",
+          "command": "/tmp/hwab-nbd2/run/gates/enwik8/native-measure /home/aeterna/pubrepo/.wk/hwab-nbd2/.work/adapter-check/xz-f7c9858a40/context.so /tmp/hwab-nbd2/run/gates/enwik8/xz-16777216/xz-f7c9858a40/archive /tmp/hwref/corpus/enwik8 region '' 4096",
+          "n_samples": 200,
+          "verified": "byte-exact",
+          "timer": "CLOCK_MONOTONIC; resident context; native callback only",
+          "archive_artifacts": {
+            "/tmp/hwab-nbd2/run/gates/enwik8/xz-16777216/xz-f7c9858a40/archive": {
+              "bytes": 26859708,
+              "sha256": "fea3ccfc481031ec0953dabbbd4f583d75b863d612a3883798c112c6fc5c5038"
+            }
+          },
+          "compress_command": "bash /home/aeterna/pubrepo/.wk/hwab-nbd2/codecs/xz.sh _call codec_compress /tmp/hwref/corpus/enwik8 /tmp/hwab-nbd2/run/gates/enwik8/xz-16777216/xz-f7c9858a40/archive 16777216",
+          "region_p50_ms": 114.916592836,
+          "region_p99_ms": 116.544887424
+        },
+        "amplification": {
+          "value": 4067.6609375,
+          "unit": "bytes/byte",
+          "n_samples": 200,
+          "verified": "byte-exact",
+          "command": "/tmp/hwab-nbd2/run/gates/enwik8/native-measure /home/aeterna/pubrepo/.wk/hwab-nbd2/.work/adapter-check/xz-f7c9858a40/counter-context.so /tmp/hwab-nbd2/run/gates/enwik8/xz-16777216/xz-f7c9858a40/archive /tmp/hwref/corpus/enwik8 amplification '' 4096",
+          "raw_samples": "xz-f7c9858a40/amplification.jsonl",
+          "raw_sha256": "daf99abef31f5467776027622d8b32b0f8b59e6ffcbcd6cb0a0320ec8efc6c14",
+          "counter_library_sha256": "06c19ee8b5a1da9475d535712a8e59861b5e47044dcbc480fd0b8a94387d1f5f",
+          "timings_collected": false
+        },
+        "break_even": {
+          "intersection_requests": 5.941205772071207,
+          "break_even_N": 6,
+          "definition": "first integer N for which N * region p50 exceeds median full decode",
+          "model": "independent single calls; excludes preparation and amortization",
+          "region": {
+            "raw_samples": "xz-f7c9858a40/region.jsonl",
+            "raw_sha256": "c102a2f0cb7f20040e45ab3a99304593f6488a690dee01b4fd4c740ac83a5954",
+            "command": "/tmp/hwab-nbd2/run/gates/enwik8/native-measure /home/aeterna/pubrepo/.wk/hwab-nbd2/.work/adapter-check/xz-f7c9858a40/context.so /tmp/hwab-nbd2/run/gates/enwik8/xz-16777216/xz-f7c9858a40/archive /tmp/hwref/corpus/enwik8 region '' 4096",
+            "n_samples": 200,
+            "verified": "byte-exact",
+            "timer": "CLOCK_MONOTONIC; resident context; native callback only",
+            "archive_artifacts": {
+              "/tmp/hwab-nbd2/run/gates/enwik8/xz-16777216/xz-f7c9858a40/archive": {
+                "bytes": 26859708,
+                "sha256": "fea3ccfc481031ec0953dabbbd4f583d75b863d612a3883798c112c6fc5c5038"
+              }
+            },
+            "compress_command": "bash /home/aeterna/pubrepo/.wk/hwab-nbd2/codecs/xz.sh _call codec_compress /tmp/hwref/corpus/enwik8 /tmp/hwab-nbd2/run/gates/enwik8/xz-16777216/xz-f7c9858a40/archive 16777216",
+            "region_p50_ms": 114.916592836,
+            "region_p99_ms": 116.544887424
+          },
+          "decode": {
+            "raw_samples": "xz-f7c9858a40/decode.jsonl",
+            "raw_sha256": "e60be2840ad0d440b200636f390ddb17bca9cb154d8512b543193385591ecc3a",
+            "command": "/tmp/hwab-nbd2/run/gates/enwik8/native-measure /home/aeterna/pubrepo/.wk/hwab-nbd2/.work/adapter-check/xz-f7c9858a40/context.so /tmp/hwab-nbd2/run/gates/enwik8/xz-16777216/xz-f7c9858a40/archive /tmp/hwref/corpus/enwik8 decode ''",
+            "n_samples": 5,
+            "verified": "byte-exact",
+            "timer": "CLOCK_MONOTONIC; resident context; native callback only",
+            "archive_artifacts": {
+              "/tmp/hwab-nbd2/run/gates/enwik8/xz-16777216/xz-f7c9858a40/archive": {
+                "bytes": 26859708,
+                "sha256": "fea3ccfc481031ec0953dabbbd4f583d75b863d612a3883798c112c6fc5c5038"
+              }
+            },
+            "compress_command": "bash /home/aeterna/pubrepo/.wk/hwab-nbd2/codecs/xz.sh _call codec_compress /tmp/hwref/corpus/enwik8 /tmp/hwab-nbd2/run/gates/enwik8/xz-16777216/xz-f7c9858a40/archive 16777216",
+            "full_decode_median_ms": 682.743124664,
+            "sample_MB_s": 146.4679707308854,
+            "plateau_status": "data_edge",
+            "plateau_reason": "single input size; a throughput plateau has not been established"
+          },
+          "verified": "byte-exact"
+        }
+      },
+      "selected": true,
+      "dominated_by": [],
+      "on_front": true,
+      "p99_ms": 116.544887424
+    }
+  ]
+}

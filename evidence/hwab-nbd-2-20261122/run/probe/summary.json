@@ -1,0 +1,199 @@
+{
+ "meta": {
+  "raw": "/tmp/hwab-nbd/fedora45.raw",
+  "raw_bytes": 5368709120,
+  "cluster": 65536,
+  "data_clusters": 13653,
+  "n": 1000,
+  "repeats": 5,
+  "seed": 20261122,
+  "read": 4096,
+  "qemu_nbd": "qemu-nbd 6.2.0 (Debian 1:6.2+dfsg-2ubuntu6.31)",
+  "nbdkit": "nbdkit 1.24.1",
+  "libnbd": "1.10.5",
+  "images": {
+   "qcow2-zstd": {
+    "path": "/tmp/hwab-nbd2/fedora45-zstd.qcow2",
+    "bytes": 669450240
+   },
+   "qcow2-zlib": {
+    "path": "/tmp/hwab-nbd2/fedora45-zlib.qcow2",
+    "bytes": 659816448
+   }
+  }
+ },
+ "rows": {
+  "qcow2-zstd": [
+   {
+    "image": "qcow2-zstd",
+    "repeat": 0,
+    "wall_s": 0.09073901176452637,
+    "peak_rss_kib": 9128,
+    "mismatches": 0,
+    "A_p50_ms": 0.036108,
+    "C_p50_ms": 0.030352,
+    "A_p99_ms": 0.11718112,
+    "C_p99_ms": 0.1046695
+   },
+   {
+    "image": "qcow2-zstd",
+    "repeat": 1,
+    "wall_s": 0.09935569763183594,
+    "peak_rss_kib": 9156,
+    "mismatches": 0,
+    "A_p50_ms": 0.0408115,
+    "C_p50_ms": 0.0348205,
+    "A_p99_ms": 0.1207472,
+    "C_p99_ms": 0.1027466
+   },
+   {
+    "image": "qcow2-zstd",
+    "repeat": 2,
+    "wall_s": 0.11321353912353516,
+    "peak_rss_kib": 9476,
+    "mismatches": 0,
+    "A_p50_ms": 0.043041,
+    "C_p50_ms": 0.037871,
+    "A_p99_ms": 0.12426283999999999,
+    "C_p99_ms": 0.10995861
+   },
+   {
+    "image": "qcow2-zstd",
+    "repeat": 3,
+    "wall_s": 0.09030580520629883,
+    "peak_rss_kib": 9172,
+    "mismatches": 0,
+    "A_p50_ms": 0.037671,
+    "C_p50_ms": 0.031099,
+    "A_p99_ms": 0.08399543999999998,
+    "C_p99_ms": 0.07255311
+   },
+   {
+    "image": "qcow2-zstd",
+    "repeat": 4,
+    "wall_s": 0.10226130485534668,
+    "peak_rss_kib": 9440,
+    "mismatches": 0,
+    "A_p50_ms": 0.040686,
+    "C_p50_ms": 0.0343845,
+    "A_p99_ms": 0.08640491,
+    "C_p99_ms": 0.07439701
+   }
+  ],
+  "qcow2-zlib": [
+   {
+    "image": "qcow2-zlib",
+    "repeat": 0,
+    "wall_s": 0.289104700088501,
+    "peak_rss_kib": 9204,
+    "mismatches": 0,
+    "A_p50_ms": 0.155867,
+    "C_p50_ms": 0.1477625,
+    "A_p99_ms": 0.23022031,
+    "C_p99_ms": 0.21389664999999994
+   },
+   {
+    "image": "qcow2-zlib",
+    "repeat": 1,
+    "wall_s": 0.3049798011779785,
+    "peak_rss_kib": 8732,
+    "mismatches": 0,
+    "A_p50_ms": 0.1605565,
+    "C_p50_ms": 0.154375,
+    "A_p99_ms": 0.23694851,
+    "C_p99_ms": 0.23020449999999995
+   },
+   {
+    "image": "qcow2-zlib",
+    "repeat": 2,
+    "wall_s": 0.30304884910583496,
+    "peak_rss_kib": 9136,
+    "mismatches": 0,
+    "A_p50_ms": 0.159119,
+    "C_p50_ms": 0.153123,
+    "A_p99_ms": 0.24081547999999994,
+    "C_p99_ms": 0.22626370999999998
+   },
+   {
+    "image": "qcow2-zlib",
+    "repeat": 3,
+    "wall_s": 0.30309247970581055,
+    "peak_rss_kib": 8952,
+    "mismatches": 0,
+    "A_p50_ms": 0.159705,
+    "C_p50_ms": 0.153348,
+    "A_p99_ms": 0.23693271,
+    "C_p99_ms": 0.22643591
+   },
+   {
+    "image": "qcow2-zlib",
+    "repeat": 4,
+    "wall_s": 0.33072376251220703,
+    "peak_rss_kib": 8984,
+    "mismatches": 0,
+    "A_p50_ms": 0.173656,
+    "C_p50_ms": 0.169969,
+    "A_p99_ms": 0.25004493,
+    "C_p99_ms": 0.24169921
+   }
+  ],
+  "file": [
+   {
+    "image": "file",
+    "repeat": 0,
+    "wall_s": 0.038352012634277344,
+    "peak_rss_kib": 4636,
+    "mismatches": 0,
+    "A_p50_ms": 0.013996,
+    "C_p50_ms": 0.014016,
+    "A_p99_ms": 0.02259092999999998,
+    "C_p99_ms": 0.01948550999999999
+   },
+   {
+    "image": "file",
+    "repeat": 1,
+    "wall_s": 0.0383303165435791,
+    "peak_rss_kib": 4844,
+    "mismatches": 0,
+    "A_p50_ms": 0.0139315,
+    "C_p50_ms": 0.0138005,
+    "A_p99_ms": 0.026737219999999996,
+    "C_p99_ms": 0.020807619999999992
+   },
+   {
+    "image": "file",
+    "repeat": 2,
+    "wall_s": 0.037946224212646484,
+    "peak_rss_kib": 4828,
+    "mismatches": 0,
+    "A_p50_ms": 0.0136705,
+    "C_p50_ms": 0.013606,
+    "A_p99_ms": 0.024783719999999995,
+    "C_p99_ms": 0.0223126
+   },
+   {
+    "image": "file",
+    "repeat": 3,
+    "wall_s": 0.03829026222229004,
+    "peak_rss_kib": 4860,
+    "mismatches": 0,
+    "A_p50_ms": 0.013771,
+    "C_p50_ms": 0.0142015,
+    "A_p99_ms": 0.017569609999999992,
+    "C_p99_ms": 0.019992509999999995
+   },
+   {
+    "image": "file",
+    "repeat": 4,
+    "wall_s": 0.03847241401672363,
+    "peak_rss_kib": 4640,
+    "mismatches": 0,
+    "A_p50_ms": 0.014006,
+    "C_p50_ms": 0.0138515,
+    "A_p99_ms": 0.02354729,
+    "C_p99_ms": 0.023406909999999996
+   }
+  ]
+ },
+ "mismatches": 0
+}
