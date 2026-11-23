@@ -3,7 +3,7 @@
 Follow-up of HWAB-NBD-1c (nbdkit-xz-filter): the same image, the same reads, the qcow2 compression formats.
 Preregistration: yasha-context HW-APEX-BENCH/CALIBRATION.md 695f63c (predictions P1, P2), amendment d946992 (support
 and ceiling fields only, predictions unchanged), both written before the run.
-Run: scripts/run_template.sh of the aceapex repository (STATUS, watchdog, PID wait), `main.sh`, 22:56–23:10 UTC.
+Run: [scripts/run_template.sh](../../scripts/run_template.sh) (STATUS, watchdog, PID wait), `main.sh`, 22:56–23:10 UTC.
 One machine: ace-core, AMD EPYC 4344P, Ubuntu 22.04. This evidence holds the qcow2 rows and the NBD overhead only; the
 run script of the session went on to a measurement that is not part of this repository.
 

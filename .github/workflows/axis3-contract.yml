@@ -28,6 +28,10 @@ jobs:
           set -euo pipefail
           python3 -m py_compile review/axis3/*.py tools/check_workflow_syntax.py tools/cmp_bases.py
           python3 tools/check_workflow_syntax.py .github/workflows/axis3-contract.yml
+          if git grep -in aceapex -- 'evidence/hwab-nbd-2-*'; then
+            echo "STOP: NBD-2 evidence must not mention ACEAPEX" >&2
+            exit 1
+          fi
           python3 -m unittest discover -s review/axis3 -p test_info_contract.py -v
           python3 review/axis3/test_ozseg_container.py
           if grep -nE 'b?["'"'"'][^"'"'"']*\\\\[nt][^"'"'"']*["'"'"']' review/axis3/*.py; then
@@ -55,10 +59,11 @@ jobs:
           import unittest
 
           # Keep collection count strict; optional native cases are still collected.
-          expected_total = 490  # 487 existing cases + 3 NBD/xz integration tests
+          expected_total = 492  # 487 existing + 3 NBD/xz + 2 NBD/qcow2 integration tests
           suite = unittest.defaultTestLoader.discover("tests")
           native_type = importlib.import_module("test_s2_native_readers").NativeAvailability
           nbd_tests = importlib.import_module("test_nbd_xz_probe")
+          qcow_tests = importlib.import_module("test_nbd_qcow2_probe")
 
           def cases(item):
               if isinstance(item, unittest.TestSuite):
@@ -74,6 +79,11 @@ jobs:
                   if isinstance(case, nbd_tests.NbdXzProbe):
                       expected_skips[case.id()] = (
                           "nbdkit with the xz filter, python3-libnbd, xz and /usr/bin/time needed")
+          if not qcow_tests.have_tools():
+              for case in collected:
+                  if isinstance(case, qcow_tests.NbdQcow2Probe):
+                      expected_skips[case.id()] = (
+                          "qemu-img, qemu-nbd, nbdkit, python3-libnbd and /usr/bin/time needed")
           native_cases = []
           for case in collected:
               if not isinstance(case, native_type):
