@@ -1,0 +1,13 @@
+qemu-img version 6.2.0 (Debian 1:6.2+dfsg-2ubuntu6.31)
+qemu-nbd 6.2.0 (Debian 1:6.2+dfsg-2ubuntu6.31)
+nbdkit 1.24.1
+libnbd 1.10.5
+liblzma5 5.2.5-2ubuntu1.2
+liblzma5 5.2.5-2ubuntu1.2
+libzstd1 1.4.8+dfsg-3build1
+libzstd1 1.4.8+dfsg-3build1
+qemu-block-extra 1:6.2+dfsg-2ubuntu6.31
+qemu-utils 1:6.2+dfsg-2ubuntu6.31
+zlib1g 1:1.2.11.dfsg-2ubuntu9.2
+zlib1g 1:1.2.11.dfsg-2ubuntu9.2
+0b3aae677ecde8d27e1c43c154877faca5cec2172d519bb3556d8b17fe314f92  /tmp/hwab-nbd/fedora45.raw

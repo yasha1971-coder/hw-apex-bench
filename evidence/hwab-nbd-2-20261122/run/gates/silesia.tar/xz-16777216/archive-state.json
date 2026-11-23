@@ -1,0 +1,11 @@
+{
+  "archive": "/tmp/hwab-nbd2/run/gates/silesia.tar/xz-16777216/xz-f7c9858a40/archive",
+  "sidecar": "",
+  "library": "/home/aeterna/pubrepo/.wk/hwab-nbd2/.work/adapter-check/xz-f7c9858a40/context.so",
+  "artifacts": {
+    "/tmp/hwab-nbd2/run/gates/silesia.tar/xz-16777216/xz-f7c9858a40/archive": {
+      "bytes": 49634556,
+      "sha256": "baffdc4e30adb0c124f0f93e168d1af0cb5f2a6d22b647aa346e6158f0b9f0ed"
+    }
+  }
+}

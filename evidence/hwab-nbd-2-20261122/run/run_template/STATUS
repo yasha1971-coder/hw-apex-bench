@@ -1,0 +1,4 @@
+[2026-11-22T22:56:34Z] CALIBRATION gate OK for 'HWAB-NBD-2b' — опора/потолок/вероятность present
+[2026-11-22T22:56:35Z] silesia reference OK (/tmp/hwref/corpus/silesia.tar sha a667bac8)
+[2026-11-22T22:56:35Z] START 'HWAB-NBD-2b': bash /tmp/hwab-nbd2/all.sh
+[2026-11-22T23:11:35Z] DONE 'HWAB-NBD-2b' rc=0
