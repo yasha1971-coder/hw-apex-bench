@@ -1413,3 +1413,9 @@ measurements.
   failed restoration, seek-table geometry, exact prediction boundaries and
   corrupt/incomplete evidence. All 21 synthetic tests passed locally; Python
   syntax and `git diff --check` passed. These checks create no performance evidence.
+- Runner preparation is committed and pushed as
+  `555387d5ff1096ccc6fb2ae9d095b205e1abb30d`. Its GitHub CI passed:
+  [Committed publication integrity](https://github.com/yasha1971-coder/hw-apex-bench/actions/runs/45442482941)
+  and [ACEAPEX v2.2 publication integrity](https://github.com/yasha1971-coder/hw-apex-bench/actions/runs/45442482800).
+  There are still no HW-GIFT-1b corpus checkpoints or RESULTS.md; the matching
+  executor remains the only pending start condition. HW-GIFT-1 evidence is unchanged.
