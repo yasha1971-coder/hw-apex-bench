@@ -1378,3 +1378,38 @@ measurements.
   evidence/a12/axis4-native-threads.log and the preserved experiment).
 - Workflow expected_total=447 at this checkpoint. Full clean-clone acceptance and
   Axis5 v2 integration remain pending until the final handoff receipt.
+
+### HW-GIFT-1b preregistration — 2026-11-24
+
+- The owner authorized the attached HW-GIFT-1b protocol after accepting
+  HW-GIFT-1. Main was verified live at
+  `85603dc8f52f20ae5fa09c50820bc30000be726f`; the retained HW-GIFT-1 directory
+  is identical to PR #89 head `2e55aa1c1b02cb2c09fe7ea56e25d63fd10e561c`.
+- Branch `hw-gift-1b` starts at that main. Its first commit,
+  `c4809624beb0ad7a243163455d9c05545bc52d99`, contains only
+  `evidence/hw-gift-1b/CALIBRATION.md`. The complete protocol text beginning
+  with "Prediction (not a measurement):" matches the owner's attachment.
+  No HW-GIFT-1b measurement preceded this commit.
+- Draft PR #90: https://github.com/yasha1971-coder/hw-apex-bench/pull/90.
+  Keep it draft; no merge or external outreach is authorized.
+- Live PyPI metadata reports pyzstd 0.20.0. Its
+  `pyzstd-0.20.0-py3-none-any.whl` SHA-256 is
+  `9c6aff5aa9b12bb14d51f724915f176db9b187214d66d93d990c75ff054483c6`.
+  The wheel was downloaded and hashed for API inspection only; no corpus
+  encoding or timing has run. The native backend dependency must also be pinned.
+- Executor remains unresolved: HW-GIFT-1 used AMD EPYC 9V74, Debian 13,
+  CPython 3.12.14 and CPU affinity [0]. The reachable SSH `ace-core` has
+  AMD EPYC 4344P, so no timing was started there. The owner was asked for
+  the matching executor or an explicit protocol amendment before measurements.
+- Next bounded action: obtain the matching executor, install and record the
+  hash-pinned wheels, then run and push each verified corpus/level checkpoint.
+  Reuse original offset lists, time fresh pyzstd readers over resident archives,
+  retain all samples and negative controls, and report both predictions honestly.
+- A premeasurement runner, wheel installer, offline verifier/report and usage
+  instructions are prepared in `evidence/hw-gift-1b/`. Archive creation is
+  single-use, each completed request pair is saved durably, and a global lock
+  prevents concurrent chunks. Wrong hosts and changed installation payloads
+  are rejected. Synthetic unit checks exercise resume without repeated reads,
+  failed restoration, seek-table geometry, exact prediction boundaries and
+  corrupt/incomplete evidence. All 21 synthetic tests passed locally; Python
+  syntax and `git diff --check` passed. These checks create no performance evidence.
