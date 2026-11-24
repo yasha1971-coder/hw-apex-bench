@@ -1620,3 +1620,39 @@ measurements.
 - Verified and delivered pyzstd checkpoint `silesia-L3`: 70 logical repeats, 0 retaken, 0 new-threshold LOADED attempts; 0 historical reset-key LOADED attempts remain excluded. Attempt archive SHA-256 `d3fdcdaf392f17052354ebc08cd6b5e1f6a58aa2dbd4599f721265e02fc31eea`. Raw samples, offset lists, restoration checks, load receipts and observational CPU deltas passed the independent verifier.
 
 - Verified and delivered pyzstd checkpoint `silesia-L19`: 70 logical repeats, 0 retaken, 0 new-threshold LOADED attempts; 0 historical reset-key LOADED attempts remain excluded. Attempt archive SHA-256 `0ff3a6238ad32f9244ee9b492bc9d884da21be2d38f5d792cd687d9b0c6daf1a`. Raw samples, offset lists, restoration checks, load receipts and observational CPU deltas passed the independent verifier.
+
+### HW-GIFT-1b completed — 2026-11-24
+
+- All eight checkpoints were verified on ace-core and Windows, committed and
+  pushed individually before advancing. Last checkpoint:
+  `7bdea8beaae5a267f410fe639449def6c98de31f`. Four C checkpoints contain 240
+  CLEAN repeats; four pyzstd checkpoints contain 280 CLEAN repeats, including the
+  default whole-corpus frame. No timings remain running or required.
+- The exact 45 approved C repeats remain byte-identical to immutable snapshot
+  `8022d9626b2b63b00b8891ccdc69996d071bb8bd`; they were not remeasured. The
+  explicitly reset repeat passed its first fresh attempt. Overall 1 of 520
+  logical repeats was retaken; zero new-threshold LOADED attempts occurred.
+  Three historical reset-key LOADED attempts and the two earlier rejected
+  whole-checkpoint trials (110 attempts) remain preserved and excluded.
+- All 475 new-repeat CPU observations are `ok`, with raw per-core snapshots
+  and independently checked deltas for the other 15 logical CPUs. The retained
+  45 predate that monitoring and were not backfilled. New boundary load1 values
+  range from 0.15 to 1.24, within the amended 2.0 threshold. All eight checkpoints
+  share ace-core / AMD EPYC 4344P / CPU 0 / kernel 5.15.0-163-generic /
+  schedutil and the same host boot identity. Archives are resident in RAM.
+- Final prediction outcome is **MISS**, without retuning or remeasurement.
+  (a) PASS: enwik8 L3, 4 KiB first-read p50 is 32,910,573 ns at default versus
+  389,589 ns at 1 MiB, exact ratio 10970191/129863 (about 84.475108x), above 20x.
+  (b) FAIL: 23 of 24 shared-grid archive comparisons pass. The exception is
+  enwik8 L3 / 256 KiB: 37,935,213 HW-GIFT-1 bytes versus 37,324,687 pyzstd bytes,
+  delta -610,526 bytes, absolute difference 61052600/37935213 percent
+  (about 1.60939125345%). Gate decisions use integer nanoseconds/bytes.
+- `evidence/hw-gift-1b/RESULTS.md` contains the complete latency/size/open tables,
+  default points, matched-host C comparison and both unchanged prediction gates.
+  Windows and ace-core report generation is byte-identical, SHA-256
+  `72cff568c7dfd8513ad291accb0848c4d9b4f530632f933be6f46dfe739cb4d8`.
+  A separate read-only audit recomputed prediction arithmetic directly from raw
+  samples/archive inventories and confirmed the report, retention and counters.
+  Full evidence integrity passed; the scientific size prediction is the only
+  failed gate. Accepted HW-GIFT-1 remains unchanged. PR #90 must stay draft;
+  no merge or publication outside this repository is authorized.
