@@ -352,6 +352,9 @@ def export(chunk):
 
 def _run(chunk, inputs, zstd, python):
     check(sys.platform == 'linux' and platform.node() == 'ace-core', 'ace-core Linux required')
+    # reproduce.sh runs in the isolated checkout, so its PATH cannot be relative
+    # to the controller checkout where the CLI arguments were supplied.
+    inputs, zstd, python = (Path(p).resolve() for p in (inputs, zstd, python))
     check(0 in os.sched_getaffinity(0), 'original C worker requires CPU 0')
     record = prepare()
     if (OUTPUT / chunk).exists():

@@ -1498,3 +1498,11 @@ measurements.
   whitespace checks passed. No C/pyzstd measurement checkpoint exists yet.
   Next: execute one locked C checkpoint, verify and push it, then advance in
   corpus/level order; follow with the pyzstd checkpoints. PR #90 stays draft.
+- Execution code and environment receipts were pushed as
+  `340bfc7808dbb2958b37b032953a340f298d26c7`. All 75 synthetic tests also passed
+  on ace-core's prepared CPython, and the real shared-flock command/receipt
+  correctness probe passed. The first C invocation then stopped in preflight,
+  before archive encoding or any timed repeat: a relative CLI PATH resolved
+  against the isolated checkout and selected system zstd 1.4.8. Diagnostic
+  inspection confirmed zero timed receipts. Resolve controller arguments to
+  absolute paths; preserve the preflight-only state separately before retrying.
