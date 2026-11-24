@@ -45,3 +45,5 @@ successes. No other codec. No new measurement before resource approval.
 Pre-run grid amendment (Yakiv): Fedora raw uses level 3 only; enwik8 and silesia.tar retain levels 3 and 19. All other protocol terms and the prediction are unchanged.
 
 Pre-measurement input amendment: both authorized Fedora mirrors timed out; exclude Fedora. Measure enwik8 and silesia.tar at levels 3 and 19. Prediction unchanged.
+
+первый прогон прерван сбросом среды, данные не сохранились, перезапуск с тем же пререгом
