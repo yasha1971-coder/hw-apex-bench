@@ -11,6 +11,8 @@ import subprocess
 import sys
 
 POLICY_COMMIT = '3e7201a0933030de8d3011eb658270e577e6eced'
+THRESHOLD_AMENDMENT = 'c8de6772e001fd52aebd73731cdd564c5f9db332'
+LOAD1_THRESHOLD = '2.0'
 LOCK_PATH = '/run/lock/ovh-bench.lock'
 LOADED_EXIT = 77
 
@@ -46,7 +48,54 @@ def load_one(raw):
 
 
 def is_loaded(start, end):
-    return any(load_one(value['loadavg_raw']) > Decimal('1.0') for value in (start, end))
+    return any(load_one(value['loadavg_raw']) > Decimal(LOAD1_THRESHOLD) for value in (start, end))
+
+
+def proc_stat_observation():
+    try:
+        return dict(proc_stat_raw=Path('/proc/stat').read_text(), proc_stat_error=None)
+    except (OSError, UnicodeError) as error:
+        return dict(proc_stat_raw=None, proc_stat_error=f'{type(error).__name__}: {error}')
+
+
+def other_cpu_delta(start, end):
+    """Observational CPU accounting over the repeat; never an admission gate."""
+    def counters(observation):
+        if observation.get('proc_stat_error') or not isinstance(observation.get('proc_stat_raw'), str):
+            raise ValueError('proc/stat snapshot unavailable')
+        result = {}
+        for line in observation['proc_stat_raw'].splitlines():
+            cells = line.split()
+            if cells and cells[0].startswith('cpu') and cells[0][3:].isdigit():
+                if len(cells) < 9:
+                    raise ValueError('incomplete per-CPU proc/stat counters')
+                values = [int(value) for value in cells[1:9]]
+                if min(values) < 0:
+                    raise ValueError('negative per-CPU proc/stat counter')
+                result[cells[0]] = values
+        if not result or 'cpu0' not in result:
+            raise ValueError('no per-CPU proc/stat counters')
+        return result
+
+    try:
+        first, last = counters(start), counters(end)
+        if first.keys() != last.keys():
+            raise ValueError('proc/stat CPU set changed across repeat')
+        cpus = {}
+        for name in sorted(first, key=lambda name: int(name[3:])):
+            if name == 'cpu0':
+                continue
+            values = [b - a for a, b in zip(first[name], last[name])]
+            if min(values) < 0:
+                raise ValueError(f'proc/stat counter regression on {name}')
+            total, idle, iowait = sum(values), values[3], values[4]
+            busy = total - idle - iowait
+            cpus[name] = dict(total_jiffies=total, busy_jiffies=busy,
+                              idle_jiffies=idle, iowait_jiffies=iowait,
+                              busy_percent=100.0 * busy / total if total else None)
+        return dict(status='ok', pinned_core=0, cpus=cpus)
+    except (ValueError, TypeError) as error:
+        return dict(status='unavailable', pinned_core=0, cpus={}, error=str(error))
 
 
 def boundary():
@@ -63,7 +112,8 @@ def boundary():
                 nproc=int(subprocess.check_output(['nproc'], text=True).strip()),
                 hostname=platform.node(), cpu=cpu, kernel=platform.release(),
                 governor=Path('/sys/devices/system/cpu/cpu0/cpufreq/scaling_governor').read_text().strip(),
-                pinned_core=0, other_processes=processes, process_inspection_errors=errors)
+                pinned_core=0, other_processes=processes, process_inspection_errors=errors,
+                **proc_stat_observation())
 
 
 def _assert_flock_parent():
@@ -84,7 +134,7 @@ def _inside(receipt_path, command):
     record.update(start=boundary(), command_started=False, returncode=None)
     output, errors = b'', b''
     try:
-        if load_one(record['start']['loadavg_raw']) <= Decimal('1.0'):
+        if load_one(record['start']['loadavg_raw']) <= Decimal(LOAD1_THRESHOLD):
             environment = os.environ.copy()
             environment['OVH_BENCH_LOCK_HELD'] = LOCK_PATH
             record['command_started'] = True
@@ -93,6 +143,9 @@ def _inside(receipt_path, command):
             output, errors = result.stdout, result.stderr
             record['returncode'] = result.returncode
         record['end'] = boundary()
+        delta = other_cpu_delta(record['start'], record['end'])
+        record['start']['other_cpu_delta'] = delta
+        record['end']['other_cpu_delta'] = delta
         if record['command_started'] and record['returncode'] != 0:
             # A failed byte check or worker error is fatal, even on a loaded
             # host. Only successful timed commands may be retried for load.
@@ -158,7 +211,8 @@ def run_locked(command, receipt_path, stdout_path=None):
         return _deliver(receipt_path, stdout_path)
     invocation = ['flock', LOCK_PATH, sys.executable, '-B', str(Path(__file__).resolve()),
                   '_inside', '--receipt', str(receipt_path), '--', *command]
-    record = dict(schema='ovh-bench-v1', policy_commit=POLICY_COMMIT, lock_path=LOCK_PATH,
+    record = dict(schema='ovh-bench-v2', policy_commit=POLICY_COMMIT, lock_path=LOCK_PATH,
+                  threshold_amendment_commit=THRESHOLD_AMENDMENT, load1_threshold=LOAD1_THRESHOLD,
                   flock_command=invocation, command=command, status='WAITING',
                   waiting_since_utc=utc(), helper_sha256=helper_hash)
     write(receipt_path, packed(record))

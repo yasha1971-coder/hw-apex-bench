@@ -8,7 +8,11 @@ The OVH-BENCH execution rule was then preregistered as
 `3e7201a0933030de8d3011eb658270e577e6eced` and supersedes zero-activity admission.
 The repeat-only retry amendment was committed as
 `f8a2fb2c82bce9eacd841eafcf584a4c81ffc37c`. The two earlier whole-checkpoint
-LOADED attempts remain rejected; the next enwik8-L3 checkpoint starts from zero.
+LOADED attempts remain rejected. The owner then amended the threshold as
+`c8de6772e001fd52aebd73731cdd564c5f9db332`: the 45 CLEAN repeats of the current
+enwik8-L3 trial are retained without retiming; only 16 MiB / 64 KiB repeat 0
+receives a fresh three-attempt budget. Its three prior LOADED attempts remain
+immutable historical evidence under `blocked/c-enwik8-L3/`.
 Predictions (a) and (b) are unchanged. Keep PR #90 draft; do not merge or contact
 external parties. Accepted HW-GIFT-1 data and its GitHub branch stay unchanged.
 
@@ -23,14 +27,22 @@ launched by `ovh_bench.py` through the blocking command
 the lock, wait. Never use a separate lock or a nonblocking bypass.
 
 Every repeat receipt retains literal `date -u`, `/proc/loadavg` and `nproc`
-outputs at both boundaries. If the one-minute average exceeds 1.0 at either
+outputs at both boundaries. If the one-minute average exceeds 2.0 at either
 boundary, its status is **LOADED**. Retake only that logical repeat immediately,
 with the same seed and offsets. There are at most three total attempts per
 logical repeat; retain all of them. The first CLEAN result is used without
-retiming. Decisions use load average, never the measured latency. Exactly 1.0 is
+retiming. Decisions use load average, never the measured latency. Exactly 2.0 is
 accepted. Original start/resume/end
 CPU, kernel, governor and other-process observations remain as context; process
 activity alone does not reject a result under the new rule.
+
+New receipts retain raw `/proc/stat` at both boundaries and the same per-repeat
+delta in each boundary record. Per-core busy/total jiffies and busy percentage
+exclude pinned CPU 0. Total counts the first eight CPU fields, so guest counters
+are not counted twice; busy excludes idle and iowait. Zero-length accounting
+intervals have no percentage. Capture/counter errors are recorded as unavailable,
+with no effect on the load decision. The retained 45 older repeats have no such
+monitoring and are not backfilled.
 
 The orchestration commands below acquire the shared lock only for timed worker
 subcommands, leaving archive encoding and long compilation outside it. Do not
@@ -90,6 +102,15 @@ changes its obsolete host gate and adds start/end load boundaries; the exact
 [diff](c-baseline/host-gate.patch) is retained. The shell, C paired timer, C
 adapter, timed Python worker and original report stay unchanged.
 
+The existing enwik8-L3 state resumes through the same command below. A one-time
+threshold migration checks the complete published 349-file snapshot, preserves
+the old metadata and blocked-repeat directory, and retains exactly the approved
+45 CLEAN records. Its journal prevents a second reset. The immutable snapshot
+at `8022d9626b2b63b00b8891ccdc69996d071bb8bd` anchors this specific exception;
+new repeats use threshold 2.0 and new monitoring. Reports distinguish the three
+historical LOADED attempts from any new-threshold LOADED attempts, and count the
+reset logical repeat as retaken even if its first new attempt succeeds.
+
 Run one chunk, verify it, commit and push it before running the next:
 
 ```sh
@@ -108,7 +129,8 @@ This C grid has six frame sizes; the new pyzstd default-1-GiB point is separate.
 Each LOADED C repeat is retained beside its retries and is never fed into the
 original C checkpoint collector. Retry is immediate, subject to the shared lock.
 After three LOADED attempts, blocked artifacts are published under
-`blocked/c-CHUNK/` and the checkpoint stops; earlier CLEAN repeats are retained.
+`blocked/c-CHUNK-threshold-2.0/` and the checkpoint stops; earlier CLEAN repeats
+are retained. The earlier threshold-1.0 blocked folder stays unchanged.
 
 ## pyzstd checkpoints
 

@@ -32,6 +32,8 @@ PROTOCOL = 'c4809624beb0ad7a243163455d9c05545bc52d99'
 AMENDMENT = '0bd4ab29794f610884e66fdb3ca6c6c93495a4e4'
 POLICY = '3e7201a0933030de8d3011eb658270e577e6eced'
 LOAD_AMENDMENT = 'f8a2fb2c82bce9eacd841eafcf584a4c81ffc37c'
+THRESHOLD_AMENDMENT = 'c8de6772e001fd52aebd73731cdd564c5f9db332'
+LOAD1_THRESHOLD = '2.0'
 AMENDMENT_TEXT = (
     'Pre-measurement host amendment: the HW-GIFT-1 host is not available. '
     'HW-GIFT-1b runs on ace-core (AMD EPYC 4344P); record CPU, kernel, governor, '
@@ -58,6 +60,22 @@ LOAD_AMENDMENT_TEXT = (
     'Load amendment: a LOADED timed repeat is retaken alone with the same seed '
     'and offsets, up to 3 attempts, all attempts retained. This replaces the '
     'whole-checkpoint rerun from the next attempt on.'
+)
+THRESHOLD_AMENDMENT_TEXT = (
+    'Load threshold amendment: the timed process itself contributes ≈1.0 to '
+    'load1 (observed: LOADED at 1.08 with no other process above 1.5% CPU). '
+    'LOADED now means load1 > 2.0 at either boundary. The 45 CLEAN repeats of '
+    'the current enwik8-L3 trial were clean under the stricter rule and are '
+    'retained. The blocked repeat (16 MiB / 64 KiB №0) restarts with a fresh '
+    '3-attempt budget. Earlier excluded trials stay excluded. Predictions unchanged.'
+)
+MONITORING_TEXT = (
+    'Additional observational monitoring: retain per-core /proc/stat counters '
+    'at both boundaries and their deltas across each repeat, including '
+    'busy/total jiffies and utilization for every logical CPU other than pinned '
+    'CPU 0. These data never affect the load decision, which uses only exact '
+    'load1 > 2.0 at either boundary. The already retained 45 CLEAN repeats '
+    'predate this monitoring and are not remeasured or backfilled.'
 )
 GS = (65536, 262144, 1048576, 4194304, 16777216, 67108864, None)
 NS = (4096, 65536)
@@ -122,14 +140,17 @@ def git(*args):
     return subprocess.check_output(['git', '-C', str(ROOT), *args])
 
 
-def verify_protocol_bytes(original, amended, policy, load_amendment, current):
+def verify_protocol_bytes(original, amended, policy, load_amendment, threshold_amendment, current):
     check(amended == original + b'\n' + AMENDMENT_TEXT.encode() + b'\n',
           'host amendment must preserve the exact original protocol prefix')
     check(policy == amended + b'\n' + POLICY_TEXT.encode() + b'\n',
           'OVH-BENCH rule must preserve the exact amended protocol prefix')
     check(load_amendment == policy + b'\n' + LOAD_AMENDMENT_TEXT.encode() + b'\n',
           'load amendment must preserve the exact OVH-BENCH protocol prefix')
-    check(current == load_amendment, 'amended preregistered protocol changed')
+    check(threshold_amendment == load_amendment + b'\n' + THRESHOLD_AMENDMENT_TEXT.encode() +
+          b'\n\n' + MONITORING_TEXT.encode() + b'\n',
+          'threshold amendment must preserve the exact three-attempt protocol prefix')
+    check(current == threshold_amendment, 'amended preregistered protocol changed')
     return hashlib.sha256(original).hexdigest()
 
 
@@ -225,11 +246,13 @@ def preflight(receipt_path, cpu):
     subprocess.run(['git', '-C', str(ROOT), 'merge-base', '--is-ancestor', AMENDMENT, 'HEAD'], check=True)
     subprocess.run(['git', '-C', str(ROOT), 'merge-base', '--is-ancestor', POLICY, 'HEAD'], check=True)
     subprocess.run(['git', '-C', str(ROOT), 'merge-base', '--is-ancestor', LOAD_AMENDMENT, 'HEAD'], check=True)
+    subprocess.run(['git', '-C', str(ROOT), 'merge-base', '--is-ancestor', THRESHOLD_AMENDMENT, 'HEAD'], check=True)
     relative = 'evidence/hw-gift-1b/CALIBRATION.md'
     verify_protocol_bytes(git('show', f'{PROTOCOL}:{relative}'),
                           git('show', f'{AMENDMENT}:{relative}'),
                           git('show', f'{POLICY}:{relative}'),
                           git('show', f'{LOAD_AMENDMENT}:{relative}'),
+                          git('show', f'{THRESHOLD_AMENDMENT}:{relative}'),
                           (HERE / 'CALIBRATION.md').read_bytes())
     sources = [str((HERE / name).relative_to(ROOT)) for name in
                ('CALIBRATION.md', 'measure.py', 'report.py', 'load_guard.py', 'ovh_bench.py',
@@ -462,6 +485,18 @@ def timed_repeat(part, chunk, g, n, rep, source_path, archive_path, info,
             check(bench_path.exists(), 'OVH-BENCH helper did not retain boundary receipt')
             benchmark = json.loads(bench_path.read_bytes())
         check(code in (0, 77), f'timed child/helper failed: exit {code}')
+        check(benchmark.get('schema') == 'ovh-bench-v2' and
+              benchmark.get('threshold_amendment_commit') == THRESHOLD_AMENDMENT and
+              benchmark.get('load1_threshold') == LOAD1_THRESHOLD,
+              'new pyzstd cohort requires the amended OVH-BENCH v2 threshold receipt')
+        for boundary_name in ('start', 'end'):
+            boundary = benchmark.get(boundary_name, {})
+            check(isinstance(boundary, dict) and
+                  {'proc_stat_raw', 'proc_stat_error', 'other_cpu_delta'}.issubset(boundary),
+                  'new pyzstd repeat is missing per-core observational monitoring')
+            delta = boundary['other_cpu_delta']
+            check(isinstance(delta, dict) and delta.get('status') in ('ok', 'unavailable'),
+                  'invalid per-core observational monitoring receipt')
         status = benchmark.get('status')
         check(status in ('CLEAN', 'LOADED') and benchmark.get('returncode') in (None, 0),
               'timed child ERROR/nonzero returncode is fatal and must not be retried')
@@ -550,6 +585,8 @@ def _run(chunk, inputs, receipt_path, cpu, attempt):
                           protocol_commit=PROTOCOL, protocol_sha256=sha(HERE / 'CALIBRATION.md'),
                           amendment_commit=AMENDMENT, ovh_policy_commit=POLICY,
                           load_amendment_commit=LOAD_AMENDMENT,
+                          threshold_amendment_commit=THRESHOLD_AMENDMENT,
+                          load1_threshold=LOAD1_THRESHOLD,
                           original_protocol_sha256=hashlib.sha256(git('show',
                               f'{PROTOCOL}:evidence/hw-gift-1b/CALIBRATION.md')).hexdigest(),
                           runner_commit=git('log', '-1', '--format=%H', '--',

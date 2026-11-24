@@ -1581,3 +1581,26 @@ measurements.
   Timing is stopped at the owner's bounded load condition. Next bounded action
   requires an owner-coordinated quiet window and explicit continuation policy
   for the exhausted repeat; do not reset its attempt counter or pause others.
+
+### Load threshold correction and retained-repeat resume — 2026-11-24
+
+- The owner corrected the admission rule to exact `load1 > 2.0` at either
+  boundary, accounting for the timed process itself. The exact supplied Load
+  threshold amendment was committed and pushed before continuation as
+  `c8de6772e001fd52aebd73731cdd564c5f9db332`. Predictions and load-only decisions
+  remain unchanged. New raw `/proc/stat` snapshots and per-repeat deltas for
+  logical CPUs other than pinned CPU 0 are observational data only.
+- Exactly the current trial's 45 stricter-rule CLEAN repeats are retained
+  unchanged. Only 16 MiB / 64 KiB repeat 0 receives a fresh three-attempt budget;
+  its old three LOADED attempts and their immutable published snapshot remain
+  retained as history. Earlier whole-checkpoint rejections stay excluded.
+  Retained data lack the new CPU monitoring and will not be backfilled or retimed.
+- Before updating the executor, all four previously untracked published status
+  artifacts were compared byte-for-byte to origin and preserved under the HW
+  checkout's `.work/hw-gift-1b/published-blocked-backup/8022d96/`. The executor
+  then fast-forwarded to the exact threshold amendment without touching C state.
+- Pre-continuation checks passed: 110 synthetic tests on Windows, including
+  the real 349-file immutable snapshot migration, strict 45-row preservation,
+  interrupted-journal resume, no second budget reset, exact 2.0 boundaries,
+  and independent `/proc/stat` accounting. Historical BLOCKED verification,
+  unchanged accepted HW-GIFT-1 and diff whitespace checks also passed.

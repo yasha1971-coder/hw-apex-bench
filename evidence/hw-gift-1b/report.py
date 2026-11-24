@@ -8,10 +8,12 @@ archives remain in the runner's durable state rather than in these checkpoints.
 import argparse
 from decimal import Decimal, localcontext
 from datetime import datetime
+from functools import lru_cache
 import gzip
 import hashlib
 import io
 import json
+import posixpath
 from pathlib import Path, PurePosixPath
 import re
 import subprocess
@@ -37,9 +39,14 @@ CAL = "c4809624beb0ad7a243163455d9c05545bc52d99"
 AMENDMENT = "0bd4ab29794f610884e66fdb3ca6c6c93495a4e4"
 POLICY = "3e7201a0933030de8d3011eb658270e577e6eced"
 LOAD_AMENDMENT = "f8a2fb2c82bce9eacd841eafcf584a4c81ffc37c"
+THRESHOLD_AMENDMENT = "c8de6772e001fd52aebd73731cdd564c5f9db332"
+OLD_SNAPSHOT_COMMIT = "8022d9626b2b63b00b8891ccdc69996d071bb8bd"
+OLD_SNAPSHOT_PATH = "evidence/hw-gift-1b/blocked/c-enwik8-L3/BLOCKED.json"
+OLD_HELPER_SHA256 = "df561159c762fad79d4ecc6cdf4f94934e7197b8de098c865acaa48010efd711"
+OLD_PROTOCOL_SHA256 = "0e9e5f2419256e8b148981e0297097fa53a0a053ed011b8592f3095a67a8080c"
 BENCH_LOCK = "/run/lock/ovh-bench.lock"
 ORIGINAL_PROTOCOL_SHA256 = "f8a32188585e70d68fcc3a845565a03f4b8bf5e271f9bafb586dc17eeee96164"
-AMENDED_PROTOCOL_SHA256 = "0e9e5f2419256e8b148981e0297097fa53a0a053ed011b8592f3095a67a8080c"
+AMENDED_PROTOCOL_SHA256 = "792f979704ab3a7158139c52a9273f4f0036f22a18284d4f296f4861697af682"
 ZSTD_COMMIT = "f8745da6ff1ad1e7bab384bd1f9d742439278e99"
 C_WORKER_SHA256 = "d2fd5a7b30fca6d56d51d56db983633d7bfa00aab4ccb831468669dd2b50c351"
 C_PAIR_SHA256 = "620f3193f65e6a5b67dcd973ea161fe2f3c9566053e586102042b78f3e50a959"
@@ -193,9 +200,13 @@ def safe_artifact_path(name):
 def verify_attempt_artifact(folder):
     folder = Path(folder)
     manifest = load(folder / "attempts.json")
+    return verify_attempt_archive(manifest, (folder / "attempts.tar.gz").read_bytes())
+
+
+def verify_attempt_archive(manifest, archive_data):
     check(manifest.get("schema") == "hw-gift-1b-attempts-v1", "unknown attempt artifact schema")
     check(manifest.get("archive_file", "attempts.tar.gz") == "attempts.tar.gz", "wrong attempt archive filename")
-    check(manifest.get("archive_sha256") == sha(folder / "attempts.tar.gz"), "attempt archive SHA-256 mismatch")
+    check(manifest.get("archive_sha256") == hashlib.sha256(archive_data).hexdigest(), "attempt archive SHA-256 mismatch")
     records = manifest.get("files")
     check(isinstance(records, list) and records, "empty attempt artifact manifest")
     expected = {}
@@ -205,7 +216,7 @@ def verify_attempt_artifact(folder):
         check(is_int(record.get("bytes")) and is_hash(record.get("sha256")), "invalid attempt artifact identity")
         expected[name] = record
     payload = {}
-    with tarfile.open(folder / "attempts.tar.gz", mode="r:gz") as archive:
+    with tarfile.open(fileobj=io.BytesIO(archive_data), mode="r:gz") as archive:
         for member in archive:
             name = safe_artifact_path(member.name)
             check(member.isfile() and not member.issym() and not member.islnk(), "attempt archive contains nonregular member")
@@ -222,12 +233,127 @@ def verify_attempt_artifact(folder):
     return payload
 
 
+@lru_cache(maxsize=1)
+def immutable_retention_snapshot():
+    """Read the approved old cohort from immutable Git objects, never work files."""
+    def blob(name):
+        return subprocess.check_output(["git", "-C", str(REPO), "show", f"{OLD_SNAPSHOT_COMMIT}:{name}"])
+    raw = blob(OLD_SNAPSHOT_PATH)
+    parent = str(PurePosixPath(OLD_SNAPSHOT_PATH).parent)
+    archive = blob(parent + "/attempts.tar.gz")
+    manifest = json.loads(blob(parent + "/attempts.json"))
+    record = json.loads(raw)
+    check(record.get("ovh_bench_sha256") == OLD_HELPER_SHA256 and len(record.get("benchmark_runs", [])) == 45,
+          "immutable retention snapshot is not the approved 45-repeat cohort")
+    return dict(record=record, payload=verify_attempt_archive(manifest, archive),
+                snapshot_sha256=hashlib.sha256(raw).hexdigest(), snapshot_attempts_sha256=hashlib.sha256(archive).hexdigest())
+
+
+def verify_approved_retention(run, payload, identity, grids):
+    retention = run.get("approved_retention")
+    if retention is None:
+        check(not (identity == ("enwik8",3) and tuple(grids) == GS[:-1]),
+              "C enwik8 L3 must retain the expressly approved 45 CLEAN repeats")
+        return None
+    check(identity == ("enwik8", 3) and tuple(grids) == GS[:-1], "legacy retention is allowed only for the approved C cohort")
+    check(isinstance(retention, dict) and retention.get("schema") == "hw-gift-1b-approved-retention-v1",
+          "invalid approved retention schema")
+    old = immutable_retention_snapshot()
+    old_record = old["record"]
+    old_runs = old_record["benchmark_runs"]
+    expected = dict(threshold_amendment_commit=THRESHOLD_AMENDMENT, snapshot_commit=OLD_SNAPSHOT_COMMIT,
+                    snapshot_path=OLD_SNAPSHOT_PATH, snapshot_sha256=old["snapshot_sha256"],
+                    snapshot_attempts_sha256=old["snapshot_attempts_sha256"], retained_count=45,
+                    retained_runs_sha256=row_digest(old_runs), old_helper_sha256=OLD_HELPER_SHA256,
+                    new_helper_sha256=run["ovh_bench_sha256"], reset_key=dict(g=16777216,n=65536,rep=0),
+                    reset_once=True, history_prefix="pre-threshold/c8de6772")
+    for key, value in expected.items():
+        check(retention.get(key) == value, "approved retention anchor mismatch: " + key)
+    check(retention.get("pre_threshold_blocked_repeat") == old_record["blocked_repeat"], "historical blocked attempts changed")
+    paths = sorted(a["receipt_path"] for r in old_runs for a in r["attempts"])
+    check(retention.get("retained_receipt_paths") == paths, "approved retained receipt list changed")
+    check(run["benchmark_runs"][:45] == old_runs, "the 45 approved CLEAN repeat dictionaries changed")
+    retained_prefixes = {str(PurePosixPath(path).parent) + "/" for path in paths}
+    old_blocked = old_record["blocked_repeat"]
+    blocked_prefix = posixpath.commonpath([str(PurePosixPath(a["receipt_path"]).parent)
+                                          for a in old_blocked["attempts"]]) + "/"
+    historical = {}
+    for name, data in old["payload"].items():
+        if any(name.startswith(prefix) for prefix in retained_prefixes):
+            check(payload.get(name) == data, "approved retained raw bytes changed: " + name)
+        if name.startswith(blocked_prefix):
+            relocated = retention["history_prefix"] + "/" + name
+            check(payload.get(relocated) == data, "historical LOADED bytes changed: " + relocated)
+            historical[relocated] = data
+    historical_receipts = {retention["history_prefix"] + "/" + a["receipt_path"] for a in old_blocked["attempts"]}
+    return dict(runs=old_runs, reset_key=(16777216,65536,0), historical_receipts=historical_receipts,
+                historical_loaded_attempts=3)
+
+
+def verify_other_cpu_observation(start, end):
+    for boundary in (start,end):
+        check("proc_stat_raw" in boundary and "proc_stat_error" in boundary, "missing new per-core monitoring receipt")
+        check(boundary["proc_stat_error"] is None or isinstance(boundary["proc_stat_error"],str),
+              "invalid per-core capture error receipt")
+    def parse(boundary):
+        if boundary["proc_stat_error"] or not isinstance(boundary["proc_stat_raw"], str):
+            raise ValueError("capture unavailable")
+        cpus = {}
+        for line in boundary["proc_stat_raw"].splitlines():
+            cells = line.split()
+            if cells and re.fullmatch(r"cpu\d+", cells[0]):
+                if len(cells) < 9 or not all(v.isdigit() for v in cells[1:9]):
+                    raise ValueError("invalid per-core counters")
+                if cells[0] in cpus:
+                    raise ValueError("duplicate per-core counters")
+                cpus[cells[0]] = [int(v) for v in cells[1:9]]
+        if "cpu0" not in cpus:
+            raise ValueError("missing pinned-core counters")
+        return cpus
+    failure = False
+    try:
+        first, last = parse(start), parse(end)
+        if first.keys() != last.keys():
+            raise ValueError("CPU set changed")
+        derived = {}
+        for name in first:
+            if name == "cpu0":
+                continue
+            values = [b-a for a,b in zip(first[name],last[name])]
+            if min(values) < 0:
+                raise ValueError("CPU counter regression")
+            total, idle, iowait = sum(values), values[3], values[4]
+            busy = total-idle-iowait
+            derived[name] = dict(total_jiffies=total,busy_jiffies=busy,idle_jiffies=idle,iowait_jiffies=iowait,
+                                 busy_percent=100.0*busy/total if total else None)
+    except ValueError:
+        failure = True
+    delta = start.get("other_cpu_delta")
+    check(isinstance(delta,dict) and end.get("other_cpu_delta") == delta and delta.get("pinned_core") == 0,
+          "per-core delta receipts differ across boundaries")
+    if failure:
+        check(delta.get("status") == "unavailable" and delta.get("cpus") == {}
+              and isinstance(delta.get("error"),str) and delta["error"], "unavailable per-core monitoring is not recorded")
+    else:
+        check(delta.get("status") == "ok" and delta.get("cpus") == derived, "per-core busy/total delta does not match raw /proc/stat")
+        for cpu in delta["cpus"].values():
+            check(all(type(cpu[k]) is int for k in ("total_jiffies","busy_jiffies","idle_jiffies","iowait_jiffies")),
+                  "per-core jiffies are not integers")
+
+
 def verify_benchmark_receipt(receipt, host, helper_hash, status):
     check(isinstance(receipt, dict) and receipt.get("status") == status,
           "OVH-BENCH repeat is not " + status)
     check(status in ("CLEAN", "LOADED"), "ERROR repeats cannot be retried or accepted")
-    check(receipt.get("schema") == "ovh-bench-v1" and receipt.get("policy_commit") == POLICY,
+    schema = receipt.get("schema")
+    check(schema in ("ovh-bench-v1", "ovh-bench-v2") and receipt.get("policy_commit") == POLICY,
           "OVH-BENCH receipt schema/policy mismatch")
+    if schema == "ovh-bench-v2":
+        check(receipt.get("threshold_amendment_commit") == THRESHOLD_AMENDMENT
+              and receipt.get("load1_threshold") == "2.0", "new load threshold amendment mismatch")
+        threshold = Decimal("2.0")
+    else:
+        threshold = Decimal("1.0")
     check(receipt.get("helper_sha256") == helper_hash, "OVH-BENCH receipt helper mismatch")
     check(type(receipt.get("command_started")) is bool, "missing command-start marker")
     code = receipt.get("returncode")
@@ -254,10 +380,12 @@ def verify_benchmark_receipt(receipt, host, helper_hash, status):
     start_time, start_load = verify_benchmark_snapshot(receipt.get("start"), host)
     end_time, end_load = verify_benchmark_snapshot(receipt.get("end"), host)
     check(end_time >= start_time >= waiting_time, "OVH-BENCH boundary timestamps are out of order")
-    loaded = start_load > Decimal("1.0") or end_load > Decimal("1.0")
+    loaded = start_load > threshold or end_load > threshold
     check(loaded == (status == "LOADED"), "LOADED status does not match exact one-minute load threshold")
-    check((receipt["command_started"] and start_load <= Decimal("1.0"))
-          or (not receipt["command_started"] and start_load > Decimal("1.0")), "command-start marker contradicts initial load")
+    check((receipt["command_started"] and start_load <= threshold)
+          or (not receipt["command_started"] and start_load > threshold), "command-start marker contradicts initial load")
+    if schema == "ovh-bench-v2":
+        verify_other_cpu_observation(receipt["start"],receipt["end"])
     if status == "LOADED":
         check(isinstance(receipt.get("ps_top8"), str) and receipt["ps_top8"].strip(), "missing LOADED ps_top8")
         check(receipt.get("ps_command") == "ps -eo pid,user,pcpu,comm --sort=-pcpu | head -8", "wrong ps_top8 command")
@@ -335,7 +463,7 @@ def verify_attempts(repeat, host, helper_hash, payload, *, key, identity, offset
     return attempts
 
 
-def verify_receipt_coverage(payload, logical):
+def verify_receipt_coverage(payload, logical, historical_receipts=()):
     expected = {attempt["receipt_path"] for repeat in logical for attempt in repeat["attempts"]}
     check(len(expected) == sum(len(repeat["attempts"]) for repeat in logical), "receipt reused for multiple attempts")
     found = set()
@@ -346,15 +474,20 @@ def verify_receipt_coverage(payload, logical):
             value = json.loads(data)
         except (ValueError, UnicodeDecodeError):
             continue
-        if isinstance(value, dict) and value.get("schema") == "ovh-bench-v1":
+        if isinstance(value, dict) and value.get("schema") in ("ovh-bench-v1","ovh-bench-v2"):
             found.add(name)
-    check(found == expected, "attempt artifact contains missing/unlisted measurement receipts")
+    check(found == expected | set(historical_receipts), "attempt artifact contains missing/unlisted measurement receipts")
 
 
-def verify_progress(run, logical, planned):
+def verify_progress(run, logical, planned, retention=None):
+    retaken = {(r["g"],r["n"],r["rep"]) for r in logical if len(r["attempts"])>1}
+    if retention and any((r["g"],r["n"],r["rep"]) == retention["reset_key"] for r in logical):
+        retaken.add(retention["reset_key"])
     counts = dict(planned_repeats=planned, started_repeats=len(logical),
-                  retaken_repeats=sum(len(r["attempts"]) > 1 for r in logical),
+                  retaken_repeats=len(retaken),
                   loaded_attempts=sum(a["status"] == "LOADED" for r in logical for a in r["attempts"]))
+    if retention:
+        counts["historical_loaded_attempts"] = 3
     for name, value in counts.items():
         check(type(run.get(name)) is int and run[name] == value, "incorrect retry counter: " + name)
     return counts
@@ -363,10 +496,14 @@ def verify_progress(run, logical, planned):
 def verify_benchmark_runs(run, rows, host, grids, payload, identity):
     check(run.get("ovh_policy_commit") == POLICY, "OVH-BENCH policy is not anchored")
     check(run.get("load_amendment_commit") == LOAD_AMENDMENT, "bounded load retry amendment is not anchored")
+    check(run.get("threshold_amendment_commit") == THRESHOLD_AMENDMENT
+          and run.get("load1_threshold") == "2.0", "current threshold policy is not anchored")
     check(is_hash(run.get("ovh_bench_sha256")), "missing shared OVH-BENCH helper identity")
     repeats = run.get("benchmark_runs")
     expected = {(g, n, rep) for g in grids for n in NS for rep in range(5)}
     check(isinstance(repeats, list) and len(repeats) == len(expected), "incomplete OVH-BENCH timed-repeat receipts")
+    retention = verify_approved_retention(run,payload,identity,grids)
+    legacy_keys = {(r["g"],r["n"],r["rep"]) for r in retention["runs"]} if retention else set()
     seen = set()
     for repeat in repeats:
         g, n, rep = repeat.get("g"), repeat.get("n"), repeat.get("rep")
@@ -374,12 +511,16 @@ def verify_benchmark_runs(run, rows, host, grids, payload, identity):
         key = g, n, rep
         check(key in expected and key not in seen, "duplicate or unexpected OVH-BENCH repeat")
         seen.add(key)
-        verify_attempts(repeat, host, run["ovh_bench_sha256"], payload, key=key, identity=identity,
+        helper_hash = OLD_HELPER_SHA256 if key in legacy_keys else run["ovh_bench_sha256"]
+        if key not in legacy_keys:
+            check(all(a.get("receipt",{}).get("schema") == "ovh-bench-v2" for a in repeat.get("attempts",[])),
+                  "unapproved legacy repeat in new evidence")
+        verify_attempts(repeat, host, helper_hash, payload, key=key, identity=identity,
                         offsets=[p[0] for p in rows[key]["samples"]])
         check(repeat.get("row_sha256") == row_digest(rows[key]), "OVH-BENCH receipt row binding mismatch")
     check(seen == expected, "incomplete OVH-BENCH accepted grid")
-    verify_receipt_coverage(payload, repeats)
-    return verify_progress(run, repeats, len(expected))
+    verify_receipt_coverage(payload, repeats,retention["historical_receipts"] if retention else ())
+    return verify_progress(run, repeats, len(expected),retention)
 
 
 def verify_installation_receipt(receipt, host):
@@ -597,7 +738,7 @@ def verify_all(evidence_root=HERE, *, baseline_root=BASELINE, source_root=REPO):
     evidence_root = Path(evidence_root)
     chunks = {c: verify_chunk(evidence_root / c, c, baseline_root=baseline_root) for c in CHUNKS}
     runs = [chunks[c]["run"] for c in CHUNKS]
-    for key in ("host", "runner_commit", "runner_sha256", "verifier_sha256", "guard_sha256", "protocol_commit", "protocol_sha256", "amendment_commit", "original_protocol_sha256", "ovh_policy_commit", "ovh_bench_sha256", "load_amendment_commit"):
+    for key in ("host", "runner_commit", "runner_sha256", "verifier_sha256", "guard_sha256", "protocol_commit", "protocol_sha256", "amendment_commit", "original_protocol_sha256", "ovh_policy_commit", "ovh_bench_sha256", "load_amendment_commit", "threshold_amendment_commit", "load1_threshold"):
         check(all(run[key] == runs[0][key] for run in runs), f"checkpoints cross {key} boundary")
     c_chunks = {c: verify_c_chunk(evidence_root / "c-baseline" / c, c, baseline_root=baseline_root,
                                 source_root=source_root) for c in CHUNKS}
@@ -631,6 +772,12 @@ def verify_blocked(folder, *, baseline_root=BASELINE):
     completed, blocked = record.get("benchmark_runs"), record.get("blocked_repeat")
     check(isinstance(completed, list) and isinstance(blocked, dict), "missing BLOCKED logical repeat history")
     grids = GS if reader == "pyzstd" else GS[:-1]
+    current = "threshold_amendment_commit" in record
+    if current:
+        check(record.get("threshold_amendment_commit") == THRESHOLD_AMENDMENT and record.get("load1_threshold") == "2.0",
+              "BLOCKED current threshold policy mismatch")
+    retention = verify_approved_retention(record,payload,CHUNKS[chunk],grids) if current else None
+    legacy_keys = {(r["g"],r["n"],r["rep"]) for r in retention["runs"]} if retention else set()
     planned = [(g, n, rep) for g in grids for n in NS for rep in range(5)]
     check(len(completed) < len(planned), "BLOCKED history already has every planned repeat")
     identity = CHUNKS[chunk]
@@ -639,11 +786,15 @@ def verify_blocked(folder, *, baseline_root=BASELINE):
         key = repeat.get("g"), repeat.get("n"), repeat.get("rep")
         check(key == planned[index], "BLOCKED repeat history is not a fresh ordered prefix")
         offsets = baseline_offsets(Path(baseline_root) / chunk, key[1], key[2])
-        verify_attempts(repeat, host, helper, payload, key=key, identity=identity, offsets=offsets,
+        repeat_helper = OLD_HELPER_SHA256 if key in legacy_keys else helper
+        if current and key not in legacy_keys:
+            check(all(a.get("receipt",{}).get("schema") == "ovh-bench-v2" for a in repeat.get("attempts",[])),
+                  "unapproved legacy BLOCKED repeat")
+        verify_attempts(repeat, host, repeat_helper, payload, key=key, identity=identity, offsets=offsets,
                         blocked=index == len(completed))
     check(record.get("ps_top8") == blocked["attempts"][-1]["receipt"]["ps_top8"], "BLOCKED ps_top8 differs from last LOADED attempt")
-    verify_receipt_coverage(payload, logical)
-    counts = verify_progress(record, logical, len(planned))
+    verify_receipt_coverage(payload, logical,retention["historical_receipts"] if retention else ())
+    counts = verify_progress(record, logical, len(planned),retention)
     return dict(record=record, retry_counts=counts, folder=folder)
 
 
@@ -654,12 +805,23 @@ def build_blocked_report(evidence_root=HERE, *, baseline_root=BASELINE):
     folders = sorted(p for p in blocked_root.iterdir() if p.is_dir())
     check(folders, "no BLOCKED artifacts found")
     cases = [verify_blocked(folder, baseline_root=baseline_root) for folder in folders]
+    # The immutable v1 stop remains verifiable, but no longer represents an
+    # active stop after its one expressly authorized migration/reset.
+    active_retention = any(c["record"].get("approved_retention") for c in cases)
+    accepted_path = evidence_root / "c-baseline" / "enwik8-L3" / "acecore.json"
+    if accepted_path.is_file() and load(accepted_path).get("approved_retention"):
+        verify_c_chunk(accepted_path.parent,"enwik8-L3",baseline_root=baseline_root)
+        active_retention = True
+    if active_retention:
+        cases = [c for c in cases if c["record"].get("threshold_amendment_commit") == THRESHOLD_AMENDMENT]
+    check(cases,"no active BLOCKED artifacts found; the old load-1.0 stop is historical")
     out = ["# HW-GIFT-1b — BLOCKED: load", "", "No performance medians or prediction outcome are reported while the experiment is incomplete.", "",
            "Each blocked logical repeat exhausted exactly three total LOADED attempts. "
-           "Every attempt used the shared blocking OVH-BENCH lock; at least one boundary's exact one-minute load average exceeded 1.0. "
+           "Every attempt used the shared blocking OVH-BENCH lock; at least one boundary's exact one-minute load average exceeded the receipt's policy threshold "
+           "(1.0 for historical v1; 2.0 after the threshold amendment). "
            "A fourth attempt is prohibited. The first CLEAN result of a logical repeat is retained without remeasurement.", "",
-           "|reader|checkpoint|started M|retaken N|LOADED attempts|planned repeats|blocked frame B|read B|repeat|",
-           "|---|---|---:|---:|---:|---:|---:|---:|---:|"]
+           "|reader|checkpoint|started M|retaken N|active LOADED attempts|historical excluded LOADED|planned repeats|blocked frame B|read B|repeat|",
+           "|---|---|---:|---:|---:|---:|---:|---:|---:|---:|"]
     total_started = total_retaken = 0
     for case in cases:
         record, counts = case["record"], case["retry_counts"]
@@ -668,10 +830,11 @@ def build_blocked_report(evidence_root=HERE, *, baseline_root=BASELINE):
         total_retaken += counts["retaken_repeats"]
         relative = case["folder"].relative_to(evidence_root).as_posix()
         out.append(f"|{record['reader']}|[{record['chunk']}]({relative}/BLOCKED.json)|{counts['started_repeats']}|"
-                   f"{counts['retaken_repeats']}|{counts['loaded_attempts']}|{counts['planned_repeats']}|"
+                   f"{counts['retaken_repeats']}|{counts['loaded_attempts']}|{counts.get('historical_loaded_attempts',0)}|{counts['planned_repeats']}|"
                    f"{frame_name(repeat['g'])}|{repeat['n']}|{repeat['rep']}|")
     out.extend(["", f"{total_retaken} of {total_started} started logical repeats were retaken. "
                 "This counts logical repeats with at least two attempts, including a blocked repeat; it does not imply that they reached CLEAN. "
+                "The explicitly reset key also counts as retaken; its three historical load-1.0 attempts are preserved separately from the active budget. "
                 "The two earlier whole-trial rejections (110 attempts) remain excluded and are not included in these new-trial counters.", ""])
     for case in cases:
         record = case["record"]
@@ -746,6 +909,7 @@ def build_report(chunks, *, baseline_root=BASELINE):
     total_started = sum(c["started_repeats"] for c in counts)
     total_retaken = sum(c["retaken_repeats"] for c in counts)
     total_loaded = sum(c["loaded_attempts"] for c in counts)
+    historical_loaded = sum(c.get("historical_loaded_attempts",0) for c in counts)
     out = ["# pyzstd SeekableZstdFile: frame size and first-read cost", "",
            "[Preregistered protocol and pre-measurement host amendment](CALIBRATION.md) · "
            "[Host and wheel receipt](enwik8-L3/run.json) · [Matched-host C receipt](c-baseline/enwik8-L3/acecore.json)", "",
@@ -762,11 +926,16 @@ def build_report(chunks, *, baseline_root=BASELINE):
            "Parent start, resume and end process observations are retained as context. "
            "Every accepted timed repeat used the blocking shared /run/lock/ovh-bench.lock and recorded "
            "date -u, raw /proc/loadavg and nproc at both boundaries. Both one-minute load averages "
-           "were ≤ 1.0; LOADED attempts are retained outside accepted checkpoints and repeated. "
+           "were ≤ the applicable policy threshold: 1.0 for the 45 immutably retained C repeats, "
+           "2.0 for all new repeats. The retained 45 predate per-core monitoring and have no backfilled /proc/stat data. "
+           "New v2 boundaries retain raw per-core counters and derived busy/total jiffies for CPUs other than CPU 0. "
+           "CPU utilization is observational and never affects the load decision. LOADED attempts are retained and excluded. "
            "Other process activity alone is not an exclusion criterion under OVH-BENCH. "
            "The same pinned core was used for the new C baseline. Historical HW-GIFT-1 host timings remain separate.", "",
-           f"{total_retaken} of {total_started} logical repeats were retaken; {total_loaded} LOADED attempts were excluded. "
-           "Each logical repeat used at most three total attempts; the first CLEAN result was selected and never retimed. "
+           f"{total_retaken} of {total_started} logical repeats were retaken; {total_loaded} active-policy LOADED attempts were excluded. "
+           f"Separately, {historical_loaded} historical LOADED attempts at the explicitly reset key remain excluded and preserved. "
+           "Each active attempt budget has at most three attempts; only the formerly blocked key received the expressly authorized fresh budget. "
+           "The first CLEAN result was selected and never retimed; the approved 45 CLEAN dictionaries and raw files remain byte-identical to commit 8022d962. "
            "All raw attempts, including their lock/load receipts and stdout/stderr, are retained in each checkpoint's attempts.tar.gz and attempts.json. "
            "The two earlier whole-trial rejections (110 attempts) remain excluded and are not counted in this fresh trial.", ""]
     for src in ("enwik8", "silesia.tar"):

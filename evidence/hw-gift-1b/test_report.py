@@ -38,10 +38,16 @@ def clean_benchmark_entry(row,host):
                     date_u="Tue Nov 24 00:00:03 UTC 2026\n",loadavg_raw="0.50 0.40 0.30 1/100 123\n",nproc=16,
                     hostname=host["hostname"],cpu=host["cpu"],kernel=host["kernel"],
                     governor=host["governor"],pinned_core=0,other_processes=[])
-    receipt=dict(schema="ovh-bench-v1",policy_commit=report.POLICY,status="CLEAN",helper_sha256="f"*64,
+    start,end=boundary(3),boundary(4)
+    start.update(proc_stat_raw="cpu0 100 0 10 200 5 0 0 0\ncpu1 100 0 10 200 5 0 0 0 20 0\n",proc_stat_error=None)
+    end.update(proc_stat_raw="cpu0 110 0 20 220 10 0 0 0\ncpu1 110 0 20 220 10 0 0 0 30 0\n",proc_stat_error=None)
+    delta=dict(status="ok",pinned_core=0,cpus={"cpu1":dict(total_jiffies=45,busy_jiffies=20,idle_jiffies=20,iowait_jiffies=5,busy_percent=100.0*20/45)})
+    start["other_cpu_delta"],end["other_cpu_delta"]=copy.deepcopy(delta),copy.deepcopy(delta)
+    receipt=dict(schema="ovh-bench-v2",policy_commit=report.POLICY,status="CLEAN",helper_sha256="f"*64,
+                 threshold_amendment_commit=report.THRESHOLD_AMENDMENT,load1_threshold="2.0",
                  lock_path=report.BENCH_LOCK,flock_command=["flock",report.BENCH_LOCK,"python","-B","synthetic-helper.py","_inside"],
                  command=["python","-B","synthetic-measure.py"],returncode=0,command_started=True,
-                 waiting_since_utc="2026-11-24T00:00:02+00:00",start=boundary(3),end=boundary(4))
+                 waiting_since_utc="2026-11-24T00:00:02+00:00",start=start,end=end)
     return dict(g=row["g"],n=row["n"],rep=row["rep"],receipt=receipt,
                 row_sha256=report.hashlib.sha256(packed(row)).hexdigest())
 
@@ -92,6 +98,7 @@ def fixture_attempts(folder,run,rows,reader):
         if "receipt" in repeat:
             repeat["receipt"]=copy.deepcopy(repeat["attempts"][-1]["receipt"])
     run.update(load_amendment_commit=report.LOAD_AMENDMENT,planned_repeats=70 if reader=="pyzstd" else 60,
+               threshold_amendment_commit=report.THRESHOLD_AMENDMENT,load1_threshold="2.0",
                started_repeats=len(logical),retaken_repeats=sum(len(r["attempts"])>1 for r in logical),
                loaded_attempts=sum(a["status"]=="LOADED" for r in logical for a in r["attempts"]))
     pack_payload(folder,payload)
@@ -105,7 +112,7 @@ def loaded_attempt(receipt,index):
                    ps_captured_utc=f"2026-11-24T00:00:{index*3+2:02d}+00:00",
                    waiting_since_utc=f"2026-11-24T00:00:{index*3-1:02d}+00:00")
     for name,second in (("start",index*3),("end",index*3+1)):
-        receipt[name].update(loadavg_raw="1.10 0.40 0.30 1/100 123\n",
+        receipt[name].update(loadavg_raw="2.10 0.40 0.30 1/100 123\n",
                              timestamp_utc=f"2026-11-24T00:00:{second:02d}+00:00")
     return dict(attempt=index,status="LOADED",receipt=receipt,row_sha256=None,raw_row_path=None)
 
@@ -236,9 +243,52 @@ class OfflineContract(unittest.TestCase):
                            source_sha256={name:report.canonical_source_sha(report.REPO,name) for name in report.C_SOURCE_PATHS})
             fixture_attempts(c_folder,acecore,all_c_rows,"c")
             save(c_folder/"acecore.json",acecore)
+        # Construct a wholly invented immutable 45-repeat v1 cohort for the
+        # retention contract. Only this explicit fixture replaces Git lookup.
+        c_folder=cls.evidence/"c-baseline"/"enwik8-L3"
+        active=json.loads((c_folder/"acecore.json").read_bytes())
+        c_rows={}
+        for g in report.GS[:-1]:
+            for row in [json.loads(line) for line in gzip.decompress((c_folder/f"samples-{g}.jsonl.gz").read_bytes()).splitlines()]:
+                if row["rep"]>=0:c_rows[row["g"],row["n"],row["rep"]]=row
+        old_runs=copy.deepcopy(active["benchmark_runs"][:45])
+        for repeat in old_runs:
+            receipt=repeat["receipt"]
+            receipt.update(schema="ovh-bench-v1",helper_sha256=report.OLD_HELPER_SHA256)
+            for field in ("threshold_amendment_commit","load1_threshold"):receipt.pop(field,None)
+            for boundary in (receipt["start"],receipt["end"]):
+                for field in ("proc_stat_raw","proc_stat_error","other_cpu_delta"):boundary.pop(field,None)
+            repeat["attempts"][0]["receipt"]=copy.deepcopy(receipt)
+        old_blocked=dict(g=16777216,n=65536,rep=0,attempts=[loaded_attempt(old_runs[0]["receipt"],i) for i in range(1,4)])
+        old_record=dict(ovh_bench_sha256=report.OLD_HELPER_SHA256,benchmark_runs=old_runs,
+                        blocked_repeat=old_blocked,host=active["host"])
+        old_folder=cls.root/"invented-approved-snapshot";old_folder.mkdir()
+        fixture_attempts(old_folder,old_record,c_rows,"c")
+        old_payload=report.verify_attempt_artifact(old_folder)
+        snapshot=dict(record=old_record,payload=old_payload,snapshot_sha256=report.hashlib.sha256(packed(old_record)).hexdigest(),
+                      snapshot_attempts_sha256=report.sha(old_folder/"attempts.tar.gz"))
+        cls.snapshot_patch=mock.patch.object(report,"immutable_retention_snapshot",return_value=snapshot)
+        cls.snapshot_patch.start()
+        active["benchmark_runs"][:45]=copy.deepcopy(old_record["benchmark_runs"])
+        fixture_attempts(c_folder,active,c_rows,"c")
+        payload=report.verify_attempt_artifact(c_folder)
+        prefix=str(Path(old_blocked["attempts"][0]["receipt_path"]).parent.parent).replace("\\","/")+"/"
+        payload.update({"pre-threshold/c8de6772/"+name:data for name,data in old_payload.items() if name.startswith(prefix)})
+        pack_payload(c_folder,payload)
+        retention=dict(schema="hw-gift-1b-approved-retention-v1",threshold_amendment_commit=report.THRESHOLD_AMENDMENT,
+                       snapshot_commit=report.OLD_SNAPSHOT_COMMIT,snapshot_path=report.OLD_SNAPSHOT_PATH,
+                       snapshot_sha256=snapshot["snapshot_sha256"],snapshot_attempts_sha256=snapshot["snapshot_attempts_sha256"],
+                       retained_count=45,retained_runs_sha256=report.row_digest(old_record["benchmark_runs"]),
+                       pre_threshold_blocked_repeat=old_record["blocked_repeat"],old_helper_sha256=report.OLD_HELPER_SHA256,
+                       new_helper_sha256=active["ovh_bench_sha256"],reset_key=dict(g=16777216,n=65536,rep=0),reset_once=True,
+                       history_prefix="pre-threshold/c8de6772",
+                       retained_receipt_paths=sorted(a["receipt_path"] for r in old_record["benchmark_runs"] for a in r["attempts"]))
+        active.update(approved_retention=retention,retaken_repeats=1,historical_loaded_attempts=3)
+        save(c_folder/"acecore.json",active)
 
     @classmethod
     def tearDownClass(cls):
+        cls.snapshot_patch.stop()
         cls.tmp.cleanup()
 
     def setUp(self):
@@ -434,23 +484,23 @@ class OfflineContract(unittest.TestCase):
                 self.assertEqual(report.canonical_source_sha(directory,path.name),report.sha(path))
             command.assert_not_called()
 
-    def test_load_boundary_one_point_zero_is_accepted(self):
+    def test_load_boundary_two_point_zero_is_accepted(self):
         def mutate(run):
             receipt=run["benchmark_runs"][0]["receipt"]
-            receipt["start"]["loadavg_raw"]="1.0 5.00 8.00 1/100 123\n"
-            receipt["end"]["loadavg_raw"]="1.00000000000000000000 5.00 8.00 1/100 123\n"
+            receipt["start"]["loadavg_raw"]="2.0 5.00 8.00 1/100 123\n"
+            receipt["end"]["loadavg_raw"]="2.00000000000000000000 5.00 8.00 1/100 123\n"
         self.change("run.json",mutate)
         self.verify()
 
-    def test_loaded_one_point_zero_one_is_rejected(self):
+    def test_loaded_two_point_zero_one_is_rejected(self):
         self.change("run.json",lambda r:r["benchmark_runs"][0]["receipt"]["end"].update(
-            loadavg_raw="1.01 0.40 0.30 1/100 123\n"))
+            loadavg_raw="2.01 0.40 0.30 1/100 123\n"))
         with self.assertRaisesRegex(ValueError,"LOADED"):
             self.verify()
 
     def test_load_threshold_compares_exact_decimals(self):
         self.change("run.json",lambda r:r["benchmark_runs"][0]["receipt"]["start"].update(
-            loadavg_raw="1.00000000000000000001 0.40 0.30 1/100 123\n"))
+            loadavg_raw="2.00000000000000000001 0.40 0.30 1/100 123\n"))
         with self.assertRaisesRegex(ValueError,"LOADED"):
             self.verify()
 
@@ -473,6 +523,72 @@ class OfflineContract(unittest.TestCase):
         self.change("run.json",lambda r:r["benchmark_runs"][0].update(row_sha256="0"*64))
         with self.assertRaisesRegex(ValueError,"row binding"):
             self.verify()
+
+    def test_new_cpu_deltas_are_recomputed_from_first_eight_counters(self):
+        def mutate(run):
+            receipt=run["benchmark_runs"][0]["receipt"]
+            for boundary in (receipt["start"],receipt["end"]):
+                boundary["other_cpu_delta"]["cpus"]["cpu1"]["busy_jiffies"]+=1
+        self.change("run.json",mutate)
+        with self.assertRaisesRegex(ValueError,"does not match raw"):
+            self.verify()
+
+    def test_new_cpu_monitor_unavailable_is_observational(self):
+        def mutate(run):
+            receipt=run["benchmark_runs"][0]["receipt"]
+            for boundary in (receipt["start"],receipt["end"]):
+                boundary.update(proc_stat_raw=None,proc_stat_error="synthetic capture error",
+                                other_cpu_delta=dict(status="unavailable",pinned_core=0,cpus={},error="capture unavailable"))
+        self.change("run.json",mutate)
+        self.verify()
+
+    def test_guest_counters_do_not_change_cpu_utilization(self):
+        self.change("run.json",lambda run:run["benchmark_runs"][0]["receipt"]["end"].update(
+            proc_stat_raw="cpu0 110 0 20 220 10 0 0 0 99999 99999\ncpu1 110 0 20 220 10 0 0 0 99999 99999\n"))
+        self.verify()
+
+    def test_new_python_cohort_cannot_use_legacy_receipts(self):
+        self.change("run.json",lambda run:run["benchmark_runs"][0]["receipt"].update(schema="ovh-bench-v1"))
+        with self.assertRaisesRegex(ValueError,"unapproved legacy"):
+            self.verify()
+
+    def test_c_enwik8_requires_the_authorized_retention(self):
+        path=self.evidence/"c-baseline"/"enwik8-L3"/"acecore.json"
+        self.saved[path]=path.read_bytes();record=json.loads(path.read_bytes());record.pop("approved_retention")
+        save(path,record)
+        with self.assertRaisesRegex(ValueError,"must retain"):
+            report.verify_c_chunk(path.parent,"enwik8-L3",baseline_root=self.baseline)
+
+    def test_retained_45_dictionaries_cannot_be_backfilled(self):
+        path=self.evidence/"c-baseline"/"enwik8-L3"/"acecore.json"
+        self.saved[path]=path.read_bytes();record=json.loads(path.read_bytes())
+        record["benchmark_runs"][0]["receipt"]["start"]["proc_stat_raw"]="invented backfill"
+        save(path,record)
+        with self.assertRaisesRegex(ValueError,"45 approved CLEAN"):
+            report.verify_c_chunk(path.parent,"enwik8-L3",baseline_root=self.baseline)
+
+    def test_authorized_reset_is_counted_and_historical_loads_are_separate(self):
+        result=report.verify_c_chunk(self.evidence/"c-baseline"/"enwik8-L3","enwik8-L3",baseline_root=self.baseline)
+        self.assertEqual(result["retry_counts"]["retaken_repeats"],1)
+        self.assertEqual(result["retry_counts"]["loaded_attempts"],0)
+        self.assertEqual(result["retry_counts"]["historical_loaded_attempts"],3)
+        old=result["acecore"]["benchmark_runs"][:45]
+        self.assertTrue(all("proc_stat_raw" not in r["receipt"]["start"] for r in old))
+
+    def test_legacy_receipt_keeps_the_stricter_one_point_zero_threshold(self):
+        old=copy.deepcopy(report.immutable_retention_snapshot()["record"]["benchmark_runs"][0]["receipt"])
+        old["start"]["loadavg_raw"]="1.01 0.00 0.00 1/100 123\n"
+        host=json.loads((self.folder/"run.json").read_bytes())["host"]
+        with self.assertRaisesRegex(ValueError,"LOADED status"):
+            report.verify_benchmark_receipt(old,host,report.OLD_HELPER_SHA256,"CLEAN")
+
+    def test_retention_snapshot_anchor_tamper_is_rejected(self):
+        path=self.evidence/"c-baseline"/"enwik8-L3"/"acecore.json"
+        self.saved[path]=path.read_bytes();record=json.loads(path.read_bytes())
+        record["approved_retention"]["snapshot_sha256"]="0"*64
+        save(path,record)
+        with self.assertRaisesRegex(ValueError,"snapshot_sha256"):
+            report.verify_c_chunk(path.parent,"enwik8-L3",baseline_root=self.baseline)
 
     def test_loaded_twice_then_first_clean_is_accepted(self):
         def mutate(run):

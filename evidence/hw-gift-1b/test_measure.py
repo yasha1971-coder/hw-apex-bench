@@ -28,12 +28,16 @@ class ParserTests(unittest.TestCase):
         amended = original + b'\n' + worker.AMENDMENT_TEXT.encode() + b'\n'
         policy = amended + b'\n' + worker.POLICY_TEXT.encode() + b'\n'
         load = policy + b'\n' + worker.LOAD_AMENDMENT_TEXT.encode() + b'\n'
-        self.assertEqual(len(worker.verify_protocol_bytes(original, amended, policy, load, load)), 64)
+        threshold = load + b'\n' + worker.THRESHOLD_AMENDMENT_TEXT.encode() + b'\n\n' + worker.MONITORING_TEXT.encode() + b'\n'
+        self.assertEqual(len(worker.verify_protocol_bytes(original, amended, policy, load, threshold, threshold)), 64)
         for changed in (amended.replace(b'unchanged\n', b'changed\n'), amended + b'new text\n'):
             with self.assertRaises(ValueError):
-                worker.verify_protocol_bytes(original, changed, policy, load, load)
+                worker.verify_protocol_bytes(original, changed, policy, load, threshold, threshold)
         with self.assertRaises(ValueError):
-            worker.verify_protocol_bytes(original, amended, policy, load, original)
+            worker.verify_protocol_bytes(original, amended, policy, load, threshold, original)
+        with self.assertRaises(ValueError):
+            worker.verify_protocol_bytes(original, amended, policy, load,
+                threshold.replace(b'load1 > 2.0', b'load1 > 1.0'), threshold)
 
     def test_amended_host_and_cpu_are_explicit(self):
         worker.require_amended_host(0, 'AMD EPYC 4344P 8-Core Processor', 'ace-core')
@@ -141,7 +145,13 @@ class ExecutionPolicyTests(unittest.TestCase):
                 self.save(Path(request['row_path']), worker.packed(row))
             receipt = dict(status=status, command=command, returncode=code,
                 command_started=started, policy_commit=worker.POLICY,
-                lock_path='/run/lock/ovh-bench.lock', ps_top8=f'header\nlast {len(calls)}\n')
+                lock_path='/run/lock/ovh-bench.lock', ps_top8=f'header\nlast {len(calls)}\n',
+                schema='ovh-bench-v2', threshold_amendment_commit=worker.THRESHOLD_AMENDMENT,
+                load1_threshold='2.0',
+                start=dict(proc_stat_raw='synthetic counters only', proc_stat_error=None,
+                    other_cpu_delta={'status': 'ok', 'pinned_core': 0, 'cpus': {}}),
+                end=dict(proc_stat_raw='synthetic counters only', proc_stat_error=None,
+                    other_cpu_delta={'status': 'ok', 'pinned_core': 0, 'cpus': {}}))
             self.save(receipt_path, worker.packed(receipt))
             self.save(Path(str(receipt_path) + '.stdout'), b'')
             self.save(Path(str(receipt_path) + '.stderr'), b'')
@@ -230,6 +240,44 @@ class ExecutionPolicyTests(unittest.TestCase):
                 self.assertEqual(len(calls), 1)
                 self.assertFalse((part / 'repeats/65536-4096-0/attempt-2').exists())
 
+    def test_new_pyzstd_cohort_refuses_old_threshold_receipts_without_retry(self):
+        calls = []
+        original = self.fake_helper(['CLEAN'], calls)
+        def legacy(command, receipt_path):
+            code = original(command, receipt_path)
+            receipt = worker.json.loads(receipt_path.read_bytes())
+            receipt.update(schema='ovh-bench-v1', load1_threshold='1.0')
+            self.save(receipt_path, worker.packed(receipt))
+            return code
+        with tempfile.TemporaryDirectory(prefix='hw-gift-1b-old-threshold-test-') as directory:
+            part = Path(directory)
+            with patch.dict(sys.modules, {'ovh_bench': SimpleNamespace(run_locked=legacy)}), \
+                    patch.object(worker, 'write', self.save):
+                with self.assertRaisesRegex(ValueError, 'amended OVH-BENCH v2'):
+                    worker.timed_repeat(*self.args(part))
+            self.assertEqual(len(calls), 1)
+            self.assertFalse((part / 'repeats/65536-4096-0/attempt-2').exists())
+
+    def test_unavailable_per_core_observation_does_not_reclassify_clean(self):
+        calls = []
+        original = self.fake_helper(['CLEAN'], calls)
+        def unavailable(command, receipt_path):
+            code = original(command, receipt_path)
+            receipt = worker.json.loads(receipt_path.read_bytes())
+            for name in ('start', 'end'):
+                receipt[name] = dict(proc_stat_raw=None, proc_stat_error='synthetic unavailable',
+                    other_cpu_delta={'status': 'unavailable', 'pinned_core': 0, 'cpus': {},
+                                     'error': 'synthetic unavailable'})
+            self.save(receipt_path, worker.packed(receipt))
+            return code
+        with tempfile.TemporaryDirectory(prefix='hw-gift-1b-observation-test-') as directory:
+            part = Path(directory)
+            with patch.dict(sys.modules, {'ovh_bench': SimpleNamespace(run_locked=unavailable)}), \
+                    patch.object(worker, 'write', self.save):
+                _, record = worker.timed_repeat(*self.args(part))
+            self.assertEqual(record['receipt']['status'], 'CLEAN')
+            self.assertEqual(len(calls), 1)
+
     def test_existing_public_blocked_marker_refuses_new_outer_attempt(self):
         report = SimpleNamespace(verify_chunk=lambda *_args, **_kwargs: None)
         with tempfile.TemporaryDirectory(prefix='hw-gift-1b-marker-test-') as directory:
@@ -287,6 +335,8 @@ class ExecutionPolicyTests(unittest.TestCase):
                              {'BLOCKED.json', 'attempts.tar.gz', 'attempts.json'})
             summary = worker.json.loads((output / 'BLOCKED.json').read_bytes())
             self.assertEqual(summary['status'], 'BLOCKED: load')
+            self.assertEqual(summary['threshold_amendment_commit'], worker.THRESHOLD_AMENDMENT)
+            self.assertEqual(summary['load1_threshold'], '2.0')
             self.assertEqual(summary['started_repeats'], 1)
             self.assertEqual(summary['retaken_repeats'], 1)
             self.assertEqual(summary['loaded_attempts'], 3)

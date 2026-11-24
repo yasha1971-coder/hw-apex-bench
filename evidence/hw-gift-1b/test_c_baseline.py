@@ -6,6 +6,7 @@ import os
 from pathlib import Path
 import subprocess
 import tempfile
+import tarfile
 from types import SimpleNamespace
 import unittest
 from unittest.mock import patch
@@ -165,7 +166,7 @@ class BoundaryTests(unittest.TestCase):
                 self.assertEqual(stopped.exception.code, 78)
             self.assertTrue((cstate / chunk / 'raw.stdout').exists())
             self.assertFalse((state / 'c-rejected').exists())
-            result = json.loads((state / 'public/blocked' / f'c-{chunk}/BLOCKED.json').read_bytes())
+            result = json.loads((state / 'public/blocked' / f'c-{chunk}-threshold-2.0/BLOCKED.json').read_bytes())
             self.assertEqual((result['planned_repeats'], result['started_repeats'], result['retaken_repeats'], result['loaded_attempts']), (60, 3, 1, 3))
             self.assertEqual((result['status'], result['reader'], result['chunk']), ('BLOCKED: load', 'c', chunk))
             self.assertEqual(len(result['benchmark_runs']), 2)
@@ -258,9 +259,127 @@ class ShimTests(unittest.TestCase):
             self.assertEqual(self.invoke(state, self.fake_helper([], [])), (9, b''))
 
     def test_attempt_counts_count_logical_keys_and_every_loaded_attempt(self):
-        records = [dict(attempts=[dict(status='CLEAN')]),
-                   dict(attempts=[dict(status='LOADED'), dict(status='CLEAN')])]
+        records = [dict(g=65536, n=4096, rep=0, attempts=[dict(status='CLEAN')]),
+                   dict(g=65536, n=4096, rep=1, attempts=[dict(status='LOADED'), dict(status='CLEAN')])]
         self.assertEqual(baseline.repeat_counts(records), dict(planned_repeats=60, started_repeats=2, retaken_repeats=1, loaded_attempts=1))
+
+
+class RetentionMigrationTests(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        # Read the actual immutable public artifact, never rerun either reader.
+        cls.source, cls.proof, cls.raw = baseline.trusted_retention_snapshot()
+
+    def fixture(self, base):
+        state, public = base / 'state', base / 'public'
+        cstate = state / 'c-state'
+        directory = cstate / 'enwik8-L3'
+        directory.mkdir(parents=True)
+        with tarfile.open(fileobj=io.BytesIO(self.raw['attempts.tar.gz']), mode='r:gz') as archive:
+            for member in archive.getmembers():
+                self.assertTrue(member.isfile())
+                path = directory / member.name
+                self.assertTrue(path.resolve().is_relative_to(directory.resolve()))
+                path.parent.mkdir(parents=True, exist_ok=True)
+                path.write_bytes(archive.extractfile(member).read())
+        for name, data in self.raw.items():
+            path = public / 'blocked/c-enwik8-L3' / name
+            path.parent.mkdir(parents=True, exist_ok=True)
+            path.write_bytes(data)
+        old = {k: self.source[k] for k in baseline.LEGACY_MANIFEST_KEYS}
+        baseline.write(state / 'c-runner-manifest.json', baseline.packed(old))
+        pending = dict(old, load_start=self.source['load_start'], load_resume_starts=self.source['load_resume_starts'],
+                       load_accepted=False, started_at_utc=self.source['started_at_utc'])
+        baseline.write(state / 'c-pending/enwik8-L3.json', baseline.packed(pending))
+        new = dict(old, threshold_amendment_commit=baseline.THRESHOLD_AMENDMENT,
+                   load1_threshold='2.0', protocol_sha256='e' * 64,
+                   ovh_bench_sha256='c' * 64, orchestration_sha256='d' * 64)
+        return state, public, cstate, new
+
+    def patches(self, state, public, cstate):
+        from contextlib import ExitStack
+        stack = ExitStack()
+        stack.enter_context(patch.object(baseline, 'STATE', state))
+        stack.enter_context(patch.object(baseline, 'HERE', public))
+        stack.enter_context(patch.object(baseline, 'CSTATE', cstate))
+        return stack
+
+    def test_actual_349_file_cohort_retains_45_exactly_and_resets_one_key_once(self):
+        with tempfile.TemporaryDirectory(prefix='gift1b-c-retain-') as temp:
+            state, public, cstate, new = self.fixture(Path(temp))
+            with self.patches(state, public, cstate):
+                approval = baseline.migrate_threshold(new)
+                self.assertEqual(baseline.accepted_runs(baseline.benchmark_runs('enwik8-L3', cstate)), self.source['benchmark_runs'])
+                history = cstate / 'enwik8-L3' / baseline.HISTORY_PREFIX
+                for attempt in self.source['blocked_repeat']['attempts']:
+                    self.assertEqual((history / attempt['receipt_path']).read_bytes(), baseline.packed(attempt['receipt']))
+                self.assertFalse((cstate / 'enwik8-L3/FAILED').exists())
+                reset = cstate / 'enwik8-L3/ovh-repeats/16777216-65536-0'
+                self.assertEqual(list(reset.iterdir()), [])
+                self.assertEqual(approval['retained_count'], 45)
+                self.assertEqual(approval['reset_key'], baseline.RESET_KEY)
+                baseline.write(reset / 'new-activity.json', b'never reset this again')
+                self.assertEqual(baseline.migrate_threshold(new), approval)
+                self.assertEqual((reset / 'new-activity.json').read_bytes(), b'never reset this again')
+                for name, data in self.raw.items():
+                    self.assertEqual((public / 'blocked/c-enwik8-L3' / name).read_bytes(), data)
+
+    def test_changed_clean_bytes_cannot_enter_retention(self):
+        with tempfile.TemporaryDirectory(prefix='gift1b-c-retain-') as temp:
+            state, public, cstate, new = self.fixture(Path(temp))
+            path = cstate / 'enwik8-L3/ovh-repeats/65536-4096-0/metadata.json'
+            path.write_bytes(path.read_bytes() + b' ')
+            with self.patches(state, public, cstate):
+                with self.assertRaisesRegex(ValueError, 'retained C state bytes changed'):
+                    baseline.migrate_threshold(new)
+            self.assertFalse((state / 'c-approved-retention.json').exists())
+            self.assertTrue((cstate / 'enwik8-L3/ovh-repeats/16777216-65536-0/metadata.json').exists())
+
+    def test_interrupted_migration_resumes_without_replacing_clean_data(self):
+        with tempfile.TemporaryDirectory(prefix='gift1b-c-retain-') as temp:
+            state, public, cstate, new = self.fixture(Path(temp))
+            real_write = baseline.write
+            pending_path = state / 'c-pending/enwik8-L3.json'
+            def interrupted(path, data):
+                if Path(path) == pending_path:
+                    raise KeyboardInterrupt('synthetic migration interruption')
+                return real_write(path, data)
+            with self.patches(state, public, cstate):
+                with patch.object(baseline, 'write', side_effect=interrupted):
+                    with self.assertRaises(KeyboardInterrupt):
+                        baseline.migrate_threshold(new)
+                self.assertEqual(json.loads((state / 'c-approved-retention.json').read_bytes())['status'], 'PREPARED')
+                baseline.migrate_threshold(new)
+                self.assertEqual(baseline.retention('enwik8-L3')['retained_count'], 45)
+                self.assertEqual(baseline.accepted_runs(baseline.benchmark_runs('enwik8-L3', cstate)), self.source['benchmark_runs'])
+
+    def test_retained_clean_replay_never_calls_new_helper_and_reset_counts_once(self):
+        with tempfile.TemporaryDirectory(prefix='gift1b-c-retain-') as temp:
+            state, public, cstate, new = self.fixture(Path(temp))
+            with self.patches(state, public, cstate):
+                approval = baseline.migrate_threshold(new)
+                args = ['-E', '-B', str(baseline.RUNNER / 'evidence/hw-gift-1/sweep.py'), 'enwik8', '65536', '4096', '0']
+                real_sha, output = baseline.sha, io.BytesIO()
+                def source_sha(path):
+                    return 'c' * 64 if Path(path).name == 'ovh_bench.py' else real_sha(path)
+                with patch.object(baseline, 'sha', side_effect=source_sha), patch.object(baseline, 'ovh') as helper, patch.object(os, 'environ', dict(os.environ, GIFT1B_TARGET='enwik8-L3')), patch.object(baseline.sys, 'stdout', SimpleNamespace(buffer=output)):
+                    self.assertEqual(baseline.python_shim(args, '/synthetic/python'), 0)
+                    helper.assert_not_called()
+                self.assertTrue(output.getvalue())
+                old_records = baseline.benchmark_runs('enwik8-L3', cstate)
+                reset = dict(baseline.RESET_KEY, attempts=[dict(status='CLEAN')])
+                counts = baseline.repeat_counts([*old_records, reset], approval)
+                self.assertEqual((counts['started_repeats'], counts['retaken_repeats'], counts['loaded_attempts'], counts['historical_loaded_attempts']), (46, 1, 0, 3))
+
+    def test_fresh_seed_cannot_discard_retained_45(self):
+        with tempfile.TemporaryDirectory(prefix='gift1b-c-retain-') as temp:
+            base = Path(temp)
+            public, state = base / 'public', base / 'state'
+            baseline.write(public / 'blocked/c-enwik8-L3/BLOCKED.json', b'published immutable cohort')
+            with patch.object(baseline, 'STATE', state), patch.object(baseline, 'HERE', public), patch.object(baseline, 'RUNNER', state / 'runner'), patch.object(baseline, 'ORIGIN', state / 'origin'), patch.object(baseline, 'manifest', return_value=({}, {}, b'', b'')), patch.object(baseline.subprocess, 'run') as command:
+                with self.assertRaisesRegex(ValueError, 'restore the approved 45-repeat'):
+                    baseline.prepare()
+                command.assert_not_called()
 
 
 if __name__ == '__main__':
