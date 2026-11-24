@@ -35,7 +35,7 @@ verifies prerequisites entirely inside this repository's `.work/`:
 
 ```sh
 set -euo pipefail
-python3 -B evidence/hw-gift-1b/prepare_host.py
+python3 -B evidence/hw-gift-1b/prepare_host.py --allow-control-load-for-preparation
 BOOT="$PWD/.work/hw-gift-1b/python/bin/python3.12"
 "$BOOT" -B evidence/hw-gift-1b/setup_env.py
 PYTHON="$PWD/.work/hw-gift-1b/venv/bin/python"
@@ -48,6 +48,11 @@ The bootstrap pins standalone CPython 3.12.16 / release 20261123, archive SHA-25
 `c85811d35971d06612585a057db3b71806378df6ea8476275fb16aa5c9fe56a0`, the exact
 corpus hashes in `corpora.json`, and zstd commit
 `f8745da6ff1ad1e7bab384bd1f9d742439278e99`. It performs no compilation or timing.
+The optional flag permits named control-session processes only for these
+downloads/unpacking steps. Compilers, measurement processes, unknown active
+processes and inspection errors still block preparation. It does not change
+checkpoint admission: accepted timing checkpoints always require zero foreign
+activity, including control processes.
 
 Setup pins pyzstd 0.20.0 and wheel SHA-256
 `9c6aff5aa9b12bb14d51f724915f176db9b187214d66d93d990c75ff054483c6`, verifies

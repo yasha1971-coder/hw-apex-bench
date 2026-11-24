@@ -7,6 +7,7 @@ import json
 import os
 from pathlib import Path, PurePosixPath
 import posixpath
+import re
 import shutil
 import subprocess
 import sys
@@ -175,11 +176,14 @@ def prepare_zstd():
 
 
 def main():
-    argparse.ArgumentParser(description=__doc__).parse_args()
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--allow-control-load-for-preparation', action='store_true',
+                        help='allow only named control-session activity during downloads; never permits timings')
+    args = parser.parse_args()
     STATE.mkdir(parents=True, exist_ok=True)
     start = snapshot(cpu=0, interval=2.0)
     write_json(STATE / "prepare-load-start.json", start)
-    require_idle(start)
+    require_preparation_admission(start, args.allow_control_load_for_preparation)
     downloads = STATE / "downloads"
     downloads.mkdir(exist_ok=True)
     python = prepare_python(downloads)
@@ -187,11 +191,30 @@ def main():
     zstd = prepare_zstd()
     end = snapshot(cpu=0, interval=2.0)
     write_json(STATE / "prepare-load-end.json", end)
-    require_idle(end)
+    require_preparation_admission(end, args.allow_control_load_for_preparation)
     write_json(STATE / "prepare-receipt.json", dict(
         prepared_at_utc=datetime.now(timezone.utc).isoformat(), python=python,
-        corpora=corpora, zstd=zstd, load_start=start, load_end=end, measurements_started=False))
+        corpora=corpora, zstd=zstd, load_start=start, load_end=end,
+        control_load_allowed_for_preparation=args.allow_control_load_for_preparation,
+        measurements_started=False))
     print("PREREQUISITES_VERIFIED_NO_BUILDS_OR_MEASUREMENTS")
+
+
+def require_preparation_admission(receipt, allow_control=False):
+    if not allow_control:
+        require_idle(receipt)
+        return
+    # This exception applies only to prerequisite downloads/unpacking, never to
+    # measure.py, c_baseline.py or the independent evidence acceptance verifier.
+    load = receipt.get('other_load', {})
+    identity = (receipt.get('hostname') == 'ace-core' and
+                'AMD EPYC 4344P' in receipt.get('cpu', '') and
+                receipt.get('pinned_core') == 0 and
+                type(receipt.get('interval_ns')) is int and receipt['interval_ns'] >= 1000000000)
+    controls_only = all(re.fullmatch(r'(?:claude|2\.\d+\.\d+)', p.get('comm', ''))
+                        for p in load.get('active_processes', []))
+    if not identity or load.get('inspection_errors') != [] or not controls_only:
+        raise BusyHost('preparation requires valid ace-core admission without foreign build/measurement work')
 
 
 if __name__ == "__main__":

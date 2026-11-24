@@ -1458,3 +1458,13 @@ measurements.
   build, install or real timer. New experiment files disable Git text conversion
   so raw samples, manifests and source/protocol hashes retain their exact bytes
   when moved between the Windows controller and Linux executor.
+- Execution package `a91a10e2283b6cd489947cb9d05f607194c40ab1` was pushed and
+  both publication-integrity CI workflows passed. The server checkout was
+  fast-forwarded to it. At 17:50 UTC its bootstrap refused idle admission;
+  `admission/20261124T175030.json` retains the six active control-session
+  processes. No download, compilation or timing preceded that refusal.
+- Prerequisite download/unpacking can separately allow only named control
+  processes, with every observation retained. Foreign compilers, measurements,
+  unknown active processes and inspection errors still block that preparation.
+  This exception never changes C/pyzstd timing acceptance, which continues to
+  require zero observed foreign activity. Its targeted five bootstrap tests pass.

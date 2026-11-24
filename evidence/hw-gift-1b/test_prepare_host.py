@@ -26,6 +26,15 @@ def tar_payload(path, name='python/bin/test', link=None):
 
 
 class BootstrapTests(unittest.TestCase):
+    def test_control_exception_never_permits_a_compiler(self):
+        receipt = dict(hostname='ace-core', cpu='AMD EPYC 4344P', pinned_core=0,
+                       interval_ns=2000000000,
+                       other_load=dict(busy=True, inspection_errors=[], active_processes=[{'comm': '2.1.284'}]))
+        prepare.require_preparation_admission(receipt, True)
+        receipt['other_load']['active_processes'].append({'comm': 'cc1'})
+        with self.assertRaises(prepare.BusyHost):
+            prepare.require_preparation_admission(receipt, True)
+
     def test_regular_payload_extracts_only_inside_workspace(self):
         with tempfile.TemporaryDirectory(prefix='gift1b-bootstrap-test-') as directory:
             root = Path(directory)
