@@ -1604,3 +1604,5 @@ measurements.
   interrupted-journal resume, no second budget reset, exact 2.0 boundaries,
   and independent `/proc/stat` accounting. Historical BLOCKED verification,
   unchanged accepted HW-GIFT-1 and diff whitespace checks also passed.
+
+- Verified and delivered c checkpoint `enwik8-L3`: 60 logical repeats, 1 retaken, 0 new-threshold LOADED attempts; 3 historical reset-key LOADED attempts remain excluded. Attempt archive SHA-256 `de5934f17fdfd9b141ffc758051971226a3cb86af023f4093aa11cf2c515d011`. Raw samples, offset lists, restoration checks, load receipts and observational CPU deltas passed the independent verifier.
