@@ -1606,3 +1606,5 @@ measurements.
   unchanged accepted HW-GIFT-1 and diff whitespace checks also passed.
 
 - Verified and delivered c checkpoint `enwik8-L3`: 60 logical repeats, 1 retaken, 0 new-threshold LOADED attempts; 3 historical reset-key LOADED attempts remain excluded. Attempt archive SHA-256 `de5934f17fdfd9b141ffc758051971226a3cb86af023f4093aa11cf2c515d011`. Raw samples, offset lists, restoration checks, load receipts and observational CPU deltas passed the independent verifier.
+
+- Verified and delivered c checkpoint `enwik8-L19`: 60 logical repeats, 0 retaken, 0 new-threshold LOADED attempts; 0 historical reset-key LOADED attempts remain excluded. Attempt archive SHA-256 `1a315e28257d95402382163a9143119e84da1e2d1d4c6eb50df36f9dc6bec834`. Raw samples, offset lists, restoration checks, load receipts and observational CPU deltas passed the independent verifier.
