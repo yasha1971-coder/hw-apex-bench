@@ -27,6 +27,7 @@ OUTPUT = HERE / 'c-baseline'
 SOURCE = '85603dc8f52f20ae5fa09c50820bc30000be726f'
 AMENDMENT = '0bd4ab29794f610884e66fdb3ca6c6c93495a4e4'
 OVH_POLICY = '3e7201a0933030de8d3011eb658270e577e6eced'
+LOAD_AMENDMENT = 'f8a2fb2c82bce9eacd841eafcf584a4c81ffc37c'
 CHUNKS = ('enwik8-L3', 'enwik8-L19', 'silesia-L3', 'silesia-L19')
 GS = (65536, 262144, 1048576, 4194304, 16777216, 67108864)
 FILES = [f'samples-{g}.jsonl.gz' for g in GS] + ['archives.json', 'controls.json', 'run.json', 'SHA256SUMS']
@@ -35,6 +36,8 @@ SOURCES = tuple('evidence/hw-gift-1/' + name for name in
     'codecs/native/zstd_seekable.c', 'harness/resident_context.h')
 STOP_AFTER_TARGET = 75
 REJECTED_LOAD = 76
+BLOCKED_REPEAT = 78
+PUBLIC_FILES = FILES + ['acecore.json', 'attempts.tar.gz', 'attempts.json']
 
 
 def check(ok, why):
@@ -91,6 +94,14 @@ def ovh():
     return module
 
 
+def artifacts():
+    spec = importlib.util.spec_from_file_location('_gift1b_attempt_artifact', HERE / 'attempt_artifact.py')
+    module = importlib.util.module_from_spec(spec)
+    sys.modules[spec.name] = module
+    spec.loader.exec_module(module)
+    return module
+
+
 def patch_chunks(original):
     """Only host admission and CLI boundary orchestration change; worker stays exact."""
     text = original.decode('utf-8')
@@ -115,10 +126,10 @@ def manifest():
     check(sys.platform == 'linux', 'Linux executor required')
     check(platform.node() == 'ace-core', 'ace-core executor required')
     check(git(ROOT, 'branch', '--show-current').decode().strip() == 'hw-gift-1b', 'wrong parent branch')
-    subprocess.run(['git', '-C', str(ROOT), 'merge-base', '--is-ancestor', OVH_POLICY, 'HEAD'], check=True)
+    subprocess.run(['git', '-C', str(ROOT), 'merge-base', '--is-ancestor', LOAD_AMENDMENT, 'HEAD'], check=True)
     actual = (HERE / 'CALIBRATION.md').read_bytes()
-    check(actual == git(ROOT, 'show', f'{OVH_POLICY}:evidence/hw-gift-1b/CALIBRATION.md'), 'execution policy changed')
-    tracked = ['evidence/hw-gift-1b/' + n for n in ('CALIBRATION.md', 'c_baseline.py', 'load_guard.py', 'ovh_bench.py')]
+    check(actual == git(ROOT, 'show', f'{LOAD_AMENDMENT}:evidence/hw-gift-1b/CALIBRATION.md'), 'execution policy changed')
+    tracked = ['evidence/hw-gift-1b/' + n for n in ('CALIBRATION.md', 'c_baseline.py', 'load_guard.py', 'ovh_bench.py', 'attempt_artifact.py')]
     check(not git(ROOT, 'status', '--porcelain', '--', *tracked).strip(), 'uncommitted C orchestration')
     originals = {name: git(ROOT, 'show', f'{SOURCE}:{name}') for name in SOURCES}
     patched = patch_chunks(originals['evidence/hw-gift-1/chunks.py'])
@@ -127,11 +138,13 @@ def manifest():
         patched.decode().splitlines(keepends=True),
         fromfile='original/chunks.py', tofile='ace-core/chunks.py', n=0)).encode()
     record = dict(runner_source_commit=SOURCE, amendment_commit=AMENDMENT, ovh_policy_commit=OVH_POLICY,
+                  load_amendment_commit=LOAD_AMENDMENT,
                   protocol_sha256=digest(actual), source_sha256={k: digest(v) for k, v in originals.items()},
                   original_chunks_sha256=digest(originals['evidence/hw-gift-1/chunks.py']),
                   patched_chunks_sha256=digest(patched), host_gate_patch_sha256=digest(patch),
                   orchestration_sha256=sha(__file__), load_guard_sha256=sha(HERE / 'load_guard.py'),
-                  ovh_bench_sha256=sha(HERE / 'ovh_bench.py'))
+                  ovh_bench_sha256=sha(HERE / 'ovh_bench.py'),
+                  attempt_artifact_sha256=sha(HERE / 'attempt_artifact.py'))
     return record, originals, patched, patch
 
 
@@ -211,7 +224,7 @@ def measurement_args(args):
 
 
 def python_shim(args, python):
-    """Forward Python calls, locking only one actual timed C repeat at a time."""
+    """Retake only a LOADED logical repeat, at most three locked attempts."""
     identity = measurement_args(args)
     if identity is None:
         return subprocess.run([str(python), *args]).returncode
@@ -219,54 +232,150 @@ def python_shim(args, python):
     check(chunk in CHUNKS, 'unknown C target chunk')
     expected_source = 'enwik8' if chunk.startswith('enwik8-') else 'silesia.tar'
     check(identity['src'] == expected_source, 'C repeat corpus differs from target')
-    directory = CSTATE / chunk / 'ovh-repeats'
     name = f"{identity['g']}-{identity['n']}-{identity['rep']}"
-    metadata_path, receipt_path, stdout_path = (directory / f'{name}{suffix}' for suffix in
-                                                ('.metadata.json', '.receipt.json', '.stdout'))
+    directory = CSTATE / chunk / 'ovh-repeats' / name
+    metadata_path = directory / 'metadata.json'
+    base = {k: identity[k] for k in ('g', 'n', 'rep')}
+    base.update(ovh_policy_commit=OVH_POLICY, load_amendment_commit=LOAD_AMENDMENT,
+                ovh_bench_sha256=sha(HERE / 'ovh_bench.py'))
+    attempts = []
     if metadata_path.exists():
         saved = json.loads(metadata_path.read_bytes())
-        check(all(saved[k] == identity[k] for k in ('g', 'n', 'rep')), 'saved C repeat identity changed')
-        check(saved['returncode'] == 0, 'rejected C repeat must be quarantined before retry')
-        check(json.loads(receipt_path.read_bytes()) == saved['receipt'], 'saved C lock receipt changed')
-        check(sha(stdout_path) == saved['stdout_sha256'], 'saved C repeat stdout changed')
-        sys.stdout.buffer.write(stdout_path.read_bytes())
-        sys.stdout.buffer.flush()
-        return 0
-    check(receipt_path.exists() or not stdout_path.exists(), 'C stdout exists without its lock receipt; inspect before retry')
+        check(all(saved.get(k) == v for k, v in base.items()), 'saved C repeat identity or policy changed')
+        attempts = saved['attempts']
+        check(len(attempts) <= 3 and [a['attempt'] for a in attempts] == list(range(1, len(attempts) + 1)), 'invalid C attempt sequence')
+        for attempt in attempts:
+            verify_attempt(attempt, CSTATE / chunk)
+        if saved['status'] == 'CLEAN':
+            replay_attempt(attempts[-1], CSTATE / chunk)
+            return 0
+        if saved['status'] == 'BLOCKED':
+            check(len(attempts) == 3 and all(a['status'] == 'LOADED' for a in attempts), 'invalid BLOCKED C repeat')
+            return BLOCKED_REPEAT
+        if saved['status'] == 'ERROR':
+            return saved['returncode'] or 1
+        check(saved['status'] in ('RUNNING', 'RETRYING'), 'unknown logical C repeat state')
+        check(all(a['status'] == 'LOADED' for a in attempts), 'retry after a non-LOADED C attempt')
     directory.mkdir(parents=True, exist_ok=True)
-    # The helper safely replays a completed CLEAN receipt after an interruption
-    # between its durable write and this shim's metadata write. WAITING/ERROR
-    # remains a manual stop; LOADED is returned as 77 for full-chunk quarantine.
-    code = ovh().run_locked([str(python), *args], receipt_path, stdout_path=stdout_path)
-    receipt = json.loads(receipt_path.read_bytes())
-    metadata = {k: identity[k] for k in ('g', 'n', 'rep')}
-    raw = stdout_path.read_bytes()
-    row_sha256 = None
-    if code == 0 or (code == 77 and raw):
-        row = dict(src=expected_source, level=int(chunk.rsplit('L', 1)[1]),
-                   g=identity['g'], n=identity['n'], rep=identity['rep'], **json.loads(raw))
-        row_sha256 = digest(packed(row))
-    metadata.update(returncode=code, receipt=receipt, stdout_sha256=digest(raw), row_sha256=row_sha256,
-                    ovh_policy_commit=OVH_POLICY, ovh_bench_sha256=sha(HERE / 'ovh_bench.py'))
-    write(metadata_path, packed(metadata))
-    if code == 0:
-        sys.stdout.buffer.write(raw)
-        sys.stdout.buffer.flush()
-    return code
+    summary = dict(base, status='RUNNING', returncode=None, receipt=None, row_sha256=None, attempts=attempts)
+    write(metadata_path, packed(summary))
+    # There is no delay or active polling between attempts. run_locked blocks
+    # in the shared flock command and never bypasses an occupied lock.
+    for number in range(len(attempts) + 1, 4):
+        attempt_path = directory / f'attempt-{number:03d}.metadata.json'
+        receipt_path = directory / f'attempt-{number:03d}.receipt.json'
+        stdout_path = directory / f'attempt-{number:03d}.stdout'
+        if attempt_path.exists():
+            attempt = json.loads(attempt_path.read_bytes())
+            check(attempt['attempt'] == number, 'C attempt number changed')
+            verify_attempt(attempt, CSTATE / chunk)
+            code = 0 if attempt['status'] == 'CLEAN' else (77 if attempt['status'] == 'LOADED' else attempt.get('returncode') or 1)
+        else:
+            check(receipt_path.exists() or not stdout_path.exists(), 'C stdout exists without its lock receipt; inspect before retry')
+            # An existing completed helper receipt is replayed safely. Its
+            # WAITING/ERROR state stops for inspection, never remeasures.
+            code = ovh().run_locked([str(python), *args], receipt_path, stdout_path=stdout_path)
+            receipt = json.loads(receipt_path.read_bytes())
+            raw = stdout_path.read_bytes()
+            status = receipt.get('status')
+            check(status in ('CLEAN', 'LOADED', 'ERROR'), 'unfinished C attempt lock receipt')
+            row_sha256 = None
+            if raw and status in ('CLEAN', 'LOADED'):
+                try:
+                    row = dict(src=expected_source, level=int(chunk.rsplit('L', 1)[1]),
+                               g=identity['g'], n=identity['n'], rep=identity['rep'], **json.loads(raw))
+                    row_sha256 = digest(packed(row))
+                except (ValueError, TypeError):
+                    if status == 'CLEAN':
+                        raise
+            check(status != 'CLEAN' or (code == 0 and row_sha256 is not None), 'CLEAN C attempt has no valid result')
+            if status == 'ERROR':
+                code = receipt.get('returncode') or code or 1
+            elif status == 'LOADED':
+                check(code == 77, 'LOADED C receipt has unexpected exit code')
+            attempt = dict(attempt=number, status=status, receipt=receipt, row_sha256=row_sha256,
+                           returncode=code, receipt_path=str(receipt_path.relative_to(CSTATE / chunk)).replace('\\', '/'),
+                           raw_stdout_path=str(stdout_path.relative_to(CSTATE / chunk)).replace('\\', '/'),
+                           raw_stdout_sha256=digest(raw))
+            write(attempt_path, packed(attempt))
+        attempts.append(attempt)
+        summary.update(attempts=attempts, receipt=attempt['receipt'], row_sha256=attempt['row_sha256'])
+        if attempt['status'] == 'CLEAN':
+            summary.update(status='CLEAN', returncode=0)
+            write(metadata_path, packed(summary))
+            replay_attempt(attempt, CSTATE / chunk)
+            return 0
+        if attempt['status'] == 'ERROR':
+            summary.update(status='ERROR', returncode=code or 1)
+            write(metadata_path, packed(summary))
+            return summary['returncode']
+        summary.update(status='BLOCKED' if number == 3 else 'RETRYING',
+                       returncode=BLOCKED_REPEAT if number == 3 else 77)
+        write(metadata_path, packed(summary))
+    return BLOCKED_REPEAT
+
+
+def verify_attempt(attempt, source):
+    receipt_path, stdout_path = (source / attempt[key] for key in ('receipt_path', 'raw_stdout_path'))
+    check(receipt_path.resolve().is_relative_to(source.resolve()) and stdout_path.resolve().is_relative_to(source.resolve()), 'C attempt path escaped state')
+    check(json.loads(receipt_path.read_bytes()) == attempt['receipt'], 'saved C lock receipt changed')
+    check(sha(stdout_path) == attempt['raw_stdout_sha256'], 'saved C repeat stdout changed')
+
+
+def replay_attempt(attempt, source):
+    check(attempt['status'] == 'CLEAN', 'only CLEAN C output may enter original checkpoint')
+    verify_attempt(attempt, source)
+    sys.stdout.buffer.write((source / attempt['raw_stdout_path']).read_bytes())
+    sys.stdout.buffer.flush()
 
 
 def benchmark_runs(chunk, cstate=CSTATE):
     directory = cstate / chunk / 'ovh-repeats'
-    records = [json.loads(path.read_bytes()) for path in sorted(directory.glob('*.metadata.json'))]
+    records = [json.loads(path.read_bytes()) for path in sorted(directory.glob('*/metadata.json'))]
     return sorted(records, key=lambda r: (r['g'], r['n'], r['rep']))
 
 
-def reject_loaded(chunk, here, cstate, receipt):
+def accepted_runs(records):
+    return [{k: r[k] for k in ('g', 'n', 'rep', 'receipt', 'row_sha256', 'attempts')}
+            for r in records if r['status'] == 'CLEAN']
+
+
+def repeat_counts(records):
+    return dict(planned_repeats=60, started_repeats=sum(bool(r['attempts']) for r in records),
+                retaken_repeats=sum(len(r['attempts']) > 1 for r in records),
+                loaded_attempts=sum(a['status'] == 'LOADED' for r in records for a in r['attempts']))
+
+
+def stop_blocked(chunk, cstate, receipt):
     records = benchmark_runs(chunk, cstate)
-    if any(record['returncode'] == 77 for record in records):
-        receipt.update(load_accepted=False, rejection_reason='OVH-BENCH LOADED timed repeat', benchmark_runs=records)
-        quarantine(chunk, here / chunk, cstate / chunk, receipt)
-        raise SystemExit(REJECTED_LOAD)
+    blocked = [record for record in records if record['status'] == 'BLOCKED']
+    if not blocked:
+        return
+    check(len(blocked) == 1, 'multiple BLOCKED C logical repeats')
+    record = blocked[0]
+    check(len(record['attempts']) == 3 and all(a['status'] == 'LOADED' for a in record['attempts']), 'C repeat blocked before three LOADED attempts')
+    last = record['attempts'][-1]['receipt']
+    receipt.update(status='BLOCKED: load', reader='c', chunk=chunk, load_accepted=False, reason='three LOADED attempts for one logical C repeat',
+                   benchmark_runs=accepted_runs(records), blocked_repeat=record, **repeat_counts(records),
+                   ps_top8=last.get('ps_top8', ''))
+    receipt.setdefault('load_end', receipt.get('load_resume_starts', [])[-1]
+                       if receipt.get('load_resume_starts') else receipt['load_start'])
+    source_run = cstate / chunk / 'run.json'
+    check(source_run.exists(), 'BLOCKED C checkpoint lacks original host receipt')
+    original_host = json.loads(source_run.read_bytes())['host']
+    start = receipt['load_start']
+    receipt['host'] = dict(hostname=start['hostname'], cpu=start['cpu'], cpu_affinity=[0], pinned_core=0,
+                          governor=start['governor'], kernel=start['kernel'], os=original_host['os'],
+                          host_boot_sha256=original_host['host_boot_sha256'])
+    target = HERE / 'blocked' / f'c-{chunk}'
+    target.mkdir(parents=True, exist_ok=True)
+    artifacts().pack_attempts(cstate / chunk, target)
+    receipt['attempts_manifest_sha256'] = sha(target / 'attempts.json')
+    write(target / 'BLOCKED.json', packed(receipt))
+    print(f"BLOCKED C {chunk}: {receipt['started_repeats']}/60 logical repeats started; "
+          f"{receipt['retaken_repeats']} retaken; {receipt['loaded_attempts']} LOADED attempts. "
+          'Successful CLEAN repeats are retained; a fourth attempt is prohibited.', file=sys.stderr, flush=True)
+    raise SystemExit(BLOCKED_REPEAT)
 
 
 def boundary(original_main, here, cstate, args):
@@ -293,11 +402,12 @@ def boundary(original_main, here, cstate, args):
             raise SystemExit(REJECTED_LOAD)
         receipt.setdefault('load_resume_starts', []).append(start)
     write(pending, packed(receipt))
-    reject_loaded(chunk, here, cstate, receipt)
+    stop_blocked(chunk, cstate, receipt)
     try:
         original_main()
     except (Exception, SystemExit):
-        reject_loaded(chunk, here, cstate, receipt)
+        receipt['load_end'] = module.snapshot(cpu=0, interval=2.0)
+        stop_blocked(chunk, cstate, receipt)
         raise
     end = module.snapshot(cpu=0, interval=2.0)
     receipt['load_end'] = end
@@ -313,8 +423,9 @@ def boundary(original_main, here, cstate, args):
     expected = {(g, n, rep) for g in GS for n in (4096, 65536) for rep in range(5)}
     check(len(records) == 60 and {(r['g'], r['n'], r['rep']) for r in records} == expected,
           'missing or duplicate C OVH-BENCH repeat receipts')
-    check(all(r['returncode'] == 0 for r in records), 'C checkpoint includes failed timed repeats')
-    receipt['benchmark_runs'] = [{k: r[k] for k in ('g', 'n', 'rep', 'receipt', 'row_sha256')} for r in records]
+    check(all(r['status'] == 'CLEAN' and r['returncode'] == 0 for r in records), 'C checkpoint includes failed timed repeats')
+    receipt['benchmark_runs'] = accepted_runs(records)
+    receipt.update(repeat_counts(records))
     receipt.update(load_accepted=True, host=dict(
         hostname=start['hostname'], cpu=start['cpu'], cpu_affinity=[0], pinned_core=0,
         governor=start['governor'], kernel=start['kernel'], os=original_host['os'],
@@ -337,15 +448,20 @@ def export(chunk):
         check(git(RUNNER, 'show', f'refs/remotes/origin/hw-gift-1:{path}') == (folder / name).read_bytes(), 'C checkpoint is not pushed to its local durable origin')
     target = OUTPUT / chunk
     if target.exists():
-        check({p.name for p in target.iterdir()} == set(FILES + ['acecore.json']), 'unexpected exported C files')
+        check({p.name for p in target.iterdir()} == set(PUBLIC_FILES), 'unexpected exported C files')
+        receipt['attempts_manifest_sha256'] = sha(target / 'attempts.json')
         check(all((target / f).read_bytes() == (folder / f).read_bytes() for f in FILES)
               and (target / 'acecore.json').read_bytes() == packed(receipt), 'exported C checkpoint changed')
+        retained = json.loads((target / 'attempts.json').read_bytes())
+        check(sha(target / 'attempts.tar.gz') == retained['archive_sha256'], 'exported C attempt archive changed')
         return
     temporary = STATE / f'c-export-{chunk}'
     check(not temporary.exists(), 'partial C export exists; inspect it')
     temporary.mkdir()
     for name in FILES:
         shutil.copyfile(folder / name, temporary / name)
+    artifacts().pack_attempts(CSTATE / chunk, temporary)
+    receipt['attempts_manifest_sha256'] = sha(temporary / 'attempts.json')
     write(temporary / 'acecore.json', packed(receipt))
     temporary.replace(target)
 
@@ -357,6 +473,10 @@ def _run(chunk, inputs, zstd, python):
     inputs, zstd, python = (Path(p).resolve() for p in (inputs, zstd, python))
     check(0 in os.sched_getaffinity(0), 'original C worker requires CPU 0')
     record = prepare()
+    blocked = HERE / 'blocked' / f'c-{chunk}' / 'BLOCKED.json'
+    if blocked.exists():
+        print('BLOCKED C', chunk, 'already reached the three-attempt limit; no fourth attempt.', flush=True)
+        return 2
     if (OUTPUT / chunk).exists():
         export(chunk)
         print('C_CHECKPOINT_VERIFIED_SKIP', chunk, flush=True)
@@ -389,10 +509,14 @@ def _run(chunk, inputs, zstd, python):
     environment['GIFT1B_PYTHON_SHIM'] = str(interpreter.resolve())
     environment['PATH'] = os.pathsep.join((str(bin_dir), str(zstd / 'programs'), str(zstd), environment['PATH']))
     result = subprocess.run(['bash', str(RUNNER / 'evidence/hw-gift-1/reproduce.sh')], cwd=RUNNER, env=environment)
+    if result.returncode == BLOCKED_REPEAT and blocked.exists():
+        print('BLOCKED C', chunk, 'retained at', blocked, flush=True)
+        return 2
     check(result.returncode in (0, STOP_AFTER_TARGET), f'C shell stopped with exit {result.returncode}; inspect logs/attempts')
     check((STATE / 'c-runner-manifest.json').read_bytes() == packed(record), 'C runner manifest changed')
     export(chunk)
     print('C_CHECKPOINT_READY_TO_PUBLISH', chunk, flush=True)
+    return 0
 
 
 def run(chunk, inputs, zstd, python):
@@ -402,7 +526,7 @@ def run(chunk, inputs, zstd, python):
     # Shared with measure.py: builds and C/Python readers never overlap.
     with (STATE / 'lock').open('a') as lock:
         fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
-        _run(chunk, inputs, zstd, python)
+        return _run(chunk, inputs, zstd, python)
 
 
 def main():
@@ -414,12 +538,12 @@ def main():
     parser.add_argument('--python', type=Path, default=Path(sys.executable))
     args = parser.parse_args()
     if args.action == 'files':
-        print('\n'.join(f'evidence/hw-gift-1b/c-baseline/{args.chunk}/{f}' for f in [*FILES, 'acecore.json']))
+        print('\n'.join(f'evidence/hw-gift-1b/c-baseline/{args.chunk}/{f}' for f in PUBLIC_FILES))
         print('evidence/hw-gift-1b/c-baseline/host-gate.patch')
         return
     check(args.inputs is not None and args.zstd is not None, '--inputs and --zstd required')
-    run(args.chunk, args.inputs, args.zstd, args.python)
+    return run(args.chunk, args.inputs, args.zstd, args.python)
 
 
 if __name__ == '__main__':
-    main()
+    raise SystemExit(main())

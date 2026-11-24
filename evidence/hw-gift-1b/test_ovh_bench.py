@@ -33,7 +33,7 @@ class OVHTests(unittest.TestCase):
             receipt = Path(directory) / 'receipt.json'
             receipt.write_bytes(bench.packed(dict(status='WAITING', command=['synthetic'], lock_path=bench.LOCK_PATH)))
             result = SimpleNamespace(returncode=child_code, stdout=b'synthetic raw output', stderr=b'')
-            with patch.object(bench, '_assert_flock_parent'), patch.object(bench, 'boundary', side_effect=[observation(start), observation(end)]), patch.object(bench.subprocess, 'run', return_value=result) as command:
+            with patch.object(bench, '_assert_flock_parent'), patch.object(bench, 'boundary', side_effect=[observation(start), observation(end)]), patch.object(bench.subprocess, 'check_output', return_value=' PID USER %CPU COMMAND\n 1 synthetic 0.0 process\n'), patch.object(bench.subprocess, 'run', return_value=result) as command:
                 code = bench._inside(receipt, ['synthetic'])
             return code, json.loads(receipt.read_bytes()), command.call_count, Path(str(receipt) + '.stdout').read_bytes()
 
@@ -49,6 +49,8 @@ class OVHTests(unittest.TestCase):
     def test_clean_at_boundary_and_child_failure(self):
         self.assertEqual(self.inside('1.00', '1.00')[:1], (0,))
         code, receipt, _, _ = self.inside('0.99', '0.99', 4)
+        self.assertEqual((code, receipt['status']), (4, 'ERROR'))
+        code, receipt, _, _ = self.inside('0.99', '1.10', 4)
         self.assertEqual((code, receipt['status']), (4, 'ERROR'))
 
     def test_cached_clean_output_is_not_timed_again(self):

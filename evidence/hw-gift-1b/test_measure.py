@@ -27,12 +27,13 @@ class ParserTests(unittest.TestCase):
         original = b'Prediction (not a measurement): unchanged\n'
         amended = original + b'\n' + worker.AMENDMENT_TEXT.encode() + b'\n'
         policy = amended + b'\n' + worker.POLICY_TEXT.encode() + b'\n'
-        self.assertEqual(len(worker.verify_protocol_bytes(original, amended, policy, policy)), 64)
+        load = policy + b'\n' + worker.LOAD_AMENDMENT_TEXT.encode() + b'\n'
+        self.assertEqual(len(worker.verify_protocol_bytes(original, amended, policy, load, load)), 64)
         for changed in (amended.replace(b'unchanged\n', b'changed\n'), amended + b'new text\n'):
             with self.assertRaises(ValueError):
-                worker.verify_protocol_bytes(original, changed, policy, policy)
+                worker.verify_protocol_bytes(original, changed, policy, load, load)
         with self.assertRaises(ValueError):
-            worker.verify_protocol_bytes(original, amended, policy, original)
+            worker.verify_protocol_bytes(original, amended, policy, load, original)
 
     def test_amended_host_and_cpu_are_explicit(self):
         worker.require_amended_host(0, 'AMD EPYC 4344P 8-Core Processor', 'ace-core')
@@ -118,6 +119,41 @@ class PairTests(unittest.TestCase):
 
 
 class ExecutionPolicyTests(unittest.TestCase):
+    @staticmethod
+    def save(path, data):
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_bytes(data)
+
+    def fake_helper(self, statuses, calls):
+        def locked(command, receipt_path):
+            request_path = Path(command[-1])
+            request = worker.json.loads(request_path.read_bytes())
+            outcome = statuses[len(calls)]
+            calls.append(request)
+            self.assertEqual(command[3], 'worker')
+            status = 'LOADED' if outcome in ('LOADED', 'LOADED_END', 'BROKEN_LOADED') else outcome
+            started = outcome != 'LOADED'
+            code = 1 if outcome in ('ERROR', 'BROKEN_LOADED') else (0 if started else None)
+            if code == 0:
+                row = dict(src='enwik8', level=3, g=65536, n=4096, rep=0,
+                           archive_bytes=12, archive_sha256='a' * 64,
+                           samples=[[off, 1, 2, 3] for off in request['offsets']])
+                self.save(Path(request['row_path']), worker.packed(row))
+            receipt = dict(status=status, command=command, returncode=code,
+                command_started=started, policy_commit=worker.POLICY,
+                lock_path='/run/lock/ovh-bench.lock', ps_top8=f'header\nlast {len(calls)}\n')
+            self.save(receipt_path, worker.packed(receipt))
+            self.save(Path(str(receipt_path) + '.stdout'), b'')
+            self.save(Path(str(receipt_path) + '.stderr'), b'')
+            return 0 if status == 'CLEAN' else (77 if status == 'LOADED' else 1)
+        return locked
+
+    @staticmethod
+    def args(part):
+        return (part, 'enwik8-L3', 65536, 4096, 0, part / 'input', part / 'archive',
+                dict(g=65536, frame='65536', bytes=12, sha256='a' * 64),
+                part / 'installation.json', {}, [0, 7])
+
     def test_foreign_activity_is_observational_but_governor_must_match(self):
         host = dict(hostname='ace-core', cpu='AMD EPYC 4344P', kernel='test',
                     pinned_core=0, governor='performance')
@@ -130,104 +166,135 @@ class ExecutionPolicyTests(unittest.TestCase):
             with self.assertRaisesRegex(ValueError, 'flock wrapper'):
                 worker.timed_worker(Path('never-read.json'))
 
-    def test_each_repeat_uses_helper_then_replays_clean_without_timing(self):
-        info = dict(g=65536, frame='65536', bytes=12, sha256='a' * 64)
-        row = dict(src='enwik8', level=3, g=65536, n=4096, rep=0,
-                   archive_bytes=12, archive_sha256='a' * 64, samples=[[0, 1, 2, 3]])
+    def test_first_clean_is_never_retried_and_replays_without_helper(self):
         calls = []
-        def save(path, data):
-            path.parent.mkdir(parents=True, exist_ok=True)
-            path.write_bytes(data)
-        def locked(command, receipt_path):
-            calls.append(command)
-            self.assertEqual(command[3], 'worker')
-            request_path = Path(command[-1])
-            request = worker.json.loads(request_path.read_bytes())
-            self.assertEqual((request['g'], request['n'], request['rep']), (65536, 4096, 0))
-            save(Path(request['row_path']), worker.packed(row))
-            save(receipt_path, worker.packed(dict(status='CLEAN', command=command,
-                 policy_commit=worker.POLICY, lock_path='/run/lock/ovh-bench.lock')))
-            return 0
         with tempfile.TemporaryDirectory(prefix='hw-gift-1b-flock-test-') as directory:
             part = Path(directory)
+            locked = self.fake_helper(['CLEAN'], calls)
             with patch.dict(sys.modules, {'ovh_bench': SimpleNamespace(run_locked=locked)}), \
-                    patch.object(worker, 'write', save):
-                args = (part, 'enwik8-L3', 65536, 4096, 0, part / 'input', part / 'archive',
-                        info, part / 'installation.json', {}, [0])
-                first, receipt = worker.timed_repeat(*args)
-                second, replay = worker.timed_repeat(*args)
+                    patch.object(worker, 'write', self.save):
+                first, receipt = worker.timed_repeat(*self.args(part))
+                second, replay = worker.timed_repeat(*self.args(part))
             self.assertEqual(len(calls), 1)
             self.assertEqual(first, second)
             self.assertEqual(receipt, replay)
-            self.assertEqual(receipt['row_sha256'], worker.hashlib.sha256(worker.packed(row)).hexdigest())
+            self.assertEqual(len(receipt['attempts']), 1)
+            self.assertFalse((part / 'repeats/65536-4096-0/attempt-2').exists())
+            self.assertEqual(receipt['row_sha256'], worker.hashlib.sha256(worker.packed(first)).hexdigest())
 
-    def test_loaded_boundary_receipt_is_retained_and_excluded(self):
-        def save(path, data):
-            path.parent.mkdir(parents=True, exist_ok=True)
-            path.write_bytes(data)
-        def locked(command, receipt_path):
-            save(receipt_path, worker.packed(dict(status='LOADED', command=command)))
-            return 77
-        with tempfile.TemporaryDirectory(prefix='hw-gift-1b-loaded-test-') as directory:
+    def test_only_loaded_repeat_is_retaken_immediately_same_offsets(self):
+        calls = []
+        with tempfile.TemporaryDirectory(prefix='hw-gift-1b-retry-test-') as directory:
             part = Path(directory)
+            locked = self.fake_helper(['LOADED_END', 'CLEAN'], calls)
             with patch.dict(sys.modules, {'ovh_bench': SimpleNamespace(run_locked=locked)}), \
-                    patch.object(worker, 'write', save):
-                with self.assertRaises(worker.LoadedAttempt):
-                    worker.timed_repeat(part, 'enwik8-L3', 65536, 4096, 0,
-                        part / 'input', part / 'archive', {}, part / 'installation.json', {}, [0])
-            self.assertTrue((part / 'repeats/65536-4096-0/ovh-bench.json').exists())
-            self.assertFalse((part / 'repeats/65536-4096-0/row.json').exists())
+                    patch.object(worker, 'write', self.save), \
+                    patch.object(worker.time, 'sleep', side_effect=AssertionError('retry slept')):
+                row, receipt = worker.timed_repeat(*self.args(part))
+            self.assertEqual(len(calls), 2)
+            self.assertEqual(calls[0]['offsets'], calls[1]['offsets'])
+            self.assertEqual([p[0] for p in row['samples']], [0, 7])
+            self.assertEqual([a['status'] for a in receipt['attempts']], ['LOADED', 'CLEAN'])
+            self.assertTrue((part / 'repeats/65536-4096-0/attempt-1/row.json').exists())
+            self.assertTrue((part / 'repeats/65536-4096-0/attempt-2/row.json').exists())
+            self.assertFalse((part / 'repeats/65536-4096-0/attempt-3').exists())
 
-    def test_loaded_attempt_retained_after_encoding_without_publishing(self):
+    def test_three_total_loaded_attempts_block_and_cannot_make_fourth(self):
+        calls = []
+        with tempfile.TemporaryDirectory(prefix='hw-gift-1b-blocked-test-') as directory:
+            part = Path(directory)
+            locked = self.fake_helper(['LOADED'] * 3, calls)
+            with patch.dict(sys.modules, {'ovh_bench': SimpleNamespace(run_locked=locked)}), \
+                    patch.object(worker, 'write', self.save):
+                for _ in range(2):
+                    with self.assertRaises(worker.BlockedLoad) as caught:
+                        worker.timed_repeat(*self.args(part))
+                record = caught.exception.record
+            self.assertEqual(len(calls), 3)
+            self.assertEqual(len(record['attempts']), 3)
+            self.assertEqual(record['ps_top8'], 'header\nlast 3\n')
+            self.assertFalse((part / 'repeats/65536-4096-0/attempt-4').exists())
+            self.assertEqual(worker.progress_counts([], record), dict(planned_repeats=70,
+                started_repeats=1, retaken_repeats=1, loaded_attempts=3))
+
+    def test_error_and_nonzero_child_are_fatal_even_if_classified_loaded(self):
+        for status in ('ERROR', 'BROKEN_LOADED'):
+            calls = []
+            with tempfile.TemporaryDirectory(prefix='hw-gift-1b-error-test-') as directory:
+                part = Path(directory)
+                locked = self.fake_helper([status], calls)
+                with patch.dict(sys.modules, {'ovh_bench': SimpleNamespace(run_locked=locked)}), \
+                        patch.object(worker, 'write', self.save):
+                    with self.assertRaises(ValueError):
+                        worker.timed_repeat(*self.args(part))
+                self.assertEqual(len(calls), 1)
+                self.assertFalse((part / 'repeats/65536-4096-0/attempt-2').exists())
+
+    def test_existing_public_blocked_marker_refuses_new_outer_attempt(self):
+        report = SimpleNamespace(verify_chunk=lambda *_args, **_kwargs: None)
+        with tempfile.TemporaryDirectory(prefix='hw-gift-1b-marker-test-') as directory:
+            root = Path(directory)
+            blocked = root / 'blocked/pyzstd-enwik8-L3/BLOCKED.json'
+            self.save(blocked, worker.packed({'blocked_repeat': {'g': 65536, 'n': 4096, 'rep': 0}}))
+            with patch.object(worker, 'HERE', root), \
+                    patch.dict(sys.modules, {'report': report,
+                        'load_guard': SimpleNamespace(snapshot=None),
+                        'attempt_artifact': SimpleNamespace(pack_attempts=None)}), \
+                    patch.object(worker, 'preflight', side_effect=AssertionError('blocked chunk started')):
+                with self.assertRaises(worker.BlockedLoad):
+                    worker._run('enwik8-L3', root, root / 'unused', 0, 4)
+
+    def test_blocked_chunk_publishes_all_raw_attempts_and_no_complete_checkpoint(self):
+        artifact_spec = importlib.util.spec_from_file_location('attempt_artifact',
+            Path(__file__).with_name('attempt_artifact.py'))
+        artifact = importlib.util.module_from_spec(artifact_spec)
+        artifact_spec.loader.exec_module(artifact)
         host = dict(hostname='ace-core', cpu='AMD EPYC 4344P', kernel='test',
                     pinned_core=0, governor='performance')
-        # Other activity no longer blocks correctness/encoding or admission.
-        observed = dict(host, other_load=dict(busy=True, active_processes=[{'pid': 100}],
-                                              inspection_errors=[]))
-        snapshots = []
-        def snapshot(cpu):
-            snapshots.append(cpu)
-            return observed
-        guard = SimpleNamespace(snapshot=snapshot)
+        observation = dict(host, other_load={'busy': True})
         lock = SimpleNamespace(flock=lambda *_: None, LOCK_EX=1, LOCK_NB=2)
-        report = SimpleNamespace(verify_chunk=lambda *_args, **_kwargs: None)
-        def save(path, data):
-            path.parent.mkdir(parents=True, exist_ok=True)
-            path.write_bytes(data)
-        with tempfile.TemporaryDirectory(prefix='hw-gift-1b-load-test-') as directory:
+        calls = []
+        with tempfile.TemporaryDirectory(prefix='hw-gift-1b-blocked-public-test-') as directory:
             root = Path(directory)
             here = root / 'evidence/hw-gift-1b'
             here.mkdir(parents=True)
-            for name in ('CALIBRATION.md', 'measure.py', 'report.py', 'load_guard.py', 'ovh_bench.py'):
+            for name in ('CALIBRATION.md', 'measure.py', 'report.py', 'load_guard.py',
+                         'ovh_bench.py', 'attempt_artifact.py'):
                 (here / name).write_bytes(b'synthetic source only')
             inputs = root / '.work/inputs'
             inputs.mkdir(parents=True)
             (inputs / 'input').write_bytes(b'input')
-            digest = worker.sha(inputs / 'input')
-            state = root / '.work/hw-gift-1b'
-            offsets = {65536: {(4096, rep): [0] for rep in range(5)}}
-            with patch.dict(sys.modules, {'load_guard': guard, 'fcntl': lock, 'report': report}), \
-                    patch.multiple(worker, HERE=here, ROOT=root, STATE=state,
-                        INPUT={'input': (5, digest)}, CHUNKS={'synthetic-L3': ('input', 3)},
-                        GS=(65536,), NS=(4096,)), \
+            offsets = {65536: {(4096, rep): [0, 7] for rep in range(5)}}
+            modules = {'report': SimpleNamespace(verify_chunk=None),
+                'load_guard': SimpleNamespace(snapshot=lambda _: observation),
+                'fcntl': lock, 'attempt_artifact': artifact,
+                'ovh_bench': SimpleNamespace(run_locked=self.fake_helper(['LOADED'] * 3, calls))}
+            with patch.dict(sys.modules, modules), \
+                    patch.multiple(worker, ROOT=root, HERE=here, STATE=root / '.work/hw-gift-1b',
+                        INPUT={'input': (5, worker.sha(inputs / 'input'))},
+                        CHUNKS={'synthetic-L3': ('input', 3)}, GS=(65536,), NS=(4096,)), \
                     patch.object(worker, 'preflight', return_value=(object(), host)), \
                     patch.object(worker, 'offset_lists', return_value=(offsets, {})), \
                     patch.object(worker, 'git', return_value=b'0' * 40), \
-                    patch.object(worker, 'write', save), \
-                    patch.object(worker, 'archive_once', return_value=(b'test', {})) as encoder, \
-                    patch.object(worker, 'control', return_value={}), \
-                    patch.object(worker, 'timed_repeat', side_effect=worker.LoadedAttempt('boundary load > 1.0')):
-                with self.assertRaises(worker.LoadedAttempt):
-                    worker._run('synthetic-L3', inputs, root / 'not-used.json', 0, 1)
-                rejected = state / 'attempts/001/synthetic-L3/REJECTED'
-                self.assertTrue(rejected.exists())
-                self.assertEqual(worker.json.loads(rejected.read_bytes())['status'], 'LOADED')
-                self.assertFalse((here / 'synthetic-L3').exists())
-                with self.assertRaises(worker.LoadedAttempt):
-                    worker._run('synthetic-L3', inputs, root / 'not-used.json', 0, 1)
-                self.assertEqual(snapshots, [0])
-                self.assertEqual(encoder.call_count, 1)
-                self.assertTrue(rejected.exists())
+                    patch.object(worker, 'write', self.save), \
+                    patch.object(worker, 'fsync_dir'), \
+                    patch.object(worker, 'archive_once', return_value=(b'test', {})), \
+                    patch.object(worker, 'control', return_value={}):
+                with self.assertRaises(worker.BlockedLoad):
+                    worker._run('synthetic-L3', inputs, root / 'install.json', 0, 1)
+            output = here / 'blocked/pyzstd-synthetic-L3'
+            self.assertEqual({p.name for p in output.iterdir()},
+                             {'BLOCKED.json', 'attempts.tar.gz', 'attempts.json'})
+            summary = worker.json.loads((output / 'BLOCKED.json').read_bytes())
+            self.assertEqual(summary['status'], 'BLOCKED: load')
+            self.assertEqual(summary['started_repeats'], 1)
+            self.assertEqual(summary['retaken_repeats'], 1)
+            self.assertEqual(summary['loaded_attempts'], 3)
+            self.assertEqual(summary['ps_top8'], 'header\nlast 3\n')
+            manifest = worker.json.loads((output / 'attempts.json').read_bytes())
+            self.assertEqual(len(manifest['files']), 12)
+            self.assertEqual(manifest['archive_sha256'], worker.sha(output / 'attempts.tar.gz'))
+            self.assertFalse((here / 'synthetic-L3').exists())
 
 
 if __name__ == '__main__':

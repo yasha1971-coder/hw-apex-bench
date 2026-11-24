@@ -10,11 +10,13 @@ from decimal import Decimal, localcontext
 from datetime import datetime
 import gzip
 import hashlib
+import io
 import json
 from pathlib import Path, PurePosixPath
 import re
 import subprocess
 import sys
+import tarfile
 
 HERE = Path(__file__).resolve().parent
 BASELINE = HERE.parent / "hw-gift-1"
@@ -34,9 +36,10 @@ INPUT = {
 CAL = "c4809624beb0ad7a243163455d9c05545bc52d99"
 AMENDMENT = "0bd4ab29794f610884e66fdb3ca6c6c93495a4e4"
 POLICY = "3e7201a0933030de8d3011eb658270e577e6eced"
+LOAD_AMENDMENT = "f8a2fb2c82bce9eacd841eafcf584a4c81ffc37c"
 BENCH_LOCK = "/run/lock/ovh-bench.lock"
 ORIGINAL_PROTOCOL_SHA256 = "f8a32188585e70d68fcc3a845565a03f4b8bf5e271f9bafb586dc17eeee96164"
-AMENDED_PROTOCOL_SHA256 = "4b8000955b34103feee7904a127ddcced7029f462c54c67673c739cdec38812f"
+AMENDED_PROTOCOL_SHA256 = "0e9e5f2419256e8b148981e0297097fa53a0a053ed011b8592f3095a67a8080c"
 ZSTD_COMMIT = "f8745da6ff1ad1e7bab384bd1f9d742439278e99"
 C_WORKER_SHA256 = "d2fd5a7b30fca6d56d51d56db983633d7bfa00aab4ccb831468669dd2b50c351"
 C_PAIR_SHA256 = "620f3193f65e6a5b67dcd973ea161fe2f3c9566053e586102042b78f3e50a959"
@@ -57,7 +60,7 @@ def frame_name(g):
     return "default" if g is None else str(g)
 
 
-FILES = [f"samples-{frame_name(g)}.jsonl.gz" for g in GS] + ["archives.json", "controls.json", "run.json"]
+FILES = [f"samples-{frame_name(g)}.jsonl.gz" for g in GS] + ["archives.json", "controls.json", "run.json", "attempts.tar.gz", "attempts.json"]
 
 
 def sha(path):
@@ -166,7 +169,6 @@ def verify_benchmark_snapshot(snapshot, host):
         value = Decimal(part)
         check(value.is_finite() and value >= 0, "invalid raw decimal load average")
         loads.append(value)
-    check(loads[0] <= Decimal("1.0"), "LOADED: one-minute load average exceeds 1.0")
     check(is_int(snapshot.get("nproc"), 1), "missing nproc receipt")
     check(isinstance(snapshot.get("other_processes"), list), "missing observational process receipt")
     stamp = snapshot.get("timestamp_utc")
@@ -177,56 +179,207 @@ def verify_benchmark_snapshot(snapshot, host):
         raise ValueError("invalid OVH-BENCH UTC timestamp") from None
     check(timestamp.utcoffset() is not None and timestamp.utcoffset().total_seconds() == 0,
           "OVH-BENCH timestamp is not UTC")
-    return timestamp
+    return timestamp, loads[0]
 
 
-def verify_benchmark_runs(run, rows, host, grids):
+def safe_artifact_path(name):
+    check(isinstance(name, str) and name and "\\" not in name, "invalid attempt artifact path")
+    path = PurePosixPath(name)
+    check(not path.is_absolute() and ".." not in path.parts and str(path) == name
+          and ":" not in name, "unsafe attempt artifact path")
+    return name
+
+
+def verify_attempt_artifact(folder):
+    folder = Path(folder)
+    manifest = load(folder / "attempts.json")
+    check(manifest.get("schema") == "hw-gift-1b-attempts-v1", "unknown attempt artifact schema")
+    check(manifest.get("archive_file", "attempts.tar.gz") == "attempts.tar.gz", "wrong attempt archive filename")
+    check(manifest.get("archive_sha256") == sha(folder / "attempts.tar.gz"), "attempt archive SHA-256 mismatch")
+    records = manifest.get("files")
+    check(isinstance(records, list) and records, "empty attempt artifact manifest")
+    expected = {}
+    for record in records:
+        name = safe_artifact_path(record.get("path"))
+        check(name not in expected, "duplicate attempt manifest path")
+        check(is_int(record.get("bytes")) and is_hash(record.get("sha256")), "invalid attempt artifact identity")
+        expected[name] = record
+    payload = {}
+    with tarfile.open(folder / "attempts.tar.gz", mode="r:gz") as archive:
+        for member in archive:
+            name = safe_artifact_path(member.name)
+            check(member.isfile() and not member.issym() and not member.islnk(), "attempt archive contains nonregular member")
+            check(name not in payload, "duplicate attempt archive member")
+            check(name in expected, "unexpected attempt archive member")
+            check(member.size == expected[name]["bytes"], "attempt member byte count mismatch")
+            stream = archive.extractfile(member)
+            check(stream is not None, "unreadable attempt archive member")
+            data = stream.read()
+            check(len(data) == member.size and hashlib.sha256(data).hexdigest() == expected[name]["sha256"],
+                  "attempt member SHA-256 mismatch")
+            payload[name] = data
+    check(set(payload) == set(expected), "missing attempt artifact member")
+    return payload
+
+
+def verify_benchmark_receipt(receipt, host, helper_hash, status):
+    check(isinstance(receipt, dict) and receipt.get("status") == status,
+          "OVH-BENCH repeat is not " + status)
+    check(status in ("CLEAN", "LOADED"), "ERROR repeats cannot be retried or accepted")
+    check(receipt.get("schema") == "ovh-bench-v1" and receipt.get("policy_commit") == POLICY,
+          "OVH-BENCH receipt schema/policy mismatch")
+    check(receipt.get("helper_sha256") == helper_hash, "OVH-BENCH receipt helper mismatch")
+    check(type(receipt.get("command_started")) is bool, "missing command-start marker")
+    code = receipt.get("returncode")
+    if receipt["command_started"]:
+        check(type(code) is int and code == 0, "ERROR/nonzero child must not be retried")
+    else:
+        check(code is None and status == "LOADED", "unstarted command cannot be CLEAN")
+    waiting = receipt.get("waiting_since_utc")
+    check(isinstance(waiting, str), "missing shared-lock wait timestamp")
+    try:
+        waiting_time = datetime.fromisoformat(waiting.replace("Z", "+00:00"))
+    except ValueError:
+        raise ValueError("invalid shared-lock wait timestamp") from None
+    check(waiting_time.utcoffset() is not None and waiting_time.utcoffset().total_seconds() == 0,
+          "shared-lock wait timestamp is not UTC")
+    check(receipt.get("lock_path") == BENCH_LOCK, "wrong shared benchmark lock")
+    command = receipt.get("flock_command")
+    check(isinstance(command, list) and len(command) >= 6 and command[:2] == ["flock", BENCH_LOCK]
+          and command[3] == "-B" and command[5] == "_inside"
+          and all(isinstance(part, str) and part for part in command), "timed repeat did not use blocking shared flock")
+    command = receipt.get("command")
+    check(isinstance(command, list) and command and all(isinstance(part, str) and part for part in command),
+          "missing timed measurement command")
+    start_time, start_load = verify_benchmark_snapshot(receipt.get("start"), host)
+    end_time, end_load = verify_benchmark_snapshot(receipt.get("end"), host)
+    check(end_time >= start_time >= waiting_time, "OVH-BENCH boundary timestamps are out of order")
+    loaded = start_load > Decimal("1.0") or end_load > Decimal("1.0")
+    check(loaded == (status == "LOADED"), "LOADED status does not match exact one-minute load threshold")
+    check((receipt["command_started"] and start_load <= Decimal("1.0"))
+          or (not receipt["command_started"] and start_load > Decimal("1.0")), "command-start marker contradicts initial load")
+    if status == "LOADED":
+        check(isinstance(receipt.get("ps_top8"), str) and receipt["ps_top8"].strip(), "missing LOADED ps_top8")
+        check(receipt.get("ps_command") == "ps -eo pid,user,pcpu,comm --sort=-pcpu | head -8", "wrong ps_top8 command")
+        check(isinstance(receipt.get("ps_captured_utc"), str), "missing ps capture timestamp")
+        header = receipt["ps_top8"].splitlines()[0].split()
+        check(all(name in header for name in ("PID", "USER", "%CPU", "COMMAND"))
+              and len(receipt["ps_top8"].splitlines()) <= 8, "invalid raw ps_top8 output")
+        try:
+            captured = datetime.fromisoformat(receipt["ps_captured_utc"].replace("Z", "+00:00"))
+        except ValueError:
+            raise ValueError("invalid ps capture timestamp") from None
+        check(captured.utcoffset() is not None and captured.utcoffset().total_seconds() == 0, "ps capture timestamp is not UTC")
+    return start_time, end_time
+
+
+def row_digest(row):
+    return hashlib.sha256((json.dumps(row, separators=(",", ":"), sort_keys=True) + "\n").encode()).hexdigest()
+
+
+def verify_attempts(repeat, host, helper_hash, payload, *, key, identity, offsets, blocked=False):
+    attempts = repeat.get("attempts")
+    check(isinstance(attempts, list) and 1 <= len(attempts) <= 3, "logical repeat must retain one to three total attempts")
+    if blocked:
+        check(len(attempts) == 3, "BLOCKED requires exactly three LOADED attempts")
+    last_end = None
+    for index, attempt in enumerate(attempts, 1):
+        check(type(attempt.get("attempt")) is int and attempt["attempt"] == index, "attempt numbering is not consecutive")
+        expected_status = "LOADED" if blocked or index < len(attempts) else "CLEAN"
+        check(attempt.get("status") == expected_status, "first CLEAN wins; only LOADED may be retried")
+        receipt = attempt.get("receipt")
+        start, end = verify_benchmark_receipt(receipt, host, helper_hash, expected_status)
+        check(last_end is None or start >= last_end, "retry predates preceding attempt")
+        last_end = end
+        receipt_name = safe_artifact_path(attempt.get("receipt_path"))
+        check(receipt_name in payload and json.loads(payload[receipt_name]) == receipt, "attempt receipt bytes differ from metadata")
+        for suffix, field in ((".stdout", "stdout_sha256"), (".stderr", "stderr_sha256")):
+            name = receipt_name + suffix
+            check(name in payload and hashlib.sha256(payload[name]).hexdigest() == receipt.get(field),
+                  "attempt stdout/stderr binding mismatch")
+        raw_name = attempt.get("raw_row_path") or attempt.get("raw_stdout_path")
+        digest = attempt.get("row_sha256")
+        if receipt["command_started"]:
+            check(is_hash(digest) and raw_name is not None, "completed command has no retained raw row")
+            raw_name = safe_artifact_path(raw_name)
+            check(raw_name in payload, "missing retained attempt raw row")
+            if "raw_stdout_sha256" in attempt:
+                check(hashlib.sha256(payload[raw_name]).hexdigest() == attempt["raw_stdout_sha256"],
+                      "retained native stdout SHA-256 mismatch")
+            row = json.loads(payload[raw_name])
+            if "src" not in row:
+                row.update(src=identity[0], level=identity[1], g=key[0], n=key[1], rep=key[2])
+            check((row.get("src"), row.get("level"), row.get("g"), row.get("n"), row.get("rep"))
+                  == (*identity, *key), "attempt raw row identity mismatch")
+            check(row_digest(row) == digest, "attempt row binding mismatch")
+            width = 4 if attempt.get("raw_row_path") else 3
+            check(isinstance(row.get("samples"), list) and all(isinstance(sample, list)
+                  and len(sample) == width and all(is_int(v) for v in sample) for sample in row["samples"]),
+                  "invalid retained attempt raw samples")
+            check([sample[0] for sample in row.get("samples", [])] == offsets, "retaken attempt offsets changed")
+        else:
+            check(digest is None and attempt.get("raw_row_path") is None, "unstarted attempt unexpectedly has a raw row")
+            if raw_name is not None:
+                raw_name = safe_artifact_path(raw_name)
+                check(raw_name in payload and payload[raw_name] == b"", "unstarted attempt stdout is not empty")
+        if "request_sha256" in attempt:
+            request_name = str(PurePosixPath(receipt_name).parent / "request.json")
+            check(request_name in payload and hashlib.sha256(payload[request_name]).hexdigest() == attempt["request_sha256"],
+                  "attempt request binding mismatch")
+            request = json.loads(payload[request_name])
+            check((request.get("g"), request.get("n"), request.get("rep")) == key
+                  and request.get("offsets") == offsets, "retaken request seed/offset identity changed")
+    if not blocked:
+        check(repeat.get("receipt") == attempts[-1]["receipt"] and repeat.get("row_sha256") == attempts[-1]["row_sha256"],
+              "accepted repeat is not its first CLEAN attempt")
+    return attempts
+
+
+def verify_receipt_coverage(payload, logical):
+    expected = {attempt["receipt_path"] for repeat in logical for attempt in repeat["attempts"]}
+    check(len(expected) == sum(len(repeat["attempts"]) for repeat in logical), "receipt reused for multiple attempts")
+    found = set()
+    for name, data in payload.items():
+        if not name.endswith(".json"):
+            continue
+        try:
+            value = json.loads(data)
+        except (ValueError, UnicodeDecodeError):
+            continue
+        if isinstance(value, dict) and value.get("schema") == "ovh-bench-v1":
+            found.add(name)
+    check(found == expected, "attempt artifact contains missing/unlisted measurement receipts")
+
+
+def verify_progress(run, logical, planned):
+    counts = dict(planned_repeats=planned, started_repeats=len(logical),
+                  retaken_repeats=sum(len(r["attempts"]) > 1 for r in logical),
+                  loaded_attempts=sum(a["status"] == "LOADED" for r in logical for a in r["attempts"]))
+    for name, value in counts.items():
+        check(type(run.get(name)) is int and run[name] == value, "incorrect retry counter: " + name)
+    return counts
+
+
+def verify_benchmark_runs(run, rows, host, grids, payload, identity):
     check(run.get("ovh_policy_commit") == POLICY, "OVH-BENCH policy is not anchored")
+    check(run.get("load_amendment_commit") == LOAD_AMENDMENT, "bounded load retry amendment is not anchored")
     check(is_hash(run.get("ovh_bench_sha256")), "missing shared OVH-BENCH helper identity")
     repeats = run.get("benchmark_runs")
     expected = {(g, n, rep) for g in grids for n in NS for rep in range(5)}
     check(isinstance(repeats, list) and len(repeats) == len(expected), "incomplete OVH-BENCH timed-repeat receipts")
     seen = set()
     for repeat in repeats:
-        check(isinstance(repeat, dict), "invalid OVH-BENCH timed-repeat receipt")
         g, n, rep = repeat.get("g"), repeat.get("n"), repeat.get("rep")
-        check((g is None or type(g) is int) and type(n) is int and type(rep) is int,
-              "invalid OVH-BENCH repeat identity")
+        check((g is None or type(g) is int) and type(n) is int and type(rep) is int, "invalid OVH-BENCH repeat identity")
         key = g, n, rep
         check(key in expected and key not in seen, "duplicate or unexpected OVH-BENCH repeat")
         seen.add(key)
-        receipt = repeat.get("receipt")
-        check(isinstance(receipt, dict) and receipt.get("status") == "CLEAN", "OVH-BENCH repeat is not CLEAN")
-        check(receipt.get("schema") == "ovh-bench-v1" and receipt.get("policy_commit") == POLICY,
-              "OVH-BENCH receipt schema/policy mismatch")
-        check(receipt.get("helper_sha256") == run["ovh_bench_sha256"], "OVH-BENCH receipt helper mismatch")
-        check(type(receipt.get("returncode")) is int and receipt["returncode"] == 0
-              and receipt.get("command_started") is True, "OVH-BENCH command did not complete successfully")
-        waiting = receipt.get("waiting_since_utc")
-        check(isinstance(waiting, str), "missing shared-lock wait timestamp")
-        try:
-            waiting_time = datetime.fromisoformat(waiting.replace("Z", "+00:00"))
-        except ValueError:
-            raise ValueError("invalid shared-lock wait timestamp") from None
-        check(waiting_time.utcoffset() is not None and waiting_time.utcoffset().total_seconds() == 0,
-              "shared-lock wait timestamp is not UTC")
-        check(receipt.get("lock_path") == BENCH_LOCK, "wrong shared benchmark lock")
-        flock_command = receipt.get("flock_command")
-        check(isinstance(flock_command, list) and len(flock_command) >= 6
-              and flock_command[:2] == ["flock", BENCH_LOCK]
-              and flock_command[3] == "-B" and flock_command[5] == "_inside"
-              and all(isinstance(part, str) and part for part in flock_command), "timed repeat did not use blocking shared flock")
-        command = receipt.get("command")
-        check(isinstance(command, list) and command and all(isinstance(part, str) and part for part in command),
-              "missing timed measurement command")
-        start = verify_benchmark_snapshot(receipt.get("start"), host)
-        end = verify_benchmark_snapshot(receipt.get("end"), host)
-        check(end >= start >= waiting_time, "OVH-BENCH boundary timestamps are out of order")
-        raw = (json.dumps(rows[key], separators=(",", ":"), sort_keys=True) + "\n").encode()
-        check(repeat.get("row_sha256") == hashlib.sha256(raw).hexdigest(), "OVH-BENCH receipt row binding mismatch")
-        if "request_sha256" in repeat:
-            check(is_hash(repeat["request_sha256"]), "invalid OVH-BENCH request identity")
+        verify_attempts(repeat, host, run["ovh_bench_sha256"], payload, key=key, identity=identity,
+                        offsets=[p[0] for p in rows[key]["samples"]])
+        check(repeat.get("row_sha256") == row_digest(rows[key]), "OVH-BENCH receipt row binding mismatch")
     check(seen == expected, "incomplete OVH-BENCH accepted grid")
+    verify_receipt_coverage(payload, repeats)
+    return verify_progress(run, repeats, len(expected))
 
 
 def verify_installation_receipt(receipt, host):
@@ -371,20 +524,22 @@ def verify_chunk(folder, chunk, *, baseline_root=BASELINE, calibration_path=None
         check(control.get("negative") == "pyzstd exception" and isinstance(control.get("exception"), str)
               and control["exception"], "corrupted frame did not raise")
     check(set(rows) == {(g, n, rep) for g in GS for n in NS for rep in range(5)}, "incomplete sample grid")
-    verify_benchmark_runs(run, rows, host, GS)
-    return dict(run=run, archives=archives, controls=controls, rows=rows)
+    retry_counts = verify_benchmark_runs(run, rows, host, GS, verify_attempt_artifact(folder), (src, level))
+    return dict(run=run, archives=archives, controls=controls, rows=rows, retry_counts=retry_counts)
 
 
 def verify_c_chunk(folder, chunk, *, baseline_root=BASELINE, source_root=REPO, calibration_path=None):
     """Verify the newly measured C baseline; do not re-audit historical timings."""
     folder, baseline_root, source_root = Path(folder), Path(baseline_root), Path(source_root)
     check(chunk in CHUNKS and folder.is_dir(), f"missing C baseline checkpoint: {chunk}")
-    check({p.name for p in folder.iterdir()} == set(C_FILES + ["SHA256SUMS", "acecore.json"]), "unexpected or missing C checkpoint files")
+    check({p.name for p in folder.iterdir()} == set(C_FILES + ["SHA256SUMS", "acecore.json", "attempts.tar.gz", "attempts.json"]), "unexpected or missing C checkpoint files")
     check(all((folder / name).is_file() and not (folder / name).is_symlink()
-              for name in C_FILES + ["SHA256SUMS", "acecore.json"]), "C checkpoint contains nonregular file")
+              for name in C_FILES + ["SHA256SUMS", "acecore.json", "attempts.tar.gz", "attempts.json"]), "C checkpoint contains nonregular file")
     expected_sums = "".join(f"{sha(folder / name)}  {name}\n" for name in sorted(C_FILES)).encode()
     check((folder / "SHA256SUMS").read_bytes() == expected_sums, "bad C SHA256SUMS")
     receipt = load(folder / "acecore.json")
+    if "attempts_manifest_sha256" in receipt:
+        check(receipt["attempts_manifest_sha256"] == sha(folder / "attempts.json"), "C attempt manifest binding mismatch")
     check(receipt.get("original_sha256sums_sha256") == sha(folder / "SHA256SUMS"), "C wrapper does not bind original checksum manifest")
     check(receipt.get("amendment_commit") == AMENDMENT, "C host amendment is not anchored")
     calibration_path = Path(calibration_path) if calibration_path else folder.parent.parent / "CALIBRATION.md"
@@ -434,15 +589,15 @@ def verify_c_chunk(folder, chunk, *, baseline_root=BASELINE, source_root=REPO, c
                 check(is_int(row.get("peak_kib"), 1), "invalid C RSS receipt")
                 rows[g, n, rep] = row
     check(controls == expected_controls, "C corruption inventory differs from raw controls")
-    verify_benchmark_runs(receipt, rows, wrapper_host, GS[:-1])
-    return dict(run=run, acecore=receipt, archives=archives, controls=controls, rows=rows)
+    retry_counts = verify_benchmark_runs(receipt, rows, wrapper_host, GS[:-1], verify_attempt_artifact(folder), (src, level))
+    return dict(run=run, acecore=receipt, archives=archives, controls=controls, rows=rows, retry_counts=retry_counts)
 
 
 def verify_all(evidence_root=HERE, *, baseline_root=BASELINE, source_root=REPO):
     evidence_root = Path(evidence_root)
     chunks = {c: verify_chunk(evidence_root / c, c, baseline_root=baseline_root) for c in CHUNKS}
     runs = [chunks[c]["run"] for c in CHUNKS]
-    for key in ("host", "runner_commit", "runner_sha256", "verifier_sha256", "guard_sha256", "protocol_commit", "protocol_sha256", "amendment_commit", "original_protocol_sha256", "ovh_policy_commit", "ovh_bench_sha256"):
+    for key in ("host", "runner_commit", "runner_sha256", "verifier_sha256", "guard_sha256", "protocol_commit", "protocol_sha256", "amendment_commit", "original_protocol_sha256", "ovh_policy_commit", "ovh_bench_sha256", "load_amendment_commit"):
         check(all(run[key] == runs[0][key] for run in runs), f"checkpoints cross {key} boundary")
     c_chunks = {c: verify_c_chunk(evidence_root / "c-baseline" / c, c, baseline_root=baseline_root,
                                 source_root=source_root) for c in CHUNKS}
@@ -455,6 +610,74 @@ def verify_all(evidence_root=HERE, *, baseline_root=BASELINE, source_root=REPO):
             check(c_host.get(key) == runs[0]["host"].get(key), f"readers do not share the same host/core: {key}")
     chunks["_c_baseline"] = c_chunks
     return chunks
+
+
+def verify_blocked(folder, *, baseline_root=BASELINE):
+    folder = Path(folder)
+    check({p.name for p in folder.iterdir()} == {"BLOCKED.json", "attempts.tar.gz", "attempts.json"},
+          "unexpected or missing BLOCKED artifacts")
+    record = load(folder / "BLOCKED.json")
+    check(record.get("status") == "BLOCKED: load" and record.get("reader") in ("c", "pyzstd"), "invalid BLOCKED status/reader")
+    chunk, reader = record.get("chunk"), record["reader"]
+    check(chunk in CHUNKS, "unknown BLOCKED checkpoint")
+    check(record.get("load_amendment_commit") == LOAD_AMENDMENT and record.get("ovh_policy_commit") == POLICY,
+          "BLOCKED amendment/policy mismatch")
+    host = record.get("host")
+    check(isinstance(host, dict) and "AMD EPYC 4344P" in host.get("cpu", "")
+          and host.get("hostname") == "ace-core" and host.get("cpu_affinity") == [0], "wrong BLOCKED host/core")
+    helper = record.get("ovh_bench_sha256")
+    check(is_hash(helper), "missing BLOCKED OVH helper identity")
+    payload = verify_attempt_artifact(folder)
+    completed, blocked = record.get("benchmark_runs"), record.get("blocked_repeat")
+    check(isinstance(completed, list) and isinstance(blocked, dict), "missing BLOCKED logical repeat history")
+    grids = GS if reader == "pyzstd" else GS[:-1]
+    planned = [(g, n, rep) for g in grids for n in NS for rep in range(5)]
+    check(len(completed) < len(planned), "BLOCKED history already has every planned repeat")
+    identity = CHUNKS[chunk]
+    logical = [*completed, blocked]
+    for index, repeat in enumerate(logical):
+        key = repeat.get("g"), repeat.get("n"), repeat.get("rep")
+        check(key == planned[index], "BLOCKED repeat history is not a fresh ordered prefix")
+        offsets = baseline_offsets(Path(baseline_root) / chunk, key[1], key[2])
+        verify_attempts(repeat, host, helper, payload, key=key, identity=identity, offsets=offsets,
+                        blocked=index == len(completed))
+    check(record.get("ps_top8") == blocked["attempts"][-1]["receipt"]["ps_top8"], "BLOCKED ps_top8 differs from last LOADED attempt")
+    verify_receipt_coverage(payload, logical)
+    counts = verify_progress(record, logical, len(planned))
+    return dict(record=record, retry_counts=counts, folder=folder)
+
+
+def build_blocked_report(evidence_root=HERE, *, baseline_root=BASELINE):
+    evidence_root = Path(evidence_root)
+    blocked_root = evidence_root / "blocked"
+    check(blocked_root.is_dir(), "no BLOCKED artifacts found")
+    folders = sorted(p for p in blocked_root.iterdir() if p.is_dir())
+    check(folders, "no BLOCKED artifacts found")
+    cases = [verify_blocked(folder, baseline_root=baseline_root) for folder in folders]
+    out = ["# HW-GIFT-1b — BLOCKED: load", "", "No performance medians or prediction outcome are reported while the experiment is incomplete.", "",
+           "Each blocked logical repeat exhausted exactly three total LOADED attempts. "
+           "Every attempt used the shared blocking OVH-BENCH lock; at least one boundary's exact one-minute load average exceeded 1.0. "
+           "A fourth attempt is prohibited. The first CLEAN result of a logical repeat is retained without remeasurement.", "",
+           "|reader|checkpoint|started M|retaken N|LOADED attempts|planned repeats|blocked frame B|read B|repeat|",
+           "|---|---|---:|---:|---:|---:|---:|---:|---:|"]
+    total_started = total_retaken = 0
+    for case in cases:
+        record, counts = case["record"], case["retry_counts"]
+        repeat = record["blocked_repeat"]
+        total_started += counts["started_repeats"]
+        total_retaken += counts["retaken_repeats"]
+        relative = case["folder"].relative_to(evidence_root).as_posix()
+        out.append(f"|{record['reader']}|[{record['chunk']}]({relative}/BLOCKED.json)|{counts['started_repeats']}|"
+                   f"{counts['retaken_repeats']}|{counts['loaded_attempts']}|{counts['planned_repeats']}|"
+                   f"{frame_name(repeat['g'])}|{repeat['n']}|{repeat['rep']}|")
+    out.extend(["", f"{total_retaken} of {total_started} started logical repeats were retaken. "
+                "This counts logical repeats with at least two attempts, including a blocked repeat; it does not imply that they reached CLEAN. "
+                "The two earlier whole-trial rejections (110 attempts) remain excluded and are not included in these new-trial counters.", ""])
+    for case in cases:
+        record = case["record"]
+        out.extend([f"## {record['reader']} / {record['chunk']} — last LOADED ps top 8", "", "```text",
+                    record["ps_top8"].rstrip(), "```", ""])
+    return "\n".join(out)
 
 
 def metrics(rows):
@@ -519,6 +742,10 @@ def build_report(chunks, *, baseline_root=BASELINE):
     check(set(chunks) == set(CHUNKS) | {"_c_baseline"} and set(chunks["_c_baseline"]) == set(CHUNKS),
           "report requires all four pyzstd and all four matched-host C checkpoints")
     host = chunks["enwik8-L3"]["run"]["host"]
+    counts = [chunks[c]["retry_counts"] for c in CHUNKS] + [chunks["_c_baseline"][c]["retry_counts"] for c in CHUNKS]
+    total_started = sum(c["started_repeats"] for c in counts)
+    total_retaken = sum(c["retaken_repeats"] for c in counts)
+    total_loaded = sum(c["loaded_attempts"] for c in counts)
     out = ["# pyzstd SeekableZstdFile: frame size and first-read cost", "",
            "[Preregistered protocol and pre-measurement host amendment](CALIBRATION.md) · "
            "[Host and wheel receipt](enwik8-L3/run.json) · [Matched-host C receipt](c-baseline/enwik8-L3/acecore.json)", "",
@@ -537,7 +764,11 @@ def build_report(chunks, *, baseline_root=BASELINE):
            "date -u, raw /proc/loadavg and nproc at both boundaries. Both one-minute load averages "
            "were ≤ 1.0; LOADED attempts are retained outside accepted checkpoints and repeated. "
            "Other process activity alone is not an exclusion criterion under OVH-BENCH. "
-           "The same pinned core was used for the new C baseline. Historical HW-GIFT-1 host timings remain separate.", ""]
+           "The same pinned core was used for the new C baseline. Historical HW-GIFT-1 host timings remain separate.", "",
+           f"{total_retaken} of {total_started} logical repeats were retaken; {total_loaded} LOADED attempts were excluded. "
+           "Each logical repeat used at most three total attempts; the first CLEAN result was selected and never retimed. "
+           "All raw attempts, including their lock/load receipts and stdout/stderr, are retained in each checkpoint's attempts.tar.gz and attempts.json. "
+           "The two earlier whole-trial rejections (110 attempts) remain excluded and are not counted in this fresh trial.", ""]
     for src in ("enwik8", "silesia.tar"):
         out.extend([f"## {src}", "", "|level|frame B|default|read B|archive B|size delta %|first p50 ms|first p99 ms|repeat p50 ms|repeat p99 ms|open p50 ms|",
                     "|---:|---:|:---:|---:|---:|---:|---:|---:|---:|---:|---:|"])
@@ -595,7 +826,7 @@ def build_report(chunks, *, baseline_root=BASELINE):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("action", choices=("verify", "verify-c", "report"))
+    parser.add_argument("action", choices=("verify", "verify-c", "report", "blocked"))
     parser.add_argument("chunk", nargs="?", choices=CHUNKS)
     parser.add_argument("--output", type=Path)
     args = parser.parse_args()
@@ -614,7 +845,7 @@ def main():
         print("VERIFIED", args.chunk or "all four checkpoints")
     else:
         check(args.chunk is None, "partial report is prohibited")
-        result = build_report(verify_all())
+        result = build_blocked_report() if args.action == "blocked" else build_report(verify_all())
         if args.output:
             args.output.write_text(result, encoding="utf-8", newline="\n")
         else:

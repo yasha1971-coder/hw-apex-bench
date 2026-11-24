@@ -31,6 +31,7 @@ STATE = ROOT / '.work/hw-gift-1b'
 PROTOCOL = 'c4809624beb0ad7a243163455d9c05545bc52d99'
 AMENDMENT = '0bd4ab29794f610884e66fdb3ca6c6c93495a4e4'
 POLICY = '3e7201a0933030de8d3011eb658270e577e6eced'
+LOAD_AMENDMENT = 'f8a2fb2c82bce9eacd841eafcf584a4c81ffc37c'
 AMENDMENT_TEXT = (
     'Pre-measurement host amendment: the HW-GIFT-1 host is not available. '
     'HW-GIFT-1b runs on ace-core (AMD EPYC 4344P); record CPU, kernel, governor, '
@@ -53,6 +54,11 @@ POLICY_TEXT = (
     'zero-foreign-activity admission policy; CPU, kernel, governor, pinned core '
     'and other-load receipts are still retained. Predictions (a) and (b) unchanged.'
 )
+LOAD_AMENDMENT_TEXT = (
+    'Load amendment: a LOADED timed repeat is retaken alone with the same seed '
+    'and offsets, up to 3 attempts, all attempts retained. This replaces the '
+    'whole-checkpoint rerun from the next attempt on.'
+)
 GS = (65536, 262144, 1048576, 4194304, 16777216, 67108864, None)
 NS = (4096, 65536)
 CHUNKS = {f'{name}-L{level}': (src, level) for name, src in
@@ -73,7 +79,7 @@ def label(g):
 
 
 FILES = [f'samples-{label(g)}.jsonl.gz' for g in GS] + [
-    'archives.json', 'controls.json', 'run.json']
+    'archives.json', 'controls.json', 'run.json', 'attempts.tar.gz', 'attempts.json']
 
 
 def packed(value):
@@ -116,12 +122,14 @@ def git(*args):
     return subprocess.check_output(['git', '-C', str(ROOT), *args])
 
 
-def verify_protocol_bytes(original, amended, policy, current):
+def verify_protocol_bytes(original, amended, policy, load_amendment, current):
     check(amended == original + b'\n' + AMENDMENT_TEXT.encode() + b'\n',
           'host amendment must preserve the exact original protocol prefix')
     check(policy == amended + b'\n' + POLICY_TEXT.encode() + b'\n',
           'OVH-BENCH rule must preserve the exact amended protocol prefix')
-    check(current == policy, 'amended preregistered protocol changed')
+    check(load_amendment == policy + b'\n' + LOAD_AMENDMENT_TEXT.encode() + b'\n',
+          'load amendment must preserve the exact OVH-BENCH protocol prefix')
+    check(current == load_amendment, 'amended preregistered protocol changed')
     return hashlib.sha256(original).hexdigest()
 
 
@@ -216,13 +224,16 @@ def preflight(receipt_path, cpu):
     subprocess.run(['git', '-C', str(ROOT), 'merge-base', '--is-ancestor', PROTOCOL, 'HEAD'], check=True)
     subprocess.run(['git', '-C', str(ROOT), 'merge-base', '--is-ancestor', AMENDMENT, 'HEAD'], check=True)
     subprocess.run(['git', '-C', str(ROOT), 'merge-base', '--is-ancestor', POLICY, 'HEAD'], check=True)
+    subprocess.run(['git', '-C', str(ROOT), 'merge-base', '--is-ancestor', LOAD_AMENDMENT, 'HEAD'], check=True)
     relative = 'evidence/hw-gift-1b/CALIBRATION.md'
     verify_protocol_bytes(git('show', f'{PROTOCOL}:{relative}'),
                           git('show', f'{AMENDMENT}:{relative}'),
                           git('show', f'{POLICY}:{relative}'),
+                          git('show', f'{LOAD_AMENDMENT}:{relative}'),
                           (HERE / 'CALIBRATION.md').read_bytes())
     sources = [str((HERE / name).relative_to(ROOT)) for name in
-               ('CALIBRATION.md', 'measure.py', 'report.py', 'load_guard.py', 'ovh_bench.py')]
+               ('CALIBRATION.md', 'measure.py', 'report.py', 'load_guard.py', 'ovh_bench.py',
+                'attempt_artifact.py')]
     check(not git('status', '--porcelain', '--', *sources).strip(), 'uncommitted runner/protocol/verifier')
     check(cpu == 0, 'matched C reader comparison requires pinned CPU 0')
     check(len(os.sched_getaffinity(0)) > 0 and cpu in os.sched_getaffinity(0), 'CPU unavailable')
@@ -373,8 +384,11 @@ def repeat(pyzstd, part, data, info, source, src, level, n, rep, offsets):
                 peak_kib=resource.getrusage(resource.RUSAGE_SELF).ru_maxrss)
 
 
-class LoadedAttempt(RuntimeError):
-    """A retained LOADED repeat excludes the entire checkpoint attempt."""
+class BlockedLoad(RuntimeError):
+    """Three retained LOADED attempts exhaust one logical timed repeat."""
+    def __init__(self, record):
+        super().__init__('BLOCKED: load; three LOADED attempts exhausted')
+        self.record = record
 
 
 def check_load_snapshot(value, host):
@@ -420,46 +434,92 @@ def timed_worker(request_path):
 def timed_repeat(part, chunk, g, n, rep, source_path, archive_path, info,
                  receipt_path, host, offsets):
     from ovh_bench import run_locked
-    folder = part / 'repeats' / f'{label(g)}-{n}-{rep}'
-    folder.mkdir(parents=True, exist_ok=True)
-    request_path, row_path, bench_path = folder / 'request.json', folder / 'row.json', folder / 'ovh-bench.json'
-    request = dict(chunk=chunk, g=g, n=n, rep=rep, cpu=0, source_path=str(source_path),
-                   archive_path=str(archive_path), archive=info, part=str(folder),
-                   row_path=str(row_path), install_receipt=str(receipt_path.resolve()),
-                   host=host, offsets=offsets)
-    command = [sys.executable, '-B', str(HERE / 'measure.py'), 'worker', '--request', str(request_path)]
-    if bench_path.exists():
-        benchmark = json.loads(bench_path.read_bytes())
-        if benchmark.get('status') == 'LOADED':
-            raise LoadedAttempt(f'LOADED repeat retained: {bench_path}')
-        check(benchmark.get('status') == 'CLEAN' and row_path.exists(),
-              'incomplete or failed durable timed repeat')
-        check(request_path.read_bytes() == packed(request), 'saved repeat request changed')
-    else:
-        check(not request_path.exists() and not row_path.exists() and not any(folder.iterdir()),
-              'interrupted repeat without complete boundary receipt; retain attempt and inspect')
-        write(request_path, packed(request))
-        code = run_locked(command, bench_path)
-        check(bench_path.exists(), 'OVH-BENCH helper did not retain boundary receipt')
-        benchmark = json.loads(bench_path.read_bytes())
-        if code == 77:
-            check(benchmark.get('status') == 'LOADED', 'helper exit 77 lacks LOADED receipt')
-            raise LoadedAttempt(f'LOADED repeat retained: {bench_path}')
-        check(code == 0 and benchmark.get('status') == 'CLEAN' and row_path.exists(),
-              f'timed child/helper failed: exit {code}')
-    check(benchmark.get('command') == command, 'OVH-BENCH receipt command changed')
-    row = json.loads(row_path.read_bytes())
-    check((row.get('src'), row.get('level'), row.get('g'), row.get('n'), row.get('rep')) ==
-          (*CHUNKS[chunk], g, n, rep), 'timed child row identity mismatch')
-    check(row_path.read_bytes() == packed(row), 'timed row is not deterministic JSON')
-    record = dict(g=g, n=n, rep=rep, receipt=benchmark,
-                  row_sha256=sha(row_path), request_sha256=sha(request_path))
-    return row, record
+    repeats_root = part / 'repeats'
+    logical = repeats_root / f'{label(g)}-{n}-{rep}'
+    logical.mkdir(parents=True, exist_ok=True)
+    check({p.name for p in logical.iterdir()}.issubset({'attempt-1', 'attempt-2', 'attempt-3'}),
+          'unexpected attempt beyond the three-attempt limit')
+    attempts = []
+    for index in range(1, 4):
+        folder = logical / f'attempt-{index}'
+        folder.mkdir(exist_ok=True)
+        request_path = folder / 'request.json'
+        row_path, bench_path = folder / 'row.json', folder / 'ovh-bench.json'
+        request = dict(chunk=chunk, g=g, n=n, rep=rep, cpu=0, source_path=str(source_path),
+                       archive_path=str(archive_path), archive=info, part=str(folder),
+                       row_path=str(row_path), install_receipt=str(receipt_path.resolve()),
+                       host=host, offsets=offsets)
+        command = [sys.executable, '-B', str(HERE / 'measure.py'), 'worker', '--request', str(request_path)]
+        if bench_path.exists():
+            check(request_path.read_bytes() == packed(request), 'saved repeat request changed')
+            benchmark = json.loads(bench_path.read_bytes())
+            code = 0 if benchmark.get('status') == 'CLEAN' else 77
+        else:
+            check(not any(folder.iterdir()),
+                  'interrupted repeat without complete boundary receipt; retain and inspect')
+            write(request_path, packed(request))
+            code = run_locked(command, bench_path)
+            check(bench_path.exists(), 'OVH-BENCH helper did not retain boundary receipt')
+            benchmark = json.loads(bench_path.read_bytes())
+        check(code in (0, 77), f'timed child/helper failed: exit {code}')
+        status = benchmark.get('status')
+        check(status in ('CLEAN', 'LOADED') and benchmark.get('returncode') in (None, 0),
+              'timed child ERROR/nonzero returncode is fatal and must not be retried')
+        check(benchmark.get('command') == command, 'OVH-BENCH receipt command changed')
+        check((status == 'CLEAN' and code == 0) or (status == 'LOADED' and code == 77),
+              'OVH-BENCH status/exit mismatch')
+        row = None
+        if row_path.exists():
+            row = json.loads(row_path.read_bytes())
+            check((row.get('src'), row.get('level'), row.get('g'), row.get('n'), row.get('rep')) ==
+                  (*CHUNKS[chunk], g, n, rep), 'timed child row identity mismatch')
+            check(row_path.read_bytes() == packed(row), 'timed row is not deterministic JSON')
+            check([sample[0] for sample in row.get('samples', [])] == offsets,
+                  'retained raw row offsets differ from this logical repeat')
+        check(type(benchmark.get('command_started')) is bool, 'missing timed command-start receipt')
+        if benchmark['command_started']:
+            check(row is not None and benchmark.get('returncode') == 0,
+                  'successful timed child has no complete raw row')
+        else:
+            check(row is None and benchmark.get('returncode') is None,
+                  'unstarted timed command has unexpected output/returncode')
+        if status == 'CLEAN':
+            check(row is not None and benchmark.get('returncode') == 0 and benchmark['command_started'],
+                  'CLEAN repeat has no complete raw row')
+        attempt_record = dict(attempt=index, status=status, receipt=benchmark,
+            row_sha256=sha(row_path) if row is not None else None,
+            request_sha256=sha(request_path),
+            receipt_path=bench_path.relative_to(repeats_root).as_posix(),
+            raw_row_path=row_path.relative_to(repeats_root).as_posix() if row is not None else None)
+        attempts.append(attempt_record)
+        if status == 'CLEAN':
+            check(not any((logical / f'attempt-{later}').exists() for later in range(index + 1, 4)),
+                  'a CLEAN repeat must never have a later attempt')
+            record = dict(g=g, n=n, rep=rep, receipt=benchmark,
+                          row_sha256=attempt_record['row_sha256'],
+                          request_sha256=attempt_record['request_sha256'], attempts=attempts)
+            return row, record
+        # Immediate retry of this logical repeat only; run_locked itself blocks
+        # on the common flock. No polling interval or independent sleep here.
+    raise BlockedLoad(dict(g=g, n=n, rep=rep, attempts=attempts,
+                          ps_top8=attempts[-1]['receipt'].get('ps_top8')))
+
+
+def progress_counts(benchmark_runs, blocked_repeat=None):
+    logical = [*benchmark_runs, *([blocked_repeat] if blocked_repeat else [])]
+    return dict(planned_repeats=len(GS) * len(NS) * 5, started_repeats=len(logical),
+                retaken_repeats=sum(len(record['attempts']) > 1 for record in logical),
+                loaded_attempts=sum(item['status'] == 'LOADED' for record in logical
+                                    for item in record['attempts']))
 
 
 def _run(chunk, inputs, receipt_path, cpu, attempt):
     from report import verify_chunk
     from load_guard import snapshot
+    from attempt_artifact import pack_attempts
+    blocked_folder = HERE / 'blocked' / f'pyzstd-{chunk}'
+    if (blocked_folder / 'BLOCKED.json').exists():
+        raise BlockedLoad(json.loads((blocked_folder / 'BLOCKED.json').read_bytes())['blocked_repeat'])
     if (HERE / chunk).exists():
         verify_chunk(HERE / chunk, chunk)
         print('COMPLETE_CHECKPOINT_VERIFIED_SKIP', chunk, flush=True)
@@ -484,20 +544,23 @@ def _run(chunk, inputs, receipt_path, cpu, attempt):
     with (part / 'lock').open('a') as lock:
         fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
         if (part / 'REJECTED').exists():
-            raise LoadedAttempt('attempt was rejected; retain it and select a new --attempt')
+            raise ValueError('previous whole-checkpoint attempt is rejected and cannot be reused')
         check(not (part / 'FAILED').exists(), 'prior failed check; inspect FAILED and stop')
         run_record = dict(corpus=src, level=level, input_bytes=INPUT[src][0], input_sha256=INPUT[src][1],
                           protocol_commit=PROTOCOL, protocol_sha256=sha(HERE / 'CALIBRATION.md'),
                           amendment_commit=AMENDMENT, ovh_policy_commit=POLICY,
+                          load_amendment_commit=LOAD_AMENDMENT,
                           original_protocol_sha256=hashlib.sha256(git('show',
                               f'{PROTOCOL}:evidence/hw-gift-1b/CALIBRATION.md')).hexdigest(),
                           runner_commit=git('log', '-1', '--format=%H', '--',
                               'evidence/hw-gift-1b/measure.py', 'evidence/hw-gift-1b/report.py',
                               'evidence/hw-gift-1b/load_guard.py',
-                              'evidence/hw-gift-1b/ovh_bench.py').decode().strip(),
+                              'evidence/hw-gift-1b/ovh_bench.py',
+                              'evidence/hw-gift-1b/attempt_artifact.py').decode().strip(),
                           runner_sha256=sha(HERE / 'measure.py'), verifier_sha256=sha(HERE / 'report.py'),
                           guard_sha256=sha(HERE / 'load_guard.py'),
-                          ovh_bench_sha256=sha(HERE / 'ovh_bench.py'), attempt=attempt,
+                          ovh_bench_sha256=sha(HERE / 'ovh_bench.py'),
+                          attempt_artifact_sha256=sha(HERE / 'attempt_artifact.py'), attempt=attempt,
                           host=host, offset_source_sha256=offset_hashes,
                           sample_columns=['offset', 'open_ns', 'first_ns', 'repeat_ns'],
                           timer='time.perf_counter_ns; open separate; seek+read first and repeat',
@@ -552,7 +615,8 @@ def _run(chunk, inputs, receipt_path, cpu, attempt):
             write(part / 'load-end.json', packed(current_load))
             run_record.update(load_start=start_load, load_end=current_load,
                               load_resume_starts=resumes, load_accepted=True,
-                              benchmark_runs=benchmark_runs)
+                              benchmark_runs=benchmark_runs, **progress_counts(benchmark_runs))
+            pack_attempts(part / 'repeats', publish)
             write(part / 'run.json', packed(run_record))
             write(publish / 'archives.json', packed(archives))
             write(publish / 'controls.json', packed(controls))
@@ -564,8 +628,22 @@ def _run(chunk, inputs, receipt_path, cpu, attempt):
             publish.replace(HERE / chunk)
             fsync_dir(HERE)
             verify_chunk(HERE / chunk, chunk)
-        except LoadedAttempt as error:
-            write(part / 'REJECTED', packed(dict(status='LOADED', phase=phase, load=current_load, reason=str(error))))
+        except BlockedLoad as error:
+            summary = dict(run_record, status='BLOCKED: load', reader='pyzstd', chunk=chunk,
+                           benchmark_runs=benchmark_runs, blocked_repeat=error.record,
+                           load_start=start_load, load_end=snapshot(cpu),
+                           load_resume_starts=resumes, load_accepted=False,
+                           ps_top8=error.record.get('ps_top8'),
+                           **progress_counts(benchmark_runs, error.record))
+            write(part / 'BLOCKED', packed(summary))
+            stage = part / 'blocked-publish'
+            stage.mkdir(exist_ok=True)
+            pack_attempts(part / 'repeats', stage)
+            write(stage / 'BLOCKED.json', packed(summary))
+            blocked_folder.parent.mkdir(parents=True, exist_ok=True)
+            check(not blocked_folder.exists(), 'blocked evidence already published')
+            stage.replace(blocked_folder)
+            fsync_dir(blocked_folder.parent)
             raise
         except Exception as error:
             write(part / 'FAILED', f'{type(error).__name__}: {error}\n'.encode())
@@ -606,8 +684,8 @@ def main():
     check(args.inputs is not None and args.receipt is not None, '--inputs and --receipt required')
     try:
         run(args.chunk, args.inputs, args.receipt, args.cpu, args.attempt)
-    except LoadedAttempt as error:
-        print(f'REJECTED_LOADED: {error}', file=sys.stderr)
+    except BlockedLoad as error:
+        print(f'BLOCKED: load: {error}', file=sys.stderr)
         raise SystemExit(2)
 
 

@@ -1529,3 +1529,26 @@ measurements.
   The owner was asked whether the new OVH rule retries just the LOADED timed
   repeat or still the entire corpus/level checkpoint specified earlier. Until
   clarified, the existing whole-checkpoint rejection rule is retained.
+
+### Per-repeat LOADED retry limit — 2026-11-24
+
+- The owner clarified that only the LOADED logical repeat (1000 pairs for one
+  frame/read-length/repeat-number) is retaken immediately with the same seed and
+  offsets. There are at most three total attempts. All three LOADED stops the
+  checkpoint as `BLOCKED: load`, with the specified top-eight `ps` listing.
+  Preserve every attempt in evidence and report the number of logical repeats
+  retaken. Decisions use load average only; threshold 1.0 and both predictions
+  remain unchanged. No fourth attempt may bypass this stop.
+- The exact supplied Load amendment was committed and pushed before continuation
+  as `f8a2fb2c82bce9eacd841eafcf584a4c81ffc37c`. Both earlier C attempts (58 and
+  50 CLEAN repeats) remain fully rejected. Their CLEAN data are not rescued or
+  used in the new run; enwik8-L3 starts from zero under the clarified policy.
+- The shared helper now records literal top-eight `ps` output for every LOADED
+  event. A worker/byte-check error is fatal even if load is high; it cannot be
+  retried as a load failure. Per-attempt raw outputs/receipts are packed without
+  byte changes into deterministic `attempts.tar.gz` and per-file hash manifests.
+  The old two rejected archives retain their original earlier helper receipts.
+- Accepted and blocked reports bind the complete attempt history, validate at
+  most three attempts per logical repeat and choose the first CLEAN result only.
+  A new source/metadata cohort starts after preserving the old isolated runner;
+  the original timed C sources and reproduce.sh remain unchanged.

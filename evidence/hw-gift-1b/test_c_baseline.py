@@ -1,11 +1,11 @@
-"""Synthetic C-baseline orchestration tests; never compile or invoke a codec."""
+"""Synthetic orchestration checks; no compiler, codec or real timing is used."""
 import importlib.util
 import io
 import json
 import os
 from pathlib import Path
-import tempfile
 import subprocess
+import tempfile
 from types import SimpleNamespace
 import unittest
 from unittest.mock import patch
@@ -13,10 +13,6 @@ from unittest.mock import patch
 spec = importlib.util.spec_from_file_location('gift1b_c_baseline', Path(__file__).with_name('c_baseline.py'))
 baseline = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(baseline)
-
-
-class BusyHost(RuntimeError):
-    pass
 
 
 def snapshot(busy=False, governor='schedutil'):
@@ -27,17 +23,41 @@ def snapshot(busy=False, governor='schedutil'):
 def fake_guard(values):
     snapshots = iter(values)
     def require_idle(value):
-        raise AssertionError('obsolete zero-activity gate was called')
-    return SimpleNamespace(BusyHost=BusyHost, snapshot=lambda **kwargs: next(snapshots), require_idle=require_idle)
+        raise AssertionError('obsolete zero-activity gate called')
+    return SimpleNamespace(snapshot=lambda **kwargs: next(snapshots), require_idle=require_idle)
 
 
-def write_repeats(cstate, chunk, loaded=False):
+def logical(cstate, chunk, g=65536, n=4096, rep=0, statuses=('CLEAN',)):
+    attempts = [dict(attempt=i, status=status, receipt=dict(status=status, ps_top8='synthetic ps top8'),
+                     row_sha256='b' * 64 if status == 'CLEAN' else None)
+                for i, status in enumerate(statuses, 1)]
+    clean = statuses[-1] == 'CLEAN'
+    record = dict(g=g, n=n, rep=rep, status='CLEAN' if clean else 'BLOCKED',
+                  returncode=0 if clean else 78, receipt=attempts[-1]['receipt'],
+                  row_sha256=attempts[-1]['row_sha256'], attempts=attempts)
+    baseline.write(cstate / chunk / 'ovh-repeats' / f'{g}-{n}-{rep}/metadata.json', baseline.packed(record))
+    return record
+
+
+def write_repeats(cstate, chunk):
     for g in baseline.GS:
         for n in (4096, 65536):
             for rep in range(5):
-                record = dict(g=g, n=n, rep=rep, returncode=77 if loaded else 0,
-                              receipt=dict(status='LOADED' if loaded else 'CLEAN'), row_sha256='b' * 64)
-                baseline.write(cstate / chunk / 'ovh-repeats' / f'{g}-{n}-{rep}.metadata.json', baseline.packed(record))
+                logical(cstate, chunk, g, n, rep)
+
+
+def write_host(path):
+    baseline.write(path, baseline.packed({'host': {'os': 'Ubuntu synthetic', 'host_boot_sha256': 'a' * 64}}))
+
+
+def fake_artifacts():
+    def pack(source, output):
+        output.mkdir(parents=True, exist_ok=True)
+        baseline.write(output / 'attempts.tar.gz', b'synthetic packed bytes')
+        result = dict(schema='hw-gift-1b-attempts-v1', archive_sha256=baseline.sha(output / 'attempts.tar.gz'), files=[])
+        baseline.write(output / 'attempts.json', baseline.packed(result))
+        return result
+    return SimpleNamespace(pack_attempts=pack)
 
 
 class HostPatchTests(unittest.TestCase):
@@ -46,17 +66,19 @@ class HostPatchTests(unittest.TestCase):
         result = baseline.patch_chunks(original).decode()
         self.assertIn("'AMD EPYC 4344P' in model", result)
         self.assertIn("platform.node() == 'ace-core'", result)
-        self.assertIn('_gift_module.boundary(main, HERE', result)
-        # Everything between checkpoint measurement entry and final report is exact.
+        self.assertIn("sys.executable = os.environ['GIFT1B_PYTHON_SHIM']", result)
         begin, end = 'def run(chunk, state, inputs):', 'def final_report():'
-        old = original.decode().split(begin)[1].split(end)[0]
-        new = result.split(begin)[1].split(end)[0]
-        self.assertEqual(old, new)
+        self.assertEqual(original.decode().split(begin)[1].split(end)[0], result.split(begin)[1].split(end)[0])
         compile(result, 'copied-chunks.py', 'exec')
 
-    def test_unknown_upstream_source_stops(self):
+    def test_unknown_source_stops(self):
         with self.assertRaisesRegex(ValueError, 'host gate changed'):
             baseline.patch_chunks(b'not original source')
+
+    def test_accepted_export_has_all_attempt_artifacts(self):
+        self.assertEqual(len(baseline.PUBLIC_FILES), 13)
+        self.assertIn('attempts.tar.gz', baseline.PUBLIC_FILES)
+        self.assertIn('attempts.json', baseline.PUBLIC_FILES)
 
 
 class BoundaryTests(unittest.TestCase):
@@ -74,78 +96,45 @@ class BoundaryTests(unittest.TestCase):
             load.assert_not_called()
         self.assertEqual(calls, ['verify'])
 
-    def exercise(self, starts, *, should_reject):
+    def exercise(self, starts, reject=False):
         with tempfile.TemporaryDirectory(prefix='gift1b-c-test-') as temp:
-            state = Path(temp)
-            here = state / 'runner/evidence/hw-gift-1'
-            cstate = state / 'c-state'
-            chunk = 'enwik8-L3'
-            baseline.write(state / 'c-runner-manifest.json', baseline.packed({'amendment_commit': baseline.AMENDMENT}))
-            calls = []
+            state, chunk = Path(temp), 'enwik8-L3'
+            here, cstate = state / 'runner/evidence/hw-gift-1', state / 'c-state'
+            baseline.write(state / 'c-runner-manifest.json', b'{}')
             def original_main():
-                calls.append('ran')
-                baseline.write(here / chunk / 'run.json', baseline.packed({'host': {'os': 'Ubuntu synthetic', 'host_boot_sha256': 'a' * 64}}))
+                write_host(here / chunk / 'run.json')
                 baseline.write(here / chunk / 'SHA256SUMS', b'synthetic sums\n')
-                baseline.write(cstate / chunk / 'samples.json', b'synthetic rejected samples\n')
+                baseline.write(cstate / chunk / 'samples.json', b'synthetic preserved samples')
                 write_repeats(cstate, chunk)
             with patch.object(baseline, 'STATE', state), patch.object(baseline, 'guard', return_value=fake_guard(starts)), patch.object(os, 'environ', dict(os.environ, GIFT1B_TARGET=chunk)):
-                if should_reject:
+                if reject:
                     with self.assertRaises(SystemExit) as stopped:
                         baseline.boundary(original_main, here, cstate, ['run', chunk])
                     self.assertEqual(stopped.exception.code, 76)
-                    self.assertFalse((here / chunk).exists())
-                    rejected = list((state / 'c-rejected' / chunk).iterdir())
-                    self.assertEqual(len(rejected), 1)
-                    self.assertTrue((rejected[0] / 'checkpoint/run.json').exists())
-                    self.assertTrue((rejected[0] / 'state/samples.json').exists())
-                    self.assertFalse((state / f'c-boundaries/{chunk}.json').exists())
                 else:
                     baseline.boundary(original_main, here, cstate, ['run', chunk])
                     result = json.loads((state / f'c-boundaries/{chunk}.json').read_bytes())
                     self.assertTrue(result['load_accepted'])
                     self.assertEqual(result['host']['cpu_affinity'], [0])
-                    self.assertEqual(result['original_sha256sums_sha256'], baseline.sha(here / chunk / 'SHA256SUMS'))
-            self.assertEqual(calls, ['ran'])
+                    self.assertEqual(len(result['benchmark_runs']), 60)
 
-    def test_foreign_activity_is_observational_not_a_zero_activity_gate(self):
-        self.exercise([snapshot(True), snapshot(True)], should_reject=False)
+    def test_foreign_activity_is_observational(self):
+        self.exercise([snapshot(True), snapshot(True)])
 
-    def test_governor_change_rejects_quiet_attempt(self):
-        self.exercise([snapshot(), snapshot(governor='performance')], should_reject=True)
+    def test_governor_change_rejects_different_conditions(self):
+        self.exercise([snapshot(), snapshot(governor='performance')], reject=True)
 
-    def test_quiet_same_host_receipt_is_accepted(self):
-        self.exercise([snapshot(), snapshot()], should_reject=False)
-
-    def test_loaded_repeat_quarantines_all_raw_samples(self):
-        with tempfile.TemporaryDirectory(prefix='gift1b-c-test-') as temp:
-            state, chunk = Path(temp), 'enwik8-L3'
-            cstate, here = state / 'partial', state / 'runner'
-            baseline.write(state / 'c-runner-manifest.json', b'{}')
-            def loaded():
-                write_repeats(cstate, chunk, loaded=True)
-                baseline.write(cstate / chunk / 'ovh-repeats/example.stdout', b'raw LOADED result')
-                raise subprocess.CalledProcessError(77, ['synthetic', 'sweep.py'])
-            with patch.object(baseline, 'STATE', state), patch.object(baseline, 'guard', return_value=fake_guard([snapshot(True)])), patch.object(os, 'environ', dict(os.environ, GIFT1B_TARGET=chunk)):
-                with self.assertRaises(SystemExit) as stopped:
-                    baseline.boundary(loaded, here, cstate, ['run', chunk])
-                self.assertEqual(stopped.exception.code, 76)
-            rejected = list((state / 'c-rejected' / chunk).iterdir())
-            self.assertEqual(len(rejected), 1)
-            self.assertEqual((rejected[0] / 'state/ovh-repeats/example.stdout').read_bytes(), b'raw LOADED result')
-            self.assertFalse((state / f'c-boundaries/{chunk}.json').exists())
-
-    def test_interrupted_attempt_retains_original_start_and_resume_admission(self):
+    def test_interruption_retains_original_start_and_resume_admission(self):
         with tempfile.TemporaryDirectory(prefix='gift1b-c-test-') as temp:
             state, chunk = Path(temp), 'enwik8-L3'
             here = state / 'runner/evidence/hw-gift-1'
             baseline.write(state / 'c-runner-manifest.json', b'{}')
             first, resumed, end = snapshot(), snapshot(), snapshot()
-            first['sample_start_utc'] = 'first'
-            resumed['sample_start_utc'] = 'resumed'
+            first['sample_start_utc'], resumed['sample_start_utc'] = 'first', 'resumed'
             def interrupted():
                 raise KeyboardInterrupt('synthetic interruption')
             def completed():
-                baseline.write(here / chunk / 'run.json', baseline.packed({'host': {'os': 'Ubuntu synthetic', 'host_boot_sha256': 'a' * 64}}))
+                write_host(here / chunk / 'run.json')
                 baseline.write(here / chunk / 'SHA256SUMS', b'synthetic sums\n')
                 write_repeats(state / 'partial', chunk)
             with patch.object(baseline, 'STATE', state), patch.object(os, 'environ', dict(os.environ, GIFT1B_TARGET=chunk)):
@@ -157,29 +146,64 @@ class BoundaryTests(unittest.TestCase):
             receipt = json.loads((state / f'c-boundaries/{chunk}.json').read_bytes())
             self.assertEqual(receipt['load_start'], first)
             self.assertEqual(receipt['load_resume_starts'], [resumed])
-            self.assertTrue(receipt['load_accepted'])
 
-    def test_loaded_resume_quarantines_prior_partial_samples(self):
+    def test_three_loaded_attempts_block_but_keep_clean_state_and_raw_bytes(self):
         with tempfile.TemporaryDirectory(prefix='gift1b-c-test-') as temp:
             state, chunk = Path(temp), 'enwik8-L3'
-            here = state / 'runner/evidence/hw-gift-1'
-            cstate = state / 'partial'
+            here, cstate = state / 'runner', state / 'partial'
             baseline.write(state / 'c-runner-manifest.json', b'{}')
-            baseline.write(state / f'c-pending/{chunk}.json', baseline.packed(dict(load_start=snapshot(), load_accepted=False)))
-            baseline.write(cstate / chunk / 'raw.json', b'synthetic interrupted sample')
-            write_repeats(cstate, chunk, loaded=True)
-            with patch.object(baseline, 'STATE', state), patch.object(os, 'environ', dict(os.environ, GIFT1B_TARGET=chunk)), patch.object(baseline, 'guard', return_value=fake_guard([snapshot(True)])):
+            def blocked():
+                write_host(cstate / chunk / 'run.json')
+                logical(cstate, chunk, rep=0)
+                logical(cstate, chunk, rep=1)
+                logical(cstate, chunk, rep=2, statuses=('LOADED', 'LOADED', 'LOADED'))
+                baseline.write(cstate / chunk / 'raw.stdout', b'raw LOADED data')
+                raise subprocess.CalledProcessError(78, ['synthetic', 'sweep.py'])
+            with patch.object(baseline, 'HERE', state / 'public'), patch.object(baseline, 'STATE', state), patch.object(baseline, 'guard', return_value=fake_guard([snapshot(), snapshot()])), patch.object(baseline, 'artifacts', return_value=fake_artifacts()), patch.object(os, 'environ', dict(os.environ, GIFT1B_TARGET=chunk)):
                 with self.assertRaises(SystemExit) as stopped:
-                    baseline.boundary(lambda: self.fail('LOADED resume executed'), here, cstate, ['run', chunk])
-                self.assertEqual(stopped.exception.code, 76)
-            rejected = list((state / 'c-rejected' / chunk).iterdir())
-            self.assertEqual(len(rejected), 1)
-            self.assertTrue((rejected[0] / 'state/raw.json').exists())
-            self.assertTrue((rejected[0] / 'pending.json').exists())
-            self.assertFalse((state / f'c-pending/{chunk}.json').exists())
+                    baseline.boundary(blocked, here, cstate, ['run', chunk])
+                self.assertEqual(stopped.exception.code, 78)
+            self.assertTrue((cstate / chunk / 'raw.stdout').exists())
+            self.assertFalse((state / 'c-rejected').exists())
+            result = json.loads((state / 'public/blocked' / f'c-{chunk}/BLOCKED.json').read_bytes())
+            self.assertEqual((result['planned_repeats'], result['started_repeats'], result['retaken_repeats'], result['loaded_attempts']), (60, 3, 1, 3))
+            self.assertEqual((result['status'], result['reader'], result['chunk']), ('BLOCKED: load', 'c', chunk))
+            self.assertEqual(len(result['benchmark_runs']), 2)
+            self.assertEqual(result['ps_top8'], 'synthetic ps top8')
 
 
 class ShimTests(unittest.TestCase):
+    RAW = b'{"samples":[[12,34,56]],"peak_kib":7}\n'
+
+    def args(self):
+        return ['-E', '-B', str(baseline.RUNNER / 'evidence/hw-gift-1/sweep.py'), 'enwik8', '65536', '4096', '0']
+
+    def fake_helper(self, values, calls):
+        results = iter(values)
+        def run_locked(command, receipt_path, stdout_path=None):
+            calls.append(command)
+            status, raw, code = next(results)
+            receipt = dict(status=status, returncode=code if status == 'ERROR' else 0,
+                           command_started=bool(raw), ps_top8='synthetic ps top8')
+            baseline.write(receipt_path, baseline.packed(receipt))
+            baseline.write(stdout_path, raw)
+            baseline.write(Path(str(receipt_path) + '.stdout'), raw)
+            baseline.write(Path(str(receipt_path) + '.stderr'), b'synthetic stderr')
+            return code
+        return SimpleNamespace(run_locked=run_locked)
+
+    def invoke(self, cstate, helper):
+        output = io.BytesIO()
+        real_sha = baseline.sha
+        def pin_sha(path):
+            return 'c' * 64 if Path(path).name == 'ovh_bench.py' else real_sha(path)
+        with patch.object(baseline, 'CSTATE', cstate), patch.object(baseline, 'ovh', return_value=helper), patch.object(baseline, 'sha', side_effect=pin_sha), patch.object(os, 'environ', dict(os.environ, GIFT1B_TARGET='enwik8-L3')), patch.object(baseline.sys, 'stdout', SimpleNamespace(buffer=output)):
+            code = baseline.python_shim(self.args(), '/synthetic/python')
+        return code, output.getvalue()
+
+    def metadata(self, cstate):
+        return json.loads(next(cstate.glob('enwik8-L3/ovh-repeats/*/metadata.json')).read_bytes())
+
     def test_negative_control_and_metadata_do_not_take_shared_lock(self):
         sweep = baseline.RUNNER / 'evidence/hw-gift-1/sweep.py'
         for args in (['-B', str(sweep), 'enwik8', '65536', '4096', '-1'], ['-B', 'chunks.py', 'verify', 'enwik8-L3']):
@@ -188,62 +212,55 @@ class ShimTests(unittest.TestCase):
                 lock.assert_not_called()
                 process.assert_called_once_with(['/synthetic/python', *args])
 
-    def test_clean_repeat_has_row_bound_receipt_and_replays_saved_stdout(self):
+    def test_first_clean_has_full_row_hash_and_is_never_retimed(self):
         with tempfile.TemporaryDirectory(prefix='gift1b-c-shim-') as temp:
-            cstate, output = Path(temp), io.BytesIO()
-            args = ['-E', '-B', str(baseline.RUNNER / 'evidence/hw-gift-1/sweep.py'), 'enwik8', '65536', '4096', '0']
-            raw = b'{"samples":[[12,34,56]],"peak_kib":7}\n'
-            calls = []
-            def run_locked(command, receipt_path, stdout_path=None):
-                calls.append(command)
-                baseline.write(receipt_path, b'{"status":"CLEAN"}\n')
-                baseline.write(stdout_path, raw)
-                return 0
-            with patch.object(baseline, 'CSTATE', cstate), patch.object(baseline, 'ovh', return_value=SimpleNamespace(run_locked=run_locked)), patch.object(baseline, 'sha', return_value='c' * 64), patch.object(os, 'environ', dict(os.environ, GIFT1B_TARGET='enwik8-L3')), patch.object(baseline.sys, 'stdout', SimpleNamespace(buffer=output)):
-                self.assertEqual(baseline.python_shim(args, '/synthetic/python'), 0)
-            self.assertEqual(output.getvalue(), raw)
-            self.assertEqual(len(calls), 1)
-            metadata = json.loads(next(cstate.rglob('*.metadata.json')).read_bytes())
-            fullrow = dict(src='enwik8', level=3, g=65536, n=4096, rep=0, **json.loads(raw))
-            self.assertEqual(metadata['row_sha256'], baseline.digest(baseline.packed(fullrow)))
-            self.assertEqual(metadata['ovh_policy_commit'], baseline.OVH_POLICY)
-            output = io.BytesIO()
-            # sha now needs the real stdout bytes hash for verified replay.
-            metadata['stdout_sha256'] = baseline.digest(raw)
-            baseline.write(next(cstate.rglob('*.metadata.json')), baseline.packed(metadata))
-            with patch.object(baseline, 'CSTATE', cstate), patch.object(baseline, 'ovh') as lock, patch.object(os, 'environ', dict(os.environ, GIFT1B_TARGET='enwik8-L3')), patch.object(baseline.sys, 'stdout', SimpleNamespace(buffer=output)):
-                self.assertEqual(baseline.python_shim(args, '/synthetic/python'), 0)
-                lock.assert_not_called()
-            self.assertEqual(output.getvalue(), raw)
+            state, calls = Path(temp), []
+            code, output = self.invoke(state, self.fake_helper([('CLEAN', self.RAW, 0)], calls))
+            self.assertEqual((code, output, len(calls)), (0, self.RAW, 1))
+            row = dict(src='enwik8', level=3, g=65536, n=4096, rep=0, **json.loads(self.RAW))
+            self.assertEqual(self.metadata(state)['row_sha256'], baseline.digest(baseline.packed(row)))
+            with patch.object(baseline, 'ovh') as unused:
+                code, output = self.invoke(state, self.fake_helper([], []))
+                unused.assert_not_called()
+            self.assertEqual((code, output), (0, self.RAW))
 
-    def test_loaded_repeat_keeps_raw_stdout_but_does_not_feed_original_reader(self):
+    def test_loaded_is_retried_alone_with_identical_arguments_until_first_clean(self):
         with tempfile.TemporaryDirectory(prefix='gift1b-c-shim-') as temp:
-            cstate, output = Path(temp), io.BytesIO()
-            args = ['-B', str(baseline.RUNNER / 'evidence/hw-gift-1/sweep.py'), 'enwik8', '65536', '4096', '0']
-            def run_locked(command, receipt_path, stdout_path=None):
-                baseline.write(receipt_path, b'{"status":"LOADED"}\n')
-                baseline.write(stdout_path, b'{"samples":[],"peak_kib":7}\n')
-                return 77
-            with patch.object(baseline, 'CSTATE', cstate), patch.object(baseline, 'ovh', return_value=SimpleNamespace(run_locked=run_locked)), patch.object(baseline, 'sha', return_value='c' * 64), patch.object(os, 'environ', dict(os.environ, GIFT1B_TARGET='enwik8-L3')), patch.object(baseline.sys, 'stdout', SimpleNamespace(buffer=output)):
-                self.assertEqual(baseline.python_shim(args, '/synthetic/python'), 77)
-            self.assertEqual(output.getvalue(), b'')
-            self.assertTrue(next(cstate.rglob('*.stdout')).exists())
-            self.assertEqual(json.loads(next(cstate.rglob('*.metadata.json')).read_bytes())['returncode'], 77)
+            state, calls = Path(temp), []
+            code, output = self.invoke(state, self.fake_helper([('LOADED', b'', 77), ('CLEAN', self.RAW, 0)], calls))
+            self.assertEqual((code, output), (0, self.RAW))
+            self.assertEqual(calls[0], calls[1])
+            meta = self.metadata(state)
+            self.assertEqual([a['status'] for a in meta['attempts']], ['LOADED', 'CLEAN'])
+            self.assertIsNone(meta['attempts'][0]['row_sha256'])
+            self.assertEqual(meta['load_amendment_commit'], baseline.LOAD_AMENDMENT)
+            for attempt in meta['attempts']:
+                self.assertTrue((state / 'enwik8-L3' / attempt['receipt_path']).is_file())
+                self.assertTrue((state / 'enwik8-L3' / attempt['raw_stdout_path']).is_file())
 
-    def test_loaded_start_without_child_stdout_still_records_rejection(self):
+    def test_three_loaded_attempts_block_and_a_fourth_is_never_started(self):
         with tempfile.TemporaryDirectory(prefix='gift1b-c-shim-') as temp:
-            cstate, output = Path(temp), io.BytesIO()
-            args = ['-B', str(baseline.RUNNER / 'evidence/hw-gift-1/sweep.py'), 'enwik8', '65536', '4096', '0']
-            def run_locked(command, receipt_path, stdout_path=None):
-                baseline.write(receipt_path, b'{"status":"LOADED","command_started":false}\n')
-                baseline.write(stdout_path, b'')
-                return 77
-            with patch.object(baseline, 'CSTATE', cstate), patch.object(baseline, 'ovh', return_value=SimpleNamespace(run_locked=run_locked)), patch.object(baseline, 'sha', return_value='c' * 64), patch.object(os, 'environ', dict(os.environ, GIFT1B_TARGET='enwik8-L3')), patch.object(baseline.sys, 'stdout', SimpleNamespace(buffer=output)):
-                self.assertEqual(baseline.python_shim(args, '/synthetic/python'), 77)
-            metadata = json.loads(next(cstate.rglob('*.metadata.json')).read_bytes())
-            self.assertEqual(metadata['returncode'], 77)
-            self.assertIsNone(metadata['row_sha256'])
-            self.assertEqual(output.getvalue(), b'')
+            state, calls = Path(temp), []
+            code, output = self.invoke(state, self.fake_helper([('LOADED', b'', 77)] * 3, calls))
+            self.assertEqual((code, output, len(calls)), (78, b'', 3))
+            meta = self.metadata(state)
+            self.assertEqual(meta['status'], 'BLOCKED')
+            self.assertEqual(len(meta['attempts']), 3)
+            code, output = self.invoke(state, self.fake_helper([], []))
+            self.assertEqual((code, output), (78, b''))
+
+    def test_error_stops_without_retry_even_if_the_host_is_loaded(self):
+        with tempfile.TemporaryDirectory(prefix='gift1b-c-shim-') as temp:
+            state, calls = Path(temp), []
+            code, output = self.invoke(state, self.fake_helper([('ERROR', b'bad child output', 9)], calls))
+            self.assertEqual((code, output, len(calls)), (9, b'', 1))
+            self.assertEqual(self.metadata(state)['status'], 'ERROR')
+            self.assertEqual(self.invoke(state, self.fake_helper([], [])), (9, b''))
+
+    def test_attempt_counts_count_logical_keys_and_every_loaded_attempt(self):
+        records = [dict(attempts=[dict(status='CLEAN')]),
+                   dict(attempts=[dict(status='LOADED'), dict(status='CLEAN')])]
+        self.assertEqual(baseline.repeat_counts(records), dict(planned_repeats=60, started_repeats=2, retaken_repeats=1, loaded_attempts=1))
 
 
 if __name__ == '__main__':

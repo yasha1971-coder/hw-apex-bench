@@ -9,6 +9,8 @@ import importlib.util
 import json
 from pathlib import Path
 import tempfile
+import tarfile
+import io
 import unittest
 from unittest import mock
 
@@ -42,6 +44,70 @@ def clean_benchmark_entry(row,host):
                  waiting_since_utc="2026-11-24T00:00:02+00:00",start=boundary(3),end=boundary(4))
     return dict(g=row["g"],n=row["n"],rep=row["rep"],receipt=receipt,
                 row_sha256=report.hashlib.sha256(packed(row)).hexdigest())
+
+
+def pack_payload(folder,payload):
+    raw=io.BytesIO()
+    with tarfile.open(fileobj=raw,mode="w") as archive:
+        for name,data in sorted(payload.items()):
+            info=tarfile.TarInfo(name)
+            info.size=len(data)
+            archive.addfile(info,io.BytesIO(data))
+    (folder/"attempts.tar.gz").write_bytes(gzip.compress(raw.getvalue(),mtime=0))
+    save(folder/"attempts.json",dict(schema="hw-gift-1b-attempts-v1",archive_file="attempts.tar.gz",
+                                   archive_sha256=report.sha(folder/"attempts.tar.gz"),
+                                   files=[dict(path=name,bytes=len(data),sha256=report.hashlib.sha256(data).hexdigest())
+                                          for name,data in sorted(payload.items())]))
+
+
+def fixture_attempts(folder,run,rows,reader):
+    payload={}
+    logical=[*run["benchmark_runs"],*([run["blocked_repeat"]] if "blocked_repeat" in run else [])]
+    for repeat in logical:
+        key=repeat["g"],repeat["n"],repeat["rep"]
+        row=rows[key]
+        if "attempts" not in repeat:
+            repeat["attempts"]=[dict(attempt=1,status="CLEAN",receipt=copy.deepcopy(repeat["receipt"]),row_sha256=repeat["row_sha256"])]
+        if "receipt" in repeat:
+            repeat["attempts"][-1].update(receipt=copy.deepcopy(repeat["receipt"]),row_sha256=repeat["row_sha256"])
+        for attempt in repeat["attempts"]:
+            receipt=attempt["receipt"]
+            name=f"{report.frame_name(key[0])}-{key[1]}-{key[2]}/attempt-{attempt['attempt']}/ovh-bench.json"
+            attempt["receipt_path"]=name
+            native={k:v for k,v in row.items() if k not in ("src","level","g","n","rep")}
+            output=packed(native) if reader=="c" and receipt["command_started"] else b""
+            receipt.update(stdout_sha256=report.hashlib.sha256(output).hexdigest(),stderr_sha256=report.hashlib.sha256(b"").hexdigest())
+            payload[name+".stdout"],payload[name+".stderr"]=output,b""
+            if receipt["command_started"]:
+                if reader=="pyzstd":
+                    raw_name=str(Path(name).with_name("row.json")).replace("\\","/")
+                    attempt["raw_row_path"]=raw_name
+                    payload[raw_name]=packed(row)
+                else:
+                    attempt["raw_stdout_path"]=name+".stdout"
+                    attempt["raw_stdout_sha256"]=report.hashlib.sha256(output).hexdigest()
+            else:
+                attempt["raw_row_path"]=None
+            payload[name]=packed(receipt)
+        if "receipt" in repeat:
+            repeat["receipt"]=copy.deepcopy(repeat["attempts"][-1]["receipt"])
+    run.update(load_amendment_commit=report.LOAD_AMENDMENT,planned_repeats=70 if reader=="pyzstd" else 60,
+               started_repeats=len(logical),retaken_repeats=sum(len(r["attempts"])>1 for r in logical),
+               loaded_attempts=sum(a["status"]=="LOADED" for r in logical for a in r["attempts"]))
+    pack_payload(folder,payload)
+
+
+def loaded_attempt(receipt,index):
+    receipt=copy.deepcopy(receipt)
+    receipt.update(status="LOADED",command_started=False,returncode=None,
+                   ps_command="ps -eo pid,user,pcpu,comm --sort=-pcpu | head -8",
+                   ps_top8="    PID USER     %CPU COMMAND\n    123 other    9.9 synthetic\n",
+                   ps_captured_utc=f"2026-11-24T00:00:{index*3+2:02d}+00:00",
+                   waiting_since_utc=f"2026-11-24T00:00:{index*3-1:02d}+00:00")
+    for name,second in (("start",index*3),("end",index*3+1)):
+        receipt[name].update(loadavg_raw="1.10 0.40 0.30 1/100 123\n",
+                             timestamp_utc=f"2026-11-24T00:00:{second:02d}+00:00")
+    return dict(attempt=index,status="LOADED",receipt=receipt,row_sha256=None,raw_row_path=None)
 
 
 class OfflineContract(unittest.TestCase):
@@ -99,6 +165,7 @@ class OfflineContract(unittest.TestCase):
             run.update(ovh_policy_commit=report.POLICY,ovh_bench_sha256="f"*64,benchmark_runs=[])
             save(folder / "run.json", run)
             archives, controls, old_archives = [], [], []
+            all_py_rows={}
             for grid_index, g in enumerate(report.GS):
                 name = report.frame_name(g)
                 input_bytes = report.INPUT[src][0]
@@ -125,6 +192,8 @@ class OfflineContract(unittest.TestCase):
                                          samples=[[rep*10000 + i*97, i+10, base+rep*100+i, i+20] for i in range(1000)]))
                 (folder / f"samples-{name}.jsonl.gz").write_bytes(gzip.compress(b"".join(packed(row) for row in rows), mtime=0))
                 run["benchmark_runs"].extend(clean_benchmark_entry(row,host) for row in rows)
+                all_py_rows.update({(row["g"],row["n"],row["rep"]):row for row in rows})
+            fixture_attempts(folder,run,all_py_rows,"pyzstd")
             save(folder / "run.json",run)
             save(folder / "archives.json", archives)
             save(folder / "controls.json", controls)
@@ -134,6 +203,7 @@ class OfflineContract(unittest.TestCase):
             c_folder.mkdir(parents=True)
             c_controls = []
             c_benchmark_runs=[]
+            all_c_rows={}
             for archive in old_archives:
                 g = archive["g"]
                 py_rows = [json.loads(line) for line in gzip.decompress((folder/f"samples-{g}.jsonl.gz").read_bytes()).splitlines()]
@@ -149,6 +219,7 @@ class OfflineContract(unittest.TestCase):
                                            samples=[[p[0],p[2],p[3]] for p in py_row["samples"]]))
                 (c_folder/f"samples-{g}.jsonl.gz").write_bytes(gzip.compress(b"".join(packed(r) for r in c_rows),mtime=0))
                 c_benchmark_runs.extend(clean_benchmark_entry(row,host) for row in c_rows if row["rep"]>=0)
+                all_c_rows.update({(row["g"],row["n"],row["rep"]):row for row in c_rows if row["rep"]>=0})
             c_host = {k:host[k] for k in ("cpu","cpu_affinity","kernel","os","host_boot_sha256")}
             c_host.update(zstd_commit=report.ZSTD_COMMIT,zstd_linked="1.5.7",worker_sha256=report.C_WORKER_SHA256,
                           pair_sha256=report.C_PAIR_SHA256,adapter_sha256=report.C_ADAPTER_SHA256,
@@ -163,6 +234,7 @@ class OfflineContract(unittest.TestCase):
                            load_start=snapshot(0,1),load_end=snapshot(10,11),load_accepted=True,
                            ovh_policy_commit=report.POLICY,ovh_bench_sha256="f"*64,benchmark_runs=c_benchmark_runs,
                            source_sha256={name:report.canonical_source_sha(report.REPO,name) for name in report.C_SOURCE_PATHS})
+            fixture_attempts(c_folder,acecore,all_c_rows,"c")
             save(c_folder/"acecore.json",acecore)
 
     @classmethod
@@ -177,7 +249,7 @@ class OfflineContract(unittest.TestCase):
         for path, content in self.saved.items():
             path.write_bytes(content)
 
-    def change(self, name, mutate, *, gzip_rows=False, repair_sums=True):
+    def change(self, name, mutate, *, gzip_rows=False, repair_sums=True, sync_artifact=True):
         path = self.folder / name
         self.saved.setdefault(path, path.read_bytes())
         if gzip_rows:
@@ -187,6 +259,15 @@ class OfflineContract(unittest.TestCase):
         else:
             data = json.loads(path.read_bytes())
             mutate(data)
+            if name=="run.json" and sync_artifact:
+                for artifact in ("attempts.tar.gz","attempts.json"):
+                    artifact_path=self.folder/artifact
+                    self.saved.setdefault(artifact_path,artifact_path.read_bytes())
+                rows={}
+                for g in report.GS:
+                    for row in [json.loads(line) for line in gzip.decompress((self.folder/f"samples-{report.frame_name(g)}.jsonl.gz").read_bytes()).splitlines()]:
+                        rows[row["g"],row["n"],row["rep"]]=row
+                fixture_attempts(self.folder,data,rows,"pyzstd")
             save(path, data)
         if repair_sums:
             checksum = self.folder / "SHA256SUMS"
@@ -392,6 +473,134 @@ class OfflineContract(unittest.TestCase):
         self.change("run.json",lambda r:r["benchmark_runs"][0].update(row_sha256="0"*64))
         with self.assertRaisesRegex(ValueError,"row binding"):
             self.verify()
+
+    def test_loaded_twice_then_first_clean_is_accepted(self):
+        def mutate(run):
+            repeat=run["benchmark_runs"][0]
+            first=loaded_attempt(repeat["receipt"],1)
+            second=loaded_attempt(repeat["receipt"],2)
+            third=copy.deepcopy(repeat["attempts"][-1])
+            third["attempt"]=3
+            third["receipt"]["waiting_since_utc"]="2026-11-24T00:00:08+00:00"
+            third["receipt"]["start"]["timestamp_utc"]="2026-11-24T00:00:09+00:00"
+            third["receipt"]["end"]["timestamp_utc"]="2026-11-24T00:00:10+00:00"
+            repeat.update(attempts=[first,second,third],receipt=third["receipt"])
+        self.change("run.json",mutate)
+        result=self.verify()
+        self.assertEqual(result["retry_counts"]["retaken_repeats"],1)
+        self.assertEqual(result["retry_counts"]["loaded_attempts"],2)
+        self.assertEqual(result["retry_counts"]["started_repeats"],70)
+
+    def test_clean_repeat_must_not_be_retimed(self):
+        def mutate(run):
+            repeat=run["benchmark_runs"][0]
+            extra=copy.deepcopy(repeat["attempts"][0])
+            extra["attempt"]=2
+            repeat["attempts"].append(extra)
+        self.change("run.json",mutate)
+        with self.assertRaisesRegex(ValueError,"first CLEAN wins"):
+            self.verify()
+
+    def test_four_attempts_are_prohibited(self):
+        def mutate(run):
+            repeat=run["benchmark_runs"][0]
+            repeat["attempts"]=[loaded_attempt(repeat["receipt"],i) for i in range(1,4)]+[copy.deepcopy(repeat["attempts"][0])]
+            repeat["attempts"][-1]["attempt"]=4
+        self.change("run.json",mutate)
+        with self.assertRaisesRegex(ValueError,"one to three total"):
+            self.verify()
+
+    def test_nonzero_child_is_fatal_even_when_loaded(self):
+        def mutate(run):
+            repeat=run["benchmark_runs"][0]
+            first=loaded_attempt(repeat["receipt"],1)
+            first["receipt"].update(command_started=True,returncode=5)
+            final=copy.deepcopy(repeat["attempts"][0])
+            final["attempt"]=2
+            repeat["attempts"]=[first,final]
+        self.change("run.json",mutate)
+        with self.assertRaisesRegex(ValueError,"ERROR/nonzero"):
+            self.verify()
+
+    def test_retry_counter_tamper_is_rejected(self):
+        self.change("run.json",lambda run:run.update(retaken_repeats=99),sync_artifact=False)
+        with self.assertRaisesRegex(ValueError,"retry counter"):
+            self.verify()
+
+    def test_missing_loaded_ps_is_rejected(self):
+        def mutate(run):
+            repeat=run["benchmark_runs"][0]
+            first=loaded_attempt(repeat["receipt"],1)
+            first["receipt"].pop("ps_top8")
+            final=copy.deepcopy(repeat["attempts"][0]);final["attempt"]=2
+            repeat["attempts"]=[first,final]
+        self.change("run.json",mutate)
+        with self.assertRaisesRegex(ValueError,"ps_top8"):
+            self.verify()
+
+    def test_attempt_tar_path_escape_is_rejected_without_extraction(self):
+        with tempfile.TemporaryDirectory(prefix="hw-gift-1b-unsafe-tar-") as directory:
+            folder=Path(directory)
+            pack_payload(folder,{"../escape":b"invented"})
+            with self.assertRaisesRegex(ValueError,"unsafe attempt artifact path"):
+                report.verify_attempt_artifact(folder)
+
+    def test_attempt_tar_symlink_is_rejected_without_extraction(self):
+        with tempfile.TemporaryDirectory(prefix="hw-gift-1b-link-tar-") as directory:
+            folder=Path(directory)
+            raw=io.BytesIO()
+            with tarfile.open(fileobj=raw,mode="w") as archive:
+                member=tarfile.TarInfo("link");member.type=tarfile.SYMTYPE;member.linkname="../escape"
+                archive.addfile(member)
+            (folder/"attempts.tar.gz").write_bytes(gzip.compress(raw.getvalue(),mtime=0))
+            save(folder/"attempts.json",dict(schema="hw-gift-1b-attempts-v1",archive_sha256=report.sha(folder/"attempts.tar.gz"),
+                                           files=[dict(path="link",bytes=0,sha256=report.hashlib.sha256(b"").hexdigest())]))
+            with self.assertRaisesRegex(ValueError,"nonregular member"):
+                report.verify_attempt_artifact(folder)
+
+    def test_attempt_tar_duplicate_member_is_rejected(self):
+        with tempfile.TemporaryDirectory(prefix="hw-gift-1b-duplicate-tar-") as directory:
+            folder=Path(directory);raw=io.BytesIO()
+            with tarfile.open(fileobj=raw,mode="w") as archive:
+                for _ in range(2):
+                    archive.addfile(tarfile.TarInfo("duplicate"),io.BytesIO(b""))
+            (folder/"attempts.tar.gz").write_bytes(gzip.compress(raw.getvalue(),mtime=0))
+            save(folder/"attempts.json",dict(schema="hw-gift-1b-attempts-v1",archive_sha256=report.sha(folder/"attempts.tar.gz"),
+                                           files=[dict(path="duplicate",bytes=0,sha256=report.hashlib.sha256(b"").hexdigest())]))
+            with self.assertRaisesRegex(ValueError,"duplicate attempt archive"):
+                report.verify_attempt_artifact(folder)
+
+    def test_three_loaded_attempts_produce_blocked_report_without_statistics(self):
+        original=json.loads((self.folder/"run.json").read_bytes())
+        key=(65536,4096,0)
+        rows=[json.loads(line) for line in gzip.decompress((self.folder/"samples-65536.jsonl.gz").read_bytes()).splitlines()]
+        row=next(r for r in rows if (r["g"],r["n"],r["rep"])==key)
+        repeat=original["benchmark_runs"][0]
+        attempts=[loaded_attempt(repeat["receipt"],index) for index in range(1,4)]
+        blocked=dict(g=key[0],n=key[1],rep=key[2],attempts=attempts)
+        record=copy.deepcopy(original)
+        record.update(reader="pyzstd",status="BLOCKED: load",chunk="enwik8-L3",benchmark_runs=[],
+                      blocked_repeat=blocked,ps_top8=attempts[-1]["receipt"]["ps_top8"],load_accepted=False)
+        with tempfile.TemporaryDirectory(prefix="hw-gift-1b-blocked-fixture-") as directory:
+            evidence=Path(directory);folder=evidence/"blocked"/"pyzstd-enwik8-L3";folder.mkdir(parents=True)
+            fixture_attempts(folder,record,{key:row},"pyzstd")
+            save(folder/"BLOCKED.json",record)
+            verified=report.verify_blocked(folder,baseline_root=self.baseline)
+            self.assertEqual(verified["retry_counts"],dict(planned_repeats=70,started_repeats=1,retaken_repeats=1,loaded_attempts=3))
+            result=report.build_blocked_report(evidence,baseline_root=self.baseline)
+            self.assertIn("1 of 1 started logical repeats were retaken",result)
+            self.assertNotIn("**HIT**",result)
+            self.assertNotIn("first p50 ms",result)
+            self.assertIn("synthetic",result)
+            record["retaken_repeats"]=0
+            save(folder/"BLOCKED.json",record)
+            with self.assertRaisesRegex(ValueError,"retry counter"):
+                report.verify_blocked(folder,baseline_root=self.baseline)
+            record["retaken_repeats"]=1
+            record["blocked_repeat"]["attempts"].pop()
+            save(folder/"BLOCKED.json",record)
+            with self.assertRaisesRegex(ValueError,"exactly three"):
+                report.verify_blocked(folder,baseline_root=self.baseline)
 
 
 if __name__ == "__main__":

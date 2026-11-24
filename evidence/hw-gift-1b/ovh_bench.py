@@ -93,7 +93,12 @@ def _inside(receipt_path, command):
             output, errors = result.stdout, result.stderr
             record['returncode'] = result.returncode
         record['end'] = boundary()
-        if is_loaded(record['start'], record['end']):
+        if record['command_started'] and record['returncode'] != 0:
+            # A failed byte check or worker error is fatal, even on a loaded
+            # host. Only successful timed commands may be retried for load.
+            record['status'] = 'ERROR'
+            code = record['returncode'] or 1
+        elif is_loaded(record['start'], record['end']):
             record['status'] = 'LOADED'
             code = LOADED_EXIT
         elif record['returncode'] == 0:
@@ -102,6 +107,11 @@ def _inside(receipt_path, command):
         else:
             record['status'] = 'ERROR'
             code = record['returncode'] or 1
+        if record['status'] == 'LOADED':
+            record['ps_command'] = 'ps -eo pid,user,pcpu,comm --sort=-pcpu | head -8'
+            listing = subprocess.check_output(['ps', '-eo', 'pid,user,pcpu,comm', '--sort=-pcpu'], text=True)
+            record['ps_top8'] = '\n'.join(listing.splitlines()[:8]) + '\n'
+            record['ps_captured_utc'] = utc()
     except BaseException as error:
         record.update(status='ERROR', error=f'{type(error).__name__}: {error}')
         code = 1
