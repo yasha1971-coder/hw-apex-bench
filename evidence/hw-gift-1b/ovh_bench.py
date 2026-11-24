@@ -109,8 +109,7 @@ def _inside(receipt_path, command):
             code = record['returncode'] or 1
         if record['status'] == 'LOADED':
             record['ps_command'] = 'ps -eo pid,user,pcpu,comm --sort=-pcpu | head -8'
-            listing = subprocess.check_output(['ps', '-eo', 'pid,user,pcpu,comm', '--sort=-pcpu'], text=True)
-            record['ps_top8'] = '\n'.join(listing.splitlines()[:8]) + '\n'
+            record['ps_top8'] = subprocess.check_output(['bash', '-c', record['ps_command']], text=True)
             record['ps_captured_utc'] = utc()
     except BaseException as error:
         record.update(status='ERROR', error=f'{type(error).__name__}: {error}')

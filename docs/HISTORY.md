@@ -1552,3 +1552,7 @@ measurements.
   most three attempts per logical repeat and choose the first CLEAN result only.
   A new source/metadata cohort starts after preserving the old isolated runner;
   the original timed C sources and reproduce.sh remain unchanged.
+- Retry implementation was committed/pushed as
+  `a6b8dfcde23681238c29a4b14b17288bfb715209`. All 91 synthetic tests passed
+  on Windows and ace-core. A read-only review then aligned the LOADED diagnostic
+  with the exact supplied `ps ... | head -8` pipeline before any new timing.

@@ -33,8 +33,10 @@ class OVHTests(unittest.TestCase):
             receipt = Path(directory) / 'receipt.json'
             receipt.write_bytes(bench.packed(dict(status='WAITING', command=['synthetic'], lock_path=bench.LOCK_PATH)))
             result = SimpleNamespace(returncode=child_code, stdout=b'synthetic raw output', stderr=b'')
-            with patch.object(bench, '_assert_flock_parent'), patch.object(bench, 'boundary', side_effect=[observation(start), observation(end)]), patch.object(bench.subprocess, 'check_output', return_value=' PID USER %CPU COMMAND\n 1 synthetic 0.0 process\n'), patch.object(bench.subprocess, 'run', return_value=result) as command:
+            with patch.object(bench, '_assert_flock_parent'), patch.object(bench, 'boundary', side_effect=[observation(start), observation(end)]), patch.object(bench.subprocess, 'check_output', return_value=' PID USER %CPU COMMAND\n 1 synthetic 0.0 process\n') as ps, patch.object(bench.subprocess, 'run', return_value=result) as command:
                 code = bench._inside(receipt, ['synthetic'])
+                if start == '1.01' or (end == '1.01' and child_code == 0):
+                    ps.assert_called_once_with(['bash', '-c', 'ps -eo pid,user,pcpu,comm --sort=-pcpu | head -8'], text=True)
             return code, json.loads(receipt.read_bytes()), command.call_count, Path(str(receipt) + '.stdout').read_bytes()
 
     def test_loaded_start_never_runs_the_measurement(self):
