@@ -1419,3 +1419,42 @@ measurements.
   and [ACEAPEX v2.2 publication integrity](https://github.com/yasha1971-coder/hw-apex-bench/actions/runs/45442482800).
   There are still no HW-GIFT-1b corpus checkpoints or RESULTS.md; the matching
   executor remains the only pending start condition. HW-GIFT-1 evidence is unchanged.
+
+### HW-GIFT-1b matched-host amendment — 2026-11-24
+
+- The owner approved ace-core (AMD EPYC 4344P) and required a new matched-host
+  C-reader baseline. The exact supplied amendment was committed and pushed
+  separately as `0bd4ab29794f610884e66fdb3ca6c6c93495a4e4`, before any
+  HW-GIFT-1b or new C-baseline measurements. Predictions (a) and (b) stay unchanged.
+- Both readers use CPU 0, because the unchanged HW-GIFT-1 timed worker pins that
+  CPU. Start/resume/end receipts record CPU, kernel, governor and foreign load.
+  Any observed foreign process CPU activity or known build/measurement process
+  rejects admission; OS-daemon activity is recorded separately. Rejected timed
+  attempts are preserved and excluded, then repeated in a fresh attempt.
+- The original `reproduce.sh` targets the existing `hw-gift-1` branch and skips
+  its accepted data. `c_baseline.py` therefore executes its exact bytes in a
+  separate scratch repository with a local bare origin. Only the copied
+  `chunks.py` host gate and boundary orchestration change; the diff is retained
+  as `evidence/hw-gift-1b/c-baseline/host-gate.patch`. The original C timed worker,
+  paired timer, adapter and shell are unchanged. New C checkpoints belong under
+  `evidence/hw-gift-1b/c-baseline/`, never in accepted HW-GIFT-1 paths or branch.
+- A separate server checkout exists at
+  `/home/ubuntu/hw-apex-bench-hw-gift-1b`. Its system Python is 3.10.12, so a
+  the new bootstrap helper can prepare hash-pinned standalone CPython 3.12.16
+  inside `.work/`, without changing the server's system Python or other projects.
+- No measurements or builds have started. The initial admission inspection saw
+  `fz_c99` using about 90% CPU on core 0. Two subsequent retained two-second
+  observations still found foreign-session CPU activity: see
+  `evidence/hw-gift-1b/admission/20261124T173530.json` and
+  `evidence/hw-gift-1b/admission/20261124T173759.json`. The owner was asked for a
+  quiet window; other sessions and their processes are not controlled by HW.
+- Next bounded action: pass idle admission, prepare pinned inputs/packages and
+  C build, then run and push each clean C and pyzstd checkpoint before advancing.
+  The final report requires all eight clean checkpoints on the same host/core,
+  while the original archive-size prediction still uses the accepted main data.
+  PR #90 stays draft; HW-GIFT-1 evidence on main is unchanged.
+- Final local checks passed: 53 synthetic unit tests, Python syntax, exact
+  amended protocol bytes and `git diff --check`. The tests execute no codec,
+  build, install or real timer. New experiment files disable Git text conversion
+  so raw samples, manifests and source/protocol hashes retain their exact bytes
+  when moved between the Windows controller and Linux executor.

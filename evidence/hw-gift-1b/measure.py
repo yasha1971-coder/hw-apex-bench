@@ -29,6 +29,15 @@ ROOT = HERE.parents[1]
 BASELINE = ROOT / 'evidence/hw-gift-1'
 STATE = ROOT / '.work/hw-gift-1b'
 PROTOCOL = 'c4809624beb0ad7a243163455d9c05545bc52d99'
+AMENDMENT = '0bd4ab29794f610884e66fdb3ca6c6c93495a4e4'
+AMENDMENT_TEXT = (
+    'Pre-measurement host amendment: the HW-GIFT-1 host is not available. '
+    'HW-GIFT-1b runs on ace-core (AMD EPYC 4344P); record CPU, kernel, governor, '
+    'pinned core and other load at start and end. On the same host and pinned '
+    'core, also rerun the HW-GIFT-1 C reader (evidence/hw-gift-1/reproduce.sh, '
+    'unchanged) on the same grid, so both readers share one host. HW-GIFT-1 data '
+    'on main stay unchanged. Predictions (a) and (b) unchanged.'
+)
 GS = (65536, 262144, 1048576, 4194304, 16777216, 67108864, None)
 NS = (4096, 65536)
 CHUNKS = {f'{name}-L{level}': (src, level) for name, src in
@@ -90,6 +99,19 @@ def same_or_write(path, data):
 
 def git(*args):
     return subprocess.check_output(['git', '-C', str(ROOT), *args])
+
+
+def verify_protocol_bytes(original, amended, current):
+    check(amended == original + b'\n' + AMENDMENT_TEXT.encode() + b'\n',
+          'host amendment must preserve the exact original protocol prefix')
+    check(current == amended, 'amended preregistered protocol changed')
+    return hashlib.sha256(original).hexdigest()
+
+
+def require_amended_host(cpu, model, hostname):
+    check(cpu == 0, 'matched C reader comparison requires pinned CPU 0')
+    check(hostname.split('.')[0] == 'ace-core' and 'AMD EPYC 4344P' in model,
+          'amended protocol requires ace-core AMD EPYC 4344P')
 
 
 def parse_archive(data, g, total):
@@ -175,18 +197,21 @@ def preflight(receipt_path, cpu):
           'Linux CPython executor required')
     check(git('branch', '--show-current').decode().strip() == 'hw-gift-1b', 'wrong branch')
     subprocess.run(['git', '-C', str(ROOT), 'merge-base', '--is-ancestor', PROTOCOL, 'HEAD'], check=True)
+    subprocess.run(['git', '-C', str(ROOT), 'merge-base', '--is-ancestor', AMENDMENT, 'HEAD'], check=True)
     relative = 'evidence/hw-gift-1b/CALIBRATION.md'
-    check((HERE / 'CALIBRATION.md').read_bytes() == git('show', f'{PROTOCOL}:{relative}'),
-          'preregistered protocol changed')
+    verify_protocol_bytes(git('show', f'{PROTOCOL}:{relative}'),
+                          git('show', f'{AMENDMENT}:{relative}'),
+                          (HERE / 'CALIBRATION.md').read_bytes())
     sources = [str((HERE / name).relative_to(ROOT)) for name in
-               ('CALIBRATION.md', 'measure.py', 'report.py')]
+               ('CALIBRATION.md', 'measure.py', 'report.py', 'load_guard.py')]
     check(not git('status', '--porcelain', '--', *sources).strip(), 'uncommitted runner/protocol/verifier')
+    check(cpu == 0, 'matched C reader comparison requires pinned CPU 0')
     check(len(os.sched_getaffinity(0)) > 0 and cpu in os.sched_getaffinity(0), 'CPU unavailable')
     os.sched_setaffinity(0, {cpu})
     check(os.sched_getaffinity(0) == {cpu}, 'single CPU affinity failed')
     model = next(line.split(':', 1)[1].strip() for line in
                  Path('/proc/cpuinfo').read_text().splitlines() if line.startswith('model name'))
-    check('AMD EPYC 9V74' in model, 'protocol requires HW-GIFT-1 host class AMD EPYC 9V74')
+    require_amended_host(cpu, model, platform.node())
     receipt = json.loads(receipt_path.read_bytes())
     for key in ('pyzstd_version', 'wheel_filename', 'wheel_sha256', 'wheel_path', 'pypi_version'):
         check(key in receipt, f'missing installation receipt {key}')
@@ -225,7 +250,10 @@ def preflight(receipt_path, cpu):
         check(importlib.metadata.version(dependency['name']) == dependency['version'],
               'installed dependency version mismatch')
     check(len(list(Path('/proc/self/task').iterdir())) == 1, 'worker has unexpected threads')
-    host = dict(cpu=model, cpu_affinity=[cpu], kernel=platform.release(),
+    governor_path = Path(f'/sys/devices/system/cpu/cpu{cpu}/cpufreq/scaling_governor')
+    governor = governor_path.read_text().strip() if governor_path.exists() else 'unavailable'
+    host = dict(cpu=model, hostname=platform.node(), cpu_affinity=[cpu], pinned_core=cpu,
+                governor=governor, kernel=platform.release(),
                 os=platform.freedesktop_os_release()['PRETTY_NAME'],
                 python=platform.python_version(), python_implementation=platform.python_implementation(),
                 pyzstd_version=pyzstd.__version__, zstd_version=str(pyzstd.zstd_version),
@@ -336,8 +364,17 @@ def repeat(pyzstd, part, data, info, source, src, level, n, rep, offsets):
                 peak_kib=resource.getrusage(resource.RUSAGE_SELF).ru_maxrss)
 
 
-def _run(chunk, inputs, receipt_path, cpu):
+def check_load_snapshot(value, host):
+    from load_guard import BusyHost
+    for key in ('hostname', 'cpu', 'kernel', 'pinned_core'):
+        check(value.get(key) == host[key], f'load receipt {key} differs from pinned host')
+    if value.get('governor') != host['governor']:
+        raise BusyHost('CPU governor changed within checkpoint')
+
+
+def _run(chunk, inputs, receipt_path, cpu, attempt):
     from report import verify_chunk
+    from load_guard import snapshot, require_idle, BusyHost
     if (HERE / chunk).exists():
         verify_chunk(HERE / chunk, chunk)
         print('COMPLETE_CHECKPOINT_VERIFIED_SKIP', chunk, flush=True)
@@ -354,35 +391,61 @@ def _run(chunk, inputs, receipt_path, cpu):
               f'input SHA256/size mismatch: {src}')
     offsets, offset_hashes = offset_lists(chunk)
     src, level = CHUNKS[chunk]
-    part = STATE / chunk
+    part = STATE / 'attempts' / f'{attempt:03}' / chunk
     part.mkdir(parents=True, exist_ok=True)
+    archive_state = STATE / 'archives' / chunk
+    archive_state.mkdir(parents=True, exist_ok=True)
     import fcntl
     with (part / 'lock').open('a') as lock:
         fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
+        if (part / 'REJECTED').exists():
+            raise BusyHost('attempt was rejected; retain it and select a new --attempt')
         check(not (part / 'FAILED').exists(), 'prior failed check; inspect FAILED and stop')
         run_record = dict(corpus=src, level=level, input_bytes=INPUT[src][0], input_sha256=INPUT[src][1],
                           protocol_commit=PROTOCOL, protocol_sha256=sha(HERE / 'CALIBRATION.md'),
+                          amendment_commit=AMENDMENT,
+                          original_protocol_sha256=hashlib.sha256(git('show',
+                              f'{PROTOCOL}:evidence/hw-gift-1b/CALIBRATION.md')).hexdigest(),
                           runner_commit=git('log', '-1', '--format=%H', '--',
-                              'evidence/hw-gift-1b/measure.py',
-                              'evidence/hw-gift-1b/report.py').decode().strip(),
+                              'evidence/hw-gift-1b/measure.py', 'evidence/hw-gift-1b/report.py',
+                              'evidence/hw-gift-1b/load_guard.py').decode().strip(),
                           runner_sha256=sha(HERE / 'measure.py'), verifier_sha256=sha(HERE / 'report.py'),
+                          guard_sha256=sha(HERE / 'load_guard.py'), attempt=attempt,
                           host=host, offset_source_sha256=offset_hashes,
                           sample_columns=['offset', 'open_ns', 'first_ns', 'repeat_ns'],
                           timer='time.perf_counter_ns; open separate; seek+read first and repeat',
                           peak_rss_scope='chunk process, including archives, source buffers and prior repeats')
-        # HEAD advances after a checkpoint commit. A resumed partial chunk stays
-        # anchored to its original commit, and source hashes must still match.
-        saved = part / 'run.json'
+        # Source commits remain fixed when checkpoint commits advance HEAD.
+        saved = part / 'run-base.json'
         if saved.exists():
             original = json.loads(saved.read_bytes())
             run_record['runner_commit'] = original['runner_commit']
         same_or_write(saved, packed(run_record))
+        same_or_write(archive_state / 'encoder.json', packed(dict(
+            corpus=src, level=level, host=host, protocol_sha256=run_record['protocol_sha256'],
+            runner_sha256=run_record['runner_sha256'])))
+        phase, current_load = 'start', None
         try:
+            current_load = snapshot(cpu)
+            require_idle(current_load)
+            check_load_snapshot(current_load, host)
+            start_path, resumes_path = part / 'load-start.json', part / 'load-resume-starts.json'
+            resumes = json.loads(resumes_path.read_bytes()) if resumes_path.exists() else []
+            if start_path.exists():
+                start_load = json.loads(start_path.read_bytes())
+                require_idle(start_load)
+                check_load_snapshot(start_load, host)
+                resumes.append(current_load)
+            else:
+                start_load = current_load
+                write(start_path, packed(start_load))
+            write(resumes_path, packed(resumes))
+            phase = 'measurement'
             publish = part / 'publish'
             publish.mkdir(exist_ok=True)
             archives, controls = [], []
             for g in GS:
-                data, info = archive_once(pyzstd, part, inputs / src, level, g)
+                data, info = archive_once(pyzstd, archive_state, inputs / src, level, g)
                 archives.append(info)
                 records = []
                 with (inputs / src).open('rb', buffering=0) as source:
@@ -396,6 +459,14 @@ def _run(chunk, inputs, receipt_path, cpu):
                 write(publish / f'samples-{label(g)}.jsonl.gz',
                       gzip.compress(b''.join(map(packed, records)), compresslevel=6, mtime=0))
             check(sha(inputs / src) == INPUT[src][1], 'source changed during measurement')
+            phase = 'end'
+            current_load = snapshot(cpu)
+            require_idle(current_load)
+            check_load_snapshot(current_load, host)
+            write(part / 'load-end.json', packed(current_load))
+            run_record.update(load_start=start_load, load_end=current_load,
+                              load_resume_starts=resumes, load_accepted=True)
+            write(part / 'run.json', packed(run_record))
             write(publish / 'archives.json', packed(archives))
             write(publish / 'controls.json', packed(controls))
             write(publish / 'run.json', packed(run_record))
@@ -406,20 +477,24 @@ def _run(chunk, inputs, receipt_path, cpu):
             publish.replace(HERE / chunk)
             fsync_dir(HERE)
             verify_chunk(HERE / chunk, chunk)
+        except BusyHost as error:
+            write(part / 'REJECTED', packed(dict(phase=phase, load=current_load, reason=str(error))))
+            raise
         except Exception as error:
             write(part / 'FAILED', f'{type(error).__name__}: {error}\n'.encode())
             raise
     print('LOCAL_CHECKPOINT_READY_TO_PUBLISH', chunk, flush=True)
 
 
-def run(chunk, inputs, receipt_path, cpu):
+def run(chunk, inputs, receipt_path, cpu, attempt=1):
     check(sys.platform == 'linux', 'Linux CPython executor required')
+    check(type(attempt) is int and attempt >= 1, '--attempt must be a positive integer')
     import fcntl
     STATE.mkdir(parents=True, exist_ok=True)
-    # One timing worker across every corpus/level, not only within one chunk.
+    # Share this lock with the matched C reader; only one measured chunk at once.
     with (STATE / 'lock').open('a') as lock:
         fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
-        _run(chunk, inputs, receipt_path, cpu)
+        _run(chunk, inputs, receipt_path, cpu, attempt)
 
 
 def main():
@@ -429,12 +504,20 @@ def main():
     parser.add_argument('--inputs', type=Path)
     parser.add_argument('--receipt', type=Path)
     parser.add_argument('--cpu', type=int, default=0)
+    parser.add_argument('--attempt', type=int, default=1)
     args = parser.parse_args()
     if args.action == 'files':
         print('\n'.join(f'evidence/hw-gift-1b/{args.chunk}/{name}' for name in [*FILES, 'SHA256SUMS']))
         return
     check(args.inputs is not None and args.receipt is not None, '--inputs and --receipt required')
-    run(args.chunk, args.inputs, args.receipt, args.cpu)
+    try:
+        run(args.chunk, args.inputs, args.receipt, args.cpu, args.attempt)
+    except RuntimeError as error:
+        from load_guard import BusyHost
+        if isinstance(error, BusyHost):
+            print(f'REJECTED_BUSY_HOST: {error}', file=sys.stderr)
+            raise SystemExit(2)
+        raise
 
 
 if __name__ == '__main__':

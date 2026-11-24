@@ -7,15 +7,22 @@ archives remain in the runner's durable state rather than in these checkpoints.
 """
 import argparse
 from decimal import Decimal, localcontext
+from datetime import datetime
 import gzip
 import hashlib
 import json
 from pathlib import Path, PurePosixPath
 import re
+import subprocess
 import sys
 
 HERE = Path(__file__).resolve().parent
 BASELINE = HERE.parent / "hw-gift-1"
+REPO = HERE.parents[1]
+C_FILES = [f"samples-{g}.jsonl.gz" for g in (65536, 262144, 1048576, 4194304, 16777216, 67108864)] + ["archives.json", "controls.json", "run.json"]
+C_SOURCE_PATHS = ("evidence/hw-gift-1/reproduce.sh", "evidence/hw-gift-1/sweep.py",
+                  "evidence/hw-gift-1/pair.c", "evidence/hw-gift-1/report.py", "codecs/native/zstd_seekable.c")
+C_SOURCE_COMMIT = "85603dc8f52f20ae5fa09c50820bc30000be726f"
 GS = (65536, 262144, 1048576, 4194304, 16777216, 67108864, None)
 NS = (4096, 65536)
 CHUNKS = {f"{name}-L{level}": (src, level) for name, src in
@@ -25,6 +32,13 @@ INPUT = {
     "silesia.tar": (211947520, "a667bac80089b3d04d5496772149e632f0758974b0579d743cd8d6e5e0d63eb2"),
 }
 CAL = "c4809624beb0ad7a243163455d9c05545bc52d99"
+AMENDMENT = "0bd4ab29794f610884e66fdb3ca6c6c93495a4e4"
+ORIGINAL_PROTOCOL_SHA256 = "f8a32188585e70d68fcc3a845565a03f4b8bf5e271f9bafb586dc17eeee96164"
+AMENDED_PROTOCOL_SHA256 = "37b0d137cccaed3cef5ab1ebb1a05d07c55616b4b0d11c819135c7be4e591649"
+ZSTD_COMMIT = "f8745da6ff1ad1e7bab384bd1f9d742439278e99"
+C_WORKER_SHA256 = "d2fd5a7b30fca6d56d51d56db983633d7bfa00aab4ccb831468669dd2b50c351"
+C_PAIR_SHA256 = "620f3193f65e6a5b67dcd973ea161fe2f3c9566053e586102042b78f3e50a959"
+C_ADAPTER_SHA256 = "e077315773eade4fa8417845ce2caa4d669a01d94721153d596fe953d83638d3"
 PYZSTD_VERSION = "0.20.0"
 WHEEL_FILENAME = "pyzstd-0.20.0-py3-none-any.whl"
 WHEEL_SHA256 = "9c6aff5aa9b12bb14d51f724915f176db9b187214d66d93d990c75ff054483c6"
@@ -47,6 +61,19 @@ FILES = [f"samples-{frame_name(g)}.jsonl.gz" for g in GS] + ["archives.json", "c
 def sha(path):
     with Path(path).open("rb") as stream:
         return hashlib.file_digest(stream, "sha256").hexdigest()
+
+
+def canonical_source_sha(source_root, name):
+    """Hash the pinned Git blob, unaffected by checkout newline conversion.
+
+    Nongit roots support standalone synthetic fixtures with explicitly supplied
+    bytes. In a repository, an absent pinned object or path is an error.
+    """
+    source_root = Path(source_root)
+    if (source_root / ".git").exists():
+        data = subprocess.check_output(["git", "-C", str(source_root), "show", f"{C_SOURCE_COMMIT}:{name}"])
+        return hashlib.sha256(data).hexdigest()
+    return sha(source_root / name)
 
 
 def is_int(x, minimum=0):
@@ -76,6 +103,46 @@ def baseline_offsets(folder, n, rep):
     offsets = [p[0] for p in matches[0]["samples"]]
     check(len(offsets) == 1000 and all(is_int(p) for p in offsets), "invalid saved offset list")
     return offsets
+
+
+def verify_load_snapshot(snapshot, host):
+    check(isinstance(snapshot, dict), "missing load snapshot")
+    for key in ("hostname", "cpu", "kernel", "governor"):
+        check(snapshot.get(key) == host.get(key), f"load snapshot differs from host {key}")
+    check(type(snapshot.get("pinned_core")) is int and snapshot["pinned_core"] == 0
+          and host.get("cpu_affinity") == [0], "load snapshot pinned core mismatch")
+    check(is_int(snapshot.get("interval_ns"), 1000000000), "load observation interval is too short")
+    times = []
+    for key in ("sample_start_utc", "sample_end_utc"):
+        check(isinstance(snapshot.get(key), str), "missing load sample UTC timestamp")
+        try:
+            value = datetime.fromisoformat(snapshot[key].replace("Z", "+00:00"))
+        except ValueError:
+            raise ValueError("invalid load sample UTC timestamp") from None
+        check(value.utcoffset() is not None and value.utcoffset().total_seconds() == 0, "load sample timestamp is not UTC")
+        times.append(value)
+    check(times[1] >= times[0], "load observation timestamps are reversed")
+    other = snapshot.get("other_load")
+    check(isinstance(other, dict) and other.get("busy") is False
+          and other.get("active_processes") == [] and other.get("inspection_errors") == [], "other workload present or load inspection failed")
+    averages = snapshot.get("loadavg")
+    check(isinstance(averages, list) and len(averages) == 3
+          and all(type(v) in (float, int) and v >= 0 for v in averages), "missing kernel load averages")
+    return times
+
+
+def verify_load_receipt(run, host):
+    check(run.get("load_accepted") is True, "load guard did not accept this attempt")
+    start = verify_load_snapshot(run.get("load_start"), host)
+    end = verify_load_snapshot(run.get("load_end"), host)
+    check(end[0] >= start[1], "end load observation predates start")
+    resumes = run.get("load_resume_starts", [])
+    check(isinstance(resumes, list), "invalid resume load receipts")
+    previous_end = start[1]
+    for resume in resumes:
+        current = verify_load_snapshot(resume, host)
+        check(previous_end <= current[0] and current[1] <= end[0], "resume load observations are out of order")
+        previous_end = current[1]
 
 
 def verify_installation_receipt(receipt, host):
@@ -156,21 +223,27 @@ def verify_chunk(folder, chunk, *, baseline_root=BASELINE, calibration_path=None
     check(run.get("corpus") == src and run.get("level") == level, "run identity mismatch")
     check((run.get("input_bytes"), run.get("input_sha256")) == INPUT[src], "input identity mismatch")
     check(run.get("protocol_commit") == CAL, "protocol was not the preregistered first commit")
+    check(run.get("amendment_commit") == AMENDMENT, "host amendment is not anchored")
+    check(run.get("original_protocol_sha256") == ORIGINAL_PROTOCOL_SHA256, "original prediction bytes mismatch")
     calibration_path = Path(calibration_path) if calibration_path else folder.parent / "CALIBRATION.md"
-    check(run.get("protocol_sha256") == sha(calibration_path), "protocol bytes mismatch")
+    check(run.get("protocol_sha256") == sha(calibration_path) == AMENDED_PROTOCOL_SHA256, "protocol bytes mismatch")
     check(isinstance(run.get("runner_commit"), str) and COMMIT.fullmatch(run["runner_commit"]), "invalid runner commit")
     check(is_hash(run.get("runner_sha256")), "invalid runner SHA-256")
     check(is_hash(run.get("verifier_sha256")), "invalid verifier SHA-256")
+    check(is_hash(run.get("guard_sha256")), "invalid load guard SHA-256")
+    check(is_int(run.get("attempt"), 1), "invalid attempt identity")
     host = run.get("host")
     check(isinstance(host, dict), "missing host receipt")
-    check("AMD EPYC 9V74" in host.get("cpu", ""), "wrong host class")
+    check("AMD EPYC 4344P" in host.get("cpu", "") and host.get("hostname") == "ace-core", "wrong amended host")
     affinity = host.get("cpu_affinity")
-    check(isinstance(affinity, list) and len(affinity) == 1 and is_int(affinity[0]), "one pinned CPU required")
+    check(affinity == [0], "the same pinned CPU 0 is required")
+    check(isinstance(host.get("governor"), str) and host["governor"], "missing CPU governor")
     check(host.get("python_implementation") == "CPython", "CPython required")
     check(all(isinstance(host.get(k), str) and host[k] for k in
               ("kernel", "os", "python", "pyzstd_version", "zstd_version")), "incomplete host/build receipt")
     check(is_hash(host.get("host_boot_sha256")), "missing host/boot identity")
     verify_installation_receipt(host.get("installation_receipt"), host)
+    verify_load_receipt(run, host)
     baseline = baseline_root / chunk
     source_hashes = run.get("offset_source_sha256")
     check(isinstance(source_hashes, dict) and source_hashes, "missing offset source hashes")
@@ -217,12 +290,83 @@ def verify_chunk(folder, chunk, *, baseline_root=BASELINE, calibration_path=None
     return dict(run=run, archives=archives, controls=controls, rows=rows)
 
 
-def verify_all(evidence_root=HERE, *, baseline_root=BASELINE):
+def verify_c_chunk(folder, chunk, *, baseline_root=BASELINE, source_root=REPO, calibration_path=None):
+    """Verify the newly measured C baseline; do not re-audit historical timings."""
+    folder, baseline_root, source_root = Path(folder), Path(baseline_root), Path(source_root)
+    check(chunk in CHUNKS and folder.is_dir(), f"missing C baseline checkpoint: {chunk}")
+    check({p.name for p in folder.iterdir()} == set(C_FILES + ["SHA256SUMS", "acecore.json"]), "unexpected or missing C checkpoint files")
+    check(all((folder / name).is_file() and not (folder / name).is_symlink()
+              for name in C_FILES + ["SHA256SUMS", "acecore.json"]), "C checkpoint contains nonregular file")
+    expected_sums = "".join(f"{sha(folder / name)}  {name}\n" for name in sorted(C_FILES)).encode()
+    check((folder / "SHA256SUMS").read_bytes() == expected_sums, "bad C SHA256SUMS")
+    receipt = load(folder / "acecore.json")
+    check(receipt.get("original_sha256sums_sha256") == sha(folder / "SHA256SUMS"), "C wrapper does not bind original checksum manifest")
+    check(receipt.get("amendment_commit") == AMENDMENT, "C host amendment is not anchored")
+    calibration_path = Path(calibration_path) if calibration_path else folder.parent.parent / "CALIBRATION.md"
+    check(receipt.get("protocol_sha256") == sha(calibration_path) == AMENDED_PROTOCOL_SHA256, "C amended protocol bytes mismatch")
+    sources = receipt.get("source_sha256")
+    check(isinstance(sources, dict) and set(C_SOURCE_PATHS).issubset(sources), "missing unchanged C source hashes")
+    for name in C_SOURCE_PATHS:
+        check(sources[name] == canonical_source_sha(source_root, name), "C timed/original source changed: " + name)
+    run = load(folder / "run.json")
+    src, level = CHUNKS[chunk]
+    check(run.get("corpus") == src and run.get("level") == level, "C run identity mismatch")
+    check((run.get("input_bytes"), run.get("input_sha256")) == INPUT[src], "C input identity mismatch")
+    host, wrapper_host = run.get("host"), receipt.get("host")
+    check(isinstance(host, dict) and isinstance(wrapper_host, dict), "missing C host receipt")
+    check("AMD EPYC 4344P" in host.get("cpu", "") and wrapper_host.get("hostname") == "ace-core"
+          and host.get("cpu_affinity") == [0], "wrong C amended host/core")
+    for key in ("cpu", "cpu_affinity", "kernel", "os", "host_boot_sha256"):
+        check(host.get(key) == wrapper_host.get(key), f"C wrapper differs from measured host {key}")
+    check(host.get("zstd_commit") == ZSTD_COMMIT and host.get("zstd_linked") == "1.5.7", "wrong C zstd revision")
+    check((host.get("worker_sha256"), host.get("pair_sha256"), host.get("adapter_sha256"))
+          == (C_WORKER_SHA256, C_PAIR_SHA256, C_ADAPTER_SHA256), "C timed source differs from HW-GIFT-1")
+    for key in ("encoder_sha256", "reader_sha256", "worker_sha256", "pair_sha256", "adapter_sha256", "host_boot_sha256"):
+        check(is_hash(host.get(key)), "missing C build/host fingerprint")
+    verify_load_receipt(receipt, wrapper_host)
+    archives, controls = load(folder / "archives.json"), load(folder / "controls.json")
+    check(isinstance(archives, list) and len(archives) == 6, "wrong C archive grid")
+    check(isinstance(controls, list) and len(controls) == 12, "wrong C control grid")
+    rows, expected_controls = {}, []
+    offsets = {(n, rep): baseline_offsets(baseline_root / chunk, n, rep) for n in NS for rep in range(5)}
+    for archive, g in zip(archives, GS[:-1]):
+        check(archive.get("g") == g and is_int(archive.get("bytes"), 1) and is_hash(archive.get("sha256")), "invalid C archive identity")
+        data = gzip.decompress((folder / f"samples-{g}.jsonl.gz").read_bytes())
+        records = [json.loads(line) for line in data.splitlines()]
+        check(len(records) == 12, "incomplete C sample grid")
+        for row, (n, rep) in zip(records, ((n, rep) for n in NS for rep in range(-1, 5))):
+            check((row.get("src"), row.get("level"), row.get("g"), row.get("n"), row.get("rep"))
+                  == (src, level, g, n, rep), "C sample identity/order mismatch")
+            if rep == -1:
+                check(row.get("negative") == "native error" and
+                      (row.get("archive_bytes"), row.get("archive_sha256")) == (archive["bytes"], archive["sha256"]), "C negative control or archive binding failed")
+                expected_controls.append({key: row[key] for key in ("g", "n", "archive_sha256", "negative")})
+            else:
+                samples = row.get("samples")
+                check(isinstance(samples, list) and len(samples) == 1000 and
+                      all(isinstance(p, list) and len(p) == 3 and all(is_int(v) for v in p) for p in samples), "invalid C raw samples")
+                check([p[0] for p in samples] == offsets[n, rep], "C offsets differ from retained HW-GIFT-1")
+                check(is_int(row.get("peak_kib"), 1), "invalid C RSS receipt")
+                rows[g, n, rep] = row
+    check(controls == expected_controls, "C corruption inventory differs from raw controls")
+    return dict(run=run, acecore=receipt, archives=archives, controls=controls, rows=rows)
+
+
+def verify_all(evidence_root=HERE, *, baseline_root=BASELINE, source_root=REPO):
     evidence_root = Path(evidence_root)
     chunks = {c: verify_chunk(evidence_root / c, c, baseline_root=baseline_root) for c in CHUNKS}
     runs = [chunks[c]["run"] for c in CHUNKS]
-    for key in ("host", "runner_commit", "runner_sha256", "verifier_sha256", "protocol_commit", "protocol_sha256"):
+    for key in ("host", "runner_commit", "runner_sha256", "verifier_sha256", "guard_sha256", "protocol_commit", "protocol_sha256", "amendment_commit", "original_protocol_sha256"):
         check(all(run[key] == runs[0][key] for run in runs), f"checkpoints cross {key} boundary")
+    c_chunks = {c: verify_c_chunk(evidence_root / "c-baseline" / c, c, baseline_root=baseline_root,
+                                source_root=source_root) for c in CHUNKS}
+    c_runs = [c_chunks[c]["run"] for c in CHUNKS]
+    check(all(run["host"] == c_runs[0]["host"] for run in c_runs), "C checkpoints cross host/build boundary")
+    for c in CHUNKS:
+        c_host = c_chunks[c]["acecore"]["host"]
+        for key in ("cpu", "hostname", "cpu_affinity", "kernel", "os", "host_boot_sha256", "governor"):
+            check(c_host.get(key) == runs[0]["host"].get(key), f"readers do not share the same host/core: {key}")
+    chunks["_c_baseline"] = c_chunks
     return chunks
 
 
@@ -236,6 +380,16 @@ def metrics(rows):
     return tuple(sorted(p[col] for p in per)[2] for col in range(5))
 
 
+def c_metrics(rows):
+    check(len(rows) == 5, "five C repeats required for reduction")
+    per = []
+    for row in rows:
+        first = sorted(p[1] for p in row["samples"])
+        repeat = sorted(p[2] for p in row["samples"])
+        per.append((first[499], first[989], repeat[499], repeat[989]))
+    return tuple(sorted(p[col] for p in per)[2] for col in range(4))
+
+
 def ms(ns):
     check(is_int(ns), "latency must be integer ns")
     return f"{ns // 1000000}.{ns % 1000000:06d}"
@@ -245,6 +399,14 @@ def percent(numerator, denominator):
     with localcontext() as context:
         context.prec = 40
         return f"{Decimal(numerator) * 100 / Decimal(denominator):.6f}"
+
+
+def ratio(numerator, denominator):
+    if denominator == 0:
+        return "n/a (zero baseline)"
+    with localcontext() as context:
+        context.prec = 40
+        return f"{Decimal(numerator) / Decimal(denominator):.6f}"
 
 
 def predictions(chunks, *, baseline_root=BASELINE):
@@ -267,10 +429,12 @@ def predictions(chunks, *, baseline_root=BASELINE):
 
 
 def build_report(chunks, *, baseline_root=BASELINE):
-    check(set(chunks) == set(CHUNKS), "report requires all four verified checkpoints")
+    check(set(chunks) == set(CHUNKS) | {"_c_baseline"} and set(chunks["_c_baseline"]) == set(CHUNKS),
+          "report requires all four pyzstd and all four matched-host C checkpoints")
     host = chunks["enwik8-L3"]["run"]["host"]
     out = ["# pyzstd SeekableZstdFile: frame size and first-read cost", "",
-           "[Preregistered protocol](CALIBRATION.md) · [Host and wheel receipt](enwik8-L3/run.json)", "",
+           "[Preregistered protocol and pre-measurement host amendment](CALIBRATION.md) · "
+           "[Host and wheel receipt](enwik8-L3/run.json) · [Matched-host C receipt](c-baseline/enwik8-L3/acecore.json)", "",
            "Archives are resident in RAM; each pair uses a new io.BytesIO and SeekableZstdFile. "
            "Open is timed separately and excluded from first-read seek+read. Repeat is the immediate same seek+read. "
            "Both returned byte strings and lengths were checked against the source outside timing.", "",
@@ -279,8 +443,10 @@ def build_report(chunks, *, baseline_root=BASELINE):
            "size delta is relative to the 64 MiB archive at the same corpus and level. "
            "Default means max_frame_content_size was omitted (1 GiB; one corpus frame).", "",
            f"Measured host: {host['cpu']}; affinity {host['cpu_affinity']}; {host['os']}; "
-           f"CPython {host['python']}; pyzstd {host['pyzstd_version']}; linked zstd {host['zstd_version']}. "
-           "Absolute times apply to this host and this resident-archive workload.", ""]
+           f"CPython {host['python']}; pyzstd {host['pyzstd_version']}; linked zstd {host['zstd_version']}; "
+           f"governor {host['governor']}. Absolute times apply to ace-core and this resident-archive workload. "
+           "Start, resume and end load observations passed the retained idle-host guard; "
+           "the same pinned core was used for the new C baseline. Historical HW-GIFT-1 host timings remain separate.", ""]
     for src in ("enwik8", "silesia.tar"):
         out.extend([f"## {src}", "", "|level|frame B|default|read B|archive B|size delta %|first p50 ms|first p99 ms|repeat p50 ms|repeat p99 ms|open p50 ms|",
                     "|---:|---:|:---:|---:|---:|---:|---:|---:|---:|---:|---:|"])
@@ -310,8 +476,27 @@ def build_report(chunks, *, baseline_root=BASELINE):
     for d in gates["deviations"]:
         out.append(f"|[{d['chunk']}]({d['chunk']}/archives.json)|{d['g']}|{d['old_bytes']}|{d['new_bytes']}|"
                    f"{d['difference_bytes']}|{percent(d['difference_bytes'],d['old_bytes'])}|{'PASS' if d['passed'] else 'FAIL'}|")
-    out.extend(["", "HW-GIFT-1 measured the zstd contrib C reader; this experiment measures pyzstd SeekableZstdFile. "
-                "The retained archive-size comparison does not establish an API speedup or cross-host timing ratio. "
+    out.extend(["", "## Matched-host C-reader comparison", "",
+                "The following measurements rerun the HW-GIFT-1 C timed reader on ace-core/core 0. "
+                "The shared grid has no C default-1-GiB row. These comparisons are informational; "
+                "predictions (a) and (b) above are unchanged and (b) uses the original HW-GIFT-1 archive sizes. "
+                "C times its native region operation; pyzstd times seek+read. Reader and linked-library versions "
+                "are recorded separately, so these are observations of the complete paths rather than an isolated API effect.", "",
+                "|corpus|level|frame B|read B|C archive B|pyzstd archive B|C first p50 ms|pyzstd first p50 ms|C first p99 ms|pyzstd first p99 ms|pyzstd/C first p50|C repeat p50 ms|pyzstd repeat p50 ms|",
+                "|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|"])
+    for chunk, (src, level) in CHUNKS.items():
+        c_data, py_data = chunks["_c_baseline"][chunk], chunks[chunk]
+        c_sizes = {a["g"]: a["bytes"] for a in c_data["archives"]}
+        py_sizes = {a["g"]: a["bytes"] for a in py_data["archives"]}
+        for g in GS[:-1]:
+            for n in NS:
+                c50, c99, cr50, _ = c_metrics([c_data["rows"][g, n, rep] for rep in range(5)])
+                _, p50, p99, pr50, _ = metrics([py_data["rows"][g, n, rep] for rep in range(5)])
+                out.append(f"|{src}|{level}|{g}|{n}|{c_sizes[g]}|{py_sizes[g]}|{ms(c50)}|{ms(p50)}|{ms(c99)}|{ms(p99)}|{ratio(p50,c50)}|{ms(cr50)}|{ms(pr50)}|")
+    out.extend(["", "Matched-host C raw samples and load receipts: " + " · ".join(
+        f"[{c}](c-baseline/{c}/)" for c in CHUNKS), "",
+                "HW-GIFT-1 measured the zstd contrib C reader; this experiment measures pyzstd SeekableZstdFile. "
+                "The retained archive-size comparison with original main data does not establish a cross-host timing ratio. "
                 "Compressed archive SHA-256 and geometry are retained encoder receipts; checkpoint SHA256SUMS "
                 "binds the committed samples and receipts.", ""])
     return "\n".join(out)
@@ -319,13 +504,19 @@ def build_report(chunks, *, baseline_root=BASELINE):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("action", choices=("verify", "report"))
+    parser.add_argument("action", choices=("verify", "verify-c", "report"))
     parser.add_argument("chunk", nargs="?", choices=CHUNKS)
     parser.add_argument("--output", type=Path)
     args = parser.parse_args()
-    if args.action == "verify":
+    if args.action in ("verify", "verify-c"):
         check(args.output is None, "verify does not write")
-        if args.chunk:
+        if args.action == "verify-c":
+            if args.chunk:
+                verify_c_chunk(HERE / "c-baseline" / args.chunk, args.chunk)
+            else:
+                for chunk in CHUNKS:
+                    verify_c_chunk(HERE / "c-baseline" / chunk, chunk)
+        elif args.chunk:
             verify_chunk(HERE / args.chunk, args.chunk)
         else:
             verify_all()

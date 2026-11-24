@@ -1,0 +1,12 @@
+--- original/chunks.py
++++ ace-core/chunks.py
+@@ -162 +162 @@
+-    check('AMD EPYC 9V74' in model and 'Debian GNU/Linux 13' in result['os'] and result['zstd_linked']=='1.5.7' and
++    check('AMD EPYC 4344P' in model and 'Ubuntu' in result['os'] and platform.node() == 'ace-core' and result['zstd_linked']=='1.5.7' and
+@@ -280 +280,5 @@
+-    main()
++    import importlib.util as _gift_import
++    _gift_spec = _gift_import.spec_from_file_location('_gift1b_boundary', os.environ['GIFT1B_BOUNDARY_MODULE'])
++    _gift_module = _gift_import.module_from_spec(_gift_spec)
++    _gift_spec.loader.exec_module(_gift_module)
++    _gift_module.boundary(main, HERE, Path(os.environ['GIFT_STATE']), sys.argv[1:])

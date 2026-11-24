@@ -10,6 +10,7 @@ import json
 from pathlib import Path
 import tempfile
 import unittest
+from unittest import mock
 
 SPEC = importlib.util.spec_from_file_location("gift1b_report", Path(__file__).with_name("report.py"))
 report = importlib.util.module_from_spec(SPEC)
@@ -39,7 +40,8 @@ class OfflineContract(unittest.TestCase):
         cls.evidence.mkdir()
         cls.baseline.mkdir()
         cls.calibration = cls.evidence / "CALIBRATION.md"
-        cls.calibration.write_bytes(Path(__file__).with_name("CALIBRATION.md").read_bytes())
+        cls.calibration.write_text(Path(__file__).with_name("CALIBRATION.md").read_text(encoding="utf-8"),
+                                   encoding="utf-8", newline="\n")
         for chunk, (src, level) in report.CHUNKS.items():
             folder, baseline = cls.evidence / chunk, cls.baseline / chunk
             folder.mkdir()
@@ -52,7 +54,8 @@ class OfflineContract(unittest.TestCase):
                 name = f"samples-{g}.jsonl.gz"
                 (baseline / name).write_bytes(gzip.compress(raw, mtime=0))
                 source_hashes[name] = report.sha(baseline / name)
-            host = dict(cpu="AMD EPYC 9V74 synthetic test host", cpu_affinity=[0], kernel="test", os="synthetic",
+            host = dict(cpu="AMD EPYC 4344P synthetic test host", hostname="ace-core", governor="performance",
+                        cpu_affinity=[0], kernel="test", os="synthetic",
                         python="3.12.14", python_implementation="CPython", pyzstd_version=report.PYZSTD_VERSION,
                         zstd_version="synthetic", host_boot_sha256="a" * 64,
                         installation_receipt=dict(pyzstd_version=report.PYZSTD_VERSION, pypi_version=report.PYZSTD_VERSION,
@@ -69,7 +72,16 @@ class OfflineContract(unittest.TestCase):
             receipt["installed_files_sha256"] = {"pyzstd/__init__.py":"a"*64,"backports/zstd/_zstd.so":"b"*64}
             run = dict(corpus=src, level=level, input_bytes=report.INPUT[src][0], input_sha256=report.INPUT[src][1],
                        protocol_commit=report.CAL, protocol_sha256=report.sha(cls.calibration), runner_commit="b" * 40,
-                       runner_sha256="c" * 64, verifier_sha256="d" * 64, host=host, offset_source_sha256=source_hashes)
+                       amendment_commit=report.AMENDMENT, original_protocol_sha256=report.ORIGINAL_PROTOCOL_SHA256,
+                       runner_sha256="c" * 64, verifier_sha256="d" * 64, guard_sha256="e"*64, attempt=1,
+                       host=host, offset_source_sha256=source_hashes)
+            def snapshot(start, end):
+                return dict(sample_start_utc=f"2026-11-24T00:00:{start:02d}+00:00",
+                            sample_end_utc=f"2026-11-24T00:00:{end:02d}+00:00", interval_ns=1000000000,
+                            hostname=host["hostname"], cpu=host["cpu"], kernel=host["kernel"],
+                            governor=host["governor"], pinned_core=0, loadavg=[0.0,0.0,0.0],
+                            other_load=dict(busy=False, active_processes=[], inspection_errors=[]))
+            run.update(load_start=snapshot(0,1), load_end=snapshot(10,11), load_accepted=True, load_resume_starts=[])
             save(folder / "run.json", run)
             archives, controls, old_archives = [], [], []
             for grid_index, g in enumerate(report.GS):
@@ -101,6 +113,37 @@ class OfflineContract(unittest.TestCase):
             save(folder / "controls.json", controls)
             save(baseline / "archives.json", old_archives)
             sums(folder)
+            c_folder = cls.evidence / "c-baseline" / chunk
+            c_folder.mkdir(parents=True)
+            c_controls = []
+            for archive in old_archives:
+                g = archive["g"]
+                py_rows = [json.loads(line) for line in gzip.decompress((folder/f"samples-{g}.jsonl.gz").read_bytes()).splitlines()]
+                c_rows = []
+                for n in report.NS:
+                    negative = dict(src=src, level=level, g=g, n=n, rep=-1, negative="native error",
+                                    archive_bytes=archive["bytes"], archive_sha256=archive["sha256"])
+                    c_rows.append(negative)
+                    c_controls.append({key:negative[key] for key in ("g","n","archive_sha256","negative")})
+                    for rep in range(5):
+                        py_row = next(r for r in py_rows if r["n"]==n and r["rep"]==rep)
+                        c_rows.append(dict(src=src,level=level,g=g,n=n,rep=rep,peak_kib=100,
+                                           samples=[[p[0],p[2],p[3]] for p in py_row["samples"]]))
+                (c_folder/f"samples-{g}.jsonl.gz").write_bytes(gzip.compress(b"".join(packed(r) for r in c_rows),mtime=0))
+            c_host = {k:host[k] for k in ("cpu","cpu_affinity","kernel","os","host_boot_sha256")}
+            c_host.update(zstd_commit=report.ZSTD_COMMIT,zstd_linked="1.5.7",worker_sha256=report.C_WORKER_SHA256,
+                          pair_sha256=report.C_PAIR_SHA256,adapter_sha256=report.C_ADAPTER_SHA256,
+                          encoder_sha256="c"*64,reader_sha256="d"*64)
+            save(c_folder/"run.json",dict(corpus=src,level=level,input_bytes=report.INPUT[src][0],input_sha256=report.INPUT[src][1],host=c_host))
+            save(c_folder/"archives.json",old_archives)
+            save(c_folder/"controls.json",c_controls)
+            (c_folder/"SHA256SUMS").write_bytes("".join(f"{report.sha(c_folder/name)}  {name}\n" for name in sorted(report.C_FILES)).encode())
+            acecore = dict(amendment_commit=report.AMENDMENT,protocol_sha256=report.sha(cls.calibration),
+                           original_sha256sums_sha256=report.sha(c_folder/"SHA256SUMS"),
+                           host={k:host[k] for k in ("hostname","cpu","cpu_affinity","kernel","os","host_boot_sha256","governor")},
+                           load_start=snapshot(0,1),load_end=snapshot(10,11),load_accepted=True,
+                           source_sha256={name:report.canonical_source_sha(report.REPO,name) for name in report.C_SOURCE_PATHS})
+            save(c_folder/"acecore.json",acecore)
 
     @classmethod
     def tearDownClass(cls):
@@ -228,6 +271,65 @@ class OfflineContract(unittest.TestCase):
             for sample in anchor[None, 4096, rep]["samples"]:
                 sample[2] -= 1
         self.assertFalse(report.predictions(chunks, baseline_root=self.baseline)["latency_pass"])
+
+    def test_foreign_workload_receipt_is_rejected(self):
+        self.change("run.json",lambda r:r["load_end"]["other_load"].update(busy=True))
+        with self.assertRaisesRegex(ValueError,"other workload"):
+            self.verify()
+
+    def test_resume_load_inspection_errors_are_rejected(self):
+        def mutate(run):
+            snapshot=copy.deepcopy(run["load_start"])
+            snapshot.update(sample_start_utc="2026-11-24T00:00:05+00:00",sample_end_utc="2026-11-24T00:00:06+00:00")
+            snapshot["other_load"]["inspection_errors"].append("synthetic /proc inspection error")
+            run["load_resume_starts"].append(snapshot)
+        self.change("run.json",mutate)
+        with self.assertRaisesRegex(ValueError,"load inspection failed"):
+            self.verify()
+
+    def test_governor_change_is_rejected(self):
+        self.change("run.json",lambda r:r["load_end"].update(governor="powersave"))
+        with self.assertRaisesRegex(ValueError,"governor"):
+            self.verify()
+
+    def test_c_manifest_binding_is_rejected(self):
+        path=self.evidence/"c-baseline"/"enwik8-L3"/"acecore.json"
+        self.saved[path]=path.read_bytes()
+        value=json.loads(path.read_bytes())
+        value["original_sha256sums_sha256"]="0"*64
+        save(path,value)
+        with self.assertRaisesRegex(ValueError,"bind original"):
+            report.verify_c_chunk(path.parent,"enwik8-L3",baseline_root=self.baseline)
+
+    def test_c_timed_source_mismatch_is_rejected(self):
+        path=self.evidence/"c-baseline"/"enwik8-L3"/"acecore.json"
+        self.saved[path]=path.read_bytes()
+        value=json.loads(path.read_bytes())
+        value["source_sha256"]["evidence/hw-gift-1/sweep.py"]="0"*64
+        save(path,value)
+        with self.assertRaisesRegex(ValueError,"source changed"):
+            report.verify_c_chunk(path.parent,"enwik8-L3",baseline_root=self.baseline)
+
+    def test_c_repeat_percentiles_and_same_host_report(self):
+        chunks=report.verify_all(self.evidence,baseline_root=self.baseline)
+        c=chunks["_c_baseline"]["enwik8-L3"]["rows"]
+        self.assertEqual(report.c_metrics([c[65536,4096,r] for r in range(5)]),(1699,2189,519,1009))
+        self.assertIn("Matched-host C-reader comparison",report.build_report(chunks,baseline_root=self.baseline))
+
+    def test_c_source_hash_uses_pinned_git_blob(self):
+        with mock.patch.object(report.subprocess,"check_output",return_value=b"canonical LF\n") as command:
+            actual=report.canonical_source_sha(report.REPO,"evidence/hw-gift-1/sweep.py")
+        self.assertEqual(actual,report.hashlib.sha256(b"canonical LF\n").hexdigest())
+        command.assert_called_once_with(["git","-C",str(report.REPO),"show",
+                                         report.C_SOURCE_COMMIT+":evidence/hw-gift-1/sweep.py"])
+
+    def test_c_source_hash_nongit_fixture_uses_fixture_bytes(self):
+        with tempfile.TemporaryDirectory(prefix="hw-gift-1b-nongit-fixture-") as directory:
+            path=Path(directory)/"synthetic.py"
+            path.write_bytes(b"invented CRLF\r\n")
+            with mock.patch.object(report.subprocess,"check_output") as command:
+                self.assertEqual(report.canonical_source_sha(directory,path.name),report.sha(path))
+            command.assert_not_called()
 
 
 if __name__ == "__main__":
