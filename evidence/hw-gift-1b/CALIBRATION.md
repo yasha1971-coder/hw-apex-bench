@@ -32,3 +32,5 @@ checkpoint to the branch, resumable. Stop on any failed check.
 Deliver: evidence/hw-gift-1b/RESULTS.md with a table in the HW-GIFT-1 form
 (size delta vs 64 MiB, first-read p50, open p50), plus a column for the
 default. Open the PR as draft. Nothing outside hw-apex-bench.
+
+Pre-measurement host amendment: the HW-GIFT-1 host is not available. HW-GIFT-1b runs on ace-core (AMD EPYC 4344P); record CPU, kernel, governor, pinned core and other load at start and end. On the same host and pinned core, also rerun the HW-GIFT-1 C reader (evidence/hw-gift-1/reproduce.sh, unchanged) on the same grid, so both readers share one host. HW-GIFT-1 data on main stay unchanged. Predictions (a) and (b) unchanged.
