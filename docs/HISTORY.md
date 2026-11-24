@@ -1556,3 +1556,28 @@ measurements.
   `a6b8dfcde23681238c29a4b14b17288bfb715209`. All 91 synthetic tests passed
   on Windows and ace-core. A read-only review then aligned the LOADED diagnostic
   with the exact supplied `ps ... | head -8` pipeline before any new timing.
+- Fresh enwik8-L3 C execution used public code
+  `98548d27894b9f8e72d03aa5be3f1e6e728f8735`, with the old isolated runner
+  preserved separately and no old rows reused. Both publication-integrity CI
+  workflows passed for that code. At 2026-11-24 19:04:14 UTC it stopped as
+  `BLOCKED: load`: 45 CLEAN logical repeats were retained, then 16 MiB / 64 KiB
+  repeat 0 exhausted three LOADED attempts. The first ran successfully (exit 0)
+  with load 1.00 -> 1.08; the next two saw 1.08 at both boundaries and did not
+  start a timed worker. Retries were immediate and used the same command/seed/
+  offsets under the blocking shared lock. No fourth attempt was run.
+- New-cohort counters: 1 of 46 started logical repeats retaken, 3 LOADED
+  attempts, 45 CLEAN; 60 repeats planned. The old 58/50-CLEAN rejected cohorts
+  remain excluded. No complete C checkpoint or pyzstd measurement exists.
+  Raw evidence is in `evidence/hw-gift-1b/blocked/c-enwik8-L3/`: 349 files in
+  `attempts.tar.gz`, SHA-256
+  `5cbf4cc04a00521499f850b27865008f4d8c1f1ae948c4ac969530b12dfff1e0`,
+  with a per-file manifest and BLOCKED.json. All three literal top-eight ps
+  outputs remain in the receipts. The last lists session processes `2.1.284`,
+  `2.1.314`, sshd and the HW Python parent; it does not identify a compiler or
+  establish which process caused the load threshold crossing.
+- `report.py blocked` independently verified the artifacts on ace-core and
+  Windows; regenerated RESULTS.md is byte-identical. Binary transfer hashes
+  match the server. Accepted HW-GIFT-1 remains unchanged. PR #90 stays draft.
+  Timing is stopped at the owner's bounded load condition. Next bounded action
+  requires an owner-coordinated quiet window and explicit continuation policy
+  for the exhausted repeat; do not reset its attempt counter or pause others.
