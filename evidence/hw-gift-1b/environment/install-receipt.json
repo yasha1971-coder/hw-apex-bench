@@ -1,0 +1,88 @@
+{
+  "fetched_at_utc": "2026-11-24T18:02:28.727334+00:00",
+  "installed_files_base": "/home/ubuntu/hw-apex-bench-hw-gift-1b/.work/hw-gift-1b/venv/lib/python3.12/site-packages",
+  "installed_files_sha256": {
+    "backports/zstd/__init__.py": "47cdd7c51b1c95138c51b308df07e85c4ba1d34e7ca3f42b2a96b35539330755",
+    "backports/zstd/__init__.pyi": "d61133bf39b75bf2e3df34ca43ab61cfcfd77123c70dc5c9c017d1452cdb1387",
+    "backports/zstd/_cffi/__init__.py": "29f071e7f109e2312afbd06992fa449698ce7e15d448466cedc6767d72b4f427",
+    "backports/zstd/_cffi/_blocks_output_buffer.py": "4669fbd2f3d383618d11dbe2d902983d2b0509d853fcec8da79bbcea636979ba",
+    "backports/zstd/_cffi/_common.py": "5953dde675fafe0d670669659b5c22de5be76c3e0d745cd61e7902be0016e780",
+    "backports/zstd/_cffi/buffer.py": "114f447abc4ed6a61c44ead4e82721cb87427d1b5d6242d646f36166a539552c",
+    "backports/zstd/_cffi/compressor.py": "96ba6d71a48a41b9888630bd56a948ea6c92f012f346b5da310679eb515b4474",
+    "backports/zstd/_cffi/decompressor.py": "2f2f861f1b49b8a362d4e9d5f648ded80c78d73b8080e3b135830e9d011697eb",
+    "backports/zstd/_cffi/zstddict.py": "030f36aa509be2d61de6d1eeecd931754aca7d4ab08e8ee7cdf7c38fb4142def",
+    "backports/zstd/_compat.py": "353bc2e5dc2231f2d9245f038b435e27beb99c4aac044df5bcd4f305d03c71b3",
+    "backports/zstd/_shutil.py": "ae514e668125d77ff51fb68fd8cb5b420e7e0e06783851651e825dc45cc76576",
+    "backports/zstd/_streams.py": "8b8e943815c748d030e540a023400cb87fb13f75c2f0615a63ec42ef9f156c92",
+    "backports/zstd/_zstd.cpython-312-x86_64-linux-gnu.so": "dafddc5ce29d0f891c4f0c7605bb8e0c6c2fc529fd9d10e13a31537e3c1c6698",
+    "backports/zstd/_zstd.py": "a01fae6f16979b0d3e8957e00a62141818e511b9c5e1ba5de79f101cad92a455",
+    "backports/zstd/_zstdfile.py": "563cff2a6b4f1b58b8de6428335cb9e77214a717e2fe5519d53504dea8ed1ebb",
+    "backports/zstd/py.typed": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "backports/zstd/tarfile.py": "bc53d904b1a3961858556b1f76622ddd7ba7e9b43d4dec56f8022d5ed4735d7e",
+    "backports/zstd/tarfile.pyi": "91f6f1770050d1f82f28e09e9d141dd4e5628a024023cfa9ac90fca691637b62",
+    "backports/zstd/zipfile/__init__.py": "2dbfdbfa5365a600ef134fd85bb9df3d016643d79eb406b372a574fcd923a869",
+    "backports/zstd/zipfile/__init__.pyi": "31755bc6023970204326e42f8670179177592988cebcd8f6d0e64d89ce00baf2",
+    "backports/zstd/zipfile/__main__.py": "e418cdbb27adf0063e3cec28179ac6b7bdb6ac743bb49d157f450551fcf38be2",
+    "backports/zstd/zipfile/_path/__init__.py": "0a50ad8096d7db5b2798909331d56d37992bcc7adaf5462243b37bb1dfc7b0b0",
+    "backports/zstd/zipfile/_path/__init__.pyi": "bccdf0f6da7c226dc9ba2b717cde26f0950df68c795b37c58cc4ec88a46f92f3",
+    "backports/zstd/zipfile/_path/glob.py": "edefea638f250b9e011526141d83b222a06466a68e357b6d780a8b4173d802f7",
+    "backports/zstd/zipfile/_path/glob.pyi": "e8f5c0eee1f9df4edeeec58f387cb9d26d55a8603cdb25736a80c92648071f8d",
+    "pyzstd/__init__.py": "9ae8acf623c257d392001efa11c776ab9b03ae2e9e3c23825f5fc369fe55e1de",
+    "pyzstd/__main__.py": "5fa5ea8afd77145274a97326c6e550e01545400d4dc875d08404f879ce01ca8f",
+    "pyzstd/_seekable_zstdfile.py": "6b28a9ba31397d2aeeec0e31a2ec09566a6a5c3bedece770e5ffb6bd5b9769d6",
+    "pyzstd/_version.py": "34621e7137b510433b51e063292278bc25ae183585d595f83dc916d8482ec69b",
+    "pyzstd/py.typed": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "typing_extensions.py": "4040ca1a1ecbee00d1385c12a93084d1c5bd46f0b774f07e5ae7e91c4f55e696"
+  },
+  "installed_python": "/home/ubuntu/hw-apex-bench-hw-gift-1b/.work/hw-gift-1b/venv/bin/python",
+  "pypi_json_sha256": "4cebf7459c5ec114220664339d39eb58f51d5b1902ede9bf5ef740f395e30c6f",
+  "pypi_url": "https://pypi.org/pypi/pyzstd/json",
+  "pypi_version": "0.20.0",
+  "pyzstd_version": "0.20.0",
+  "runtime": {
+    "distributions": {
+      "backports.zstd": "1.8.0",
+      "pip": "26.3",
+      "pyzstd": "0.20.0",
+      "typing_extensions": "4.16.0"
+    },
+    "executable": "/home/ubuntu/hw-apex-bench-hw-gift-1b/.work/hw-gift-1b/venv/bin/python",
+    "python": "3.12.16",
+    "pyzstd_version": "0.20.0",
+    "site_packages": "/home/ubuntu/hw-apex-bench-hw-gift-1b/.work/hw-gift-1b/venv/lib/python3.12/site-packages",
+    "zstd_version": "1.5.7"
+  },
+  "setup_script_sha256": "eff0ca44776cc12aed69c577f614628ab100f657e6a1cedd34fbe9265c180f1b",
+  "wheel_filename": "pyzstd-0.20.0-py3-none-any.whl",
+  "wheel_path": "/home/ubuntu/hw-apex-bench-hw-gift-1b/.work/hw-gift-1b/wheels/pyzstd-0.20.0-py3-none-any.whl",
+  "wheel_sha256": "9c6aff5aa9b12bb14d51f724915f176db9b187214d66d93d990c75ff054483c6",
+  "wheels": [
+    {
+      "name": "backports-zstd",
+      "pypi_json_sha256": "46e7c61ed80debde8476ad35823201b96714cb3683f56a3470c99138d4a534c3",
+      "pypi_url": "https://pypi.org/pypi/backports-zstd/1.8.0/json",
+      "version": "1.8.0",
+      "wheel_filename": "backports_zstd-1.8.0-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl",
+      "wheel_path": "/home/ubuntu/hw-apex-bench-hw-gift-1b/.work/hw-gift-1b/wheels/backports_zstd-1.8.0-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl",
+      "wheel_sha256": "f9e9aa28a44db1897fb637f037175566f3b75890d4bae6cae7ba34f1df1e0804"
+    },
+    {
+      "name": "pyzstd",
+      "pypi_json_sha256": "aa4b4f2bd231b54a10840eecd94fe0ec1a7e420fe87f5ef76e6f0942b336b50c",
+      "pypi_url": "https://pypi.org/pypi/pyzstd/0.20.0/json",
+      "version": "0.20.0",
+      "wheel_filename": "pyzstd-0.20.0-py3-none-any.whl",
+      "wheel_path": "/home/ubuntu/hw-apex-bench-hw-gift-1b/.work/hw-gift-1b/wheels/pyzstd-0.20.0-py3-none-any.whl",
+      "wheel_sha256": "9c6aff5aa9b12bb14d51f724915f176db9b187214d66d93d990c75ff054483c6"
+    },
+    {
+      "name": "typing-extensions",
+      "pypi_json_sha256": "2140da00d62dde967f52d0be0ae28444f1d6a3fe603f52c83c23988c32122d5a",
+      "pypi_url": "https://pypi.org/pypi/typing-extensions/4.16.0/json",
+      "version": "4.16.0",
+      "wheel_filename": "typing_extensions-4.16.0-py3-none-any.whl",
+      "wheel_path": "/home/ubuntu/hw-apex-bench-hw-gift-1b/.work/hw-gift-1b/wheels/typing_extensions-4.16.0-py3-none-any.whl",
+      "wheel_sha256": "481caa481374e813c1b176ada14e97f1f67a4539ce9cfeb3f350d78d6370c2e8"
+    }
+  ]
+}

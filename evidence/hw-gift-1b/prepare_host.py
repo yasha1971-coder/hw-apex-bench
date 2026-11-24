@@ -1,4 +1,4 @@
-"""Download verified local prerequisites on idle ace-core; no builds or timings."""
+"""Download verified ace-core prerequisites; OVH-BENCH permits parallel setup."""
 import argparse
 from datetime import datetime, timezone
 import gzip
@@ -7,7 +7,6 @@ import json
 import os
 from pathlib import Path, PurePosixPath
 import posixpath
-import re
 import shutil
 import subprocess
 import sys
@@ -16,7 +15,7 @@ import tempfile
 import urllib.request
 import zipfile
 
-from load_guard import BusyHost, require_idle, snapshot
+from load_guard import snapshot
 
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -177,13 +176,11 @@ def prepare_zstd():
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--allow-control-load-for-preparation', action='store_true',
-                        help='allow only named control-session activity during downloads; never permits timings')
-    args = parser.parse_args()
+    parser.parse_args()
     STATE.mkdir(parents=True, exist_ok=True)
     start = snapshot(cpu=0, interval=2.0)
     write_json(STATE / "prepare-load-start.json", start)
-    require_preparation_admission(start, args.allow_control_load_for_preparation)
+    check(start.get('hostname') == 'ace-core' and 'AMD EPYC 4344P' in start.get('cpu', ''), 'wrong preparation host')
     downloads = STATE / "downloads"
     downloads.mkdir(exist_ok=True)
     python = prepare_python(downloads)
@@ -191,35 +188,13 @@ def main():
     zstd = prepare_zstd()
     end = snapshot(cpu=0, interval=2.0)
     write_json(STATE / "prepare-load-end.json", end)
-    require_preparation_admission(end, args.allow_control_load_for_preparation)
     write_json(STATE / "prepare-receipt.json", dict(
         prepared_at_utc=datetime.now(timezone.utc).isoformat(), python=python,
         corpora=corpora, zstd=zstd, load_start=start, load_end=end,
-        control_load_allowed_for_preparation=args.allow_control_load_for_preparation,
+        ovh_policy_commit='3e7201a0933030de8d3011eb658270e577e6eced',
         measurements_started=False))
     print("PREREQUISITES_VERIFIED_NO_BUILDS_OR_MEASUREMENTS")
 
 
-def require_preparation_admission(receipt, allow_control=False):
-    if not allow_control:
-        require_idle(receipt)
-        return
-    # This exception applies only to prerequisite downloads/unpacking, never to
-    # measure.py, c_baseline.py or the independent evidence acceptance verifier.
-    load = receipt.get('other_load', {})
-    identity = (receipt.get('hostname') == 'ace-core' and
-                'AMD EPYC 4344P' in receipt.get('cpu', '') and
-                receipt.get('pinned_core') == 0 and
-                type(receipt.get('interval_ns')) is int and receipt['interval_ns'] >= 1000000000)
-    controls_only = all(re.fullmatch(r'(?:claude|2\.\d+\.\d+)', p.get('comm', ''))
-                        for p in load.get('active_processes', []))
-    if not identity or load.get('inspection_errors') != [] or not controls_only:
-        raise BusyHost('preparation requires valid ace-core admission without foreign build/measurement work')
-
-
 if __name__ == "__main__":
-    try:
-        main()
-    except BusyHost as error:
-        print("PREPARATION_DEFERRED_BUSY_HOST:", error, file=sys.stderr)
-        raise SystemExit(2)
+    main()

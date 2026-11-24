@@ -30,6 +30,20 @@ def sums(folder):
         f"{report.sha(folder / name)}  {name}\n" for name in sorted(report.FILES)).encode())
 
 
+def clean_benchmark_entry(row,host):
+    def boundary(second):
+        return dict(timestamp_utc=f"2026-11-24T00:00:{second:02d}+00:00",
+                    date_u="Tue Nov 24 00:00:03 UTC 2026\n",loadavg_raw="0.50 0.40 0.30 1/100 123\n",nproc=16,
+                    hostname=host["hostname"],cpu=host["cpu"],kernel=host["kernel"],
+                    governor=host["governor"],pinned_core=0,other_processes=[])
+    receipt=dict(schema="ovh-bench-v1",policy_commit=report.POLICY,status="CLEAN",helper_sha256="f"*64,
+                 lock_path=report.BENCH_LOCK,flock_command=["flock",report.BENCH_LOCK,"python","-B","synthetic-helper.py","_inside"],
+                 command=["python","-B","synthetic-measure.py"],returncode=0,command_started=True,
+                 waiting_since_utc="2026-11-24T00:00:02+00:00",start=boundary(3),end=boundary(4))
+    return dict(g=row["g"],n=row["n"],rep=row["rep"],receipt=receipt,
+                row_sha256=report.hashlib.sha256(packed(row)).hexdigest())
+
+
 class OfflineContract(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
@@ -82,6 +96,7 @@ class OfflineContract(unittest.TestCase):
                             governor=host["governor"], pinned_core=0, loadavg=[0.0,0.0,0.0],
                             other_load=dict(busy=False, active_processes=[], inspection_errors=[]))
             run.update(load_start=snapshot(0,1), load_end=snapshot(10,11), load_accepted=True, load_resume_starts=[])
+            run.update(ovh_policy_commit=report.POLICY,ovh_bench_sha256="f"*64,benchmark_runs=[])
             save(folder / "run.json", run)
             archives, controls, old_archives = [], [], []
             for grid_index, g in enumerate(report.GS):
@@ -109,6 +124,8 @@ class OfflineContract(unittest.TestCase):
                                          archive_bytes=archive_bytes, archive_sha256=digest, peak_kib=100,
                                          samples=[[rep*10000 + i*97, i+10, base+rep*100+i, i+20] for i in range(1000)]))
                 (folder / f"samples-{name}.jsonl.gz").write_bytes(gzip.compress(b"".join(packed(row) for row in rows), mtime=0))
+                run["benchmark_runs"].extend(clean_benchmark_entry(row,host) for row in rows)
+            save(folder / "run.json",run)
             save(folder / "archives.json", archives)
             save(folder / "controls.json", controls)
             save(baseline / "archives.json", old_archives)
@@ -116,6 +133,7 @@ class OfflineContract(unittest.TestCase):
             c_folder = cls.evidence / "c-baseline" / chunk
             c_folder.mkdir(parents=True)
             c_controls = []
+            c_benchmark_runs=[]
             for archive in old_archives:
                 g = archive["g"]
                 py_rows = [json.loads(line) for line in gzip.decompress((folder/f"samples-{g}.jsonl.gz").read_bytes()).splitlines()]
@@ -130,6 +148,7 @@ class OfflineContract(unittest.TestCase):
                         c_rows.append(dict(src=src,level=level,g=g,n=n,rep=rep,peak_kib=100,
                                            samples=[[p[0],p[2],p[3]] for p in py_row["samples"]]))
                 (c_folder/f"samples-{g}.jsonl.gz").write_bytes(gzip.compress(b"".join(packed(r) for r in c_rows),mtime=0))
+                c_benchmark_runs.extend(clean_benchmark_entry(row,host) for row in c_rows if row["rep"]>=0)
             c_host = {k:host[k] for k in ("cpu","cpu_affinity","kernel","os","host_boot_sha256")}
             c_host.update(zstd_commit=report.ZSTD_COMMIT,zstd_linked="1.5.7",worker_sha256=report.C_WORKER_SHA256,
                           pair_sha256=report.C_PAIR_SHA256,adapter_sha256=report.C_ADAPTER_SHA256,
@@ -142,6 +161,7 @@ class OfflineContract(unittest.TestCase):
                            original_sha256sums_sha256=report.sha(c_folder/"SHA256SUMS"),
                            host={k:host[k] for k in ("hostname","cpu","cpu_affinity","kernel","os","host_boot_sha256","governor")},
                            load_start=snapshot(0,1),load_end=snapshot(10,11),load_accepted=True,
+                           ovh_policy_commit=report.POLICY,ovh_bench_sha256="f"*64,benchmark_runs=c_benchmark_runs,
                            source_sha256={name:report.canonical_source_sha(report.REPO,name) for name in report.C_SOURCE_PATHS})
             save(c_folder/"acecore.json",acecore)
 
@@ -272,20 +292,22 @@ class OfflineContract(unittest.TestCase):
                 sample[2] -= 1
         self.assertFalse(report.predictions(chunks, baseline_root=self.baseline)["latency_pass"])
 
-    def test_foreign_workload_receipt_is_rejected(self):
-        self.change("run.json",lambda r:r["load_end"]["other_load"].update(busy=True))
-        with self.assertRaisesRegex(ValueError,"other workload"):
-            self.verify()
+    def test_foreign_workload_is_observational_below_load_threshold(self):
+        def mutate(run):
+            process=dict(pid=123,comm="synthetic-other-job",cpu_ticks_delta=10)
+            run["load_end"]["other_load"].update(busy=True,active_processes=[process])
+            run["benchmark_runs"][0]["receipt"]["start"]["other_processes"].append(process)
+        self.change("run.json",mutate)
+        self.verify()
 
-    def test_resume_load_inspection_errors_are_rejected(self):
+    def test_resume_load_inspection_errors_are_observational(self):
         def mutate(run):
             snapshot=copy.deepcopy(run["load_start"])
             snapshot.update(sample_start_utc="2026-11-24T00:00:05+00:00",sample_end_utc="2026-11-24T00:00:06+00:00")
             snapshot["other_load"]["inspection_errors"].append("synthetic /proc inspection error")
             run["load_resume_starts"].append(snapshot)
         self.change("run.json",mutate)
-        with self.assertRaisesRegex(ValueError,"load inspection failed"):
-            self.verify()
+        self.verify()
 
     def test_governor_change_is_rejected(self):
         self.change("run.json",lambda r:r["load_end"].update(governor="powersave"))
@@ -330,6 +352,46 @@ class OfflineContract(unittest.TestCase):
             with mock.patch.object(report.subprocess,"check_output") as command:
                 self.assertEqual(report.canonical_source_sha(directory,path.name),report.sha(path))
             command.assert_not_called()
+
+    def test_load_boundary_one_point_zero_is_accepted(self):
+        def mutate(run):
+            receipt=run["benchmark_runs"][0]["receipt"]
+            receipt["start"]["loadavg_raw"]="1.0 5.00 8.00 1/100 123\n"
+            receipt["end"]["loadavg_raw"]="1.00000000000000000000 5.00 8.00 1/100 123\n"
+        self.change("run.json",mutate)
+        self.verify()
+
+    def test_loaded_one_point_zero_one_is_rejected(self):
+        self.change("run.json",lambda r:r["benchmark_runs"][0]["receipt"]["end"].update(
+            loadavg_raw="1.01 0.40 0.30 1/100 123\n"))
+        with self.assertRaisesRegex(ValueError,"LOADED"):
+            self.verify()
+
+    def test_load_threshold_compares_exact_decimals(self):
+        self.change("run.json",lambda r:r["benchmark_runs"][0]["receipt"]["start"].update(
+            loadavg_raw="1.00000000000000000001 0.40 0.30 1/100 123\n"))
+        with self.assertRaisesRegex(ValueError,"LOADED"):
+            self.verify()
+
+    def test_loaded_status_is_never_accepted(self):
+        self.change("run.json",lambda r:r["benchmark_runs"][0]["receipt"].update(status="LOADED"))
+        with self.assertRaisesRegex(ValueError,"not CLEAN"):
+            self.verify()
+
+    def test_nonblocking_lock_command_is_rejected(self):
+        self.change("run.json",lambda r:r["benchmark_runs"][0]["receipt"]["flock_command"].insert(1,"-n"))
+        with self.assertRaisesRegex(ValueError,"blocking shared flock"):
+            self.verify()
+
+    def test_missing_timed_repeat_receipt_is_rejected(self):
+        self.change("run.json",lambda r:r["benchmark_runs"].pop())
+        with self.assertRaisesRegex(ValueError,"timed-repeat receipts"):
+            self.verify()
+
+    def test_timed_receipt_row_binding_is_rejected(self):
+        self.change("run.json",lambda r:r["benchmark_runs"][0].update(row_sha256="0"*64))
+        with self.assertRaisesRegex(ValueError,"row binding"):
+            self.verify()
 
 
 if __name__ == "__main__":

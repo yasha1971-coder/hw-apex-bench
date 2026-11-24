@@ -26,15 +26,6 @@ def tar_payload(path, name='python/bin/test', link=None):
 
 
 class BootstrapTests(unittest.TestCase):
-    def test_control_exception_never_permits_a_compiler(self):
-        receipt = dict(hostname='ace-core', cpu='AMD EPYC 4344P', pinned_core=0,
-                       interval_ns=2000000000,
-                       other_load=dict(busy=True, inspection_errors=[], active_processes=[{'comm': '2.1.284'}]))
-        prepare.require_preparation_admission(receipt, True)
-        receipt['other_load']['active_processes'].append({'comm': 'cc1'})
-        with self.assertRaises(prepare.BusyHost):
-            prepare.require_preparation_admission(receipt, True)
-
     def test_regular_payload_extracts_only_inside_workspace(self):
         with tempfile.TemporaryDirectory(prefix='gift1b-bootstrap-test-') as directory:
             root = Path(directory)
@@ -68,15 +59,15 @@ class BootstrapTests(unittest.TestCase):
                     prepare.download('https://unused.invalid', path, hashlib.sha256(b'original').hexdigest())
                 network.assert_not_called()
 
-    def test_busy_admission_prevents_all_dependency_preparation(self):
+    def test_preparation_may_run_with_foreign_load_under_ovh_rule(self):
         with tempfile.TemporaryDirectory(prefix='gift1b-bootstrap-test-') as directory:
             state = Path(directory) / '.work/state'
-            with patch.object(prepare, 'STATE', state), patch.object(prepare, 'snapshot', return_value={'synthetic': True}), patch.object(prepare, 'require_idle', side_effect=prepare.BusyHost('synthetic foreign load')), patch.object(prepare, 'prepare_python') as python, patch.object(prepare, 'prepare_corpora') as corpora, patch.object(prepare, 'prepare_zstd') as zstd, patch.object(prepare.sys, 'argv', ['prepare_host.py']):
-                with self.assertRaises(prepare.BusyHost):
-                    prepare.main()
-                python.assert_not_called()
-                corpora.assert_not_called()
-                zstd.assert_not_called()
+            observed = dict(hostname='ace-core', cpu='AMD EPYC 4344P', other_load={'busy': True})
+            with patch.object(prepare, 'STATE', state), patch.object(prepare, 'snapshot', return_value=observed), patch.object(prepare, 'prepare_python', return_value={}) as python, patch.object(prepare, 'prepare_corpora', return_value=[]) as corpora, patch.object(prepare, 'prepare_zstd', return_value={}) as zstd, patch.object(prepare.sys, 'argv', ['prepare_host.py']):
+                prepare.main()
+                python.assert_called_once()
+                corpora.assert_called_once()
+                zstd.assert_called_once()
             self.assertTrue((state / 'prepare-load-start.json').exists())
 
 

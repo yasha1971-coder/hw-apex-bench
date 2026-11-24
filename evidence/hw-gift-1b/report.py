@@ -33,8 +33,10 @@ INPUT = {
 }
 CAL = "c4809624beb0ad7a243163455d9c05545bc52d99"
 AMENDMENT = "0bd4ab29794f610884e66fdb3ca6c6c93495a4e4"
+POLICY = "3e7201a0933030de8d3011eb658270e577e6eced"
+BENCH_LOCK = "/run/lock/ovh-bench.lock"
 ORIGINAL_PROTOCOL_SHA256 = "f8a32188585e70d68fcc3a845565a03f4b8bf5e271f9bafb586dc17eeee96164"
-AMENDED_PROTOCOL_SHA256 = "37b0d137cccaed3cef5ab1ebb1a05d07c55616b4b0d11c819135c7be4e591649"
+AMENDED_PROTOCOL_SHA256 = "4b8000955b34103feee7904a127ddcced7029f462c54c67673c739cdec38812f"
 ZSTD_COMMIT = "f8745da6ff1ad1e7bab384bd1f9d742439278e99"
 C_WORKER_SHA256 = "d2fd5a7b30fca6d56d51d56db983633d7bfa00aab4ccb831468669dd2b50c351"
 C_PAIR_SHA256 = "620f3193f65e6a5b67dcd973ea161fe2f3c9566053e586102042b78f3e50a959"
@@ -123,8 +125,11 @@ def verify_load_snapshot(snapshot, host):
         times.append(value)
     check(times[1] >= times[0], "load observation timestamps are reversed")
     other = snapshot.get("other_load")
-    check(isinstance(other, dict) and other.get("busy") is False
-          and other.get("active_processes") == [] and other.get("inspection_errors") == [], "other workload present or load inspection failed")
+    check(isinstance(other, dict) and type(other.get("busy")) is bool
+          and isinstance(other.get("active_processes"), list)
+          and all(isinstance(p, dict) for p in other["active_processes"])
+          and isinstance(other.get("inspection_errors"), list)
+          and all(isinstance(e, str) for e in other["inspection_errors"]), "missing observational other-load receipt")
     averages = snapshot.get("loadavg")
     check(isinstance(averages, list) and len(averages) == 3
           and all(type(v) in (float, int) and v >= 0 for v in averages), "missing kernel load averages")
@@ -132,7 +137,7 @@ def verify_load_snapshot(snapshot, host):
 
 
 def verify_load_receipt(run, host):
-    check(run.get("load_accepted") is True, "load guard did not accept this attempt")
+    check(type(run.get("load_accepted")) is bool, "missing parent load observation marker")
     start = verify_load_snapshot(run.get("load_start"), host)
     end = verify_load_snapshot(run.get("load_end"), host)
     check(end[0] >= start[1], "end load observation predates start")
@@ -143,6 +148,85 @@ def verify_load_receipt(run, host):
         current = verify_load_snapshot(resume, host)
         check(previous_end <= current[0] and current[1] <= end[0], "resume load observations are out of order")
         previous_end = current[1]
+
+
+def verify_benchmark_snapshot(snapshot, host):
+    """Use raw decimal loadavg text; foreign-process observations are not gates."""
+    check(isinstance(snapshot, dict), "missing OVH-BENCH boundary snapshot")
+    for key in ("hostname", "cpu", "kernel", "governor"):
+        check(snapshot.get(key) == host.get(key), f"OVH-BENCH boundary host {key} mismatch")
+    check(type(snapshot.get("pinned_core")) is int and snapshot["pinned_core"] == 0, "OVH-BENCH boundary core mismatch")
+    check(isinstance(snapshot.get("date_u"), str) and snapshot["date_u"].strip(), "missing raw date -u receipt")
+    check(isinstance(snapshot.get("loadavg_raw"), str), "missing raw /proc/loadavg receipt")
+    parts = snapshot["loadavg_raw"].split()
+    check(len(parts) == 5 and re.fullmatch(r"\d+/\d+", parts[3]) and parts[4].isdigit(), "invalid raw /proc/loadavg receipt")
+    loads = []
+    for part in parts[:3]:
+        check(re.fullmatch(r"\d+(?:\.\d+)?", part) is not None, "invalid raw decimal load average")
+        value = Decimal(part)
+        check(value.is_finite() and value >= 0, "invalid raw decimal load average")
+        loads.append(value)
+    check(loads[0] <= Decimal("1.0"), "LOADED: one-minute load average exceeds 1.0")
+    check(is_int(snapshot.get("nproc"), 1), "missing nproc receipt")
+    check(isinstance(snapshot.get("other_processes"), list), "missing observational process receipt")
+    stamp = snapshot.get("timestamp_utc")
+    check(isinstance(stamp, str), "missing OVH-BENCH UTC timestamp")
+    try:
+        timestamp = datetime.fromisoformat(stamp.replace("Z", "+00:00"))
+    except ValueError:
+        raise ValueError("invalid OVH-BENCH UTC timestamp") from None
+    check(timestamp.utcoffset() is not None and timestamp.utcoffset().total_seconds() == 0,
+          "OVH-BENCH timestamp is not UTC")
+    return timestamp
+
+
+def verify_benchmark_runs(run, rows, host, grids):
+    check(run.get("ovh_policy_commit") == POLICY, "OVH-BENCH policy is not anchored")
+    check(is_hash(run.get("ovh_bench_sha256")), "missing shared OVH-BENCH helper identity")
+    repeats = run.get("benchmark_runs")
+    expected = {(g, n, rep) for g in grids for n in NS for rep in range(5)}
+    check(isinstance(repeats, list) and len(repeats) == len(expected), "incomplete OVH-BENCH timed-repeat receipts")
+    seen = set()
+    for repeat in repeats:
+        check(isinstance(repeat, dict), "invalid OVH-BENCH timed-repeat receipt")
+        g, n, rep = repeat.get("g"), repeat.get("n"), repeat.get("rep")
+        check((g is None or type(g) is int) and type(n) is int and type(rep) is int,
+              "invalid OVH-BENCH repeat identity")
+        key = g, n, rep
+        check(key in expected and key not in seen, "duplicate or unexpected OVH-BENCH repeat")
+        seen.add(key)
+        receipt = repeat.get("receipt")
+        check(isinstance(receipt, dict) and receipt.get("status") == "CLEAN", "OVH-BENCH repeat is not CLEAN")
+        check(receipt.get("schema") == "ovh-bench-v1" and receipt.get("policy_commit") == POLICY,
+              "OVH-BENCH receipt schema/policy mismatch")
+        check(receipt.get("helper_sha256") == run["ovh_bench_sha256"], "OVH-BENCH receipt helper mismatch")
+        check(type(receipt.get("returncode")) is int and receipt["returncode"] == 0
+              and receipt.get("command_started") is True, "OVH-BENCH command did not complete successfully")
+        waiting = receipt.get("waiting_since_utc")
+        check(isinstance(waiting, str), "missing shared-lock wait timestamp")
+        try:
+            waiting_time = datetime.fromisoformat(waiting.replace("Z", "+00:00"))
+        except ValueError:
+            raise ValueError("invalid shared-lock wait timestamp") from None
+        check(waiting_time.utcoffset() is not None and waiting_time.utcoffset().total_seconds() == 0,
+              "shared-lock wait timestamp is not UTC")
+        check(receipt.get("lock_path") == BENCH_LOCK, "wrong shared benchmark lock")
+        flock_command = receipt.get("flock_command")
+        check(isinstance(flock_command, list) and len(flock_command) >= 6
+              and flock_command[:2] == ["flock", BENCH_LOCK]
+              and flock_command[3] == "-B" and flock_command[5] == "_inside"
+              and all(isinstance(part, str) and part for part in flock_command), "timed repeat did not use blocking shared flock")
+        command = receipt.get("command")
+        check(isinstance(command, list) and command and all(isinstance(part, str) and part for part in command),
+              "missing timed measurement command")
+        start = verify_benchmark_snapshot(receipt.get("start"), host)
+        end = verify_benchmark_snapshot(receipt.get("end"), host)
+        check(end >= start >= waiting_time, "OVH-BENCH boundary timestamps are out of order")
+        raw = (json.dumps(rows[key], separators=(",", ":"), sort_keys=True) + "\n").encode()
+        check(repeat.get("row_sha256") == hashlib.sha256(raw).hexdigest(), "OVH-BENCH receipt row binding mismatch")
+        if "request_sha256" in repeat:
+            check(is_hash(repeat["request_sha256"]), "invalid OVH-BENCH request identity")
+    check(seen == expected, "incomplete OVH-BENCH accepted grid")
 
 
 def verify_installation_receipt(receipt, host):
@@ -287,6 +371,7 @@ def verify_chunk(folder, chunk, *, baseline_root=BASELINE, calibration_path=None
         check(control.get("negative") == "pyzstd exception" and isinstance(control.get("exception"), str)
               and control["exception"], "corrupted frame did not raise")
     check(set(rows) == {(g, n, rep) for g in GS for n in NS for rep in range(5)}, "incomplete sample grid")
+    verify_benchmark_runs(run, rows, host, GS)
     return dict(run=run, archives=archives, controls=controls, rows=rows)
 
 
@@ -349,6 +434,7 @@ def verify_c_chunk(folder, chunk, *, baseline_root=BASELINE, source_root=REPO, c
                 check(is_int(row.get("peak_kib"), 1), "invalid C RSS receipt")
                 rows[g, n, rep] = row
     check(controls == expected_controls, "C corruption inventory differs from raw controls")
+    verify_benchmark_runs(receipt, rows, wrapper_host, GS[:-1])
     return dict(run=run, acecore=receipt, archives=archives, controls=controls, rows=rows)
 
 
@@ -356,13 +442,14 @@ def verify_all(evidence_root=HERE, *, baseline_root=BASELINE, source_root=REPO):
     evidence_root = Path(evidence_root)
     chunks = {c: verify_chunk(evidence_root / c, c, baseline_root=baseline_root) for c in CHUNKS}
     runs = [chunks[c]["run"] for c in CHUNKS]
-    for key in ("host", "runner_commit", "runner_sha256", "verifier_sha256", "guard_sha256", "protocol_commit", "protocol_sha256", "amendment_commit", "original_protocol_sha256"):
+    for key in ("host", "runner_commit", "runner_sha256", "verifier_sha256", "guard_sha256", "protocol_commit", "protocol_sha256", "amendment_commit", "original_protocol_sha256", "ovh_policy_commit", "ovh_bench_sha256"):
         check(all(run[key] == runs[0][key] for run in runs), f"checkpoints cross {key} boundary")
     c_chunks = {c: verify_c_chunk(evidence_root / "c-baseline" / c, c, baseline_root=baseline_root,
                                 source_root=source_root) for c in CHUNKS}
     c_runs = [c_chunks[c]["run"] for c in CHUNKS]
     check(all(run["host"] == c_runs[0]["host"] for run in c_runs), "C checkpoints cross host/build boundary")
     for c in CHUNKS:
+        check(c_chunks[c]["acecore"]["ovh_bench_sha256"] == runs[0]["ovh_bench_sha256"], "readers use different OVH-BENCH helpers")
         c_host = c_chunks[c]["acecore"]["host"]
         for key in ("cpu", "hostname", "cpu_affinity", "kernel", "os", "host_boot_sha256", "governor"):
             check(c_host.get(key) == runs[0]["host"].get(key), f"readers do not share the same host/core: {key}")
@@ -445,8 +532,12 @@ def build_report(chunks, *, baseline_root=BASELINE):
            f"Measured host: {host['cpu']}; affinity {host['cpu_affinity']}; {host['os']}; "
            f"CPython {host['python']}; pyzstd {host['pyzstd_version']}; linked zstd {host['zstd_version']}; "
            f"governor {host['governor']}. Absolute times apply to ace-core and this resident-archive workload. "
-           "Start, resume and end load observations passed the retained idle-host guard; "
-           "the same pinned core was used for the new C baseline. Historical HW-GIFT-1 host timings remain separate.", ""]
+           "Parent start, resume and end process observations are retained as context. "
+           "Every accepted timed repeat used the blocking shared /run/lock/ovh-bench.lock and recorded "
+           "date -u, raw /proc/loadavg and nproc at both boundaries. Both one-minute load averages "
+           "were ≤ 1.0; LOADED attempts are retained outside accepted checkpoints and repeated. "
+           "Other process activity alone is not an exclusion criterion under OVH-BENCH. "
+           "The same pinned core was used for the new C baseline. Historical HW-GIFT-1 host timings remain separate.", ""]
     for src in ("enwik8", "silesia.tar"):
         out.extend([f"## {src}", "", "|level|frame B|default|read B|archive B|size delta %|first p50 ms|first p99 ms|repeat p50 ms|repeat p99 ms|open p50 ms|",
                     "|---:|---:|:---:|---:|---:|---:|---:|---:|---:|---:|---:|"])

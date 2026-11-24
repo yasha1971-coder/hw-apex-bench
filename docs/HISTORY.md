@@ -1468,3 +1468,33 @@ measurements.
   unknown active processes and inspection errors still block that preparation.
   This exception never changes C/pyzstd timing acceptance, which continues to
   require zero observed foreign activity. Its targeted five bootstrap tests pass.
+
+### OVH-BENCH supersedes zero-activity admission — 2026-11-24
+
+- The owner supplied the shared OVH rule: compilation, tests and correctness
+  checks may run concurrently; all timed measurements wait for
+  `flock /run/lock/ovh-bench.lock`. Record literal `date -u`, `/proc/loadavg`
+  and `nproc` at both boundaries. A one-minute load average above 1.0 makes
+  the result LOADED, excluded and repeated. Long builds never hold that lock.
+  This rule supersedes the earlier zero-foreign-CPU checks above.
+- The rule was appended to CALIBRATION.md and committed/pushed before any
+  timings as `3e7201a0933030de8d3011eb658270e577e6eced`. The original host
+  amendment and both predictions remain unchanged. The existing shared lock
+  file and `/usr/bin/flock` were verified on ace-core.
+- Each timed repeat is now a subprocess under the literal blocking `flock`
+  command. Archive encoding, C builds and checks stay outside the shared lock.
+  CLEAN repeats are replayable without retiming; LOADED raw output is retained
+  and its checkpoint attempt is quarantined before acceptance or push. Accepted
+  rows bind their exact raw JSON SHA to the lock/date/load/nproc receipt.
+- Server prerequisites are ready, without any benchmark timing: standalone
+  CPython 3.12.16, pyzstd 0.20.0, backports-zstd 1.8.0 (linked zstd 1.5.7),
+  typing-extensions 4.16.0, verified enwik8 and silesia.tar, pinned clean zstd
+  `f8745da6ff1ad1e7bab384bd1f9d742439278e99` and its PIC static library/CLI.
+  Compiler: Ubuntu GCC 11.4.0. Setup was confined to the benchmark `.work/`,
+  with compilation on CPU 15 at nice 19 and no shared benchmark lock.
+  Exact wheel/payload/binary hashes and preparation receipts are retained in
+  `evidence/hw-gift-1b/environment/`.
+- Local premeasurement validation: 75 synthetic tests, Python syntax and diff
+  whitespace checks passed. No C/pyzstd measurement checkpoint exists yet.
+  Next: execute one locked C checkpoint, verify and push it, then advance in
+  corpus/level order; follow with the pyzstd checkpoints. PR #90 stays draft.

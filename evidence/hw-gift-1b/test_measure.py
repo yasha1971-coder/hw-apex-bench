@@ -26,12 +26,13 @@ class ParserTests(unittest.TestCase):
     def test_exact_host_amendment_preserves_original_prefix(self):
         original = b'Prediction (not a measurement): unchanged\n'
         amended = original + b'\n' + worker.AMENDMENT_TEXT.encode() + b'\n'
-        self.assertEqual(len(worker.verify_protocol_bytes(original, amended, amended)), 64)
+        policy = amended + b'\n' + worker.POLICY_TEXT.encode() + b'\n'
+        self.assertEqual(len(worker.verify_protocol_bytes(original, amended, policy, policy)), 64)
         for changed in (amended.replace(b'unchanged\n', b'changed\n'), amended + b'new text\n'):
             with self.assertRaises(ValueError):
-                worker.verify_protocol_bytes(original, changed, changed)
+                worker.verify_protocol_bytes(original, changed, policy, policy)
         with self.assertRaises(ValueError):
-            worker.verify_protocol_bytes(original, amended, original)
+            worker.verify_protocol_bytes(original, amended, policy, original)
 
     def test_amended_host_and_cpu_are_explicit(self):
         worker.require_amended_host(0, 'AMD EPYC 4344P 8-Core Processor', 'ace-core')
@@ -119,31 +120,78 @@ class PairTests(unittest.TestCase):
             self.assertFalse(any(part.rglob('*.json')))
 
 
-class LoadGateTests(unittest.TestCase):
-    def test_changed_governor_rejects_checkpoint(self):
-        class BusyHost(RuntimeError):
-            pass
+class ExecutionPolicyTests(unittest.TestCase):
+    def test_foreign_activity_is_observational_but_governor_must_match(self):
         host = dict(hostname='ace-core', cpu='AMD EPYC 4344P', kernel='test',
                     pinned_core=0, governor='performance')
-        with patch.dict(sys.modules, {'load_guard': SimpleNamespace(BusyHost=BusyHost)}):
-            worker.check_load_snapshot(dict(host), host)
-            with self.assertRaises(BusyHost):
-                worker.check_load_snapshot(dict(host, governor='powersave'), host)
+        worker.check_load_snapshot(dict(host, other_load={'busy': True}), host)
+        with self.assertRaises(ValueError):
+            worker.check_load_snapshot(dict(host, governor='powersave'), host)
 
-    def test_busy_attempt_retained_without_encoding_or_publishing(self):
-        class BusyHost(RuntimeError):
-            pass
+    def test_direct_timed_worker_without_flock_marker_is_rejected(self):
+        with patch.object(worker.os, 'environ', {}):
+            with self.assertRaisesRegex(ValueError, 'flock wrapper'):
+                worker.timed_worker(Path('never-read.json'))
+
+    def test_each_repeat_uses_helper_then_replays_clean_without_timing(self):
+        info = dict(g=65536, frame='65536', bytes=12, sha256='a' * 64)
+        row = dict(src='enwik8', level=3, g=65536, n=4096, rep=0,
+                   archive_bytes=12, archive_sha256='a' * 64, samples=[[0, 1, 2, 3]])
+        calls = []
+        def save(path, data):
+            path.parent.mkdir(parents=True, exist_ok=True)
+            path.write_bytes(data)
+        def locked(command, receipt_path):
+            calls.append(command)
+            self.assertEqual(command[3], 'worker')
+            request_path = Path(command[-1])
+            request = worker.json.loads(request_path.read_bytes())
+            self.assertEqual((request['g'], request['n'], request['rep']), (65536, 4096, 0))
+            save(Path(request['row_path']), worker.packed(row))
+            save(receipt_path, worker.packed(dict(status='CLEAN', command=command,
+                 policy_commit=worker.POLICY, lock_path='/run/lock/ovh-bench.lock')))
+            return 0
+        with tempfile.TemporaryDirectory(prefix='hw-gift-1b-flock-test-') as directory:
+            part = Path(directory)
+            with patch.dict(sys.modules, {'ovh_bench': SimpleNamespace(run_locked=locked)}), \
+                    patch.object(worker, 'write', save):
+                args = (part, 'enwik8-L3', 65536, 4096, 0, part / 'input', part / 'archive',
+                        info, part / 'installation.json', {}, [0])
+                first, receipt = worker.timed_repeat(*args)
+                second, replay = worker.timed_repeat(*args)
+            self.assertEqual(len(calls), 1)
+            self.assertEqual(first, second)
+            self.assertEqual(receipt, replay)
+            self.assertEqual(receipt['row_sha256'], worker.hashlib.sha256(worker.packed(row)).hexdigest())
+
+    def test_loaded_boundary_receipt_is_retained_and_excluded(self):
+        def save(path, data):
+            path.parent.mkdir(parents=True, exist_ok=True)
+            path.write_bytes(data)
+        def locked(command, receipt_path):
+            save(receipt_path, worker.packed(dict(status='LOADED', command=command)))
+            return 77
+        with tempfile.TemporaryDirectory(prefix='hw-gift-1b-loaded-test-') as directory:
+            part = Path(directory)
+            with patch.dict(sys.modules, {'ovh_bench': SimpleNamespace(run_locked=locked)}), \
+                    patch.object(worker, 'write', save):
+                with self.assertRaises(worker.LoadedAttempt):
+                    worker.timed_repeat(part, 'enwik8-L3', 65536, 4096, 0,
+                        part / 'input', part / 'archive', {}, part / 'installation.json', {}, [0])
+            self.assertTrue((part / 'repeats/65536-4096-0/ovh-bench.json').exists())
+            self.assertFalse((part / 'repeats/65536-4096-0/row.json').exists())
+
+    def test_loaded_attempt_retained_after_encoding_without_publishing(self):
         host = dict(hostname='ace-core', cpu='AMD EPYC 4344P', kernel='test',
                     pinned_core=0, governor='performance')
+        # Other activity no longer blocks correctness/encoding or admission.
         observed = dict(host, other_load=dict(busy=True, active_processes=[{'pid': 100}],
                                               inspection_errors=[]))
         snapshots = []
         def snapshot(cpu):
             snapshots.append(cpu)
             return observed
-        def require_idle(value):
-            raise BusyHost('foreign workload present')
-        guard = SimpleNamespace(BusyHost=BusyHost, snapshot=snapshot, require_idle=require_idle)
+        guard = SimpleNamespace(snapshot=snapshot)
         lock = SimpleNamespace(flock=lambda *_: None, LOCK_EX=1, LOCK_NB=2)
         report = SimpleNamespace(verify_chunk=lambda *_args, **_kwargs: None)
         def save(path, data):
@@ -153,30 +201,35 @@ class LoadGateTests(unittest.TestCase):
             root = Path(directory)
             here = root / 'evidence/hw-gift-1b'
             here.mkdir(parents=True)
-            for name in ('CALIBRATION.md', 'measure.py', 'report.py', 'load_guard.py'):
+            for name in ('CALIBRATION.md', 'measure.py', 'report.py', 'load_guard.py', 'ovh_bench.py'):
                 (here / name).write_bytes(b'synthetic source only')
             inputs = root / '.work/inputs'
             inputs.mkdir(parents=True)
             (inputs / 'input').write_bytes(b'input')
             digest = worker.sha(inputs / 'input')
             state = root / '.work/hw-gift-1b'
+            offsets = {65536: {(4096, rep): [0] for rep in range(5)}}
             with patch.dict(sys.modules, {'load_guard': guard, 'fcntl': lock, 'report': report}), \
                     patch.multiple(worker, HERE=here, ROOT=root, STATE=state,
-                                   INPUT={'input': (5, digest)}, CHUNKS={'synthetic-L3': ('input', 3)}), \
+                        INPUT={'input': (5, digest)}, CHUNKS={'synthetic-L3': ('input', 3)},
+                        GS=(65536,), NS=(4096,)), \
                     patch.object(worker, 'preflight', return_value=(object(), host)), \
-                    patch.object(worker, 'offset_lists', return_value=({}, {})), \
+                    patch.object(worker, 'offset_lists', return_value=(offsets, {})), \
                     patch.object(worker, 'git', return_value=b'0' * 40), \
                     patch.object(worker, 'write', save), \
-                    patch.object(worker, 'archive_once', side_effect=AssertionError('busy host encoded')):
-                with self.assertRaises(BusyHost):
+                    patch.object(worker, 'archive_once', return_value=(b'test', {})) as encoder, \
+                    patch.object(worker, 'control', return_value={}), \
+                    patch.object(worker, 'timed_repeat', side_effect=worker.LoadedAttempt('boundary load > 1.0')):
+                with self.assertRaises(worker.LoadedAttempt):
                     worker._run('synthetic-L3', inputs, root / 'not-used.json', 0, 1)
                 rejected = state / 'attempts/001/synthetic-L3/REJECTED'
                 self.assertTrue(rejected.exists())
+                self.assertEqual(worker.json.loads(rejected.read_bytes())['status'], 'LOADED')
                 self.assertFalse((here / 'synthetic-L3').exists())
-                self.assertFalse(any(state.rglob('pairs-*')))
-                with self.assertRaises(BusyHost):
+                with self.assertRaises(worker.LoadedAttempt):
                     worker._run('synthetic-L3', inputs, root / 'not-used.json', 0, 1)
                 self.assertEqual(snapshots, [0])
+                self.assertEqual(encoder.call_count, 1)
                 self.assertTrue(rejected.exists())
 
 

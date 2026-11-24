@@ -30,6 +30,7 @@ BASELINE = ROOT / 'evidence/hw-gift-1'
 STATE = ROOT / '.work/hw-gift-1b'
 PROTOCOL = 'c4809624beb0ad7a243163455d9c05545bc52d99'
 AMENDMENT = '0bd4ab29794f610884e66fdb3ca6c6c93495a4e4'
+POLICY = '3e7201a0933030de8d3011eb658270e577e6eced'
 AMENDMENT_TEXT = (
     'Pre-measurement host amendment: the HW-GIFT-1 host is not available. '
     'HW-GIFT-1b runs on ace-core (AMD EPYC 4344P); record CPU, kernel, governor, '
@@ -37,6 +38,20 @@ AMENDMENT_TEXT = (
     'core, also rerun the HW-GIFT-1 C reader (evidence/hw-gift-1/reproduce.sh, '
     'unchanged) on the same grid, so both readers share one host. HW-GIFT-1 data '
     'on main stay unchanged. Predictions (a) and (b) unchanged.'
+)
+POLICY_TEXT = (
+    'Pre-measurement OVH-BENCH execution rule (2026-11-24): builds, tests and '
+    'correctness checks may run in parallel without restriction. Every timed '
+    'measurement must run through `flock /run/lock/ovh-bench.lock <measurement '
+    'command>`; wait if the lock is occupied and never bypass it. Record `date '
+    '-u`, `cat /proc/loadavg` and `nproc` at the beginning and end of each timed '
+    'repeat. If the one-minute load average is above 1.0 at either boundary, '
+    'retain the result as LOADED, exclude it from accepted evidence and repeat '
+    'the measurement. Do not hold the shared benchmark lock during long builds. '
+    'Existing OVH timing numbers from before this rule are not remeasured '
+    'unless they will be published externally. This rule supersedes the earlier '
+    'zero-foreign-activity admission policy; CPU, kernel, governor, pinned core '
+    'and other-load receipts are still retained. Predictions (a) and (b) unchanged.'
 )
 GS = (65536, 262144, 1048576, 4194304, 16777216, 67108864, None)
 NS = (4096, 65536)
@@ -101,10 +116,12 @@ def git(*args):
     return subprocess.check_output(['git', '-C', str(ROOT), *args])
 
 
-def verify_protocol_bytes(original, amended, current):
+def verify_protocol_bytes(original, amended, policy, current):
     check(amended == original + b'\n' + AMENDMENT_TEXT.encode() + b'\n',
           'host amendment must preserve the exact original protocol prefix')
-    check(current == amended, 'amended preregistered protocol changed')
+    check(policy == amended + b'\n' + POLICY_TEXT.encode() + b'\n',
+          'OVH-BENCH rule must preserve the exact amended protocol prefix')
+    check(current == policy, 'amended preregistered protocol changed')
     return hashlib.sha256(original).hexdigest()
 
 
@@ -198,12 +215,14 @@ def preflight(receipt_path, cpu):
     check(git('branch', '--show-current').decode().strip() == 'hw-gift-1b', 'wrong branch')
     subprocess.run(['git', '-C', str(ROOT), 'merge-base', '--is-ancestor', PROTOCOL, 'HEAD'], check=True)
     subprocess.run(['git', '-C', str(ROOT), 'merge-base', '--is-ancestor', AMENDMENT, 'HEAD'], check=True)
+    subprocess.run(['git', '-C', str(ROOT), 'merge-base', '--is-ancestor', POLICY, 'HEAD'], check=True)
     relative = 'evidence/hw-gift-1b/CALIBRATION.md'
     verify_protocol_bytes(git('show', f'{PROTOCOL}:{relative}'),
                           git('show', f'{AMENDMENT}:{relative}'),
+                          git('show', f'{POLICY}:{relative}'),
                           (HERE / 'CALIBRATION.md').read_bytes())
     sources = [str((HERE / name).relative_to(ROOT)) for name in
-               ('CALIBRATION.md', 'measure.py', 'report.py', 'load_guard.py')]
+               ('CALIBRATION.md', 'measure.py', 'report.py', 'load_guard.py', 'ovh_bench.py')]
     check(not git('status', '--porcelain', '--', *sources).strip(), 'uncommitted runner/protocol/verifier')
     check(cpu == 0, 'matched C reader comparison requires pinned CPU 0')
     check(len(os.sched_getaffinity(0)) > 0 and cpu in os.sched_getaffinity(0), 'CPU unavailable')
@@ -364,17 +383,93 @@ def repeat(pyzstd, part, data, info, source, src, level, n, rep, offsets):
                 peak_kib=resource.getrusage(resource.RUSAGE_SELF).ru_maxrss)
 
 
+class LoadedAttempt(RuntimeError):
+    """A retained LOADED repeat excludes the entire checkpoint attempt."""
+
+
 def check_load_snapshot(value, host):
-    from load_guard import BusyHost
-    for key in ('hostname', 'cpu', 'kernel', 'pinned_core'):
+    # Observational receipts may contain foreign activity under the OVH rule.
+    for key in ('hostname', 'cpu', 'kernel', 'pinned_core', 'governor'):
         check(value.get(key) == host[key], f'load receipt {key} differs from pinned host')
-    if value.get('governor') != host['governor']:
-        raise BusyHost('CPU governor changed within checkpoint')
+
+
+def timed_worker(request_path):
+    """One timed repeat; callable only as the child of the shared flock helper."""
+    check(os.environ.get('OVH_BENCH_LOCK_HELD') == '/run/lock/ovh-bench.lock',
+          'timed worker requires the OVH-BENCH flock wrapper')
+    request_path = request_path.resolve()
+    check(request_path.is_relative_to(STATE), 'worker request outside durable state')
+    request = json.loads(request_path.read_bytes())
+    chunk, g, n, rep = (request[k] for k in ('chunk', 'g', 'n', 'rep'))
+    check(chunk in CHUNKS and g in GS and n in NS and rep in range(5), 'invalid worker grid')
+    check(request.get('cpu') == 0, 'timed worker requires CPU 0')
+    pyzstd, host = preflight(Path(request['install_receipt']), 0)
+    check(host == request['host'], 'timed child host/build differs from parent')
+    src, level = CHUNKS[chunk]
+    source_path, archive_path = Path(request['source_path']).resolve(), Path(request['archive_path']).resolve()
+    part, row_path = Path(request['part']).resolve(), Path(request['row_path']).resolve()
+    check(source_path.is_relative_to(ROOT) and archive_path.is_relative_to(STATE) and
+          part == request_path.parent and row_path.parent == part, 'worker path outside assigned state')
+    check(not row_path.exists(), 'timed repeat row already exists')
+    check(source_path.stat().st_size == INPUT[src][0] and sha(source_path) == INPUT[src][1],
+          'timed child input changed')
+    data = archive_path.read_bytes()
+    info = request['archive']
+    check(len(data) == info['bytes'] and hashlib.sha256(data).hexdigest() == info['sha256'],
+          'timed child archive changed')
+    check(parse_archive(data, g, INPUT[src][0]) == {k: info[k] for k in
+          ('frame_count', 'decompressed_bytes', 'seek_table_bytes', 'checksum_flag', 'frames')},
+          'timed child seek table changed')
+    offsets, _ = offset_lists(chunk)
+    check(request['offsets'] == offsets[g][n, rep], 'timed child offsets differ from original evidence')
+    with source_path.open('rb', buffering=0) as source:
+        row = repeat(pyzstd, part, data, info, source, src, level, n, rep, request['offsets'])
+    write(row_path, packed(row))
+
+
+def timed_repeat(part, chunk, g, n, rep, source_path, archive_path, info,
+                 receipt_path, host, offsets):
+    from ovh_bench import run_locked
+    folder = part / 'repeats' / f'{label(g)}-{n}-{rep}'
+    folder.mkdir(parents=True, exist_ok=True)
+    request_path, row_path, bench_path = folder / 'request.json', folder / 'row.json', folder / 'ovh-bench.json'
+    request = dict(chunk=chunk, g=g, n=n, rep=rep, cpu=0, source_path=str(source_path),
+                   archive_path=str(archive_path), archive=info, part=str(folder),
+                   row_path=str(row_path), install_receipt=str(receipt_path.resolve()),
+                   host=host, offsets=offsets)
+    command = [sys.executable, '-B', str(HERE / 'measure.py'), 'worker', '--request', str(request_path)]
+    if bench_path.exists():
+        benchmark = json.loads(bench_path.read_bytes())
+        if benchmark.get('status') == 'LOADED':
+            raise LoadedAttempt(f'LOADED repeat retained: {bench_path}')
+        check(benchmark.get('status') == 'CLEAN' and row_path.exists(),
+              'incomplete or failed durable timed repeat')
+        check(request_path.read_bytes() == packed(request), 'saved repeat request changed')
+    else:
+        check(not request_path.exists() and not row_path.exists() and not any(folder.iterdir()),
+              'interrupted repeat without complete boundary receipt; retain attempt and inspect')
+        write(request_path, packed(request))
+        code = run_locked(command, bench_path)
+        check(bench_path.exists(), 'OVH-BENCH helper did not retain boundary receipt')
+        benchmark = json.loads(bench_path.read_bytes())
+        if code == 77:
+            check(benchmark.get('status') == 'LOADED', 'helper exit 77 lacks LOADED receipt')
+            raise LoadedAttempt(f'LOADED repeat retained: {bench_path}')
+        check(code == 0 and benchmark.get('status') == 'CLEAN' and row_path.exists(),
+              f'timed child/helper failed: exit {code}')
+    check(benchmark.get('command') == command, 'OVH-BENCH receipt command changed')
+    row = json.loads(row_path.read_bytes())
+    check((row.get('src'), row.get('level'), row.get('g'), row.get('n'), row.get('rep')) ==
+          (*CHUNKS[chunk], g, n, rep), 'timed child row identity mismatch')
+    check(row_path.read_bytes() == packed(row), 'timed row is not deterministic JSON')
+    record = dict(g=g, n=n, rep=rep, receipt=benchmark,
+                  row_sha256=sha(row_path), request_sha256=sha(request_path))
+    return row, record
 
 
 def _run(chunk, inputs, receipt_path, cpu, attempt):
     from report import verify_chunk
-    from load_guard import snapshot, require_idle, BusyHost
+    from load_guard import snapshot
     if (HERE / chunk).exists():
         verify_chunk(HERE / chunk, chunk)
         print('COMPLETE_CHECKPOINT_VERIFIED_SKIP', chunk, flush=True)
@@ -399,22 +494,24 @@ def _run(chunk, inputs, receipt_path, cpu, attempt):
     with (part / 'lock').open('a') as lock:
         fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
         if (part / 'REJECTED').exists():
-            raise BusyHost('attempt was rejected; retain it and select a new --attempt')
+            raise LoadedAttempt('attempt was rejected; retain it and select a new --attempt')
         check(not (part / 'FAILED').exists(), 'prior failed check; inspect FAILED and stop')
         run_record = dict(corpus=src, level=level, input_bytes=INPUT[src][0], input_sha256=INPUT[src][1],
                           protocol_commit=PROTOCOL, protocol_sha256=sha(HERE / 'CALIBRATION.md'),
-                          amendment_commit=AMENDMENT,
+                          amendment_commit=AMENDMENT, ovh_policy_commit=POLICY,
                           original_protocol_sha256=hashlib.sha256(git('show',
                               f'{PROTOCOL}:evidence/hw-gift-1b/CALIBRATION.md')).hexdigest(),
                           runner_commit=git('log', '-1', '--format=%H', '--',
                               'evidence/hw-gift-1b/measure.py', 'evidence/hw-gift-1b/report.py',
-                              'evidence/hw-gift-1b/load_guard.py').decode().strip(),
+                              'evidence/hw-gift-1b/load_guard.py',
+                              'evidence/hw-gift-1b/ovh_bench.py').decode().strip(),
                           runner_sha256=sha(HERE / 'measure.py'), verifier_sha256=sha(HERE / 'report.py'),
-                          guard_sha256=sha(HERE / 'load_guard.py'), attempt=attempt,
+                          guard_sha256=sha(HERE / 'load_guard.py'),
+                          ovh_bench_sha256=sha(HERE / 'ovh_bench.py'), attempt=attempt,
                           host=host, offset_source_sha256=offset_hashes,
                           sample_columns=['offset', 'open_ns', 'first_ns', 'repeat_ns'],
                           timer='time.perf_counter_ns; open separate; seek+read first and repeat',
-                          peak_rss_scope='chunk process, including archives, source buffers and prior repeats')
+                          peak_rss_scope='timed-repeat child process, including resident archive and request buffers')
         # Source commits remain fixed when checkpoint commits advance HEAD.
         saved = part / 'run-base.json'
         if saved.exists():
@@ -427,13 +524,11 @@ def _run(chunk, inputs, receipt_path, cpu, attempt):
         phase, current_load = 'start', None
         try:
             current_load = snapshot(cpu)
-            require_idle(current_load)
             check_load_snapshot(current_load, host)
             start_path, resumes_path = part / 'load-start.json', part / 'load-resume-starts.json'
             resumes = json.loads(resumes_path.read_bytes()) if resumes_path.exists() else []
             if start_path.exists():
                 start_load = json.loads(start_path.read_bytes())
-                require_idle(start_load)
                 check_load_snapshot(start_load, host)
                 resumes.append(current_load)
             else:
@@ -443,29 +538,31 @@ def _run(chunk, inputs, receipt_path, cpu, attempt):
             phase = 'measurement'
             publish = part / 'publish'
             publish.mkdir(exist_ok=True)
-            archives, controls = [], []
+            archives, controls, benchmark_runs = [], [], []
             for g in GS:
                 data, info = archive_once(pyzstd, archive_state, inputs / src, level, g)
                 archives.append(info)
                 records = []
-                with (inputs / src).open('rb', buffering=0) as source:
-                    for n in NS:
-                        controls.append(control(pyzstd, part, data, info, n))
-                        for rep in range(5):
-                            records.append(repeat(pyzstd, part, data, info, source, src, level,
-                                                  n, rep, offsets[g][n, rep]))
-                            print('REPEAT_SAVED', chunk, label(g), n, rep, flush=True)
+                for n in NS:
+                    controls.append(control(pyzstd, part, data, info, n))
+                    for rep in range(5):
+                        row, benchmark = timed_repeat(part, chunk, g, n, rep, inputs / src,
+                            archive_state / f'archive-{label(g)}.zst', info, receipt_path,
+                            host, offsets[g][n, rep])
+                        records.append(row)
+                        benchmark_runs.append(benchmark)
+                        print('REPEAT_SAVED_CLEAN', chunk, label(g), n, rep, flush=True)
                 check(hashlib.sha256(data).hexdigest() == info['sha256'], 'resident archive changed')
                 write(publish / f'samples-{label(g)}.jsonl.gz',
                       gzip.compress(b''.join(map(packed, records)), compresslevel=6, mtime=0))
             check(sha(inputs / src) == INPUT[src][1], 'source changed during measurement')
             phase = 'end'
             current_load = snapshot(cpu)
-            require_idle(current_load)
             check_load_snapshot(current_load, host)
             write(part / 'load-end.json', packed(current_load))
             run_record.update(load_start=start_load, load_end=current_load,
-                              load_resume_starts=resumes, load_accepted=True)
+                              load_resume_starts=resumes, load_accepted=True,
+                              benchmark_runs=benchmark_runs)
             write(part / 'run.json', packed(run_record))
             write(publish / 'archives.json', packed(archives))
             write(publish / 'controls.json', packed(controls))
@@ -477,8 +574,8 @@ def _run(chunk, inputs, receipt_path, cpu, attempt):
             publish.replace(HERE / chunk)
             fsync_dir(HERE)
             verify_chunk(HERE / chunk, chunk)
-        except BusyHost as error:
-            write(part / 'REJECTED', packed(dict(phase=phase, load=current_load, reason=str(error))))
+        except LoadedAttempt as error:
+            write(part / 'REJECTED', packed(dict(status='LOADED', phase=phase, load=current_load, reason=str(error))))
             raise
         except Exception as error:
             write(part / 'FAILED', f'{type(error).__name__}: {error}\n'.encode())
@@ -491,7 +588,8 @@ def run(chunk, inputs, receipt_path, cpu, attempt=1):
     check(type(attempt) is int and attempt >= 1, '--attempt must be a positive integer')
     import fcntl
     STATE.mkdir(parents=True, exist_ok=True)
-    # Share this lock with the matched C reader; only one measured chunk at once.
+    # Workspace-state lock only. The shared OVH lock wraps each timed child,
+    # and is never held while this parent encodes or verifies archives.
     with (STATE / 'lock').open('a') as lock:
         fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
         _run(chunk, inputs, receipt_path, cpu, attempt)
@@ -499,25 +597,28 @@ def run(chunk, inputs, receipt_path, cpu, attempt=1):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('action', choices=('run', 'files'))
-    parser.add_argument('chunk', choices=CHUNKS)
+    parser.add_argument('action', choices=('run', 'files', 'worker'))
+    parser.add_argument('chunk', nargs='?', choices=CHUNKS)
     parser.add_argument('--inputs', type=Path)
     parser.add_argument('--receipt', type=Path)
     parser.add_argument('--cpu', type=int, default=0)
     parser.add_argument('--attempt', type=int, default=1)
+    parser.add_argument('--request', type=Path)
     args = parser.parse_args()
+    if args.action == 'worker':
+        check(args.request is not None, '--request required')
+        timed_worker(args.request)
+        return
+    check(args.chunk is not None, 'chunk required')
     if args.action == 'files':
         print('\n'.join(f'evidence/hw-gift-1b/{args.chunk}/{name}' for name in [*FILES, 'SHA256SUMS']))
         return
     check(args.inputs is not None and args.receipt is not None, '--inputs and --receipt required')
     try:
         run(args.chunk, args.inputs, args.receipt, args.cpu, args.attempt)
-    except RuntimeError as error:
-        from load_guard import BusyHost
-        if isinstance(error, BusyHost):
-            print(f'REJECTED_BUSY_HOST: {error}', file=sys.stderr)
-            raise SystemExit(2)
-        raise
+    except LoadedAttempt as error:
+        print(f'REJECTED_LOADED: {error}', file=sys.stderr)
+        raise SystemExit(2)
 
 
 if __name__ == '__main__':

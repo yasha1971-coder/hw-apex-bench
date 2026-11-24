@@ -26,6 +26,7 @@ CSTATE = STATE / 'c-state'
 OUTPUT = HERE / 'c-baseline'
 SOURCE = '85603dc8f52f20ae5fa09c50820bc30000be726f'
 AMENDMENT = '0bd4ab29794f610884e66fdb3ca6c6c93495a4e4'
+OVH_POLICY = '3e7201a0933030de8d3011eb658270e577e6eced'
 CHUNKS = ('enwik8-L3', 'enwik8-L19', 'silesia-L3', 'silesia-L19')
 GS = (65536, 262144, 1048576, 4194304, 16777216, 67108864)
 FILES = [f'samples-{g}.jsonl.gz' for g in GS] + ['archives.json', 'controls.json', 'run.json', 'SHA256SUMS']
@@ -82,6 +83,14 @@ def guard():
     return module
 
 
+def ovh():
+    spec = importlib.util.spec_from_file_location('_gift1b_ovh_bench', HERE / 'ovh_bench.py')
+    module = importlib.util.module_from_spec(spec)
+    sys.modules[spec.name] = module
+    spec.loader.exec_module(module)
+    return module
+
+
 def patch_chunks(original):
     """Only host admission and CLI boundary orchestration change; worker stays exact."""
     text = original.decode('utf-8')
@@ -95,6 +104,7 @@ def patch_chunks(original):
     _gift_spec = _gift_import.spec_from_file_location('_gift1b_boundary', os.environ['GIFT1B_BOUNDARY_MODULE'])
     _gift_module = _gift_import.module_from_spec(_gift_spec)
     _gift_spec.loader.exec_module(_gift_module)
+    sys.executable = os.environ['GIFT1B_PYTHON_SHIM']
     _gift_module.boundary(main, HERE, Path(os.environ['GIFT_STATE']), sys.argv[1:])
 """
     check(text.count(entry) == 1, 'original entry point changed')
@@ -105,10 +115,10 @@ def manifest():
     check(sys.platform == 'linux', 'Linux executor required')
     check(platform.node() == 'ace-core', 'ace-core executor required')
     check(git(ROOT, 'branch', '--show-current').decode().strip() == 'hw-gift-1b', 'wrong parent branch')
-    subprocess.run(['git', '-C', str(ROOT), 'merge-base', '--is-ancestor', AMENDMENT, 'HEAD'], check=True)
+    subprocess.run(['git', '-C', str(ROOT), 'merge-base', '--is-ancestor', OVH_POLICY, 'HEAD'], check=True)
     actual = (HERE / 'CALIBRATION.md').read_bytes()
-    check(actual == git(ROOT, 'show', f'{AMENDMENT}:evidence/hw-gift-1b/CALIBRATION.md'), 'host amendment changed')
-    tracked = ['evidence/hw-gift-1b/' + n for n in ('CALIBRATION.md', 'c_baseline.py', 'load_guard.py')]
+    check(actual == git(ROOT, 'show', f'{OVH_POLICY}:evidence/hw-gift-1b/CALIBRATION.md'), 'execution policy changed')
+    tracked = ['evidence/hw-gift-1b/' + n for n in ('CALIBRATION.md', 'c_baseline.py', 'load_guard.py', 'ovh_bench.py')]
     check(not git(ROOT, 'status', '--porcelain', '--', *tracked).strip(), 'uncommitted C orchestration')
     originals = {name: git(ROOT, 'show', f'{SOURCE}:{name}') for name in SOURCES}
     patched = patch_chunks(originals['evidence/hw-gift-1/chunks.py'])
@@ -116,11 +126,12 @@ def manifest():
         originals['evidence/hw-gift-1/chunks.py'].decode().splitlines(keepends=True),
         patched.decode().splitlines(keepends=True),
         fromfile='original/chunks.py', tofile='ace-core/chunks.py', n=0)).encode()
-    record = dict(runner_source_commit=SOURCE, amendment_commit=AMENDMENT,
+    record = dict(runner_source_commit=SOURCE, amendment_commit=AMENDMENT, ovh_policy_commit=OVH_POLICY,
                   protocol_sha256=digest(actual), source_sha256={k: digest(v) for k, v in originals.items()},
                   original_chunks_sha256=digest(originals['evidence/hw-gift-1/chunks.py']),
                   patched_chunks_sha256=digest(patched), host_gate_patch_sha256=digest(patch),
-                  orchestration_sha256=sha(__file__), load_guard_sha256=sha(HERE / 'load_guard.py'))
+                  orchestration_sha256=sha(__file__), load_guard_sha256=sha(HERE / 'load_guard.py'),
+                  ovh_bench_sha256=sha(HERE / 'ovh_bench.py'))
     return record, originals, patched, patch
 
 
@@ -179,6 +190,85 @@ def quarantine(chunk, folder, state, receipt):
     return target
 
 
+def measurement_args(args):
+    """Only the original timed sweep worker gets the shared OVH lock."""
+    for index, argument in enumerate(args):
+        if argument.startswith('-'):
+            continue
+        path = Path(argument)
+        if path.name != 'sweep.py':
+            return None
+        check(path.resolve() == (RUNNER / 'evidence/hw-gift-1/sweep.py').resolve(), 'unexpected C sweep path')
+        tail = args[index + 1:]
+        check(len(tail) == 4, 'unexpected C sweep arguments')
+        src, g, n, rep = tail
+        g, n, rep = int(g), int(n), int(rep)
+        check(g in GS and n in (4096, 65536) and rep in range(-1, 5), 'C sweep outside preregistered grid')
+        if rep == -1:
+            return None
+        return dict(src=src, g=g, n=n, rep=rep)
+    return None
+
+
+def python_shim(args, python):
+    """Forward Python calls, locking only one actual timed C repeat at a time."""
+    identity = measurement_args(args)
+    if identity is None:
+        return subprocess.run([str(python), *args]).returncode
+    chunk = os.environ['GIFT1B_TARGET']
+    check(chunk in CHUNKS, 'unknown C target chunk')
+    expected_source = 'enwik8' if chunk.startswith('enwik8-') else 'silesia.tar'
+    check(identity['src'] == expected_source, 'C repeat corpus differs from target')
+    directory = CSTATE / chunk / 'ovh-repeats'
+    name = f"{identity['g']}-{identity['n']}-{identity['rep']}"
+    metadata_path, receipt_path, stdout_path = (directory / f'{name}{suffix}' for suffix in
+                                                ('.metadata.json', '.receipt.json', '.stdout'))
+    if metadata_path.exists():
+        saved = json.loads(metadata_path.read_bytes())
+        check(all(saved[k] == identity[k] for k in ('g', 'n', 'rep')), 'saved C repeat identity changed')
+        check(saved['returncode'] == 0, 'rejected C repeat must be quarantined before retry')
+        check(json.loads(receipt_path.read_bytes()) == saved['receipt'], 'saved C lock receipt changed')
+        check(sha(stdout_path) == saved['stdout_sha256'], 'saved C repeat stdout changed')
+        sys.stdout.buffer.write(stdout_path.read_bytes())
+        sys.stdout.buffer.flush()
+        return 0
+    check(receipt_path.exists() or not stdout_path.exists(), 'C stdout exists without its lock receipt; inspect before retry')
+    directory.mkdir(parents=True, exist_ok=True)
+    # The helper safely replays a completed CLEAN receipt after an interruption
+    # between its durable write and this shim's metadata write. WAITING/ERROR
+    # remains a manual stop; LOADED is returned as 77 for full-chunk quarantine.
+    code = ovh().run_locked([str(python), *args], receipt_path, stdout_path=stdout_path)
+    receipt = json.loads(receipt_path.read_bytes())
+    metadata = {k: identity[k] for k in ('g', 'n', 'rep')}
+    raw = stdout_path.read_bytes()
+    row_sha256 = None
+    if code == 0 or (code == 77 and raw):
+        row = dict(src=expected_source, level=int(chunk.rsplit('L', 1)[1]),
+                   g=identity['g'], n=identity['n'], rep=identity['rep'], **json.loads(raw))
+        row_sha256 = digest(packed(row))
+    metadata.update(returncode=code, receipt=receipt, stdout_sha256=digest(raw), row_sha256=row_sha256,
+                    ovh_policy_commit=OVH_POLICY, ovh_bench_sha256=sha(HERE / 'ovh_bench.py'))
+    write(metadata_path, packed(metadata))
+    if code == 0:
+        sys.stdout.buffer.write(raw)
+        sys.stdout.buffer.flush()
+    return code
+
+
+def benchmark_runs(chunk, cstate=CSTATE):
+    directory = cstate / chunk / 'ovh-repeats'
+    records = [json.loads(path.read_bytes()) for path in sorted(directory.glob('*.metadata.json'))]
+    return sorted(records, key=lambda r: (r['g'], r['n'], r['rep']))
+
+
+def reject_loaded(chunk, here, cstate, receipt):
+    records = benchmark_runs(chunk, cstate)
+    if any(record['returncode'] == 77 for record in records):
+        receipt.update(load_accepted=False, rejection_reason='OVH-BENCH LOADED timed repeat', benchmark_runs=records)
+        quarantine(chunk, here / chunk, cstate / chunk, receipt)
+        raise SystemExit(REJECTED_LOAD)
+
+
 def boundary(original_main, here, cstate, args):
     """Called only by the copied metadata dispatcher, never by the timed worker."""
     if not args or args[0] != 'run':
@@ -193,42 +283,38 @@ def boundary(original_main, here, cstate, args):
     manifest_record = json.loads((STATE / 'c-runner-manifest.json').read_bytes())
     receipt = dict(manifest_record, load_start=start, load_resume_starts=[], load_accepted=False,
                    started_at_utc=datetime.now(timezone.utc).isoformat())
-    try:
-        module.require_idle(start)
-    except module.BusyHost:
-        receipt['rejection_reason'] = 'foreign load at start'
-        write(STATE / 'c-boundaries' / f'{chunk}-rejected-start-{uuid.uuid4().hex}.json', packed(receipt))
-        pending = STATE / 'c-pending' / f'{chunk}.json'
-        if pending.exists() or (here / chunk).exists() or (cstate / chunk).exists():
-            if pending.exists():
-                previous = json.loads(pending.read_bytes())
-                previous.update(load_end=start, load_accepted=False, rejection_reason='foreign load at resume')
-                receipt = previous
-            quarantine(chunk, here / chunk, cstate / chunk, receipt)
-        raise SystemExit(REJECTED_LOAD)
     pending = STATE / 'c-pending' / f'{chunk}.json'
     if pending.exists():
         receipt = json.loads(pending.read_bytes())
         check(all(receipt.get(k) == v for k, v in manifest_record.items()), 'resumed C provenance changed')
-        module.require_idle(receipt['load_start'])
         if not snapshots_match(receipt['load_start'], start):
             receipt.update(load_end=start, rejection_reason='host/core/governor changed across resume')
             quarantine(chunk, here / chunk, cstate / chunk, receipt)
             raise SystemExit(REJECTED_LOAD)
         receipt.setdefault('load_resume_starts', []).append(start)
     write(pending, packed(receipt))
-    original_main()
+    reject_loaded(chunk, here, cstate, receipt)
+    try:
+        original_main()
+    except (Exception, SystemExit):
+        reject_loaded(chunk, here, cstate, receipt)
+        raise
     end = module.snapshot(cpu=0, interval=2.0)
     receipt['load_end'] = end
     try:
-        module.require_idle(end)
         check(snapshots_match(receipt['load_start'], end), 'CPU/kernel/governor changed during C checkpoint')
-    except (module.BusyHost, ValueError) as error:
+    except ValueError as error:
         receipt['rejection_reason'] = str(error)
         quarantine(chunk, here / chunk, cstate / chunk, receipt)
         raise SystemExit(REJECTED_LOAD)
     run = json.loads((here / chunk / 'run.json').read_bytes())
     original_host = run['host']
+    records = benchmark_runs(chunk, cstate)
+    expected = {(g, n, rep) for g in GS for n in (4096, 65536) for rep in range(5)}
+    check(len(records) == 60 and {(r['g'], r['n'], r['rep']) for r in records} == expected,
+          'missing or duplicate C OVH-BENCH repeat receipts')
+    check(all(r['returncode'] == 0 for r in records), 'C checkpoint includes failed timed repeats')
+    receipt['benchmark_runs'] = [{k: r[k] for k in ('g', 'n', 'rep', 'receipt', 'row_sha256')} for r in records]
     receipt.update(load_accepted=True, host=dict(
         hostname=start['hostname'], cpu=start['cpu'], cpu_affinity=[0], pinned_core=0,
         governor=start['governor'], kernel=start['kernel'], os=original_host['os'],
@@ -267,8 +353,6 @@ def export(chunk):
 def _run(chunk, inputs, zstd, python):
     check(sys.platform == 'linux' and platform.node() == 'ace-core', 'ace-core Linux required')
     check(0 in os.sched_getaffinity(0), 'original C worker requires CPU 0')
-    module = guard()
-    module.require_idle(module.snapshot(cpu=0, interval=2.0))  # Also before the shell's build.
     record = prepare()
     if (OUTPUT / chunk).exists():
         export(chunk)
@@ -283,13 +367,23 @@ def _run(chunk, inputs, zstd, python):
     bin_dir = STATE / 'c-bin'
     bin_dir.mkdir(exist_ok=True)
     interpreter = bin_dir / 'python3'
+    shim = (f'#!{python.resolve()}\n'
+            'import importlib.util,sys\n'
+            f'spec=importlib.util.spec_from_file_location("_gift1b_c_shim",{str(Path(__file__).resolve())!r})\n'
+            'module=importlib.util.module_from_spec(spec)\n'
+            'spec.loader.exec_module(module)\n'
+            f'raise SystemExit(module.python_shim(sys.argv[1:],{str(python.resolve())!r}))\n').encode()
+    if interpreter.is_symlink():
+        interpreter.unlink()  # Own prior preparation used a symlink; never follow it for writing.
     if interpreter.exists():
-        check(interpreter.resolve() == python.resolve(), 'C interpreter shim changed')
+        check(interpreter.read_bytes() == shim, 'C interpreter shim changed')
     else:
-        interpreter.symlink_to(python.resolve())
+        write(interpreter, shim)
+        interpreter.chmod(0o755)
     environment = os.environ.copy()
     environment.update(GIFT_INPUTS=str(inputs.resolve()), GIFT_ZSTD=str(zstd.resolve()),
                        GIFT_STATE=str(CSTATE), GIFT1B_TARGET=chunk, GIFT1B_BOUNDARY_MODULE=str(Path(__file__).resolve()))
+    environment['GIFT1B_PYTHON_SHIM'] = str(interpreter.resolve())
     environment['PATH'] = os.pathsep.join((str(bin_dir), str(zstd / 'programs'), str(zstd), environment['PATH']))
     result = subprocess.run(['bash', str(RUNNER / 'evidence/hw-gift-1/reproduce.sh')], cwd=RUNNER, env=environment)
     check(result.returncode in (0, STOP_AFTER_TARGET), f'C shell stopped with exit {result.returncode}; inspect logs/attempts')
