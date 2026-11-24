@@ -41,3 +41,5 @@ median of the five corresponding statistics, likewise peak RSS.
 Relative archive bytes = 100*(size(g)/size(64MiB)-1), within corpus and
 level. Include exact bytes and hashes; failed/incomplete runs are not
 successes. No other codec. No new measurement before resource approval.
+
+Pre-run grid amendment (Yakiv): Fedora raw uses level 3 only; enwik8 and silesia.tar retain levels 3 and 19. All other protocol terms and the prediction are unchanged.
