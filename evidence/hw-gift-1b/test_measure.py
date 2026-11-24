@@ -72,7 +72,7 @@ class ParserTests(unittest.TestCase):
 
 
 class PairTests(unittest.TestCase):
-    def test_saved_pairs_are_reused_without_opening_reader(self):
+    def test_pair_loop_retains_samples_in_ram_without_filesystem_writes(self):
         content = b'synthetic test bytes only'
         class Reader:
             opens = 0
@@ -87,17 +87,14 @@ class PairTests(unittest.TestCase):
                 self.raw.close()
         info = dict(g=65536, frame='65536', bytes=12, sha256='a' * 64)
         resource = SimpleNamespace(RUSAGE_SELF=0, getrusage=lambda _: SimpleNamespace(ru_maxrss=1))
-        def save(path, data):
-            path.write_bytes(data)
         with tempfile.TemporaryDirectory(prefix='hw-gift-1b-test-') as directory:
             part = Path(directory)
-            with patch.dict(sys.modules, {'resource': resource}), patch.object(worker, 'write', save), patch.object(worker.time, 'perf_counter_ns', side_effect=count(100, 10)):
+            with patch.dict(sys.modules, {'resource': resource}), patch.object(worker, 'write') as save, patch.object(worker.time, 'perf_counter_ns', side_effect=count(100, 10)):
                 first = worker.repeat(SimpleNamespace(SeekableZstdFile=Reader), part, b'test', info, io.BytesIO(content), 'synthetic', 3, 4, 0, [0, 3])
                 self.assertEqual(Reader.opens, 2)
-                def forbidden(*args):
-                    raise AssertionError('completed pair was timed again')
-                second = worker.repeat(SimpleNamespace(SeekableZstdFile=forbidden), part, b'test', info, io.BytesIO(content), 'synthetic', 3, 4, 0, [0, 3])
-                self.assertEqual(first['samples'], second['samples'])
+                self.assertEqual([sample[0] for sample in first['samples']], [0, 3])
+                save.assert_not_called()
+                self.assertEqual(list(part.iterdir()), [])
 
     def test_repeat_mismatch_is_fatal_and_is_not_saved(self):
         class Reader:

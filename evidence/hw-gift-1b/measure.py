@@ -3,9 +3,9 @@
 Usage: python -B measure.py run enwik8-L3 --inputs .work/inputs \
     --receipt .work/hw-gift-1b/install.json --cpu 0
 
-Only complete corpus/level checkpoints enter evidence/. Archives and every
-completed request pair survive in .work/hw-gift-1b/. Interrupted archive writes
-and failed checks stop, rather than silently encoding or measuring again.
+Only complete corpus/level checkpoints enter evidence/. Archives and completed
+CLEAN repeats survive in .work/hw-gift-1b/. Samples stay in RAM during a repeat.
+Interrupted archive writes and failed checks stop rather than silently retrying.
 """
 
 import argparse
@@ -343,41 +343,31 @@ def control(pyzstd, part, data, info, n):
 
 
 def repeat(pyzstd, part, data, info, source, src, level, n, rep, offsets):
+    """Keep samples in RAM; persist the complete repeat after its timed loop."""
     import resource
-    folder = part / f'pairs-{info["frame"]}-{n}-{rep}'
-    folder.mkdir(exist_ok=True)
     samples = []
-    for index, off in enumerate(offsets):
-        path = folder / f'{index:04}.json'
-        if path.exists():
-            sample = json.loads(path.read_bytes())
-            check(isinstance(sample, list) and len(sample) == 4 and sample[0] == off and
-                  all(type(value) is int and value >= 0 for value in sample),
-                  'invalid durable sample')
-        else:
-            buffer = io.BytesIO(data)
+    for off in offsets:
+        buffer = io.BytesIO(data)
+        t0 = time.perf_counter_ns()
+        reader = pyzstd.SeekableZstdFile(buffer, 'rb')
+        open_ns = time.perf_counter_ns() - t0
+        try:
             t0 = time.perf_counter_ns()
-            reader = pyzstd.SeekableZstdFile(buffer, 'rb')
-            open_ns = time.perf_counter_ns() - t0
-            try:
-                t0 = time.perf_counter_ns()
-                reader.seek(off)
-                first = reader.read(n)
-                first_ns = time.perf_counter_ns() - t0
-                t0 = time.perf_counter_ns()
-                reader.seek(off)
-                second = reader.read(n)
-                repeat_ns = time.perf_counter_ns() - t0
-                source.seek(off)
-                expected = source.read(n)
-                check(len(first) == len(second) == len(expected) == n and
-                      first == expected and second == expected, 'restored byte/length mismatch')
-            finally:
-                reader.close()
-                buffer.close()
-            sample = [off, open_ns, first_ns, repeat_ns]
-            write(path, packed(sample))
-        samples.append(sample)
+            reader.seek(off)
+            first = reader.read(n)
+            first_ns = time.perf_counter_ns() - t0
+            t0 = time.perf_counter_ns()
+            reader.seek(off)
+            second = reader.read(n)
+            repeat_ns = time.perf_counter_ns() - t0
+            source.seek(off)
+            expected = source.read(n)
+            check(len(first) == len(second) == len(expected) == n and
+                  first == expected and second == expected, 'restored byte/length mismatch')
+        finally:
+            reader.close()
+            buffer.close()
+        samples.append([off, open_ns, first_ns, repeat_ns])
     return dict(src=src, level=level, g=info['g'], frame=info['frame'], n=n, rep=rep,
                 archive_sha256=info['sha256'], archive_bytes=info['bytes'], samples=samples,
                 peak_kib=resource.getrusage(resource.RUSAGE_SELF).ru_maxrss)

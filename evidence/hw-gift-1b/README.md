@@ -116,7 +116,10 @@ Exit 2 means a timed repeat was LOADED or host conditions changed. Preserve it
 and use a new explicit `--attempt` number for the retry. Archive bytes remain
 shared and immutable across pyzstd attempts; rejected timing samples are never
 reused. Ordinary interruptions resume the same non-rejected attempt, retaining
-all completed pairs and the original and resumed admission receipts.
+all completed CLEAN repeats and the original and resumed observations. Within a
+timed repeat, samples stay in RAM and the complete raw row is saved once after
+the loop; no synchronous checkpoint files are written between timed API calls.
+An interrupted repeat without a complete boundary receipt stops for inspection.
 
 If the executor has no GitHub write credential, preserve its local checkpoint
 commit and transfer a Git bundle to the Windows HW checkout for a fast-forward

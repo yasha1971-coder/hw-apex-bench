@@ -1506,3 +1506,17 @@ measurements.
   against the isolated checkout and selected system zstd 1.4.8. Diagnostic
   inspection confirmed zero timed receipts. Resolve controller arguments to
   absolute paths; preserve the preflight-only state separately before retrying.
+- The first actual C enwik8-L3 attempt retained 58 CLEAN repeats, then its
+  64 MiB / 64 KiB repeat 3 ended at one-minute load 1.08 (start 1.00).
+  The entire checkpoint was marked LOADED and quarantined before acceptance;
+  none of its rows is used. All 381 original files are retained byte-for-byte
+  in `evidence/hw-gift-1b/rejected/c-enwik8-L3-attempt1-LOADED.tar.gz`, with
+  archive SHA-256 `48b8add53eb322707fafdf7cd44027811a2033c115d95a85042c02dae7f40ef7`
+  and per-file hashes/status receipts in the adjacent JSON manifest.
+- Before any pyzstd timing, its worker was aligned with the C sample collection:
+  1000 pairs are retained in RAM, followed by one durable raw-repeat write.
+  Per-pair synchronous JSON writes are removed to avoid unrequested disk activity
+  between API timers. Completed CLEAN repeat replay remains unchanged; partial
+  repeats without a complete receipt are not accepted. The 13 targeted synthetic
+  worker tests pass. The shared helper and C timed sources are unchanged.
+  Next: repeat the rejected C checkpoint under the same OVH rule and thresholds.
