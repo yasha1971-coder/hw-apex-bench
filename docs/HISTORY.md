@@ -1520,3 +1520,12 @@ measurements.
   repeats without a complete receipt are not accepted. The 13 targeted synthetic
   worker tests pass. The shared helper and C timed sources are unchanged.
   Next: repeat the rejected C checkpoint under the same OVH rule and thresholds.
+- The second C enwik8-L3 timing attempt also ended LOADED: 50 CLEAN repeats,
+  then 64 MiB / 4 KiB repeat 0 started at 0.98 and ended at 1.04. The command
+  returned zero and its byte checks passed; rejection is solely the load rule.
+  All 332 original files are retained in the second rejected archive, SHA-256
+  `c478573ad2abf28e8aadf98e36e5f064094f6dfff38e1d0545ea5c788cf5bc1d`, with
+  per-file manifest alongside it. No measurement checkpoint is accepted yet.
+  The owner was asked whether the new OVH rule retries just the LOADED timed
+  repeat or still the entire corpus/level checkpoint specified earlier. Until
+  clarified, the existing whole-checkpoint rejection rule is retained.
