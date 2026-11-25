@@ -1724,3 +1724,5 @@ measurements.
   claim may follow from this one pair. No prior latency series is rerun.
 
 - HW-GIFT-1c checkpoint `timing-selfcheck`: both in-memory native encoder/decoder paths reproduce the full archived SHA and source bytes; clock calls=0. Raw files and receipts are retained in evidence/hw-gift-1c/.
+
+- HW-GIFT-1c checkpoint `timing-pair`: CLEAN; one paired observation, 1 retained attempts, 0 LOADED attempts. Raw files and receipts are retained in evidence/hw-gift-1c/.
