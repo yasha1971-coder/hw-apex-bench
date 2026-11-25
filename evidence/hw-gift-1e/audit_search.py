@@ -326,7 +326,12 @@ def adjacent(tested, nodes):
 
 def function_hashes(path):
     tree = ast.parse(Path(path).read_text(encoding='utf-8'))
-    return {node.name:hashlib.sha256(ast.dump(node,include_attributes=False).encode()).hexdigest()
+    # The pre-build receipt was produced by Python 3.11. Python 3.12 adds
+    # an empty type_params field to function ASTs; no generic code is allowed.
+    for node in ast.walk(tree):
+        if hasattr(node,'type_params'):
+            check(node.type_params == [], 'generic AST is outside the recorded 3.11 proof')
+    return {node.name:hashlib.sha256(ast.dump(node,include_attributes=False).replace(', type_params=[]','').encode()).hexdigest()
             for node in tree.body if isinstance(node,(ast.FunctionDef,ast.AsyncFunctionDef))}
 
 
