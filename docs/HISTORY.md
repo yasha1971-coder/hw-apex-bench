@@ -1778,3 +1778,5 @@ measurements.
   `3316277cbbcb853ed2d2f0b08dac3134e72ce8bfa16b20d46b6ea7468c8f15b6`.
   Final text/data review passed. PR #92 stays draft; PR #91 remains the separate
   one-file method adoption. No merge, external issue or contact was performed.
+
+- HW-GIFT-1d checkpoint `prepare`: retained raw attempts and hash-bound results under evidence/hw-gift-1d/. No external issue or merge.
