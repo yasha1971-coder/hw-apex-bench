@@ -1928,3 +1928,5 @@ measurements.
 - Publication integrity and site build PASS on clean Linux checkout (435 frozen records). Windows-only validation sees existing results.jsonl CRLF conversion; Git blob and normalized worktree are identical and were not changed. Old HW-GIFT-1/1b/1c evidence stays unchanged. No external zstd issue/comment or PR merge. Next bounded action is owner review of the completed draft and its density trade-offs; additional measurements are not needed to reject the initial free-win premise on this grid.
 
 - HW-GIFT-1e checkpoint `setup`: retained raw attempts and hash-bound results under evidence/hw-gift-1e/. No external issue or merge.
+
+- HW-GIFT-1e checkpoint `prepare`: retained raw attempts and hash-bound results under evidence/hw-gift-1e/. No external issue or merge.
