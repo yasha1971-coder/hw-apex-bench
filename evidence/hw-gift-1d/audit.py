@@ -594,8 +594,9 @@ def verify_freeze(cells, selected):
         summary,request = item['summary'],item['request']
         freeze = summary.get('freeze')
         check(isinstance(freeze,dict) and freeze['selection']['sha256'] == selection_sha
-              and freeze['conditional_protocol']['sha256'] == protocol_sha, 'cell does not bind the committed development freeze')
-        ref(freeze['selection']);ref(freeze['conditional_protocol'])
+              and freeze['conditional_protocol'] == dict(path='CONDITIONAL_PROTOCOL.md',sha256=protocol_sha),
+              'cell does not bind the committed development freeze')
+        ref(freeze['selection'])
         check(request['threshold'] == selected, 'X changed after development selection')
         source_commit = summary['provenance']['source_commit']
         completed = subprocess.run(['git','-C',str(ROOT),'merge-base','--is-ancestor',selection_commit,source_commit],stdout=subprocess.PIPE,stderr=subprocess.PIPE)
