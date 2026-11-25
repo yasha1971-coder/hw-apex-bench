@@ -1895,3 +1895,5 @@ measurements.
 - HW-GIFT-1d checkpoint `holdout-L10-G16384`: retained raw attempts and hash-bound results under evidence/hw-gift-1d/. No external issue or merge.
 
 - HW-GIFT-1d checkpoint `holdout-L10-G65536`: retained raw attempts and hash-bound results under evidence/hw-gift-1d/. No external issue or merge.
+
+- HW-GIFT-1d checkpoint `holdout-L10-G262144`: retained raw attempts and hash-bound results under evidence/hw-gift-1d/. No external issue or merge.
