@@ -93,12 +93,6 @@ No rounded display value replaces the underlying record.
 [AUDITS](docs/AUDITS/README.md) collects the checks behind the claims.
 [HISTORY.md](docs/HISTORY.md) preserves decisions, corrections and review boundaries.
 
-[HW-GIFT-1e](evidence/hw-gift-1e/RESULTS.md) compares the tiny-frame source-size
-hint on zstd 1.5.4 and 1.5.7, with a frozen seekable writer on ace-core. Both
-primary forecasts passed; the bounded search found a qualified transition on
-the init-once source branch. The [unsent issue draft](evidence/hw-gift-1e/ZSTD_ISSUE_DRAFT.md)
-also retains the saved level-dependent size/speed trade-offs.
-
 The full migration comparison and untimed BGZF closure remain distinct receipts.
 Their deterministic checks do not assert byte-identical timing on different hosts.
 The strict c(g) run uses its own baseline and configuration; do not splice it
