@@ -1689,3 +1689,5 @@ measurements.
   128/512 KiB (eight configurations); push each validated checkpoint.
 
 - HW-GIFT-1c checkpoint `controls`: positive equality, negative-level distinction, known FCS and corrupt-magic controls passed; no timers. Raw files and receipts are retained in evidence/hw-gift-1c/.
+
+- HW-GIFT-1c checkpoint `minimal`: both minimal frame SHA values match their archived frame 0; fixed-policy chunking invariant=True. Raw files and receipts are retained in evidence/hw-gift-1c/.
