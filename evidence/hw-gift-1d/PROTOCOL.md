@@ -27,7 +27,7 @@ created and initialized before each timed native encode. Buffers are allocated
 and prefaulted before timing; codec internal lazy allocation remains inside.
 Hashing, full byte restore, disk access and context telemetry stay outside.
 No warmups. Five original/nohint pairs per cell, in A B A B order. The starting
-variant reverses on alternating cells (A B / B A), fixed by cell index, never
+variant reverses by parity of (cell index + repeat index), (A B / B A), never
 chosen from outcomes. Report each variant's median and minimum compression ns.
 One full-decode observation per variant/cell, on pair 0, has no ranking claim.
 Every produced archive, including each timed repetition, restores bit for bit.
