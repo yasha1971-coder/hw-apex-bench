@@ -1915,3 +1915,5 @@ measurements.
 - HW-GIFT-1d checkpoint `holdout-L19-G524288`: retained raw attempts and hash-bound results under evidence/hw-gift-1d/. No external issue or merge.
 
 - HW-GIFT-1d checkpoint `audits`: retained raw attempts and hash-bound results under evidence/hw-gift-1d/. No external issue or merge.
+
+- HW-GIFT-1d checkpoint `report-bindings`: retained raw attempts and hash-bound results under evidence/hw-gift-1d/. No external issue or merge.
