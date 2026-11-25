@@ -1687,3 +1687,5 @@ measurements.
   match the accepted HW-GIFT-1b SHA and size before use. Correctness/size work has
   no timers. The bounded matrix covers all six anomalous points plus enwik8 L3
   128/512 KiB (eight configurations); push each validated checkpoint.
+
+- HW-GIFT-1c checkpoint `controls`: positive equality, negative-level distinction, known FCS and corrupt-magic controls passed; no timers. Raw files and receipts are retained in evidence/hw-gift-1c/.
