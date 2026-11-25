@@ -1,0 +1,79 @@
+{
+  "cpu": "AMD EPYC 4344P 8-Core Processor",
+  "excluded_observer_ancestry": [
+    1,
+    187050,
+    3020797,
+    3020844,
+    3020845
+  ],
+  "governor": "schedutil",
+  "hostname": "ace-core",
+  "interval_ns": 2045422624,
+  "kernel": "5.15.0-163-generic",
+  "loadavg": [
+    0.93115234375,
+    0.9833984375,
+    0.61474609375
+  ],
+  "method": "two /proc process snapshots; any foreign CPU tick or known compute process makes busy; OS daemon ticks recorded separately",
+  "os_daemon_activity": [
+    {
+      "comm": "containerd",
+      "cpu_ticks_delta": 1,
+      "pid": 187039,
+      "start_ticks": 2986238457,
+      "state": "S",
+      "uid": 0
+    },
+    {
+      "comm": "systemd-journal",
+      "cpu_ticks_delta": 1,
+      "pid": 187056,
+      "start_ticks": 2986238458,
+      "state": "S",
+      "uid": 0
+    }
+  ],
+  "other_load": {
+    "active_processes": [
+      {
+        "comm": "2.1.284",
+        "cpu_ticks_delta": 1,
+        "pid": 805134,
+        "start_ticks": 2994846867,
+        "state": "S",
+        "uid": 1002
+      },
+      {
+        "comm": "2.1.284",
+        "cpu_ticks_delta": 1,
+        "pid": 2171726,
+        "start_ticks": 2888712752,
+        "state": "S",
+        "uid": 1002
+      },
+      {
+        "comm": "2.1.284",
+        "cpu_ticks_delta": 31,
+        "pid": 3102557,
+        "start_ticks": 2779355596,
+        "state": "R",
+        "uid": 1002
+      },
+      {
+        "comm": "2.1.314",
+        "cpu_ticks_delta": 2,
+        "pid": 4181850,
+        "start_ticks": 2812157752,
+        "state": "S",
+        "uid": 1000
+      }
+    ],
+    "busy": true,
+    "inspection_errors": []
+  },
+  "pinned_core": 0,
+  "sample_end_utc": "2026-11-24T17:35:32.221403+00:00",
+  "sample_start_utc": "2026-11-24T17:35:30.175972+00:00"
+}

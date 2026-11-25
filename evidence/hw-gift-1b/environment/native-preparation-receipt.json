@@ -1,0 +1,187 @@
+{
+  "binaries_sha256": {
+    ".work/hw-gift-1b/zstd/lib/libzstd.a": "a446b45116241342a3223f9d65a713ea3d99e01a69b53d3c9dd4124ec91ca9ac",
+    ".work/hw-gift-1b/zstd/programs/zstd": "d2b3777100f3b1d63dbdbf4ec0e57ecaca677c6e4ecba1d3342fc08af0ab3281"
+  },
+  "compiler": "gcc (Ubuntu 11.4.0-1ubuntu1~22.04.3) 11.4.0",
+  "load_end": {
+    "cpu": "AMD EPYC 4344P 8-Core Processor",
+    "excluded_observer_ancestry": [
+      1,
+      187050,
+      3026267,
+      3026324,
+      3026325
+    ],
+    "governor": "schedutil",
+    "hostname": "ace-core",
+    "interval_ns": 2049261993,
+    "kernel": "5.15.0-163-generic",
+    "loadavg": [
+      0.48974609375,
+      0.185546875,
+      0.18359375
+    ],
+    "method": "two /proc process snapshots; any foreign CPU tick or known compute process makes busy; OS daemon ticks recorded separately",
+    "os_daemon_activity": [
+      {
+        "comm": "containerd",
+        "cpu_ticks_delta": 1,
+        "pid": 187039,
+        "start_ticks": 2986238457,
+        "state": "S",
+        "uid": 0
+      }
+    ],
+    "other_load": {
+      "active_processes": [
+        {
+          "comm": "claude",
+          "cpu_ticks_delta": 1,
+          "pid": 554052,
+          "start_ticks": 2543376514,
+          "state": "S",
+          "uid": 1002
+        },
+        {
+          "comm": "2.1.284",
+          "cpu_ticks_delta": 2,
+          "pid": 805134,
+          "start_ticks": 2994846867,
+          "state": "S",
+          "uid": 1002
+        },
+        {
+          "comm": "2.1.284",
+          "cpu_ticks_delta": 1,
+          "pid": 2171726,
+          "start_ticks": 2888712752,
+          "state": "S",
+          "uid": 1002
+        },
+        {
+          "comm": "2.1.284",
+          "cpu_ticks_delta": 1,
+          "pid": 2310730,
+          "start_ticks": 2594790999,
+          "state": "S",
+          "uid": 1002
+        },
+        {
+          "comm": "2.1.284",
+          "cpu_ticks_delta": 9,
+          "pid": 3102557,
+          "start_ticks": 2779355596,
+          "state": "S",
+          "uid": 1002
+        },
+        {
+          "comm": "2.1.314",
+          "cpu_ticks_delta": 2,
+          "pid": 4181850,
+          "start_ticks": 2812157752,
+          "state": "S",
+          "uid": 1000
+        }
+      ],
+      "busy": true,
+      "inspection_errors": []
+    },
+    "pinned_core": 0,
+    "sample_end_utc": "2026-11-24T18:02:58.469873+00:00",
+    "sample_start_utc": "2026-11-24T18:02:56.420609+00:00"
+  },
+  "load_start": {
+    "cpu": "AMD EPYC 4344P 8-Core Processor",
+    "excluded_observer_ancestry": [
+      1,
+      187050,
+      3026267,
+      3026324,
+      3026325
+    ],
+    "governor": "schedutil",
+    "hostname": "ace-core",
+    "interval_ns": 2039568083,
+    "kernel": "5.15.0-163-generic",
+    "loadavg": [
+      0.12109375,
+      0.095703125,
+      0.15380859375
+    ],
+    "method": "two /proc process snapshots; any foreign CPU tick or known compute process makes busy; OS daemon ticks recorded separately",
+    "os_daemon_activity": [
+      {
+        "comm": "containerd",
+        "cpu_ticks_delta": 1,
+        "pid": 187039,
+        "start_ticks": 2986238457,
+        "state": "S",
+        "uid": 0
+      },
+      {
+        "comm": "systemd-journal",
+        "cpu_ticks_delta": 1,
+        "pid": 187056,
+        "start_ticks": 2986238458,
+        "state": "S",
+        "uid": 0
+      },
+      {
+        "comm": "cloudflared",
+        "cpu_ticks_delta": 1,
+        "pid": 3277404,
+        "start_ticks": 2156924418,
+        "state": "S",
+        "uid": 0
+      }
+    ],
+    "other_load": {
+      "active_processes": [
+        {
+          "comm": "2.1.284",
+          "cpu_ticks_delta": 2,
+          "pid": 805134,
+          "start_ticks": 2994846867,
+          "state": "S",
+          "uid": 1002
+        },
+        {
+          "comm": "2.1.284",
+          "cpu_ticks_delta": 1,
+          "pid": 2310730,
+          "start_ticks": 2594790999,
+          "state": "S",
+          "uid": 1002
+        },
+        {
+          "comm": "2.1.284",
+          "cpu_ticks_delta": 1,
+          "pid": 3102557,
+          "start_ticks": 2779355596,
+          "state": "S",
+          "uid": 1002
+        },
+        {
+          "comm": "2.1.314",
+          "cpu_ticks_delta": 2,
+          "pid": 4181850,
+          "start_ticks": 2812157752,
+          "state": "S",
+          "uid": 1000
+        }
+      ],
+      "busy": true,
+      "inspection_errors": []
+    },
+    "pinned_core": 0,
+    "sample_end_utc": "2026-11-24T18:02:28.573966+00:00",
+    "sample_start_utc": "2026-11-24T18:02:26.534405+00:00"
+  },
+  "measurements_started": false,
+  "nice": 19,
+  "ovh_policy_commit": "3e7201a0933030de8d3011eb658270e577e6eced",
+  "preparation_cpu": 15,
+  "zstd_cli": "*** Zstandard CLI (64-bit) v1.5.7, by Yann Collet ***",
+  "zstd_commit": "f8745da6ff1ad1e7bab384bd1f9d742439278e99"
+}

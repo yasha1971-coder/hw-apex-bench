@@ -1,0 +1,191 @@
+{
+  "control_load_allowed_for_preparation": true,
+  "corpora": [
+    {
+      "bytes": 100000000,
+      "name": "enwik8",
+      "sha256": "2b49720ec4d78c3c9fabaee6e4179a5e997302b3a70029f30f2d582218c024a8",
+      "source_url": "https://mattmahoney.net/dc/enwik8.zip"
+    },
+    {
+      "bytes": 211947520,
+      "name": "silesia.tar",
+      "sha256": "a667bac80089b3d04d5496772149e632f0758974b0579d743cd8d6e5e0d63eb2",
+      "source_url": "https://github.com/DataCompression/corpus-collection/raw/main/Silesia-Corpus/silesia.tar.gz"
+    }
+  ],
+  "load_end": {
+    "cpu": "AMD EPYC 4344P 8-Core Processor",
+    "excluded_observer_ancestry": [
+      1,
+      187050,
+      3024649,
+      3024706,
+      3024714
+    ],
+    "governor": "schedutil",
+    "hostname": "ace-core",
+    "interval_ns": 2048202640,
+    "kernel": "5.15.0-163-generic",
+    "loadavg": [
+      0.1416015625,
+      0.09765625,
+      0.2177734375
+    ],
+    "method": "two /proc process snapshots; any foreign CPU tick or known compute process makes busy; OS daemon ticks recorded separately",
+    "os_daemon_activity": [
+      {
+        "comm": "irqbalance",
+        "cpu_ticks_delta": 1,
+        "pid": 187035,
+        "start_ticks": 2986238456,
+        "state": "S",
+        "uid": 0
+      },
+      {
+        "comm": "multipathd",
+        "cpu_ticks_delta": 1,
+        "pid": 187076,
+        "start_ticks": 2986238460,
+        "state": "S",
+        "uid": 0
+      },
+      {
+        "comm": "cloudflared",
+        "cpu_ticks_delta": 1,
+        "pid": 3277404,
+        "start_ticks": 2156924418,
+        "state": "S",
+        "uid": 0
+      }
+    ],
+    "other_load": {
+      "active_processes": [
+        {
+          "comm": "2.1.284",
+          "cpu_ticks_delta": 1,
+          "pid": 805134,
+          "start_ticks": 2994846867,
+          "state": "S",
+          "uid": 1002
+        },
+        {
+          "comm": "2.1.284",
+          "cpu_ticks_delta": 9,
+          "pid": 2310730,
+          "start_ticks": 2594790999,
+          "state": "S",
+          "uid": 1002
+        },
+        {
+          "comm": "2.1.284",
+          "cpu_ticks_delta": 3,
+          "pid": 3102557,
+          "start_ticks": 2779355596,
+          "state": "S",
+          "uid": 1002
+        },
+        {
+          "comm": "2.1.314",
+          "cpu_ticks_delta": 2,
+          "pid": 4181850,
+          "start_ticks": 2812157752,
+          "state": "S",
+          "uid": 1000
+        }
+      ],
+      "busy": true,
+      "inspection_errors": []
+    },
+    "pinned_core": 0,
+    "sample_end_utc": "2026-11-24T17:53:04.253985+00:00",
+    "sample_start_utc": "2026-11-24T17:53:02.205786+00:00"
+  },
+  "load_start": {
+    "cpu": "AMD EPYC 4344P 8-Core Processor",
+    "excluded_observer_ancestry": [
+      1,
+      187050,
+      3024649,
+      3024706,
+      3024714
+    ],
+    "governor": "schedutil",
+    "hostname": "ace-core",
+    "interval_ns": 2037912303,
+    "kernel": "5.15.0-163-generic",
+    "loadavg": [
+      0.16796875,
+      0.1015625,
+      0.220703125
+    ],
+    "method": "two /proc process snapshots; any foreign CPU tick or known compute process makes busy; OS daemon ticks recorded separately",
+    "os_daemon_activity": [
+      {
+        "comm": "dockerd",
+        "cpu_ticks_delta": 3,
+        "pid": 3758,
+        "start_ticks": 633724,
+        "state": "S",
+        "uid": 0
+      }
+    ],
+    "other_load": {
+      "active_processes": [
+        {
+          "comm": "2.1.284",
+          "cpu_ticks_delta": 1,
+          "pid": 2171726,
+          "start_ticks": 2888712752,
+          "state": "S",
+          "uid": 1002
+        },
+        {
+          "comm": "2.1.284",
+          "cpu_ticks_delta": 7,
+          "pid": 2310730,
+          "start_ticks": 2594790999,
+          "state": "S",
+          "uid": 1002
+        },
+        {
+          "comm": "2.1.284",
+          "cpu_ticks_delta": 3,
+          "pid": 3102557,
+          "start_ticks": 2779355596,
+          "state": "S",
+          "uid": 1002
+        },
+        {
+          "comm": "2.1.314",
+          "cpu_ticks_delta": 1,
+          "pid": 4181850,
+          "start_ticks": 2812157752,
+          "state": "S",
+          "uid": 1000
+        }
+      ],
+      "busy": true,
+      "inspection_errors": []
+    },
+    "pinned_core": 0,
+    "sample_end_utc": "2026-11-24T17:52:55.337850+00:00",
+    "sample_start_utc": "2026-11-24T17:52:53.299932+00:00"
+  },
+  "measurements_started": false,
+  "prepared_at_utc": "2026-11-24T17:53:04.254369+00:00",
+  "python": {
+    "archive_sha256": "c85811d35971d06612585a057db3b71806378df6ea8476275fb16aa5c9fe56a0",
+    "interpreter": "/home/ubuntu/hw-apex-bench-hw-gift-1b/.work/hw-gift-1b/python/bin/python3.12",
+    "interpreter_sha256": "569e1bb97ea3926c8f30e7e14375646aa3c632b1192732e3668f3c974b5b1801",
+    "release": "20261123",
+    "url": "https://github.com/astral-sh/python-build-standalone/releases/download/20261123/cpython-3.12.16%2B20261123-x86_64-unknown-linux-gnu-install_only_stripped.tar.gz",
+    "version": "3.12.16"
+  },
+  "zstd": {
+    "commit": "f8745da6ff1ad1e7bab384bd1f9d742439278e99",
+    "compiled": false,
+    "path": "/home/ubuntu/hw-apex-bench-hw-gift-1b/.work/hw-gift-1b/zstd",
+    "source": "https://github.com/facebook/zstd.git"
+  }
+}

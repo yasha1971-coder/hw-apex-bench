@@ -1,0 +1,8 @@
+{
+  "archive_sha256": "c85811d35971d06612585a057db3b71806378df6ea8476275fb16aa5c9fe56a0",
+  "interpreter": "/home/ubuntu/hw-apex-bench-hw-gift-1b/.work/hw-gift-1b/python/bin/python3.12",
+  "interpreter_sha256": "569e1bb97ea3926c8f30e7e14375646aa3c632b1192732e3668f3c974b5b1801",
+  "release": "20261123",
+  "url": "https://github.com/astral-sh/python-build-standalone/releases/download/20261123/cpython-3.12.16%2B20261123-x86_64-unknown-linux-gnu-install_only_stripped.tar.gz",
+  "version": "3.12.16"
+}

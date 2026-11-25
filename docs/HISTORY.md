@@ -1378,3 +1378,281 @@ measurements.
   evidence/a12/axis4-native-threads.log and the preserved experiment).
 - Workflow expected_total=447 at this checkpoint. Full clean-clone acceptance and
   Axis5 v2 integration remain pending until the final handoff receipt.
+
+### HW-GIFT-1b preregistration — 2026-11-24
+
+- The owner authorized the attached HW-GIFT-1b protocol after accepting
+  HW-GIFT-1. Main was verified live at
+  `85603dc8f52f20ae5fa09c50820bc30000be726f`; the retained HW-GIFT-1 directory
+  is identical to PR #89 head `2e55aa1c1b02cb2c09fe7ea56e25d63fd10e561c`.
+- Branch `hw-gift-1b` starts at that main. Its first commit,
+  `c4809624beb0ad7a243163455d9c05545bc52d99`, contains only
+  `evidence/hw-gift-1b/CALIBRATION.md`. The complete protocol text beginning
+  with "Prediction (not a measurement):" matches the owner's attachment.
+  No HW-GIFT-1b measurement preceded this commit.
+- Draft PR #90: https://github.com/yasha1971-coder/hw-apex-bench/pull/90.
+  Keep it draft; no merge or external outreach is authorized.
+- Live PyPI metadata reports pyzstd 0.20.0. Its
+  `pyzstd-0.20.0-py3-none-any.whl` SHA-256 is
+  `9c6aff5aa9b12bb14d51f724915f176db9b187214d66d93d990c75ff054483c6`.
+  The wheel was downloaded and hashed for API inspection only; no corpus
+  encoding or timing has run. The native backend dependency must also be pinned.
+- Executor remains unresolved: HW-GIFT-1 used AMD EPYC 9V74, Debian 13,
+  CPython 3.12.14 and CPU affinity [0]. The reachable SSH `ace-core` has
+  AMD EPYC 4344P, so no timing was started there. The owner was asked for
+  the matching executor or an explicit protocol amendment before measurements.
+- Next bounded action: obtain the matching executor, install and record the
+  hash-pinned wheels, then run and push each verified corpus/level checkpoint.
+  Reuse original offset lists, time fresh pyzstd readers over resident archives,
+  retain all samples and negative controls, and report both predictions honestly.
+- A premeasurement runner, wheel installer, offline verifier/report and usage
+  instructions are prepared in `evidence/hw-gift-1b/`. Archive creation is
+  single-use, each completed request pair is saved durably, and a global lock
+  prevents concurrent chunks. Wrong hosts and changed installation payloads
+  are rejected. Synthetic unit checks exercise resume without repeated reads,
+  failed restoration, seek-table geometry, exact prediction boundaries and
+  corrupt/incomplete evidence. All 21 synthetic tests passed locally; Python
+  syntax and `git diff --check` passed. These checks create no performance evidence.
+- Runner preparation is committed and pushed as
+  `555387d5ff1096ccc6fb2ae9d095b205e1abb30d`. Its GitHub CI passed:
+  [Committed publication integrity](https://github.com/yasha1971-coder/hw-apex-bench/actions/runs/45442482941)
+  and [ACEAPEX v2.2 publication integrity](https://github.com/yasha1971-coder/hw-apex-bench/actions/runs/45442482800).
+  There are still no HW-GIFT-1b corpus checkpoints or RESULTS.md; the matching
+  executor remains the only pending start condition. HW-GIFT-1 evidence is unchanged.
+
+### HW-GIFT-1b matched-host amendment — 2026-11-24
+
+- The owner approved ace-core (AMD EPYC 4344P) and required a new matched-host
+  C-reader baseline. The exact supplied amendment was committed and pushed
+  separately as `0bd4ab29794f610884e66fdb3ca6c6c93495a4e4`, before any
+  HW-GIFT-1b or new C-baseline measurements. Predictions (a) and (b) stay unchanged.
+- Both readers use CPU 0, because the unchanged HW-GIFT-1 timed worker pins that
+  CPU. Start/resume/end receipts record CPU, kernel, governor and foreign load.
+  Any observed foreign process CPU activity or known build/measurement process
+  rejects admission; OS-daemon activity is recorded separately. Rejected timed
+  attempts are preserved and excluded, then repeated in a fresh attempt.
+- The original `reproduce.sh` targets the existing `hw-gift-1` branch and skips
+  its accepted data. `c_baseline.py` therefore executes its exact bytes in a
+  separate scratch repository with a local bare origin. Only the copied
+  `chunks.py` host gate and boundary orchestration change; the diff is retained
+  as `evidence/hw-gift-1b/c-baseline/host-gate.patch`. The original C timed worker,
+  paired timer, adapter and shell are unchanged. New C checkpoints belong under
+  `evidence/hw-gift-1b/c-baseline/`, never in accepted HW-GIFT-1 paths or branch.
+- A separate server checkout exists at
+  `/home/ubuntu/hw-apex-bench-hw-gift-1b`. Its system Python is 3.10.12, so a
+  the new bootstrap helper can prepare hash-pinned standalone CPython 3.12.16
+  inside `.work/`, without changing the server's system Python or other projects.
+- No measurements or builds have started. The initial admission inspection saw
+  `fz_c99` using about 90% CPU on core 0. Two subsequent retained two-second
+  observations still found foreign-session CPU activity: see
+  `evidence/hw-gift-1b/admission/20261124T173530.json` and
+  `evidence/hw-gift-1b/admission/20261124T173759.json`. The owner was asked for a
+  quiet window; other sessions and their processes are not controlled by HW.
+- Next bounded action: pass idle admission, prepare pinned inputs/packages and
+  C build, then run and push each clean C and pyzstd checkpoint before advancing.
+  The final report requires all eight clean checkpoints on the same host/core,
+  while the original archive-size prediction still uses the accepted main data.
+  PR #90 stays draft; HW-GIFT-1 evidence on main is unchanged.
+- Final local checks passed: 53 synthetic unit tests, Python syntax, exact
+  amended protocol bytes and `git diff --check`. The tests execute no codec,
+  build, install or real timer. New experiment files disable Git text conversion
+  so raw samples, manifests and source/protocol hashes retain their exact bytes
+  when moved between the Windows controller and Linux executor.
+- Execution package `a91a10e2283b6cd489947cb9d05f607194c40ab1` was pushed and
+  both publication-integrity CI workflows passed. The server checkout was
+  fast-forwarded to it. At 17:50 UTC its bootstrap refused idle admission;
+  `admission/20261124T175030.json` retains the six active control-session
+  processes. No download, compilation or timing preceded that refusal.
+- Prerequisite download/unpacking can separately allow only named control
+  processes, with every observation retained. Foreign compilers, measurements,
+  unknown active processes and inspection errors still block that preparation.
+  This exception never changes C/pyzstd timing acceptance, which continues to
+  require zero observed foreign activity. Its targeted five bootstrap tests pass.
+
+### OVH-BENCH supersedes zero-activity admission — 2026-11-24
+
+- The owner supplied the shared OVH rule: compilation, tests and correctness
+  checks may run concurrently; all timed measurements wait for
+  `flock /run/lock/ovh-bench.lock`. Record literal `date -u`, `/proc/loadavg`
+  and `nproc` at both boundaries. A one-minute load average above 1.0 makes
+  the result LOADED, excluded and repeated. Long builds never hold that lock.
+  This rule supersedes the earlier zero-foreign-CPU checks above.
+- The rule was appended to CALIBRATION.md and committed/pushed before any
+  timings as `3e7201a0933030de8d3011eb658270e577e6eced`. The original host
+  amendment and both predictions remain unchanged. The existing shared lock
+  file and `/usr/bin/flock` were verified on ace-core.
+- Each timed repeat is now a subprocess under the literal blocking `flock`
+  command. Archive encoding, C builds and checks stay outside the shared lock.
+  CLEAN repeats are replayable without retiming; LOADED raw output is retained
+  and its checkpoint attempt is quarantined before acceptance or push. Accepted
+  rows bind their exact raw JSON SHA to the lock/date/load/nproc receipt.
+- Server prerequisites are ready, without any benchmark timing: standalone
+  CPython 3.12.16, pyzstd 0.20.0, backports-zstd 1.8.0 (linked zstd 1.5.7),
+  typing-extensions 4.16.0, verified enwik8 and silesia.tar, pinned clean zstd
+  `f8745da6ff1ad1e7bab384bd1f9d742439278e99` and its PIC static library/CLI.
+  Compiler: Ubuntu GCC 11.4.0. Setup was confined to the benchmark `.work/`,
+  with compilation on CPU 15 at nice 19 and no shared benchmark lock.
+  Exact wheel/payload/binary hashes and preparation receipts are retained in
+  `evidence/hw-gift-1b/environment/`.
+- Local premeasurement validation: 75 synthetic tests, Python syntax and diff
+  whitespace checks passed. No C/pyzstd measurement checkpoint exists yet.
+  Next: execute one locked C checkpoint, verify and push it, then advance in
+  corpus/level order; follow with the pyzstd checkpoints. PR #90 stays draft.
+- Execution code and environment receipts were pushed as
+  `340bfc7808dbb2958b37b032953a340f298d26c7`. All 75 synthetic tests also passed
+  on ace-core's prepared CPython, and the real shared-flock command/receipt
+  correctness probe passed. The first C invocation then stopped in preflight,
+  before archive encoding or any timed repeat: a relative CLI PATH resolved
+  against the isolated checkout and selected system zstd 1.4.8. Diagnostic
+  inspection confirmed zero timed receipts. Resolve controller arguments to
+  absolute paths; preserve the preflight-only state separately before retrying.
+- The first actual C enwik8-L3 attempt retained 58 CLEAN repeats, then its
+  64 MiB / 64 KiB repeat 3 ended at one-minute load 1.08 (start 1.00).
+  The entire checkpoint was marked LOADED and quarantined before acceptance;
+  none of its rows is used. All 381 original files are retained byte-for-byte
+  in `evidence/hw-gift-1b/rejected/c-enwik8-L3-attempt1-LOADED.tar.gz`, with
+  archive SHA-256 `48b8add53eb322707fafdf7cd44027811a2033c115d95a85042c02dae7f40ef7`
+  and per-file hashes/status receipts in the adjacent JSON manifest.
+- Before any pyzstd timing, its worker was aligned with the C sample collection:
+  1000 pairs are retained in RAM, followed by one durable raw-repeat write.
+  Per-pair synchronous JSON writes are removed to avoid unrequested disk activity
+  between API timers. Completed CLEAN repeat replay remains unchanged; partial
+  repeats without a complete receipt are not accepted. The 13 targeted synthetic
+  worker tests pass. The shared helper and C timed sources are unchanged.
+  Next: repeat the rejected C checkpoint under the same OVH rule and thresholds.
+- The second C enwik8-L3 timing attempt also ended LOADED: 50 CLEAN repeats,
+  then 64 MiB / 4 KiB repeat 0 started at 0.98 and ended at 1.04. The command
+  returned zero and its byte checks passed; rejection is solely the load rule.
+  All 332 original files are retained in the second rejected archive, SHA-256
+  `c478573ad2abf28e8aadf98e36e5f064094f6dfff38e1d0545ea5c788cf5bc1d`, with
+  per-file manifest alongside it. No measurement checkpoint is accepted yet.
+  The owner was asked whether the new OVH rule retries just the LOADED timed
+  repeat or still the entire corpus/level checkpoint specified earlier. Until
+  clarified, the existing whole-checkpoint rejection rule is retained.
+
+### Per-repeat LOADED retry limit — 2026-11-24
+
+- The owner clarified that only the LOADED logical repeat (1000 pairs for one
+  frame/read-length/repeat-number) is retaken immediately with the same seed and
+  offsets. There are at most three total attempts. All three LOADED stops the
+  checkpoint as `BLOCKED: load`, with the specified top-eight `ps` listing.
+  Preserve every attempt in evidence and report the number of logical repeats
+  retaken. Decisions use load average only; threshold 1.0 and both predictions
+  remain unchanged. No fourth attempt may bypass this stop.
+- The exact supplied Load amendment was committed and pushed before continuation
+  as `f8a2fb2c82bce9eacd841eafcf584a4c81ffc37c`. Both earlier C attempts (58 and
+  50 CLEAN repeats) remain fully rejected. Their CLEAN data are not rescued or
+  used in the new run; enwik8-L3 starts from zero under the clarified policy.
+- The shared helper now records literal top-eight `ps` output for every LOADED
+  event. A worker/byte-check error is fatal even if load is high; it cannot be
+  retried as a load failure. Per-attempt raw outputs/receipts are packed without
+  byte changes into deterministic `attempts.tar.gz` and per-file hash manifests.
+  The old two rejected archives retain their original earlier helper receipts.
+- Accepted and blocked reports bind the complete attempt history, validate at
+  most three attempts per logical repeat and choose the first CLEAN result only.
+  A new source/metadata cohort starts after preserving the old isolated runner;
+  the original timed C sources and reproduce.sh remain unchanged.
+- Retry implementation was committed/pushed as
+  `a6b8dfcde23681238c29a4b14b17288bfb715209`. All 91 synthetic tests passed
+  on Windows and ace-core. A read-only review then aligned the LOADED diagnostic
+  with the exact supplied `ps ... | head -8` pipeline before any new timing.
+- Fresh enwik8-L3 C execution used public code
+  `98548d27894b9f8e72d03aa5be3f1e6e728f8735`, with the old isolated runner
+  preserved separately and no old rows reused. Both publication-integrity CI
+  workflows passed for that code. At 2026-11-24 19:04:14 UTC it stopped as
+  `BLOCKED: load`: 45 CLEAN logical repeats were retained, then 16 MiB / 64 KiB
+  repeat 0 exhausted three LOADED attempts. The first ran successfully (exit 0)
+  with load 1.00 -> 1.08; the next two saw 1.08 at both boundaries and did not
+  start a timed worker. Retries were immediate and used the same command/seed/
+  offsets under the blocking shared lock. No fourth attempt was run.
+- New-cohort counters: 1 of 46 started logical repeats retaken, 3 LOADED
+  attempts, 45 CLEAN; 60 repeats planned. The old 58/50-CLEAN rejected cohorts
+  remain excluded. No complete C checkpoint or pyzstd measurement exists.
+  Raw evidence is in `evidence/hw-gift-1b/blocked/c-enwik8-L3/`: 349 files in
+  `attempts.tar.gz`, SHA-256
+  `5cbf4cc04a00521499f850b27865008f4d8c1f1ae948c4ac969530b12dfff1e0`,
+  with a per-file manifest and BLOCKED.json. All three literal top-eight ps
+  outputs remain in the receipts. The last lists session processes `2.1.284`,
+  `2.1.314`, sshd and the HW Python parent; it does not identify a compiler or
+  establish which process caused the load threshold crossing.
+- `report.py blocked` independently verified the artifacts on ace-core and
+  Windows; regenerated RESULTS.md is byte-identical. Binary transfer hashes
+  match the server. Accepted HW-GIFT-1 remains unchanged. PR #90 stays draft.
+  Timing is stopped at the owner's bounded load condition. Next bounded action
+  requires an owner-coordinated quiet window and explicit continuation policy
+  for the exhausted repeat; do not reset its attempt counter or pause others.
+
+### Load threshold correction and retained-repeat resume — 2026-11-24
+
+- The owner corrected the admission rule to exact `load1 > 2.0` at either
+  boundary, accounting for the timed process itself. The exact supplied Load
+  threshold amendment was committed and pushed before continuation as
+  `c8de6772e001fd52aebd73731cdd564c5f9db332`. Predictions and load-only decisions
+  remain unchanged. New raw `/proc/stat` snapshots and per-repeat deltas for
+  logical CPUs other than pinned CPU 0 are observational data only.
+- Exactly the current trial's 45 stricter-rule CLEAN repeats are retained
+  unchanged. Only 16 MiB / 64 KiB repeat 0 receives a fresh three-attempt budget;
+  its old three LOADED attempts and their immutable published snapshot remain
+  retained as history. Earlier whole-checkpoint rejections stay excluded.
+  Retained data lack the new CPU monitoring and will not be backfilled or retimed.
+- Before updating the executor, all four previously untracked published status
+  artifacts were compared byte-for-byte to origin and preserved under the HW
+  checkout's `.work/hw-gift-1b/published-blocked-backup/8022d96/`. The executor
+  then fast-forwarded to the exact threshold amendment without touching C state.
+- Pre-continuation checks passed: 110 synthetic tests on Windows, including
+  the real 349-file immutable snapshot migration, strict 45-row preservation,
+  interrupted-journal resume, no second budget reset, exact 2.0 boundaries,
+  and independent `/proc/stat` accounting. Historical BLOCKED verification,
+  unchanged accepted HW-GIFT-1 and diff whitespace checks also passed.
+
+- Verified and delivered c checkpoint `enwik8-L3`: 60 logical repeats, 1 retaken, 0 new-threshold LOADED attempts; 3 historical reset-key LOADED attempts remain excluded. Attempt archive SHA-256 `de5934f17fdfd9b141ffc758051971226a3cb86af023f4093aa11cf2c515d011`. Raw samples, offset lists, restoration checks, load receipts and observational CPU deltas passed the independent verifier.
+
+- Verified and delivered c checkpoint `enwik8-L19`: 60 logical repeats, 0 retaken, 0 new-threshold LOADED attempts; 0 historical reset-key LOADED attempts remain excluded. Attempt archive SHA-256 `1a315e28257d95402382163a9143119e84da1e2d1d4c6eb50df36f9dc6bec834`. Raw samples, offset lists, restoration checks, load receipts and observational CPU deltas passed the independent verifier.
+
+- Verified and delivered c checkpoint `silesia-L3`: 60 logical repeats, 0 retaken, 0 new-threshold LOADED attempts; 0 historical reset-key LOADED attempts remain excluded. Attempt archive SHA-256 `5d431ba0664c65b7eb5c7f6effab3bd2f18eda05ae09fbda8c3be8af107ce7b7`. Raw samples, offset lists, restoration checks, load receipts and observational CPU deltas passed the independent verifier.
+
+- Verified and delivered c checkpoint `silesia-L19`: 60 logical repeats, 0 retaken, 0 new-threshold LOADED attempts; 0 historical reset-key LOADED attempts remain excluded. Attempt archive SHA-256 `aeca152d4a27a19d4dd4f20d4cb31d5fb649865dba914f6c597931e815e78366`. Raw samples, offset lists, restoration checks, load receipts and observational CPU deltas passed the independent verifier.
+
+- Verified and delivered pyzstd checkpoint `enwik8-L3`: 70 logical repeats, 0 retaken, 0 new-threshold LOADED attempts; 0 historical reset-key LOADED attempts remain excluded. Attempt archive SHA-256 `8126dfa8b1959581cee4a01fb887e2355ce161a67115c5c6a2fac3cab9be7d2c`. Raw samples, offset lists, restoration checks, load receipts and observational CPU deltas passed the independent verifier.
+
+- Verified and delivered pyzstd checkpoint `enwik8-L19`: 70 logical repeats, 0 retaken, 0 new-threshold LOADED attempts; 0 historical reset-key LOADED attempts remain excluded. Attempt archive SHA-256 `a6c1c658d0b3531e7d607ee1fa616fb3da7d58cfb6136fa2c68d335132d2f15e`. Raw samples, offset lists, restoration checks, load receipts and observational CPU deltas passed the independent verifier.
+
+- Verified and delivered pyzstd checkpoint `silesia-L3`: 70 logical repeats, 0 retaken, 0 new-threshold LOADED attempts; 0 historical reset-key LOADED attempts remain excluded. Attempt archive SHA-256 `d3fdcdaf392f17052354ebc08cd6b5e1f6a58aa2dbd4599f721265e02fc31eea`. Raw samples, offset lists, restoration checks, load receipts and observational CPU deltas passed the independent verifier.
+
+- Verified and delivered pyzstd checkpoint `silesia-L19`: 70 logical repeats, 0 retaken, 0 new-threshold LOADED attempts; 0 historical reset-key LOADED attempts remain excluded. Attempt archive SHA-256 `0ff3a6238ad32f9244ee9b492bc9d884da21be2d38f5d792cd687d9b0c6daf1a`. Raw samples, offset lists, restoration checks, load receipts and observational CPU deltas passed the independent verifier.
+
+### HW-GIFT-1b completed — 2026-11-24
+
+- All eight checkpoints were verified on ace-core and Windows, committed and
+  pushed individually before advancing. Last checkpoint:
+  `7bdea8beaae5a267f410fe639449def6c98de31f`. Four C checkpoints contain 240
+  CLEAN repeats; four pyzstd checkpoints contain 280 CLEAN repeats, including the
+  default whole-corpus frame. No timings remain running or required.
+- The exact 45 approved C repeats remain byte-identical to immutable snapshot
+  `8022d9626b2b63b00b8891ccdc69996d071bb8bd`; they were not remeasured. The
+  explicitly reset repeat passed its first fresh attempt. Overall 1 of 520
+  logical repeats was retaken; zero new-threshold LOADED attempts occurred.
+  Three historical reset-key LOADED attempts and the two earlier rejected
+  whole-checkpoint trials (110 attempts) remain preserved and excluded.
+- All 475 new-repeat CPU observations are `ok`, with raw per-core snapshots
+  and independently checked deltas for the other 15 logical CPUs. The retained
+  45 predate that monitoring and were not backfilled. New boundary load1 values
+  range from 0.15 to 1.24, within the amended 2.0 threshold. All eight checkpoints
+  share ace-core / AMD EPYC 4344P / CPU 0 / kernel 5.15.0-163-generic /
+  schedutil and the same host boot identity. Archives are resident in RAM.
+- Final prediction outcome is **MISS**, without retuning or remeasurement.
+  (a) PASS: enwik8 L3, 4 KiB first-read p50 is 32,910,573 ns at default versus
+  389,589 ns at 1 MiB, exact ratio 10970191/129863 (about 84.475108x), above 20x.
+  (b) FAIL: 23 of 24 shared-grid archive comparisons pass. The exception is
+  enwik8 L3 / 256 KiB: 37,935,213 HW-GIFT-1 bytes versus 37,324,687 pyzstd bytes,
+  delta -610,526 bytes, absolute difference 61052600/37935213 percent
+  (about 1.60939125345%). Gate decisions use integer nanoseconds/bytes.
+- `evidence/hw-gift-1b/RESULTS.md` contains the complete latency/size/open tables,
+  default points, matched-host C comparison and both unchanged prediction gates.
+  Windows and ace-core report generation is byte-identical, SHA-256
+  `72cff568c7dfd8513ad291accb0848c4d9b4f530632f933be6f46dfe739cb4d8`.
+  A separate read-only audit recomputed prediction arithmetic directly from raw
+  samples/archive inventories and confirmed the report, retention and counters.
+  Full evidence integrity passed; the scientific size prediction is the only
+  failed gate. Accepted HW-GIFT-1 remains unchanged. PR #90 must stay draft;
+  no merge or publication outside this repository is authorized.
