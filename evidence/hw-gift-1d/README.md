@@ -12,6 +12,18 @@ No external issue is submitted; the repository PR remains draft.
 
 Execution order on the isolated ace-core checkout:
 
+Run every controller action through `taskset -c 0` with the pinned Python 3.12
+interpreter from HW-GIFT-1b. For example, from the 1d checkout:
+
+```sh
+taskset -c 0 /home/ubuntu/hw-apex-bench-hw-gift-1b/.work/hw-gift-1b/venv/bin/python \
+  -B evidence/hw-gift-1d/run.py method
+```
+
+The controller acquires the shared OVH lock for each timed pair itself; CPU
+affinity is inherited by that helper and its native worker. Direct unpinned
+worker invocation fails before reading a timing clock.
+
 1. Commit instruments; `run.py prepare` builds outside the timing lock and checks
    known archive SHA, deterministic output, changed input and corruption.
 2. `run.py method` performs the declared five same-writer timing-control pairs.

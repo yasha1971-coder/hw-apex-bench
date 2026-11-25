@@ -96,6 +96,32 @@ writer, and changing CONTINUE chunking alone did not explain the frame hashes.
 Those source paths, exact release versions and file hashes remain recorded in
 [the 1c source inventory](../hw-gift-1c/SOURCE_PATHS.md).
 
+## Row-hash changes after the historical example
+
+Two changes dated 2023-03-13 followed #3544's 2023-03-10 merge:
+
+- [`9420bce8a491e21821c4b372f837bf4bd47e5870`](https://github.com/meta/zstd/commit/9420bce8a491e21821c4b372f837bf4bd47e5870),
+  [PR #3529](https://github.com/meta/zstd/pull/3529), introduced workspace
+  storage initialized once and moved row-tag allocation to that storage,
+  replacing the previous per-reset tag-table clearing.
+- [`91f4c23e634a1d260f290f00b6d870a56cd59ab6`](https://github.com/meta/zstd/commit/91f4c23e634a1d260f290f00b6d870a56cd59ab6),
+  [PR #3533](https://github.com/meta/zstd/pull/3533), added changing row-hash
+  salts to avoid regressions when successive compressions reuse tag storage
+  with similar input. Both changes belong to [the #3528 work](https://github.com/meta/zstd/pull/3528).
+
+Both mechanisms are present in the pinned 1.5.7 source: the CCtx branch at
+[`zstd_compress.c:2032-2044`](https://github.com/meta/zstd/blob/f8745da6ff1ad1e7bab384bd1f9d742439278e99/lib/compress/zstd_compress.c#L2032-L2044)
+reserves init-once tag storage and advances the hash salt; its CDict branch
+still clears the tag storage. Automatic row-matcher selection also depends
+on strategy and `windowLog`, at
+[`zstd_compress.c:237-244`](https://github.com/meta/zstd/blob/f8745da6ff1ad1e7bab384bd1f9d742439278e99/lib/compress/zstd_compress.c#L237-L244).
+
+The source-history inference is that the historical M1 ratios cannot be
+assumed to transfer to this host and later library unchanged: relevant reset
+and reuse behavior evolved just after that example. This is a plausible
+explanation for a failed portability assumption, not a causal attribution of
+HW-GIFT-1d's timing result. No old/new-version or feature ablation was run.
+
 ## Consequences for an unsent issue draft
 
 Lead with #3544's intentional tiny-frame ingestion improvement. Then separate
