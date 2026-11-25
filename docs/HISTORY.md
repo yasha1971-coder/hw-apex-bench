@@ -1831,3 +1831,5 @@ measurements.
 - Independent training audit PASS and frozen smallest eligible X=1024 B. P1 is MISS; enwik8 L10 64/256 KiB already contradict the size part of P2. X is a candidate speed-budget policy, not evidence of hint necessity or a universal free win. Conditional development/holdout predictions and actual one-line patch are recorded separately in CONDITIONAL_PROTOCOL.md before any silesia observations. No prior evidence modified, no external issue or merge.
 
 - HW-GIFT-1d checkpoint `validate-L3-G256`: retained raw attempts and hash-bound results under evidence/hw-gift-1d/. No external issue or merge.
+
+- HW-GIFT-1d checkpoint `validate-L3-G1024`: retained raw attempts and hash-bound results under evidence/hw-gift-1d/. No external issue or merge.
