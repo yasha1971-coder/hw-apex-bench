@@ -1788,3 +1788,5 @@ measurements.
 - HW-GIFT-1d checkpoint `train-L3-G1024`: retained raw attempts and hash-bound results under evidence/hw-gift-1d/. No external issue or merge.
 
 - HW-GIFT-1d checkpoint `train-L3-G4096`: retained raw attempts and hash-bound results under evidence/hw-gift-1d/. No external issue or merge.
+
+- HW-GIFT-1d checkpoint `train-L3-G16384`: retained raw attempts and hash-bound results under evidence/hw-gift-1d/. No external issue or merge.
