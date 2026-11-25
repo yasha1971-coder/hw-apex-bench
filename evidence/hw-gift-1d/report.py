@@ -440,7 +440,7 @@ def verdict_table(data):
          'HIT' if v['P3']['passed'] else 'MISS',
          'NO SUPPORTED X' if data['threshold'] is None else f'X={data["threshold"]} B; {p3bad}/42 violating cells'],
         ['Kill', 'L3/G65536 B/A≥1.10 on either corpus means size/speed trade-off',
-         'HIT' if v['Kill']['triggered'] else 'MISS',
+         'TRIGGERED' if v['Kill']['triggered'] else 'NOT TRIGGERED',
          '; '.join(f"{r['corpus']}: B/A={fraction_text(Fraction(r['ratio']).numerator, Fraction(r['ratio']).denominator)}" for r in v['Kill']['cells'])],
     ]
     return table(['Forecast', 'Literal preregistered prediction', 'Verdict', 'Observed fact'], rows)
@@ -490,10 +490,26 @@ def native_paragraph(data):
             f"medians, predicates, source bindings and load admission.")
 
 
+def decision_summary(data):
+    x = data['threshold']
+    if x is None:
+        return 'No preregistered frame-size threshold met the training speed constraint. The complete original/nohint comparison is retained; no conditional default is established.'
+    checks = data['verdicts']['P3']['cells']
+    speed_passes = sum(row['speed_pass'] for row in checks)
+    losses = len(density_losses(data, True))
+    statement = (f'The experimental rule **hint only when maxFrameSize < {x} bytes** met the '
+                 f'compression-time budget in {speed_passes}/{len(checks)} cells. Its actual archives '
+                 f'were larger than the original in **{losses}/{len(checks)} cells**.')
+    if losses:
+        statement += ' The initial premise of a boundary below which the hint is needed for speed and above which it only costs bytes is not confirmed by this grid.'
+    return statement
+
+
 def results_markdown(data):
     x = data['threshold']
     v = data['verdicts']
     pieces = ['# HW-GIFT-1d results',
+        decision_summary(data),
         'Complete saved-data report; the independent final audit passed. Predictions are evaluated before rounding, using integer nanoseconds and bytes. A PASS audit establishes completeness/integrity; each forecast has its own HIT/MISS below.',
         'Protocol: ' + ', '.join(link(p) for p in ('CALIBRATION.md', 'PROTOCOL.md', 'SOURCE_PATHS.md', 'audit/final.json', 'TABLE.csv')) + '.',
         'A = original `hint=maxFrameSize`; B = `hint=0`; C = the frozen conditional implementation. Archive bytes include the complete seek table with per-frame checksums in every variant. Compression figures are median/minimum of five CLEAN observations; decode is one full-decode observation per variant/cell/phase, with no decode ranking claim. Ratios are ratios of compression medians.',
@@ -574,6 +590,7 @@ def issue_markdown(data):
     parts = ['[PR #3544](https://github.com/meta/zstd/pull/3544) intentionally improved ingestion of tiny seekable frames by supplying an approximate source-size hint. Any proposed change should preserve that purpose.',
         '# Draft: empirical source-size hint policy for the seekable writer',
         '**UNSENT DRAFT.** No issue/comment has been posted. This document reports a pinned experiment and asks whether a conditional policy merits broader testing; it does not establish an upstream default.',
+        decision_summary(data),
         'The original Pijul report described a regression, then supplied L10/256-byte settings. The PR author reported historical M1 enwik8 times of 35 s→2.5 s and 4 KiB-frame times of 3.6 s→1.8 s. Those are 2023 upstream observations, not the following measurements. Primary sources, attribution, exact commits and later row-hash changes are recorded in ' + link('SOURCE_PATHS.md') + '.',
         'We compared original A (`hint=maxFrameSize`) and B (`hint=0`) with identical seek-table checksums, resident input/output, five interleaved pairs, deterministic ordering and full restoration checks. G=256/1024 B uses a 16 MiB prefix; G≥4096 uses the full named corpus. Timing includes native compression only; decode was observed once per variant/cell/phase. Complete archives include their seek tables.',
         verdict_table(data),
@@ -612,6 +629,8 @@ def main():
         artifacts = {'RESULTS.md': results_markdown(data), 'ZSTD_ISSUE_DRAFT.md': issue_markdown(data), 'TABLE.csv': csv_text(data)}
         args.output_dir.mkdir(parents=True, exist_ok=True)
         for name, text in artifacts.items():
+            if name.endswith('.md'):
+                text = '\n'.join(line.rstrip() for line in text.splitlines()) + '\n'
             destination = args.output_dir / name
             pending = destination.with_name(destination.name + '.writing')
             pending.write_text(text, encoding='utf-8', newline='\n')
