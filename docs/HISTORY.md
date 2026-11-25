@@ -1859,3 +1859,5 @@ measurements.
 - HW-GIFT-1d checkpoint `validate-L10-G524288`: retained raw attempts and hash-bound results under evidence/hw-gift-1d/. No external issue or merge.
 
 - HW-GIFT-1d checkpoint `validate-L19-G256`: retained raw attempts and hash-bound results under evidence/hw-gift-1d/. No external issue or merge.
+
+- HW-GIFT-1d checkpoint `validate-L19-G1024`: retained raw attempts and hash-bound results under evidence/hw-gift-1d/. No external issue or merge.
