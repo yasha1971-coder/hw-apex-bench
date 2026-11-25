@@ -1,5 +1,10 @@
 # HW-GIFT-1d: seekable source-size hint boundary
 
+Completed: [results and all tables](RESULTS.md), [integer data](TABLE.csv),
+[unsent issue draft](ZSTD_ISSUE_DRAFT.md). The experimental 1 KiB rule meets the
++10% compression-time budget in all 42 checks, while 14 conditional archives
+are larger than the original. The initial size-boundary premise is not confirmed.
+
 Follow-up to [HW-GIFT-1c](../hw-gift-1c/RESULTS.md), including the tiny-frame
 ingestion reason for [zstd PR #3544](https://github.com/meta/zstd/pull/3544).
 See [the unchanged preregistration](CALIBRATION.md), [execution protocol](PROTOCOL.md)
