@@ -324,12 +324,17 @@ def candidates(admission_path):
 
     def finish(reason, transition=None):
         bracket = closest_bracket(tested, nodes)
+        if transition:
+            transition.update(on_tag_ancestry_path=is_ancestor(nodes, backend.OLD, transition['slow_commit']),
+                              fast_is_ancestor_of_v157=is_ancestor(nodes, transition['fast_commit'], backend.NEW),
+                              qualification='measured first-parent source-branch edge; not a global first-fast claim')
         save(final, dict(schema='hw-gift-1e-search-result-v1', identity=frozen,
              status='ADJACENT TRANSITION' if transition else 'NARROWED RANGE', tested=tested, failed_builds=failed,
              build_count=2+len(list((STATE/'reservations').glob('*.json'))), transition=transition,
              remaining_range=dict(slow=bracket['slow'], fast=bracket['fast']),
              selected_path=bracket, history=ref(PUBLIC/'history.json'), S1=forecast(tested),
-             counters=totals([row['pair_summary'] for row in tested]), global_first_fast_claim=False, reason=reason))
+             counters=totals([row['pair_summary'] for row in tested]), global_first_fast_claim=False, reason=reason,
+             source_branch_amendment=load(admission_path).get('source_branch_amendment')))
         print('SEARCH', load(final)['status'], flush=True)
         return 0
 

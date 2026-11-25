@@ -133,8 +133,25 @@ def gate(admission_path, candidate=False):
         endpoint_path = deref(admission['endpoint_admission'])
         committed(endpoint_path)
         endpoint_admission = load(endpoint_path)
+        amendment = None
+        if 'source_branch_amendment' in admission:
+            amendment_path = deref(admission['source_branch_amendment'])
+            committed(amendment_path)
+            amendment = load(amendment_path)
+            require(amendment['status'] == 'PRE-BUILD SOURCE-ANCESTRY AMENDMENT'
+                    and amendment['new_backend_sha256'] == sha(__file__)
+                    and amendment['new_frontend_sha256'] == admission['frontend_sha256'], 'invalid source-branch amendment')
+            require(amendment['protocol'] == committed(HERE/'SEARCH_AMENDMENT.md'), 'source-branch amendment protocol changed')
+            require(amendment['endpoint_admission'] == admission['endpoint_admission']
+                    and amendment['supersedes'] == admission['supersedes'], 'amendment changed historical admission')
+            original = load(deref(admission['supersedes']))
+            for key, filename in (('backend_sha256','bisect_core.txt'), ('frontend_sha256','search.txt')):
+                require(original[key] == endpoint_admission[key] == sha(deref(amendment['original_sources'][filename])),
+                        'historical endpoint source snapshot changed')
         for key in ('decision', 'setup_sha256', 'completed_grid', 'grid_audit', 'baseline_build',
                     'backend_sha256', 'frontend_sha256', 'search_protocol'):
+            if amendment and key in ('backend_sha256','frontend_sha256'):
+                continue
             require(endpoint_admission[key] == admission[key], 'candidate admission changed endpoint root: '+key)
         classifier_path = deref(admission['classifier'])
         require(admission['classifier_commit'] == committed(classifier_path), 'classifier was not frozen before candidates')
@@ -172,7 +189,14 @@ def native(path):
 def build_candidate(commit, admission_path):
     admission = gate(admission_path, candidate=True)
     require(not os.environ.get('OVH_BENCH_LOCK_HELD') and re.fullmatch('[0-9a-f]{40}', commit), 'build outside timing lock using a full SHA')
-    for left, right in ((OLD, commit), (commit, NEW)):
+    allowed = []
+    if 'source_branch_amendment' in admission:
+        allowed = load(deref(admission['source_branch_amendment']))['allowed_source_branch_commits']
+        require(allowed == ['e2965edd107acd0123294e23848cdc00af906468',
+                           '9420bce8a491e21821c4b372f837bf4bd47e5870',
+                           '91f4c23e634a1d260f290f00b6d870a56cd59ab6'], 'side-branch allowance widened')
+    ancestry = [(commit, NEW)] + ([] if commit in allowed else [(OLD, commit)])
+    for left, right in ancestry:
         subprocess.run(['git', '-C', str(UPSTREAM), 'merge-base', '--is-ancestor', left, right], check=True)
     require(commit not in (OLD, NEW), 'endpoint libraries are already built')
     folder = SEARCH / 'builds' / commit
