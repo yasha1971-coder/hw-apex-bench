@@ -602,6 +602,91 @@ def verify_freeze(cells, selected):
         check(completed.returncode == 0, 'holdout/validation predates the committed threshold selection')
 
 
+def verify_native_proof(selected, *phases):
+    """Bind the separate post-timing byte/decoder proof to these exact results."""
+    path = HERE/'audit/native.json'
+    proof = load(path)
+    check(proof.get('schema') == 'hw-gift-1d-independent-native-v1' and proof.get('status') == 'PASS',
+          'independent native correctness proof did not pass')
+    check(proof.get('no_clocks') is True and proof.get('measurements_of_time') is False
+          and proof.get('all_attempts') is True and type(proof.get('minimal_encodings_authorized')) is int
+          and proof['minimal_encodings_authorized'] == 2,
+          'native proof clock/attempt/minimal-encoding scope changed')
+    check(proof.get('source_sha256') == sha(HERE/'verify_native.py'), 'native verifier source changed after its proof')
+    count_names = ('archive_references','archive_paths_verified','unique_archives_verified',
+                   'frame_decodes_verified','restored_bytes_verified')
+    check(all(positive(proof.get(name)) for name in count_names), 'native proof lacks positive verification counts')
+    archives,paths = proof['archives'],proof['archive_paths']
+    check(isinstance(archives,list) and isinstance(paths,dict)
+          and len(archives) == proof['unique_archives_verified'] and len(paths) == proof['archive_paths_verified']
+          and proof['archive_references'] >= len(paths) >= len(archives), 'native archive/path counts disagree')
+    for item in paths.values():
+        check(positive(item.get('bytes')) and valid_sha(item.get('sha256')), 'invalid verified native path identity')
+    for archive in archives:
+        check(positive(archive.get('frame_count')) and positive(archive.get('nonempty_frame_count'))
+              and type(archive.get('empty_terminal_frames')) is int and archive['empty_terminal_frames'] in (0,1)
+              and archive['frame_count'] == archive['nonempty_frame_count'] + archive['empty_terminal_frames']
+              and archive.get('seek_table_bytes') == 17+12*archive['frame_count']
+              and archive.get('seek_checksums_verified') is True and positive(archive.get('restored_bytes'))
+              and positive(archive.get('archive_bytes')) and valid_sha(archive.get('archive_sha256'))
+              and valid_sha(archive.get('restored_sha256')), 'incomplete native frame/checksum/source proof')
+    check(sum(a['frame_count'] for a in archives) == proof['frame_decodes_verified']
+          and sum(a['restored_bytes'] for a in archives) == proof['restored_bytes_verified'],
+          'native frame/source totals differ from individual archive proofs')
+    prep = load(HERE/'preparation.json')
+    check(proof['pins']['preparation_sha256'] == sha(HERE/'preparation.json'), 'native proof preparation changed')
+    builds = proof['pins']['native_builds']
+    required_builds = {'base'} | ({f'conditional-{selected}'} if selected is not None else set())
+    check(set(builds) == required_builds, 'native proof uses a different build cohort')
+    for name,item in builds.items():
+        build_path = HERE/'native'/name/'build.json'
+        build = load(build_path)
+        check(item['sha256'] == sha(build_path) and item['identity'] == build['identity']
+              and item['libraries'] == build['libraries'], 'native proof production build binding changed')
+    oracle = proof['independent_build']['identity']
+    check(oracle['zstd_commit'] == 'f8745da6ff1ad1e7bab384bd1f9d742439278e99'
+          and oracle['static_library_sha256'] == builds['base']['identity']['static_library_sha256']
+          and oracle['probe_source_sha256'] == sha(HERE.parent/'hw-gift-1c/frame_probe.c'),
+          'independent decoder/probe build pins changed')
+    known = {'original':'3cab61b1c4cec5296d5ff271d162bbbd3ef730604c00a8833a4dac211db461e6',
+             'nohint':'bf72723ed208c90b32be0400bb1a611201f32555ca98d6f6261395614f2ec2c2'}
+    check(set(proof['tiny_probe']) == set(known), 'native tiny proof variant set changed')
+    for name,digest in known.items():
+        tiny = proof['tiny_probe'][name]
+        check(tiny['sha256'] == digest and tiny['result'].get('roundtrip') is True
+              and tiny['result'].get('corrupted_magic_error') is True, 'native tiny known-answer proof failed')
+    documents = proof['documents_sha256']
+    check(isinstance(documents,dict), 'native document bindings missing')
+    for name,digest in documents.items():
+        document = relative(name)
+        check(name == document.relative_to(HERE).as_posix() and valid_sha(digest)
+              and sha(document) == digest, 'native proof document bytes changed: '+name)
+    required_documents = {'method-controls.json','method-check.json',prep['selfcheck']['path']}
+    summaries = [load(HERE/'method-check.json')]
+    for cells in phases:
+        for item in cells.values():
+            required_documents.add(Path(item['source_path']).relative_to(HERE).as_posix())
+            summaries.append(item['summary'])
+    for summary in summaries:
+        required_documents.add(summary['selfcheck_path'])
+        for repeat in summary['repeats']:
+            for attempt in repeat['attempts']:
+                if attempt['result'] is not None:
+                    required_documents.add(attempt['result']['path'])
+    check(required_documents <= set(documents), 'native proof omits a summary, selfcheck, or retained attempt result')
+    conditional = proof['conditional_policy_byte_checks']
+    check(isinstance(conditional,list), 'conditional native byte checks missing')
+    expected = {(corpus,level,g) for corpus in INPUTS for level in LEVELS for g in GRIDS} if selected is not None else set()
+    actual = [(item['corpus'],item['level'],item['g']) for item in conditional]
+    check(len(actual) == len(expected) and set(actual) == expected, 'native conditional byte-proof grid incomplete or duplicated')
+    for item in conditional:
+        check(item['threshold'] == selected and item['selected'] == ('original' if item['g'] < selected else 'nohint')
+              and item['bytes_equal'] is True, 'actual conditional archive differs from its frozen branch')
+    return dict(path='audit/native.json',sha256=sha(path),source_sha256=proof['source_sha256'],
+                **{name:proof[name] for name in count_names},minimal_encodings_authorized=2,
+                conditional_policy_cells=len(conditional))
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--stage',choices=('method','train','selection','all'),default='all')
@@ -627,6 +712,7 @@ def main():
                 result.update(validation_cells=len(validation),holdout_cells=21,
                               phase_counters={name:{key:sum(v['counters'][key] for v in cells.values()) for key in ('logical_repeats','attempts','retaken','loaded_attempts')}
                                               for name,cells in (('train',training),('validate',validation),('holdout',holdout))})
+                result['native_proof'] = verify_native_proof(selected,training,validation,holdout)
         result.update(private_artifacts_hash_verified=len(PRIVATE_CHECKED),private_paths_not_available=sorted(PRIVATE_UNAVAILABLE))
         if args.stage == 'all':
             for name in ('audit.py','report.py','verify_native.py','CALIBRATION.md','PROTOCOL.md','CONDITIONAL_PROTOCOL.md','select_threshold.py'):

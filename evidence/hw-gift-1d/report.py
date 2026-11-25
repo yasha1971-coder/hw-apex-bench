@@ -113,11 +113,88 @@ def audit_gate(root, path):
           'audit does not cover the complete baseline grid')
     check(isinstance(value.get('literal_verdicts'), dict) and isinstance(value.get('phase_counters'), dict),
           'final audit is missing verdicts/counters')
-    # Bindings may cover JSON, source code, Markdown or native logs: hash bytes only.
-    for item in value.get('source_bindings', []):
-        path = public(root, item['path'])
-        check(sha(path) == item['sha256'], 'final audit is stale: ' + item['path'])
+    bindings = value.get('source_bindings')
+    check(isinstance(bindings, list) and bindings, 'final audit requires retained source bindings')
+    seen = set()
+    # The independent auditor also reads a few pinned 1b/1c anchors. Every
+    # binding remains within repo/evidence; no private work file is opened here.
+    for item in bindings:
+        name = item['path']
+        check(isinstance(name, str) and name and name not in seen, 'duplicate/invalid audit source binding')
+        seen.add(name)
+        bound_path = (root / name).resolve()
+        check(bound_path.is_relative_to(root.parent.resolve()), 'audit binding escapes repo/evidence')
+        check(sha(bound_path) == item['sha256'], 'final audit is stale: ' + name)
     return value
+
+
+def native_proof(root, audit):
+    """Validate the post-grid independent proof, without loading native code."""
+    path = root / 'audit/native.json'
+    proof = load(path)
+    check(any(item['path'] == 'audit/native.json' and item['sha256'] == sha(path)
+              for item in audit['source_bindings']), 'native proof is not bound by the complete final audit')
+    check(proof.get('schema') == 'hw-gift-1d-independent-native-v1' and proof.get('status') == 'PASS',
+          'independent native proof missing or failed')
+    check(proof.get('no_clocks') is True and proof.get('measurements_of_time') is False
+          and proof.get('all_attempts') is True and proof.get('minimal_encodings_authorized') == 2,
+          'native proof must cover all attempts, with only two untimed known-answer encodings')
+    check(proof.get('source_sha256') == sha(root / 'verify_native.py'), 'independent native verifier source changed')
+    documents = proof.get('documents_sha256')
+    check(isinstance(documents, dict) and documents, 'independent proof document bindings missing')
+    for name, digest in documents.items():
+        check(sha(public(root, name)) == digest, 'native proof document changed: ' + name)
+    fields = ('archive_references', 'archive_paths_verified', 'unique_archives_verified',
+              'frame_decodes_verified', 'restored_bytes_verified')
+    check(all(positive(proof.get(key)) for key in fields), 'native proof counters missing')
+    check(proof['unique_archives_verified'] <= proof['archive_paths_verified'] <= proof['archive_references'],
+          'inconsistent native proof archive counts')
+    archives, paths = proof.get('archives'), proof.get('archive_paths')
+    check(isinstance(archives, list) and len(archives) == proof['unique_archives_verified']
+          and isinstance(paths, dict) and len(paths) == proof['archive_paths_verified'],
+          'native proof archive inventory/count mismatch')
+    check(sum(item['frame_count'] for item in archives) == proof['frame_decodes_verified']
+          and sum(item['restored_bytes'] for item in archives) == proof['restored_bytes_verified'],
+          'native proof frame/restore totals do not match inventory')
+    tiny = proof.get('tiny_probe')
+    check(isinstance(tiny, dict) and set(tiny) == {'original', 'nohint'}
+          and all(item['result']['roundtrip'] is True and item['result']['corrupted_magic_error'] is True
+                  for item in tiny.values()), 'independent tiny known-answer controls did not pass')
+    check(isinstance(proof.get('conditional_policy_byte_checks'), list), 'native policy byte checks missing')
+    audited = audit.get('native_proof')
+    check(isinstance(audited, dict), 'final audit is missing its independent native proof verdict')
+    expected = dict(path='audit/native.json', sha256=sha(path), source_sha256=proof['source_sha256'],
+                    minimal_encodings_authorized=2, conditional_policy_cells=len(proof['conditional_policy_byte_checks']))
+    expected.update({key: proof[key] for key in fields})
+    check(all(audited.get(key) == value for key, value in expected.items()), 'final audit/native proof summary mismatch')
+    return proof
+
+
+def proof_coverage(data):
+    proof = data['native']
+    required = {'method-controls.json', 'method-check.json', data['method']['selfcheck_path']}
+    summaries = [data['method']]
+    for phase in ('train', 'validate', 'holdout'):
+        for cell in data[phase].values():
+            required.add(cell['path'])
+            required.add(cell['summary']['selfcheck_path'])
+            summaries.append(cell['summary'])
+    for summary in summaries:
+        for repeat in summary['repeats']:
+            for attempt in repeat['attempts']:
+                if attempt.get('result') is not None:
+                    required.add(attempt['result']['path'])
+    check(required <= set(proof['documents_sha256']), 'native proof omitted inspected cells/controls/attempts')
+    expected = []
+    if data['threshold'] is not None:
+        for corpus in ('enwik8', 'silesia.tar'):
+            for level in LEVELS:
+                for g in GRIDS:
+                    expected.append(dict(corpus=corpus, level=level, g=g, threshold=data['threshold'],
+                                         selected='original' if g < data['threshold'] else 'nohint', bytes_equal=True))
+    actual = proof['conditional_policy_byte_checks']
+    key = lambda item: (item['corpus'], item['level'], item['g'])
+    check(sorted(actual, key=key) == expected, 'independent native conditional byte checks do not cover the frozen policy')
 
 
 def repeated(root, summary, method=False):
@@ -259,6 +336,7 @@ def literal_verdicts(training, holdout, validation, threshold):
 
 def load_all(root, audit_path):
     audit = audit_gate(root, audit_path)
+    native = native_proof(root, audit)
     selection = load(root / 'selection.json')
     threshold = selection['threshold_bytes']
     check(threshold is None or threshold in CANDIDATES, 'threshold outside preregistered candidates')
@@ -287,9 +365,11 @@ def load_all(root, audit_path):
     for name, cells in (('train', training), ('validate', validation), ('holdout', holdout)):
         phase_counters[name] = {k: sum(c['counters'][k] for c in cells.values()) for k in counters}
     check(phase_counters == audit['phase_counters'], 'phase attempt counters differ from final audit')
-    return dict(root=root, audit=audit, audit_path=audit_path, selection=selection, threshold=threshold,
+    data = dict(root=root, audit=audit, audit_path=audit_path, native=native, selection=selection, threshold=threshold,
                 method=method, method_raw=raw, method_counters=counters, method_maximum=maximum,
                 train=training, holdout=holdout, validate=validation, verdicts=verdicts, counters=phase_counters)
+    proof_coverage(data)
+    return data
 
 
 def baseline_rows(data, focused=False):
@@ -394,6 +474,22 @@ def attempt_table(data):
     return table(['Phase', 'M logical repeats', 'N retaken repeats', 'All attempts', 'LOADED attempts', 'Max start load1', 'Max end load1'], rows)
 
 
+def native_paragraph(data):
+    proof = data['native']
+    return (f"The separate post-grid {link('verify_native.py', 'native verifier')} passed: "
+            f"{proof['archive_paths_verified']} actual archive paths checked, "
+            f"{proof['unique_archives_verified']} distinct archive/source/frame identities independently decoded, "
+            f"{proof['frame_decodes_verified']} frame decodes and {proof['restored_bytes_verified']} restored bytes "
+            f"across those distinct identities. It covers all retained attempts, verifies frame metadata and seek-table "
+            f"checksums against actual bytes, and confirms {len(proof['conditional_policy_byte_checks'])} complete "
+            f"conditional archives against the selected policy. The only permitted new encodings are two tiny "
+            f"known-answer controls; no clocks are read and no performance ranking is derived. "
+            f"{len(proof['documents_sha256'])} saved document hashes and the verifier source hash bind this proof "
+            f"to the inspected evidence. {link('audit/native.json', 'Native proof')} is itself hash-bound by the "
+            f"independent {link('audit/final.json', 'saved-data audit')}; that audit separately recalculates timing "
+            f"medians, predicates, source bindings and load admission.")
+
+
 def results_markdown(data):
     x = data['threshold']
     v = data['verdicts']
@@ -426,6 +522,8 @@ def results_markdown(data):
         'The raw five A/A pairs: ' + ', '.join(link(r['selected_result']['path'], str(i)) for i, r in enumerate(method['repeats'])) + '.',
         attempt_table(data),
         'Counts include retained rejected attempts. Only successful pairs with load1>2.0 at a boundary are LOADED; each logical pair has at most three attempts, first CLEAN wins, and worker/byte errors are fatal. All request/result/receipt/stdout/stderr files remain linked from the cell summaries. Maximum loads above include CLEAN and LOADED attempts. Other-core /proc/stat deltas are observations, not admission criteria.',
+        '## Independent post-grid native proof',
+        native_paragraph(data),
         '## Scope and limits',
         'Measured host: ace-core, AMD EPYC 4344P, Linux, pinned CPU 0, schedutil governor; zstd 1.5.7 at `f8745da6ff1ad1e7bab384bd1f9d742439278e99`. Input/output are resident in RAM. Fresh contexts and prefaulted outer buffers precede each compression timer; codec internal lazy allocation is included. Hashing, restoration, disk I/O and context telemetry are outside compression timing. Native build/compiler/source digests are retained in the public native manifests and bound by each request.',
         'This is one machine, two corpora and the stated levels/frame grid. It establishes no universal threshold, process-RSS result, or performance claim for other APIs/versions/hosts. HW-GIFT-1c showed a window/header change at 512 KiB even where archive sizes match. Internal context size is not process RSS.',
@@ -497,6 +595,7 @@ def issue_markdown(data):
         '## Reproduction scope and retained evidence',
         'ace-core AMD EPYC 4344P, Linux, CPU 0, schedutil; zstd 1.5.7 source `f8745da6ff1ad1e7bab384bd1f9d742439278e99`; levels 3/10/19, two corpora, RAM-resident operation. This is a single-machine observation, not a universal boundary. No process-RSS measurement is claimed. HW-GIFT-1c showed that an equal archive size at 512 KiB can coexist with changed header/window parameters.',
         'A/A passed the strict <5% median gate; known-answer complete 1c archive SHA values, positive/negative controls and every bit-perfect restore passed. All raw CLEAN/LOADED attempts and receipts are retained. Only load1>2.0 admits a mechanical retry, at most three attempts per pair, with no timing-based retakes.',
+        native_paragraph(data),
         attempt_table(data),
         'Protocol, selection/freeze, native build manifests and independent audit: ' + ', '.join(link(p) for p in ('CALIBRATION.md', 'PROTOCOL.md', 'selection.json', 'audit/final.json')) + '. A failed holdout prediction is not repaired by choosing another X. Further machines/versions/workloads would be needed before recommending an upstream conditional default.'])
     return '\n\n'.join(parts) + '\n'
