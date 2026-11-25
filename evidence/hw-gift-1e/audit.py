@@ -31,6 +31,7 @@ SOURCE_BINDINGS = {}
 PRIVATE_CHECKED, PRIVATE_UNAVAILABLE = set(),set()
 HOST = None
 COVERED_RECEIPTS = set()
+COVERED_RESULTS = set()
 
 
 class Incomplete(ValueError):
@@ -528,6 +529,7 @@ def verify_repeats(summary, request, selfcheck, method):
                 check(attempt['result'] is not None, 'started worker lacks a retained result')
                 worker,result_path = json_ref(attempt['result'])
                 check(result_path == path.parent/'result.json' and load(Path(str(path)+'.stdout')) == worker, 'stdout/result identity differs')
+                COVERED_RESULTS.add(result_path)
                 selected_rows = verify_worker(worker,request,selfcheck,pair,sequence,method)
             else:
                 check(attempt['result'] is None and not (path.parent/'result.json').exists()
@@ -617,14 +619,97 @@ def verify_decision(old, new=None):
     return expected
 
 
+def bind_1d_report_inputs():
+    """Close the renderer's historical inputs by hashes, without reauditing 1d."""
+    prior_root = HERE.parent/'hw-gift-1d'
+    prior = load(prior_root/'audit/final.json')
+    check(prior.get('status') == 'PASS' and prior.get('stage') == 'all'
+          and isinstance(prior.get('source_bindings'),list) and prior['source_bindings'], 'saved 1d final audit missing/failed')
+    for item in prior['source_bindings']:
+        check(set(item) == {'path','sha256'} and valid_sha(item['sha256']), 'invalid saved 1d binding')
+        path = (prior_root/item['path']).resolve()
+        check(path.is_relative_to((ROOT/'evidence').resolve()) and sha(path) == item['sha256'], 'historical renderer input changed: '+item['path'])
+    for phase in ('train','holdout'):
+        for level in (3,10,19):
+            for g in (256,1024,4096,16384,65536,262144,524288):
+                path = prior_root/'cells'/phase/f'L{level}-G{g}.json'
+                value = load(path)
+                check(value['status'] == 'COMPLETE' and (value['level'],value['g']) == (level,g), 'saved 1d baseline summary incomplete')
+
+
+def verify_final_proofs(search_admitted):
+    """Final-only native/search closure; the earlier grid audit needs neither."""
+    if search_admitted:
+        result_path = HERE/'search/result.json'
+        search_result = load(result_path)
+        search_audit = load(HERE/'search/audit.json')
+        check(search_audit.get('status') == 'PASS' and search_audit.get('saved_data_only') is True
+              and search_audit.get('result_sha256') == sha(result_path), 'separate search audit does not bind the current result')
+        sha(HERE/'SEARCH_PROTOCOL.md')
+        visited = set()
+        def references(value):
+            if isinstance(value,dict):
+                if set(value) == {'path','sha256'}:
+                    path = file_ref(value,True)
+                    if path.suffix == '.json' and path not in visited:
+                        visited.add(path)
+                        references(load(path))
+                else:
+                    for item in value.values():
+                        references(item)
+            elif isinstance(value,list):
+                for item in value:
+                    references(item)
+        references(search_result);references(search_audit)
+        # Freeze every public attempt/build/admission/classifier payload, even
+        # when its hash is represented by a named field rather than a JSON ref.
+        for path in sorted((HERE/'search').rglob('*')):
+            if path.is_file():
+                sha(path)
+        for path in sorted(HERE.glob('*.py')):
+            sha(path)
+    native_path = HERE/'audit/native.json'
+    native = load(native_path)
+    check(native.get('schema') == 'hw-gift-1e-independent-native-v1' and native.get('status') == 'PASS'
+          and native.get('source_sha256') == sha(HERE/'verify_native.py') and native.get('no_clocks') is True
+          and native.get('measurements_of_time') is False and native.get('all_attempts') is True
+          and type(native.get('encodings_performed')) is int and native['encodings_performed'] == 0,
+          'independent native proof source/scope differs')
+    check(native['setup_sha256'] == sha(HERE/'setup.json'), 'native proof uses a different setup')
+    names = ('archive_references','archive_paths_verified','unique_archives_verified','frame_decodes_verified','restored_bytes_verified')
+    check(all(positive(native.get(k)) for k in names)
+          and len(native['archive_paths']) == native['archive_paths_verified']
+          and len(native['archives']) == native['unique_archives_verified']
+          and native['archive_references'] >= native['archive_paths_verified'] >= native['unique_archives_verified'],
+          'native proof archive/path counts differ')
+    check(sum(p['frame_count'] for p in native['archives']) == native['frame_decodes_verified']
+          and sum(p['restored_bytes'] for p in native['archives']) == native['restored_bytes_verified']
+          and all(p['seek_checksums_verified'] is True and p['empty_terminal_verified'] is True for p in native['archives']),
+          'native proof frame/checksum totals differ')
+    documents = native['documents_sha256']
+    check(isinstance(documents,dict) and documents, 'native proof has no inspected-document bindings')
+    for name,digest in documents.items():
+        check(sha(public(name)) == digest, 'native proof document changed: '+name)
+    required = {p.relative_to(HERE).as_posix() for p in COVERED_RESULTS}
+    required |= {p.relative_to(HERE).as_posix() for p in (HERE/'selfchecks').rglob('*.json')}
+    required |= {p.relative_to(HERE).as_posix() for p in (HERE/'cells').rglob('*.json')}
+    required |= {p.name for p in HERE.glob('method-v*.json')}
+    required |= {'method-controls.json','decision.json'}
+    check(required <= set(documents), 'native proof omits selected/excluded output or a method/grid selfcheck')
+    return dict(path='audit/native.json',sha256=sha(native_path),source_sha256=native['source_sha256'],
+                encodings_performed=0,**{name:native[name] for name in names})
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--stage',choices=('setup','prepare','method','primary','all'),default='all')
     parser.add_argument('--core',choices=tuple(PINS),default='v1.5.4')
+    parser.add_argument('--final',action='store_true',help='also require the post-run native proof and complete search proof closure')
     parser.add_argument('--output',type=Path)
     args = parser.parse_args()
-    result = dict(status='PASS',stage=args.stage,saved_data_only=True,no_codecs_or_clocks_executed=True)
+    result = dict(status='PASS',stage=args.stage,final_verification=False,saved_data_only=True,no_codecs_or_clocks_executed=True)
     try:
+        check(not args.final or args.stage == 'all', '--final requires --stage all')
         if args.stage == 'setup':
             verify_setup()
         else:
@@ -662,9 +747,16 @@ def main():
                 if args.stage == 'all':
                     actual = set((HERE/'raw').rglob('ovh-bench.json'))
                     check(actual == COVERED_RECEIPTS, 'unaccounted timed receipts or forbidden post-Kill work')
+                    check(set((HERE/'raw').rglob('result.json')) == COVERED_RESULTS, 'unaccounted started worker output')
                     result['grid_status'] = 'STOP: Kill' if kill else 'COMPLETE'
                     result['search_status'] = 'SEPARATE PREREGISTERED STAGE REQUIRED' if result['literal_verdicts']['search_admitted'] else 'NOT ADMITTED'
         result.update(private_artifacts_hash_verified=len(PRIVATE_CHECKED),private_paths_not_available=sorted(PRIVATE_UNAVAILABLE))
+        if args.stage == 'all':
+            sha(HERE/'report.py')
+            bind_1d_report_inputs()
+            if args.final:
+                result['native_proof'] = verify_final_proofs(result['literal_verdicts']['search_admitted'])
+                result['final_verification'] = True
         for name in ('audit.py','SOURCE_PATHS.md'):
             sha(HERE/name)
         result['source_bindings'] = [dict(path=name,sha256=digest) for name,digest in sorted(SOURCE_BINDINGS.items())]
