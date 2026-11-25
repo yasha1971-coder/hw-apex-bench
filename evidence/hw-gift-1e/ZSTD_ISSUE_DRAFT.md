@@ -1,3 +1,5 @@
+[written by ChatGPT (AI) at the author's request; checked by the author]
+
 [PR #3544](https://github.com/meta/zstd/pull/3544) intentionally improved ingestion of very small seekable frames by providing a source-size hint.
 
 # Draft: historical tiny-frame slowdown and the current hint trade-off
