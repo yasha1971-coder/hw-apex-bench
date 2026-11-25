@@ -1968,3 +1968,5 @@ measurements.
 - HW-GIFT-1e checkpoint `search-init-once`: retained raw attempts and hash-bound results under evidence/hw-gift-1e/. No external issue or merge.
 
 - HW-GIFT-1e checkpoint `independent-proofs`: retained raw attempts and hash-bound results under evidence/hw-gift-1e/. No external issue or merge.
+
+- HW-GIFT-1e checkpoint `final-audit`: retained raw attempts and hash-bound results under evidence/hw-gift-1e/. No external issue or merge.
