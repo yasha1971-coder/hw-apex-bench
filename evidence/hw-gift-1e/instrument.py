@@ -55,6 +55,8 @@ size_t probe_seek_checksums(const void *source, size_t size, const void *table, 
     return offset == size ? 0 : count+1;
 }
 unsigned probe_empty_frame(const void *frame, size_t size) {
+    const unsigned char *bytes = (const unsigned char *)frame;
+    if (size < 4 || probe_le32(bytes) != 0xFD2FB528U) return 1;
     size_t extent = ZSTD_findFrameCompressedSize(frame, size);
     size_t decoded;
     if (ZSTD_isError(extent) || extent != size) return 1;
