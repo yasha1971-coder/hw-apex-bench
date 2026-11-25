@@ -1926,3 +1926,67 @@ measurements.
 - Separate native proof PASS: 127 actual archive paths, 85 unique contents, 1593946 frame decodes, 9861078784 restored bytes, 42 exact conditional-policy file comparisons. It rebuilds its oracle, performs two tiny known-answer correctness encodes, and reads no timing clock. Legitimate terminal empty frames are fully decoded/XXH checked. Native proof SHA 0cb52524d54879066fd2eb205ee41cbf3d9dcf1e81f45fc8f51a95c0b984c776.
 - Saved-data final audit PASS with native proof and renderer hash bindings, 134 private artifacts hashed on ace-core, no unavailable paths. Audit SHA c1a263b73198bb4c10ff2247a2a3ef0e9c74ffb2eaec53c8fbdd65c741579e11. RESULTS SHA af3781c36d32949e5d359029004c80d169ea7e30fc4e4173f3a8033859cc903c; issue draft SHA 18fd2698e5dcfe96391e0a7cb0cabc03df9cf75df4633a7056af879b5d7e2006; CSV SHA d74a339310bec9e242a6463b419d1185781417eed82d3c1844fcf0d282c88f73. Independent number/text review passed with explicit negative goal-premise and NOT TRIGGERED Kill label.
 - Publication integrity and site build PASS on clean Linux checkout (435 frozen records). Windows-only validation sees existing results.jsonl CRLF conversion; Git blob and normalized worktree are identical and were not changed. Old HW-GIFT-1/1b/1c evidence stays unchanged. No external zstd issue/comment or PR merge. Next bounded action is owner review of the completed draft and its density trade-offs; additional measurements are not needed to reject the initial free-win premise on this grid.
+
+- HW-GIFT-1e checkpoint `setup`: retained raw attempts and hash-bound results under evidence/hw-gift-1e/. No external issue or merge.
+
+- HW-GIFT-1e checkpoint `prepare`: retained raw attempts and hash-bound results under evidence/hw-gift-1e/. No external issue or merge.
+
+- HW-GIFT-1e checkpoint `method-old`: retained raw attempts and hash-bound results under evidence/hw-gift-1e/. No external issue or merge.
+
+- HW-GIFT-1e checkpoint `primary-old`: retained raw attempts and hash-bound results under evidence/hw-gift-1e/. No external issue or merge.
+
+- HW-GIFT-1e checkpoint `method-new`: retained raw attempts and hash-bound results under evidence/hw-gift-1e/. No external issue or merge.
+
+- HW-GIFT-1e checkpoint `primary-new`: retained raw attempts and hash-bound results under evidence/hw-gift-1e/. No external issue or merge.
+
+- HW-GIFT-1e checkpoint `v154-full-L10-G1024`: retained raw attempts and hash-bound results under evidence/hw-gift-1e/. No external issue or merge.
+
+- HW-GIFT-1e checkpoint `v154-full-L3-G256`: retained raw attempts and hash-bound results under evidence/hw-gift-1e/. No external issue or merge.
+
+- HW-GIFT-1e checkpoint `v154-prefix-L10-G256`: retained raw attempts and hash-bound results under evidence/hw-gift-1e/. No external issue or merge.
+
+- HW-GIFT-1e checkpoint `v154-prefix-L10-G1024`: retained raw attempts and hash-bound results under evidence/hw-gift-1e/. No external issue or merge.
+
+- HW-GIFT-1e checkpoint `v154-prefix-L3-G256`: retained raw attempts and hash-bound results under evidence/hw-gift-1e/. No external issue or merge.
+
+- HW-GIFT-1e checkpoint `v157-full-L10-G1024`: retained raw attempts and hash-bound results under evidence/hw-gift-1e/. No external issue or merge.
+
+- HW-GIFT-1e checkpoint `v157-full-L3-G256`: retained raw attempts and hash-bound results under evidence/hw-gift-1e/. No external issue or merge.
+
+- HW-GIFT-1e checkpoint `v157-prefix-L10-G256`: retained raw attempts and hash-bound results under evidence/hw-gift-1e/. No external issue or merge.
+
+- HW-GIFT-1e checkpoint `v157-prefix-L10-G1024`: retained raw attempts and hash-bound results under evidence/hw-gift-1e/. No external issue or merge.
+
+- HW-GIFT-1e checkpoint `v157-prefix-L3-G256`: retained raw attempts and hash-bound results under evidence/hw-gift-1e/. No external issue or merge.
+
+- HW-GIFT-1e checkpoint `search-endpoints`: retained raw attempts and hash-bound results under evidence/hw-gift-1e/. No external issue or merge.
+
+- HW-GIFT-1e checkpoint `search-parent`: retained raw attempts and hash-bound results under evidence/hw-gift-1e/. No external issue or merge.
+
+- HW-GIFT-1e checkpoint `search-parent-v2`: retained raw attempts and hash-bound results under evidence/hw-gift-1e/. No external issue or merge.
+
+- HW-GIFT-1e checkpoint `search-init-once`: retained raw attempts and hash-bound results under evidence/hw-gift-1e/. No external issue or merge.
+
+- HW-GIFT-1e checkpoint `independent-proofs`: retained raw attempts and hash-bound results under evidence/hw-gift-1e/. No external issue or merge.
+
+- HW-GIFT-1e checkpoint `final-audit`: retained raw attempts and hash-bound results under evidence/hw-gift-1e/. No external issue or merge.
+
+### HW-GIFT-1e complete — 2026-11-25
+
+- Draft PR #94, branch hw-gift-1e, based on main ecc9eb570a3837d81efb11095b8f76e4a43b10fc. The unchanged attachment CALIBRATION.md was the only file in first commit 8b1fba61c325a4020dbad165a058d91848f9f914, before builds or timing. Frozen v1.5.4 seekable writer/header/decoder and the same resident bridge isolate the two pinned core versions; A adds the two PR #3544 hint lines, B literally has no setter call. Each core uses its own matching headers/static library and the same compiler flags.
+- All twelve full/prefix enwik8 cells are complete. Primary full/L10/256 B: P1 HIT, v1.5.4 no-hint/hint = 65207374880/2090112729 ns (31.198018x); P2 HIT, v1.5.7 symmetric factor = 2087706392/1916454131 (1.089359x), directional B/A = 0.917971. Kill was not triggered. AA gates passed independently on both versions. Full and prefix data, and AA and AB data, were never pooled.
+- Fresh prefix endpoints established a 10951488609/325867241 ns bracket and the classifier was committed before candidate builds. The initial source-informed plan was rejected by ancestry checks before reservation/build/timing: the named source branch is not descended from the release tag. The rejected plan, exact old sources and committed pre-build amendment are retained; 22 unchanged-function AST fingerprints preserve the sampler and classifier. Original endpoint observations were retained, not repeated. Only the three already named branch commits gained the explicit ancestry allowance.
+- S1 HIT: e2965edd107acd0123294e23848cdc00af906468 is SLOW (5683351415 ns, paired reference 328850076); its first-parent child 9420bce8a491e21821c4b372f837bf4bd47e5870, "Add init once memory (#3528) (#3529)", is FAST (319755040 ns, reference 327526753). Four distinct core builds total, including both tags; stop on this observed adjacent source-branch transition. The fast child is an ancestor of v1.5.7; this is outside the direct tag ancestry path and is not a global first-fast claim or an isolated memset ablation. A separate read-only Git check verified all 1069 retained history nodes and exact parents/titles.
+- Across grid, AA and search: 85 logical rounds, 85 attempts and 170 positive compression observations; 0 retaken and 0 LOADED. Every raw boundary/process/load/counter receipt is retained. Every timing used the shared OVH lock, CPU0 and load1 >2.0 policy; other-core utilization was observational only. Builds/correctness never held the benchmark lock. No more timing was performed after the transition.
+- Independent search audit PASS, with 115 private artifacts hashed and none unavailable. Independently rebuilt direct-frame decoder proof PASS: 209 retained archive references, 30 actual paths, 22 unique archives, 3537317 frame decodes and 1168296448 restored bytes, including all checksums and empty terminal frames. It performs zero encodings and reads no clock. Native proof SHA e65d7667088ffca2f5dc41b34b984cf79eae430b203c96de56833e6f120c5078.
+- Final saved-data audit PASS: 2046 source bindings, 90 private artifacts hashed, none unavailable; SHA 39e70bf7eab9091cf37ee368c5f7c7d97ed10d1bd4fb37659337e0b63e6f9760. Python 3.11/3.12 empty AST-field compatibility and cross-experiment JSON reference context needed metadata-auditor corrections; both incomplete receipts remain in evidence. Frozen timing code and measurements were unchanged. The final audit adapter preserves all native/numeric checks and the separately checked historical 1d closure.
+- RESULTS SHA 77a4ba69128642b0a5e71d5a241f0e7773eea2c09b491de5c0a2fd2a013c0ef1; TABLE.csv SHA 191506a1a7c2fc7edde59673c5aff667271cb9543d8f36d6f7fe7bf1daf29bd0; unsent issue draft SHA 921fc3feffa4b2e253a67511e283c3812f4a0824e3e2f22dc9df4e302bb996ac. The draft starts with PR #3544 and its historical reason, shows current version reproduction and the qualified source transition, derives all level-specific price ranges from the 42 saved 1d cells, and ends with one configurable-policy question. The historical renderer remains frozen; a separately bound saved-data wrapper adds the source-branch qualification.
+- Publication integrity (435 frozen records) and the static site build passed on Linux. Accepted HW-GIFT-1/1b/1c/1d evidence and the original 1e CALIBRATION.md are unchanged. Results apply to ace-core EPYC 4344P, pinned CPU0 and resident RAM input/output. PR #94 stays draft; no upstream issue/comment or merge. Next step is owner review of the unsent maintainer question and density/speed trade-offs; this fixed comparison and local transition need no further measurements.
+- Final CI detected the new README evidence link's stale publication-manifest entry. The standard refresh changed only README.md bytes/SHA; every measurement/report entry and all 435 records stayed unchanged. This documentation digest correction does not alter any 1e result or audit binding.
+- The subsequent generator check confirmed README.md is wholly generated, so the optional handwritten evidence link was removed and the original README/manifest bytes restored. Final evidence remains linked from PR #94 and this history. No generator, validator, benchmark record or 1e result was changed to accommodate that documentation addition.
+
+### External text signature rule — 2026-11-25
+
+- The owner requires honest ChatGPT/Claude attribution on the exact first line of external drafts, unsigned content-free thanks, no AI Hacker News text (including drafts; Russian supporting points only), and sending only by Yakov or a controller on his instruction after checking numbers. The complete rule is isolated in draft PR #95, one-file commit 0fedd8b4c7bd525d9abce9730be079aae2f7b876 adding docs/EXTERNAL_TEXTS.md to main.
+- Applied the exact ChatGPT first line to the PR #94 description and its unsent HW-GIFT-1e issue draft. This is an editorial prefix only: stripping the signature and one blank line reproduces all 8727 original body bytes, SHA 921fc3feffa4b2e253a67511e283c3812f4a0824e3e2f22dc9df4e302bb996ac. Signed draft SHA 0dc03684d6b94afc739347741c8f0b1a53115c744340d4752c6d9dc0b014648e; the first content paragraph still cites PR #3544, and the final single maintainer question is unchanged.
+- The completed experiment's frozen renderers, audits, measurements, RESULTS.md and TABLE.csv remain unchanged. A future re-render must receive the required signature before delivery. Legacy 1c/1d evidence is retained as accepted. No measurement, upstream message or merge was performed for this policy update.
