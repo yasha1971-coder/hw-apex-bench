@@ -1829,3 +1829,5 @@ measurements.
 
 - Main 52018a3 includes owner-merged PRs #91 and #92. New draft PR #93 started with CALIBRATION-only commit 2d02a8b. Exact 1c known archives and AA method gate passed; 21 enwik8 training cells are retained and pushed through d65a503. No LOADED attempts.
 - Independent training audit PASS and frozen smallest eligible X=1024 B. P1 is MISS; enwik8 L10 64/256 KiB already contradict the size part of P2. X is a candidate speed-budget policy, not evidence of hint necessity or a universal free win. Conditional development/holdout predictions and actual one-line patch are recorded separately in CONDITIONAL_PROTOCOL.md before any silesia observations. No prior evidence modified, no external issue or merge.
+
+- HW-GIFT-1d checkpoint `validate-L3-G256`: retained raw attempts and hash-bound results under evidence/hw-gift-1d/. No external issue or merge.
