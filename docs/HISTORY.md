@@ -1691,3 +1691,5 @@ measurements.
 - HW-GIFT-1c checkpoint `controls`: positive equality, negative-level distinction, known FCS and corrupt-magic controls passed; no timers. Raw files and receipts are retained in evidence/hw-gift-1c/.
 
 - HW-GIFT-1c checkpoint `minimal`: both minimal frame SHA values match their archived frame 0; fixed-policy chunking invariant=True. Raw files and receipts are retained in evidence/hw-gift-1c/.
+
+- HW-GIFT-1c checkpoint `enwik8-L3-65536`: 1526 frames match pyzstd; complete native restore and XXH64 pass; remainder 6104 bytes is exactly four checksum bytes per frame. Raw files and receipts are retained in evidence/hw-gift-1c/.
