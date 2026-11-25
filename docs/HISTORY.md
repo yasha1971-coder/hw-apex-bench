@@ -1722,3 +1722,5 @@ measurements.
   load-only attempts, all retained. Builds and an exact-archive untimed API
   selfcheck occur outside the shared lock; no general speed ranking or plateau
   claim may follow from this one pair. No prior latency series is rerun.
+
+- HW-GIFT-1c checkpoint `timing-selfcheck`: both in-memory native encoder/decoder paths reproduce the full archived SHA and source bytes; clock calls=0. Raw files and receipts are retained in evidence/hw-gift-1c/.
