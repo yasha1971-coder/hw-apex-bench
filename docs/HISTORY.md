@@ -1707,3 +1707,18 @@ measurements.
 - HW-GIFT-1c checkpoint `silesia-L3-262144`: 809 frames match pyzstd; complete native restore and XXH64 pass; remainder 3236 bytes is exactly four checksum bytes per frame. Raw files and receipts are retained in evidence/hw-gift-1c/.
 
 - HW-GIFT-1c checkpoint `silesia-L19-65536`: 3235 frames match pyzstd; complete native restore and XXH64 pass; remainder 12940 bytes is exactly four checksum bytes per frame. Raw files and receipts are retained in evidence/hw-gift-1c/.
+
+- The eight-case size/byte matrix is complete and pushed through
+  `36611386c8dd52daf1cf496a7b981d95ff7aec74`. Every patched data frame matches
+  pyzstd; both seek-table rewrite directions reproduce complete archives exactly.
+  Primary-case data-frame savings are 608,998 bytes, plus 1,528 checksum bytes
+  account for the original 610,526-byte difference. All 381 full frames differ;
+  one full frame (index 272) is one byte larger with pyzstd's policy. The
+  512 KiB case has no size saving, while its window descriptor still changes.
+- Optional step 6 is now preregistered in TIMING_PROTOCOL.md and timing.py before
+  any new timer: one resident enwik8 L3/256 KiB paired observation of original
+  and patched native compression/full decompression, CPU 0, fixed operation
+  order, existing shared blocking flock, load1 > 2.0 exclusion and at most three
+  load-only attempts, all retained. Builds and an exact-archive untimed API
+  selfcheck occur outside the shared lock; no general speed ranking or plateau
+  claim may follow from this one pair. No prior latency series is rerun.
