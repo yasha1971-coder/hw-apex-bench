@@ -1656,3 +1656,34 @@ measurements.
   Full evidence integrity passed; the scientific size prediction is the only
   failed gate. Accepted HW-GIFT-1 remains unchanged. PR #90 must stay draft;
   no merge or publication outside this repository is authorized.
+
+### HW-GIFT-1c preregistration and engineering method — 2026-11-25
+
+- The owner supplied PROGNOZ_ZADANIE.md and authorized its permanent adoption.
+  Separate PR #91, branch `docs/prognoz-zadanie`, contains only the unchanged
+  `docs/METHOD_PROGNOZ_ZADANIE.md` in commit
+  `0859e40fe81fc6f4cad4dcfbceff332c7afcf12f`; committed bytes match the attachment,
+  SHA-256 `618d2404476d4bc3aafeff52ee65df6e6a923efaef0dd0c96dc86ceba0664fa9`.
+  Apply the method to subsequent assignments. No merge was performed by HW.
+- Main was checked live at `c1ad9d4b6ff8ed0a576593cb6e101e6c1032faa4`; PR #90
+  is merged. HW-GIFT-1c starts from this main. Its first commit,
+  `65baf466eb399f815afff9235e20e94ea7780421`, contains only the unchanged
+  CALIBRATION.md from "Hypotheses (not measurements):" through the supplied task
+  ending; SHA-256 `789ade94cd05aababe422bcaff4ebdbc3a6eaeb673a42ca5a28411ccd2de0b76`.
+  No new encoding or timing preceded it. Draft PR #92 stays draft.
+- Goal: exact code cause, minimal frame-SHA reproduction, one-line private-copy
+  change and complete byte accounting for both writers, then a storage/speed
+  decision. No ACEAPEX, other-project changes or external contact. Existing
+  pyzstd issue #75 is not changed; a zstd issue can be drafted locally only.
+- Source-only investigation identifies contrib's unconditional `srcSizeHint`
+  at pinned zstd's zstdseek_compress.c:234 as a candidate, not yet an empirical
+  conclusion. Source paths, immutable versions and hashes are retained in
+  evidence/hw-gift-1c/SOURCE_PATHS.md. Method controls must pass before comparing
+  frames; both minimal hashes must match before building the one-line copy.
+- A separate executor checkout exists at
+  `/home/ubuntu/hw-apex-bench-hw-gift-1c`. Inputs, Python environment, original
+  C encoder and clean pinned source are read-only dependencies in the previous
+  checkout. Existing C archive bytes were temporary; reconstructed archives must
+  match the accepted HW-GIFT-1b SHA and size before use. Correctness/size work has
+  no timers. The bounded matrix covers all six anomalous points plus enwik8 L3
+  128/512 KiB (eight configurations); push each validated checkpoint.
