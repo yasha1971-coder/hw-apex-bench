@@ -1656,3 +1656,125 @@ measurements.
   Full evidence integrity passed; the scientific size prediction is the only
   failed gate. Accepted HW-GIFT-1 remains unchanged. PR #90 must stay draft;
   no merge or publication outside this repository is authorized.
+
+### HW-GIFT-1c preregistration and engineering method — 2026-11-25
+
+- The owner supplied PROGNOZ_ZADANIE.md and authorized its permanent adoption.
+  Separate PR #91, branch `docs/prognoz-zadanie`, contains only the unchanged
+  `docs/METHOD_PROGNOZ_ZADANIE.md` in commit
+  `0859e40fe81fc6f4cad4dcfbceff332c7afcf12f`; committed bytes match the attachment,
+  SHA-256 `618d2404476d4bc3aafeff52ee65df6e6a923efaef0dd0c96dc86ceba0664fa9`.
+  Apply the method to subsequent assignments. No merge was performed by HW.
+- Main was checked live at `c1ad9d4b6ff8ed0a576593cb6e101e6c1032faa4`; PR #90
+  is merged. HW-GIFT-1c starts from this main. Its first commit,
+  `65baf466eb399f815afff9235e20e94ea7780421`, contains only the unchanged
+  CALIBRATION.md from "Hypotheses (not measurements):" through the supplied task
+  ending; SHA-256 `789ade94cd05aababe422bcaff4ebdbc3a6eaeb673a42ca5a28411ccd2de0b76`.
+  No new encoding or timing preceded it. Draft PR #92 stays draft.
+- Goal: exact code cause, minimal frame-SHA reproduction, one-line private-copy
+  change and complete byte accounting for both writers, then a storage/speed
+  decision. No ACEAPEX, other-project changes or external contact. Existing
+  pyzstd issue #75 is not changed; a zstd issue can be drafted locally only.
+- Source-only investigation identifies contrib's unconditional `srcSizeHint`
+  at pinned zstd's zstdseek_compress.c:234 as a candidate, not yet an empirical
+  conclusion. Source paths, immutable versions and hashes are retained in
+  evidence/hw-gift-1c/SOURCE_PATHS.md. Method controls must pass before comparing
+  frames; both minimal hashes must match before building the one-line copy.
+- A separate executor checkout exists at
+  `/home/ubuntu/hw-apex-bench-hw-gift-1c`. Inputs, Python environment, original
+  C encoder and clean pinned source are read-only dependencies in the previous
+  checkout. Existing C archive bytes were temporary; reconstructed archives must
+  match the accepted HW-GIFT-1b SHA and size before use. Correctness/size work has
+  no timers. The bounded matrix covers all six anomalous points plus enwik8 L3
+  128/512 KiB (eight configurations); push each validated checkpoint.
+
+- HW-GIFT-1c checkpoint `controls`: positive equality, negative-level distinction, known FCS and corrupt-magic controls passed; no timers. Raw files and receipts are retained in evidence/hw-gift-1c/.
+
+- HW-GIFT-1c checkpoint `minimal`: both minimal frame SHA values match their archived frame 0; fixed-policy chunking invariant=True. Raw files and receipts are retained in evidence/hw-gift-1c/.
+
+- HW-GIFT-1c checkpoint `enwik8-L3-65536`: 1526 frames match pyzstd; complete native restore and XXH64 pass; remainder 6104 bytes is exactly four checksum bytes per frame. Raw files and receipts are retained in evidence/hw-gift-1c/.
+
+- HW-GIFT-1c checkpoint `enwik8-L3-131072`: 763 frames match pyzstd; complete native restore and XXH64 pass; remainder 3052 bytes is exactly four checksum bytes per frame. Raw files and receipts are retained in evidence/hw-gift-1c/.
+
+- HW-GIFT-1c checkpoint `enwik8-L3-262144`: 382 frames match pyzstd; complete native restore and XXH64 pass; remainder 1528 bytes is exactly four checksum bytes per frame. Raw files and receipts are retained in evidence/hw-gift-1c/.
+
+- HW-GIFT-1c checkpoint `enwik8-L3-524288`: 191 frames match pyzstd; complete native restore and XXH64 pass; remainder 764 bytes is exactly four checksum bytes per frame. Raw files and receipts are retained in evidence/hw-gift-1c/.
+
+- HW-GIFT-1c checkpoint `enwik8-L19-65536`: 1526 frames match pyzstd; complete native restore and XXH64 pass; remainder 6104 bytes is exactly four checksum bytes per frame. Raw files and receipts are retained in evidence/hw-gift-1c/.
+
+- HW-GIFT-1c checkpoint `silesia-L3-65536`: 3235 frames match pyzstd; complete native restore and XXH64 pass; remainder 12940 bytes is exactly four checksum bytes per frame. Raw files and receipts are retained in evidence/hw-gift-1c/.
+
+- HW-GIFT-1c checkpoint `silesia-L3-262144`: 809 frames match pyzstd; complete native restore and XXH64 pass; remainder 3236 bytes is exactly four checksum bytes per frame. Raw files and receipts are retained in evidence/hw-gift-1c/.
+
+- HW-GIFT-1c checkpoint `silesia-L19-65536`: 3235 frames match pyzstd; complete native restore and XXH64 pass; remainder 12940 bytes is exactly four checksum bytes per frame. Raw files and receipts are retained in evidence/hw-gift-1c/.
+
+- The eight-case size/byte matrix is complete and pushed through
+  `36611386c8dd52daf1cf496a7b981d95ff7aec74`. Every patched data frame matches
+  pyzstd; both seek-table rewrite directions reproduce complete archives exactly.
+  Primary-case data-frame savings are 608,998 bytes, plus 1,528 checksum bytes
+  account for the original 610,526-byte difference. All 381 full frames differ;
+  one full frame (index 272) is one byte larger with pyzstd's policy. The
+  512 KiB case has no size saving, while its window descriptor still changes.
+- Optional step 6 is now preregistered in TIMING_PROTOCOL.md and timing.py before
+  any new timer: one resident enwik8 L3/256 KiB paired observation of original
+  and patched native compression/full decompression, CPU 0, fixed operation
+  order, existing shared blocking flock, load1 > 2.0 exclusion and at most three
+  load-only attempts, all retained. Builds and an exact-archive untimed API
+  selfcheck occur outside the shared lock; no general speed ranking or plateau
+  claim may follow from this one pair. No prior latency series is rerun.
+
+- HW-GIFT-1c checkpoint `timing-selfcheck`: both in-memory native encoder/decoder paths reproduce the full archived SHA and source bytes; clock calls=0. Raw files and receipts are retained in evidence/hw-gift-1c/.
+
+- HW-GIFT-1c checkpoint `timing-pair`: CLEAN; one paired observation, 1 retained attempts, 0 LOADED attempts. Raw files and receipts are retained in evidence/hw-gift-1c/.
+
+### HW-GIFT-1c complete — 2026-11-25
+
+- Exact cause: pinned zstd 1.5.7 contrib/seekable_format/zstdseek_compress.c:234
+  sets `ZSTD_c_srcSizeHint = maxFrameSize`; pyzstd 0.20.0 leaves that hint unset
+  on its CONTINUE/empty-END writer path. The hint changes the small-source
+  parameter policy and window while pledged source size stays UNKNOWN.
+  Changing that one line to hint zero on a private copy makes all 11,667 tested
+  data frames byte-identical to pyzstd. Original source/evidence remain unchanged.
+- The primary enwik8 L3/256 KiB archive has 382 frames, 381 full. All full frames
+  have size/byte differences; one full frame (272) is one byte larger with the
+  pyzstd policy. Aggregate difference is 608,998 bytes of data frames plus 1,528
+  optional checksum bytes, exactly 610,526 bytes. Both minimal C outputs match
+  archived frame 0 SHA exactly: contrib `3cab61b1c4cec5296d5ff271d162bbbd3ef730604c00a8833a4dac211db461e6`,
+  pyzstd `bf72723ed208c90b32be0400bb1a611201f32555ca98d6f6261395614f2ec2c2`.
+- All eight configurations were checkpointed and pushed individually. All 24
+  archives restored bit for bit, including seek-table XXH checks. Patched contrib
+  keeps four low-32-bit XXH64 checksum bytes per frame; removing/adding these
+  fields and updating length/descriptor reconstructs both complete archive forms
+  exactly. At 512 KiB there is no size saving; all 191 original frames still
+  differ only at byte 5 (window descriptor 0x48 versus 0x58).
+- Calibration: H1 is a literal MISS (pledge/first-END premise wrong; the related
+  size-tier/window mechanism is explained by srcSizeHint). Its stated kill
+  predicate is not met, and it was not rewritten into a HIT. H2 is rejected:
+  whole-frame CONTINUE at fixed hint and empty END leaves frame SHA unchanged.
+- The independent controller rebuilt the C probe, made only two tiny correctness
+  encodings, and verified all 24 actual archives / 35,001 frame decodes with its
+  own parser. Audit output SHA-256
+  `5dbd418442c1961f6859582e445ae7a9950cfaf7d19686454aef15ecde80540a` and verifier
+  source `b94cd970c5ab22ff31ac86ef2d442ceef1f63266ebf22981bbff4268f707a8b5`
+  are retained under evidence/hw-gift-1c/audit/.
+- Optional timing protocol was committed as `457d1d34329528c6349af1d82a51b00d24be0edc`,
+  then the orchestrator as `8184d6bd32046cebeb494d2ad02ae4e4ce02ab18`, before
+  timing. Untimed exact-archive selfcheck was pushed as `027834b37fc59a969e41c390834e878fb9b59414`.
+  The single ordered resident enwik8 L3/256 KiB pair is checkpoint
+  `4e48cbf42720f5f69bf8ad89d989bd1a7e4eff69`: first CLEAN, 0 of 1 pairs retaken,
+  0 LOADED; CPU 0, load1 0.09 at both boundaries, all 15 other-core deltas valid.
+  Encode original/patched: 340,959,823 / 312,972,138 ns; full decode:
+  81,793,021 / 70,095,693 ns. Elapsed changed -8.208499% / -14.301132% in this
+  one pair. No general speed ranking, p99 or plateau claim follows.
+- Memory tradeoff: fresh minimal 256 KiB CCtx accounting after encode increases
+  1,566,233 -> 3,663,385 bytes, while declared window grows 256 KiB -> 2 MiB.
+  This is not process RSS. Storage-focused users can choose the no-hint policy;
+  memory-constrained users retain a reason to prefer the original hint. Keeping
+  the checksum option is separate from the compression policy.
+- RESULTS.md and a clearly unsent ZSTD_ISSUE_DRAFT.md are generated from saved
+  evidence by report.py. Results SHA-256
+  `c486ea31fcfaaac86f64de55f583f2d2d5e58f6eb914ae7fe5a0ec8ff9d155a9`.
+  Separate read-only timing audit SHA-256
+  `3316277cbbcb853ed2d2f0b08dac3134e72ce8bfa16b20d46b6ea7468c8f15b6`.
+  Final text/data review passed. PR #92 stays draft; PR #91 remains the separate
+  one-file method adoption. No merge, external issue or contact was performed.

@@ -1,0 +1,5 @@
+--- original/contrib/seekable_format/zstdseek_compress.c
++++ patched/contrib/seekable_format/zstdseek_compress.c
+@@ -234 +234 @@
+-    ZSTD_CCtx_setParameter(zcs->cstream, ZSTD_c_srcSizeHint, (int)zcs->maxFrameSize);
++    ZSTD_CCtx_setParameter(zcs->cstream, ZSTD_c_srcSizeHint, 0);
