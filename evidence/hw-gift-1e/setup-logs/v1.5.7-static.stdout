@@ -1,0 +1,37 @@
+make: Entering directory '/home/ubuntu/hw-apex-bench-hw-gift-1e/.work/hw-gift-1e/cores/v1.5.7/lib'
+CC obj/conf_f06ab5b75baaf8c0c378b8e245e228a7/static/debug.o
+CC obj/conf_f06ab5b75baaf8c0c378b8e245e228a7/static/entropy_common.o
+CC obj/conf_f06ab5b75baaf8c0c378b8e245e228a7/static/error_private.o
+CC obj/conf_f06ab5b75baaf8c0c378b8e245e228a7/static/fse_decompress.o
+CC obj/conf_f06ab5b75baaf8c0c378b8e245e228a7/static/pool.o
+CC obj/conf_f06ab5b75baaf8c0c378b8e245e228a7/static/threading.o
+CC obj/conf_f06ab5b75baaf8c0c378b8e245e228a7/static/xxhash.o
+CC obj/conf_f06ab5b75baaf8c0c378b8e245e228a7/static/zstd_common.o
+CC obj/conf_f06ab5b75baaf8c0c378b8e245e228a7/static/zstd_v05.o
+CC obj/conf_f06ab5b75baaf8c0c378b8e245e228a7/static/zstd_v06.o
+CC obj/conf_f06ab5b75baaf8c0c378b8e245e228a7/static/zstd_v07.o
+CC obj/conf_f06ab5b75baaf8c0c378b8e245e228a7/static/fse_compress.o
+CC obj/conf_f06ab5b75baaf8c0c378b8e245e228a7/static/hist.o
+CC obj/conf_f06ab5b75baaf8c0c378b8e245e228a7/static/huf_compress.o
+CC obj/conf_f06ab5b75baaf8c0c378b8e245e228a7/static/zstd_compress.o
+CC obj/conf_f06ab5b75baaf8c0c378b8e245e228a7/static/zstd_compress_literals.o
+CC obj/conf_f06ab5b75baaf8c0c378b8e245e228a7/static/zstd_compress_sequences.o
+CC obj/conf_f06ab5b75baaf8c0c378b8e245e228a7/static/zstd_compress_superblock.o
+CC obj/conf_f06ab5b75baaf8c0c378b8e245e228a7/static/zstd_double_fast.o
+CC obj/conf_f06ab5b75baaf8c0c378b8e245e228a7/static/zstd_fast.o
+CC obj/conf_f06ab5b75baaf8c0c378b8e245e228a7/static/zstd_lazy.o
+CC obj/conf_f06ab5b75baaf8c0c378b8e245e228a7/static/zstd_ldm.o
+CC obj/conf_f06ab5b75baaf8c0c378b8e245e228a7/static/zstd_opt.o
+CC obj/conf_f06ab5b75baaf8c0c378b8e245e228a7/static/zstd_preSplit.o
+CC obj/conf_f06ab5b75baaf8c0c378b8e245e228a7/static/zstdmt_compress.o
+CC obj/conf_f06ab5b75baaf8c0c378b8e245e228a7/static/huf_decompress.o
+CC obj/conf_f06ab5b75baaf8c0c378b8e245e228a7/static/zstd_ddict.o
+CC obj/conf_f06ab5b75baaf8c0c378b8e245e228a7/static/zstd_decompress.o
+CC obj/conf_f06ab5b75baaf8c0c378b8e245e228a7/static/zstd_decompress_block.o
+AS obj/conf_f06ab5b75baaf8c0c378b8e245e228a7/static/huf_decompress_amd64.o
+CC obj/conf_f06ab5b75baaf8c0c378b8e245e228a7/static/cover.o
+CC obj/conf_f06ab5b75baaf8c0c378b8e245e228a7/static/divsufsort.o
+CC obj/conf_f06ab5b75baaf8c0c378b8e245e228a7/static/fastcover.o
+CC obj/conf_f06ab5b75baaf8c0c378b8e245e228a7/static/zdict.o
+compiling single-threaded static library 1.5.7
+make: Leaving directory '/home/ubuntu/hw-apex-bench-hw-gift-1e/.work/hw-gift-1e/cores/v1.5.7/lib'

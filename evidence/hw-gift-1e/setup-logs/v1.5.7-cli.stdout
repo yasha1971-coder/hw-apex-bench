@@ -1,0 +1,53 @@
+make: Entering directory '/home/ubuntu/hw-apex-bench-hw-gift-1e/.work/hw-gift-1e/cores/v1.5.7/programs'
+CC obj/conf_2a7f7b6455a5b30886c55c4afff92f8d/debug.o
+CC obj/conf_2a7f7b6455a5b30886c55c4afff92f8d/entropy_common.o
+CC obj/conf_2a7f7b6455a5b30886c55c4afff92f8d/error_private.o
+CC obj/conf_2a7f7b6455a5b30886c55c4afff92f8d/fse_decompress.o
+CC obj/conf_2a7f7b6455a5b30886c55c4afff92f8d/pool.o
+CC obj/conf_2a7f7b6455a5b30886c55c4afff92f8d/threading.o
+CC obj/conf_2a7f7b6455a5b30886c55c4afff92f8d/xxhash.o
+CC obj/conf_2a7f7b6455a5b30886c55c4afff92f8d/zstd_common.o
+CC obj/conf_2a7f7b6455a5b30886c55c4afff92f8d/fse_compress.o
+CC obj/conf_2a7f7b6455a5b30886c55c4afff92f8d/hist.o
+CC obj/conf_2a7f7b6455a5b30886c55c4afff92f8d/huf_compress.o
+CC obj/conf_2a7f7b6455a5b30886c55c4afff92f8d/zstd_compress.o
+CC obj/conf_2a7f7b6455a5b30886c55c4afff92f8d/zstd_compress_literals.o
+CC obj/conf_2a7f7b6455a5b30886c55c4afff92f8d/zstd_compress_sequences.o
+CC obj/conf_2a7f7b6455a5b30886c55c4afff92f8d/zstd_compress_superblock.o
+CC obj/conf_2a7f7b6455a5b30886c55c4afff92f8d/zstd_double_fast.o
+CC obj/conf_2a7f7b6455a5b30886c55c4afff92f8d/zstd_fast.o
+CC obj/conf_2a7f7b6455a5b30886c55c4afff92f8d/zstd_lazy.o
+CC obj/conf_2a7f7b6455a5b30886c55c4afff92f8d/zstd_ldm.o
+CC obj/conf_2a7f7b6455a5b30886c55c4afff92f8d/zstd_opt.o
+CC obj/conf_2a7f7b6455a5b30886c55c4afff92f8d/zstd_preSplit.o
+CC obj/conf_2a7f7b6455a5b30886c55c4afff92f8d/zstdmt_compress.o
+CC obj/conf_2a7f7b6455a5b30886c55c4afff92f8d/huf_decompress.o
+AS obj/conf_2a7f7b6455a5b30886c55c4afff92f8d/huf_decompress_amd64.o
+CC obj/conf_2a7f7b6455a5b30886c55c4afff92f8d/zstd_ddict.o
+CC obj/conf_2a7f7b6455a5b30886c55c4afff92f8d/zstd_decompress.o
+CC obj/conf_2a7f7b6455a5b30886c55c4afff92f8d/zstd_decompress_block.o
+CC obj/conf_2a7f7b6455a5b30886c55c4afff92f8d/cover.o
+CC obj/conf_2a7f7b6455a5b30886c55c4afff92f8d/divsufsort.o
+CC obj/conf_2a7f7b6455a5b30886c55c4afff92f8d/fastcover.o
+CC obj/conf_2a7f7b6455a5b30886c55c4afff92f8d/zdict.o
+CC obj/conf_2a7f7b6455a5b30886c55c4afff92f8d/zstd_v05.o
+CC obj/conf_2a7f7b6455a5b30886c55c4afff92f8d/zstd_v06.o
+CC obj/conf_2a7f7b6455a5b30886c55c4afff92f8d/zstd_v07.o
+CC obj/conf_2a7f7b6455a5b30886c55c4afff92f8d/benchfn.o
+CC obj/conf_2a7f7b6455a5b30886c55c4afff92f8d/benchzstd.o
+CC obj/conf_2a7f7b6455a5b30886c55c4afff92f8d/datagen.o
+CC obj/conf_2a7f7b6455a5b30886c55c4afff92f8d/dibio.o
+CC obj/conf_2a7f7b6455a5b30886c55c4afff92f8d/fileio.o
+CC obj/conf_2a7f7b6455a5b30886c55c4afff92f8d/fileio_asyncio.o
+CC obj/conf_2a7f7b6455a5b30886c55c4afff92f8d/lorem.o
+CC obj/conf_2a7f7b6455a5b30886c55c4afff92f8d/timefn.o
+CC obj/conf_2a7f7b6455a5b30886c55c4afff92f8d/util.o
+CC obj/conf_2a7f7b6455a5b30886c55c4afff92f8d/zstdcli.o
+CC obj/conf_2a7f7b6455a5b30886c55c4afff92f8d/zstdcli_trace.o
+==> building with threading support
+==> building zstd with .gz compression support
+==> building zstd with .xz/.lzma compression support
+==> no liblz4, building zstd without .lz4 support
+LINK obj/conf_2a7f7b6455a5b30886c55c4afff92f8d/zstd
+zstd build completed
+make: Leaving directory '/home/ubuntu/hw-apex-bench-hw-gift-1e/.work/hw-gift-1e/cores/v1.5.7/programs'
