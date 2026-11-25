@@ -1726,3 +1726,55 @@ measurements.
 - HW-GIFT-1c checkpoint `timing-selfcheck`: both in-memory native encoder/decoder paths reproduce the full archived SHA and source bytes; clock calls=0. Raw files and receipts are retained in evidence/hw-gift-1c/.
 
 - HW-GIFT-1c checkpoint `timing-pair`: CLEAN; one paired observation, 1 retained attempts, 0 LOADED attempts. Raw files and receipts are retained in evidence/hw-gift-1c/.
+
+### HW-GIFT-1c complete — 2026-11-25
+
+- Exact cause: pinned zstd 1.5.7 contrib/seekable_format/zstdseek_compress.c:234
+  sets `ZSTD_c_srcSizeHint = maxFrameSize`; pyzstd 0.20.0 leaves that hint unset
+  on its CONTINUE/empty-END writer path. The hint changes the small-source
+  parameter policy and window while pledged source size stays UNKNOWN.
+  Changing that one line to hint zero on a private copy makes all 11,667 tested
+  data frames byte-identical to pyzstd. Original source/evidence remain unchanged.
+- The primary enwik8 L3/256 KiB archive has 382 frames, 381 full. All full frames
+  have size/byte differences; one full frame (272) is one byte larger with the
+  pyzstd policy. Aggregate difference is 608,998 bytes of data frames plus 1,528
+  optional checksum bytes, exactly 610,526 bytes. Both minimal C outputs match
+  archived frame 0 SHA exactly: contrib `3cab61b1c4cec5296d5ff271d162bbbd3ef730604c00a8833a4dac211db461e6`,
+  pyzstd `bf72723ed208c90b32be0400bb1a611201f32555ca98d6f6261395614f2ec2c2`.
+- All eight configurations were checkpointed and pushed individually. All 24
+  archives restored bit for bit, including seek-table XXH checks. Patched contrib
+  keeps four low-32-bit XXH64 checksum bytes per frame; removing/adding these
+  fields and updating length/descriptor reconstructs both complete archive forms
+  exactly. At 512 KiB there is no size saving; all 191 original frames still
+  differ only at byte 5 (window descriptor 0x48 versus 0x58).
+- Calibration: H1 is a literal MISS (pledge/first-END premise wrong; the related
+  size-tier/window mechanism is explained by srcSizeHint). Its stated kill
+  predicate is not met, and it was not rewritten into a HIT. H2 is rejected:
+  whole-frame CONTINUE at fixed hint and empty END leaves frame SHA unchanged.
+- The independent controller rebuilt the C probe, made only two tiny correctness
+  encodings, and verified all 24 actual archives / 35,001 frame decodes with its
+  own parser. Audit output SHA-256
+  `5dbd418442c1961f6859582e445ae7a9950cfaf7d19686454aef15ecde80540a` and verifier
+  source `b94cd970c5ab22ff31ac86ef2d442ceef1f63266ebf22981bbff4268f707a8b5`
+  are retained under evidence/hw-gift-1c/audit/.
+- Optional timing protocol was committed as `457d1d34329528c6349af1d82a51b00d24be0edc`,
+  then the orchestrator as `8184d6bd32046cebeb494d2ad02ae4e4ce02ab18`, before
+  timing. Untimed exact-archive selfcheck was pushed as `027834b37fc59a969e41c390834e878fb9b59414`.
+  The single ordered resident enwik8 L3/256 KiB pair is checkpoint
+  `4e48cbf42720f5f69bf8ad89d989bd1a7e4eff69`: first CLEAN, 0 of 1 pairs retaken,
+  0 LOADED; CPU 0, load1 0.09 at both boundaries, all 15 other-core deltas valid.
+  Encode original/patched: 340,959,823 / 312,972,138 ns; full decode:
+  81,793,021 / 70,095,693 ns. Elapsed changed -8.208499% / -14.301132% in this
+  one pair. No general speed ranking, p99 or plateau claim follows.
+- Memory tradeoff: fresh minimal 256 KiB CCtx accounting after encode increases
+  1,566,233 -> 3,663,385 bytes, while declared window grows 256 KiB -> 2 MiB.
+  This is not process RSS. Storage-focused users can choose the no-hint policy;
+  memory-constrained users retain a reason to prefer the original hint. Keeping
+  the checksum option is separate from the compression policy.
+- RESULTS.md and a clearly unsent ZSTD_ISSUE_DRAFT.md are generated from saved
+  evidence by report.py. Results SHA-256
+  `c486ea31fcfaaac86f64de55f583f2d2d5e58f6eb914ae7fe5a0ec8ff9d155a9`.
+  Separate read-only timing audit SHA-256
+  `3316277cbbcb853ed2d2f0b08dac3134e72ce8bfa16b20d46b6ea7468c8f15b6`.
+  Final text/data review passed. PR #92 stays draft; PR #91 remains the separate
+  one-file method adoption. No merge, external issue or contact was performed.
