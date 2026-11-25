@@ -1778,3 +1778,151 @@ measurements.
   `3316277cbbcb853ed2d2f0b08dac3134e72ce8bfa16b20d46b6ea7468c8f15b6`.
   Final text/data review passed. PR #92 stays draft; PR #91 remains the separate
   one-file method adoption. No merge, external issue or contact was performed.
+
+- HW-GIFT-1d checkpoint `prepare`: retained raw attempts and hash-bound results under evidence/hw-gift-1d/. No external issue or merge.
+
+- HW-GIFT-1d checkpoint `method`: retained raw attempts and hash-bound results under evidence/hw-gift-1d/. No external issue or merge.
+
+- HW-GIFT-1d checkpoint `train-L3-G256`: retained raw attempts and hash-bound results under evidence/hw-gift-1d/. No external issue or merge.
+
+- HW-GIFT-1d checkpoint `train-L3-G1024`: retained raw attempts and hash-bound results under evidence/hw-gift-1d/. No external issue or merge.
+
+- HW-GIFT-1d checkpoint `train-L3-G4096`: retained raw attempts and hash-bound results under evidence/hw-gift-1d/. No external issue or merge.
+
+- HW-GIFT-1d checkpoint `train-L3-G16384`: retained raw attempts and hash-bound results under evidence/hw-gift-1d/. No external issue or merge.
+
+- HW-GIFT-1d checkpoint `train-L3-G65536`: retained raw attempts and hash-bound results under evidence/hw-gift-1d/. No external issue or merge.
+
+- HW-GIFT-1d checkpoint `train-L3-G262144`: retained raw attempts and hash-bound results under evidence/hw-gift-1d/. No external issue or merge.
+
+- HW-GIFT-1d checkpoint `train-L3-G524288`: retained raw attempts and hash-bound results under evidence/hw-gift-1d/. No external issue or merge.
+
+- HW-GIFT-1d checkpoint `train-L10-G256`: retained raw attempts and hash-bound results under evidence/hw-gift-1d/. No external issue or merge.
+
+- HW-GIFT-1d checkpoint `train-L10-G1024`: retained raw attempts and hash-bound results under evidence/hw-gift-1d/. No external issue or merge.
+
+- HW-GIFT-1d checkpoint `train-L10-G4096`: retained raw attempts and hash-bound results under evidence/hw-gift-1d/. No external issue or merge.
+
+- HW-GIFT-1d checkpoint `train-L10-G16384`: retained raw attempts and hash-bound results under evidence/hw-gift-1d/. No external issue or merge.
+
+- HW-GIFT-1d checkpoint `train-L10-G65536`: retained raw attempts and hash-bound results under evidence/hw-gift-1d/. No external issue or merge.
+
+- HW-GIFT-1d checkpoint `train-L10-G262144`: retained raw attempts and hash-bound results under evidence/hw-gift-1d/. No external issue or merge.
+
+- HW-GIFT-1d checkpoint `train-L10-G524288`: retained raw attempts and hash-bound results under evidence/hw-gift-1d/. No external issue or merge.
+
+- HW-GIFT-1d checkpoint `train-L19-G256`: retained raw attempts and hash-bound results under evidence/hw-gift-1d/. No external issue or merge.
+
+- HW-GIFT-1d checkpoint `train-L19-G1024`: retained raw attempts and hash-bound results under evidence/hw-gift-1d/. No external issue or merge.
+
+- HW-GIFT-1d checkpoint `train-L19-G4096`: retained raw attempts and hash-bound results under evidence/hw-gift-1d/. No external issue or merge.
+
+- HW-GIFT-1d checkpoint `train-L19-G16384`: retained raw attempts and hash-bound results under evidence/hw-gift-1d/. No external issue or merge.
+
+- HW-GIFT-1d checkpoint `train-L19-G65536`: retained raw attempts and hash-bound results under evidence/hw-gift-1d/. No external issue or merge.
+
+- HW-GIFT-1d checkpoint `train-L19-G262144`: retained raw attempts and hash-bound results under evidence/hw-gift-1d/. No external issue or merge.
+
+- HW-GIFT-1d checkpoint `train-L19-G524288`: retained raw attempts and hash-bound results under evidence/hw-gift-1d/. No external issue or merge.
+
+### HW-GIFT-1d development freeze — 2026-11-25
+
+- Main 52018a3 includes owner-merged PRs #91 and #92. New draft PR #93 started with CALIBRATION-only commit 2d02a8b. Exact 1c known archives and AA method gate passed; 21 enwik8 training cells are retained and pushed through d65a503. No LOADED attempts.
+- Independent training audit PASS and frozen smallest eligible X=1024 B. P1 is MISS; enwik8 L10 64/256 KiB already contradict the size part of P2. X is a candidate speed-budget policy, not evidence of hint necessity or a universal free win. Conditional development/holdout predictions and actual one-line patch are recorded separately in CONDITIONAL_PROTOCOL.md before any silesia observations. No prior evidence modified, no external issue or merge.
+
+- HW-GIFT-1d checkpoint `validate-L3-G256`: retained raw attempts and hash-bound results under evidence/hw-gift-1d/. No external issue or merge.
+
+- HW-GIFT-1d checkpoint `validate-L3-G1024`: retained raw attempts and hash-bound results under evidence/hw-gift-1d/. No external issue or merge.
+
+- HW-GIFT-1d checkpoint `validate-L3-G4096`: retained raw attempts and hash-bound results under evidence/hw-gift-1d/. No external issue or merge.
+
+- HW-GIFT-1d checkpoint `validate-L3-G16384`: retained raw attempts and hash-bound results under evidence/hw-gift-1d/. No external issue or merge.
+
+- HW-GIFT-1d checkpoint `validate-L3-G65536`: retained raw attempts and hash-bound results under evidence/hw-gift-1d/. No external issue or merge.
+
+- HW-GIFT-1d checkpoint `validate-L3-G262144`: retained raw attempts and hash-bound results under evidence/hw-gift-1d/. No external issue or merge.
+
+- HW-GIFT-1d checkpoint `validate-L3-G524288`: retained raw attempts and hash-bound results under evidence/hw-gift-1d/. No external issue or merge.
+
+- HW-GIFT-1d checkpoint `validate-L10-G256`: retained raw attempts and hash-bound results under evidence/hw-gift-1d/. No external issue or merge.
+
+- HW-GIFT-1d checkpoint `validate-L10-G1024`: retained raw attempts and hash-bound results under evidence/hw-gift-1d/. No external issue or merge.
+
+- HW-GIFT-1d checkpoint `validate-L10-G4096`: retained raw attempts and hash-bound results under evidence/hw-gift-1d/. No external issue or merge.
+
+- HW-GIFT-1d checkpoint `validate-L10-G16384`: retained raw attempts and hash-bound results under evidence/hw-gift-1d/. No external issue or merge.
+
+- HW-GIFT-1d checkpoint `validate-L10-G65536`: retained raw attempts and hash-bound results under evidence/hw-gift-1d/. No external issue or merge.
+
+- HW-GIFT-1d checkpoint `validate-L10-G262144`: retained raw attempts and hash-bound results under evidence/hw-gift-1d/. No external issue or merge.
+
+- HW-GIFT-1d checkpoint `validate-L10-G524288`: retained raw attempts and hash-bound results under evidence/hw-gift-1d/. No external issue or merge.
+
+- HW-GIFT-1d checkpoint `validate-L19-G256`: retained raw attempts and hash-bound results under evidence/hw-gift-1d/. No external issue or merge.
+
+- HW-GIFT-1d checkpoint `validate-L19-G1024`: retained raw attempts and hash-bound results under evidence/hw-gift-1d/. No external issue or merge.
+
+- HW-GIFT-1d checkpoint `validate-L19-G4096`: retained raw attempts and hash-bound results under evidence/hw-gift-1d/. No external issue or merge.
+
+- HW-GIFT-1d checkpoint `validate-L19-G16384`: retained raw attempts and hash-bound results under evidence/hw-gift-1d/. No external issue or merge.
+
+- HW-GIFT-1d checkpoint `validate-L19-G65536`: retained raw attempts and hash-bound results under evidence/hw-gift-1d/. No external issue or merge.
+
+- HW-GIFT-1d checkpoint `validate-L19-G262144`: retained raw attempts and hash-bound results under evidence/hw-gift-1d/. No external issue or merge.
+
+- HW-GIFT-1d checkpoint `validate-L19-G524288`: retained raw attempts and hash-bound results under evidence/hw-gift-1d/. No external issue or merge.
+
+- HW-GIFT-1d checkpoint `holdout-L3-G256`: retained raw attempts and hash-bound results under evidence/hw-gift-1d/. No external issue or merge.
+
+- HW-GIFT-1d checkpoint `holdout-L3-G1024`: retained raw attempts and hash-bound results under evidence/hw-gift-1d/. No external issue or merge.
+
+- HW-GIFT-1d checkpoint `holdout-L3-G4096`: retained raw attempts and hash-bound results under evidence/hw-gift-1d/. No external issue or merge.
+
+- HW-GIFT-1d checkpoint `holdout-L3-G16384`: retained raw attempts and hash-bound results under evidence/hw-gift-1d/. No external issue or merge.
+
+- HW-GIFT-1d checkpoint `holdout-L3-G65536`: retained raw attempts and hash-bound results under evidence/hw-gift-1d/. No external issue or merge.
+
+- HW-GIFT-1d checkpoint `holdout-L3-G262144`: retained raw attempts and hash-bound results under evidence/hw-gift-1d/. No external issue or merge.
+
+- HW-GIFT-1d checkpoint `holdout-L3-G524288`: retained raw attempts and hash-bound results under evidence/hw-gift-1d/. No external issue or merge.
+
+- HW-GIFT-1d checkpoint `holdout-L10-G256`: retained raw attempts and hash-bound results under evidence/hw-gift-1d/. No external issue or merge.
+
+- HW-GIFT-1d checkpoint `holdout-L10-G1024`: retained raw attempts and hash-bound results under evidence/hw-gift-1d/. No external issue or merge.
+
+- HW-GIFT-1d checkpoint `holdout-L10-G4096`: retained raw attempts and hash-bound results under evidence/hw-gift-1d/. No external issue or merge.
+
+- HW-GIFT-1d checkpoint `holdout-L10-G16384`: retained raw attempts and hash-bound results under evidence/hw-gift-1d/. No external issue or merge.
+
+- HW-GIFT-1d checkpoint `holdout-L10-G65536`: retained raw attempts and hash-bound results under evidence/hw-gift-1d/. No external issue or merge.
+
+- HW-GIFT-1d checkpoint `holdout-L10-G262144`: retained raw attempts and hash-bound results under evidence/hw-gift-1d/. No external issue or merge.
+
+- HW-GIFT-1d checkpoint `holdout-L10-G524288`: retained raw attempts and hash-bound results under evidence/hw-gift-1d/. No external issue or merge.
+
+- HW-GIFT-1d checkpoint `holdout-L19-G256`: retained raw attempts and hash-bound results under evidence/hw-gift-1d/. No external issue or merge.
+
+- HW-GIFT-1d checkpoint `holdout-L19-G1024`: retained raw attempts and hash-bound results under evidence/hw-gift-1d/. No external issue or merge.
+
+- HW-GIFT-1d checkpoint `holdout-L19-G4096`: retained raw attempts and hash-bound results under evidence/hw-gift-1d/. No external issue or merge.
+
+- HW-GIFT-1d checkpoint `holdout-L19-G16384`: retained raw attempts and hash-bound results under evidence/hw-gift-1d/. No external issue or merge.
+
+- HW-GIFT-1d checkpoint `holdout-L19-G65536`: retained raw attempts and hash-bound results under evidence/hw-gift-1d/. No external issue or merge.
+
+- HW-GIFT-1d checkpoint `holdout-L19-G262144`: retained raw attempts and hash-bound results under evidence/hw-gift-1d/. No external issue or merge.
+
+- HW-GIFT-1d checkpoint `holdout-L19-G524288`: retained raw attempts and hash-bound results under evidence/hw-gift-1d/. No external issue or merge.
+
+- HW-GIFT-1d checkpoint `audits`: retained raw attempts and hash-bound results under evidence/hw-gift-1d/. No external issue or merge.
+
+- HW-GIFT-1d checkpoint `report-bindings`: retained raw attempts and hash-bound results under evidence/hw-gift-1d/. No external issue or merge.
+
+### HW-GIFT-1d complete — 2026-11-25
+
+- Draft PR #93, branch hw-gift-1d. Unchanged CALIBRATION-only first commit 2d02a8b; training-only X=1024 B frozen by cc8dd71 before conditional builds or silesia observations. All 21 training A/B, 21 new enwik8 A/C and 21 silesia A/B/C cells are checkpointed and pushed through db3ec83; forecasts/source/admission rules were not retuned.
+- Independent result: P1 MISS (nohint/original 329174338/348459318 ns, not >=3x); P2 MISS in four L10 64/256 KiB corpus cells (faster nohint, larger archives); P3 HIT, all 42 actual conditional speed/byte checks pass. Kill not triggered. Maximum contemporaneous C/A is 9255296957/8573937992 on enwik8 and 37201086505/35311973532 on silesia. C is larger than original in 14/42 cells; no universal frame boundary preserving both size and speed is established.
+- All 320 logical pairs/triples including five AA controls were CLEAN: 0 retaken, 0 LOADED. 735 grid compression observations plus 10 AA; decode once per variant/cell/phase stays observational. All raw attempts, load boundaries and other-core /proc/stat deltas retained. Transport GitHub 500/one completed SSH-channel stall caused delivery retries only; COMPLETE data replayed without new measurements.
+- Separate native proof PASS: 127 actual archive paths, 85 unique contents, 1593946 frame decodes, 9861078784 restored bytes, 42 exact conditional-policy file comparisons. It rebuilds its oracle, performs two tiny known-answer correctness encodes, and reads no timing clock. Legitimate terminal empty frames are fully decoded/XXH checked. Native proof SHA 0cb52524d54879066fd2eb205ee41cbf3d9dcf1e81f45fc8f51a95c0b984c776.
+- Saved-data final audit PASS with native proof and renderer hash bindings, 134 private artifacts hashed on ace-core, no unavailable paths. Audit SHA c1a263b73198bb4c10ff2247a2a3ef0e9c74ffb2eaec53c8fbdd65c741579e11. RESULTS SHA af3781c36d32949e5d359029004c80d169ea7e30fc4e4173f3a8033859cc903c; issue draft SHA 18fd2698e5dcfe96391e0a7cb0cabc03df9cf75df4633a7056af879b5d7e2006; CSV SHA d74a339310bec9e242a6463b419d1185781417eed82d3c1844fcf0d282c88f73. Independent number/text review passed with explicit negative goal-premise and NOT TRIGGERED Kill label.
+- Publication integrity and site build PASS on clean Linux checkout (435 frozen records). Windows-only validation sees existing results.jsonl CRLF conversion; Git blob and normalized worktree are identical and were not changed. Old HW-GIFT-1/1b/1c evidence stays unchanged. No external zstd issue/comment or PR merge. Next bounded action is owner review of the completed draft and its density trade-offs; additional measurements are not needed to reject the initial free-win premise on this grid.

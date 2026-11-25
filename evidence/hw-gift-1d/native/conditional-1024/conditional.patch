@@ -1,0 +1,5 @@
+--- original/zstdseek_compress.c
++++ conditional/zstdseek_compress.c
+@@ -234 +234 @@
+-    ZSTD_CCtx_setParameter(zcs->cstream, ZSTD_c_srcSizeHint, (int)zcs->maxFrameSize);
++    ZSTD_CCtx_setParameter(zcs->cstream, ZSTD_c_srcSizeHint, zcs->maxFrameSize < 1024 ? (int)zcs->maxFrameSize : 0);
