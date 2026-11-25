@@ -1948,3 +1948,5 @@ measurements.
 - HW-GIFT-1e checkpoint `v154-prefix-L10-G1024`: retained raw attempts and hash-bound results under evidence/hw-gift-1e/. No external issue or merge.
 
 - HW-GIFT-1e checkpoint `v154-prefix-L3-G256`: retained raw attempts and hash-bound results under evidence/hw-gift-1e/. No external issue or merge.
+
+- HW-GIFT-1e checkpoint `v157-full-L10-G1024`: retained raw attempts and hash-bound results under evidence/hw-gift-1e/. No external issue or merge.
