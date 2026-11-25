@@ -45,6 +45,9 @@ Every produced archive must restore bit for bit, including every frame/checksum
 and the legitimate terminal empty frame when the writer emits one. Do not force
 frame count to ceil(N/G). Preserve actual archive bytes and SHA in private state
 and bind them in public receipts. No warmup observations are discarded.
+Identical untimed helpers appended to the common bridge verify every seek-table
+XXH64 against source slices and separately validate/decode a terminal empty frame.
+They execute after the compression intervals; the retained encode loop is unchanged.
 
 ## Primary gates, auxiliary grid and order
 

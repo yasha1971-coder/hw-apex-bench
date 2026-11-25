@@ -37,6 +37,31 @@ LOCK = '/run/lock/ovh-bench.lock'
 VARIANTS = ('A', 'B')
 HINT_LINES = (b'    assert(zcs->maxFrameSize < INT_MAX);\n'
               b'    ZSTD_CCtx_setParameter(zcs->cstream, ZSTD_c_srcSizeHint, (int)zcs->maxFrameSize);\n')
+UNTIMED_CHECKS = b'''
+#include "xxhash.h"
+static unsigned probe_le32(const unsigned char *p) {
+    return (unsigned)p[0] | ((unsigned)p[1]<<8) | ((unsigned)p[2]<<16) | ((unsigned)p[3]<<24);
+}
+size_t probe_seek_checksums(const void *source, size_t size, const void *table, size_t count) {
+    const unsigned char *src = (const unsigned char *)source;
+    const unsigned char *entry = (const unsigned char *)table;
+    size_t offset = 0, i;
+    for (i=0; i<count; ++i, entry+=12) {
+        size_t amount = probe_le32(entry+4);
+        unsigned expected = probe_le32(entry+8);
+        if (amount > size-offset || (unsigned)XXH64(src+offset, amount, 0) != expected) return i+1;
+        offset += amount;
+    }
+    return offset == size ? 0 : count+1;
+}
+unsigned probe_empty_frame(const void *frame, size_t size) {
+    size_t extent = ZSTD_findFrameCompressedSize(frame, size);
+    size_t decoded;
+    if (ZSTD_isError(extent) || extent != size) return 1;
+    decoded = ZSTD_decompress(NULL, 0, frame, size);
+    return ZSTD_isError(decoded) || decoded != 0;
+}
+'''
 
 
 def check(ok, message):
@@ -161,6 +186,8 @@ def build(core, allow_create=True):
     payload = writer_payloads()
     check(setup['frozen']['source_sha256'] == {name: sha(data) for name, data in payload.items()},
           'setup frozen payload bindings differ')
+    frozen_hashes = {name: sha(data) for name, data in payload.items()}
+    payload['bridge.c'] += UNTIMED_CHECKS
     folder = STATE / 'native' / core
     library = checkout / 'lib/libzstd.a'
     cli = checkout / 'programs/zstd'
@@ -176,6 +203,7 @@ def build(core, allow_create=True):
     identity = dict(core=core, core_commit=PINS[core], protocol=protocol, instrument_sha256=file_sha(__file__),
                     setup_sha256=file_sha(setup_path), core_setup=prepared,
                     frozen_from_commit=PINS['v1.5.4'], source_sha256={name: sha(data) for name, data in payload.items()},
+                    frozen_source_sha256=frozen_hashes, untimed_checks_sha256=sha(UNTIMED_CHECKS),
                     core_headers_sha256=headers, static_library_sha256=file_sha(library),
                     cli_sha256=file_sha(cli), cli_version=cli_version,
                     bridge_source_sha256=file_sha(ROOT / 'evidence/hw-gift-1c/timing.py'),
@@ -286,6 +314,8 @@ def load(core, variant):
                'ZSTD_seekable_create': ([], ptr), 'ZSTD_seekable_free': ([ptr], size),
                'ZSTD_seekable_initBuff': ([ptr, ptr, size], size),
                'ZSTD_seekable_decompress': ([ptr, ptr, size, ct.c_ulonglong], size)}
+    methods.update(probe_seek_checksums=([ptr, size, ptr, size], size),
+                   probe_empty_frame=([ptr, size], ct.c_uint))
     for name, (arguments, returns) in methods.items():
         fn = getattr(lib, name)
         fn.argtypes, fn.restype = arguments, returns
@@ -377,6 +407,17 @@ def evaluate(cell, order, clock=None, input_override=None):
             check(restored == raw, 'archive does not restore bit for bit')
             data = ct.string_at(slot['encoded'], slot['length'])
             wire = header(data, len(raw), cell['g'])
+            table_start = len(data) - wire['seek_table_bytes']
+            entries = ct.cast(ct.byref(slot['encoded'], table_start+8), ct.c_void_p)
+            check(slot['lib'].probe_seek_checksums(source, len(raw), entries, wire['frame_count']) == 0,
+                  'seek-table XXH64 mismatch, including any empty terminal frame')
+            if wire['empty_terminal_frames']:
+                last = table_start + 8 + (wire['frame_count']-1)*12
+                compressed, decompressed, _ = struct.unpack_from('<III', data, last)
+                check(decompressed == 0 and slot['lib'].probe_empty_frame(
+                    ct.cast(ct.byref(slot['encoded'], table_start-compressed), ct.c_void_p), compressed) == 0,
+                    'terminal zero-output entry is not one valid empty zstd frame')
+            wire.update(seek_checksums_verified=True, empty_terminal_verified=True)
             library = STATE / 'native' / cell['core'] / f"{slot['variant']}.so"
             key = sha(packed(dict(input_sha256=input_sha, level=cell['level'], g=cell['g'],
                                  core=cell['core'], variant=slot['variant'], library_sha256=file_sha(library))))
