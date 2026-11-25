@@ -1934,3 +1934,5 @@ measurements.
 - HW-GIFT-1e checkpoint `method-old`: retained raw attempts and hash-bound results under evidence/hw-gift-1e/. No external issue or merge.
 
 - HW-GIFT-1e checkpoint `primary-old`: retained raw attempts and hash-bound results under evidence/hw-gift-1e/. No external issue or merge.
+
+- HW-GIFT-1e checkpoint `method-new`: retained raw attempts and hash-bound results under evidence/hw-gift-1e/. No external issue or merge.
