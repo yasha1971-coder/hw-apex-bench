@@ -1782,3 +1782,5 @@ measurements.
 - HW-GIFT-1d checkpoint `prepare`: retained raw attempts and hash-bound results under evidence/hw-gift-1d/. No external issue or merge.
 
 - HW-GIFT-1d checkpoint `method`: retained raw attempts and hash-bound results under evidence/hw-gift-1d/. No external issue or merge.
+
+- HW-GIFT-1d checkpoint `train-L3-G256`: retained raw attempts and hash-bound results under evidence/hw-gift-1d/. No external issue or merge.
