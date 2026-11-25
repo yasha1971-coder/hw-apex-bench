@@ -1697,3 +1697,5 @@ measurements.
 - HW-GIFT-1c checkpoint `enwik8-L3-131072`: 763 frames match pyzstd; complete native restore and XXH64 pass; remainder 3052 bytes is exactly four checksum bytes per frame. Raw files and receipts are retained in evidence/hw-gift-1c/.
 
 - HW-GIFT-1c checkpoint `enwik8-L3-262144`: 382 frames match pyzstd; complete native restore and XXH64 pass; remainder 1528 bytes is exactly four checksum bytes per frame. Raw files and receipts are retained in evidence/hw-gift-1c/.
+
+- HW-GIFT-1c checkpoint `enwik8-L3-524288`: 191 frames match pyzstd; complete native restore and XXH64 pass; remainder 764 bytes is exactly four checksum bytes per frame. Raw files and receipts are retained in evidence/hw-gift-1c/.
