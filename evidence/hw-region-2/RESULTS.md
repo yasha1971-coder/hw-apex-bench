@@ -4,7 +4,7 @@
 
 **COMPLETE.** All 31 corpora / 186 registered main rows passed the resumed saved-data audit; one supplementary chr1 reader row is separately audited; the original load stop remains retained.
 
-The retained [original Kill](RESULTS-before-casefix.md) and its captures remain unchanged. The owner-authorized one-line [casefix](lib2bit-casefix.patch) is the only lib2bit source change; no Kent/UCSC implementation or binary is used. [Full casefix stage report](casefix/RESULTS.md).
+The retained [original Kill](RESULTS-before-casefix.md) and its captures remain unchanged. For the 186 registered rows, the owner-authorized one-line [casefix](lib2bit-casefix.patch) is the only lib2bit source change; the separate reader addition also changes the initial mask lookup; no Kent/UCSC implementation or binary is used. [Full casefix stage report](casefix/RESULTS.md).
 
 The unchanged reader’s case discrepancy from FASTA is limited to N inside soft-mask runs: full-archive N/mask overlap analysis identifies 181 such positions on chr1, first chr1:121757469 (one-based); the retained original native witness confirms n→N.
 
@@ -14,7 +14,7 @@ Equivalent rows return the same 16,384 case-preserved bases. ACEAPEX 2.6.5 inter
 
 Main-cell protocol: a fresh process, one persistent handle, the same 12 warmups and 1000 saved starts mapped without resampling. Query timers include malloc-returning API work and ACE/zstd FAI span calculation, decode and newline removal. Validation, capture and free are outside. Open time is a separate single observation (n=1), excluding preload; RSS delta is after-open minus before-open, and peak RSS is the entire process including reference preparation, capture buffers, archive prefault and reader allocations. Neither is library-exclusive memory.
 
-Recorded timing boundaries: **2026-11-26T17:40:09.671004+00:00 → 2026-11-26T19:03:40.406329+00:00 UTC**; ace-core, AMD EPYC 4344P 8-Core Processor, kernel 5.15.0-163-generic, governor schedutil, pinned core 0. Dates come from retained start/end receipts.
+Registered-grid timing boundaries: **2026-11-26T17:40:09.671004+00:00 → 2026-11-26T19:03:40.406329+00:00 UTC**; ace-core, AMD EPYC 4344P 8-Core Processor, kernel 5.15.0-163-generic, governor schedutil, pinned core 0. Dates come from retained start/end receipts.
 
 ## Why chr1 differs from the T2T windows
 
@@ -71,7 +71,7 @@ Real archive boundaries were selected by metadata alone; the .2bit control uses 
 
 The fixed reader passed the mandatory repeated lowercase-n witness and whole sampled grid before any timer.
 
-## Complete same-run table
+## Registered table and separate reader addition
 
 | Corpus | Reader | Stored B | p50 µs | p99 µs | Open µs (n=1) | Open RSS delta KiB | Peak whole-process KiB |
 |---|---|---:|---:|---:|---:|---:|---:|
