@@ -1,0 +1,12 @@
+diff --git a/2bit.c b/2bit.c
+--- a/2bit.c
++++ b/2bit.c
+@@ -152,7 +152,7 @@
+         }
+         width += pos;
+         for(; pos < width; pos++) {
+-            if(seq[pos] != 'N') seq[pos] = tolower(seq[pos]);
++            seq[pos] = tolower(seq[pos]);
+         }
+     }
+ }
