@@ -258,9 +258,12 @@ def render_region_coordinates():
     require(audit_path.resolve().is_relative_to(base.resolve()) and audit_path.is_file()
             and hashlib.sha256(audit_path.read_bytes()).hexdigest() == value['audit']['sha256'], 'coordinate audit changed')
     audit = json.loads(audit_path.read_bytes())
-    require(value['schema'] == 'hw-region-2-casefix-summary-v1' and audit['status'] == 'PASS' and audit['stage'] == 'all'
+    require(value['schema'] == 'hw-region-2-casefix-summary-v1' and audit['status'] == 'PASS' and audit['stage'] in ('all', 'resumed-all')
             and audit['counts']['cases'] == 31 and audit['counts']['rows'] == 186
             and value['renderer_sha256'] == hashlib.sha256((base / 'report.py').read_bytes()).hexdigest(), 'coordinate summary is not complete/audited')
+    if audit['stage'] == 'resumed-all':
+        require(audit.get('completion') == 'COMPLETE' and audit.get('full_comparison_complete') is True
+                and audit.get('integrity_only') is False, 'resumed coordinate comparison remains incomplete')
     profiles = ('aceapex', 'zstd_seekable', 'bgzip', 'twobit_casefix_mask1')
     require(set(value['primary']) == set(profiles), 'four equivalent coordinate rows required')
     cells = []
