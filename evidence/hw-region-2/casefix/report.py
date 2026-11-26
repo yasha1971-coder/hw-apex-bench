@@ -280,6 +280,7 @@ def render(value):
     text = [SIGNATURE, '', '# HW-REGION-2 — casefix continuation', '',
             '**' + value['status'] + '.** ' + value['reason'], '',
             'The retained [original Kill](../RESULTS-before-casefix.md) and its captures remain unchanged. The owner-authorized one-line [casefix](../lib2bit-casefix.patch) is the only lib2bit source change; no Kent/UCSC implementation or binary is used. [Full casefix stage report](RESULTS.md).', '',
+            'The unchanged lib2bit discrepancy from FASTA is limited to N inside soft-mask runs: 181 positions on chr1, first chr1:121757469 (one-based).', '',
             'Scope: ace-core / AMD EPYC 4344P, one timed CPU0 and T=1, archive/index files warm in RAM/page cache; controller/build/correctness CPU15. These finite sampled coordinate results do not establish cross-host or exhaustive reader correctness. The terminal-packed-byte limitation remains unpatched; the frozen sampled grid has no terminal or last-packed-byte endpoint.', '',
             'Equivalent rows return the same 16,384 case-preserved bases. ACEAPEX 2.6.5 interactive L2 (LIT=65536/FSE=4096), zstd 1.5.7 L3 and BGZF/HTSlib 1.24 L6 use 16 KiB FASTA blocks/frames plus all required FAI/GZI bytes. The .2bit-casefix row uses storeMasked=1. Original masked and case-folded diagnostics are excluded from P1–P3 and fastest/smallest decisions.', '',
             'Main-cell protocol: a fresh process, one persistent handle, the same 12 warmups and 1000 saved starts mapped without resampling. Query timers include malloc-returning API work and ACE/zstd FAI span calculation, decode and newline removal. Validation, capture and free are outside. Open time is a separate single observation (n=1), excluding preload; RSS delta is after-open minus before-open, and peak RSS is the entire process including reference preparation, capture buffers, archive prefault and reader allocations. Neither is library-exclusive memory.', '']
@@ -307,7 +308,7 @@ def render(value):
         text += [f"| P1 (65%) | 20 × {p1['ACE_stored_bytes']} ≤ 19 × {p1['twobit_stored_bytes']}; ACE/.2bit = {p1['exact_ratio']} | {p1['verdict']} |",
                  f"| P2 (75%) | 4 × {p2['casefix_p50_ns']} ≤ {p2['ACE_p50_ns']}; .2bit/ACE p50 = {p2['exact_ratio']} | {p2['verdict']} |",
                  f"| P3 (70%) | .2bit-casefix p50 < ACE p50 in {p3['wins']}/30 windows; required ≥28 | {p3['verdict']} |", '',
-                 'The full chr1 has 181 lowercase n bases encoded by overlapping N/soft-mask intervals; the first is coordinate 121757469 one-based (121757468 zero-based). The original Kill demonstrated n→N; the fixed reader passed the mandatory repeated witness and whole sampled grid before any timer.', '',
+                 'The fixed reader passed the mandatory repeated lowercase-n witness and whole sampled grid before any timer.', '',
                  '## Complete same-run table', '',
                  '| Corpus | Reader | Stored B | p50 µs | p99 µs | Open µs (n=1) | Open RSS delta KiB | Peak whole-process KiB |',
                  '|---|---|---:|---:|---:|---:|---:|---:|']
