@@ -154,7 +154,7 @@ DOI: [10.5281/zenodo.22713364](https://doi.org/10.5281/zenodo.22713364).
     return text.replace('published 435 records', f'published {len(rows)} records')
 
 
-def render_region_primary():
+def render_region_primary(rows):
     """A separate retained run; never insert it into the 435 publication rows."""
     import json
     from fractions import Fraction
@@ -168,14 +168,25 @@ def render_region_primary():
     if (case.get('schema'), case.get('status'), case.get('case_id'), case.get('corpus'), case.get('g')) != (
             'hw-region-1-case-v1', 'COMPLETE', 'chr1-g16384', 'chr1', 16384):
         raise ValueError('HW-REGION-1 primary presentation scope changed')
-    labels = (('aceapex', 'ACEAPEX tag v2.6.5 interactive (L2)'),
-              ('zstd_seekable', 'zstd-seekable 1.5.7 (L3)'),
-              ('bgzip', 'BGZF / HTSlib 1.24 (L6)'))
-    if set(case['formats']) != {key for key, _ in labels}:
+    labels = (('aceapex', 'ACEAPEX tag v2.6.5 / ce6b674 interactive (L2)',
+               'aceapex-interactive', 'ACEAPEX 1b13df3 interactive (L2)'),
+              ('zstd_seekable', 'zstd-seekable 1.5.7 (L3)',
+               'zstd-seekable', 'zstd-seekable 1.5.7 (L3)'),
+              ('bgzip', 'BGZF / HTSlib 1.24 (L6)',
+               'bgzip+htslib', 'BGZF / HTSlib 1.19 (L6)'))
+    if set(case['formats']) != {item[0] for item in labels}:
         raise ValueError('HW-REGION-1 requires all three formats')
-    table = ['| Codec / source version | Stored bytes incl. indexes | Ratio | p50 ms | p99 ms | Mean amplification |',
-             '|---|---:|---:|---:|---:|---:|']
-    for key, label in labels:
+    table = ['| Date / scope | Codec / source version | g | Stored bytes incl. indexes | Ratio | p50 / p99 ms | Mean amplification |',
+             '|---|---|---:|---:|---:|---:|---:|']
+    def historical(codec, label):
+        ratio = one(rows, codec, 'ratio')
+        block = ('≤ ' if codec == 'bgzip+htslib' else '') + str(ratio['configuration']['block'] // 1024) + ' KiB'
+        stored = ratio['archive_bytes'] + ratio.get('index_bytes', 0)
+        p50, p99, amp = (one(rows, codec, metric)['value']
+                         for metric in ('region_p50', 'region_p99', 'amplification'))
+        return (f"| 2026-09-10 · historical | {label} | {block} | {stored:,} | {ratio['value']:.6f} | "
+                f"{p50:.6f} / {p99:.6f} | {amp:.6f} |")
+    for key, label, old_codec, old_label in labels:
         row = case['formats'][key]
         if (row['input_bytes'], row['effective_g'], row['requested_bytes_total']) != (253935557, 16384, 1000 * 16384):
             raise ValueError('HW-REGION-1 input/granularity/trace changed')
@@ -183,8 +194,10 @@ def render_region_primary():
                 or Fraction(row['amplification']) != Fraction(row['decoded_bytes_total'], row['requested_bytes_total'])
                 or not all(type(row[k]) is int and row[k] > 0 for k in ('p50_ns', 'p99_ns'))):
             raise ValueError('HW-REGION-1 primary totals differ')
-        table.append(f"| {label} | {row['stored_bytes']:,} | {float(Fraction(row['ratio'])):.6f} | "
-                     f"{row['p50_ns'] / 1000000:.6f} | {row['p99_ns'] / 1000000:.6f} | {float(Fraction(row['amplification'])):.6f} |")
+        table.append(historical(old_codec, old_label))
+        table.append(f"| 2026-11-26 · HW-REGION-1 | {label} | 16 KiB | {row['stored_bytes']:,} | {float(Fraction(row['ratio'])):.6f} | "
+                     f"{row['p50_ns'] / 1000000:.6f} / {row['p99_ns'] / 1000000:.6f} | {float(Fraction(row['amplification'])):.6f} |")
+    table.append(historical('aceapex-dense', 'ACEAPEX 1b13df3 dense (L2)'))
     ace, zstd, bgzf = (case['formats'][key] for key in ('aceapex', 'zstd_seekable', 'bgzip'))
     if not (ace['p50_ns'] < min(zstd['p50_ns'], bgzf['p50_ns'])
             and ace['p99_ns'] > max(zstd['p99_ns'], bgzf['p99_ns'])
@@ -194,12 +207,17 @@ def render_region_primary():
     relative = Fraction(ace['p50_ns'], zstd['p50_ns'])
     return ("[written by ChatGPT (AI) at the author's request; checked by the author]\n\n"
             "## Same-run chr1 refresh — 2026-11-26\n\n"
-            "HW-REGION-1: full hg38 chr1 FASTA (253,935,557 bytes), g=R=16 KiB, 1,000 uniform requests per format. "
-            "One pinned core on ace-core (AMD EPYC 4344P), persistent library handles, archive in RAM.\n\n"
+            "Full hg38 chr1 FASTA (253,935,557 bytes), R=16 KiB, archive in RAM; ratio = input / stored bytes including required indexes. "
+            "Each date has its own host, source, configuration and request sample.\n\n"
+            "2026-09-10: Intel Xeon 6973P-C, 200 requests per configuration; ACEAPEX 1b13df3 uses the one-shot "
+            "`aceapex_decompress_region` API. BGZF g is a 64 KiB ceiling; ACE dense uses g=256 KiB.\n\n"
+            "2026-11-26 (HW-REGION-1): one pinned core on ace-core (AMD EPYC 4344P), 1,000 uniform requests per format, "
+            "persistent library handles, g=16 KiB for all three formats; ACE interactive LIT=65,536 B, FSE=4,096 B.\n\n"
             + '\n'.join(table) + '\n\n'
-            "ACEAPEX has lower p50 and fewer stored bytes here; its p99 and amplification are higher than both alternatives. "
-            f"Its p50/zstd ratio is {float(relative):.6f}: outcome (a), so the older chr1 ranking is stale for this scope.\n\n"
-            "[Run report](evidence/hw-region-1/RESULTS.md) · [Saved primary cell](" + source + ") · "
+            f"Within 2026-11-26, ACEAPEX / zstd: p50 = {float(relative):.6f}; "
+            f"p99 = {ace['p99_ns'] / zstd['p99_ns']:.6f}; stored bytes = {ace['stored_bytes'] / zstd['stored_bytes']:.6f}; "
+            f"amplification = {float(Fraction(ace['amplification']) / Fraction(zstd['amplification'])):.6f}.\n\n"
+            "[Historical rows](results.jsonl) · [Run report](evidence/hw-region-1/RESULTS.md) · [Saved primary cell](" + source + ") · "
             "[Pinned versions, CLI/header strings and build metadata](evidence/hw-region-1/setup.json). "
             "Historical rows below retain their original sources and hosts.\n\n")
 
@@ -211,7 +229,7 @@ def render_snapshots(rows):
     body = legacy.split('## Matched-g refresh:', 1)[1].split('[All nine axes', 1)[0]
     body = '## Matched-g refresh:' + body
     body = body.replace('| Codec | Granularity | Ratio | p50 ms | p99 ms | Amplification |',
-                        "[written by ChatGPT (AI) at the author's request; checked by the author]\n\n"
+                        render_region_primary(rows) + "[written by ChatGPT (AI) at the author's request; checked by the author]\n\n"
                         '## Historical chr1 snapshot — 2026-09-10 (ACEAPEX before v2.1.0)\n\n'
                         '| Codec | Granularity | Ratio | p50 ms | p99 ms | Amplification |', 1)
     def rebase(match):
@@ -219,7 +237,7 @@ def render_snapshots(rows):
         if re.match(r'(?:[a-z]+:|#|/)', target):
             return match.group(0)
         return '](' + posixpath.relpath(target, 'docs/RESULTS') + ')'
-    return 'ACEAPEX is developed by the author of this benchmark.\n\n' + re.sub(r'\]\(([^\s)]+)\)', rebase, render_region_primary() + body)
+    return 'ACEAPEX is developed by the author of this benchmark.\n\n' + re.sub(r'\]\(([^\s)]+)\)', rebase, body)
 
 
 def render_readme(rows):
@@ -241,7 +259,7 @@ def render_readme(rows):
             "- Four development corpora; results do not establish general workload coverage.\n"
             "- No concurrent workload is measured.\n"
             "- ACEAPEX is developed by the author of this benchmark.\n\n"
-            + render_region_primary() +
+            + render_region_primary(rows) +
             "## Example pick frontier — chrX\n\n"
             "Retained PR #79 evidence (accepted attempt 2), CPU, 16 KiB reads; not a new benchmark.\n"
             "★ marks nondominated rows across all codecs: higher ratio and lower p50. It is not a universal winner.\n\n"
