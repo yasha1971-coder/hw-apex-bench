@@ -130,6 +130,18 @@ def unchanged_parent():
     require(100 * ace['stored_bytes'] <= 95 * fixed['stored_bytes'] and 4 * fixed['p50_ns'] > ace['p50_ns']
             and wins == 30 and fixed['p50_ns'] == 88965, 'original P1/P2/P3 or fixed baseline changed')
     require([value['forecasts'][p]['verdict'] for p in ('P1', 'P2', 'P3')] == ['HIT', 'MISS', 'HIT'], 'parent forecast labels changed')
+    summary = load(BASE / 'summary.json')
+    published = {(r['corpus'], r['profile']): r for r in summary['rows']}
+    require(summary['status'] == 'COMPLETE' and len(summary['rows']) == len(published) == 186
+            and set(published) == set(rows) and summary['counts'] == value['counts'], 'original renderer input scope/counts differ')
+    for key, row in rows.items():
+        saved = published[key]
+        require(all(saved[field] == row[field] for field in ('stored_bytes', 'p50_ns', 'p99_ns', 'open_ns', 'peak_process_rss_kib'))
+                and saved['open_rss_delta_kib'] == row['rss_after_open_kib'] - row['rss_before_open_kib'], 'original summary numeric row differs from audited raw evidence')
+    require([summary['forecasts'][p]['verdict'] for p in ('P1', 'P2', 'P3')] == ['HIT', 'MISS', 'HIT']
+            and summary['forecasts']['P3']['wins'] == 30, 'original summary forecasts changed')
+    for profile, row in summary['primary'].items():
+        require(row == published['chr1', profile], 'original primary summary disagrees with its complete table')
     HOST = tuple(value['host'])
     return value, anchors, fixed
 
