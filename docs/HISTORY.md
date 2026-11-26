@@ -2016,3 +2016,5 @@ measurements.
 - HW-REGION-1 checkpoint `fit`: retained raw attempts and hash-bound results under evidence/hw-region-1/. No external issue or merge.
 
 - HW-REGION-1 checkpoint `case-case-chr1-g4096`: retained raw attempts and hash-bound results under evidence/hw-region-1/. No external issue or merge.
+
+- HW-REGION-1 checkpoint `case-case-chr1-g65536`: retained raw attempts and hash-bound results under evidence/hw-region-1/. No external issue or merge.
