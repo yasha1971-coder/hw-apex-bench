@@ -5,6 +5,7 @@ All reader comparisons use retained public gzip captures. Private artifact
 paths are identities only and need not exist on the auditing machine.
 """
 import argparse
+from datetime import datetime, timedelta, timezone
 from decimal import Decimal, localcontext
 from fractions import Fraction
 import gzip
@@ -24,6 +25,7 @@ PIN = '58e20daa898a6fc338eae82e5d2ef7108d4fc07f'
 LOCK = '/run/lock/ovh-bench.lock'
 R = 16384
 BINDS, UNIT_COUNTS, BLOCKED_UNITS, CAPTURE_CACHE, EXPECTED_IDENTITIES = {}, {}, {}, {}, {}
+PENDING_UNITS = {}
 HOST = None
 SOURCE_MAP = None
 NATIVE = None
@@ -546,10 +548,11 @@ def checked(reference, unit_id, profile, case, trace, fresh=False, probe=False):
     return value
 
 
-def timed_unit(reference, kind, unit_id, profile, case, trace, fresh=False, probe=False, allow_blocked=False):
-    path = file_ref(reference); value = load(path)
+def timed_unit(reference, kind, unit_id, profile, case, trace, fresh=False, probe=False, allow_blocked=False, pending_value=None):
+    path = HERE / 'units' / kind / unit_id / (profile + '.json') if pending_value is not None else file_ref(reference)
+    value = pending_value if pending_value is not None else load(path)
     require(path == HERE / 'units' / kind / unit_id / (profile + '.json') and value['schema'] == 'hw-region-2-casefix-unit-v1'
-            and value['status'] in ('CLEAN', 'BLOCKED: load')
+            and value['status'] in (('WAITING',) if pending_value is not None else ('CLEAN', 'BLOCKED: load'))
             and value['identity'] == expected_identity('latency', profile, case, trace, fresh, probe), 'timed unit identity differs')
     attempts = value['attempts']; require(1 <= len(attempts) <= 3, 'three-attempt budget exceeded')
     raw_folder = HERE / 'raw' / kind / unit_id / profile
@@ -581,6 +584,12 @@ def timed_unit(reference, kind, unit_id, profile, case, trace, fresh=False, prob
             if attempt['status'] == 'CLEAN':
                 selected = observed
     if selected is None:
+        if pending_value is not None:
+            require(value['status'] == 'WAITING' and value['selected'] is None and len(attempts) < 3
+                    and all(item['status'] == 'LOADED' for item in attempts), 'pending budget must contain only one/two retained LOADED attempts')
+            PENDING_UNITS[path.relative_to(HERE).as_posix()] = dict(unit=None, kind=kind, unit_id=unit_id, profile=profile,
+                selected=None, attempts=blocked_attempts, worker_starts=worker_starts, query_clock_calls=query_clocks, open_clock_calls=open_clocks)
+            return None
         require(value['status'] == 'BLOCKED: load' and value['selected'] is None and len(attempts) == 3
                 and all(item['status'] == 'LOADED' for item in attempts), 'BLOCKED requires exactly three LOADED attempts')
         BLOCKED_UNITS[path.relative_to(HERE).as_posix()] = dict(unit=reference, kind=kind, unit_id=unit_id, profile=profile,
@@ -724,7 +733,208 @@ def method_stage(setup, admission, plan):
     return dict(AA=aa_result, boundaries=boundary_result)
 
 
-def main_stage(setup, checkpoint=False):
+RESUME_ALIAS = dict(corpus='t2t-15', profile='twobit_original_mask1', unit_id='t2t-15-resume-1')
+
+
+def here_ref(path):
+    return dict(path=path.relative_to(HERE).as_posix(), sha256=sha(path))
+
+
+def utc_stamp(value):
+    require(isinstance(value, str), 'missing UTC timestamp')
+    result = datetime.fromisoformat(value.replace('Z', '+00:00'))
+    require(result.tzinfo is not None and result.utcoffset() == timedelta(0), 'timestamp is not UTC')
+    return result
+
+
+def resume_authorization(setup):
+    path = HERE / 'resume/authorization.json'; auth = load(path)
+    require(auth['schema'] == 'hw-region-2-casefix-resume-authorization-v1' and auth['status'] == 'AUTHORIZED'
+            and auth['max_attempts'] == 3 and auth['poll_interval_seconds'] == 300 and auth['alias'] == RESUME_ALIAS,
+            'resume authorization/budget/sole alias differs')
+    require(file_ref(auth['protocol']) == HERE / 'RESUME_PROTOCOL.md' and file_ref(auth['controller']) == HERE / 'resume.py'
+            and auth['protocol_sha256'] == auth['protocol']['sha256'] and auth['controller_sha256'] == auth['controller']['sha256'],
+            'resume source bindings differ')
+    quote = 'T2T-15: 3 попытки LOADED из-за постороннего cc1plus ~99 % CPU; выдан новый бюджет 3 попытки для того же прохода'
+    require(quote in (HERE / 'RESUME_PROTOCOL.md').read_text(encoding='utf-8'), 'exact owner authorization missing')
+    require(all(isinstance(auth[k], str) and len(auth[k]) == 40 and all(c in '0123456789abcdef' for c in auth[k])
+                for k in ('protocol_commit', 'controller_commit', 'initial_head')), 'resume commit provenance missing')
+    require(auth['protocol_commit'] == 'ae84313194d36a4e5fd61e98383088408f43fe09', 'wrong owner-authorized resume protocol commit')
+    require(auth['core_source_sha256'] == SOURCE_MAP and auth['native_build_sha256'] == sha(HERE / 'native/build.json')
+            and auth['setup_sha256'] == sha(HERE / 'setup.json'), 'resume changed binaries/setup/execution cohort')
+    require(file_ref(auth['original_checkpoint']) == HERE / 'audit/checkpoint.json', 'wrong original integrity checkpoint')
+    checkpoint = json_ref(auth['original_checkpoint'])
+    require(checkpoint['schema'] == 'hw-region-2-casefix-independent-audit-v1' and checkpoint['status'] == 'PASS'
+            and checkpoint['stage'] == 'checkpoint' and checkpoint['completion'] == 'BLOCKED: load'
+            and checkpoint['counts']['cases'] == 16 and checkpoint['counts']['rows'] == 96
+            and checkpoint['counts']['timed_logical_units'] == 112 and checkpoint['counts']['attempts'] == 115,
+            'original checkpoint scope differs')
+    require(auth['retained_case_refs'] == checkpoint['case_refs'] and len(auth['retained_case_refs']) == 16,
+            'original sixteen case references changed')
+    expected_cases = [HERE / 'cases' / (c + '.json') for c in CORPORA[:16]]
+    require([file_ref(r) for r in auth['retained_case_refs']] == expected_cases, 'retained case prefix differs')
+    retained = auth['retained_clean_units']
+    expected = {'units/main/' + c + '/' + p + '.json' for c in CORPORA[:16] for p in PROFILES}
+    expected |= {'units/' + k + '/chr1/' + p + '.json' for k in ('aa-first', 'aa-second') for p in PROFILES}
+    expected |= {'units/boundary/boundary-' + p + '/' + p + '.json' for p in PROFILES[:4]}
+    require(len(retained) == 112 and {r['path'] for r in retained} == expected, 'resume must retain exactly 112 old CLEAN units')
+    for r in retained:
+        require(json_ref(r)['status'] == 'CLEAN', 'retained old CLEAN status changed')
+    # Historical numerical evidence is immutable. Auditor/renderer-only source
+    # additions are permitted; frozen execution sources remain in SOURCE_MAP.
+    old_bindings = checkpoint['source_bindings']
+    require(len({r['path'] for r in old_bindings}) == len(old_bindings), 'duplicate historical source binding')
+    for r in old_bindings:
+        old_path = (ROOT / r['path']).resolve()
+        require(old_path.is_relative_to(ROOT.resolve()), 'historical binding escaped repository')
+        metadata_code = old_path.parent == HERE and old_path.suffix == '.py' and r['path'] not in SOURCE_MAP
+        if not metadata_code:
+            require(sha(old_path) == r['sha256'], 'retained historical numerical/source bytes changed: ' + r['path'])
+    old_path = file_ref(auth['original_blocked_unit'])
+    require(old_path == HERE / 'units/main/t2t-15/twobit_original_mask1.json', 'wrong historical blocked unit')
+    case = case_stage('t2t-15', setup); trace = load(HERE / 'traces/t2t-15.json')
+    require(timed_unit(auth['original_blocked_unit'], 'main', 't2t-15', 'twobit_original_mask1', case, trace, allow_blocked=True) is None,
+            'historical blocked unit acquired a winner')
+    history = BLOCKED_UNITS.pop(auth['original_blocked_unit']['path'])
+    require(len(history['attempts']) == 3 and history['worker_starts'] == history['query_clock_calls'] == history['open_clock_calls'] == 0,
+            'old three admissions must remain excluded and never-started')
+    return dict(authorization=auth, authorization_record=here_ref(path), historical=history)
+
+
+def resumed_unit_id(corpus, profile):
+    return RESUME_ALIAS['unit_id'] if (corpus, profile) == (RESUME_ALIAS['corpus'], RESUME_ALIAS['profile']) else corpus
+
+
+def poll_boundary(value):
+    signature = tuple(value[k] for k in ('hostname', 'cpu', 'kernel', 'governor', 'pinned_core', 'host_logical_cpus'))
+    require(signature == HOST and value['hostname'] == 'ace-core' and 'AMD EPYC 4344P' in value['cpu']
+            and value['pinned_core'] == 0 and value['timed_threads'] == 1 and integer(value['nproc'], 1) and value['date_u'],
+            'resume poll host/core/governor differs')
+    utc_stamp(value['timestamp_utc'])
+    fields = value['loadavg_raw'].split(); require(len(fields) == 5, 'poll raw loadavg missing')
+    number = Decimal(fields[0])
+    require(number.is_finite() and number >= 0 and Decimal(value['load1_minus_T']) == number - 1, 'poll load1 minus T differs')
+    return number
+
+
+def resume_ledger(resumed):
+    auth = resumed['authorization']; auth_ref = resumed['authorization_record']
+    path = HERE / 'resume/ledger.json'; ledger = load(path)
+    require(ledger['schema'] == 'hw-region-2-casefix-resume-ledger-v1' and ledger['authorization'] == auth_ref
+            and ledger['original_blocked_unit'] == auth['original_blocked_unit']
+            and ledger['status'] in ('WAITING', 'READY', 'BLOCKED: load', 'ERROR', 'COMPLETE'), 'resume ledger provenance/status differs')
+    polls = ledger['polls']; consumptions = ledger['consumptions']
+    actual_polls = sorted((HERE / 'resume/polls').glob('poll-*.json'))
+    require([file_ref(r) for r in polls] == actual_polls
+            and [p.name for p in actual_polls] == [f'poll-{i:06d}.json' for i in range(1, len(polls) + 1)], 'poll sequence/coverage differs')
+    actual_tokens = sorted((HERE / 'resume/consumptions').glob('poll-*.json'))
+    require([file_ref(r) for r in consumptions] == actual_tokens, 'consumption coverage differs')
+    tokens = {p.name: (here_ref(p), load(p)) for p in actual_tokens}
+    remaining = []
+    for i, corpus in enumerate(CORPORA[16:], 16):
+        for profile in PROFILES[i % 6:] + PROFILES[:i % 6]:
+            remaining.append(dict(corpus=corpus, profile=profile, unit_id=resumed_unit_id(corpus, profile)))
+    position, cooldown, previous_end = 0, None, None
+    histories, used_receipts, alias_history = {}, set(), []
+    for index, (poll_ref, poll_path) in enumerate(zip(polls, actual_polls)):
+        poll = load(poll_path)
+        require(position < len(remaining) and poll['schema'] == 'hw-region-2-casefix-resume-poll-v1'
+                and poll['authorization'] == auth_ref and poll['target'] == remaining[position]
+                and poll['no_native_calls'] is True and poll['status'] in ('PASS', 'WAITING', 'ERROR'), 'poll target/order/authorization differs')
+        start, end = utc_stamp(poll['observed_start_utc']), utc_stamp(poll['observed_end_utc'])
+        require(start <= end and (previous_end is None or start >= previous_end)
+                and (cooldown is None or start >= cooldown), 'poll violates chronology or 300-second cooldown')
+        if poll['status'] == 'ERROR':
+            require(isinstance(poll.get('error'), str) and poll['error'] and index == len(polls) - 1,
+                    'ERROR poll lacks retained error or was followed by another observation')
+        else:
+            loads = [poll_boundary(poll[k]) for k in ('start', 'end')]
+            foreign = foreign_cpu(poll['foreign_cpu_start'])
+            require(start <= utc_stamp(poll['start']['timestamp_utc']) <= utc_stamp(poll['end']['timestamp_utc']) <= end,
+                    'poll boundary timestamps outside observation')
+            require((foreign or any(v > Decimal('2.0') for v in loads)) is (poll['status'] == 'WAITING'), 'poll admission decision differs')
+        previous_end = end
+        token_pair = tokens.pop(poll_path.name, None)
+        if token_pair is None:
+            require(poll['status'] != 'PASS' or index == len(polls) - 1, 'unused PASS poll was bypassed or polled again')
+            if poll['status'] != 'PASS':
+                cooldown = max(cooldown, end + timedelta(seconds=300)) if cooldown else end + timedelta(seconds=300)
+            continue
+        token_ref, token = token_pair
+        target = remaining[position]
+        key = ('main', target['unit_id'], target['profile'])
+        history = histories.setdefault(key, [])
+        number = len(history) + 1
+        expected_receipt = HERE / 'raw/main' / target['unit_id'] / target['profile'] / ('attempt-' + str(number)) / 'ovh-bench.json'
+        require(poll['status'] == 'PASS' and number <= 3
+                and token['schema'] == 'hw-region-2-casefix-resume-consumption-v1' and token['authorization'] == auth_ref
+                and token['poll'] == poll_ref and token['target'] == target and token['attempt_number'] == number
+                and public_path(token['receipt_path']) == expected_receipt, 'poll token reused/swapped or fourth attempt')
+        receipt = load(expected_receipt)
+        require(end <= utc_stamp(token['committed_before_attempt_utc']) <= utc_stamp(receipt['waiting_since_utc'])
+                <= utc_stamp(receipt['start']['timestamp_utc']), 'poll consumption was not retained before actual attempt')
+        ovh_receipt(receipt, expected_receipt, receipt['status'])
+        require(expected_receipt not in used_receipts, 'one receipt consumed multiple polls')
+        used_receipts.add(expected_receipt)
+        observed = expected_receipt.parent / 'observation.json'
+        item = dict(number=number, status=receipt['status'], receipt=here_ref(expected_receipt),
+                    observation=here_ref(observed) if observed.exists() else None,
+                    admission_poll=poll_ref, poll_consumption=token_ref)
+        history.append(item)
+        if target == RESUME_ALIAS:
+            alias_history = history
+        if receipt['status'] == 'CLEAN':
+            position += 1
+        else:
+            deadline = utc_stamp(receipt['end']['timestamp_utc']) + timedelta(seconds=300)
+            cooldown = max(cooldown, deadline) if cooldown else deadline
+            require(number < 3 or index == len(polls) - 1, 'poll/attempt after exhausted three-LOADED budget')
+        previous_end = utc_stamp(receipt['end']['timestamp_utc'])
+    require(not tokens, 'consumption without matching retained poll')
+    old_receipt_paths = {file_ref(a['receipt']) for a in json_ref(auth['original_blocked_unit'])['attempts']}
+    for r in auth['retained_clean_units']:
+        old_receipt_paths.update(file_ref(a['receipt']) for a in json_ref(r)['attempts'])
+    require(set((HERE / 'raw').rglob('ovh-bench.json')) == old_receipt_paths | used_receipts, 'unpolled/orphan/fourth raw attempt exists')
+    for key, history in histories.items():
+        unit_path = HERE / 'units' / key[0] / key[1] / (key[2] + '.json')
+        if unit_path.exists():
+            value = load(unit_path)
+            require(value['resume_authorization'] == auth_ref and value['attempts'] == history, 'resumed unit differs from poll-bound attempt history')
+        else:
+            require(len(history) < 3 and history[-1]['status'] == 'LOADED' and key == ('main', remaining[position]['unit_id'], remaining[position]['profile']),
+                    'finalized CLEAN/BLOCKED unit missing, or abandoned pending unit')
+    alias_path = HERE / 'units/main/t2t-15-resume-1/twobit_original_mask1.json'
+    require(ledger['resumed_unit'] == (here_ref(alias_path) if alias_path.exists() else None), 'ledger alias binding differs')
+    completed_refs = [here_ref(HERE / 'cases' / (c + '.json')) for c in CORPORA if (HERE / 'cases' / (c + '.json')).exists()]
+    require(ledger['completed_case_refs'] == completed_refs, 'ledger completed-case inventory differs')
+    target = remaining[position] if position < len(remaining) else None
+    error_path = HERE / 'resume/ERROR.json'
+    fatal_poll = bool(polls and load(actual_polls[-1])['status'] == 'ERROR')
+    require(error_path.exists() is fatal_poll, 'fatal poll error latch differs')
+    if fatal_poll:
+        require(ledger['status'] == 'ERROR' and file_ref(ledger['error']) == error_path, 'fatal poll did not stop ledger')
+        error = load(error_path); poll = load(actual_polls[-1])
+        require(error == dict(schema='hw-region-2-casefix-resume-error-v1', status='ERROR', authorization=auth_ref,
+                              reason=poll['error'], poll=polls[-1]), 'fatal poll error provenance differs')
+    if target is None:
+        require(ledger['status'] == 'COMPLETE' and ledger['next_target'] is None, 'complete ledger status differs')
+    else:
+        history = histories.get(('main', target['unit_id'], target['profile']), [])
+        require(ledger['next_target'] == dict(**target, attempts_used=len(history), max_attempts=3), 'ledger next target/budget differs')
+        exhausted = len(history) == 3
+        ready = bool(polls and load(actual_polls[-1])['status'] == 'PASS' and actual_polls[-1].name not in {p.name for p in actual_tokens})
+        require(ledger['status'] == ('ERROR' if fatal_poll else 'BLOCKED: load' if exhausted else 'READY' if ready else 'WAITING'),
+                'ledger status differs from retained attempts/polls')
+    if ledger['next_due_utc'] is not None:
+        require(cooldown is not None and utc_stamp(ledger['next_due_utc']) == cooldown, 'ledger cooldown deadline differs')
+    resumed.update(attempts_by_unit=histories, ledger=ledger, projection=dict(authorization=auth['protocol'], authorization_record=auth_ref,
+        ledger=here_ref(path), original_checkpoint=auth['original_checkpoint'], original_blocked_unit=auth['original_blocked_unit'],
+        new_budget_unit=ledger['resumed_unit'], old_loaded_attempts=3, new_attempts=len(alias_history),
+        new_loaded_attempts=sum(a['status'] == 'LOADED' for a in alias_history), new_budget_status=ledger['status']))
+    return resumed
+
+
+def main_stage(setup, checkpoint=False, resumed=None):
     rows, case_refs, main_values = [], [], {}
     actual = set((HERE / 'cases').glob('*.json'))
     planned = {HERE / 'cases' / (name + '.json') for name in CORPORA}
@@ -744,6 +954,8 @@ def main_stage(setup, checkpoint=False):
     for index, corpus in enumerate(corpora):
         path = HERE / 'cases' / (corpus + '.json')
         value = load(path); check_sources(value)
+        if resumed and index >= 16:
+            require(value['resume_authorization'] == resumed['authorization_record'], 'new case lost its resume authorization')
         start = index % len(PROFILES)
         require(value['schema'] == 'hw-region-2-casefix-case-v1' and value['status'] == 'COMPLETE' and value['corpus'] == corpus
                 and value['order'] == list(PROFILES[start:] + PROFILES[:start]) and set(value['units']) == set(PROFILES), 'main case completion/profile order differs')
@@ -753,7 +965,8 @@ def main_stage(setup, checkpoint=False):
         case = case_stage(corpus, setup); trace = load(HERE / 'traces' / (corpus + '.json'))
         profiles = {}
         for profile in PROFILES:
-            observed = timed_unit(value['units'][profile], 'main', corpus, profile, case, trace)
+            unit_id = resumed_unit_id(corpus, profile) if resumed else corpus
+            observed = timed_unit(value['units'][profile], 'main', unit_id, profile, case, trace)
             summary = observed['summary']
             fmt = case['formats']['twobit' if profile.startswith('twobit_') else profile]
             record = dict(corpus=corpus, profile=profile, byte_equivalent=SEMANTICS[profile] == 0,
@@ -767,11 +980,40 @@ def main_stage(setup, checkpoint=False):
             rows.append(record)
         main_values[corpus] = profiles
         case_refs.append(dict(path=path.relative_to(HERE).as_posix(), sha256=sha(path)))
-    expected_units = {'units/main/' + corpus + '/' + profile + '.json' for corpus in corpora for profile in PROFILES}
+    expected_units = {'units/main/' + (resumed_unit_id(corpus, profile) if resumed else corpus) + '/' + profile + '.json'
+                      for corpus in corpora for profile in PROFILES}
     expected_units |= {'units/' + part + '/chr1/' + profile + '.json' for part in ('aa-first', 'aa-second') for profile in PROFILES}
     expected_units |= {'units/boundary/boundary-' + profile + '/' + profile + '.json' for profile in PROFILES[:4]}
     expected_files = set(expected_units)
-    if checkpoint:
+    pending_raw = set()
+    if resumed:
+        expected_files.add(resumed['authorization']['original_blocked_unit']['path'])
+    if checkpoint and resumed:
+        # A resume can stop between profiles of the next corpus. These accepted
+        # units count as retained observations, but do not fabricate case rows.
+        corpus = CORPORA[len(corpora)]; start = len(corpora) % len(PROFILES)
+        case, trace = case_stage(corpus, setup), load(HERE / 'traces' / (corpus + '.json'))
+        for profile in PROFILES[start:] + PROFILES[:start]:
+            unit_id = resumed_unit_id(corpus, profile)
+            path = HERE / 'units/main' / unit_id / (profile + '.json')
+            if not path.exists():
+                raw = HERE / 'raw/main' / unit_id / profile
+                if raw.exists():
+                    pending_raw.add(raw)
+                    history = resumed['attempts_by_unit'].get(('main', unit_id, profile), [])
+                    require(history, 'orphan unfinished resumed raw unit')
+                    value = dict(schema='hw-region-2-casefix-unit-v1', status='WAITING', selected=None,
+                                 identity=expected_identity('latency', profile, case, trace, False, False), attempts=history)
+                    timed_unit(None, 'main', unit_id, profile, case, trace, pending_value=value)
+                break
+            reference = here_ref(path); expected_files.add(reference['path'])
+            observed = timed_unit(reference, 'main', unit_id, profile, case, trace, allow_blocked=True)
+            if observed is None:
+                break
+            expected_units.add(reference['path'])
+        else:
+            raise Incomplete('all profiles completed; resume controller must retain the completed corpus summary')
+    if checkpoint and not resumed:
         # Only the first profile of the next ordered corpus was attempted in
         # this retained stop; later profiles/corpora must have no hidden units.
         blocked_corpus = CORPORA[len(corpora)]
@@ -788,7 +1030,8 @@ def main_stage(setup, checkpoint=False):
     require(set(UNIT_COUNTS) == expected_units and {path.relative_to(HERE).as_posix() for path in (HERE / 'units').rglob('*.json')} == expected_files,
             'accepted/blocked timing-unit coverage differs from declared grid')
     raw_units = {path for path in (HERE / 'raw').glob('*/*/*') if path.is_dir()}
-    require(raw_units == {HERE / ('raw/' + name[len('units/'):-len('.json')]) for name in expected_files}, 'orphan/future raw timing unit exists')
+    require(raw_units == {HERE / ('raw/' + name[len('units/'):-len('.json')]) for name in expected_files} | pending_raw,
+            'orphan/future raw timing unit exists')
     main = main_values['chr1']
     ace, fixed = main['aceapex'], main['twobit_casefix_mask1']
     p1 = 100 * ace['stored_bytes'] <= 95 * fixed['stored_bytes']
@@ -829,9 +1072,29 @@ def checkpoint_accounting():
     return result
 
 
+def resume_accounting(resumed):
+    result = checkpoint_accounting()
+    pending_attempts = sum(len(v['attempts']) for v in PENDING_UNITS.values())
+    pending_retaken = sum(len(v['attempts']) > 1 for v in PENDING_UNITS.values())
+    result.update(historical_blocked_timed_logical_units=1, historical_blocked_unit_attempts=3,
+        historical_loaded_attempts=3, historical_worker_starts=0, historical_query_clock_calls=0, historical_open_clock_calls=0,
+        pending_timed_logical_units=len(PENDING_UNITS), pending_unit_attempts=pending_attempts,
+        pending_worker_starts=sum(v['worker_starts'] for v in PENDING_UNITS.values()),
+        pending_query_clock_calls=sum(v['query_clock_calls'] for v in PENDING_UNITS.values()),
+        pending_open_clock_calls=sum(v['open_clock_calls'] for v in PENDING_UNITS.values()),
+        attempts=result['attempts'] + pending_attempts + 3, retaken=result['retaken'] + pending_retaken + 1,
+        loaded_attempts=result['loaded_attempts'] + pending_attempts + 3,
+        started_timed_logical_units=result['started_timed_logical_units'] + len(PENDING_UNITS) + 1,
+        retained_original_clean_units=112, retained_original_main_rows=96,
+        unit_files=len(list((HERE / 'units').rglob('*.json'))),
+        resume_polls=len(resumed['ledger']['polls']), resume_consumed_polls=len(resumed['ledger']['consumptions']),
+        new_budget_attempts=resumed['projection']['new_attempts'], new_budget_loaded_attempts=resumed['projection']['new_loaded_attempts'])
+    return result
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--stage', choices=('setup', 'admission', 'method', 'checkpoint', 'all'), default='all')
+    parser.add_argument('--stage', choices=('setup', 'admission', 'method', 'checkpoint', 'all', 'resume-checkpoint', 'resumed-all'), default='all')
     parser.add_argument('--output', type=Path)
     args = parser.parse_args()
     result = dict(schema='hw-region-2-casefix-independent-audit-v1', stage=args.stage, saved_data_only=True, no_codecs=True, no_clocks=True,
@@ -852,8 +1115,29 @@ def main():
             result['admission'] = dict(status='PASS', grid_observations=186, grid_captured_queries=186000,
                 equivalent_profiles=4, equivalent_grid_queries=124000, diagnostic_grid_queries=62000,
                 lowercase_n_witness='PASS', synthetic_and_boundary_query_captures=8000, warmups_verified_by_frozen_worker=True)
-        if args.stage in ('method', 'checkpoint', 'all'):
+        if args.stage in ('method', 'checkpoint', 'all', 'resume-checkpoint', 'resumed-all'):
             result['method'] = method_stage(setup, admitted, plan)
+        resumed = None
+        if args.stage in ('resume-checkpoint', 'resumed-all'):
+            resumed = resume_ledger(resume_authorization(setup))
+            complete = args.stage == 'resumed-all'
+            rows, refs, forecasts = main_stage(setup, checkpoint=not complete, resumed=resumed)
+            if complete:
+                require(resumed['ledger']['status'] == 'COMPLETE' and len(refs) == 31 and len(rows) == 186,
+                        'resumed complete grid/ledger missing')
+                require(accounting()['timed_logical_units'] == 202 and accounting()['accepted_query_timing_observations'] == 206000,
+                        'resumed accepted timing count differs')
+                result.update(forecasts=forecasts, completion='COMPLETE', integrity_only=False, full_comparison_complete=True)
+            else:
+                require(len(refs) >= 16 and len(rows) == 6 * len(refs), 'resumed prefix dropped retained cases')
+                result.update(prefix_forecasts=forecasts, completion=resumed['ledger']['status'], integrity_only=True,
+                              full_comparison_complete=False, missing_corpora=list(CORPORA[len(refs):]))
+            result.update(rows=rows, case_refs=refs, resume=resumed['projection'],
+                historical_blocked_units=[resumed['historical']],
+                blocked_units=[BLOCKED_UNITS[k] for k in sorted(BLOCKED_UNITS)],
+                pending_units=[PENDING_UNITS[k] for k in sorted(PENDING_UNITS)])
+            for path in HERE.glob('*.py'):
+                sha(path)
         if args.stage == 'checkpoint':
             rows, refs, forecasts = main_stage(setup, checkpoint=True)
             count = checkpoint_accounting()
@@ -873,7 +1157,7 @@ def main():
             for path in HERE.glob('*.py'):
                 sha(path)
         check_sources()
-        counts = checkpoint_accounting() if args.stage == 'checkpoint' else accounting()
+        counts = resume_accounting(resumed) if resumed is not None else checkpoint_accounting() if args.stage == 'checkpoint' else accounting()
         result.update(status='PASS', host=HOST, counts=dict(cases=len(result.get('case_refs', [])), rows=len(result.get('rows', [])), **counts),
                       independently_compared_capture_pairs=len(CAPTURE_CACHE))
     except Incomplete as error:

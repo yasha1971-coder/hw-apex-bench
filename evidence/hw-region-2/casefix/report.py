@@ -153,6 +153,18 @@ def timing_context():
                 boundary_count=len(boundaries), **signature)
 
 
+def resumed_audit():
+    """Only an independently verified resume ledger may supersede old BLOCKED."""
+    for stage in ('resumed-all', 'resume-checkpoint'):
+        path = HERE / 'audit' / (stage + '.json')
+        if path.exists():
+            value = load(path)
+            require(value['schema'] == 'hw-region-2-casefix-independent-audit-v1'
+                    and value['stage'] == stage, 'wrong resumed audit identity')
+            return path, value
+    return None
+
+
 def state():
     if (HERE / 'KILL.json').exists():
         return 'KILL', 'Unexpected required call or string failure; no timing table is admitted.'
@@ -160,6 +172,16 @@ def state():
         path = HERE / name
         if path.exists() and load(path)['status'] != 'PASS':
             return 'METHODFAIL', name + ': ' + load(path)['status']
+    resumed = resumed_audit()
+    if resumed:
+        _, audit = resumed
+        if audit['status'] != 'PASS':
+            return 'AUDIT FAILED', 'The resumed saved-data audit has not passed.'
+        if audit['stage'] == 'resumed-all':
+            require(audit['counts']['cases'] == 31 and audit['counts']['rows'] == 186,
+                    'resumed completion requires the full 31-corpus / 186-row comparison')
+            return 'COMPLETE', 'All 31 corpora / 186 main rows passed the resumed saved-data audit; the original load stop remains retained.'
+        return audit['completion'], 'The authorized continuation remains incomplete; all earlier CLEAN data and the original load stop are retained.'
     for path in (HERE / 'units').rglob('*.json') if (HERE / 'units').exists() else []:
         if load(path).get('status') == 'BLOCKED: load':
             return 'BLOCKED: load', 'Three retained LOADED attempts; no fourth attempt or elapsed-based retry.'
@@ -181,18 +203,23 @@ def summary():
                  date_label=context['date_label'] if context else None,
                  saved_data_only=True, no_codecs=True, no_clocks=True, renderer_sha256=sha(__file__),
                  primary={}, forecasts={name: dict(verdict='NOT TESTED: ' + status) for name in ('P1', 'P2', 'P3')}, rows=[], corpus_decisions={})
-    checkpoint = status == 'BLOCKED: load' and (HERE / 'audit/checkpoint.json').exists()
+    if status in ('KILL', 'METHODFAIL', 'AUDIT FAILED'):
+        return value
+    resumed = resumed_audit()
+    checkpoint = (resumed[1]['stage'] == 'resume-checkpoint' if resumed else
+                  status == 'BLOCKED: load' and (HERE / 'audit/checkpoint.json').exists())
     if status != 'COMPLETE' and not checkpoint:
         return value
-    audit_path = HERE / ('audit/checkpoint.json' if checkpoint else 'audit/all.json'); audit = load(audit_path)
+    audit_path, audit = resumed if resumed else (HERE / ('audit/checkpoint.json' if checkpoint else 'audit/all.json'), None)
+    audit = audit if audit is not None else load(audit_path)
     completed = tuple(c for c in CORPORA if (HERE / 'cases' / (c + '.json')).exists()
                       and load(HERE / 'cases' / (c + '.json')).get('status') == 'COMPLETE') if checkpoint else CORPORA
     require(completed and completed[0] == 'chr1' and completed == CORPORA[:len(completed)], 'only the verified sequential completed prefix may be published')
     require(audit['schema'] == 'hw-region-2-casefix-independent-audit-v1' and audit['status'] == 'PASS'
-            and audit['stage'] == ('checkpoint' if checkpoint else 'all')
+            and audit['stage'] == (('resume-checkpoint' if checkpoint else 'resumed-all') if resumed else ('checkpoint' if checkpoint else 'all'))
             and audit['saved_data_only'] is True and audit['no_codecs'] is True and audit['no_clocks'] is True
             and audit['counts']['cases'] == len(completed) and audit['counts']['rows'] == 6 * len(completed), 'independent audit scope differs')
-    if checkpoint:
+    if checkpoint and not resumed:
         require(audit['completion'] == 'BLOCKED: load', 'checkpoint integrity PASS is not experiment completion')
     require(audit['source_binding_base'] == 'repository', 'unknown audit source reference domain')
     for item in audit['source_bindings']:
@@ -239,12 +266,68 @@ def summary():
                  counts=audit['counts'], overlap=overlap_info(), native_build_sha256=sha(HERE / 'native/build.json'),
                  setup_sha256=sha(HERE / 'setup.json'), case_refs=references, completed_corpora=list(completed),
                  missing_corpora=missing, partial=checkpoint)
+    if resumed:
+        value['resume'] = resume_evidence(audit)
     if checkpoint:
-        value['blocked_units'] = blocked_units(audit['blocked_units'], sources)
+        value['blocked_units'] = blocked_units(audit['blocked_units'], sources, admission_only=not resumed)
     return value
 
 
-def blocked_units(records, sources):
+def resume_evidence(audit):
+    """Read the auditor's source-bound authorization and both attempt sets."""
+    value = audit['resume']
+    require(deref(value['authorization']) == HERE / 'RESUME_PROTOCOL.md', 'resume protocol reference differs')
+    require(deref(value['ledger']) == HERE / 'resume/ledger.json', 'resume ledger reference differs')
+    require(deref(value['original_checkpoint']) == HERE / 'audit/checkpoint.json', 'original checkpoint reference differs')
+    ledger = load(deref(value['ledger']))
+    require(ledger['schema'] == 'hw-region-2-casefix-resume-ledger-v1'
+            and deref(ledger['authorization']) == HERE / 'resume/authorization.json', 'resume authorization record differs')
+    require(value['authorization_record'] == ledger['authorization'], 'audited authorization record differs from ledger')
+    load(deref(ledger['authorization']))
+    require(ledger['original_blocked_unit'] == value['original_blocked_unit']
+            and ledger['resumed_unit'] == value['new_budget_unit'], 'resume ledger/unit projection differs')
+    original = load(deref(value['original_blocked_unit']))
+    require(original['status'] == 'BLOCKED: load' and original['selected'] is None
+            and len(original['attempts']) == value['old_loaded_attempts'] == 3,
+            'original three-attempt load stop changed')
+    history = []
+    for number, attempt in enumerate(original['attempts'], 1):
+        receipt = load(deref(attempt['receipt']))
+        require(attempt['number'] == number and attempt['status'] == receipt['status'] == 'LOADED'
+                and attempt['observation'] is None and receipt['command_started'] is False,
+                'original admission-only load attempt changed')
+        history.append(dict(number=number, status='LOADED', receipt=attempt['receipt'], worker_started=False))
+    new_attempts, history = [], []
+    if value['new_budget_unit'] is not None:
+        require(deref(value['new_budget_unit']) == HERE / 'units/main/t2t-15-resume-1/twobit_original_mask1.json',
+                'replacement budget is not the authorized alias')
+        unit = load(deref(value['new_budget_unit']))
+        require(unit['identity']['profile'] == 'twobit_original_mask1'
+                and unit['resume_authorization'] == ledger['authorization'] and 1 <= len(unit['attempts']) <= 3,
+                'replacement unit authorization/budget differs')
+        history = unit['attempts']
+    else:
+        pending = [item for item in audit['pending_units'] if item['unit_id'] == 't2t-15-resume-1'
+                   and item['profile'] == 'twobit_original_mask1']
+        require(len(pending) <= 1 and 0 <= value['new_attempts'] < 3, 'unfinished replacement budget differs')
+        history = pending[0]['attempts'] if pending else []
+        require(all(item['status'] == 'LOADED' for item in history), 'unfinished replacement has a winner/error')
+    for number, attempt in enumerate(history, 1):
+        receipt = load(deref(attempt['receipt']))
+        require(attempt['number'] == number and attempt['status'] == receipt['status']
+                and attempt['status'] in ('LOADED', 'CLEAN'), 'replacement attempt history differs')
+        new_attempts.append(dict(number=number, status=attempt['status'], receipt=attempt['receipt'],
+                                 worker_started=receipt['command_started']))
+    require(value['new_attempts'] == len(new_attempts)
+            and value['new_loaded_attempts'] == sum(a['status'] == 'LOADED' for a in new_attempts),
+            'replacement attempt counts differ')
+    return dict(protocol=value['authorization'], authorization=ledger['authorization'], ledger=value['ledger'],
+                ledger_status=ledger['status'], original_checkpoint=value['original_checkpoint'],
+                original_unit=value['original_blocked_unit'], replacement_unit=value['new_budget_unit'],
+                original_attempts=history, replacement_attempts=new_attempts)
+
+
+def blocked_units(records, sources, admission_only=True):
     result = []
     for record in records:
         unit = load(deref(record['unit']))
@@ -253,24 +336,29 @@ def blocked_units(records, sources):
                 and unit['identity']['source_sha256'] == sources and len(unit['attempts']) == 3,
                 'blocked logical unit identity/budget differs')
         attempts = []
-        require(len(record['attempts']) == 3 and record['worker_starts'] == record['query_clock_calls'] == record['open_clock_calls'] == 0,
-                'blocked checkpoint must retain three never-started attempts')
+        require(len(record['attempts']) == 3, 'blocked checkpoint must retain three attempts')
+        if admission_only:
+            require(record['worker_starts'] == record['query_clock_calls'] == record['open_clock_calls'] == 0,
+                    'original blocked checkpoint must retain three never-started attempts')
         for number, (attempt, audited) in enumerate(zip(unit['attempts'], record['attempts']), 1):
             require(attempt['number'] == audited['number'] == number and attempt['status'] == audited['status'] == 'LOADED'
-                    and attempt['observation'] is None and attempt['receipt'] == audited['receipt'], 'blocked attempt history differs')
+                    and attempt['receipt'] == audited['receipt'], 'blocked attempt history differs')
             receipt = load(deref(attempt['receipt']))
             foreign = receipt['foreign_cpu_start']['exceeded']
-            require(receipt['status'] == 'LOADED' and receipt['command_started'] is False and receipt['returncode'] is None
-                    and audited['command_started'] is False and foreign == audited['foreign_exceeded'] and foreign
+            require(receipt['status'] == 'LOADED' and receipt['command_started'] is audited['command_started']
+                    and (receipt['returncode'] == 0 if receipt['command_started'] else receipt['returncode'] is None)
+                    and bool(attempt['observation']) is receipt['command_started'] and foreign == audited['foreign_exceeded']
                     and all(Fraction(p['percent_one_cpu']) > 10 for p in foreign)
                     and receipt['ps_top8'] and receipt['ps_command'] == 'ps -eo pid,user,pcpu,comm --sort=-pcpu | head -8',
                     'blocked admission/foreign CPU evidence differs')
             start = receipt['start']['loadavg_raw'].split()[0]; end = receipt['end']['loadavg_raw'].split()[0]
             attempts.append(dict(number=number, receipt=attempt['receipt'], load1_start=start, load1_end=end,
-                                 foreign=foreign, worker_started=False, ps_recorded=True, ps_top8=receipt['ps_top8']))
+                                 foreign=foreign, worker_started=receipt['command_started'], ps_recorded=True, ps_top8=receipt['ps_top8']))
         result.append(dict(unit=record['unit'], unit_id=record['unit_id'], profile=record['profile'], attempts=attempts,
-                           worker_starts=0, query_clock_calls=0, open_clock_calls=0))
-    require(result, 'BLOCKED report needs its retained admission evidence')
+                           worker_starts=record['worker_starts'], query_clock_calls=record['query_clock_calls'],
+                           open_clock_calls=record['open_clock_calls']))
+    if admission_only:
+        require(result, 'BLOCKED report needs its retained admission evidence')
     return result
 
 
@@ -335,6 +423,20 @@ def render(value):
         t = value['timing_context']
         text += [f"Recorded timing boundaries: **{t['start_utc']} → {t['end_utc']} UTC**; {t['hostname']}, {t['cpu']}, kernel {t['kernel']}, governor {t['governor']}, pinned core {t['pinned_core']}. Dates come from retained start/end receipts.", '']
     aa, controls = method_data()
+    if value.get('resume'):
+        resumed = value['resume']
+        text += ['## Owner-authorized continuation', '',
+                 'The [resume amendment](' + resumed['protocol']['path'] + ') authorizes one fresh maximum-three-attempt budget for the same blocked t2t-15 original/storeMasked=1 pass. The [authorization record](' + resumed['authorization']['path'] + ') and [continuation ledger](' + resumed['ledger']['path'] + ') bind the unchanged reader binaries, inputs, seed and offsets. Every earlier CLEAN unit is reused.', '',
+                 'The original three LOADED admissions remain unchanged and do not consume the new budget. Polls inspect admission only; inadmissible polls and actual LOADED attempts require a five-minute cooldown. A CLEAN pass may proceed to the next target without that cooldown. The helper rechecks admission under the shared lock before every new attempt.', '',
+                 '| Attempt set | Attempt | Status | Timed worker started | Receipt |',
+                 '|---|---:|---|---|---|']
+        for name, attempts in (('Original retained stop', resumed['original_attempts']),
+                               ('Authorized replacement budget', resumed['replacement_attempts'])):
+            for attempt in attempts:
+                text.append(f"| {name} | {attempt['number']} | {attempt['status']} | {'yes' if attempt['worker_started'] else 'no'} | [raw]({attempt['receipt']['path']}) |")
+        text += ['', 'Continuation ledger status: **' + resumed['ledger_status'] + '**. The retained stop is history; only the current independently audited continuation can establish completion. No additional budget follows three further LOADED attempts without another owner authorization.', '']
+        if value.get('partial') and not value['blocked_units']:
+            text += ['**One next step:** continue the authorized admission waiting procedure for the ledger’s next target; an inadmissible poll consumes no actual attempt. Keep all previous attempts and reuse every CLEAN unit.', '']
     if aa:
         text += ['## Method gates', '', 'A/A requires the strict integer comparison `20 × abs(B−A) < A`; clean slow results are never retried.', '',
                  '| Reader | A p50 ns | B p50 ns | abs(B−A)/A | Result |', '|---|---:|---:|---:|---|']
@@ -360,8 +462,8 @@ def render(value):
                  'The fixed reader passed the mandatory repeated lowercase-n witness and whole sampled grid before any timer.', '',
                  '## Audited partial same-run table' if value.get('partial') else '## Complete same-run table', '']
         if value.get('partial'):
-            text += [f"**Partial: {len(value['completed_corpora'])}/31 complete corpora, {len(value['rows'])}/186 main rows.** Checkpoint integrity is PASS; experiment completion is **BLOCKED: load**. The retained CLEAN rows remain valid. No final P3 verdict or README performance row is admitted.", '',
-                     '**Not measured:** ' + ', '.join(value['missing_corpora']) + '. No zero-valued rows stand in for these missing measurements.', '']
+            text += [f"**Partial: {len(value['completed_corpora'])}/31 complete corpora, {len(value['rows'])}/186 main rows.** Checkpoint integrity is PASS; experiment status is **{value['status']}**. The retained CLEAN rows remain valid. No final P3 verdict or README performance row is admitted.", '',
+                     '**No complete main-corpus result:** ' + ', '.join(value['missing_corpora']) + '. Individually retained units are not substituted for a complete six-profile comparison; no zero-valued rows stand in for missing measurements.', '']
         text += [
                  '| Corpus | Reader | Stored B | p50 µs | p99 µs | Open µs (n=1) | Open RSS delta KiB | Peak whole-process KiB |',
                  '|---|---|---:|---:|---:|---:|---:|---:|']
@@ -380,21 +482,21 @@ def render(value):
         for corpus, d in value['corpus_decisions'].items():
             fastest = ' / '.join(LABELS[p] for p in d['fastest']); smallest = ' / '.join(LABELS[p] for p in d['smallest'])
             text.append(f"- {corpus}: lowest p50 {fastest} ({d['fastest_p50_ns']/1000:.3f} µs); smallest {smallest} ({d['smallest_stored_bytes']} B).")
-        if value.get('partial'):
+        if value.get('partial') and value['blocked_units']:
             text += ['', '## Blocked logical unit', '',
-                     'The three admissions below never started the timed worker: no warmups, query timers or open timers ran for this blocked unit. Foreign CPU strictly above 10% is an independent LOADED criterion, even when load1 is below 2.0. The linked raw receipts retain the one-second process observations and top-eight `ps` output.', '',
+                     'All three LOADED attempts below remain retained. The worker-start column distinguishes admission-only rejection from a pass rejected after its end-boundary check. Foreign CPU strictly above 10% is an independent LOADED criterion, even when load1 is below 2.0. The linked raw receipts retain the process observations and top-eight `ps` output.', '',
                      '| Unit / profile | Attempt | load1 start / end | Foreign process admission CPU | Worker started | Receipt + ps |',
                      '|---|---:|---:|---|---|---|']
             for blocked in value['blocked_units']:
                 for attempt in blocked['attempts']:
                     processes = '; '.join(f"PID {p['pid']} {p['comm']} {float(Fraction(p['percent_one_cpu'])):.2f}%" for p in attempt['foreign'])
-                    text.append(f"| {blocked['unit_id']} / {blocked['profile']} | {attempt['number']} | {attempt['load1_start']} / {attempt['load1_end']} | {processes} | no | [raw]({attempt['receipt']['path']}) |")
+                    text.append(f"| {blocked['unit_id']} / {blocked['profile']} | {attempt['number']} | {attempt['load1_start']} / {attempt['load1_end']} | {processes or 'none above threshold'} | {'yes' if attempt['worker_started'] else 'no'} | [raw]({attempt['receipt']['path']}) |")
             for blocked in value['blocked_units']:
                 text += ['', 'Recorded `ps -eo pid,user,pcpu,comm --sort=-pcpu | head -8`, third LOADED admission:', '',
                          '```text', blocked['attempts'][-1]['ps_top8'].rstrip(), '```', '']
-            text += ['', '**One next step:** the owner provides a quiet window and explicitly authorizes a fresh three-attempt budget for this same blocked unit, with the same reader binaries, seed and offsets. Preserve its three old LOADED admissions and reuse every CLEAN unit; no CLEAN measurement needs to be rerun.', '']
+            text += ['', '**One next step:** the owner provides a quiet window and explicitly authorizes a fresh three-attempt budget for this same blocked unit, with the same reader binaries, seed and offsets. Preserve every previous LOADED attempt and reuse every CLEAN unit; no CLEAN measurement needs to be rerun.', '']
         counts = value['counts']
-        accounting = (f"Saved checkpoint: {counts['timed_logical_units']} CLEAN timing units ({len(value['rows'])} main + {counts['timed_logical_units']-len(value['rows'])} method), "
+        accounting = (f"Saved checkpoint: {counts['timed_logical_units']} CLEAN timing units ({len(value['rows'])} completed-corpus main rows + {counts['timed_logical_units']-len(value['rows'])} method or incomplete-corpus units), "
                       f"{counts['blocked_timed_logical_units']} blocked unit, {counts['attempts']} total attempts, {counts['loaded_attempts']} LOADED admissions, "
                       f"{counts['accepted_retaken']} accepted units retaken, and {counts['accepted_query_timing_observations']} accepted query timings."
                       if value.get('partial') else
@@ -403,7 +505,7 @@ def render(value):
         text += ['', '## Retention and audit', '',
                  'Every timing unit uses blocking `flock /run/lock/ovh-bench.lock`. LOADED means load1−T>1 at either boundary or a surviving foreign process strictly above 10% of one CPU at admission; equality at 2.0/10% passes. At most three identical attempts retain all LOADED data and accept the first CLEAN; worker errors stop even on loaded attempts. Other-core CPU accounting is observational.', '',
                  accounting + ' Full raw strings remain private and public deterministic gzip captures bind their raw/compressed hashes.', '',
-                 '[Independent saved-data ' + ('checkpoint audit](audit/checkpoint.json)' if value.get('partial') else 'complete audit](audit/all.json)') +
+                 '[Independent saved-data ' + ('checkpoint audit](' if value.get('partial') else 'complete audit](') + value['audit']['path'] + ')' +
                  ' · [Machine-readable summary and selected raw links](summary.json) · [Correctness admission](admission.json) · [Native source/build bindings](native/build.json) · [Pinned inputs, libraries and indexes](setup.json).', '']
     text += ['## Foundations and reproduction', '',
              '- ' + line_link('evidence/hw-region-1/RESULTS.md', '## Primary measured tradeoff', 'HW-REGION-1/RESULTS.md') + ' retains the separate FASTA-byte experiment; its timings are not reused as 16,384-base measurements.',
