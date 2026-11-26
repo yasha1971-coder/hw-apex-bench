@@ -10,6 +10,7 @@ from pathlib import Path
 
 import report
 import tail
+import window_summary
 
 HERE = Path(__file__).resolve().parent
 
@@ -56,6 +57,20 @@ def main():
         trace_paths = {row['trace_path'] for row in data['rows'] if row['case_id'] == case['case_id']}
         report.require(len(trace_paths) == 1, 'formats do not share the saved request trace')
     base = report.render(data)
+    window_path = HERE / 'window-summary.json'
+    windows = report.load(window_path)
+    report.require(windows == window_summary.build(window_summary.Saved(args.audit)),
+                   'window summary differs from exact saved-case recomputation')
+    paragraphs = base.split('\n\n')
+    positions = [index for index, value in enumerate(paragraphs)
+                 if value.startswith('The primary outcome does not generalize to the window set.')]
+    report.require(len(positions) == 1, 'original window example paragraph changed')
+    paragraphs[positions[0]] = (
+        'Across all thirty frozen T2T windows at each g, the counts below use strict comparisons of the '
+        'saved integers before rounding; the latency ratio is the arithmetic mean of the thirty individual '
+        'ACE p50 / zstd p50 ratios. Density is input bytes / complete stored bytes, including indexes.\n\n'
+        + window_summary.render(windows).rstrip())
+    base = '\n\n'.join(paragraphs)
     fairness = ('## Comparison fairness — saved evidence\n\n'
                 '**PASS.** zstd-seekable uses zstd **1.5.7**; BGZF uses HTSlib **1.24**. '
                 'Each pass keeps one persistent C99 ACEAPEX handle, one `ZSTD_seekable`, or one `BGZF` handle. '
@@ -75,6 +90,7 @@ def main():
                    measurements_repeated=False, source_sha256=sha(__file__),
                    numerical_renderer_sha256=sha(report.__file__), tail_renderer_sha256=sha(tail.__file__),
                    numerical_audit_sha256=sha(args.audit), tail_summary_sha256=sha(summary_path),
+                   window_summary_sha256=sha(window_path), window_renderer_sha256=sha(window_summary.__file__),
                    base_report_sha256=hashlib.sha256(base.encode('utf-8')).hexdigest(),
                    result_sha256=sha(HERE / 'RESULTS.md'), fairness='PASS')
     (HERE / 'followup-render.json').write_bytes((json.dumps(receipt, sort_keys=True, indent=2) + '\n').encode())

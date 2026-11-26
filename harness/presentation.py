@@ -205,6 +205,21 @@ def render_region_primary(rows):
             and 10 * ace['p50_ns'] <= 11 * zstd['p50_ns']):
         raise ValueError('HW-REGION-1 outcome-(a) presentation predicates changed')
     relative = Fraction(ace['p50_ns'], zstd['p50_ns'])
+    non_genome = []
+    for corpus in ('enwik8', 'silesia'):
+        cell_source = f'evidence/hw-region-1/cases/{corpus}-g16384.json'
+        cell = json.loads((root / cell_source).read_bytes())
+        if (cell.get('schema'), cell.get('status'), cell.get('case_id'), cell.get('corpus'), cell.get('g')) != (
+                'hw-region-1-case-v1', 'COMPLETE', f'{corpus}-g16384', corpus, 16384):
+            raise ValueError('HW-REGION-1 non-genome presentation scope changed')
+        left, right = (cell['formats'][key] for key in ('aceapex', 'zstd_seekable'))
+        if any(row['effective_g'] != 16384 or row['requested_bytes_total'] != 1000 * 16384
+               or not all(type(row[key]) is int and row[key] > 0 for key in ('p50_ns', 'stored_bytes'))
+               for row in (left, right)):
+            raise ValueError('HW-REGION-1 non-genome totals differ')
+        p50_ratio = Fraction(left['p50_ns'], right['p50_ns'])
+        non_genome.append(f"[{corpus}]({cell_source}) p50 = {float(p50_ratio):.2f}, "
+                          f"stored bytes = {left['stored_bytes']:,} / {right['stored_bytes']:,}")
     return ("[written by ChatGPT (AI) at the author's request; checked by the author]\n\n"
             "## Same-run chr1 refresh — 2026-11-26\n\n"
             "Full hg38 chr1 FASTA (253,935,557 bytes), R=16 KiB, archive in RAM; ratio = input / stored bytes including required indexes. "
@@ -214,6 +229,7 @@ def render_region_primary(rows):
             "2026-11-26 (HW-REGION-1): one pinned core on ace-core (AMD EPYC 4344P), 1,000 uniform requests per format, "
             "persistent library handles, g=16 KiB for all three formats; ACE interactive LIT=65,536 B, FSE=4,096 B.\n\n"
             + '\n'.join(table) + '\n\n'
+            "Same-run non-genome, g=16 KiB, ACEAPEX / zstd: " + '; '.join(non_genome) + '.\n\n'
             f"Within 2026-11-26, ACEAPEX / zstd: p50 = {float(relative):.6f}; "
             f"p99 = {ace['p99_ns'] / zstd['p99_ns']:.6f}; stored bytes = {ace['stored_bytes'] / zstd['stored_bytes']:.6f}; "
             f"amplification = {float(Fraction(ace['amplification']) / Fraction(zstd['amplification'])):.6f}.\n\n"
