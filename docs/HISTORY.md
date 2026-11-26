@@ -2297,3 +2297,7 @@ measurements.
 [written by ChatGPT (AI) at the author's request; checked by the author]
 
 - HW-REGION-2 casefix checkpoint `t2t-23-24-clean-after-wait`: retained raw outputs and hash-bound receipts under evidence/hw-region-2/casefix/. Original Kill and P1-P3 unchanged; draft PR97, no upstream post or merge.
+
+[written by ChatGPT (AI) at the author's request; checked by the author]
+
+- HW-REGION-2 casefix checkpoint `complete-grid-31`: retained raw outputs and hash-bound receipts under evidence/hw-region-2/casefix/. Original Kill and P1-P3 unchanged; draft PR97, no upstream post or merge.
