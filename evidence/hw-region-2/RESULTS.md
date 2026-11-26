@@ -2,7 +2,7 @@
 
 # HW-REGION-2 — casefix continuation
 
-**BLOCKED: load.** Three retained LOADED attempts; no fourth attempt or elapsed-based retry.
+**COMPLETE.** All 31 corpora / 186 main rows passed the resumed saved-data audit; the original load stop remains retained.
 
 The retained [original Kill](RESULTS-before-casefix.md) and its captures remain unchanged. The owner-authorized one-line [casefix](lib2bit-casefix.patch) is the only lib2bit source change; no Kent/UCSC implementation or binary is used. [Full casefix stage report](casefix/RESULTS.md).
 
@@ -14,7 +14,22 @@ Equivalent rows return the same 16,384 case-preserved bases. ACEAPEX 2.6.5 inter
 
 Main-cell protocol: a fresh process, one persistent handle, the same 12 warmups and 1000 saved starts mapped without resampling. Query timers include malloc-returning API work and ACE/zstd FAI span calculation, decode and newline removal. Validation, capture and free are outside. Open time is a separate single observation (n=1), excluding preload; RSS delta is after-open minus before-open, and peak RSS is the entire process including reference preparation, capture buffers, archive prefault and reader allocations. Neither is library-exclusive memory.
 
-Recorded timing boundaries: **2026-11-26T17:40:09.671004+00:00 → 2026-11-26T18:04:12.200950+00:00 UTC**; ace-core, AMD EPYC 4344P 8-Core Processor, kernel 5.15.0-163-generic, governor schedutil, pinned core 0. Dates come from retained start/end receipts.
+Recorded timing boundaries: **2026-11-26T17:40:09.671004+00:00 → 2026-11-26T19:03:40.406329+00:00 UTC**; ace-core, AMD EPYC 4344P 8-Core Processor, kernel 5.15.0-163-generic, governor schedutil, pinned core 0. Dates come from retained start/end receipts.
+
+## Owner-authorized continuation
+
+The [resume amendment](casefix/RESUME_PROTOCOL.md) authorizes one fresh maximum-three-attempt budget for the same blocked t2t-15 original/storeMasked=1 pass. The [authorization record](casefix/resume/authorization.json) and [continuation ledger](casefix/resume/ledger.json) bind the unchanged reader binaries, inputs, seed and offsets. Every earlier CLEAN unit is reused.
+
+The original three LOADED admissions remain unchanged and do not consume the new budget. Polls inspect admission only; inadmissible polls and actual LOADED attempts require a five-minute cooldown. A CLEAN pass may proceed to the next target without that cooldown. The helper rechecks admission under the shared lock before every new attempt.
+
+| Attempt set | Attempt | Status | Timed worker started | Receipt |
+|---|---:|---|---|---|
+| Original retained stop | 1 | LOADED | no | [raw](casefix/raw/main/t2t-15/twobit_original_mask1/attempt-1/ovh-bench.json) |
+| Original retained stop | 2 | LOADED | no | [raw](casefix/raw/main/t2t-15/twobit_original_mask1/attempt-2/ovh-bench.json) |
+| Original retained stop | 3 | LOADED | no | [raw](casefix/raw/main/t2t-15/twobit_original_mask1/attempt-3/ovh-bench.json) |
+| Authorized replacement budget | 1 | CLEAN | yes | [raw](casefix/raw/main/t2t-15-resume-1/twobit_original_mask1/attempt-1/ovh-bench.json) |
+
+Continuation ledger status: **COMPLETE**. The retained stop is history; only the current independently audited continuation can establish completion. No additional budget follows three further LOADED attempts without another owner authorization.
 
 ## Method gates
 
@@ -46,15 +61,11 @@ Real archive boundaries were selected by metadata alone; the .2bit control uses 
 |---|---|---|
 | P1 (65%) | 20 × 60440787 ≤ 19 × 64895635; ACE/.2bit = 60440787/64895635 | HIT |
 | P2 (75%) | 4 × 88965 ≤ 41357; .2bit/ACE p50 = 88965/41357 | MISS |
-| P3 (70%) | .2bit-casefix p50 < ACE p50 in 15 wins among 15/30 observed T2T windows; 15 pending; required ≥28 of 30 | PENDING |
+| P3 (70%) | .2bit-casefix p50 < ACE p50 in 30/30 windows; required ≥28 | HIT |
 
 The fixed reader passed the mandatory repeated lowercase-n witness and whole sampled grid before any timer.
 
-## Audited partial same-run table
-
-**Partial: 16/31 complete corpora, 96/186 main rows.** Checkpoint integrity is PASS; experiment completion is **BLOCKED: load**. The retained CLEAN rows remain valid. No final P3 verdict or README performance row is admitted.
-
-**Not measured:** t2t-15, t2t-16, t2t-17, t2t-18, t2t-19, t2t-20, t2t-21, t2t-22, t2t-23, t2t-24, t2t-25, t2t-26, t2t-27, t2t-28, t2t-29. No zero-valued rows stand in for these missing measurements.
+## Complete same-run table
 
 | Corpus | Reader | Stored B | p50 µs | p99 µs | Open µs (n=1) | Open RSS delta KiB | Peak whole-process KiB |
 |---|---|---:|---:|---:|---:|---:|---:|
@@ -154,6 +165,96 @@ The fixed reader passed the mandatory repeated lowercase-n witness and whole sam
 | t2t-14 | lib2bit-casefix (storeMasked=1) | 605851 | 9.538 | 12.273 | 40.306 | 0 | 35728 |
 | t2t-14 | lib2bit (storeMasked=1): not byte-equal: N in soft-masked runs | — | 14.397 | 20.979 | 41.347 | — | — |
 | t2t-14 | lib2bit (storeMasked=0): case-folded, not equivalent | 605851 | 4.599 | 5.099 | 10.900 | 0 | 35708 |
+| t2t-15 | ACEAPEX 2.6.5 interactive L2 | 162326 | 38.873 | 72.215 | 14.818 | 0 | 35720 |
+| t2t-15 | zstd-seekable 1.5.7 L3 | 210695 | 21.530 | 29.155 | 27.181 | 0 | 35708 |
+| t2t-15 | BGZF / HTSlib 1.24 L6 | 205897 | 12.283 | 18.374 | 75.962 | 332 | 35656 |
+| t2t-15 | lib2bit-casefix (storeMasked=1) | 525259 | 9.748 | 10.270 | 9.739 | 0 | 35660 |
+| t2t-15 | lib2bit (storeMasked=1): not byte-equal: N in soft-masked runs | — | 23.123 | 26.008 | 9.347 | — | — |
+| t2t-15 | lib2bit (storeMasked=0): case-folded, not equivalent | 525259 | 4.618 | 5.250 | 9.357 | 0 | 35728 |
+| t2t-16 | ACEAPEX 2.6.5 interactive L2 | 565981 | 31.249 | 57.688 | 13.746 | 0 | 35716 |
+| t2t-16 | zstd-seekable 1.5.7 L3 | 739088 | 44.934 | 63.459 | 26.429 | 0 | 35708 |
+| t2t-16 | BGZF / HTSlib 1.24 L6 | 686007 | 39.263 | 57.528 | 72.987 | 256 | 35732 |
+| t2t-16 | lib2bit-casefix (storeMasked=1) | 588283 | 8.055 | 11.732 | 32.221 | 0 | 35700 |
+| t2t-16 | lib2bit (storeMasked=1): not byte-equal: N in soft-masked runs | — | 11.031 | 20.158 | 40.727 | — | — |
+| t2t-16 | lib2bit (storeMasked=0): case-folded, not equivalent | 588283 | 4.609 | 5.400 | 9.538 | 0 | 35660 |
+| t2t-17 | ACEAPEX 2.6.5 interactive L2 | 576720 | 32.381 | 58.900 | 13.395 | 0 | 35640 |
+| t2t-17 | zstd-seekable 1.5.7 L3 | 770411 | 45.806 | 52.288 | 27.481 | 0 | 35660 |
+| t2t-17 | BGZF / HTSlib 1.24 L6 | 721223 | 40.426 | 45.846 | 74.399 | 264 | 35712 |
+| t2t-17 | lib2bit-casefix (storeMasked=1) | 606531 | 8.956 | 13.074 | 49.834 | 0 | 35728 |
+| t2t-17 | lib2bit (storeMasked=1): not byte-equal: N in soft-masked runs | — | 13.295 | 19.747 | 47.299 | — | — |
+| t2t-17 | lib2bit (storeMasked=0): case-folded, not equivalent | 606531 | 4.599 | 5.460 | 11.151 | 0 | 35660 |
+| t2t-18 | ACEAPEX 2.6.5 interactive L2 | 163105 | 42.850 | 80.602 | 15.840 | 0 | 35652 |
+| t2t-18 | zstd-seekable 1.5.7 L3 | 210573 | 22.182 | 29.275 | 33.733 | 0 | 35664 |
+| t2t-18 | BGZF / HTSlib 1.24 L6 | 169120 | 10.970 | 15.399 | 70.242 | 144 | 35656 |
+| t2t-18 | lib2bit-casefix (storeMasked=1) | 525011 | 9.798 | 11.882 | 9.788 | 0 | 35644 |
+| t2t-18 | lib2bit (storeMasked=1): not byte-equal: N in soft-masked runs | — | 23.073 | 24.195 | 10.680 | — | — |
+| t2t-18 | lib2bit (storeMasked=0): case-folded, not equivalent | 525011 | 4.619 | 5.260 | 8.296 | 0 | 35704 |
+| t2t-19 | ACEAPEX 2.6.5 interactive L2 | 561679 | 31.399 | 58.870 | 13.605 | 0 | 35624 |
+| t2t-19 | zstd-seekable 1.5.7 L3 | 729399 | 44.253 | 59.541 | 28.383 | 0 | 35656 |
+| t2t-19 | BGZF / HTSlib 1.24 L6 | 674926 | 38.482 | 53.661 | 69.661 | 188 | 35724 |
+| t2t-19 | lib2bit-casefix (storeMasked=1) | 586411 | 8.165 | 10.991 | 31.138 | 0 | 35644 |
+| t2t-19 | lib2bit (storeMasked=1): not byte-equal: N in soft-masked runs | — | 11.421 | 18.715 | 37.631 | — | — |
+| t2t-19 | lib2bit (storeMasked=0): case-folded, not equivalent | 586411 | 4.618 | 5.200 | 10.249 | 0 | 35708 |
+| t2t-20 | ACEAPEX 2.6.5 interactive L2 | 578722 | 33.823 | 62.037 | 13.926 | 0 | 35728 |
+| t2t-20 | zstd-seekable 1.5.7 L3 | 775611 | 46.096 | 65.733 | 27.011 | 0 | 35720 |
+| t2t-20 | BGZF / HTSlib 1.24 L6 | 728096 | 40.847 | 60.734 | 68.529 | 180 | 35720 |
+| t2t-20 | lib2bit-casefix (storeMasked=1) | 631355 | 10.039 | 14.327 | 60.082 | 0 | 35704 |
+| t2t-20 | lib2bit (storeMasked=1): not byte-equal: N in soft-masked runs | — | 15.208 | 21.460 | 49.603 | — | — |
+| t2t-20 | lib2bit (storeMasked=0): case-folded, not equivalent | 631355 | 4.599 | 5.330 | 11.462 | 0 | 35672 |
+| t2t-21 | ACEAPEX 2.6.5 interactive L2 | 204356 | 42.810 | 76.764 | 20.088 | 0 | 35660 |
+| t2t-21 | zstd-seekable 1.5.7 L3 | 217843 | 23.354 | 28.604 | 25.168 | 0 | 35660 |
+| t2t-21 | BGZF / HTSlib 1.24 L6 | 185657 | 12.644 | 15.829 | 75.652 | 176 | 35704 |
+| t2t-21 | lib2bit-casefix (storeMasked=1) | 527803 | 9.879 | 10.700 | 11.020 | 0 | 35644 |
+| t2t-21 | lib2bit (storeMasked=1): not byte-equal: N in soft-masked runs | — | 23.174 | 25.878 | 10.459 | — | — |
+| t2t-21 | lib2bit (storeMasked=0): case-folded, not equivalent | 527803 | 4.599 | 4.980 | 9.087 | 0 | 35728 |
+| t2t-22 | ACEAPEX 2.6.5 interactive L2 | 552517 | 32.301 | 59.281 | 14.918 | 0 | 35724 |
+| t2t-22 | zstd-seekable 1.5.7 L3 | 713904 | 44.023 | 58.660 | 25.829 | 0 | 35660 |
+| t2t-22 | BGZF / HTSlib 1.24 L6 | 659331 | 38.061 | 51.837 | 74.479 | 332 | 35656 |
+| t2t-22 | lib2bit-casefix (storeMasked=1) | 585283 | 8.375 | 11.161 | 30.337 | 0 | 35648 |
+| t2t-22 | lib2bit (storeMasked=1): not byte-equal: N in soft-masked runs | — | 11.651 | 18.695 | 30.016 | — | — |
+| t2t-22 | lib2bit (storeMasked=0): case-folded, not equivalent | 585283 | 4.618 | 5.139 | 9.278 | 0 | 35628 |
+| t2t-23 | ACEAPEX 2.6.5 interactive L2 | 577833 | 33.874 | 62.337 | 13.375 | 0 | 35704 |
+| t2t-23 | zstd-seekable 1.5.7 L3 | 775620 | 46.777 | 53.801 | 24.055 | 0 | 35728 |
+| t2t-23 | BGZF / HTSlib 1.24 L6 | 728354 | 41.047 | 45.004 | 65.272 | 216 | 35672 |
+| t2t-23 | lib2bit-casefix (storeMasked=1) | 630267 | 10.390 | 14.547 | 49.282 | 0 | 35676 |
+| t2t-23 | lib2bit (storeMasked=1): not byte-equal: N in soft-masked runs | — | 14.938 | 22.933 | 51.096 | — | — |
+| t2t-23 | lib2bit (storeMasked=0): case-folded, not equivalent | 630267 | 4.599 | 4.980 | 11.241 | 0 | 35728 |
+| t2t-24 | ACEAPEX 2.6.5 interactive L2 | 196870 | 43.201 | 78.557 | 13.816 | 0 | 35648 |
+| t2t-24 | zstd-seekable 1.5.7 L3 | 206647 | 23.364 | 31.639 | 23.244 | 0 | 35644 |
+| t2t-24 | BGZF / HTSlib 1.24 L6 | 174171 | 12.563 | 17.903 | 71.214 | 256 | 35728 |
+| t2t-24 | lib2bit-casefix (storeMasked=1) | 524747 | 9.738 | 10.560 | 9.678 | 0 | 35716 |
+| t2t-24 | lib2bit (storeMasked=1): not byte-equal: N in soft-masked runs | — | 23.074 | 25.688 | 9.408 | — | — |
+| t2t-24 | lib2bit (storeMasked=0): case-folded, not equivalent | 524747 | 4.628 | 5.069 | 9.488 | 0 | 35704 |
+| t2t-25 | ACEAPEX 2.6.5 interactive L2 | 573132 | 33.032 | 59.562 | 14.427 | 0 | 35660 |
+| t2t-25 | zstd-seekable 1.5.7 L3 | 749902 | 45.315 | 63.639 | 25.739 | 0 | 35624 |
+| t2t-25 | BGZF / HTSlib 1.24 L6 | 702244 | 39.654 | 57.759 | 67.106 | 228 | 35644 |
+| t2t-25 | lib2bit-casefix (storeMasked=1) | 602219 | 9.007 | 12.664 | 38.593 | 0 | 35728 |
+| t2t-25 | lib2bit (storeMasked=1): not byte-equal: N in soft-masked runs | — | 14.297 | 21.821 | 44.653 | — | — |
+| t2t-25 | lib2bit (storeMasked=0): case-folded, not equivalent | 602219 | 4.599 | 5.060 | 11.331 | 0 | 35628 |
+| t2t-26 | ACEAPEX 2.6.5 interactive L2 | 575709 | 32.962 | 60.293 | 15.580 | 0 | 35728 |
+| t2t-26 | zstd-seekable 1.5.7 L3 | 769779 | 45.946 | 64.711 | 25.528 | 0 | 35724 |
+| t2t-26 | BGZF / HTSlib 1.24 L6 | 720915 | 40.656 | 59.932 | 69.390 | 220 | 35624 |
+| t2t-26 | lib2bit-casefix (storeMasked=1) | 614451 | 9.328 | 13.094 | 48.551 | 0 | 35704 |
+| t2t-26 | lib2bit (storeMasked=1): not byte-equal: N in soft-masked runs | — | 14.007 | 21.169 | 42.720 | — | — |
+| t2t-26 | lib2bit (storeMasked=0): case-folded, not equivalent | 614451 | 4.599 | 5.069 | 11.021 | 0 | 35632 |
+| t2t-27 | ACEAPEX 2.6.5 interactive L2 | 156050 | 45.976 | 86.482 | 18.335 | 0 | 35664 |
+| t2t-27 | zstd-seekable 1.5.7 L3 | 145116 | 20.669 | 26.970 | 29.876 | 0 | 35660 |
+| t2t-27 | BGZF / HTSlib 1.24 L6 | 136984 | 11.251 | 15.078 | 74.500 | 256 | 35732 |
+| t2t-27 | lib2bit-casefix (storeMasked=1) | 526243 | 9.768 | 10.600 | 9.828 | 0 | 35704 |
+| t2t-27 | lib2bit (storeMasked=1): not byte-equal: N in soft-masked runs | — | 23.044 | 23.865 | 9.498 | — | — |
+| t2t-27 | lib2bit (storeMasked=0): case-folded, not equivalent | 526243 | 4.628 | 5.080 | 9.668 | 0 | 35632 |
+| t2t-28 | ACEAPEX 2.6.5 interactive L2 | 573276 | 33.562 | 60.644 | 15.439 | 0 | 35732 |
+| t2t-28 | zstd-seekable 1.5.7 L3 | 749914 | 45.376 | 61.846 | 24.186 | 0 | 35704 |
+| t2t-28 | BGZF / HTSlib 1.24 L6 | 703944 | 39.565 | 55.274 | 75.482 | 264 | 35720 |
+| t2t-28 | lib2bit-casefix (storeMasked=1) | 598739 | 9.458 | 12.654 | 44.974 | 0 | 35728 |
+| t2t-28 | lib2bit (storeMasked=1): not byte-equal: N in soft-masked runs | — | 14.797 | 20.759 | 37.240 | — | — |
+| t2t-28 | lib2bit (storeMasked=0): case-folded, not equivalent | 598739 | 4.619 | 5.360 | 10.861 | 0 | 35720 |
+| t2t-29 | ACEAPEX 2.6.5 interactive L2 | 561715 | 33.032 | 61.586 | 14.577 | 0 | 35720 |
+| t2t-29 | zstd-seekable 1.5.7 L3 | 728268 | 44.173 | 62.587 | 24.115 | 0 | 35704 |
+| t2t-29 | BGZF / HTSlib 1.24 L6 | 680946 | 37.500 | 52.478 | 67.747 | 148 | 35732 |
+| t2t-29 | lib2bit-casefix (storeMasked=1) | 586899 | 9.167 | 11.903 | 29.986 | 0 | 35672 |
+| t2t-29 | lib2bit (storeMasked=1): not byte-equal: N in soft-masked runs | — | 16.301 | 21.029 | 29.135 | — | — |
+| t2t-29 | lib2bit (storeMasked=0): case-folded, not equivalent | 586899 | 4.619 | 5.460 | 9.668 | 0 | 35704 |
 
 Original storeMasked=1 is a time-only diagnostic: stored bytes and RSS are deliberately omitted. All thirty frozen T2T sequences contain no N/n; the diagnostic label identifies the unchanged reader’s failure to preserve chr1 case. The separate original storeMasked=0 row is case-folded and not equivalent.
 
@@ -177,41 +278,29 @@ Primary chr1 p50, separate first-CLEAN passes: casefix/storeMasked=1 88.965 µs;
 - t2t-12: lowest p50 lib2bit-casefix (storeMasked=1) (9.868 µs); smallest ACEAPEX 2.6.5 interactive L2 (138646 B).
 - t2t-13: lowest p50 lib2bit-casefix (storeMasked=1) (7.624 µs); smallest ACEAPEX 2.6.5 interactive L2 (556113 B).
 - t2t-14: lowest p50 lib2bit-casefix (storeMasked=1) (9.538 µs); smallest ACEAPEX 2.6.5 interactive L2 (574906 B).
-
-## Blocked logical unit
-
-The three admissions below never started the timed worker: no warmups, query timers or open timers ran for this blocked unit. Foreign CPU strictly above 10% is an independent LOADED criterion, even when load1 is below 2.0. The linked raw receipts retain the one-second process observations and top-eight `ps` output.
-
-| Unit / profile | Attempt | load1 start / end | Foreign process admission CPU | Worker started | Receipt + ps |
-|---|---:|---:|---|---|---|
-| t2t-15 / twobit_original_mask1 | 1 | 0.58 / 0.58 | PID 124200 cc1plus 99.57% | no | [raw](casefix/raw/main/t2t-15/twobit_original_mask1/attempt-1/ovh-bench.json) |
-| t2t-15 / twobit_original_mask1 | 2 | 0.58 / 0.58 | PID 124200 cc1plus 99.57% | no | [raw](casefix/raw/main/t2t-15/twobit_original_mask1/attempt-2/ovh-bench.json) |
-| t2t-15 / twobit_original_mask1 | 3 | 0.61 / 0.61 | PID 124200 cc1plus 98.60% | no | [raw](casefix/raw/main/t2t-15/twobit_original_mask1/attempt-3/ovh-bench.json) |
-
-Recorded `ps -eo pid,user,pcpu,comm --sort=-pcpu | head -8`, third LOADED admission:
-
-```text
-    PID USER     %CPU COMMAND
- 124200 aeterna  86.4 cc1plus
- 124261 ubuntu    3.0 python
- 124519 ubuntu    2.0 python
-4181850 ubuntu    0.7 2.1.314
-3450996 aeterna   0.5 2.1.332
- 124201 root      0.2 sshd
-3277404 root      0.2 cloudflared
-```
-
-
-**One next step:** the owner provides a quiet window and explicitly authorizes a fresh three-attempt budget for this same blocked unit, with the same reader binaries, seed and offsets. Preserve its three old LOADED admissions and reuse every CLEAN unit; no CLEAN measurement needs to be rerun.
-
+- t2t-15: lowest p50 lib2bit-casefix (storeMasked=1) (9.748 µs); smallest ACEAPEX 2.6.5 interactive L2 (162326 B).
+- t2t-16: lowest p50 lib2bit-casefix (storeMasked=1) (8.055 µs); smallest ACEAPEX 2.6.5 interactive L2 (565981 B).
+- t2t-17: lowest p50 lib2bit-casefix (storeMasked=1) (8.956 µs); smallest ACEAPEX 2.6.5 interactive L2 (576720 B).
+- t2t-18: lowest p50 lib2bit-casefix (storeMasked=1) (9.798 µs); smallest ACEAPEX 2.6.5 interactive L2 (163105 B).
+- t2t-19: lowest p50 lib2bit-casefix (storeMasked=1) (8.165 µs); smallest ACEAPEX 2.6.5 interactive L2 (561679 B).
+- t2t-20: lowest p50 lib2bit-casefix (storeMasked=1) (10.039 µs); smallest ACEAPEX 2.6.5 interactive L2 (578722 B).
+- t2t-21: lowest p50 lib2bit-casefix (storeMasked=1) (9.879 µs); smallest BGZF / HTSlib 1.24 L6 (185657 B).
+- t2t-22: lowest p50 lib2bit-casefix (storeMasked=1) (8.375 µs); smallest ACEAPEX 2.6.5 interactive L2 (552517 B).
+- t2t-23: lowest p50 lib2bit-casefix (storeMasked=1) (10.390 µs); smallest ACEAPEX 2.6.5 interactive L2 (577833 B).
+- t2t-24: lowest p50 lib2bit-casefix (storeMasked=1) (9.738 µs); smallest BGZF / HTSlib 1.24 L6 (174171 B).
+- t2t-25: lowest p50 lib2bit-casefix (storeMasked=1) (9.007 µs); smallest ACEAPEX 2.6.5 interactive L2 (573132 B).
+- t2t-26: lowest p50 lib2bit-casefix (storeMasked=1) (9.328 µs); smallest ACEAPEX 2.6.5 interactive L2 (575709 B).
+- t2t-27: lowest p50 lib2bit-casefix (storeMasked=1) (9.768 µs); smallest BGZF / HTSlib 1.24 L6 (136984 B).
+- t2t-28: lowest p50 lib2bit-casefix (storeMasked=1) (9.458 µs); smallest ACEAPEX 2.6.5 interactive L2 (573276 B).
+- t2t-29: lowest p50 lib2bit-casefix (storeMasked=1) (9.167 µs); smallest ACEAPEX 2.6.5 interactive L2 (561715 B).
 
 ## Retention and audit
 
 Every timing unit uses blocking `flock /run/lock/ovh-bench.lock`. LOADED means load1−T>1 at either boundary or a surviving foreign process strictly above 10% of one CPU at admission; equality at 2.0/10% passes. At most three identical attempts retain all LOADED data and accept the first CLEAN; worker errors stop even on loaded attempts. Other-core CPU accounting is observational.
 
-Saved checkpoint: 112 CLEAN timing units (96 main + 16 method), 1 blocked unit, 115 total attempts, 3 LOADED admissions, 0 accepted units retaken, and 116000 accepted query timings. Full raw strings remain private and public deterministic gzip captures bind their raw/compressed hashes.
+Saved audit counts: 202 accepted timing units; 206 attempts; 1 accepted units required a load retry; 4 LOADED attempts; 206000 accepted query timings. Full raw strings remain private and public deterministic gzip captures bind their raw/compressed hashes.
 
-[Independent saved-data checkpoint audit](casefix/audit/checkpoint.json) · [Machine-readable summary and selected raw links](casefix/summary.json) · [Correctness admission](casefix/admission.json) · [Native source/build bindings](casefix/native/build.json) · [Pinned inputs, libraries and indexes](casefix/setup.json).
+[Independent saved-data complete audit](casefix/audit/resumed-all.json) · [Machine-readable summary and selected raw links](casefix/summary.json) · [Correctness admission](casefix/admission.json) · [Native source/build bindings](casefix/native/build.json) · [Pinned inputs, libraries and indexes](casefix/setup.json).
 
 ## Foundations and reproduction
 

@@ -49,6 +49,16 @@ Same-run non-genome, g=16 KiB, ACEAPEX / zstd: [enwik8](../../evidence/hw-region
 
 [written by ChatGPT (AI) at the author's request; checked by the author]
 
+**Genome-coordinate chr1 — 2026-11-26 UTC** · 16,384 case-preserved bases; ace-core EPYC 4344P/CPU0, warm RAM archives; 1,000 requests. Cells: stored B · p50 / p99 µs.
+
+| ACEAPEX 2.6.5 | zstd 1.5.7 | BGZF / HTSlib 1.24 | .2bit-casefix (storeMasked=1) |
+|---:|---:|---:|---:|
+| 60,440,787 · 41.357 / 61.724 | 83,924,190 · 46.997 / 66.293 | 80,071,586 · 41.526 / 59.931 | 64,895,635 · 88.965 / 171.828 |
+
+[Coordinate report, original diagnostics and audit](../../evidence/hw-region-2/casefix/RESULTS.md).
+
+[written by ChatGPT (AI) at the author's request; checked by the author]
+
 ## Historical chr1 snapshot — 2026-09-10 (ACEAPEX before v2.1.0)
 
 | Codec | Granularity | Ratio | p50 ms | p99 ms | Amplification |

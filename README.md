@@ -41,6 +41,16 @@ Full hg38 chr1 FASTA (253,935,557 bytes), R=16 KiB, archive in RAM; ratio = inpu
 
 Same-run non-genome, g=16 KiB, ACEAPEX / zstd: [enwik8](evidence/hw-region-1/cases/enwik8-g16384.json) p50 = 2.45, stored bytes = 41,649,923 / 42,939,459; [silesia](evidence/hw-region-1/cases/silesia-g16384.json) p50 = 2.82, stored bytes = 76,265,370 / 79,417,442. Within 2026-11-26, ACEAPEX / zstd: p50 = 0.785039; p99 = 1.151997; stored bytes = 0.720183; amplification = 2.998125. [Historical rows](results.jsonl) · [Run report](evidence/hw-region-1/RESULTS.md) · [Saved primary cell](evidence/hw-region-1/cases/chr1-g16384.json) · [Pinned versions, CLI/header strings and build metadata](evidence/hw-region-1/setup.json). Historical rows below retain their original sources and hosts.
 
+[written by ChatGPT (AI) at the author's request; checked by the author]
+
+**Genome-coordinate chr1 — 2026-11-26 UTC** · 16,384 case-preserved bases; ace-core EPYC 4344P/CPU0, warm RAM archives; 1,000 requests. Cells: stored B · p50 / p99 µs.
+
+| ACEAPEX 2.6.5 | zstd 1.5.7 | BGZF / HTSlib 1.24 | .2bit-casefix (storeMasked=1) |
+|---:|---:|---:|---:|
+| 60,440,787 · 41.357 / 61.724 | 83,924,190 · 46.997 / 66.293 | 80,071,586 · 41.526 / 59.931 | 64,895,635 · 88.965 / 171.828 |
+
+[Coordinate report, original diagnostics and audit](evidence/hw-region-2/casefix/RESULTS.md).
+
 ## Example pick frontier — chrX
 
 Retained PR #79 evidence (accepted attempt 2), CPU, 16 KiB reads; not a new benchmark.

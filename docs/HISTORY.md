@@ -2301,3 +2301,13 @@ measurements.
 [written by ChatGPT (AI) at the author's request; checked by the author]
 
 - HW-REGION-2 casefix checkpoint `complete-grid-31`: retained raw outputs and hash-bound receipts under evidence/hw-region-2/casefix/. Original Kill and P1-P3 unchanged; draft PR97, no upstream post or merge.
+
+[written by ChatGPT (AI) at the author's request; checked by the author]
+
+## HW-REGION-2 completed after renewed admission — 2026-11-26
+
+- Owner admission amendment ae843131 preceded every new attempt; resume controller a85999d3c35ce5648a59575b1abdff68cafa04b1 retained all 112 earlier CLEAN units and the original three admission-only LOADED receipts. The replacement T2T-15/original_mask1 unit used 1 actual attempt(s), 0 LOADED. All later cells use the same binaries, archives, seeds, offsets and frozen execution source cohort e9b3a276. No CLEAN measurement was repeated.
+- Complete grid: 31 corpora / 186 main rows plus 16 method units, 206 total attempts, 4 retained LOADED attempts, 206000 accepted query timings. Independent public-only resumed-all audit PASS verifies the alias, complete raw inventory, poll-to-attempt bindings, waiting intervals, old CLEAN hashes and exact quantiles. All original forecasts and criteria are unchanged: P1 HIT, P2 MISS, P3 HIT; P3 has 30/30 strict casefix p50 wins.
+- RESULTS includes casefix/storeMasked=1 as the main .2bit row, unchanged masked reader as a time-only diagnostic and mask-disabled output separately as non-equivalent. Full-archive analysis identifies 181 N/soft-mask overlap positions on chr1, first 121757469 one-based. Host scope remains ace-core EPYC 4344P / CPU0, warm archives in RAM; open time and whole-process RSS remain explicit. The separate terminal-packed-byte limitation stays unpatched and outside the frozen sampled endpoints.
+- README and ACEAPEX snapshots now include the dated four-reader coordinate numbers, keeping all older rows and scopes. README has 150 lines. All 435 historical measurement rows remain byte-identical. Publication integrity, static build, local links and eight publication regressions passed; standalone adapter correctness remains PASS without another native correctness pass. See casefix/resumed-publication-checks.json and audit/resumed-all.json.
+- Keep PR #97 draft; no upstream post or merge. Next bounded action: owner/controller review of the full table and unchanged forecast verdicts. Normal mandatory CI runs on the final push.
