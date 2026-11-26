@@ -2206,3 +2206,11 @@ measurements.
 - HW-REGION-1 checkpoint `decide`: retained raw attempts and hash-bound results under evidence/hw-region-1/. No external issue or merge.
 
 - HW-REGION-1 checkpoint `final-audit`: retained raw attempts and hash-bound results under evidence/hw-region-1/. No external issue or merge.
+
+## HW-REGION-1 completed — 2026-11-26
+
+- Draft PR #96, branch `hw-region-1`; unchanged CALIBRATION first in `8108834615cbd651f79f77cb8d81fed24fa269f1`. Native/controller freeze `402b8c9` / `07b8d26`; saved-data audit/report source at `46e631cedce8f833cf17797d8c54ab0c820e2b2c`.
+- All 95 cases / 285 comparative codec cells, three AA gates and four standalone zstd sizes are complete on ace-core EPYC 4344P, CPU0, RAM archives. Counts: {"accepted_timing_observations": 295000, "attempts": 300, "counter_requests": 285000, "loaded_attempts": 8, "logical_units": 292, "retaken": 6}.
+- Primary chr1 g=R=16 KiB: ACEAPEX p50/p99 32711/54592 ns, zstd-seekable 41668/47389 ns, BGZF 42280/46257 ns. Complete bytes incl. indexes 60440764 / 83924167 / 80071563. P1 MISS; Kill triggered, outcome (a). P2 NOT TESTED: Kill; only primary decomposition retained. P3 MISS. NNLS c_call=0, c_byte=11567801/17895424 ns/B; primary model overpredicts by 29.5%, not an estimate of zero physical call overhead. T2T losses remain visible.
+- Independent final audit PASS, no unavailable private artifacts; full restores and retained region outputs checked independently with GNU dd+cmp. See `evidence/hw-region-1/audit/final.json`, `RESULTS.md`, `TABLE.csv`, `publication-checks.json`. Historical 435 measurement rows and HW-GIFT evidence unchanged.
+- Active adapter now pins v2.6.5 tag 8fd46ca -> ce6b674; old adapter retained byte-for-byte as aceapex_v220.sh and the manual v220 workflow routes to it. Current CLI prints 2.6.5-dev, C99 header literal remains 2.6.4; linked zstd is 1.5.7. No codec source change, no extra decomposition after Kill, no upstream message or merge. Next bounded step: owner/controller review of draft PR #96 and its complete evidence.

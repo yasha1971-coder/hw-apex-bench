@@ -23,6 +23,22 @@ for codec in bgzip zstd_seekable xz; do ./run.sh --check "codecs/$codec.sh" || e
 - No concurrent workload is measured.
 - ACEAPEX is developed by the author of this benchmark.
 
+[written by ChatGPT (AI) at the author's request; checked by the author]
+
+## Same-run chr1 refresh — 2026-11-26
+
+HW-REGION-1: full hg38 chr1 FASTA (253,935,557 bytes), g=R=16 KiB, 1,000 uniform requests per format. One pinned core on ace-core (AMD EPYC 4344P), persistent library handles, archive in RAM.
+
+| Codec / source version | Stored bytes incl. indexes | Ratio | p50 ms | p99 ms | Mean amplification |
+|---|---:|---:|---:|---:|---:|
+| ACEAPEX tag v2.6.5 interactive (L2) | 60,440,764 | 4.201396 | 0.032711 | 0.054592 | 5.996250 |
+| zstd-seekable 1.5.7 (L3) | 83,924,167 | 3.025774 | 0.041668 | 0.047389 | 2.000000 |
+| BGZF / HTSlib 1.24 (L6) | 80,071,563 | 3.171358 | 0.042280 | 0.046257 | 2.000000 |
+
+ACEAPEX has lower p50 and fewer stored bytes here; its p99 and amplification are higher than both alternatives. Its p50/zstd ratio is 0.785039: outcome (a), so the older chr1 ranking is stale for this scope.
+
+[Run report](evidence/hw-region-1/RESULTS.md) · [Saved primary cell](evidence/hw-region-1/cases/chr1-g16384.json) · [Pinned versions, CLI/header strings and build metadata](evidence/hw-region-1/setup.json). Historical rows below retain their original sources and hosts.
+
 ## Example pick frontier — chrX
 
 Retained PR #79 evidence (accepted attempt 2), CPU, 16 KiB reads; not a new benchmark.
