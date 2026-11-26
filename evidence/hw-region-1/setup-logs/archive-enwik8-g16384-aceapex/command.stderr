@@ -1,0 +1,12 @@
+[*] Compress: /home/ubuntu/hw-apex-bench-hw-region-1/.work/hw-region-1/inputs/enwik8 (100.00 MB) threads=1
+  Original:        100000000 bytes
+  Compressed:       41259199 bytes
+  Ratio:  2.42370x
+  Phase LZ77:    1.001s
+  Phase lit/zstd:0.401s
+  Phase FSE:     0.017s
+  Phase fread:   0.006s
+  Phase sha256:  0.003s
+  Phase other:   0.021s
+  Encode: 69.03 MB/s  (1.449s)
+  XXH3:   e5cbe56bb1579db8
