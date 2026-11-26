@@ -2028,3 +2028,5 @@ measurements.
 - HW-REGION-1 checkpoint `case-case-t2t-01-g4096`: retained raw attempts and hash-bound results under evidence/hw-region-1/. No external issue or merge.
 
 - HW-REGION-1 checkpoint `case-case-t2t-01-g16384`: retained raw attempts and hash-bound results under evidence/hw-region-1/. No external issue or merge.
+
+- HW-REGION-1 checkpoint `case-case-t2t-01-g65536`: retained raw attempts and hash-bound results under evidence/hw-region-1/. No external issue or merge.
