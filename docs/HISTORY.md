@@ -1992,3 +1992,5 @@ measurements.
 - The completed experiment's frozen renderers, audits, measurements, RESULTS.md and TABLE.csv remain unchanged. A future re-render must receive the required signature before delivery. Legacy 1c/1d evidence is retained as accepted. No measurement, upstream message or merge was performed for this policy update.
 
 - HW-REGION-1 checkpoint `setup`: retained raw attempts and hash-bound results under evidence/hw-region-1/. No external issue or merge.
+
+- HW-REGION-1 checkpoint `primary-archives`: retained raw attempts and hash-bound results under evidence/hw-region-1/. No external issue or merge.
