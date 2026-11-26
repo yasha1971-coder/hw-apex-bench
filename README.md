@@ -43,13 +43,15 @@ Same-run non-genome, g=16 KiB, ACEAPEX / zstd: [enwik8](evidence/hw-region-1/cas
 
 [written by ChatGPT (AI) at the author's request; checked by the author]
 
-**Genome-coordinate chr1 — 2026-11-26 UTC** · 16,384 case-preserved bases; ace-core EPYC 4344P/CPU0, warm RAM archives; 1,000 requests. Cells: stored B · p50 / p99 µs.
+**Genome-coordinate chr1 / T2T — 2026-11-26 UTC** · 16,384 case-preserved bases; ace-core EPYC 4344P/CPU0, warm RAM archives; 1,000 requests per corpus. Cells: stored B · p50 / p99 µs; T2T cells are medians of 30 per-window values.
 
-| ACEAPEX 2.6.5 | zstd 1.5.7 | BGZF / HTSlib 1.24 | .2bit-casefix (storeMasked=1) |
-|---:|---:|---:|---:|
-| 60,440,787 · 41.357 / 61.724 | 83,924,190 · 46.997 / 66.293 | 80,071,586 · 41.526 / 59.931 | 64,895,635 · 88.965 / 171.828 |
+| UTC / corpus | ACEAPEX 2.6.5 | zstd 1.5.7 | BGZF / HTSlib 1.24 | .2bit-casefix (storeMasked=1) | lib2bit-casefix + binary search (reader change, not upstream) |
+|---|---:|---:|---:|---:|---:|
+| 2026-11-26 chr1 | 60,440,787 · 41.357 / 61.724 | 83,924,190 · 46.997 / 66.293 | 80,071,586 · 41.526 / 59.931 | 64,895,635 · 88.965 / 171.828 | n/a — separate row |
+| 2026-11-26 chr1, reader addition | n/a — retained above | n/a — retained above | n/a — retained above | n/a — retained above | 64,895,635 · 9.348 / 13.155 |
+| 2026-11-26 T2T-30 | 563,848 · 33.6075 / 61.8510 | 737,801 · 44.8390 / 58.7100 | 686,035 · 39.2130 / 51.7565 | 592,407 · 9.6180 / 11.8820 | n/a — chr1 only |
 
-[Coordinate report, original diagnostics and audit](evidence/hw-region-2/casefix/RESULTS.md).
+[Registered coordinate rows](evidence/hw-region-2/casefix/RESULTS.md) · [Separate reader change and audit](evidence/hw-region-2/binary-search/RESULTS.md).
 
 ## Example pick frontier — chrX
 
@@ -113,8 +115,7 @@ Follow [CONTRIBUTING.md](CONTRIBUTING.md) for native companions and provenance.
 ## Read the evidence
 
 The overview is generated from [results.jsonl](results.jsonl), never edited by hand.
-The published 435 records retain their original bytes and separate evidence scopes.
-No rounded display value replaces the underlying record.
+The published 435 records retain their original bytes and separate evidence scopes. No rounded display value replaces the underlying record.
 
 [PROVENANCE.md](docs/PROVENANCE.md) explains row identities, commands and hashes.
 [CODECS.md](docs/CODECS.md) explains configuration choices and backend differences.
@@ -127,8 +128,7 @@ The strict c(g) run uses its own baseline and configuration; do not splice it
 into the interactive/dense CPU rows as though it were the same experiment.
 Current open-profile GPU rows are measured external Colab evidence with retained logs; older owner-declared GPU observations remain historical.
 
-The Pages explorer selects only measured profile points, without interpolation.
-Unavailable comparisons stay visible with their reasons.
+The Pages explorer selects only measured profile points, without interpolation. Unavailable comparisons stay visible with their reasons.
 Its tables provide the same values as the graph for keyboard and screen-reader users.
 The detailed result pages retain commands and scope for reviewing each conclusion.
 

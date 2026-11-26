@@ -115,8 +115,7 @@ Follow [CONTRIBUTING.md](CONTRIBUTING.md) for native companions and provenance.
 ## Read the evidence
 
 The overview is generated from [results.jsonl](results.jsonl), never edited by hand.
-The published 435 records retain their original bytes and separate evidence scopes.
-No rounded display value replaces the underlying record.
+The published 435 records retain their original bytes and separate evidence scopes. No rounded display value replaces the underlying record.
 
 [PROVENANCE.md](docs/PROVENANCE.md) explains row identities, commands and hashes.
 [CODECS.md](docs/CODECS.md) explains configuration choices and backend differences.
@@ -129,8 +128,7 @@ The strict c(g) run uses its own baseline and configuration; do not splice it
 into the interactive/dense CPU rows as though it were the same experiment.
 Current open-profile GPU rows are measured external Colab evidence with retained logs; older owner-declared GPU observations remain historical.
 
-The Pages explorer selects only measured profile points, without interpolation.
-Unavailable comparisons stay visible with their reasons.
+The Pages explorer selects only measured profile points, without interpolation. Unavailable comparisons stay visible with their reasons.
 Its tables provide the same values as the graph for keyboard and screen-reader users.
 The detailed result pages retain commands and scope for reviewing each conclusion.
 
@@ -272,6 +270,37 @@ def render_region_coordinates():
         require(row['equivalent'] is True and all(type(row[k]) is int and row[k] > 0 for k in ('stored_bytes', 'p50_ns', 'p99_ns')),
                 'invalid coordinate primary values')
         cells.append(f"{row['stored_bytes']:,} · {row['p50_ns']/1000:.3f} / {row['p99_ns']/1000:.3f}")
+    extension = base.parent / 'binary-search'
+    extra_path = extension / 'summary.json'
+    if extra_path.is_file():
+        from fractions import Fraction
+        extra = json.loads(extra_path.read_bytes())
+        checked = (root / extra['audit']['path']).resolve()
+        require(checked.is_relative_to(extension.resolve()) and checked.is_file()
+                and hashlib.sha256(checked.read_bytes()).hexdigest() == extra['audit']['sha256'], 'reader-addition audit changed')
+        require(extra['schema'] == 'hw-region-2-binary-search-summary-v1' and extra['status'] == 'COMPLETE'
+                and json.loads(checked.read_bytes())['status'] == 'PASS'
+                and extra['renderer_sha256'] == hashlib.sha256((extension / 'report.py').read_bytes()).hexdigest()
+                and extra['original_summary']['sha256'] == hashlib.sha256(path.read_bytes()).hexdigest(), 'reader addition is not complete/audited')
+        main = extra['main']
+        label = 'lib2bit-casefix + binary search (reader change, not upstream)'
+        require(main['label'] == label and main['corpus'] == 'chr1' and main['stored_bytes'] == value['primary']['twobit_casefix_mask1']['stored_bytes'],
+                'reader addition changed archive or identity')
+        added = f"{main['stored_bytes']:,} · {main['p50_ns']/1000:.3f} / {main['p99_ns']/1000:.3f}"
+        medians = []
+        for profile in profiles:
+            r = extra['T2T_median_per_window'][profile]
+            stored = Fraction(r['stored_bytes'])
+            require(stored.denominator == 1, 'window median stored bytes need an exact display')
+            medians.append(f"{stored.numerator:,} · {float(Fraction(r['p50_ns'])/1000):.4f} / {float(Fraction(r['p99_ns'])/1000):.4f}")
+        return ("[written by ChatGPT (AI) at the author's request; checked by the author]\n\n"
+                "**Genome-coordinate chr1 / T2T — 2026-11-26 UTC** · 16,384 case-preserved bases; ace-core EPYC 4344P/CPU0, warm RAM archives; 1,000 requests per corpus. Cells: stored B · p50 / p99 µs; T2T cells are medians of 30 per-window values.\n\n"
+                "| UTC / corpus | ACEAPEX 2.6.5 | zstd 1.5.7 | BGZF / HTSlib 1.24 | .2bit-casefix (storeMasked=1) | " + label + " |\n"
+                "|---|---:|---:|---:|---:|---:|\n"
+                "| 2026-11-26 chr1 | " + ' | '.join(cells) + " | n/a — separate row |\n"
+                "| 2026-11-26 chr1, reader addition | n/a — retained above | n/a — retained above | n/a — retained above | n/a — retained above | " + added + " |\n"
+                "| 2026-11-26 T2T-30 | " + ' | '.join(medians) + " | n/a — chr1 only |\n\n"
+                "[Registered coordinate rows](evidence/hw-region-2/casefix/RESULTS.md) · [Separate reader change and audit](evidence/hw-region-2/binary-search/RESULTS.md).\n\n")
     return ("[written by ChatGPT (AI) at the author's request; checked by the author]\n\n"
             f"**Genome-coordinate chr1 — {value['date_label']} UTC** · "
             "16,384 case-preserved bases; ace-core EPYC 4344P/CPU0, warm RAM archives; 1,000 requests. Cells: stored B · p50 / p99 µs.\n\n"

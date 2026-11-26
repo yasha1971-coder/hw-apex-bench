@@ -2,7 +2,7 @@
 
 # HW-REGION-2 — casefix continuation
 
-**COMPLETE.** All 31 corpora / 186 main rows passed the resumed saved-data audit; the original load stop remains retained.
+**COMPLETE.** All 31 corpora / 186 registered main rows passed the resumed saved-data audit; one supplementary chr1 reader row is separately audited; the original load stop remains retained.
 
 The retained [original Kill](RESULTS-before-casefix.md) and its captures remain unchanged. The owner-authorized one-line [casefix](lib2bit-casefix.patch) is the only lib2bit source change; no Kent/UCSC implementation or binary is used. [Full casefix stage report](casefix/RESULTS.md).
 
@@ -15,6 +15,12 @@ Equivalent rows return the same 16,384 case-preserved bases. ACEAPEX 2.6.5 inter
 Main-cell protocol: a fresh process, one persistent handle, the same 12 warmups and 1000 saved starts mapped without resampling. Query timers include malloc-returning API work and ACE/zstd FAI span calculation, decode and newline removal. Validation, capture and free are outside. Open time is a separate single observation (n=1), excluding preload; RSS delta is after-open minus before-open, and peak RSS is the entire process including reference preparation, capture buffers, archive prefault and reader allocations. Neither is library-exclusive memory.
 
 Recorded timing boundaries: **2026-11-26T17:40:09.671004+00:00 → 2026-11-26T19:03:40.406329+00:00 UTC**; ace-core, AMD EPYC 4344P 8-Core Processor, kernel 5.15.0-163-generic, governor schedutil, pinned core 0. Dates come from retained start/end receipts.
+
+## Why chr1 differs from the T2T windows
+
+On chr1, lib2bit-casefix/storeMasked=1 has p50 **88.965 µs**, versus **6.823 µs** with storeMasked=0 (case-folded output, not equivalent). Pinned [softMask(), 2bit.c:139](https://github.com/dpryan79/lib2bit/blob/58e20daa898a6fc338eae82e5d2ef7108d4fc07f/2bit.c#L133-L158) starts its mask-table scan at index 0 for every query and skips ended blocks until the query; its work therefore grows with the number of preceding mask blocks. The unchanged chr1 archive has **331,893** mask blocks; the 30 T2T windows have median **8509.5**, range **34–15,137** (middle windows: 7,994 and 9,025 blocks). Static replay of the frozen chr1 requests gives median **184,885** old loop entries versus **43** search-plus-body inspections; these are operation counts, not timed components. The separate binary-search reader returns identical case-preserved bytes, with p50/p99 **9.348 / 13.155 µs** and unchanged archive bytes. On the measured chr1 workload, the .2bit latency penalty is driven by lib2bit's linear mask lookup, not a requirement of the format; the T2T windows show the same format with much smaller mask tables.
+
+[Separately preregistered reader addition, method checks and raw audit](binary-search/RESULTS.md). B1 **HIT**; the supplementary row below is excluded from original P1-P3.
 
 ## Owner-authorized continuation
 
@@ -73,6 +79,7 @@ The fixed reader passed the mandatory repeated lowercase-n witness and whole sam
 | chr1 | zstd-seekable 1.5.7 L3 | 83924190 | 46.997 | 66.293 | 202.064 | 732 | 116620 |
 | chr1 | BGZF / HTSlib 1.24 L6 | 80071586 | 41.526 | 59.931 | 241.017 | 516 | 112588 |
 | chr1 | lib2bit-casefix (storeMasked=1) | 64895635 | 88.965 | 171.828 | 1163.393 | 5100 | 104300 |
+| chr1 | lib2bit-casefix + binary search (reader change, not upstream) | 64895635 | 9.348 | 13.155 | 1159.446 | 5088 | 103968 |
 | chr1 | lib2bit (storeMasked=1): not byte-equal: N in soft-masked runs | — | 97.169 | 180.033 | 1094.847 | — | — |
 | chr1 | lib2bit (storeMasked=0): case-folded, not equivalent | 64895635 | 6.823 | 9.248 | 12.804 | 0 | 104788 |
 | t2t-00 | ACEAPEX 2.6.5 interactive L2 | 197011 | 44.442 | 80.148 | 14.917 | 0 | 35664 |
