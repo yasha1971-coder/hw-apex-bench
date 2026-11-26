@@ -1,0 +1,33 @@
+test_seq_build_keeps_case_and_rejects_nonsequence_bytes (test_twobit_sequence.SequenceAdapter.test_seq_build_keeps_case_and_rejects_nonsequence_bytes) ... ok
+test_seq_fetch_casefix_preserves_lowercase_n (test_twobit_sequence.SequenceAdapter.test_seq_fetch_casefix_preserves_lowercase_n) ... ok
+test_streaming_digest_spans_multiple_chunks (test_twobit_sequence.SequenceAdapter.test_streaming_digest_spans_multiple_chunks) ... ok
+test_default_discovery_retains_byte_adapters_and_reports_sequence_skip (test_adapter_domains.AdapterDomains.test_default_discovery_retains_byte_adapters_and_reports_sequence_skip) ... ok
+test_malformed_domain_is_not_silently_skipped (test_adapter_domains.AdapterDomains.test_malformed_domain_is_not_silently_skipped) ... ok
+test_nonbyte_domain_cannot_advertise_generic_byte_support (test_adapter_domains.AdapterDomains.test_nonbyte_domain_cannot_advertise_generic_byte_support) ... ok
+test_bad_restore_never_receives_success_receipt (test_check_adapter.CheckContract.test_bad_restore_never_receives_success_receipt) ... ok
+test_concurrent_check_cannot_replace_receipt (test_check_adapter.CheckContract.test_concurrent_check_cannot_replace_receipt) ... ok
+test_empty_na_reason_rejected (test_check_adapter.CheckContract.test_empty_na_reason_rejected) ... ok
+test_external_cli_only_adapter_without_native_library (test_check_adapter.CheckContract.test_external_cli_only_adapter_without_native_library) ... ok
+test_missing_required_function_rejected_before_build (test_check_adapter.CheckContract.test_missing_required_function_rejected_before_build) ... ok
+test_sequence_domain_rejected_before_build_or_fixtures (test_check_adapter.CheckContract.test_sequence_domain_rejected_before_build_or_fixtures) ... ok
+test_active_check_blocks_planning (test_axis_planner.PlannerTests.test_active_check_blocks_planning) ... ok
+test_changed_adapter_rejected (test_axis_planner.PlannerTests.test_changed_adapter_rejected) ... ok
+test_changed_built_binary_rejected (test_axis_planner.PlannerTests.test_changed_built_binary_rejected) ... ok
+test_changed_configuration_rejected_without_source_change (test_axis_planner.PlannerTests.test_changed_configuration_rejected_without_source_change) ... ok
+test_changed_declared_input_rejected (test_axis_planner.PlannerTests.test_changed_declared_input_rejected) ... ok
+test_changed_state_during_dispatch_discards_output (test_axis_planner.PlannerTests.test_changed_state_during_dispatch_discards_output) ... ok
+test_failed_receipt_rejected (test_axis_planner.PlannerTests.test_failed_receipt_rejected) ... ok
+test_missing_backend_blocks_instead_of_fabricating_na (test_axis_planner.PlannerTests.test_missing_backend_blocks_instead_of_fabricating_na) ... ok
+test_missing_fixture_evidence_rejected (test_axis_planner.PlannerTests.test_missing_fixture_evidence_rejected) ... ok
+test_modified_plan_rejected_before_handler (test_axis_planner.PlannerTests.test_modified_plan_rejected_before_handler) ... ok
+test_nine_axes_and_adapter_owned_reasons (test_axis_planner.PlannerTests.test_nine_axes_and_adapter_owned_reasons) ... ok
+test_old_receipt_rejected (test_axis_planner.PlannerTests.test_old_receipt_rejected) ... ok
+test_sequence_domain_rejected_before_receipt_or_backend (test_axis_planner.PlannerTests.test_sequence_domain_rejected_before_receipt_or_backend) ... ok
+test_supported_dispatch_and_no_unsupported_calls (test_axis_planner.PlannerTests.test_supported_dispatch_and_no_unsupported_calls) ... ok
+test_unknown_axis_rejected (test_axis_planner.PlannerTests.test_unknown_axis_rejected) ... ok
+test_exhaustive_reasons_from_each_adapter (test_resident_xz.Capabilities.test_exhaustive_reasons_from_each_adapter) ... ok
+
+----------------------------------------------------------------------
+Ran 28 tests in 4.846s
+
+OK

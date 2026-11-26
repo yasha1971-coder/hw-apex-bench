@@ -1,0 +1,2 @@
+STOP: generic byte qualification/planning excludes this input/coordinate domain; use the adapter sequence interface (seq-build/seq-fetch)
+Build/check log: /home/ubuntu/hw-apex-bench-hw-region-2/.work/hw-region-2/casefix/domain-rejection/twobit-242411693f/check.log
