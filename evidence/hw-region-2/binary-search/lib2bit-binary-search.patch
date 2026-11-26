@@ -1,0 +1,19 @@
+--- a/2bit.c
++++ b/2bit.c
+@@ -136,7 +136,15 @@
+ 
+     if(!tb->idx->maskBlockStart) return;
+ 
+-    for(i=0; i<tb->idx->maskBlockCount[tid]; i++) {
++    uint32_t lo = 0, hi = tb->idx->maskBlockCount[tid];
++    while(lo < hi) {
++        uint32_t mid = lo + (hi - lo) / 2;
++        uint64_t limit = (uint64_t)tb->idx->maskBlockStart[tid][mid]
++                       + tb->idx->maskBlockSizes[tid][mid];
++        if(limit <= start) lo = mid + 1;
++        else hi = mid;
++    }
++    for(i=lo; i<tb->idx->maskBlockCount[tid]; i++) {
+         blockStart = tb->idx->maskBlockStart[tid][i];
+         blockEnd = blockStart + tb->idx->maskBlockSizes[tid][i];
+         if(blockEnd <= start) continue;
