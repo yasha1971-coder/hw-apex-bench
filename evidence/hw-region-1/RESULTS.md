@@ -31,7 +31,15 @@ Kill stops decomposition beyond the primary cell. The three-format comparative g
 
 ACEAPEX has lower p50 and fewer stored bytes in this cell; its p99 and physical amplification are higher than both alternatives. The full grid below is retained without pooling windows into a new forecast HIT.
 
-The primary outcome does not generalize to the window set. For example, the frozen t2t-00/g16384 cell has ACEAPEX p50 25868 ns / stored 112758 B, zstd-seekable p50 11932 ns / stored 102259 B, BGZF p50 10349 ns / stored 99992 B. Every window result remains visible below; no pooled window latency replaces these comparisons.
+Across all thirty frozen T2T windows at each g, the counts below use strict comparisons of the saved integers before rounding; the latency ratio is the arithmetic mean of the thirty individual ACE p50 / zstd p50 ratios. Density is input bytes / complete stored bytes, including indexes.
+
+| g B | ACE p50 < zstd /30 | ACE p50 < BGZF /30 | ACE p99 < zstd /30 | ACE stored < zstd /30 | Mean of 30 individual ACE/zstd p50 ratios | Slow / other n | ACE density median, slow / other |
+|---:|---:|---:|---:|---:|---:|---:|---:|
+| 4096 | 25 | 25 | 1 | 30 | 0.869021 | 5 / 25 | 17.232569 / 3.667991 |
+| 16384 | 24 | 25 | 0 | 28 | 0.868023 | 6 / 24 | 26.073618 / 3.819663 |
+| 65536 | 26 | 25 | 22 | 22 | 0.943024 | 4 / 26 | 30.278059 / 3.879213 |
+
+t2t-00 is a minority slower-than-zstd example at g=4096/16384/65536 B; slower groups have higher median ACE compression ratios at g=4096/16384/65536 B, but density ranges overlap at g=4096/16384/65536 B and this descriptive association does not establish a causal explanation.
 
 ## Two-constant calibration and the one permitted decomposition
 
@@ -144,7 +152,7 @@ Chr1 retains the complete supplied FASTA bytes (MD5 `9465e0f0df6e2c6eb39729c39ce
 
 [Setup and origin coordinates](setup.json) · [Native build](native/build.json) · [Frozen manifest](../t2t-regions-20260916/manifest.json). The prior v2.2.0 adapter remains as `codecs/aceapex_v220.sh`; the active adapter changes only its release pin, label and version.
 
-Source foundations: [SOURCE_PATHS.md:56](SOURCE_PATHS.md#actual-persistent-read-path-and-work-counters) documents the persistent decoder/cache and actual API counters. [ACEAPEX_SNAPSHOTS.md:34](../../docs/RESULTS/ACEAPEX_SNAPSHOTS.md#same-run-chr1-refresh--2026-11-26) contains this same-run refresh; [the preserved historical chr1 table, line 58](../../docs/RESULTS/ACEAPEX_SNAPSHOTS.md#historical-chr1-snapshot--2026-09-10-aceapex-before-v210) belongs to its older sources/host and supports no numerical cross-host speedup claim here.
+Source foundations: [SOURCE_PATHS.md:56](SOURCE_PATHS.md#actual-persistent-read-path-and-work-counters) documents the persistent decoder/cache and actual API counters. [ACEAPEX_SNAPSHOTS.md:34](../../docs/RESULTS/ACEAPEX_SNAPSHOTS.md#same-run-chr1-refresh--2026-11-26) contains this same-run refresh; [the preserved historical chr1 table, line 60](../../docs/RESULTS/ACEAPEX_SNAPSHOTS.md#historical-chr1-snapshot--2026-09-10-aceapex-before-v210) belongs to its older sources/host and supports no numerical cross-host speedup claim here.
 
 ## Foundations and closed directions
 

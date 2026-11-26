@@ -49,6 +49,8 @@ Full hg38 chr1 FASTA (253,935,557 bytes), R=16 KiB, archive in RAM; ratio = inpu
 | 2026-11-26 · HW-REGION-1 | BGZF / HTSlib 1.24 (L6) | 16 KiB | 80,071,563 | 3.171358 | 0.042280 / 0.046257 | 2.000000 |
 | 2026-09-10 · historical | ACEAPEX 1b13df3 dense (L2) | 256 KiB | 67,167,236 | 3.780646 | 1.330098 / 2.523226 | 83.431872 |
 
+Same-run non-genome, g=16 KiB, ACEAPEX / zstd: [enwik8](../../evidence/hw-region-1/cases/enwik8-g16384.json) p50 = 2.45, stored bytes = 41,649,923 / 42,939,459; [silesia](../../evidence/hw-region-1/cases/silesia-g16384.json) p50 = 2.82, stored bytes = 76,265,370 / 79,417,442.
+
 Within 2026-11-26, ACEAPEX / zstd: p50 = 0.785039; p99 = 1.151997; stored bytes = 0.720183; amplification = 2.998125.
 
 [Historical rows](../../results.jsonl) · [Run report](../../evidence/hw-region-1/RESULTS.md) · [Saved primary cell](../../evidence/hw-region-1/cases/chr1-g16384.json) · [Pinned versions, CLI/header strings and build metadata](../../evidence/hw-region-1/setup.json). Historical rows below retain their original sources and hosts.
