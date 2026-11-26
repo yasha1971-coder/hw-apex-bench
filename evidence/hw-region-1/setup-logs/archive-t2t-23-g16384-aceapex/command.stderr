@@ -1,0 +1,12 @@
+[*] Compress: /home/ubuntu/hw-apex-bench-hw-region-1/.work/hw-region-1/inputs/chr11-annotation_complement.seq (2.10 MB) threads=1
+  Original:          2097152 bytes
+  Compressed:         551897 bytes
+  Ratio:  3.79990x
+  Phase LZ77:    0.003s
+  Phase lit/zstd:0.019s
+  Phase FSE:     0.000s
+  Phase fread:   0.000s
+  Phase sha256:  0.000s
+  Phase other:   0.000s
+  Encode: 94.24 MB/s  (0.022s)
+  XXH3:   c14b0f4f68fa7eb6
