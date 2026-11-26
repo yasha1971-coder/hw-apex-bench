@@ -1,0 +1,212 @@
+{
+  "schema": "hw-region-1-followup-checks-v1",
+  "status": "PASS",
+  "saved_data_only": true,
+  "new_measurements": 0,
+  "source_commit": "abc4aa13a85c857b07dc8243ad641b304fa3748b",
+  "original_complete_run": "0b619247bf89d0e22a8d2939f33194a40388c599",
+  "unchanged_measurement_paths": [
+    "results.jsonl",
+    "evidence/hw-gift-1",
+    "evidence/hw-gift-1b",
+    "evidence/hw-gift-1c",
+    "evidence/hw-gift-1d",
+    "evidence/hw-gift-1e",
+    "evidence/hw-region-1/CALIBRATION.md",
+    "evidence/hw-region-1/PROTOCOL.md",
+    "evidence/hw-region-1/setup.py",
+    "evidence/hw-region-1/instrument.py",
+    "evidence/hw-region-1/controls.py",
+    "evidence/hw-region-1/ovh_bench.py",
+    "evidence/hw-region-1/worker.c",
+    "evidence/hw-region-1/native_constants.c",
+    "evidence/hw-region-1/native_versions.c",
+    "evidence/hw-region-1/model.py",
+    "evidence/hw-region-1/run.py",
+    "evidence/hw-region-1/audit.py",
+    "evidence/hw-region-1/report.py",
+    "evidence/hw-region-1/raw",
+    "evidence/hw-region-1/counters",
+    "evidence/hw-region-1/cases",
+    "evidence/hw-region-1/units",
+    "evidence/hw-region-1/requests",
+    "evidence/hw-region-1/traces",
+    "evidence/hw-region-1/archives",
+    "evidence/hw-region-1/model",
+    "evidence/hw-region-1/decision.json",
+    "evidence/hw-region-1/audit",
+    "evidence/hw-region-1/TABLE.csv"
+  ],
+  "exact_request_byte_matches": 95000,
+  "tail_summary_sha256": "5f0663e1b07dc71e08672040f89be9e85ea759933fed4e1565d2b40ad6e32365",
+  "result_sha256": "00ae8ac8cff3e59596bac967eadb1d852826cdc97e8914475af1a9394f7b06bc",
+  "checks": [
+    {
+      "name": "generated-docs",
+      "command": [
+        "taskset",
+        "-c",
+        "15",
+        "/home/ubuntu/hw-apex-bench-hw-gift-1b/.work/hw-gift-1b/venv/bin/python",
+        "-B",
+        "harness/report.py"
+      ],
+      "returncode": 0,
+      "stdout": {
+        "path": "followup-logs/generated-docs.stdout",
+        "bytes": 56,
+        "sha256": "e100221c57d18c6649f58d04c9e9e72686c7d4efed05de756e0332184fb52649"
+      },
+      "stderr": {
+        "path": "followup-logs/generated-docs.stderr",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "name": "followup-report",
+      "command": [
+        "taskset",
+        "-c",
+        "15",
+        "/home/ubuntu/hw-apex-bench-hw-gift-1b/.work/hw-gift-1b/venv/bin/python",
+        "-B",
+        "evidence/hw-region-1/followup.py"
+      ],
+      "returncode": 0,
+      "stdout": {
+        "path": "followup-logs/followup-report.stdout",
+        "bytes": 86,
+        "sha256": "2e264bb6412e42048451b8a360f37d34b2c5398fa59bc40b563857c8534c3568"
+      },
+      "stderr": {
+        "path": "followup-logs/followup-report.stderr",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "name": "refresh-manifest",
+      "command": [
+        "taskset",
+        "-c",
+        "15",
+        "/home/ubuntu/hw-apex-bench-hw-gift-1b/.work/hw-gift-1b/venv/bin/python",
+        "-B",
+        "web/refresh_manifest.py"
+      ],
+      "returncode": 0,
+      "stdout": {
+        "path": "followup-logs/refresh-manifest.stdout",
+        "bytes": 30,
+        "sha256": "1a6eb6cd2c00795e3b1f73e7a6871e5df3a8e9a1a7c91a5ed44191ef2936b287"
+      },
+      "stderr": {
+        "path": "followup-logs/refresh-manifest.stderr",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "name": "validate-publication",
+      "command": [
+        "taskset",
+        "-c",
+        "15",
+        "/home/ubuntu/hw-apex-bench-hw-gift-1b/.work/hw-gift-1b/venv/bin/python",
+        "-B",
+        "web/validate_publication.py"
+      ],
+      "returncode": 0,
+      "stdout": {
+        "path": "followup-logs/validate-publication.stdout",
+        "bytes": 67,
+        "sha256": "7111d24421a1b6a46255ba7ac88299c9b411e09e1f2cba1c4a12413a2944d051"
+      },
+      "stderr": {
+        "path": "followup-logs/validate-publication.stderr",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "name": "build-site",
+      "command": [
+        "taskset",
+        "-c",
+        "15",
+        "/home/ubuntu/hw-apex-bench-hw-gift-1b/.work/hw-gift-1b/venv/bin/python",
+        "-B",
+        "web/build.py",
+        "/home/ubuntu/hw-apex-bench-hw-region-1/.work/hw-region-1/followup-site/index.html"
+      ],
+      "returncode": 0,
+      "stdout": {
+        "path": "followup-logs/build-site.stdout",
+        "bytes": 137,
+        "sha256": "13c010f83942cbd16bd92ff97b3eb1eadc7cc2aaac90ee88a3a523dde7dd6b0c"
+      },
+      "stderr": {
+        "path": "followup-logs/build-site.stderr",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "name": "local-links",
+      "command": [
+        "taskset",
+        "-c",
+        "15",
+        "/home/ubuntu/hw-apex-bench-hw-gift-1b/.work/hw-gift-1b/venv/bin/python",
+        "-B",
+        "web/check_links.py"
+      ],
+      "returncode": 0,
+      "stdout": {
+        "path": "followup-logs/local-links.stdout",
+        "bytes": 41,
+        "sha256": "79c22304ebb4f97f2ed14fb71c6dd0d3f9647d0736941e027407aec144cb14e0"
+      },
+      "stderr": {
+        "path": "followup-logs/local-links.stderr",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "name": "publication-tests",
+      "command": [
+        "taskset",
+        "-c",
+        "15",
+        "/home/ubuntu/hw-apex-bench-hw-gift-1b/.work/hw-gift-1b/venv/bin/python",
+        "-B",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "web",
+        "-p",
+        "test_publication.py",
+        "-v"
+      ],
+      "returncode": 0,
+      "stdout": {
+        "path": "followup-logs/publication-tests.stdout",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stderr": {
+        "path": "followup-logs/publication-tests.stderr",
+        "bytes": 1172,
+        "sha256": "7870f802232afaec970b6c033c8aee1996a52df81cebf56216f9837c7f5e8e79"
+      }
+    }
+  ],
+  "manifest_changed_entries": [
+    "README.md"
+  ],
+  "timing_ci_repeated": false,
+  "reason": "owner requested saved data only; original implementation CI passed at 0b619247bf89d0e22a8d2939f33194a40388c599"
+}

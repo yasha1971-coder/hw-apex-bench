@@ -1,0 +1,14 @@
+{
+  "base_report_sha256": "1ed492d9c5ab983b15afd9a677308906f6c5e2d0187f7ed7bbeeab6d755d9e26",
+  "fairness": "PASS",
+  "measurements_repeated": false,
+  "numerical_audit_sha256": "34143d5bd3a5d5559af6046037a3393c5867c68881afc9596676d8a144ec0914",
+  "numerical_renderer_sha256": "382af0b7da8558a3ab959db4e09552204328d42b6c8666cf4997930051acec81",
+  "result_sha256": "00ae8ac8cff3e59596bac967eadb1d852826cdc97e8914475af1a9394f7b06bc",
+  "saved_data_only": true,
+  "schema": "hw-region-1-followup-render-v1",
+  "source_sha256": "a347500ea2f0335c2797852fabe5d94800e96191eece216b4e7b38bc4b6f896f",
+  "status": "PASS",
+  "tail_renderer_sha256": "9878dc4c137ba5facac947d3075335759e48ba781c3edbeab4500655ef343fa2",
+  "tail_summary_sha256": "5f0663e1b07dc71e08672040f89be9e85ea759933fed4e1565d2b40ad6e32365"
+}

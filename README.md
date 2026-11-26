@@ -27,17 +27,25 @@ for codec in bgzip zstd_seekable xz; do ./run.sh --check "codecs/$codec.sh" || e
 
 ## Same-run chr1 refresh — 2026-11-26
 
-HW-REGION-1: full hg38 chr1 FASTA (253,935,557 bytes), g=R=16 KiB, 1,000 uniform requests per format. One pinned core on ace-core (AMD EPYC 4344P), persistent library handles, archive in RAM.
+Full hg38 chr1 FASTA (253,935,557 bytes), R=16 KiB, archive in RAM; ratio = input / stored bytes including required indexes. Each date has its own host, source, configuration and request sample.
 
-| Codec / source version | Stored bytes incl. indexes | Ratio | p50 ms | p99 ms | Mean amplification |
-|---|---:|---:|---:|---:|---:|
-| ACEAPEX tag v2.6.5 interactive (L2) | 60,440,764 | 4.201396 | 0.032711 | 0.054592 | 5.996250 |
-| zstd-seekable 1.5.7 (L3) | 83,924,167 | 3.025774 | 0.041668 | 0.047389 | 2.000000 |
-| BGZF / HTSlib 1.24 (L6) | 80,071,563 | 3.171358 | 0.042280 | 0.046257 | 2.000000 |
+2026-09-10: Intel Xeon 6973P-C, 200 requests per configuration; ACEAPEX 1b13df3 uses the one-shot `aceapex_decompress_region` API. BGZF g is a 64 KiB ceiling; ACE dense uses g=256 KiB.
 
-ACEAPEX has lower p50 and fewer stored bytes here; its p99 and amplification are higher than both alternatives. Its p50/zstd ratio is 0.785039: outcome (a), so the older chr1 ranking is stale for this scope.
+2026-11-26 (HW-REGION-1): one pinned core on ace-core (AMD EPYC 4344P), 1,000 uniform requests per format, persistent library handles, g=16 KiB for all three formats; ACE interactive LIT=65,536 B, FSE=4,096 B.
 
-[Run report](evidence/hw-region-1/RESULTS.md) · [Saved primary cell](evidence/hw-region-1/cases/chr1-g16384.json) · [Pinned versions, CLI/header strings and build metadata](evidence/hw-region-1/setup.json). Historical rows below retain their original sources and hosts.
+| Date / scope | Codec / source version | g | Stored bytes incl. indexes | Ratio | p50 / p99 ms | Mean amplification |
+|---|---|---:|---:|---:|---:|---:|
+| 2026-09-10 · historical | ACEAPEX 1b13df3 interactive (L2) | 16 KiB | 69,409,878 | 3.658493 | 0.129720 / 0.240419 | 6.216250 |
+| 2026-11-26 · HW-REGION-1 | ACEAPEX tag v2.6.5 / ce6b674 interactive (L2) | 16 KiB | 60,440,764 | 4.201396 | 0.032711 / 0.054592 | 5.996250 |
+| 2026-09-10 · historical | zstd-seekable 1.5.7 (L3) | 16 KiB | 83,924,167 | 3.025774 | 0.046046 / 0.059425 | 2.000000 |
+| 2026-11-26 · HW-REGION-1 | zstd-seekable 1.5.7 (L3) | 16 KiB | 83,924,167 | 3.025774 | 0.041668 / 0.047389 | 2.000000 |
+| 2026-09-10 · historical | BGZF / HTSlib 1.19 (L6) | ≤ 64 KiB | 75,072,042 | 3.382558 | 0.102141 / 0.212103 | 4.821094 |
+| 2026-11-26 · HW-REGION-1 | BGZF / HTSlib 1.24 (L6) | 16 KiB | 80,071,563 | 3.171358 | 0.042280 / 0.046257 | 2.000000 |
+| 2026-09-10 · historical | ACEAPEX 1b13df3 dense (L2) | 256 KiB | 67,167,236 | 3.780646 | 1.330098 / 2.523226 | 83.431872 |
+
+Within 2026-11-26, ACEAPEX / zstd: p50 = 0.785039; p99 = 1.151997; stored bytes = 0.720183; amplification = 2.998125.
+
+[Historical rows](results.jsonl) · [Run report](evidence/hw-region-1/RESULTS.md) · [Saved primary cell](evidence/hw-region-1/cases/chr1-g16384.json) · [Pinned versions, CLI/header strings and build metadata](evidence/hw-region-1/setup.json). Historical rows below retain their original sources and hosts.
 
 ## Example pick frontier — chrX
 
