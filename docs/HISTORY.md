@@ -2264,6 +2264,8 @@ measurements.
 - HW-REGION-2 casefix checkpoint `blocked-load`: retained raw outputs and hash-bound receipts under evidence/hw-region-2/casefix/. Original Kill and P1-P3 unchanged; draft PR97, no upstream post or merge.
 
 
+[written by ChatGPT (AI) at the author's request; checked by the author]
+
 ## HW-REGION-2 casefix retained checkpoint — 2026-11-26
 
 - The owner authorized the same lib2bit pin 58e20daa898a6fc338eae82e5d2ef7108d4fc07f with only the softMask N guard removed. Patch/protocol ca6ff975 preceded execution; original calibration 7fdcbd78 and P1–P3 are unchanged. Original Kill, admission and captures are unchanged; the exact prior RESULTS is retained as RESULTS-before-casefix.md. All 31 sampled corpus grids and the former lowercase-n witness passed equivalence; independent public-capture admission checkpoint 9206b288 passed.
@@ -2271,3 +2273,11 @@ measurements.
 - BLOCKED: load on the first T2T-15/original_mask1 unit, retained in ab9d4366. All three admissions rejected foreign aeterna cc1plus PID 124200 at 98.6–99.6% of one CPU; load1 was 0.58–0.61. The worker never started. No fourth attempt or later window timer ran. The checkpoint contains 16 complete corpora / 96 main rows plus 16 method units, 115 attempts and 116000 accepted query timings. Integrity PASS is distinct from experiment completion: P1 HIT and P2 MISS on completed chr1; P3 PENDING, 15 wins in 15 observed of 30 windows.
 - Partial auditor/renderer source 2495cdaf, standalone sequence adapter 8cd5be74 and untimed verification b3f6f332 are retained. Standalone build, three synthetic native sequence fetches preserving n, and domain/check/planner regressions passed without query timers. Generic byte qualification excludes the base-coordinate adapter; default discovery preserves byte adapters. README has no new coordinate performance row while incomplete. All 435 historical rows remain byte-identical. Publication integrity, static build, links and eight publication regression tests passed; see casefix/publication-checks.json.
 - PR #97 stays draft; no upstream post or merge. The next bounded action requires the owner to coordinate a quiet window and explicitly authorize a fresh three-attempt budget for the same blocked reader binary, seed and offsets. Preserve its three old LOADED admissions and every CLEAN unit. Until then, no further experimental timing. Normal mandatory CI runs on the final push.
+
+[written by ChatGPT (AI) at the author's request; checked by the author]
+
+## HW-REGION-2 renewed admission authorized — 2026-11-26
+
+- The owner authorized a fresh maximum of three attempts for T2T-15/original_mask1, with the same reader binary, seed and offsets. Preregistered admission amendment ae84313194d36a4e5fd61e98383088408f43fe09 was committed and pushed before any new attempt. The original three LOADED admissions and all 96 CLEAN main cells / 16 CLEAN method units remain retained.
+- Wait for admission rather than a fixed quiet window: after an inadmissible observation or actual LOADED attempt, wait at least 300 seconds before the next observation. Waiting observations consume no attempt; a fresh passing observation is required before an actual attempt, and the original shared-flock helper rechecks admission. After CLEAN, proceed to the next unit's admission check. All forecasts, criteria and frozen reader binaries remain unchanged.
+- A separate resume alias, source-bound authorization and ledger preserve both attempt budgets without overwriting the old BLOCKED file. If the new three attempts all become LOADED, stop again, report foreign process names, and leave the next decision to the owner. No foreign process is stopped. Next bounded action: commit and verify the resume controller and audit sources, then observe admission; keep PR #97 draft.
