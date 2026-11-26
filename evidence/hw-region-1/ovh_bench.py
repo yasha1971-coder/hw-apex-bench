@@ -113,7 +113,9 @@ def cpu_observation():
     return dict(start_utc=started, end_utc=utc(), interval_ns=elapsed, hz=hz,
         before=list(before.values()), after=list(after.values()), excluded_ancestry=sorted(excluded),
         exited_pids=sorted(set(before)-set(after)), live_processes=live, exceeded=exceeded,
-        inspection_errors=errors_before+errors_after,
+        all_inspection_errors=errors_before+errors_after,
+        inspection_errors=[item for item in errors_before+errors_after
+                           if item['pid'] in after or Path('/proc',str(item['pid'])).exists()],
         method='one-second ticks delta; surviving processes at admission; new PID uses ticks since birth')
 
 
