@@ -290,14 +290,14 @@ def resume_evidence(audit):
     require(original['status'] == 'BLOCKED: load' and original['selected'] is None
             and len(original['attempts']) == value['old_loaded_attempts'] == 3,
             'original three-attempt load stop changed')
-    history = []
+    original_history = []
     for number, attempt in enumerate(original['attempts'], 1):
         receipt = load(deref(attempt['receipt']))
         require(attempt['number'] == number and attempt['status'] == receipt['status'] == 'LOADED'
                 and attempt['observation'] is None and receipt['command_started'] is False,
                 'original admission-only load attempt changed')
-        history.append(dict(number=number, status='LOADED', receipt=attempt['receipt'], worker_started=False))
-    new_attempts, history = [], []
+        original_history.append(dict(number=number, status='LOADED', receipt=attempt['receipt'], worker_started=False))
+    new_attempts, replacement_history = [], []
     if value['new_budget_unit'] is not None:
         require(deref(value['new_budget_unit']) == HERE / 'units/main/t2t-15-resume-1/twobit_original_mask1.json',
                 'replacement budget is not the authorized alias')
@@ -305,14 +305,14 @@ def resume_evidence(audit):
         require(unit['identity']['profile'] == 'twobit_original_mask1'
                 and unit['resume_authorization'] == ledger['authorization'] and 1 <= len(unit['attempts']) <= 3,
                 'replacement unit authorization/budget differs')
-        history = unit['attempts']
+        replacement_history = unit['attempts']
     else:
         pending = [item for item in audit['pending_units'] if item['unit_id'] == 't2t-15-resume-1'
                    and item['profile'] == 'twobit_original_mask1']
         require(len(pending) <= 1 and 0 <= value['new_attempts'] < 3, 'unfinished replacement budget differs')
-        history = pending[0]['attempts'] if pending else []
-        require(all(item['status'] == 'LOADED' for item in history), 'unfinished replacement has a winner/error')
-    for number, attempt in enumerate(history, 1):
+        replacement_history = pending[0]['attempts'] if pending else []
+        require(all(item['status'] == 'LOADED' for item in replacement_history), 'unfinished replacement has a winner/error')
+    for number, attempt in enumerate(replacement_history, 1):
         receipt = load(deref(attempt['receipt']))
         require(attempt['number'] == number and attempt['status'] == receipt['status']
                 and attempt['status'] in ('LOADED', 'CLEAN'), 'replacement attempt history differs')
@@ -324,7 +324,7 @@ def resume_evidence(audit):
     return dict(protocol=value['authorization'], authorization=ledger['authorization'], ledger=value['ledger'],
                 ledger_status=ledger['status'], original_checkpoint=value['original_checkpoint'],
                 original_unit=value['original_blocked_unit'], replacement_unit=value['new_budget_unit'],
-                original_attempts=history, replacement_attempts=new_attempts)
+                original_attempts=original_history, replacement_attempts=new_attempts)
 
 
 def blocked_units(records, sources, admission_only=True):
