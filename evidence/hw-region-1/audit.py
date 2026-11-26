@@ -906,7 +906,8 @@ def verify_model_case(case_id,case,coefficients,killed):
 
 def counters():
     return dict(logical_units=len(UNITS),attempts=sum(v['attempts'] for v in UNITS.values()),retaken=sum(v['retaken'] for v in UNITS.values()),
-                loaded_attempts=sum(v['loaded'] for v in UNITS.values()),accepted_timing_observations=sum(v['rows'] for v in UNITS.values()),counter_requests=285000)
+                loaded_attempts=sum(v['loaded'] for v in UNITS.values()),accepted_timing_observations=sum(v['rows'] for v in UNITS.values()),
+                counter_requests=sum(v['rows'] for name,v in OBSERVATIONS.items() if name.startswith('counters/') and v['mode']=='counter'))
 
 
 def verify_decision(primary,models,coefficients):
