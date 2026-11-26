@@ -1998,3 +1998,5 @@ measurements.
 - HW-REGION-1 checkpoint `native-controls`: retained raw attempts and hash-bound results under evidence/hw-region-1/. No external issue or merge.
 
 - HW-REGION-1 checkpoint `primary-output-proof`: retained raw attempts and hash-bound results under evidence/hw-region-1/. No external issue or merge.
+
+- HW-REGION-1 checkpoint `prepare`: retained raw attempts and hash-bound results under evidence/hw-region-1/. No external issue or merge.
