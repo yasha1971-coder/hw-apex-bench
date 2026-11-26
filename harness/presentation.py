@@ -223,19 +223,58 @@ def render_region_primary(rows):
     return ("[written by ChatGPT (AI) at the author's request; checked by the author]\n\n"
             "## Same-run chr1 refresh — 2026-11-26\n\n"
             "Full hg38 chr1 FASTA (253,935,557 bytes), R=16 KiB, archive in RAM; ratio = input / stored bytes including required indexes. "
-            "Each date has its own host, source, configuration and request sample.\n\n"
+            "Each date has its own host, source, configuration and request sample. "
             "2026-09-10: Intel Xeon 6973P-C, 200 requests per configuration; ACEAPEX 1b13df3 uses the one-shot "
-            "`aceapex_decompress_region` API. BGZF g is a 64 KiB ceiling; ACE dense uses g=256 KiB.\n\n"
+            "`aceapex_decompress_region` API. BGZF g is a 64 KiB ceiling; ACE dense uses g=256 KiB. "
             "2026-11-26 (HW-REGION-1): one pinned core on ace-core (AMD EPYC 4344P), 1,000 uniform requests per format, "
             "persistent library handles, g=16 KiB for all three formats; ACE interactive LIT=65,536 B, FSE=4,096 B.\n\n"
             + '\n'.join(table) + '\n\n'
-            "Same-run non-genome, g=16 KiB, ACEAPEX / zstd: " + '; '.join(non_genome) + '.\n\n'
+            "Same-run non-genome, g=16 KiB, ACEAPEX / zstd: " + '; '.join(non_genome) + '. '
             f"Within 2026-11-26, ACEAPEX / zstd: p50 = {float(relative):.6f}; "
             f"p99 = {ace['p99_ns'] / zstd['p99_ns']:.6f}; stored bytes = {ace['stored_bytes'] / zstd['stored_bytes']:.6f}; "
-            f"amplification = {float(Fraction(ace['amplification']) / Fraction(zstd['amplification'])):.6f}.\n\n"
+            f"amplification = {float(Fraction(ace['amplification']) / Fraction(zstd['amplification'])):.6f}. "
             "[Historical rows](results.jsonl) · [Run report](evidence/hw-region-1/RESULTS.md) · [Saved primary cell](" + source + ") · "
             "[Pinned versions, CLI/header strings and build metadata](evidence/hw-region-1/setup.json). "
             "Historical rows below retain their original sources and hosts.\n\n")
+
+
+def render_region_coordinates():
+    """Publish only the independently audited, equivalent coordinate rows."""
+    import hashlib
+    import json
+    from pathlib import Path
+    root = Path(__file__).resolve().parents[1]
+    base = root / 'evidence/hw-region-2/casefix'
+    path = base / 'summary.json'
+    if not path.is_file():
+        return ''
+    value = json.loads(path.read_bytes())
+    if value.get('status') != 'COMPLETE':
+        return ''
+    def require(ok, why):
+        if not ok:
+            raise ValueError(why)
+    audit_path = base / value['audit']['path']
+    require(audit_path.resolve().is_relative_to(base.resolve()) and audit_path.is_file()
+            and hashlib.sha256(audit_path.read_bytes()).hexdigest() == value['audit']['sha256'], 'coordinate audit changed')
+    audit = json.loads(audit_path.read_bytes())
+    require(value['schema'] == 'hw-region-2-casefix-summary-v1' and audit['status'] == 'PASS' and audit['stage'] == 'all'
+            and audit['counts']['cases'] == 31 and audit['counts']['rows'] == 186
+            and value['renderer_sha256'] == hashlib.sha256((base / 'report.py').read_bytes()).hexdigest(), 'coordinate summary is not complete/audited')
+    profiles = ('aceapex', 'zstd_seekable', 'bgzip', 'twobit_casefix_mask1')
+    require(set(value['primary']) == set(profiles), 'four equivalent coordinate rows required')
+    cells = []
+    for profile in profiles:
+        row = value['primary'][profile]
+        require(row['equivalent'] is True and all(type(row[k]) is int and row[k] > 0 for k in ('stored_bytes', 'p50_ns', 'p99_ns')),
+                'invalid coordinate primary values')
+        cells.append(f"{row['stored_bytes']:,} · {row['p50_ns']/1000:.3f} / {row['p99_ns']/1000:.3f}")
+    return ("[written by ChatGPT (AI) at the author's request; checked by the author]\n\n"
+            f"**Genome-coordinate chr1 — {value['date_label']} UTC** · "
+            "16,384 case-preserved bases; ace-core EPYC 4344P/CPU0, warm RAM archives; 1,000 requests. Cells: stored B · p50 / p99 µs.\n\n"
+            "| ACEAPEX 2.6.5 | zstd 1.5.7 | BGZF / HTSlib 1.24 | .2bit-casefix (storeMasked=1) |\n"
+            "|---:|---:|---:|---:|\n| " + ' | '.join(cells) + " |\n\n"
+            "[Coordinate report, original diagnostics and audit](evidence/hw-region-2/casefix/RESULTS.md).\n\n")
 
 
 def render_snapshots(rows):
@@ -245,7 +284,7 @@ def render_snapshots(rows):
     body = legacy.split('## Matched-g refresh:', 1)[1].split('[All nine axes', 1)[0]
     body = '## Matched-g refresh:' + body
     body = body.replace('| Codec | Granularity | Ratio | p50 ms | p99 ms | Amplification |',
-                        render_region_primary(rows) + "[written by ChatGPT (AI) at the author's request; checked by the author]\n\n"
+                        render_region_primary(rows) + render_region_coordinates() + "[written by ChatGPT (AI) at the author's request; checked by the author]\n\n"
                         '## Historical chr1 snapshot — 2026-09-10 (ACEAPEX before v2.1.0)\n\n'
                         '| Codec | Granularity | Ratio | p50 ms | p99 ms | Amplification |', 1)
     def rebase(match):
@@ -275,7 +314,7 @@ def render_readme(rows):
             "- Four development corpora; results do not establish general workload coverage.\n"
             "- No concurrent workload is measured.\n"
             "- ACEAPEX is developed by the author of this benchmark.\n\n"
-            + render_region_primary(rows) +
+            + render_region_primary(rows) + render_region_coordinates() +
             "## Example pick frontier — chrX\n\n"
             "Retained PR #79 evidence (accepted attempt 2), CPU, 16 KiB reads; not a new benchmark.\n"
             "★ marks nondominated rows across all codecs: higher ratio and lower p50. It is not a universal winner.\n\n"

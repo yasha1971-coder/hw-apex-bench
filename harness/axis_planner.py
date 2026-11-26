@@ -6,8 +6,8 @@ import fcntl
 import json
 from pathlib import Path
 import sys
-from qualification import ROOT, digest, require_current, work_directory
-from resident_probe import AXES
+from qualification import ROOT, digest, require_current, work_directory, clean_environment
+from resident_probe import AXES, adapter_configuration, require_byte_domain, discover_byte_adapters
 
 @contextmanager
 def qualification_lock(work):
@@ -22,6 +22,7 @@ def plan_adapter(adapter,work,axes):
     adapter=Path(adapter).resolve()
     if not axes or len(set(axes))!=len(axes) or set(axes)-AXES:
         raise ValueError('unknown, duplicate or empty axis selection')
+    require_byte_domain(adapter_configuration(adapter,clean_environment(work)))
     with qualification_lock(work):
         receipt,state=require_current(adapter,work)
         tasks=[]
@@ -80,7 +81,11 @@ def main():
     try:
         if not a.output.name.endswith('.plan.json'):
             raise ValueError('plan output must end in .plan.json; it is not results.jsonl')
-        adapters=[resolve_adapter(c) for c in a.codec] if a.codec else sorted((ROOT/'codecs').glob('*.sh'))
+        if a.codec:
+            adapters=[resolve_adapter(c) for c in a.codec]
+        else:
+            adapters,skipped=discover_byte_adapters(sorted((ROOT/'codecs').glob('*.sh')))
+            for item in skipped: print('SKIP '+item['adapter']+': '+item['reason'])
         if len(set(map(str,adapters)))!=len(adapters): raise ValueError('duplicate adapter selection')
         rows=[plan_adapter(c,work_directory(c,a.work),a.axis or sorted(AXES)) for c in adapters]
         plan={'schema':'cabench-axis-plan-v1','mode':'planning-only','timings_collected':False,

@@ -5,7 +5,7 @@ import random
 import subprocess
 import tempfile
 import unittest
-from resident_probe import Context, capabilities, probe
+from resident_probe import Context, capabilities, probe, adapter_configuration, require_byte_domain
 
 ROOT=Path(__file__).resolve().parents[1]
 LIB=os.environ.get('HB_CONTEXT_LIBRARY')
@@ -15,8 +15,16 @@ class Capabilities(unittest.TestCase):
         for adapter in (ROOT/'codecs').glob('*.sh'):
             with self.subTest(adapter=adapter.name):
                 axes=capabilities(adapter)
-                self.assertEqual(axes['region'],'available')
-                self.assertEqual(axes['decode'],'available')
+                config=adapter_configuration(adapter)
+                if config.get('coordinate_domain','byte') == 'base':
+                    self.assertEqual(config['input_domain'],'fasta-sequence')
+                    self.assertTrue(all(value.startswith('n/a — ') for value in axes.values()))
+                    with self.assertRaisesRegex(ValueError,'generic byte'):
+                        require_byte_domain(config)
+                else:
+                    require_byte_domain(config)
+                    self.assertEqual(axes['region'],'available')
+                    self.assertEqual(axes['decode'],'available')
 
 @unittest.skipUnless(LIB, 'set HB_CONTEXT_LIBRARY to the built xz context library')
 class XzContext(unittest.TestCase):

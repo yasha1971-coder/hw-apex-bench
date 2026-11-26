@@ -80,5 +80,11 @@ codec_build_artifacts() {{ printf '["%s/tool"]\\n' "$HB_CHECK_WORK"; }}
         def mutate(_): self.helper.write_text('new version'); return 1
         with self.assertRaisesRegex(ValueError,'stale|changed'):
             dispatch_adapter(self.plan(['decode']),{'decode':mutate})
+    def test_sequence_domain_rejected_before_receipt_or_backend(self):
+        from unittest.mock import patch
+        with patch('axis_planner.adapter_configuration',return_value=dict(input_domain='fasta-sequence',coordinate_domain='base')):
+            with patch('axis_planner.qualification_lock',side_effect=AssertionError('sequence domain reached generic qualification')):
+                with self.assertRaisesRegex(ValueError,'generic byte'):
+                    self.plan(['region'])
 
 if __name__=='__main__': unittest.main()

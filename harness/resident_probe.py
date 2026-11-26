@@ -10,6 +10,28 @@ import subprocess
 
 AXES = {'ratio','encode','decode','region','amplification','c_g','batch','h_alpha','break_even'}
 
+def adapter_configuration(adapter, env=None):
+    """Read metadata without building a codec or opening any archive."""
+    return json.loads(subprocess.check_output(
+        ['bash',str(adapter),'_call','codec_configuration'],text=True,env=env))
+
+def is_byte_domain(configuration):
+    if not isinstance(configuration,dict):
+        raise ValueError('adapter configuration must be an object')
+    input_domain=configuration.get('input_domain','bytes')
+    coordinate_domain=configuration.get('coordinate_domain','byte')
+    if not all(isinstance(v,str) and v.strip() for v in (input_domain,coordinate_domain)):
+        raise ValueError('adapter input/coordinate domains must be nonempty strings')
+    byte_domain=input_domain in ('bytes','arbitrary-bytes') and coordinate_domain=='byte'
+    if not byte_domain and not {'input_domain','coordinate_domain'} <= configuration.keys():
+        raise ValueError('non-byte adapter must explicitly declare input and coordinate domains')
+    return byte_domain
+
+def require_byte_domain(configuration):
+    """The generic nine-axis runner requires original-file byte semantics."""
+    if not is_byte_domain(configuration):
+        raise ValueError('generic byte qualification/planning excludes this input/coordinate domain; use the adapter sequence interface (seq-build/seq-fetch)')
+
 def capabilities(adapter, env=None):
     supported = subprocess.check_output(['bash', str(adapter), 'supports'], text=True, env=env).split()
     missing = json.loads(subprocess.check_output(['bash', str(adapter), 'unavailable'], text=True, env=env))
@@ -20,6 +42,26 @@ def capabilities(adapter, env=None):
     if any(not isinstance(v,str) or not v.strip() for v in missing.values()):
         raise ValueError('n/a requires a nonempty reason')
     return {a: 'available' if a in supported else 'n/a — '+missing[a] for a in sorted(AXES)}
+
+def discover_byte_adapters(adapters, env=None):
+    """Default discovery skips explicit non-byte domains without qualifying them.
+
+    Explicit selections still go through require_byte_domain and fail. A skip
+    requires valid metadata and a complete set of adapter-owned n/a reasons;
+    a non-byte adapter advertising generic operations is a contract error.
+    """
+    included,skipped=[],[]
+    for adapter in adapters:
+        config=adapter_configuration(adapter,env)
+        if is_byte_domain(config):
+            included.append(adapter)
+            continue
+        axes=capabilities(adapter,env)
+        if any(value=='available' for value in axes.values()):
+            raise ValueError('non-byte adapter advertises a generic axis: '+str(adapter))
+        skipped.append(dict(adapter=str(adapter),reason='input_domain='+config['input_domain']+
+                            ', coordinate_domain='+config['coordinate_domain']+'; generic byte axes unavailable'))
+    return included,skipped
 
 class Context:
     def __init__(self, library, archive, expected_size=None, sidecar=None):
