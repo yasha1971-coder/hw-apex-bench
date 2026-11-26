@@ -2004,3 +2004,5 @@ measurements.
 - HW-REGION-1 checkpoint `method`: retained raw attempts and hash-bound results under evidence/hw-region-1/. No external issue or merge.
 
 - HW-REGION-1 checkpoint `case-case-chr1-g16384`: retained raw attempts and hash-bound results under evidence/hw-region-1/. No external issue or merge.
+
+- HW-REGION-1 checkpoint `constants-frame-4096`: retained raw attempts and hash-bound results under evidence/hw-region-1/. No external issue or merge.
