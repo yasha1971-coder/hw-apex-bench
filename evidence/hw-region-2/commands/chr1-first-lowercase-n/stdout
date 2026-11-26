@@ -1,0 +1,1 @@
+{"schema":"hw-region-2-equivalence-v1","status":"KILL","no_clocks":true,"storeMasked":1,"start0":121749276,"length":16384,"reference_byte_start":124184267,"reference_byte_span":16712,"mismatches":2,"first_difference0":121757468,"first_difference1":121757469,"expected_byte":110,"actual_byte":78}
