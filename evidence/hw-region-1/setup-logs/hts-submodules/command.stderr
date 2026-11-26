@@ -1,0 +1,4 @@
+Submodule 'htscodecs' (https://github.com/samtools/htscodecs.git) registered for path 'htscodecs'
+Cloning into '/home/ubuntu/hw-apex-bench-hw-region-1/.work/hw-region-1/deps/htslib/htscodecs'...
+From https://github.com/samtools/htscodecs
+ * branch            b9fc194f772e45bb0a1f44b08cbf8697a1384bae -> FETCH_HEAD

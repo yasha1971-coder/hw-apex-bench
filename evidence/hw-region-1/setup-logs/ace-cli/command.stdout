@@ -1,0 +1,4 @@
+make: Entering directory '/home/ubuntu/hw-apex-bench-hw-region-1/.work/hw-region-1/deps/aceapex'
+g++ -std=c++17 -O3 -march=native -funroll-loops -DACEAPEX_CLI -I/home/ubuntu/hw-apex-bench-hw-region-1/.work/hw-region-1/deps/zstd/lib -Isrc -c -o src/aceapex_api.o src/aceapex_api.cpp
+g++ -o aceapex src/aceapex_api.o -lpthread /home/ubuntu/hw-apex-bench-hw-region-1/.work/hw-region-1/deps/zstd/lib/libzstd.a
+make: Leaving directory '/home/ubuntu/hw-apex-bench-hw-region-1/.work/hw-region-1/deps/aceapex'

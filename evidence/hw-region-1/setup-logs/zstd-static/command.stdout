@@ -1,0 +1,37 @@
+make: Entering directory '/home/ubuntu/hw-apex-bench-hw-region-1/.work/hw-region-1/deps/zstd/lib'
+CC obj/conf_6b80ce095a3166dc0b927363fb7485d0/static/debug.o
+CC obj/conf_6b80ce095a3166dc0b927363fb7485d0/static/entropy_common.o
+CC obj/conf_6b80ce095a3166dc0b927363fb7485d0/static/error_private.o
+CC obj/conf_6b80ce095a3166dc0b927363fb7485d0/static/fse_decompress.o
+CC obj/conf_6b80ce095a3166dc0b927363fb7485d0/static/pool.o
+CC obj/conf_6b80ce095a3166dc0b927363fb7485d0/static/threading.o
+CC obj/conf_6b80ce095a3166dc0b927363fb7485d0/static/xxhash.o
+CC obj/conf_6b80ce095a3166dc0b927363fb7485d0/static/zstd_common.o
+CC obj/conf_6b80ce095a3166dc0b927363fb7485d0/static/zstd_v05.o
+CC obj/conf_6b80ce095a3166dc0b927363fb7485d0/static/zstd_v06.o
+CC obj/conf_6b80ce095a3166dc0b927363fb7485d0/static/zstd_v07.o
+CC obj/conf_6b80ce095a3166dc0b927363fb7485d0/static/fse_compress.o
+CC obj/conf_6b80ce095a3166dc0b927363fb7485d0/static/hist.o
+CC obj/conf_6b80ce095a3166dc0b927363fb7485d0/static/huf_compress.o
+CC obj/conf_6b80ce095a3166dc0b927363fb7485d0/static/zstd_compress.o
+CC obj/conf_6b80ce095a3166dc0b927363fb7485d0/static/zstd_compress_literals.o
+CC obj/conf_6b80ce095a3166dc0b927363fb7485d0/static/zstd_compress_sequences.o
+CC obj/conf_6b80ce095a3166dc0b927363fb7485d0/static/zstd_compress_superblock.o
+CC obj/conf_6b80ce095a3166dc0b927363fb7485d0/static/zstd_double_fast.o
+CC obj/conf_6b80ce095a3166dc0b927363fb7485d0/static/zstd_fast.o
+CC obj/conf_6b80ce095a3166dc0b927363fb7485d0/static/zstd_lazy.o
+CC obj/conf_6b80ce095a3166dc0b927363fb7485d0/static/zstd_ldm.o
+CC obj/conf_6b80ce095a3166dc0b927363fb7485d0/static/zstd_opt.o
+CC obj/conf_6b80ce095a3166dc0b927363fb7485d0/static/zstd_preSplit.o
+CC obj/conf_6b80ce095a3166dc0b927363fb7485d0/static/zstdmt_compress.o
+CC obj/conf_6b80ce095a3166dc0b927363fb7485d0/static/huf_decompress.o
+CC obj/conf_6b80ce095a3166dc0b927363fb7485d0/static/zstd_ddict.o
+CC obj/conf_6b80ce095a3166dc0b927363fb7485d0/static/zstd_decompress.o
+CC obj/conf_6b80ce095a3166dc0b927363fb7485d0/static/zstd_decompress_block.o
+AS obj/conf_6b80ce095a3166dc0b927363fb7485d0/static/huf_decompress_amd64.o
+CC obj/conf_6b80ce095a3166dc0b927363fb7485d0/static/cover.o
+CC obj/conf_6b80ce095a3166dc0b927363fb7485d0/static/divsufsort.o
+CC obj/conf_6b80ce095a3166dc0b927363fb7485d0/static/fastcover.o
+CC obj/conf_6b80ce095a3166dc0b927363fb7485d0/static/zdict.o
+compiling single-threaded static library 1.5.7
+make: Leaving directory '/home/ubuntu/hw-apex-bench-hw-region-1/.work/hw-region-1/deps/zstd/lib'
