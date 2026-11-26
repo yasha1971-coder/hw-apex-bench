@@ -1,0 +1,1 @@
+{"command":["make","-C","/home/ubuntu/hw-apex-bench-hw-region-1/.work/hw-region-1/native/counter-zstd/lib","-j1","libzstd.a","CFLAGS=-O3 -fPIC -fno-lto"],"returncode":0,"status":"COMPLETE","stderr_sha256":"e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855","stdout_sha256":"a6162f39be26f6f12c0ebbcab94cd697918a2a370455dc832f2ec9b80a53acc4"}

@@ -1,0 +1,27 @@
+/home/ubuntu/hw-apex-bench-hw-region-1/evidence/hw-region-1/worker.c: In function ‘readall’:
+/home/ubuntu/hw-apex-bench-hw-region-1/evidence/hw-region-1/worker.c:30:5: warning: this ‘if’ clause does not guard... [-Wmisleading-indentation]
+   30 |     if(fread(b.p,1,b.n,f)!=b.n || fclose(f)) fail("input read"); return b;
+      |     ^~
+/home/ubuntu/hw-apex-bench-hw-region-1/evidence/hw-region-1/worker.c:30:66: note: ...this statement, but the latter is misleadingly indented as if it were guarded by the ‘if’
+   30 |     if(fread(b.p,1,b.n,f)!=b.n || fclose(f)) fail("input read"); return b;
+      |                                                                  ^~~~~~
+/home/ubuntu/hw-apex-bench-hw-region-1/evidence/hw-region-1/worker.c: In function ‘regions’:
+/home/ubuntu/hw-apex-bench-hw-region-1/evidence/hw-region-1/worker.c:97:13: warning: this ‘if’ clause does not guard... [-Wmisleading-indentation]
+   97 |             if(n!=REGION || memcmp(warmbuf+GUARD,original.p+off,REGION)) fail("warmup restore"); guards(warmbuf,REGION);
+      |             ^~
+/home/ubuntu/hw-apex-bench-hw-region-1/evidence/hw-region-1/worker.c:97:98: note: ...this statement, but the latter is misleadingly indented as if it were guarded by the ‘if’
+   97 |             if(n!=REGION || memcmp(warmbuf+GUARD,original.p+off,REGION)) fail("warmup restore"); guards(warmbuf,REGION);
+      |                                                                                                  ^~~~~~
+/home/ubuntu/hw-apex-bench-hw-region-1/evidence/hw-region-1/worker.c: In function ‘constants’:
+/home/ubuntu/hw-apex-bench-hw-region-1/evidence/hw-region-1/worker.c:129:5: warning: this ‘if’ clause does not guard... [-Wmisleading-indentation]
+  129 |     if(argc!=6) fail("usage: worker constants LIB RAW FRAME PREFIX"); timing_gate();
+      |     ^~
+/home/ubuntu/hw-apex-bench-hw-region-1/evidence/hw-region-1/worker.c:129:71: note: ...this statement, but the latter is misleadingly indented as if it were guarded by the ‘if’
+  129 |     if(argc!=6) fail("usage: worker constants LIB RAW FRAME PREFIX"); timing_gate();
+      |                                                                       ^~~~~~~~~~~
+/home/ubuntu/hw-apex-bench-hw-region-1/evidence/hw-region-1/worker.c:146:9: warning: this ‘if’ clause does not guard... [-Wmisleading-indentation]
+  146 |         if(is_error(n)||n!=raw.n||memcmp(out+GUARD,raw.p,raw.n)) fail("standalone restore"); guards(out,raw.n);
+      |         ^~
+/home/ubuntu/hw-apex-bench-hw-region-1/evidence/hw-region-1/worker.c:146:94: note: ...this statement, but the latter is misleadingly indented as if it were guarded by the ‘if’
+  146 |         if(is_error(n)||n!=raw.n||memcmp(out+GUARD,raw.p,raw.n)) fail("standalone restore"); guards(out,raw.n);
+      |                                                                                              ^~~~~~

@@ -1,0 +1,1 @@
+{"aligned_offset":0,"boundary":16384,"codec":"bgzip","crossing_offset":1,"next_decoded_bytes":16384,"preceding_decoded_bytes":16384,"request_bytes":16384,"rule":"first actual BGZF boundary with an R-byte preceding span","unit_index":0}
