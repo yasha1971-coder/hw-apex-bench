@@ -70,6 +70,11 @@ def build():
     counts = load(HERE / 'mask-counts.json')
     require(counts['status'] == 'PASS', 'mask geometry required')
     chr1 = next(r for r in counts['corpora'] if r['corpus'] == 'chr1')
+    receipts = [load(p) for p in (HERE / 'raw').rglob('ovh-bench.json')]
+    clean = [r for r in receipts if r['status'] == 'CLEAN' and r['command_started']]
+    require(len(clean) == 4, 'four clean reader-addition timing units required')
+    start_utc = min(r['start']['timestamp_utc'] for r in clean)
+    end_utc = max(r['end']['timestamp_utc'] for r in clean)
     t2t = {}
     for profile in ('aceapex','zstd_seekable','bgzip','twobit_casefix_mask1'):
         rows = [r for r in old['rows'] if r['corpus'].startswith('t2t-') and r['profile'] == profile]
@@ -80,11 +85,13 @@ def build():
                    renderer_sha256=sha(Path(__file__)), audit=ref(audit_path), original_summary=ref(CASEFIX/'summary.json'),
                    mask_counts=ref(HERE/'mask-counts.json'), main=row, B1=forecast,
                    original_forecasts=old['forecasts'], T2T_median_per_window=t2t,
-                   counts=audit['counts'], AA=audit['AA'], boundary=audit['boundary'])
+                   counts=audit['counts'], AA=audit['AA'], boundary=audit['boundary'],
+                   timing_boundaries=dict(start_utc=start_utc, end_utc=end_utc))
     write(HERE/'summary.json', json.dumps(summary,sort_keys=True,separators=(',',':'))+'\n')
     scope = ('ace-core AMD EPYC 4344P, CPU0, one timed thread; the identical archive and indexes warm in RAM/page cache. '
              'The original worker/native wrapper, compiler flags, chr1 reference, 12 warmups and 1000 offsets are retained. '
-             'This reader addition was measured after the original grid; the two rows are separate clean passes, not interleaved pairs.')
+             'This reader addition was measured after the original grid; the two rows are separate clean passes, not interleaved pairs. '
+             f'New method/main timing boundaries: {start_utc} → {end_utc} UTC.')
     conclusion = ('On the measured chr1 workload, the .2bit latency penalty is driven by lib2bit\'s linear mask lookup, '
                   'not a requirement of the format; the T2T windows show the same format with much smaller mask tables.'
                   if verdict == 'HIT' else
@@ -127,6 +134,10 @@ def build():
               '[Separately preregistered reader addition, method checks and raw audit](binary-search/RESULTS.md). '
               f'B1 **{verdict}**; the supplementary row below is excluded from original P1-P3.\n\n')
     updated=original.replace(marker,addition+marker)
+    updated=updated.replace('The owner-authorized one-line [casefix](lib2bit-casefix.patch) is the only lib2bit source change;',
+                            'For the 186 registered rows, the owner-authorized one-line [casefix](lib2bit-casefix.patch) is the only lib2bit source change; the separate reader addition also changes the initial mask lookup;')
+    updated=updated.replace('Recorded timing boundaries:', 'Registered-grid timing boundaries:')
+    updated=updated.replace('## Complete same-run table', '## Registered table and separate reader addition')
     updated=updated.replace('All 31 corpora / 186 main rows passed the resumed saved-data audit;',
                             'All 31 corpora / 186 registered main rows passed the resumed saved-data audit; one supplementary chr1 reader row is separately audited;')
     lines=updated.splitlines()
