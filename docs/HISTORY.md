@@ -2202,3 +2202,5 @@ measurements.
 - HW-REGION-1 checkpoint `case-case-enwik8-g16384`: retained raw attempts and hash-bound results under evidence/hw-region-1/. No external issue or merge.
 
 - HW-REGION-1 checkpoint `case-case-silesia-g16384`: retained raw attempts and hash-bound results under evidence/hw-region-1/. No external issue or merge.
+
+- HW-REGION-1 checkpoint `decide`: retained raw attempts and hash-bound results under evidence/hw-region-1/. No external issue or merge.
