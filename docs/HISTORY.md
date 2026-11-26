@@ -2250,3 +2250,5 @@ measurements.
 - Next bounded action: qualify all four equivalent readers on the complete grid and repeat the old lowercase-n witness using casefix. Any required mismatch stops all timing. Only after complete admission, A/A and prespecified fresh-handle boundary controls may admit the six-row main grid. Draft PR97 remains draft; no upstream message or merge.
 
 - HW-REGION-2 casefix checkpoint `equivalence-pass`: retained raw outputs and hash-bound receipts under evidence/hw-region-2/casefix/. Original Kill and P1-P3 unchanged; draft PR97, no upstream post or merge.
+
+- HW-REGION-2 casefix checkpoint `method-pass`: retained raw outputs and hash-bound receipts under evidence/hw-region-2/casefix/. Original Kill and P1-P3 unchanged; draft PR97, no upstream post or merge.
