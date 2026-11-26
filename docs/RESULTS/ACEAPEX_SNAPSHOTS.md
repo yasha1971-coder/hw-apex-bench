@@ -1,5 +1,21 @@
 ACEAPEX is developed by the author of this benchmark.
 
+[written by ChatGPT (AI) at the author's request; checked by the author]
+
+## Same-run chr1 refresh — 2026-11-26
+
+HW-REGION-1: full hg38 chr1 FASTA (253,935,557 bytes), g=R=16 KiB, 1,000 uniform requests per format. One pinned core on ace-core (AMD EPYC 4344P), persistent library handles, archive in RAM.
+
+| Codec / source version | Stored bytes incl. indexes | Ratio | p50 ms | p99 ms | Mean amplification |
+|---|---:|---:|---:|---:|---:|
+| ACEAPEX tag v2.6.5 interactive (L2) | 60,440,764 | 4.201396 | 0.032711 | 0.054592 | 5.996250 |
+| zstd-seekable 1.5.7 (L3) | 83,924,167 | 3.025774 | 0.041668 | 0.047389 | 2.000000 |
+| BGZF / HTSlib 1.24 (L6) | 80,071,563 | 3.171358 | 0.042280 | 0.046257 | 2.000000 |
+
+ACEAPEX has lower p50 and fewer stored bytes here; its p99 and amplification are higher than both alternatives. Its p50/zstd ratio is 0.785039: outcome (a), so the older chr1 ranking is stale for this scope.
+
+[Run report](../../evidence/hw-region-1/RESULTS.md) · [Saved primary cell](../../evidence/hw-region-1/cases/chr1-g16384.json) · [Pinned versions, CLI/header strings and build metadata](../../evidence/hw-region-1/setup.json). Historical rows below retain their original sources and hosts.
+
 ## Matched-g refresh: ACEAPEX v2.1.0 / main open vs BGZF — 2026-09-30
 
 Measured on thirty frozen 2 MiB T2T-CHM13v2.0 windows, not the chr1 snapshot below; ratios are not comparable between the two tables. ACEAPEX is written by the author of this benchmark. Its density advantage and its latency penalty are both reported below; the harness, corpora and raw samples are in the repository.
@@ -28,6 +44,10 @@ A native batch API is what makes the dense profile usable at all for region read
 Concentration helps BGZF more than it helps ACEAPEX in the single-request path. Under uniform access bgzip runs 10,040.6 ranges/s against ACEAPEX interactive at 9,086.4, a 1.1× gap. At Hα ≈ 2 bits bgzip reaches 64,722.7 against 13,847.4, a 4.7× gap. The batch API is where ACEAPEX answers locality; the loop path is not.
 
 [Access-entropy sweep →](ACCESS_ENTROPY_20260919.md)
+
+[written by ChatGPT (AI) at the author's request; checked by the author]
+
+## Historical chr1 snapshot — 2026-09-10 (ACEAPEX before v2.1.0)
 
 | Codec | Granularity | Ratio | p50 ms | p99 ms | Amplification |
 |---|---:|---:|---:|---:|---:|
