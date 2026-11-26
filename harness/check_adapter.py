@@ -11,7 +11,7 @@ import signal
 import subprocess
 import sys
 import tempfile
-from resident_probe import capabilities
+from resident_probe import capabilities, require_byte_domain, discover_byte_adapters
 from qualification import PROTOCOL, clean_environment, snapshot, fingerprint, work_directory
 
 ROOT=Path(__file__).resolve().parents[1]
@@ -53,11 +53,12 @@ def check_locked(adapter,work):
             return output.strip() if capture else None
         def call(op,*args,capture=False):
             return run(['bash',adapter,'_call',op,*args],capture)
+        config=json.loads(call('codec_configuration',capture=True))
+        require_byte_domain(config)  # Before required byte operations, builds or fixtures.
         run(['bash','-c','source "$1"; shift; for fn in "$@"; do declare -F "$fn" >/dev/null || exit 2; done','contract',adapter,*REQUIRED])
         name=call('codec_name',capture=True); version=call('codec_version',capture=True)
         axes=capabilities(adapter,env)
         limits=json.loads(call('codec_constraints',capture=True))
-        config=json.loads(call('codec_configuration',capture=True))
         g=limits['granularity']; minimum=limits['min_input_bytes']
         if not isinstance(g,int) or not 1<=g<=1048576 or minimum not in (0,1):
             raise ValueError('invalid smoke-test constraints')
@@ -141,7 +142,11 @@ def main():
     p.add_argument('adapter',nargs='?',type=Path)
     p.add_argument('--work',type=Path,default=ROOT/'.work/adapter-check')
     args=p.parse_args()
-    adapters=[args.adapter] if args.adapter else sorted((ROOT/'codecs').glob('*.sh'))
+    if args.adapter:
+        adapters=[args.adapter]
+    else:
+        adapters,skipped=discover_byte_adapters(sorted((ROOT/'codecs').glob('*.sh')))
+        for item in skipped: print('SKIP '+item['adapter']+': '+item['reason'],flush=True)
     for adapter in adapters:
         work=work_directory(adapter,args.work)
         try: check(adapter,work)

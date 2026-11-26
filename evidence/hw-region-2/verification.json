@@ -1,0 +1,137 @@
+{
+  "schema": "hw-region-2-verification-v1",
+  "status": "PASS",
+  "saved_data_only": true,
+  "new_measurements": 0,
+  "native_calls_in_completed_replay": 0,
+  "command_receipts_unchanged": true,
+  "source_commit": "549a6232c42fe864ee22fa2c4ea08f508692ff62",
+  "admission_sha256": "fe94288bc3aa23b325c976d5eee845c39f068b2ca75fabf341b3d0a6d4c92619",
+  "report_sha256": "ef9884af9e00b2b01905b8ed03727674b6c9947c0ed9433f587f0d772ead6f57",
+  "exact_first_difference0": 121757468,
+  "exact_first_difference1": 121757469,
+  "region_mismatches": 2,
+  "standalone_markdown_links": 24,
+  "checks": [
+    {
+      "name": "hash-only-replay",
+      "command": [
+        "taskset",
+        "-c",
+        "15",
+        "/home/ubuntu/hw-apex-bench-hw-gift-1b/.work/hw-gift-1b/venv/bin/python",
+        "-B",
+        "evidence/hw-region-2/reproduce.py"
+      ],
+      "returncode": 0,
+      "stdout": {
+        "path": "verification-logs/hash-only-replay.stdout",
+        "bytes": 38,
+        "sha256": "03a848a98a79ff5dd46c229014368ffc1fafc68c0d10c55c10375988e277f997"
+      },
+      "stderr": {
+        "path": "verification-logs/hash-only-replay.stderr",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "name": "saved-report",
+      "command": [
+        "taskset",
+        "-c",
+        "15",
+        "/home/ubuntu/hw-apex-bench-hw-gift-1b/.work/hw-gift-1b/venv/bin/python",
+        "-B",
+        "evidence/hw-region-2/report.py"
+      ],
+      "returncode": 0,
+      "stdout": {
+        "path": "verification-logs/saved-report.stdout",
+        "bytes": 83,
+        "sha256": "3c43c857b7b675a018248fcc486c35fbf886a2b01dd0b8ca4c6e801a370bdb04"
+      },
+      "stderr": {
+        "path": "verification-logs/saved-report.stderr",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "name": "validate-publication",
+      "command": [
+        "taskset",
+        "-c",
+        "15",
+        "/home/ubuntu/hw-apex-bench-hw-gift-1b/.work/hw-gift-1b/venv/bin/python",
+        "-B",
+        "web/validate_publication.py"
+      ],
+      "returncode": 0,
+      "stdout": {
+        "path": "verification-logs/validate-publication.stdout",
+        "bytes": 67,
+        "sha256": "7111d24421a1b6a46255ba7ac88299c9b411e09e1f2cba1c4a12413a2944d051"
+      },
+      "stderr": {
+        "path": "verification-logs/validate-publication.stderr",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "name": "build-site",
+      "command": [
+        "taskset",
+        "-c",
+        "15",
+        "/home/ubuntu/hw-apex-bench-hw-gift-1b/.work/hw-gift-1b/venv/bin/python",
+        "-B",
+        "web/build.py",
+        "/home/ubuntu/hw-apex-bench-hw-region-2/.work/hw-region-2/site/index.html"
+      ],
+      "returncode": 0,
+      "stdout": {
+        "path": "verification-logs/build-site.stdout",
+        "bytes": 128,
+        "sha256": "12b1f912b6935b779b1f30104b091a146059e108639e26d78cd1be8241b33da0"
+      },
+      "stderr": {
+        "path": "verification-logs/build-site.stderr",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "name": "local-links",
+      "command": [
+        "taskset",
+        "-c",
+        "15",
+        "/home/ubuntu/hw-apex-bench-hw-gift-1b/.work/hw-gift-1b/venv/bin/python",
+        "-B",
+        "web/check_links.py"
+      ],
+      "returncode": 0,
+      "stdout": {
+        "path": "verification-logs/local-links.stdout",
+        "bytes": 41,
+        "sha256": "23eb9ac7b73d704928fd071c21cfcf803028836fed41d3c5d41707e9deb95cd3"
+      },
+      "stderr": {
+        "path": "verification-logs/local-links.stderr",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    }
+  ],
+  "host": {
+    "hostname": "ace-core",
+    "kernel": "5.15.0-163-generic",
+    "cpu": "AMD EPYC 4344P 8-Core Processor",
+    "nproc": 16,
+    "correctness_core": 15,
+    "prospective_timing_core": 0,
+    "governor": "schedutil"
+  }
+}

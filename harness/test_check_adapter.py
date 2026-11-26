@@ -68,5 +68,14 @@ esac
         text=self.adapter_text().replace('not implemented by this CLI-only fixture','')
         self.adapter.write_text(text)
         with self.assertRaisesRegex(ValueError,'nonempty reason'): capabilities(self.adapter)
+    def test_sequence_domain_rejected_before_build_or_fixtures(self):
+        marker=self.root/'built'
+        text=self.adapter_text().replace('codec_build() { :; }',f'codec_build() {{ touch "{marker}"; }}')
+        config='codec_configuration() { echo \'{"input_domain":"fasta-sequence","coordinate_domain":"base"}\'; }\n'
+        self.adapter.write_text(text.replace('if [[ "${BASH_SOURCE[0]}" != "$0" ]]',config+'if [[ "${BASH_SOURCE[0]}" != "$0" ]]'))
+        with self.assertRaisesRegex(ValueError,'generic byte'): self.execute()
+        self.assertFalse(marker.exists())
+        self.assertFalse((self.work/'check.json').exists())
+        self.assertFalse(list(self.work.glob('fixtures-*')))
 
 if __name__=='__main__': unittest.main()

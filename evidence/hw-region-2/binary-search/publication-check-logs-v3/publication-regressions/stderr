@@ -1,0 +1,35 @@
+test_generated_readme_refresh_and_determinism (test_publication.ManifestRefreshTests.test_generated_readme_refresh_and_determinism) ... FAIL
+test_missing_input_leaves_manifest_unchanged (test_publication.ManifestRefreshTests.test_missing_input_leaves_manifest_unchanged) ... ok
+test_binary_corruption_is_rejected (test_publication.PublicationIntegrityTests.test_binary_corruption_is_rejected) ... ok
+test_blank_lines_and_nonobjects_are_rejected (test_publication.PublicationIntegrityTests.test_blank_lines_and_nonobjects_are_rejected) ... ok
+test_nonfinite_and_duplicate_values_are_rejected (test_publication.PublicationIntegrityTests.test_nonfinite_and_duplicate_values_are_rejected) ... ok
+test_same_length_numeric_tampering_is_rejected (test_publication.PublicationIntegrityTests.test_same_length_numeric_tampering_is_rejected) ... ok
+test_truncated_record_is_rejected (test_publication.PublicationIntegrityTests.test_truncated_record_is_rejected) ... ok
+test_valid_utf8_preserves_values (test_publication.PublicationIntegrityTests.test_valid_utf8_preserves_values) ... ok
+
+======================================================================
+FAIL: test_generated_readme_refresh_and_determinism (test_publication.ManifestRefreshTests.test_generated_readme_refresh_and_determinism)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/hw-apex-bench-hw-region-2/web/test_publication.py", line 76, in test_generated_readme_refresh_and_determinism
+    self.assertEqual(report.returncode, 0, report.stderr)
+AssertionError: 1 != 0 : Traceback (most recent call last):
+  File "/tmp/tmpg7j1ss2g/repo/harness/report.py", line 173, in <module>
+    write_reports(rows)
+  File "/tmp/tmpg7j1ss2g/repo/harness/report.py", line 158, in write_reports
+    (ROOT/"docs/RESULTS/ACEAPEX_SNAPSHOTS.md").write_text(render_snapshots(rows))
+                                                          ^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/tmpg7j1ss2g/repo/harness/presentation.py", line 319, in render_snapshots
+    render_region_primary(rows) + render_region_coordinates() + "[written by ChatGPT (AI) at the author's request; checked by the author]\n\n"
+                                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/tmpg7j1ss2g/repo/harness/presentation.py", line 281, in render_region_coordinates
+    require(extra['schema'] == 'hw-region-2-binary-search-summary-v1' and extra['status'] == 'COMPLETE'
+  File "/tmp/tmpg7j1ss2g/repo/harness/presentation.py", line 254, in require
+    raise ValueError(why)
+ValueError: reader addition is not complete/audited
+
+
+----------------------------------------------------------------------
+Ran 8 tests in 4.222s
+
+FAILED (failures=1)

@@ -27,11 +27,7 @@ for codec in bgzip zstd_seekable xz; do ./run.sh --check "codecs/$codec.sh" || e
 
 ## Same-run chr1 refresh — 2026-11-26
 
-Full hg38 chr1 FASTA (253,935,557 bytes), R=16 KiB, archive in RAM; ratio = input / stored bytes including required indexes. Each date has its own host, source, configuration and request sample.
-
-2026-09-10: Intel Xeon 6973P-C, 200 requests per configuration; ACEAPEX 1b13df3 uses the one-shot `aceapex_decompress_region` API. BGZF g is a 64 KiB ceiling; ACE dense uses g=256 KiB.
-
-2026-11-26 (HW-REGION-1): one pinned core on ace-core (AMD EPYC 4344P), 1,000 uniform requests per format, persistent library handles, g=16 KiB for all three formats; ACE interactive LIT=65,536 B, FSE=4,096 B.
+Full hg38 chr1 FASTA (253,935,557 bytes), R=16 KiB, archive in RAM; ratio = input / stored bytes including required indexes. Each date has its own host, source, configuration and request sample. 2026-09-10: Intel Xeon 6973P-C, 200 requests per configuration; ACEAPEX 1b13df3 uses the one-shot `aceapex_decompress_region` API. BGZF g is a 64 KiB ceiling; ACE dense uses g=256 KiB. 2026-11-26 (HW-REGION-1): one pinned core on ace-core (AMD EPYC 4344P), 1,000 uniform requests per format, persistent library handles, g=16 KiB for all three formats; ACE interactive LIT=65,536 B, FSE=4,096 B.
 
 | Date / scope | Codec / source version | g | Stored bytes incl. indexes | Ratio | p50 / p99 ms | Mean amplification |
 |---|---|---:|---:|---:|---:|---:|
@@ -43,11 +39,19 @@ Full hg38 chr1 FASTA (253,935,557 bytes), R=16 KiB, archive in RAM; ratio = inpu
 | 2026-11-26 · HW-REGION-1 | BGZF / HTSlib 1.24 (L6) | 16 KiB | 80,071,563 | 3.171358 | 0.042280 / 0.046257 | 2.000000 |
 | 2026-09-10 · historical | ACEAPEX 1b13df3 dense (L2) | 256 KiB | 67,167,236 | 3.780646 | 1.330098 / 2.523226 | 83.431872 |
 
-Same-run non-genome, g=16 KiB, ACEAPEX / zstd: [enwik8](evidence/hw-region-1/cases/enwik8-g16384.json) p50 = 2.45, stored bytes = 41,649,923 / 42,939,459; [silesia](evidence/hw-region-1/cases/silesia-g16384.json) p50 = 2.82, stored bytes = 76,265,370 / 79,417,442.
+Same-run non-genome, g=16 KiB, ACEAPEX / zstd: [enwik8](evidence/hw-region-1/cases/enwik8-g16384.json) p50 = 2.45, stored bytes = 41,649,923 / 42,939,459; [silesia](evidence/hw-region-1/cases/silesia-g16384.json) p50 = 2.82, stored bytes = 76,265,370 / 79,417,442. Within 2026-11-26, ACEAPEX / zstd: p50 = 0.785039; p99 = 1.151997; stored bytes = 0.720183; amplification = 2.998125. [Historical rows](results.jsonl) · [Run report](evidence/hw-region-1/RESULTS.md) · [Saved primary cell](evidence/hw-region-1/cases/chr1-g16384.json) · [Pinned versions, CLI/header strings and build metadata](evidence/hw-region-1/setup.json). Historical rows below retain their original sources and hosts.
 
-Within 2026-11-26, ACEAPEX / zstd: p50 = 0.785039; p99 = 1.151997; stored bytes = 0.720183; amplification = 2.998125.
+[written by ChatGPT (AI) at the author's request; checked by the author]
 
-[Historical rows](results.jsonl) · [Run report](evidence/hw-region-1/RESULTS.md) · [Saved primary cell](evidence/hw-region-1/cases/chr1-g16384.json) · [Pinned versions, CLI/header strings and build metadata](evidence/hw-region-1/setup.json). Historical rows below retain their original sources and hosts.
+**Genome-coordinate chr1 / T2T — 2026-11-26 UTC** · 16,384 case-preserved bases; ace-core EPYC 4344P/CPU0, warm RAM archives; 1,000 requests per corpus. Cells: stored B · p50 / p99 µs; T2T cells are medians of 30 per-window values.
+
+| UTC / corpus | ACEAPEX 2.6.5 | zstd 1.5.7 | BGZF / HTSlib 1.24 | .2bit-casefix (storeMasked=1) | lib2bit-casefix + binary search (reader change, not upstream) |
+|---|---:|---:|---:|---:|---:|
+| 2026-11-26 chr1 | 60,440,787 · 41.357 / 61.724 | 83,924,190 · 46.997 / 66.293 | 80,071,586 · 41.526 / 59.931 | 64,895,635 · 88.965 / 171.828 | n/a — separate row |
+| 2026-11-26 chr1, reader addition | n/a — retained above | n/a — retained above | n/a — retained above | n/a — retained above | 64,895,635 · 9.348 / 13.155 |
+| 2026-11-26 T2T-30 | 563,848 · 33.6075 / 61.8510 | 737,801 · 44.8390 / 58.7100 | 686,035 · 39.2130 / 51.7565 | 592,407 · 9.6180 / 11.8820 | n/a — chr1 only |
+
+[Registered coordinate rows](evidence/hw-region-2/casefix/RESULTS.md) · [Separate reader change and audit](evidence/hw-region-2/binary-search/RESULTS.md).
 
 ## Example pick frontier — chrX
 
@@ -111,8 +115,7 @@ Follow [CONTRIBUTING.md](CONTRIBUTING.md) for native companions and provenance.
 ## Read the evidence
 
 The overview is generated from [results.jsonl](results.jsonl), never edited by hand.
-The published 435 records retain their original bytes and separate evidence scopes.
-No rounded display value replaces the underlying record.
+The published 435 records retain their original bytes and separate evidence scopes. No rounded display value replaces the underlying record.
 
 [PROVENANCE.md](docs/PROVENANCE.md) explains row identities, commands and hashes.
 [CODECS.md](docs/CODECS.md) explains configuration choices and backend differences.
@@ -125,8 +128,7 @@ The strict c(g) run uses its own baseline and configuration; do not splice it
 into the interactive/dense CPU rows as though it were the same experiment.
 Current open-profile GPU rows are measured external Colab evidence with retained logs; older owner-declared GPU observations remain historical.
 
-The Pages explorer selects only measured profile points, without interpolation.
-Unavailable comparisons stay visible with their reasons.
+The Pages explorer selects only measured profile points, without interpolation. Unavailable comparisons stay visible with their reasons.
 Its tables provide the same values as the graph for keyboard and screen-reader users.
 The detailed result pages retain commands and scope for reviewing each conclusion.
 

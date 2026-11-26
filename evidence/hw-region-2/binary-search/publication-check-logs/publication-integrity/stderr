@@ -1,0 +1,9 @@
+Traceback (most recent call last):
+  File "/home/ubuntu/hw-apex-bench-hw-region-2/web/validate_publication.py", line 101, in <module>
+    checked = validate()
+              ^^^^^^^^^^
+  File "/home/ubuntu/hw-apex-bench-hw-region-2/web/validate_publication.py", line 86, in validate
+    validate_tables((root / name).read_text(encoding='utf-8'))
+  File "/home/ubuntu/hw-apex-bench-hw-region-2/harness/table_cells.py", line 29, in validate_tables
+    raise ValueError(f"Unexplained table cell at line {number}: {cell!r}")
+ValueError: Unexplained table cell at line 50: ' — '

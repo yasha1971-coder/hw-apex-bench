@@ -1,0 +1,1 @@
+STOP: generic byte qualification/planning excludes this input/coordinate domain; use the adapter sequence interface (seq-build/seq-fetch)

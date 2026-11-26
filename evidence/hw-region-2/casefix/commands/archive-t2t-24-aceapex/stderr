@@ -1,0 +1,12 @@
+[*] Compress: /home/ubuntu/hw-apex-bench-hw-region-2/.work/hw-region-2/casefix/inputs/t2t-24.fa (2.12 MB) threads=1
+  Original:          2123375 bytes
+  Compressed:         188459 bytes
+  Ratio:  11.26704x
+  Phase LZ77:    0.011s
+  Phase lit/zstd:0.008s
+  Phase FSE:     0.000s
+  Phase fread:   0.000s
+  Phase sha256:  0.000s
+  Phase other:   0.000s
+  Encode: 110.11 MB/s  (0.019s)
+  XXH3:   18554f328424cb62

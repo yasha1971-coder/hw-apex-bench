@@ -2230,3 +2230,93 @@ measurements.
 - `window_summary.py` independently reads all90 frozen T2T case JSON: g4/16/64KiB counts ACEp50<zstd 25/24/26, ACEp50<BGZF25/25/25, ACEp99<zstd1/0/22, ACEstored<zstd30/28/22; arithmetic means of thirty individual p50 ratios0.8690211286/0.8680234812/0.9430238847. `window-summary.json` retains exact fractions, source closure, case SHA, slower-group IDs and density statistics. RESULTS now reports the whole set; t2t-00 is a minority example, with density ranges explicitly overlapping.
 - One numerical same-run non-genome line follows the chr1 table in both README and snapshots: enwik8 ACE/zstd p50=2.45, stored41649923/42939459B; silesia2.82, stored76265370/79417442B. Old dated rows remain; README148lines.
 - No new timing/counter/codec run and no changed measured data or model. Publication validation, static build, local links and eight publication regression tests passed; exact commands/logs in `ready-checks.json`. Normal mandatory CI runs on the final publication commit; experimental data remain unchanged. Next bounded action: mark PR #96 ready per owner, then Claude may merge; HW performs no merge.
+
+- HW-REGION-2 untimed admission checkpoint: KILL; native correctness outputs, commands, writer metadata and source hashes retained. No timing table or benchmark admitted.
+
+## HW-REGION-2 stopped by equivalence Kill — 2026-11-26
+
+- Draft PR #97, branch hw-region-2, based on merged main `e5d6158a99afa9a62c91723c26ace083ac0ac125`; unchanged owner CALIBRATION was the sole first-commit file in `7fdcbd78b27739cbe1739bf0a8650f395c2afbde`. Admission sources `327090a0`, driver `d691e479`, retained native evidence `e950bb46`, saved report source `549a6232c42fe864ee22fa2c4ea08f508692ff62`.
+- Full input preflight found181 lowercase n in chr1 (sequence248956422B, SHA7f99a160ce64b77f61798ba650f63f0e787e9b8cc463fed905c12e9776c6507d); all31input SHA/alphabets verified. Original Apache2 writer structurally reconstructs every case-preserved base; N and lower-mask tables overlap correctly.
+- Unmodified MIT lib2bit58e20daa898a6fc338eae82e5d2ef7108d4fc07f: positive TCAGtcag and NN controls passed; one untimed16384-base chr1 query start121749276 returned two n(110)→N(78) differences. First0based121757468 (1based121757469), second0based121757508. Independent saved-output/FAI/N+mask review PASS.
+- KILL stops all main work: P1/P2/P3 NOT TESTED: Kill; no latency table, open/RSS/A/A/boundary timing, coordinate trace or other-codec grid. No reader patch or output normalization, no Kent utilities. A qualified twobit adapter and README performance row are not promoted after this failed mandatory admission.
+- Completed replay checked retained hashes with0newnativecalls and unchanged command receipts. Strict saved report, publication integrity, static build and Markdown links passed; see evidence/hw-region-2/{RESULTS.md,admission.json,verification.json}. Old measurements, codecs and publication rows unchanged. Keep PR97draft; no upstream post/merge. Next bounded action: owner decides whether a separate reader fix or explicitly changed equivalence contract is warranted; no continuation under current Kill.
+
+- HW-REGION-2 casefix checkpoint `untimed-archives`: retained raw outputs and hash-bound receipts under evidence/hw-region-2/casefix/. Original Kill and P1-P3 unchanged; draft PR97, no upstream post or merge.
+
+## HW-REGION-2 owner-authorized casefix continuation — 2026-11-26
+
+- Owner authorized only one lib2bit source change: remove the N guard from softMask at 2bit.c:155, same pin58e20daa898a6fc338eae82e5d2ef7108d4fc07f. Original Kill/admission, original writer and forecasts remain unchanged. Patch and complete continuation protocol were committed before execution in ca6ff975; untimed setup38ee1d9d and coordinate native sourcesbabbdc75 precede qualification.
+- Untimed archive checkpoint7561b6ddd50b7d7e57dcc1916436d0f2f568b3e6 preserves all31 original sequences, exact mapped12+1000 traces, complete archives/index counts and separately compiled original/casefix libraries. All fixed starts avoid the separate unpatched terminal-packed-byte rejection; no resampling, padding, additional chromosome or EOF source patch. Scope is the frozen sampled grid, not exhaustive library qualification.
+- Next bounded action: qualify all four equivalent readers on the complete grid and repeat the old lowercase-n witness using casefix. Any required mismatch stops all timing. Only after complete admission, A/A and prespecified fresh-handle boundary controls may admit the six-row main grid. Draft PR97 remains draft; no upstream message or merge.
+
+- HW-REGION-2 casefix checkpoint `equivalence-pass`: retained raw outputs and hash-bound receipts under evidence/hw-region-2/casefix/. Original Kill and P1-P3 unchanged; draft PR97, no upstream post or merge.
+
+- HW-REGION-2 casefix checkpoint `method-pass`: retained raw outputs and hash-bound receipts under evidence/hw-region-2/casefix/. Original Kill and P1-P3 unchanged; draft PR97, no upstream post or merge.
+
+- HW-REGION-2 casefix checkpoint `chr1`: retained raw outputs and hash-bound receipts under evidence/hw-region-2/casefix/. Original Kill and P1-P3 unchanged; draft PR97, no upstream post or merge.
+
+- HW-REGION-2 casefix checkpoint `t2t-00-04`: retained raw outputs and hash-bound receipts under evidence/hw-region-2/casefix/. Original Kill and P1-P3 unchanged; draft PR97, no upstream post or merge.
+
+- HW-REGION-2 casefix checkpoint `t2t-05-09`: retained raw outputs and hash-bound receipts under evidence/hw-region-2/casefix/. Original Kill and P1-P3 unchanged; draft PR97, no upstream post or merge.
+
+- HW-REGION-2 casefix checkpoint `t2t-10-14`: retained raw outputs and hash-bound receipts under evidence/hw-region-2/casefix/. Original Kill and P1-P3 unchanged; draft PR97, no upstream post or merge.
+
+- HW-REGION-2 casefix checkpoint `blocked-load`: retained raw outputs and hash-bound receipts under evidence/hw-region-2/casefix/. Original Kill and P1-P3 unchanged; draft PR97, no upstream post or merge.
+
+
+[written by ChatGPT (AI) at the author's request; checked by the author]
+
+## HW-REGION-2 casefix retained checkpoint — 2026-11-26
+
+- The owner authorized the same lib2bit pin 58e20daa898a6fc338eae82e5d2ef7108d4fc07f with only the softMask N guard removed. Patch/protocol ca6ff975 preceded execution; original calibration 7fdcbd78 and P1–P3 are unchanged. Original Kill, admission and captures are unchanged; the exact prior RESULTS is retained as RESULTS-before-casefix.md. All 31 sampled corpus grids and the former lowercase-n witness passed equivalence; independent public-capture admission checkpoint 9206b288 passed.
+- Method checkpoint 90669050 passed strict A/A <5% for all six profiles (maximum 1.9304%) and all four prespecified boundary-cost controls: 16 first-CLEAN units, no LOADED. Main checkpoints: chr1 4da97b36; T2T 00–04 7b62c0f5, 05–09 09388832, 10–14 ce2d78e9. The frozen execution source cohort remains e9b3a276; no CLEAN unit was retimed.
+- BLOCKED: load on the first T2T-15/original_mask1 unit, retained in ab9d4366. All three admissions rejected foreign aeterna cc1plus PID 124200 at 98.6–99.6% of one CPU; load1 was 0.58–0.61. The worker never started. No fourth attempt or later window timer ran. The checkpoint contains 16 complete corpora / 96 main rows plus 16 method units, 115 attempts and 116000 accepted query timings. Integrity PASS is distinct from experiment completion: P1 HIT and P2 MISS on completed chr1; P3 PENDING, 15 wins in 15 observed of 30 windows.
+- Partial auditor/renderer source 2495cdaf, standalone sequence adapter 8cd5be74 and untimed verification b3f6f332 are retained. Standalone build, three synthetic native sequence fetches preserving n, and domain/check/planner regressions passed without query timers. Generic byte qualification excludes the base-coordinate adapter; default discovery preserves byte adapters. README has no new coordinate performance row while incomplete. All 435 historical rows remain byte-identical. Publication integrity, static build, links and eight publication regression tests passed; see casefix/publication-checks.json.
+- PR #97 stays draft; no upstream post or merge. The next bounded action requires the owner to coordinate a quiet window and explicitly authorize a fresh three-attempt budget for the same blocked reader binary, seed and offsets. Preserve its three old LOADED admissions and every CLEAN unit. Until then, no further experimental timing. Normal mandatory CI runs on the final push.
+
+[written by ChatGPT (AI) at the author's request; checked by the author]
+
+## HW-REGION-2 renewed admission authorized — 2026-11-26
+
+- The owner authorized a fresh maximum of three attempts for T2T-15/original_mask1, with the same reader binary, seed and offsets. Preregistered admission amendment ae84313194d36a4e5fd61e98383088408f43fe09 was committed and pushed before any new attempt. The original three LOADED admissions and all 96 CLEAN main cells / 16 CLEAN method units remain retained.
+- Wait for admission rather than a fixed quiet window: after an inadmissible observation or actual LOADED attempt, wait at least 300 seconds before the next observation. Waiting observations consume no attempt; a fresh passing observation is required before an actual attempt, and the original shared-flock helper rechecks admission. After CLEAN, proceed to the next unit's admission check. All forecasts, criteria and frozen reader binaries remain unchanged.
+- A separate resume alias, source-bound authorization and ledger preserve both attempt budgets without overwriting the old BLOCKED file. If the new three attempts all become LOADED, stop again, report foreign process names, and leave the next decision to the owner. No foreign process is stopped. Next bounded action: commit and verify the resume controller and audit sources, then observe admission; keep PR #97 draft.
+
+[written by ChatGPT (AI) at the author's request; checked by the author]
+
+- HW-REGION-2 casefix checkpoint `t2t-15-new-budget-clean`: retained raw outputs and hash-bound receipts under evidence/hw-region-2/casefix/. Original Kill and P1-P3 unchanged; draft PR97, no upstream post or merge.
+
+[written by ChatGPT (AI) at the author's request; checked by the author]
+
+- HW-REGION-2 casefix checkpoint `t2t-16-19-clean`: retained raw outputs and hash-bound receipts under evidence/hw-region-2/casefix/. Original Kill and P1-P3 unchanged; draft PR97, no upstream post or merge.
+
+[written by ChatGPT (AI) at the author's request; checked by the author]
+
+- HW-REGION-2 casefix checkpoint `t2t-20-22-load-wait`: retained raw outputs and hash-bound receipts under evidence/hw-region-2/casefix/. Original Kill and P1-P3 unchanged; draft PR97, no upstream post or merge.
+
+[written by ChatGPT (AI) at the author's request; checked by the author]
+
+- HW-REGION-2 casefix checkpoint `t2t-23-24-clean-after-wait`: retained raw outputs and hash-bound receipts under evidence/hw-region-2/casefix/. Original Kill and P1-P3 unchanged; draft PR97, no upstream post or merge.
+
+[written by ChatGPT (AI) at the author's request; checked by the author]
+
+- HW-REGION-2 casefix checkpoint `complete-grid-31`: retained raw outputs and hash-bound receipts under evidence/hw-region-2/casefix/. Original Kill and P1-P3 unchanged; draft PR97, no upstream post or merge.
+
+[written by ChatGPT (AI) at the author's request; checked by the author]
+
+## HW-REGION-2 completed after renewed admission — 2026-11-26
+
+- Owner admission amendment ae843131 preceded every new attempt; resume controller a85999d3c35ce5648a59575b1abdff68cafa04b1 retained all 112 earlier CLEAN units and the original three admission-only LOADED receipts. The replacement T2T-15/original_mask1 unit used 1 actual attempt(s), 0 LOADED. All later cells use the same binaries, archives, seeds, offsets and frozen execution source cohort e9b3a276. No CLEAN measurement was repeated.
+- Complete grid: 31 corpora / 186 main rows plus 16 method units, 206 total attempts, 4 retained LOADED attempts, 206000 accepted query timings. Independent public-only resumed-all audit PASS verifies the alias, complete raw inventory, poll-to-attempt bindings, waiting intervals, old CLEAN hashes and exact quantiles. All original forecasts and criteria are unchanged: P1 HIT, P2 MISS, P3 HIT; P3 has 30/30 strict casefix p50 wins.
+- RESULTS includes casefix/storeMasked=1 as the main .2bit row, unchanged masked reader as a time-only diagnostic and mask-disabled output separately as non-equivalent. Full-archive analysis identifies 181 N/soft-mask overlap positions on chr1, first 121757469 one-based. Host scope remains ace-core EPYC 4344P / CPU0, warm archives in RAM; open time and whole-process RSS remain explicit. The separate terminal-packed-byte limitation stays unpatched and outside the frozen sampled endpoints.
+- README and ACEAPEX snapshots now include the dated four-reader coordinate numbers, keeping all older rows and scopes. README has 150 lines. All 435 historical measurement rows remain byte-identical. Publication integrity, static build, local links and eight publication regressions passed; standalone adapter correctness remains PASS without another native correctness pass. See casefix/resumed-publication-checks.json and audit/resumed-all.json.
+- Keep PR #97 draft; no upstream post or merge. Next bounded action: owner/controller review of the full table and unchanged forecast verdicts. Normal mandatory CI runs on the final push.
+
+[written by ChatGPT (AI) at the author's request; checked by the author]
+
+## HW-REGION-2 separate binary-search reader — 2026-11-26
+
+- Owner requested the chr1/T2T mask-table explanation and a separate chr1 reader row. Calibration-only first commit633badf8 preceded the patch/check source9feecfc5 and execution sourcef1c787ce. Same lib2bit pin58e20daa; only softMask initial lookup changes relative to casefix. Exact unchanged worker/native wrapper, archive and frozen trace retained. Public source copies keep MIT LICENSE. No default adapter change.
+- Saved metadata: chr1 maskblocks331893; T2T-30 median8509.5, range34..15137. Static chr1 query operation replay: old-loop entries p50184885 versus binary end+body inspections43; not a timed decomposition. All required untimed native captures and actual-C synthetic checks passed before timing.
+- New chr1 reader p50/p99 9348/13155ns; stored64895635B. Separate B1 HIT. New A/A and unchanged synthetic boundary gate PASS; 4CLEAN units/5000accepted timings, 1retained LOADED out of5attempts. No old CLEAN or T2T timer repeated. Full public-only new audit PASS. Original casefix folder/CALIBRATION and P1HIT/P2MISS/P3HIT30of30 remain byte-identical.
+- README/snapshots preserve the registered chr1 row and add dated numerical chr1 reader-change/T2T-median rows together. Host scope ace-core EPYC4344P/CPU0, warm RAM/page-cache archives. Publication integrity, static build, links and eight publication regressions PASS; all435 historical measurement rows unchanged. Keep PR97draft; no upstream post or merge. Next bounded action: owner/controller review of this separate reader correction and unchanged registered verdicts.

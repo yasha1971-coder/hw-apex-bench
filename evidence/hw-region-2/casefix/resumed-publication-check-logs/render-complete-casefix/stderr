@@ -1,0 +1,13 @@
+Traceback (most recent call last):
+  File "/home/ubuntu/hw-apex-bench-hw-region-2/evidence/hw-region-2/casefix/report.py", line 554, in <module>
+    main()
+  File "/home/ubuntu/hw-apex-bench-hw-region-2/evidence/hw-region-2/casefix/report.py", line 534, in main
+    value, document, parent_document = outputs()
+                                       ^^^^^^^^^
+  File "/home/ubuntu/hw-apex-bench-hw-region-2/evidence/hw-region-2/casefix/report.py", line 525, in outputs
+    document = render(value)
+               ^^^^^^^^^^^^^
+  File "/home/ubuntu/hw-apex-bench-hw-region-2/evidence/hw-region-2/casefix/report.py", line 436, in render
+    text.append(f"| {name} | {attempt['number']} | {attempt['status']} | {'yes' if attempt['worker_started'] else 'no'} | [raw]({attempt['receipt']['path']}) |")
+                                                                                   ~~~~~~~^^^^^^^^^^^^^^^^^^
+KeyError: 'worker_started'
