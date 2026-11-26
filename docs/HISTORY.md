@@ -2254,3 +2254,5 @@ measurements.
 - HW-REGION-2 casefix checkpoint `method-pass`: retained raw outputs and hash-bound receipts under evidence/hw-region-2/casefix/. Original Kill and P1-P3 unchanged; draft PR97, no upstream post or merge.
 
 - HW-REGION-2 casefix checkpoint `chr1`: retained raw outputs and hash-bound receipts under evidence/hw-region-2/casefix/. Original Kill and P1-P3 unchanged; draft PR97, no upstream post or merge.
+
+- HW-REGION-2 casefix checkpoint `t2t-00-04`: retained raw outputs and hash-bound receipts under evidence/hw-region-2/casefix/. Original Kill and P1-P3 unchanged; draft PR97, no upstream post or merge.
