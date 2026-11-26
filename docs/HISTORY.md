@@ -2260,3 +2260,5 @@ measurements.
 - HW-REGION-2 casefix checkpoint `t2t-05-09`: retained raw outputs and hash-bound receipts under evidence/hw-region-2/casefix/. Original Kill and P1-P3 unchanged; draft PR97, no upstream post or merge.
 
 - HW-REGION-2 casefix checkpoint `t2t-10-14`: retained raw outputs and hash-bound receipts under evidence/hw-region-2/casefix/. Original Kill and P1-P3 unchanged; draft PR97, no upstream post or merge.
+
+- HW-REGION-2 casefix checkpoint `blocked-load`: retained raw outputs and hash-bound receipts under evidence/hw-region-2/casefix/. Original Kill and P1-P3 unchanged; draft PR97, no upstream post or merge.
