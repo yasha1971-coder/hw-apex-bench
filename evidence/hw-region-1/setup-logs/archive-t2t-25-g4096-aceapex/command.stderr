@@ -1,0 +1,12 @@
+[*] Compress: /home/ubuntu/hw-apex-bench-hw-region-1/.work/hw-region-1/inputs/chr5-telomere_context.seq (2.10 MB) threads=1
+  Original:          2097152 bytes
+  Compressed:         543476 bytes
+  Ratio:  3.85878x
+  Phase LZ77:    0.005s
+  Phase lit/zstd:0.019s
+  Phase FSE:     0.000s
+  Phase fread:   0.000s
+  Phase sha256:  0.000s
+  Phase other:   0.000s
+  Encode: 87.53 MB/s  (0.024s)
+  XXH3:   f84191d6458a30db

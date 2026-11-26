@@ -1,0 +1,12 @@
+[*] Compress: /home/ubuntu/hw-apex-bench-hw-region-1/.work/hw-region-1/inputs/chr1.fa (253.94 MB) threads=1
+  Original:        253935557 bytes
+  Compressed:       59448760 bytes
+  Ratio:  4.27150x
+  Phase LZ77:    0.337s
+  Phase lit/zstd:2.138s
+  Phase FSE:     0.002s
+  Phase fread:   0.017s
+  Phase sha256:  0.007s
+  Phase other:   0.021s
+  Encode: 100.69 MB/s  (2.522s)
+  XXH3:   6717ffebd3c5a5e2

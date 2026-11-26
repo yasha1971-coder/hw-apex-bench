@@ -1,0 +1,16 @@
+{
+  "base_report_sha256": "a02ad8605b037d100f23012f440c78540b3cecf9b30177abfa1816825d776ff4",
+  "fairness": "PASS",
+  "measurements_repeated": false,
+  "numerical_audit_sha256": "34143d5bd3a5d5559af6046037a3393c5867c68881afc9596676d8a144ec0914",
+  "numerical_renderer_sha256": "382af0b7da8558a3ab959db4e09552204328d42b6c8666cf4997930051acec81",
+  "result_sha256": "fbdbacfeca68dd07402f2ba9754dd675ea964f993c4637ea8b41ff179e14a218",
+  "saved_data_only": true,
+  "schema": "hw-region-1-followup-render-v1",
+  "source_sha256": "75ede2ef1e2ff6dab8b5bf193066563296ab381c5d88d2cdddf23ce2e4cff61d",
+  "status": "PASS",
+  "tail_renderer_sha256": "9878dc4c137ba5facac947d3075335759e48ba781c3edbeab4500655ef343fa2",
+  "tail_summary_sha256": "5f0663e1b07dc71e08672040f89be9e85ea759933fed4e1565d2b40ad6e32365",
+  "window_renderer_sha256": "6c774505b0432bd372e1f04b23ad3f2d0ced5f27c4781317d04afcad7868c1d2",
+  "window_summary_sha256": "e996673c5bd1db4c0649e506da866299309e6774bc871b687d4c3df06d638c0c"
+}

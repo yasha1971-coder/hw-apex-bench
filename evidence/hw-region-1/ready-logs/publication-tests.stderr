@@ -1,0 +1,13 @@
+test_generated_readme_refresh_and_determinism (test_publication.ManifestRefreshTests.test_generated_readme_refresh_and_determinism) ... ok
+test_missing_input_leaves_manifest_unchanged (test_publication.ManifestRefreshTests.test_missing_input_leaves_manifest_unchanged) ... ok
+test_binary_corruption_is_rejected (test_publication.PublicationIntegrityTests.test_binary_corruption_is_rejected) ... ok
+test_blank_lines_and_nonobjects_are_rejected (test_publication.PublicationIntegrityTests.test_blank_lines_and_nonobjects_are_rejected) ... ok
+test_nonfinite_and_duplicate_values_are_rejected (test_publication.PublicationIntegrityTests.test_nonfinite_and_duplicate_values_are_rejected) ... ok
+test_same_length_numeric_tampering_is_rejected (test_publication.PublicationIntegrityTests.test_same_length_numeric_tampering_is_rejected) ... ok
+test_truncated_record_is_rejected (test_publication.PublicationIntegrityTests.test_truncated_record_is_rejected) ... ok
+test_valid_utf8_preserves_values (test_publication.PublicationIntegrityTests.test_valid_utf8_preserves_values) ... ok
+
+----------------------------------------------------------------------
+Ran 8 tests in 3.153s
+
+OK

@@ -1990,3 +1990,243 @@ measurements.
 - The owner requires honest ChatGPT/Claude attribution on the exact first line of external drafts, unsigned content-free thanks, no AI Hacker News text (including drafts; Russian supporting points only), and sending only by Yakov or a controller on his instruction after checking numbers. The complete rule is isolated in draft PR #95, one-file commit 0fedd8b4c7bd525d9abce9730be079aae2f7b876 adding docs/EXTERNAL_TEXTS.md to main.
 - Applied the exact ChatGPT first line to the PR #94 description and its unsent HW-GIFT-1e issue draft. This is an editorial prefix only: stripping the signature and one blank line reproduces all 8727 original body bytes, SHA 921fc3feffa4b2e253a67511e283c3812f4a0824e3e2f22dc9df4e302bb996ac. Signed draft SHA 0dc03684d6b94afc739347741c8f0b1a53115c744340d4752c6d9dc0b014648e; the first content paragraph still cites PR #3544, and the final single maintainer question is unchanged.
 - The completed experiment's frozen renderers, audits, measurements, RESULTS.md and TABLE.csv remain unchanged. A future re-render must receive the required signature before delivery. Legacy 1c/1d evidence is retained as accepted. No measurement, upstream message or merge was performed for this policy update.
+
+- HW-REGION-1 checkpoint `setup`: retained raw attempts and hash-bound results under evidence/hw-region-1/. No external issue or merge.
+
+- HW-REGION-1 checkpoint `primary-archives`: retained raw attempts and hash-bound results under evidence/hw-region-1/. No external issue or merge.
+
+- HW-REGION-1 checkpoint `native-controls`: retained raw attempts and hash-bound results under evidence/hw-region-1/. No external issue or merge.
+
+- HW-REGION-1 checkpoint `primary-output-proof`: retained raw attempts and hash-bound results under evidence/hw-region-1/. No external issue or merge.
+
+- HW-REGION-1 checkpoint `prepare`: retained raw attempts and hash-bound results under evidence/hw-region-1/. No external issue or merge.
+
+- HW-REGION-1 checkpoint `method`: retained raw attempts and hash-bound results under evidence/hw-region-1/. No external issue or merge.
+
+- HW-REGION-1 checkpoint `case-case-chr1-g16384`: retained raw attempts and hash-bound results under evidence/hw-region-1/. No external issue or merge.
+
+- HW-REGION-1 checkpoint `constants-frame-4096`: retained raw attempts and hash-bound results under evidence/hw-region-1/. No external issue or merge.
+
+- HW-REGION-1 checkpoint `constants-frame-16384`: retained raw attempts and hash-bound results under evidence/hw-region-1/. No external issue or merge.
+
+- HW-REGION-1 checkpoint `constants-frame-65536`: retained raw attempts and hash-bound results under evidence/hw-region-1/. No external issue or merge.
+
+- HW-REGION-1 checkpoint `constants-frame-262144`: retained raw attempts and hash-bound results under evidence/hw-region-1/. No external issue or merge.
+
+- HW-REGION-1 checkpoint `fit`: retained raw attempts and hash-bound results under evidence/hw-region-1/. No external issue or merge.
+
+- HW-REGION-1 checkpoint `case-case-chr1-g4096`: retained raw attempts and hash-bound results under evidence/hw-region-1/. No external issue or merge.
+
+- HW-REGION-1 checkpoint `case-case-chr1-g65536`: retained raw attempts and hash-bound results under evidence/hw-region-1/. No external issue or merge.
+
+- HW-REGION-1 checkpoint `case-case-t2t-00-g4096`: retained raw attempts and hash-bound results under evidence/hw-region-1/. No external issue or merge.
+
+- HW-REGION-1 checkpoint `case-case-t2t-00-g16384`: retained raw attempts and hash-bound results under evidence/hw-region-1/. No external issue or merge.
+
+- HW-REGION-1 checkpoint `case-case-t2t-00-g65536`: retained raw attempts and hash-bound results under evidence/hw-region-1/. No external issue or merge.
+
+- HW-REGION-1 checkpoint `case-case-t2t-01-g4096`: retained raw attempts and hash-bound results under evidence/hw-region-1/. No external issue or merge.
+
+- HW-REGION-1 checkpoint `case-case-t2t-01-g16384`: retained raw attempts and hash-bound results under evidence/hw-region-1/. No external issue or merge.
+
+- HW-REGION-1 checkpoint `case-case-t2t-01-g65536`: retained raw attempts and hash-bound results under evidence/hw-region-1/. No external issue or merge.
+
+- HW-REGION-1 checkpoint `case-case-t2t-02-g4096`: retained raw attempts and hash-bound results under evidence/hw-region-1/. No external issue or merge.
+
+- HW-REGION-1 checkpoint `case-case-t2t-02-g16384`: retained raw attempts and hash-bound results under evidence/hw-region-1/. No external issue or merge.
+
+- HW-REGION-1 checkpoint `case-case-t2t-02-g65536`: retained raw attempts and hash-bound results under evidence/hw-region-1/. No external issue or merge.
+
+- HW-REGION-1 checkpoint `case-case-t2t-03-g4096`: retained raw attempts and hash-bound results under evidence/hw-region-1/. No external issue or merge.
+
+- HW-REGION-1 checkpoint `case-case-t2t-03-g16384`: retained raw attempts and hash-bound results under evidence/hw-region-1/. No external issue or merge.
+
+- HW-REGION-1 checkpoint `case-case-t2t-03-g65536`: retained raw attempts and hash-bound results under evidence/hw-region-1/. No external issue or merge.
+
+- HW-REGION-1 checkpoint `case-case-t2t-04-g4096`: retained raw attempts and hash-bound results under evidence/hw-region-1/. No external issue or merge.
+
+- HW-REGION-1 checkpoint `case-case-t2t-04-g16384`: retained raw attempts and hash-bound results under evidence/hw-region-1/. No external issue or merge.
+
+- HW-REGION-1 checkpoint `case-case-t2t-04-g65536`: retained raw attempts and hash-bound results under evidence/hw-region-1/. No external issue or merge.
+
+- HW-REGION-1 checkpoint `case-case-t2t-05-g4096`: retained raw attempts and hash-bound results under evidence/hw-region-1/. No external issue or merge.
+
+- HW-REGION-1 checkpoint `case-case-t2t-05-g16384`: retained raw attempts and hash-bound results under evidence/hw-region-1/. No external issue or merge.
+
+- HW-REGION-1 checkpoint `case-case-t2t-05-g65536`: retained raw attempts and hash-bound results under evidence/hw-region-1/. No external issue or merge.
+
+- HW-REGION-1 checkpoint `case-case-t2t-06-g4096`: retained raw attempts and hash-bound results under evidence/hw-region-1/. No external issue or merge.
+
+- HW-REGION-1 checkpoint `case-case-t2t-06-g16384`: retained raw attempts and hash-bound results under evidence/hw-region-1/. No external issue or merge.
+
+- HW-REGION-1 checkpoint `case-case-t2t-06-g65536`: retained raw attempts and hash-bound results under evidence/hw-region-1/. No external issue or merge.
+
+- HW-REGION-1 checkpoint `case-case-t2t-07-g4096`: retained raw attempts and hash-bound results under evidence/hw-region-1/. No external issue or merge.
+
+- HW-REGION-1 checkpoint `case-case-t2t-07-g16384`: retained raw attempts and hash-bound results under evidence/hw-region-1/. No external issue or merge.
+
+- HW-REGION-1 checkpoint `case-case-t2t-07-g65536`: retained raw attempts and hash-bound results under evidence/hw-region-1/. No external issue or merge.
+
+- HW-REGION-1 checkpoint `case-case-t2t-08-g4096`: retained raw attempts and hash-bound results under evidence/hw-region-1/. No external issue or merge.
+
+- HW-REGION-1 checkpoint `case-case-t2t-08-g16384`: retained raw attempts and hash-bound results under evidence/hw-region-1/. No external issue or merge.
+
+- HW-REGION-1 checkpoint `case-case-t2t-08-g65536`: retained raw attempts and hash-bound results under evidence/hw-region-1/. No external issue or merge.
+
+- HW-REGION-1 checkpoint `case-case-t2t-09-g4096`: retained raw attempts and hash-bound results under evidence/hw-region-1/. No external issue or merge.
+
+- HW-REGION-1 checkpoint `case-case-t2t-09-g16384`: retained raw attempts and hash-bound results under evidence/hw-region-1/. No external issue or merge.
+
+- HW-REGION-1 checkpoint `case-case-t2t-09-g65536`: retained raw attempts and hash-bound results under evidence/hw-region-1/. No external issue or merge.
+
+- HW-REGION-1 checkpoint `case-case-t2t-10-g4096`: retained raw attempts and hash-bound results under evidence/hw-region-1/. No external issue or merge.
+
+- HW-REGION-1 checkpoint `case-case-t2t-10-g16384`: retained raw attempts and hash-bound results under evidence/hw-region-1/. No external issue or merge.
+
+- HW-REGION-1 checkpoint `case-case-t2t-10-g65536`: retained raw attempts and hash-bound results under evidence/hw-region-1/. No external issue or merge.
+
+- HW-REGION-1 checkpoint `case-case-t2t-11-g4096`: retained raw attempts and hash-bound results under evidence/hw-region-1/. No external issue or merge.
+
+- HW-REGION-1 checkpoint `case-case-t2t-11-g16384`: retained raw attempts and hash-bound results under evidence/hw-region-1/. No external issue or merge.
+
+- HW-REGION-1 checkpoint `case-case-t2t-11-g65536`: retained raw attempts and hash-bound results under evidence/hw-region-1/. No external issue or merge.
+
+- HW-REGION-1 checkpoint `case-case-t2t-12-g4096`: retained raw attempts and hash-bound results under evidence/hw-region-1/. No external issue or merge.
+
+- HW-REGION-1 checkpoint `case-case-t2t-12-g16384`: retained raw attempts and hash-bound results under evidence/hw-region-1/. No external issue or merge.
+
+- HW-REGION-1 checkpoint `case-case-t2t-12-g65536`: retained raw attempts and hash-bound results under evidence/hw-region-1/. No external issue or merge.
+
+- HW-REGION-1 checkpoint `case-case-t2t-13-g4096`: retained raw attempts and hash-bound results under evidence/hw-region-1/. No external issue or merge.
+
+- HW-REGION-1 checkpoint `case-case-t2t-13-g16384`: retained raw attempts and hash-bound results under evidence/hw-region-1/. No external issue or merge.
+
+- HW-REGION-1 checkpoint `case-case-t2t-13-g65536`: retained raw attempts and hash-bound results under evidence/hw-region-1/. No external issue or merge.
+
+- HW-REGION-1 checkpoint `case-case-t2t-14-g4096`: retained raw attempts and hash-bound results under evidence/hw-region-1/. No external issue or merge.
+
+- HW-REGION-1 checkpoint `case-case-t2t-14-g16384`: retained raw attempts and hash-bound results under evidence/hw-region-1/. No external issue or merge.
+
+- HW-REGION-1 checkpoint `case-case-t2t-14-g65536`: retained raw attempts and hash-bound results under evidence/hw-region-1/. No external issue or merge.
+
+- HW-REGION-1 checkpoint `case-case-t2t-15-g4096`: retained raw attempts and hash-bound results under evidence/hw-region-1/. No external issue or merge.
+
+- HW-REGION-1 checkpoint `case-case-t2t-15-g16384`: retained raw attempts and hash-bound results under evidence/hw-region-1/. No external issue or merge.
+
+- HW-REGION-1 checkpoint `case-case-t2t-15-g65536`: retained raw attempts and hash-bound results under evidence/hw-region-1/. No external issue or merge.
+
+- HW-REGION-1 checkpoint `case-case-t2t-16-g4096`: retained raw attempts and hash-bound results under evidence/hw-region-1/. No external issue or merge.
+
+- HW-REGION-1 checkpoint `case-case-t2t-16-g16384`: retained raw attempts and hash-bound results under evidence/hw-region-1/. No external issue or merge.
+
+- HW-REGION-1 checkpoint `case-case-t2t-16-g65536`: retained raw attempts and hash-bound results under evidence/hw-region-1/. No external issue or merge.
+
+- HW-REGION-1 checkpoint `case-case-t2t-17-g4096`: retained raw attempts and hash-bound results under evidence/hw-region-1/. No external issue or merge.
+
+- HW-REGION-1 checkpoint `case-case-t2t-17-g16384`: retained raw attempts and hash-bound results under evidence/hw-region-1/. No external issue or merge.
+
+- HW-REGION-1 checkpoint `case-case-t2t-17-g65536`: retained raw attempts and hash-bound results under evidence/hw-region-1/. No external issue or merge.
+
+- HW-REGION-1 checkpoint `case-case-t2t-18-g4096`: retained raw attempts and hash-bound results under evidence/hw-region-1/. No external issue or merge.
+
+- HW-REGION-1 checkpoint `case-case-t2t-18-g16384`: retained raw attempts and hash-bound results under evidence/hw-region-1/. No external issue or merge.
+
+- HW-REGION-1 checkpoint `case-case-t2t-18-g65536`: retained raw attempts and hash-bound results under evidence/hw-region-1/. No external issue or merge.
+
+- HW-REGION-1 checkpoint `case-case-t2t-19-g4096`: retained raw attempts and hash-bound results under evidence/hw-region-1/. No external issue or merge.
+
+- HW-REGION-1 checkpoint `case-case-t2t-19-g16384`: retained raw attempts and hash-bound results under evidence/hw-region-1/. No external issue or merge.
+
+- HW-REGION-1 checkpoint `case-case-t2t-19-g65536`: retained raw attempts and hash-bound results under evidence/hw-region-1/. No external issue or merge.
+
+- HW-REGION-1 checkpoint `case-case-t2t-20-g4096`: retained raw attempts and hash-bound results under evidence/hw-region-1/. No external issue or merge.
+
+- HW-REGION-1 checkpoint `case-case-t2t-20-g16384`: retained raw attempts and hash-bound results under evidence/hw-region-1/. No external issue or merge.
+
+- HW-REGION-1 checkpoint `case-case-t2t-20-g65536`: retained raw attempts and hash-bound results under evidence/hw-region-1/. No external issue or merge.
+
+- HW-REGION-1 checkpoint `case-case-t2t-21-g4096`: retained raw attempts and hash-bound results under evidence/hw-region-1/. No external issue or merge.
+
+- HW-REGION-1 checkpoint `case-case-t2t-21-g16384`: retained raw attempts and hash-bound results under evidence/hw-region-1/. No external issue or merge.
+
+- HW-REGION-1 checkpoint `case-case-t2t-21-g65536`: retained raw attempts and hash-bound results under evidence/hw-region-1/. No external issue or merge.
+
+- HW-REGION-1 checkpoint `case-case-t2t-22-g4096`: retained raw attempts and hash-bound results under evidence/hw-region-1/. No external issue or merge.
+
+- HW-REGION-1 checkpoint `case-case-t2t-22-g16384`: retained raw attempts and hash-bound results under evidence/hw-region-1/. No external issue or merge.
+
+- HW-REGION-1 checkpoint `case-case-t2t-22-g65536`: retained raw attempts and hash-bound results under evidence/hw-region-1/. No external issue or merge.
+
+- HW-REGION-1 checkpoint `case-case-t2t-23-g4096`: retained raw attempts and hash-bound results under evidence/hw-region-1/. No external issue or merge.
+
+- HW-REGION-1 checkpoint `case-case-t2t-23-g16384`: retained raw attempts and hash-bound results under evidence/hw-region-1/. No external issue or merge.
+
+- HW-REGION-1 checkpoint `case-case-t2t-23-g65536`: retained raw attempts and hash-bound results under evidence/hw-region-1/. No external issue or merge.
+
+- HW-REGION-1 checkpoint `case-case-t2t-24-g4096`: retained raw attempts and hash-bound results under evidence/hw-region-1/. No external issue or merge.
+
+- HW-REGION-1 checkpoint `case-case-t2t-24-g16384`: retained raw attempts and hash-bound results under evidence/hw-region-1/. No external issue or merge.
+
+- HW-REGION-1 checkpoint `case-case-t2t-24-g65536`: retained raw attempts and hash-bound results under evidence/hw-region-1/. No external issue or merge.
+
+- HW-REGION-1 checkpoint `case-case-t2t-25-g4096`: retained raw attempts and hash-bound results under evidence/hw-region-1/. No external issue or merge.
+
+- HW-REGION-1 checkpoint `case-case-t2t-25-g16384`: retained raw attempts and hash-bound results under evidence/hw-region-1/. No external issue or merge.
+
+- HW-REGION-1 checkpoint `case-case-t2t-25-g65536`: retained raw attempts and hash-bound results under evidence/hw-region-1/. No external issue or merge.
+
+- HW-REGION-1 checkpoint `case-case-t2t-26-g4096`: retained raw attempts and hash-bound results under evidence/hw-region-1/. No external issue or merge.
+
+- HW-REGION-1 checkpoint `case-case-t2t-26-g16384`: retained raw attempts and hash-bound results under evidence/hw-region-1/. No external issue or merge.
+
+- HW-REGION-1 checkpoint `case-case-t2t-26-g65536`: retained raw attempts and hash-bound results under evidence/hw-region-1/. No external issue or merge.
+
+- HW-REGION-1 checkpoint `case-case-t2t-27-g4096`: retained raw attempts and hash-bound results under evidence/hw-region-1/. No external issue or merge.
+
+- HW-REGION-1 checkpoint `case-case-t2t-27-g16384`: retained raw attempts and hash-bound results under evidence/hw-region-1/. No external issue or merge.
+
+- HW-REGION-1 checkpoint `case-case-t2t-27-g65536`: retained raw attempts and hash-bound results under evidence/hw-region-1/. No external issue or merge.
+
+- HW-REGION-1 checkpoint `case-case-t2t-28-g4096`: retained raw attempts and hash-bound results under evidence/hw-region-1/. No external issue or merge.
+
+- HW-REGION-1 checkpoint `case-case-t2t-28-g16384`: retained raw attempts and hash-bound results under evidence/hw-region-1/. No external issue or merge.
+
+- HW-REGION-1 checkpoint `case-case-t2t-28-g65536`: retained raw attempts and hash-bound results under evidence/hw-region-1/. No external issue or merge.
+
+- HW-REGION-1 checkpoint `case-case-t2t-29-g4096`: retained raw attempts and hash-bound results under evidence/hw-region-1/. No external issue or merge.
+
+- HW-REGION-1 checkpoint `case-case-t2t-29-g16384`: retained raw attempts and hash-bound results under evidence/hw-region-1/. No external issue or merge.
+
+- HW-REGION-1 checkpoint `case-case-t2t-29-g65536`: retained raw attempts and hash-bound results under evidence/hw-region-1/. No external issue or merge.
+
+- HW-REGION-1 checkpoint `case-case-enwik8-g16384`: retained raw attempts and hash-bound results under evidence/hw-region-1/. No external issue or merge.
+
+- HW-REGION-1 checkpoint `case-case-silesia-g16384`: retained raw attempts and hash-bound results under evidence/hw-region-1/. No external issue or merge.
+
+- HW-REGION-1 checkpoint `decide`: retained raw attempts and hash-bound results under evidence/hw-region-1/. No external issue or merge.
+
+- HW-REGION-1 checkpoint `final-audit`: retained raw attempts and hash-bound results under evidence/hw-region-1/. No external issue or merge.
+
+## HW-REGION-1 completed — 2026-11-26
+
+- Draft PR #96, branch `hw-region-1`; unchanged CALIBRATION first in `8108834615cbd651f79f77cb8d81fed24fa269f1`. Native/controller freeze `402b8c9` / `07b8d26`; saved-data audit/report source at `46e631cedce8f833cf17797d8c54ab0c820e2b2c`.
+- All 95 cases / 285 comparative codec cells, three AA gates and four standalone zstd sizes are complete on ace-core EPYC 4344P, CPU0, RAM archives. Counts: {"accepted_timing_observations": 295000, "attempts": 300, "counter_requests": 285000, "loaded_attempts": 8, "logical_units": 292, "retaken": 6}.
+- Primary chr1 g=R=16 KiB: ACEAPEX p50/p99 32711/54592 ns, zstd-seekable 41668/47389 ns, BGZF 42280/46257 ns. Complete bytes incl. indexes 60440764 / 83924167 / 80071563. P1 MISS; Kill triggered, outcome (a). P2 NOT TESTED: Kill; only primary decomposition retained. P3 MISS. NNLS c_call=0, c_byte=11567801/17895424 ns/B; primary model overpredicts by 29.5%, not an estimate of zero physical call overhead. T2T losses remain visible.
+- Independent final audit PASS, no unavailable private artifacts; full restores and retained region outputs checked independently with GNU dd+cmp. See `evidence/hw-region-1/audit/final.json`, `RESULTS.md`, `TABLE.csv`, `publication-checks.json`. Historical 435 measurement rows and HW-GIFT evidence unchanged.
+- Active adapter now pins v2.6.5 tag 8fd46ca -> ce6b674; old adapter retained byte-for-byte as aceapex_v220.sh and the manual v220 workflow routes to it. Current CLI prints 2.6.5-dev, C99 header literal remains 2.6.4; linked zstd is 1.5.7. No codec source change, no extra decomposition after Kill, no upstream message or merge. Next bounded step: owner/controller review of draft PR #96 and its complete evidence.
+
+- HW-REGION-1 checkpoint `saved-tail`: retained raw attempts and hash-bound results under evidence/hw-region-1/. No external issue or merge.
+
+## HW-REGION-1 saved-data p99 clarification — 2026-11-26
+
+- Owner clarified Kill stops only the calls/bytes time model; the original complete 95-case / 285-codec-cell table and outcome (a) remain. No timing or codec/counter pass repeated. Original complete head `0b619247bf89d0e22a8d2939f33194a40388c599`, source follow-up `bef62dfb`, saved-tail parent `abc4aa13a85c857b07dc8243ad641b304fa3748b`.
+- All 95000 saved ACE latency requests joined to original counter observations; static retained-archive metadata and exact last-block/four-entry-per-stream LRU replay matched every observed materialized-byte count. Observed calls/bytes/time are separate from reconstructed block/chunk IDs. `TAIL.md` has one 95-row table and a primary-cell association statement; `tail/requests.csv.gz` keeps every request; `tail/geometry.json.gz` exports BO/chunk metadata without payload. Source and parent audit SHA are retained.
+- README and snapshots put dated old/new chr1 rows next to one another, p50/p99 together, numerical text only, with distinct host/source/request scopes and unchanged historical rows. Saved fairness confirmation explicitly names zstd 1.5.7 / HTSlib 1.24, persistent handles, identical traces, A/A <5%, and the positive-work boundary control.
+- Publication integrity, static build, local links and eight publication regression tests passed; `followup-checks.json` retains commands and logs. Automatic timing smoke CI is skipped for this data-only clarification as requested; all five implementation workflows passed on `0b619247bf89d0e22a8d2939f33194a40388c599`. PR #96 stays draft. Next bounded action: owner/controller review of the saved tail evidence; no merge or upstream post.
+
+## HW-REGION-1 final publication corrections — 2026-11-26
+
+- Owner requested two saved-data corrections and then PR #96 ready for review; Claude handles merge. Previous complete follow-up `870990a167109255c0cbb76b7877097bca108d9b`, publication source checkpoint `d2a322133552cd4355d90fcb4823e88deee9d438`.
+- `window_summary.py` independently reads all90 frozen T2T case JSON: g4/16/64KiB counts ACEp50<zstd 25/24/26, ACEp50<BGZF25/25/25, ACEp99<zstd1/0/22, ACEstored<zstd30/28/22; arithmetic means of thirty individual p50 ratios0.8690211286/0.8680234812/0.9430238847. `window-summary.json` retains exact fractions, source closure, case SHA, slower-group IDs and density statistics. RESULTS now reports the whole set; t2t-00 is a minority example, with density ranges explicitly overlapping.
+- One numerical same-run non-genome line follows the chr1 table in both README and snapshots: enwik8 ACE/zstd p50=2.45, stored41649923/42939459B; silesia2.82, stored76265370/79417442B. Old dated rows remain; README148lines.
+- No new timing/counter/codec run and no changed measured data or model. Publication validation, static build, local links and eight publication regression tests passed; exact commands/logs in `ready-checks.json`. Normal mandatory CI runs on the final publication commit; experimental data remain unchanged. Next bounded action: mark PR #96 ready per owner, then Claude may merge; HW performs no merge.

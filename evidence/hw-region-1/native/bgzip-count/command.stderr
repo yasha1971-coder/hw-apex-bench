@@ -1,0 +1,7 @@
+/home/ubuntu/hw-apex-bench-hw-region-1/.work/hw-region-1/native/sources/bgzf_count.c: In function ‘__wrap_libdeflate_deflate_decompress’:
+/home/ubuntu/hw-apex-bench-hw-region-1/.work/hw-region-1/native/sources/bgzf_count.c:19:5: warning: this ‘if’ clause does not guard... [-Wmisleading-indentation]
+   19 |     if(r==LIBDEFLATE_SUCCESS)region_bytes+=got;if(actual)*actual=got;return r;}
+      |     ^~
+/home/ubuntu/hw-apex-bench-hw-region-1/.work/hw-region-1/native/sources/bgzf_count.c:19:48: note: ...this statement, but the latter is misleadingly indented as if it were guarded by the ‘if’
+   19 |     if(r==LIBDEFLATE_SUCCESS)region_bytes+=got;if(actual)*actual=got;return r;}
+      |                                                ^~

@@ -1,0 +1,64 @@
+gcc -O3 -fPIC  -I. -I/home/ubuntu/hw-apex-bench-hw-region-1/.work/hw-region-1/deps/libdeflate -c -o kfunc.o kfunc.c
+gcc -O3 -fPIC  -I. -I/home/ubuntu/hw-apex-bench-hw-region-1/.work/hw-region-1/deps/libdeflate -c -o kstring.o kstring.c
+gcc -O3 -fPIC  -I. -I/home/ubuntu/hw-apex-bench-hw-region-1/.work/hw-region-1/deps/libdeflate -c -o bcf_sr_sort.o bcf_sr_sort.c
+gcc -O3 -fPIC  -I. -I/home/ubuntu/hw-apex-bench-hw-region-1/.work/hw-region-1/deps/libdeflate -c -o bgzf.o bgzf.c
+gcc -O3 -fPIC  -I. -I/home/ubuntu/hw-apex-bench-hw-region-1/.work/hw-region-1/deps/libdeflate -c -o errmod.o errmod.c
+gcc -O3 -fPIC  -I. -I/home/ubuntu/hw-apex-bench-hw-region-1/.work/hw-region-1/deps/libdeflate -c -o faidx.o faidx.c
+gcc -O3 -fPIC  -I. -I/home/ubuntu/hw-apex-bench-hw-region-1/.work/hw-region-1/deps/libdeflate -c -o header.o header.c
+gcc -O3 -fPIC  -I. -I/home/ubuntu/hw-apex-bench-hw-region-1/.work/hw-region-1/deps/libdeflate -c -o hfile.o hfile.c
+echo '#define HTS_VERSION_TEXT "1.24"' > version.h
+printf '#define HTS_CC "%s"\n#define HTS_CPPFLAGS "%s"\n#define HTS_CFLAGS "%s"\n#define HTS_LDFLAGS "%s"\n#define HTS_LIBS "%s"\n' \
+'gcc' \
+'-I/home/ubuntu/hw-apex-bench-hw-region-1/.work/hw-region-1/deps/libdeflate' \
+'-O3 -fPIC' \
+'-L/home/ubuntu/hw-apex-bench-hw-region-1/.work/hw-region-1/libdeflate-build -fvisibility=hidden ' \
+'-ldeflate -lz -lm  ' > config_vars.h
+Updating htscodecs/htscodecs/version.h : #define HTSCODECS_VERSION_TEXT "1.6.7-gb9fc194"
+gcc -O3 -fPIC  -I. -I/home/ubuntu/hw-apex-bench-hw-region-1/.work/hw-region-1/deps/libdeflate -c -o hts.o hts.c
+gcc -O3 -fPIC  -I. -I/home/ubuntu/hw-apex-bench-hw-region-1/.work/hw-region-1/deps/libdeflate -c -o hts_expr.o hts_expr.c
+gcc -O3 -fPIC  -I. -I/home/ubuntu/hw-apex-bench-hw-region-1/.work/hw-region-1/deps/libdeflate -c -o hts_os.o hts_os.c
+gcc -O3 -fPIC  -I. -I/home/ubuntu/hw-apex-bench-hw-region-1/.work/hw-region-1/deps/libdeflate -c -o md5.o md5.c
+gcc -O3 -fPIC  -I. -I/home/ubuntu/hw-apex-bench-hw-region-1/.work/hw-region-1/deps/libdeflate -c -o multipart.o multipart.c
+gcc -O3 -fPIC  -I. -I/home/ubuntu/hw-apex-bench-hw-region-1/.work/hw-region-1/deps/libdeflate -c -o probaln.o probaln.c
+gcc -O3 -fPIC  -I. -I/home/ubuntu/hw-apex-bench-hw-region-1/.work/hw-region-1/deps/libdeflate -c -o realn.o realn.c
+gcc -O3 -fPIC  -I. -I/home/ubuntu/hw-apex-bench-hw-region-1/.work/hw-region-1/deps/libdeflate -c -o regidx.o regidx.c
+gcc -O3 -fPIC  -I. -I/home/ubuntu/hw-apex-bench-hw-region-1/.work/hw-region-1/deps/libdeflate -c -o region.o region.c
+gcc -O3 -fPIC  -I. -I/home/ubuntu/hw-apex-bench-hw-region-1/.work/hw-region-1/deps/libdeflate -c -o sam.o sam.c
+gcc -O3 -fPIC  -I. -I/home/ubuntu/hw-apex-bench-hw-region-1/.work/hw-region-1/deps/libdeflate -c -o sam_mods.o sam_mods.c
+gcc -O3 -fPIC  -I. -I/home/ubuntu/hw-apex-bench-hw-region-1/.work/hw-region-1/deps/libdeflate -c -o simd.o simd.c
+gcc -O3 -fPIC  -I. -I/home/ubuntu/hw-apex-bench-hw-region-1/.work/hw-region-1/deps/libdeflate -c -o synced_bcf_reader.o synced_bcf_reader.c
+gcc -O3 -fPIC  -I. -I/home/ubuntu/hw-apex-bench-hw-region-1/.work/hw-region-1/deps/libdeflate -c -o vcf_sweep.o vcf_sweep.c
+gcc -O3 -fPIC  -I. -I/home/ubuntu/hw-apex-bench-hw-region-1/.work/hw-region-1/deps/libdeflate -c -o tbx.o tbx.c
+gcc -O3 -fPIC  -I. -I/home/ubuntu/hw-apex-bench-hw-region-1/.work/hw-region-1/deps/libdeflate -c -o textutils.o textutils.c
+gcc -O3 -fPIC  -I. -I/home/ubuntu/hw-apex-bench-hw-region-1/.work/hw-region-1/deps/libdeflate -c -o thread_pool.o thread_pool.c
+gcc -O3 -fPIC  -I. -I/home/ubuntu/hw-apex-bench-hw-region-1/.work/hw-region-1/deps/libdeflate -c -o vcf.o vcf.c
+gcc -O3 -fPIC  -I. -I/home/ubuntu/hw-apex-bench-hw-region-1/.work/hw-region-1/deps/libdeflate -c -o vcfutils.o vcfutils.c
+gcc -O3 -fPIC  -I. -I/home/ubuntu/hw-apex-bench-hw-region-1/.work/hw-region-1/deps/libdeflate -c -o cram/cram_codecs.o cram/cram_codecs.c
+gcc -O3 -fPIC  -I. -I/home/ubuntu/hw-apex-bench-hw-region-1/.work/hw-region-1/deps/libdeflate -c -o cram/cram_decode.o cram/cram_decode.c
+gcc -O3 -fPIC  -I. -I/home/ubuntu/hw-apex-bench-hw-region-1/.work/hw-region-1/deps/libdeflate -c -o cram/cram_encode.o cram/cram_encode.c
+gcc -O3 -fPIC  -I. -I/home/ubuntu/hw-apex-bench-hw-region-1/.work/hw-region-1/deps/libdeflate -c -o cram/cram_external.o cram/cram_external.c
+gcc -O3 -fPIC  -I. -I/home/ubuntu/hw-apex-bench-hw-region-1/.work/hw-region-1/deps/libdeflate -c -o cram/cram_index.o cram/cram_index.c
+gcc -O3 -fPIC  -I. -I/home/ubuntu/hw-apex-bench-hw-region-1/.work/hw-region-1/deps/libdeflate -c -o cram/cram_io.o cram/cram_io.c
+gcc -O3 -fPIC  -I. -I/home/ubuntu/hw-apex-bench-hw-region-1/.work/hw-region-1/deps/libdeflate -c -o cram/cram_stats.o cram/cram_stats.c
+gcc -O3 -fPIC  -I. -I/home/ubuntu/hw-apex-bench-hw-region-1/.work/hw-region-1/deps/libdeflate -c -o cram/mFILE.o cram/mFILE.c
+gcc -O3 -fPIC  -I. -I/home/ubuntu/hw-apex-bench-hw-region-1/.work/hw-region-1/deps/libdeflate -c -o cram/open_trace_file.o cram/open_trace_file.c
+gcc -O3 -fPIC  -I. -I/home/ubuntu/hw-apex-bench-hw-region-1/.work/hw-region-1/deps/libdeflate -c -o cram/pooled_alloc.o cram/pooled_alloc.c
+gcc -O3 -fPIC  -I. -I/home/ubuntu/hw-apex-bench-hw-region-1/.work/hw-region-1/deps/libdeflate -c -o cram/string_alloc.o cram/string_alloc.c
+gcc -O3 -fPIC  -I. -I/home/ubuntu/hw-apex-bench-hw-region-1/.work/hw-region-1/deps/libdeflate -c -o htscodecs/htscodecs/arith_dynamic.o htscodecs/htscodecs/arith_dynamic.c
+gcc -O3 -fPIC  -I. -I/home/ubuntu/hw-apex-bench-hw-region-1/.work/hw-region-1/deps/libdeflate -c -o htscodecs/htscodecs/fqzcomp_qual.o htscodecs/htscodecs/fqzcomp_qual.c
+gcc -O3 -fPIC  -I. -I/home/ubuntu/hw-apex-bench-hw-region-1/.work/hw-region-1/deps/libdeflate -c -o htscodecs/htscodecs/htscodecs.o htscodecs/htscodecs/htscodecs.c
+gcc -O3 -fPIC  -I. -I/home/ubuntu/hw-apex-bench-hw-region-1/.work/hw-region-1/deps/libdeflate -c -o htscodecs/htscodecs/pack.o htscodecs/htscodecs/pack.c
+gcc -O3 -fPIC  -I. -I/home/ubuntu/hw-apex-bench-hw-region-1/.work/hw-region-1/deps/libdeflate -c -o htscodecs/htscodecs/rANS_static4x16pr.o htscodecs/htscodecs/rANS_static4x16pr.c
+gcc -O3 -fPIC -mavx2 -mpopcnt -I. -I/home/ubuntu/hw-apex-bench-hw-region-1/.work/hw-region-1/deps/libdeflate -c -o htscodecs/htscodecs/rANS_static32x16pr_avx2.o htscodecs/htscodecs/rANS_static32x16pr_avx2.c
+gcc -O3 -fPIC -mavx512f -mpopcnt -I. -I/home/ubuntu/hw-apex-bench-hw-region-1/.work/hw-region-1/deps/libdeflate -c -o htscodecs/htscodecs/rANS_static32x16pr_avx512.o htscodecs/htscodecs/rANS_static32x16pr_avx512.c
+gcc -O3 -fPIC -msse4.1 -mssse3 -mpopcnt -I. -I/home/ubuntu/hw-apex-bench-hw-region-1/.work/hw-region-1/deps/libdeflate -c -o htscodecs/htscodecs/rANS_static32x16pr_sse4.o htscodecs/htscodecs/rANS_static32x16pr_sse4.c
+gcc -O3 -fPIC  -I. -I/home/ubuntu/hw-apex-bench-hw-region-1/.work/hw-region-1/deps/libdeflate -c -o htscodecs/htscodecs/rANS_static32x16pr_neon.o htscodecs/htscodecs/rANS_static32x16pr_neon.c
+gcc -O3 -fPIC  -I. -I/home/ubuntu/hw-apex-bench-hw-region-1/.work/hw-region-1/deps/libdeflate -c -o htscodecs/htscodecs/rANS_static32x16pr.o htscodecs/htscodecs/rANS_static32x16pr.c
+gcc -O3 -fPIC  -I. -I/home/ubuntu/hw-apex-bench-hw-region-1/.work/hw-region-1/deps/libdeflate -c -o htscodecs/htscodecs/rANS_static.o htscodecs/htscodecs/rANS_static.c
+gcc -O3 -fPIC  -I. -I/home/ubuntu/hw-apex-bench-hw-region-1/.work/hw-region-1/deps/libdeflate -c -o htscodecs/htscodecs/rle.o htscodecs/htscodecs/rle.c
+gcc -O3 -fPIC  -I. -I/home/ubuntu/hw-apex-bench-hw-region-1/.work/hw-region-1/deps/libdeflate -c -o htscodecs/htscodecs/tokenise_name3.o htscodecs/htscodecs/tokenise_name3.c
+gcc -O3 -fPIC  -I. -I/home/ubuntu/hw-apex-bench-hw-region-1/.work/hw-region-1/deps/libdeflate -c -o htscodecs/htscodecs/utils.o htscodecs/htscodecs/utils.c
+ar -rc libhts.a kfunc.o kstring.o bcf_sr_sort.o bgzf.o errmod.o faidx.o header.o hfile.o hts.o hts_expr.o hts_os.o md5.o multipart.o probaln.o realn.o regidx.o region.o sam.o sam_mods.o simd.o synced_bcf_reader.o vcf_sweep.o tbx.o textutils.o thread_pool.o vcf.o vcfutils.o cram/cram_codecs.o cram/cram_decode.o cram/cram_encode.o cram/cram_external.o cram/cram_index.o cram/cram_io.o cram/cram_stats.o cram/mFILE.o cram/open_trace_file.o cram/pooled_alloc.o cram/string_alloc.o htscodecs/htscodecs/arith_dynamic.o htscodecs/htscodecs/fqzcomp_qual.o htscodecs/htscodecs/htscodecs.o htscodecs/htscodecs/pack.o htscodecs/htscodecs/rANS_static4x16pr.o htscodecs/htscodecs/rANS_static32x16pr_avx2.o htscodecs/htscodecs/rANS_static32x16pr_avx512.o htscodecs/htscodecs/rANS_static32x16pr_sse4.o htscodecs/htscodecs/rANS_static32x16pr_neon.o htscodecs/htscodecs/rANS_static32x16pr.o htscodecs/htscodecs/rANS_static.o htscodecs/htscodecs/rle.o htscodecs/htscodecs/tokenise_name3.o htscodecs/htscodecs/utils.o  
+ranlib libhts.a
+gcc -O3 -fPIC  -I. -I/home/ubuntu/hw-apex-bench-hw-region-1/.work/hw-region-1/deps/libdeflate -c -o bgzip.o bgzip.c
+gcc -L/home/ubuntu/hw-apex-bench-hw-region-1/.work/hw-region-1/libdeflate-build -fvisibility=hidden  -o bgzip bgzip.o libhts.a -ldeflate -lz -lm   -lpthread

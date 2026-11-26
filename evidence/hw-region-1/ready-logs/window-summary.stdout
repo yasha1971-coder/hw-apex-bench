@@ -1,0 +1,8 @@
+WINDOW_SUMMARY_PASS 90 e996673c5bd1db4c0649e506da866299309e6774bc871b687d4c3df06d638c0c
+| g B | ACE p50 < zstd /30 | ACE p50 < BGZF /30 | ACE p99 < zstd /30 | ACE stored < zstd /30 | Mean of 30 individual ACE/zstd p50 ratios | Slow / other n | ACE density median, slow / other |
+|---:|---:|---:|---:|---:|---:|---:|---:|
+| 4096 | 25 | 25 | 1 | 30 | 0.869021 | 5 / 25 | 17.232569 / 3.667991 |
+| 16384 | 24 | 25 | 0 | 28 | 0.868023 | 6 / 24 | 26.073618 / 3.819663 |
+| 65536 | 26 | 25 | 22 | 22 | 0.943024 | 4 / 26 | 30.278059 / 3.879213 |
+
+t2t-00 is a minority slower-than-zstd example at g=4096/16384/65536 B; slower groups have higher median ACE compression ratios at g=4096/16384/65536 B, but density ranges overlap at g=4096/16384/65536 B and this descriptive association does not establish a causal explanation.

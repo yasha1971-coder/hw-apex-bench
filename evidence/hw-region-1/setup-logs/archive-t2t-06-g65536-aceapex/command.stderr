@@ -1,0 +1,12 @@
+[*] Compress: /home/ubuntu/hw-apex-bench-hw-region-1/.work/hw-region-1/inputs/chr9-centromeric_HOR.seq (2.10 MB) threads=1
+  Original:          2097152 bytes
+  Compressed:          60265 bytes
+  Ratio:  34.79884x
+  Phase LZ77:    0.005s
+  Phase lit/zstd:0.002s
+  Phase FSE:     0.000s
+  Phase fread:   0.000s
+  Phase sha256:  0.000s
+  Phase other:   0.000s
+  Encode: 273.24 MB/s  (0.008s)
+  XXH3:   17e96aaac64a5fd0

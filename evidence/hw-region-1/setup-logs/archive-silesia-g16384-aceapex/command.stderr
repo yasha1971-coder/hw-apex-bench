@@ -1,0 +1,12 @@
+[*] Compress: /home/ubuntu/hw-apex-bench-hw-region-1/.work/hw-region-1/inputs/silesia.tar (211.95 MB) threads=1
+  Original:        211947520 bytes
+  Compressed:       75437334 bytes
+  Ratio:  2.80958x
+  Phase LZ77:    1.659s
+  Phase lit/zstd:0.506s
+  Phase FSE:     0.045s
+  Phase fread:   0.013s
+  Phase sha256:  0.006s
+  Phase other:   0.035s
+  Encode: 93.63 MB/s  (2.264s)
+  XXH3:   ae64365ab6a96975
