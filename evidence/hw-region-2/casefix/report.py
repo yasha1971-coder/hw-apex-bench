@@ -501,9 +501,9 @@ def render(value):
         counts = value['counts']
         accounting = (f"Saved checkpoint: {counts['timed_logical_units']} CLEAN timing units ({len(value['rows'])} completed-corpus main rows + {counts['timed_logical_units']-len(value['rows'])} method or incomplete-corpus units), "
                       f"{counts['blocked_timed_logical_units']} blocked unit, {counts['attempts']} total attempts, {counts['loaded_attempts']} LOADED admissions, "
-                      f"{counts['accepted_retaken']} accepted units retaken, and {counts['accepted_query_timing_observations']} accepted query timings."
+                      f"{counts['accepted_retaken']} accepted units required a load retry, and {counts['accepted_query_timing_observations']} accepted query timings."
                       if value.get('partial') else
-                      f"Saved audit counts: {counts['timed_logical_units']} accepted timing units; {counts['attempts']} attempts; {counts.get('accepted_retaken', counts['retaken'])} accepted units retaken; "
+                      f"Saved audit counts: {counts['timed_logical_units']} accepted timing units; {counts['attempts']} attempts; {counts.get('accepted_retaken', counts['retaken'])} accepted units required a load retry; "
                       f"{counts['loaded_attempts']} LOADED attempts; {counts['accepted_query_timing_observations']} accepted query timings.")
         text += ['', '## Retention and audit', '',
                  'Every timing unit uses blocking `flock /run/lock/ovh-bench.lock`. LOADED means load1−T>1 at either boundary or a surviving foreign process strictly above 10% of one CPU at admission; equality at 2.0/10% passes. At most three identical attempts retain all LOADED data and accept the first CLEAN; worker errors stop even on loaded attempts. Other-core CPU accounting is observational.', '',
