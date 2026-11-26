@@ -23,7 +23,7 @@ SEMANTICS = {name: 1 if name == 'twobit_original_mask1' else 2 if name == 'twobi
 PIN = '58e20daa898a6fc338eae82e5d2ef7108d4fc07f'
 LOCK = '/run/lock/ovh-bench.lock'
 R = 16384
-BINDS, UNIT_COUNTS, CAPTURE_CACHE, EXPECTED_IDENTITIES = {}, {}, {}, {}
+BINDS, UNIT_COUNTS, BLOCKED_UNITS, CAPTURE_CACHE, EXPECTED_IDENTITIES = {}, {}, {}, {}, {}
 HOST = None
 SOURCE_MAP = None
 NATIVE = None
@@ -546,7 +546,7 @@ def checked(reference, unit_id, profile, case, trace, fresh=False, probe=False):
     return value
 
 
-def timed_unit(reference, kind, unit_id, profile, case, trace, fresh=False, probe=False):
+def timed_unit(reference, kind, unit_id, profile, case, trace, fresh=False, probe=False, allow_blocked=False):
     path = file_ref(reference); value = load(path)
     require(path == HERE / 'units' / kind / unit_id / (profile + '.json') and value['schema'] == 'hw-region-2-casefix-unit-v1'
             and value['status'] in ('CLEAN', 'BLOCKED: load')
@@ -556,12 +556,18 @@ def timed_unit(reference, kind, unit_id, profile, case, trace, fresh=False, prob
     require(raw_folder.is_dir() and {p.name for p in raw_folder.iterdir()} == {'attempt-' + str(i) for i in range(1, len(attempts) + 1)},
             'fourth/unretained raw attempt exists')
     selected = None
+    blocked_attempts, worker_starts, query_clocks, open_clocks = [], 0, 0, 0
     for number, attempt in enumerate(attempts, 1):
         require(attempt['number'] == number and attempt['status'] in ('CLEAN', 'LOADED')
                 and (number == len(attempts) or attempt['status'] == 'LOADED'), 'first CLEAN retaken or non-load attempt retried')
         receipt_path = file_ref(attempt['receipt'])
         require(receipt_path == raw_folder / ('attempt-' + str(number)) / 'ovh-bench.json', 'attempt receipt swapped')
         record = ovh_receipt(load(receipt_path), receipt_path, attempt['status'])
+        worker_starts += int(record['command_started'])
+        blocked_attempts.append(dict(number=number, status=attempt['status'], receipt=attempt['receipt'],
+            command_started=record['command_started'], foreign_exceeded=record['foreign_cpu_start']['exceeded'],
+            loadavg_start_raw=record['start']['loadavg_raw'], loadavg_end_raw=record['end']['loadavg_raw'],
+            ps_top8=record.get('ps_top8'), ps_command=record.get('ps_command')))
         argv = record['command']
         require(len(argv) >= 15 and argv[14].endswith('/.work/hw-region-2/casefix/captures/' + kind + '/' + unit_id + '/' + profile + '/attempt-' + str(number) + '/out')
                 and argv == worker_command('latency', profile, case, trace, argv[14], fresh, probe), 'timed native command/DSO/index differs')
@@ -570,11 +576,17 @@ def timed_unit(reference, kind, unit_id, profile, case, trace, fresh=False, prob
         if attempt['observation']:
             require(file_ref(attempt['observation']) == observed_path, 'attempt selected another result')
             observed = observation(attempt['observation'], 'latency', profile, case, trace, fresh, probe)
+            query_clocks += observed['summary']['query_clock_calls']
+            open_clocks += observed['summary']['open_clock_calls']
             if attempt['status'] == 'CLEAN':
                 selected = observed
     if selected is None:
         require(value['status'] == 'BLOCKED: load' and value['selected'] is None and len(attempts) == 3
                 and all(item['status'] == 'LOADED' for item in attempts), 'BLOCKED requires exactly three LOADED attempts')
+        BLOCKED_UNITS[path.relative_to(HERE).as_posix()] = dict(unit=reference, kind=kind, unit_id=unit_id, profile=profile,
+            selected=None, attempts=blocked_attempts, worker_starts=worker_starts, query_clock_calls=query_clocks, open_clock_calls=open_clocks)
+        if allow_blocked:
+            return None
         raise Incomplete('BLOCKED: load; validated three attempts at ' + str(path.relative_to(HERE)))
     require(value['status'] == 'CLEAN' and value['selected'] == attempts[-1]['observation'], 'winner is not first CLEAN')
     UNIT_COUNTS[path.relative_to(HERE).as_posix()] = dict(attempts=len(attempts), retaken=len(attempts) > 1,
@@ -712,14 +724,24 @@ def method_stage(setup, admission, plan):
     return dict(AA=aa_result, boundaries=boundary_result)
 
 
-def main_stage(setup):
+def main_stage(setup, checkpoint=False):
     rows, case_refs, main_values = [], [], {}
     actual = set((HERE / 'cases').glob('*.json'))
     planned = {HERE / 'cases' / (name + '.json') for name in CORPORA}
-    if planned - actual:
+    if checkpoint:
+        length = 0
+        while length < len(CORPORA) and HERE / 'cases' / (CORPORA[length] + '.json') in actual:
+            length += 1
+        require(0 < length < len(CORPORA) and actual == {HERE / 'cases' / (name + '.json') for name in CORPORA[:length]},
+                'checkpoint cases must form one nonempty incomplete contiguous prefix')
+        corpora = CORPORA[:length]
+    else:
+        corpora = CORPORA
+    if not checkpoint and planned - actual:
         raise Incomplete('main comparative grid: ' + str(len(actual & planned)) + '/31 complete corpus summaries')
-    require(actual == planned, 'main grid contains extra corpus summaries')
-    for index, corpus in enumerate(CORPORA):
+    if not checkpoint:
+        require(actual == planned, 'main grid contains extra corpus summaries')
+    for index, corpus in enumerate(corpora):
         path = HERE / 'cases' / (corpus + '.json')
         value = load(path); check_sources(value)
         start = index % len(PROFILES)
@@ -745,22 +767,41 @@ def main_stage(setup):
             rows.append(record)
         main_values[corpus] = profiles
         case_refs.append(dict(path=path.relative_to(HERE).as_posix(), sha256=sha(path)))
-    expected_units = {'units/main/' + corpus + '/' + profile + '.json' for corpus in CORPORA for profile in PROFILES}
+    expected_units = {'units/main/' + corpus + '/' + profile + '.json' for corpus in corpora for profile in PROFILES}
     expected_units |= {'units/' + part + '/chr1/' + profile + '.json' for part in ('aa-first', 'aa-second') for profile in PROFILES}
     expected_units |= {'units/boundary/boundary-' + profile + '/' + profile + '.json' for profile in PROFILES[:4]}
-    require(set(UNIT_COUNTS) == expected_units and {path.relative_to(HERE).as_posix() for path in (HERE / 'units').rglob('*.json')} == expected_units,
-            'accepted timing coverage differs from 186 main + 12 AA + 4 controls')
+    expected_files = set(expected_units)
+    if checkpoint:
+        # Only the first profile of the next ordered corpus was attempted in
+        # this retained stop; later profiles/corpora must have no hidden units.
+        blocked_corpus = CORPORA[len(corpora)]
+        blocked_profile = PROFILES[len(corpora) % len(PROFILES)]
+        blocked_path = HERE / 'units/main' / blocked_corpus / (blocked_profile + '.json')
+        blocked_ref = dict(path=blocked_path.relative_to(HERE).as_posix(), sha256=sha(blocked_path))
+        case, trace = case_stage(blocked_corpus, setup), load(HERE / 'traces' / (blocked_corpus + '.json'))
+        require(timed_unit(blocked_ref, 'main', blocked_corpus, blocked_profile, case, trace, allow_blocked=True) is None,
+                'checkpoint next profile must be BLOCKED with no selected result')
+        blocked = BLOCKED_UNITS[blocked_ref['path']]
+        require(blocked['worker_starts'] == blocked['query_clock_calls'] == blocked['open_clock_calls'] == 0
+                and all(not item['command_started'] for item in blocked['attempts']), 'this checkpoint must contain admission-only LOADED attempts, no benchmark clock')
+        expected_files.add(blocked_ref['path'])
+    require(set(UNIT_COUNTS) == expected_units and {path.relative_to(HERE).as_posix() for path in (HERE / 'units').rglob('*.json')} == expected_files,
+            'accepted/blocked timing-unit coverage differs from declared grid')
+    raw_units = {path for path in (HERE / 'raw').glob('*/*/*') if path.is_dir()}
+    require(raw_units == {HERE / ('raw/' + name[len('units/'):-len('.json')]) for name in expected_files}, 'orphan/future raw timing unit exists')
     main = main_values['chr1']
     ace, fixed = main['aceapex'], main['twobit_casefix_mask1']
     p1 = 100 * ace['stored_bytes'] <= 95 * fixed['stored_bytes']
     p2 = 4 * fixed['p50_ns'] <= ace['p50_ns']
-    wins = [corpus for corpus in CORPORA[1:] if main_values[corpus]['twobit_casefix_mask1']['p50_ns'] < main_values[corpus]['aceapex']['p50_ns']]
-    ties = [corpus for corpus in CORPORA[1:] if main_values[corpus]['twobit_casefix_mask1']['p50_ns'] == main_values[corpus]['aceapex']['p50_ns']]
+    wins = [corpus for corpus in corpora[1:] if main_values[corpus]['twobit_casefix_mask1']['p50_ns'] < main_values[corpus]['aceapex']['p50_ns']]
+    ties = [corpus for corpus in corpora[1:] if main_values[corpus]['twobit_casefix_mask1']['p50_ns'] == main_values[corpus]['aceapex']['p50_ns']]
     forecasts = dict(P1=dict(passed=p1, verdict='HIT' if p1 else 'MISS', ACE_stored_bytes=ace['stored_bytes'], twobit_stored_bytes=fixed['stored_bytes'],
                              ratio=str(Fraction(ace['stored_bytes'], fixed['stored_bytes'])), lhs=100 * ace['stored_bytes'], rhs=95 * fixed['stored_bytes']),
         P2=dict(passed=p2, verdict='HIT' if p2 else 'MISS', ACE_p50_ns=ace['p50_ns'], casefix_p50_ns=fixed['p50_ns'],
                 ratio=str(Fraction(fixed['p50_ns'], ace['p50_ns'])), lhs=4 * fixed['p50_ns'], rhs=ace['p50_ns']),
         P3=dict(passed=len(wins) >= 28, verdict='HIT' if len(wins) >= 28 else 'MISS', wins=len(wins), required=28, total=30, winning_corpora=wins, ties=ties))
+    if checkpoint:
+        forecasts['P3'].update(passed=None, verdict='PENDING', observed=len(corpora) - 1, pending=31 - len(corpora))
     return rows, case_refs, forecasts
 
 
@@ -772,9 +813,25 @@ def accounting():
                 accepted_open_clock_calls=sum(value['open_clocks'] for value in UNIT_COUNTS.values()))
 
 
+def checkpoint_accounting():
+    result = accounting()
+    blocked_attempts = sum(len(value['attempts']) for value in BLOCKED_UNITS.values())
+    blocked_retaken = sum(len(value['attempts']) > 1 for value in BLOCKED_UNITS.values())
+    blocked_loaded = sum(item['status'] == 'LOADED' for value in BLOCKED_UNITS.values() for item in value['attempts'])
+    result.update(accepted_unit_attempts=result['attempts'], blocked_unit_attempts=blocked_attempts,
+                  accepted_retaken=result['retaken'], blocked_timed_logical_units=len(BLOCKED_UNITS),
+                  started_timed_logical_units=len(UNIT_COUNTS) + len(BLOCKED_UNITS),
+                  attempts=result['attempts'] + blocked_attempts, retaken=result['retaken'] + blocked_retaken,
+                  loaded_attempts=result['loaded_attempts'] + blocked_loaded,
+                  blocked_worker_starts=sum(value['worker_starts'] for value in BLOCKED_UNITS.values()),
+                  blocked_query_clock_calls=sum(value['query_clock_calls'] for value in BLOCKED_UNITS.values()),
+                  blocked_open_clock_calls=sum(value['open_clock_calls'] for value in BLOCKED_UNITS.values()))
+    return result
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--stage', choices=('setup', 'admission', 'method', 'all'), default='all')
+    parser.add_argument('--stage', choices=('setup', 'admission', 'method', 'checkpoint', 'all'), default='all')
     parser.add_argument('--output', type=Path)
     args = parser.parse_args()
     result = dict(schema='hw-region-2-casefix-independent-audit-v1', stage=args.stage, saved_data_only=True, no_codecs=True, no_clocks=True,
@@ -795,8 +852,19 @@ def main():
             result['admission'] = dict(status='PASS', grid_observations=186, grid_captured_queries=186000,
                 equivalent_profiles=4, equivalent_grid_queries=124000, diagnostic_grid_queries=62000,
                 lowercase_n_witness='PASS', synthetic_and_boundary_query_captures=8000, warmups_verified_by_frozen_worker=True)
-        if args.stage in ('method', 'all'):
+        if args.stage in ('method', 'checkpoint', 'all'):
             result['method'] = method_stage(setup, admitted, plan)
+        if args.stage == 'checkpoint':
+            rows, refs, forecasts = main_stage(setup, checkpoint=True)
+            count = checkpoint_accounting()
+            require(len(refs) == 16 and len(rows) == 96 and count['timed_logical_units'] == 112
+                    and count['blocked_timed_logical_units'] == 1 and count['attempts'] == 115
+                    and count['accepted_query_timing_observations'] == 116000,
+                    'retained checkpoint scope differs from 16 complete cases plus one three-load admission stop')
+            result.update(rows=rows, case_refs=refs, prefix_forecasts=forecasts, completion='BLOCKED: load', integrity_only=True, full_comparison_complete=False,
+                          missing_corpora=list(CORPORA[len(refs):]), blocked_units=[BLOCKED_UNITS[name] for name in sorted(BLOCKED_UNITS)])
+            for path in HERE.glob('*.py'):
+                sha(path)
         if args.stage == 'all':
             rows, refs, forecasts = main_stage(setup)
             result.update(rows=rows, case_refs=refs, forecasts=forecasts)
@@ -805,7 +873,8 @@ def main():
             for path in HERE.glob('*.py'):
                 sha(path)
         check_sources()
-        result.update(status='PASS', host=HOST, counts=dict(cases=31 if args.stage == 'all' else 0, rows=186 if args.stage == 'all' else 0, **accounting()),
+        counts = checkpoint_accounting() if args.stage == 'checkpoint' else accounting()
+        result.update(status='PASS', host=HOST, counts=dict(cases=len(result.get('case_refs', [])), rows=len(result.get('rows', [])), **counts),
                       independently_compared_capture_pairs=len(CAPTURE_CACHE))
     except Incomplete as error:
         result.update(status='INCOMPLETE', reason=str(error), counts=accounting())
