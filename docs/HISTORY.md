@@ -2281,3 +2281,7 @@ measurements.
 - The owner authorized a fresh maximum of three attempts for T2T-15/original_mask1, with the same reader binary, seed and offsets. Preregistered admission amendment ae84313194d36a4e5fd61e98383088408f43fe09 was committed and pushed before any new attempt. The original three LOADED admissions and all 96 CLEAN main cells / 16 CLEAN method units remain retained.
 - Wait for admission rather than a fixed quiet window: after an inadmissible observation or actual LOADED attempt, wait at least 300 seconds before the next observation. Waiting observations consume no attempt; a fresh passing observation is required before an actual attempt, and the original shared-flock helper rechecks admission. After CLEAN, proceed to the next unit's admission check. All forecasts, criteria and frozen reader binaries remain unchanged.
 - A separate resume alias, source-bound authorization and ledger preserve both attempt budgets without overwriting the old BLOCKED file. If the new three attempts all become LOADED, stop again, report foreign process names, and leave the next decision to the owner. No foreign process is stopped. Next bounded action: commit and verify the resume controller and audit sources, then observe admission; keep PR #97 draft.
+
+[written by ChatGPT (AI) at the author's request; checked by the author]
+
+- HW-REGION-2 casefix checkpoint `t2t-15-new-budget-clean`: retained raw outputs and hash-bound receipts under evidence/hw-region-2/casefix/. Original Kill and P1-P3 unchanged; draft PR97, no upstream post or merge.
