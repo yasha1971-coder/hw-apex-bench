@@ -1,0 +1,5 @@
+[*] Decompress: /home/ubuntu/hw-apex-bench-hw-region-2/.work/hw-region-2/casefix/archives/t2t-06/aceapex.aet -> /home/ubuntu/hw-apex-bench-hw-region-2/.work/hw-region-2/casefix/archives/t2t-06/aceapex.restored.aceapex-tmp.83953
+  Phase entropy (4 streams in parallel): 0.001s
+  Phase lz77: 0.000s
+  Decode: 1329.51 MB/s  (0.002s, algorithmic)
+  Decode wall: 755.39 MB/s  (0.003s, wall clock)
