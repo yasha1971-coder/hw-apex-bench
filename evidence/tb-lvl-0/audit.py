@@ -33,6 +33,7 @@ PINS = dict(aceapex='022af6126de42e63450a45557676ba30bfd6caa9',brotli='717514a67
  lzma='44809544b95bbf2dccec75d954657ff76fc349ff',minlz='ede3d8ebed44161c62b50a22491274d182ced777',
  misa77='d5293cfa4fd59526d26a8702a42a1139a5d4e0df',zstd='e50cdb0d407f5db512ed377fbee6c9ba473fea8e',zxc='69d1fae484b44b7ab612d8a9b1a5a023b9021c1b')
 HEADER_PINS = {'zlib':'a28e8d5acad59823917e4e556a87584a803ac15e'}
+AUXILIARY_PINS = {'Turbo-Range-Coder':'092b08c425394b118dd068e7c7778f51fad99fcf'}
 HEADER = 'dataset size csize dtime ctime codec level param cmem dmem cstack dstack time err'.split()
 BINDINGS = {}
 
@@ -208,12 +209,16 @@ def build_evidence():
             and value['benchmark_calls']==0 and value['static_elf_verified'] is True,'successful build-only artifact required')
     require(value['turbobench_commit']==TB and value['aceapex_override']==ACE and value['controller_sha256']==sha(HERE/'build_static.py'),'build source pins/controller differ')
     require(value['fixed_architecture']=='-march=x86-64-v3 -mtune=generic' and value['go']['version']=='go1.27.4','compiler target/Go version differ')
-    pins=dict(PINS,**HEADER_PINS)
+    pins=dict(PINS,**HEADER_PINS,**AUXILIARY_PINS)
     sources=value['selected_sources']
-    require(set(sources)==set(pins) and value['header_only_dependencies']==['zlib'],'codec/header source set differs')
+    require(set(sources)==set(pins) and value['header_only_dependencies']==['zlib']
+            and value['auxiliary_dependencies']=={'Turbo-Range-Coder':'upstream makefile supplies libsais and libsais16 for BSC/BCM'},
+            'codec/header/auxiliary source roles differ')
     for name,pin in pins.items():require(sources[name]['upstream_gitlink']==pin and sources[name]['commit']==(ACE if name=='aceapex' else pin),'codec/header gitlink changed: '+name)
     require(sources['zlib']['url']=='https://github.com/madler/zlib.git' and 'zlib' not in value['requested_profiles'],
             'mandatory zlib headers became a measured dependency')
+    require(sources['Turbo-Range-Coder']['url']=='https://github.com/powturbo/Turbo-Range-Coder.git'
+            and value['requested_profiles']==PROFILES,'auxiliary dependency changed the registered profiles')
     for name,digest in value['repository_sources'].items():require(sha(ROOT/name)==digest,'CI repository source changed')
     require(value['make_argv'][0]=='make' and all(x in value['make_argv'] for x in ('STATIC=1','OPENMP=0','ZLIB=0','CC=gcc-14','CXX=g++-14','CXL=g++-14','MARCH=-march=x86-64-v3 -mtune=generic')),'build/link/header-only flags differ')
     for command in value['commands']:
