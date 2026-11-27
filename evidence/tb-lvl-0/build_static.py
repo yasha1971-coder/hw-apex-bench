@@ -29,6 +29,7 @@ PINS = {
     'zstd': ('https://github.com/facebook/zstd.git', 'e50cdb0d407f5db512ed377fbee6c9ba473fea8e'),
     'zxc': ('https://github.com/hellobertrand/zxc.git', '69d1fae484b44b7ab612d8a9b1a5a023b9021c1b'),
     'zlib': ('https://github.com/madler/zlib.git', 'a28e8d5acad59823917e4e556a87584a803ac15e'),
+    'Turbo-Range-Coder': ('https://github.com/powturbo/Turbo-Range-Coder.git', '092b08c425394b118dd068e7c7778f51fad99fcf'),
 }
 PROFILES = {
     'aceapex_fast': list(range(1, 9)), 'aceapex': [1, 2, 3, 4],
@@ -174,6 +175,7 @@ class Builder:
         self.record['selected_sources'] = {path:dict(url=url,upstream_gitlink=pin,commit=ACE if path=='aceapex' else pin)
                                            for path,(url,pin) in PINS.items()}
         self.record['header_only_dependencies'] = ['zlib']
+        self.record['auxiliary_dependencies'] = {'Turbo-Range-Coder': 'upstream makefile supplies libsais and libsais16 for BSC/BCM'}
         self.check_clean()
 
     def check_clean(self):

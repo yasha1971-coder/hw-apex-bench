@@ -1,0 +1,19 @@
+makefile:175: OpenMP not available
+gmake[1]: warning: -j4 forced in submake: resetting jobserver mode.
+gmake[1]: warning: -j4 forced in submake: resetting jobserver mode.
+gmake[1]: warning: -j4 forced in submake: resetting jobserver mode.
+make[1]: warning: jobserver unavailable: using -j1.  Add '+' to parent make rule.
+make[1]: warning: jobserver unavailable: using -j1.  Add '+' to parent make rule.
+make[1]: warning: jobserver unavailable: using -j1.  Add '+' to parent make rule.
+/usr/bin/ld: build/plugin.o: in function `codini':
+plugin.cc:(.text+0x48e4): warning: Using 'dlopen' in statically linked applications requires at runtime the shared libraries from the glibc version used for linking
+/usr/bin/ld: build/turbobench_/bcm/bcm.o: in function `bcmcompress':
+bcm.cpp:(.text+0x2f1): undefined reference to `libsais_bwt'
+/usr/bin/ld: build/libbsc/libbsc/bwt/bwt.o: in function `bsc_bwt_encode':
+bwt.cpp:(.text+0xda): undefined reference to `libsais_bwt_aux'
+/usr/bin/ld: bwt.cpp:(.text+0x162): undefined reference to `libsais_bwt'
+/usr/bin/ld: build/libbsc/libbsc/bwt/bwt.o: in function `bsc_bwt_decode':
+bwt.cpp:(.text+0x3a8): undefined reference to `libsais_unbwt_aux'
+/usr/bin/ld: bwt.cpp:(.text+0x3da): undefined reference to `libsais_unbwt'
+collect2: error: ld returned 1 exit status
+make: *** [makefile:1637: turbobench] Error 1

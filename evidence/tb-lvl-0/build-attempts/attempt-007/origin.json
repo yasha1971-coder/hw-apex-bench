@@ -1,0 +1,14 @@
+{
+  "schema": "tb-lvl-0-actions-artifact-v1",
+  "repository": "yasha1971-coder/hw-apex-bench",
+  "run_id": 46063239250,
+  "job_id": 140722296681,
+  "head_sha": "cc74a594b024aad1b30dbeba718d98a842567564",
+  "artifact_id": 15229378191,
+  "artifact_name": "tb-lvl-0-static-cc74a594b024aad1b30dbeba718d98a842567564",
+  "artifact_zip_sha256": "aff3af4423669297def25bfe6e8a10e532670087ecba0b9a62114ae0e586851b",
+  "status": "FAIL",
+  "failure_stage": "BSC/BCM link requires upstream Turbo-Range-Coder libsais dependency",
+  "benchmark_calls": 0,
+  "url": "https://github.com/yasha1971-coder/hw-apex-bench/actions/runs/46063239250"
+}

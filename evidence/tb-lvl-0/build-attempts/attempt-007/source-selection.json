@@ -1,0 +1,607 @@
+{
+  "index_flags": {
+    ".github/workflows/build.yml": "H",
+    ".github/workflows/release.yml": "H",
+    ".github/workflows/submodule_update.yml": "H",
+    ".gitmodules": "H",
+    "EC/FPC/Makefile": "H",
+    "EC/FPC/README.md": "H",
+    "EC/FPC/builds/fpc": "H",
+    "EC/FPC/builds/fpc32": "H",
+    "EC/FPC/cli.c": "H",
+    "EC/FPC/fpc.c": "H",
+    "EC/FPC/fpc.h": "H",
+    "EC/FastARI/FastAri.c": "H",
+    "EC/FastARI/FastAri.h": "H",
+    "EC/FastARI/LICENSE": "H",
+    "EC/FastARI/MTARI.c": "H",
+    "EC/FastARI/README.md": "H",
+    "EC/aom_/aom.c": "H",
+    "EC/aom_/aom.h": "H",
+    "EC/aom_/aom_config.h": "H",
+    "EC/daala_/daala.c": "H",
+    "EC/daala_/daala.h": "H",
+    "EC/fastac/arithmetic_codec.cpp": "H",
+    "EC/fastac/arithmetic_codec.h": "H",
+    "EC/fasthf/binary_codec.cpp": "H",
+    "EC/fasthf/binary_codec.h": "H",
+    "EC/fpaq0p/fpaq0p_sh.cpp": "H",
+    "EC/fpaq0p/fpaq0p_sh.h": "H",
+    "EC/fpaqc/fpaqc.cpp": "H",
+    "EC/fpaqc/fpaqc.h": "H",
+    "EC/fqz0/clr.cdr": "H",
+    "EC/fqz0/f_o0.cc": "H",
+    "EC/fqz0/f_o0.h": "H",
+    "EC/fqz0/simple_model.h": "H",
+    "EC/freqtab/freqtab.h": "H",
+    "EC/freqtab/src/c_fil.cpp": "H",
+    "EC/freqtab/src/c_mem.cpp": "H",
+    "EC/freqtab/src/coder/coder.h": "H",
+    "EC/freqtab/src/coder/common.inc": "H",
+    "EC/freqtab/src/coder/coro3_pin.inc": "H",
+    "EC/freqtab/src/coder/coro3_pin_0.inc": "H",
+    "EC/freqtab/src/coder/coro3_setjmp_x32.h": "H",
+    "EC/freqtab/src/coder/coro3_setjmp_x64.h": "H",
+    "EC/freqtab/src/coder/coro3b.inc": "H",
+    "EC/freqtab/src/coder/counter.inc": "H",
+    "EC/freqtab/src/coder/model.cpp": "H",
+    "EC/freqtab/src/coder/model.inc": "H",
+    "EC/freqtab/src/coder/model1.cpp": "H",
+    "EC/freqtab/src/coder/model_dec.inc": "H",
+    "EC/freqtab/src/coder/model_enc.inc": "H",
+    "EC/freqtab/src/coder/model_freq.inc": "H",
+    "EC/freqtab/src/coder/sh_model_h.inc": "H",
+    "EC/freqtab/src/coder/sh_qsort.inc": "H",
+    "EC/freqtab/src/coder/sh_v1x.inc": "H",
+    "EC/freqtab/src/g.bat": "H",
+    "EC/freqtab/src/valloc.inc": "H",
+    "EC/freqtab/t.bat": "H",
+    "EC/ppmdec/ppmdec.c": "H",
+    "EC/ppmdec/ppmdec.h": "H",
+    "EC/ppmdec/simple_model.h": "H",
+    "EC/rgc": "S",
+    "EC/sserangecoding": "S",
+    "EC/subotin/range.c": "H",
+    "EC/subotin/range.h": "H",
+    "EC/subotin_/subotin.c": "H",
+    "EC/subotin_/subotin.h": "H",
+    "EC/vecrc/model.h": "H",
+    "EC/vecrc/model_byte.h": "H",
+    "EC/vecrc/sh_v1m.h": "H",
+    "EC/vecrc/vector_rc.cpp": "H",
+    "EC/vecrc/vector_rc.h": "H",
+    "FastLZ": "S",
+    "GLZA": "S",
+    "Glyd": "S",
+    "HDiffPatch": "S",
+    "LZSSE": "S",
+    "README.md": "H",
+    "Turbo-Range-Coder": "S",
+    "Turbo-Run-Length-Encoding": "S",
+    "aceapex": "H",
+    "aocl-compression": "S",
+    "bcm": "S",
+    "benchmark.md": "H",
+    "blaris": "S",
+    "brotli": "H",
+    "bz2-ng": "S",
+    "bzip2": "S",
+    "bzip3": "S",
+    "c-blosc2": "S",
+    "density": "S",
+    "fast-lzma2": "S",
+    "firetrail": "S",
+    "heatshrink": "S",
+    "iguana": "S",
+    "isa-l": "S",
+    "kanzi-cpp": "H",
+    "lib": "S",
+    "libbsc": "H",
+    "libdeflate": "S",
+    "liblzraven": "S",
+    "libslz": "S",
+    "lizard": "S",
+    "lz0": "S",
+    "lz4": "H",
+    "lzav": "H",
+    "lzfse": "S",
+    "lzham_codec_devel": "S",
+    "lzlib": "S",
+    "lzma": "H",
+    "lzo": "S",
+    "lzsa": "S",
+    "makefile": "H",
+    "mbrotli": "S",
+    "memlz": "S",
+    "miniz": "S",
+    "minlz": "H",
+    "misa77": "H",
+    "ms-compress": "S",
+    "mzstd": "S",
+    "openzl": "S",
+    "orz": "S",
+    "pcodec": "S",
+    "pivco-huffman": "S",
+    "plugin.cc": "H",
+    "plugin.h": "H",
+    "pulsar-best": "S",
+    "quicklz": "S",
+    "scripts/README.md": "H",
+    "scripts/bench_views.py": "H",
+    "scripts/enhance_bench_md.sh": "H",
+    "scripts/fixtures/micro_p4_sample.md": "H",
+    "scripts/requirements.txt": "H",
+    "scripts/test_bench_views.sh": "H",
+    "snappy": "S",
+    "tamp": "S",
+    "tinyuz": "S",
+    "turbobench.c": "H",
+    "turbobench.ini": "H",
+    "turbobench_/Cargo.toml": "H",
+    "turbobench_/TurboBench.jpeg": "H",
+    "turbobench_/app3.tar.html": "H",
+    "turbobench_/app3.tar.png": "H",
+    "turbobench_/app3r.tar.png": "H",
+    "turbobench_/bcm/bcm.cpp": "H",
+    "turbobench_/bcm/bcm.h": "H",
+    "turbobench_/blaris/blaris_tb.c": "H",
+    "turbobench_/blaris/blaris_tb.h": "H",
+    "turbobench_/charts/micro_decomp_speed.png": "H",
+    "turbobench_/charts/micro_speed_vs_ratio.png": "H",
+    "turbobench_/conf.h": "H",
+    "turbobench_/cpu.c": "H",
+    "turbobench_/cpu.h": "H",
+    "turbobench_/heatshrink/heatshrink.c": "H",
+    "turbobench_/heatshrink/heatshrink.h": "H",
+    "turbobench_/lzlib/bbexample.c": "H",
+    "turbobench_/lzlib/bbexample.h": "H",
+    "turbobench_/micro.md": "H",
+    "turbobench_/micro_CMBs.md": "H",
+    "turbobench_/micro_CMem.md": "H",
+    "turbobench_/micro_CStack.md": "H",
+    "turbobench_/micro_DCat.md": "H",
+    "turbobench_/micro_DMBs.md": "H",
+    "turbobench_/micro_DMem.md": "H",
+    "turbobench_/micro_DStack.md": "H",
+    "turbobench_/micro_File.md": "H",
+    "turbobench_/micro_Name.md": "H",
+    "turbobench_/micro_Rank.md": "H",
+    "turbobench_/micro_ratio.md": "H",
+    "turbobench_/minlz-c/minlz.c": "H",
+    "turbobench_/minlz-c/minlz.h": "H",
+    "turbobench_/minlz-c/minlzc.h": "H",
+    "turbobench_/minlz-c/minlzd.h": "H",
+    "turbobench_/minlz/go.mod": "H",
+    "turbobench_/minlz/main.go": "H",
+    "turbobench_/minlz/mlz.h": "H",
+    "turbobench_/orz-ffi/Cargo.toml": "H",
+    "turbobench_/orz-ffi/README.md": "H",
+    "turbobench_/orz-ffi/examples/c_example.c": "H",
+    "turbobench_/orz-ffi/examples/table.csv": "H",
+    "turbobench_/orz-ffi/include/orz.h": "H",
+    "turbobench_/orz-ffi/src/coder.rs": "H",
+    "turbobench_/orz-ffi/src/ffi.rs": "H",
+    "turbobench_/orz-ffi/src/huffman.rs": "H",
+    "turbobench_/orz-ffi/src/ioutil.rs": "H",
+    "turbobench_/orz-ffi/src/lib.rs": "H",
+    "turbobench_/orz-ffi/src/lz.rs": "H",
+    "turbobench_/orz-ffi/src/matcher.rs": "H",
+    "turbobench_/orz-ffi/src/mem.rs": "H",
+    "turbobench_/orz-ffi/src/progress.rs": "H",
+    "turbobench_/orz-ffi/src/symrank.rs": "H",
+    "turbobench_/quicklz/quicklz-c.h": "H",
+    "turbobench_/quicklz/quicklz1.c": "H",
+    "turbobench_/quicklz/quicklz2.c": "H",
+    "turbobench_/quicklz/quicklz3.c": "H",
+    "turbobench_/quicklz/src/quicklz.c": "H",
+    "turbobench_/quicklz/src/quicklz.h": "H",
+    "turbobench_/skylake.JPG": "H",
+    "turbobench_/src/lib.rs": "H",
+    "turbobench_/time_.h": "H",
+    "turbobench_/unishox.c": "H",
+    "turbobench_/zlib_turbo.c": "H",
+    "vs/TurboBench/TurboBench.vcxproj": "H",
+    "vs/TurboBench/TurboBench.vcxproj.filters": "H",
+    "vs/getopt.c": "H",
+    "vs/getopt.h": "H",
+    "vs/vs.sln": "H",
+    "wzip": "S",
+    "xz": "S",
+    "zlib": "H",
+    "zlib-ng": "S",
+    "zlib-rs": "S",
+    "zlib-turbo": "S",
+    "zopfli": "S",
+    "zpaq": "S",
+    "zstd": "H",
+    "zxc": "H"
+  },
+  "index_gitlinks": {
+    "EC/rgc": {
+      "commit": "d535fda0ea6d9bd2b8c8178e3cd51cf33d0b7421",
+      "mode": "160000",
+      "stage": "0"
+    },
+    "EC/sserangecoding": {
+      "commit": "4405dfcd02250ce48050ab4f57302fd71f9466c5",
+      "mode": "160000",
+      "stage": "0"
+    },
+    "FastLZ": {
+      "commit": "b1342dabcf5257ab303743c9332fe75e9147a011",
+      "mode": "160000",
+      "stage": "0"
+    },
+    "GLZA": {
+      "commit": "71bfdfe2a770eed615bcf6be47691118f6718ab6",
+      "mode": "160000",
+      "stage": "0"
+    },
+    "Glyd": {
+      "commit": "7478f35f510bfd311224ab862dabe37a13c38fb9",
+      "mode": "160000",
+      "stage": "0"
+    },
+    "HDiffPatch": {
+      "commit": "06961361340085ddb2a551775dc402172b8ca67c",
+      "mode": "160000",
+      "stage": "0"
+    },
+    "LZSSE": {
+      "commit": "1847c3e82794400deb56edd30d8aa3f445fd000b",
+      "mode": "160000",
+      "stage": "0"
+    },
+    "Turbo-Range-Coder": {
+      "commit": "092b08c425394b118dd068e7c7778f51fad99fcf",
+      "mode": "160000",
+      "stage": "0"
+    },
+    "Turbo-Run-Length-Encoding": {
+      "commit": "d2f6e15203babac58e6b4ddedfb76e4b86e9efa7",
+      "mode": "160000",
+      "stage": "0"
+    },
+    "aceapex": {
+      "commit": "022af6126de42e63450a45557676ba30bfd6caa9",
+      "mode": "160000",
+      "stage": "0"
+    },
+    "aocl-compression": {
+      "commit": "2629f887dc01950c006fb6faaca834ff36e6e0b5",
+      "mode": "160000",
+      "stage": "0"
+    },
+    "bcm": {
+      "commit": "b6a0a094fa973793d754de8b3a1e54b7e59de261",
+      "mode": "160000",
+      "stage": "0"
+    },
+    "blaris": {
+      "commit": "fdf237fd58069e4f91b91fff6f94586721921f8b",
+      "mode": "160000",
+      "stage": "0"
+    },
+    "brotli": {
+      "commit": "717514a67b3f8abf53365d4471a102a60fff8ef5",
+      "mode": "160000",
+      "stage": "0"
+    },
+    "bz2-ng": {
+      "commit": "517948ed836d4c52d68d8e633887aaa21c17ba27",
+      "mode": "160000",
+      "stage": "0"
+    },
+    "bzip2": {
+      "commit": "ffa63c85d78bcf907c85516e8f4bc7f223244132",
+      "mode": "160000",
+      "stage": "0"
+    },
+    "bzip3": {
+      "commit": "ab0801987441ec7f7d801c1b1020b482e95b5879",
+      "mode": "160000",
+      "stage": "0"
+    },
+    "c-blosc2": {
+      "commit": "31b4f94c058c7d02bd4f20eaebee7091112ac0db",
+      "mode": "160000",
+      "stage": "0"
+    },
+    "density": {
+      "commit": "58938943bb0dfd85b186551a3d1d36cc286f9c1d",
+      "mode": "160000",
+      "stage": "0"
+    },
+    "fast-lzma2": {
+      "commit": "967306d39daacf9a14ad923c86fa7f9c4552b59b",
+      "mode": "160000",
+      "stage": "0"
+    },
+    "firetrail": {
+      "commit": "fc49a00a2de088a1bf0c8a62d2735529d263280d",
+      "mode": "160000",
+      "stage": "0"
+    },
+    "heatshrink": {
+      "commit": "7d419e1fa4830d0b919b9b6a91fe2fb786cf3280",
+      "mode": "160000",
+      "stage": "0"
+    },
+    "iguana": {
+      "commit": "fda9ce907b48217117514ef370f45e7c08ac2c92",
+      "mode": "160000",
+      "stage": "0"
+    },
+    "isa-l": {
+      "commit": "ef205fba51be041505d708fa982b7ba578c6e850",
+      "mode": "160000",
+      "stage": "0"
+    },
+    "kanzi-cpp": {
+      "commit": "388ca03cf3a13e5456629a6781616c4c96f8fd4a",
+      "mode": "160000",
+      "stage": "0"
+    },
+    "lib": {
+      "commit": "5a3f3aba052e63ffae8eb0214c6bb8ffffedea3c",
+      "mode": "160000",
+      "stage": "0"
+    },
+    "libbsc": {
+      "commit": "6542faafd0c235975e77e219c77f8227f770fe91",
+      "mode": "160000",
+      "stage": "0"
+    },
+    "libdeflate": {
+      "commit": "aa5181e82536b9508f2319816b5780e86415d3b5",
+      "mode": "160000",
+      "stage": "0"
+    },
+    "liblzraven": {
+      "commit": "700b88c4b2e1b1d96e499d172dfa0b8e5d9134ab",
+      "mode": "160000",
+      "stage": "0"
+    },
+    "libslz": {
+      "commit": "47de65e7669ec5017c893a8cc22455ae8156d4ee",
+      "mode": "160000",
+      "stage": "0"
+    },
+    "lizard": {
+      "commit": "d3becc7e80d3eb01147c2f63bed2e23fac533f19",
+      "mode": "160000",
+      "stage": "0"
+    },
+    "lz0": {
+      "commit": "b025b9ebb108ee9c9cf5fd454184ed55d6b55e48",
+      "mode": "160000",
+      "stage": "0"
+    },
+    "lz4": {
+      "commit": "00bf3522fdb94a9d0e69c1d4db7eed77343f7a60",
+      "mode": "160000",
+      "stage": "0"
+    },
+    "lzav": {
+      "commit": "5a60cfd78e6f6dd8347a905d520b8d03ff5ea2f4",
+      "mode": "160000",
+      "stage": "0"
+    },
+    "lzfse": {
+      "commit": "e634ca58b4821d9f3d560cdc6df5dec02ffc93fd",
+      "mode": "160000",
+      "stage": "0"
+    },
+    "lzham_codec_devel": {
+      "commit": "d09fc6676a0313c3814457fbc76351a68f653092",
+      "mode": "160000",
+      "stage": "0"
+    },
+    "lzlib": {
+      "commit": "811308c48fc4709981c1412b70997c3a0b93fe86",
+      "mode": "160000",
+      "stage": "0"
+    },
+    "lzma": {
+      "commit": "44809544b95bbf2dccec75d954657ff76fc349ff",
+      "mode": "160000",
+      "stage": "0"
+    },
+    "lzo": {
+      "commit": "0083878c235a89ef96a009d1ff0b500f3a364e4b",
+      "mode": "160000",
+      "stage": "0"
+    },
+    "lzsa": {
+      "commit": "15ee2dfe118eeb8f7683ca44f64821c3a61ca1e5",
+      "mode": "160000",
+      "stage": "0"
+    },
+    "mbrotli": {
+      "commit": "2c3b44d8bed979a03c8aba6e9f1963f7bc289468",
+      "mode": "160000",
+      "stage": "0"
+    },
+    "memlz": {
+      "commit": "f416ac29b45e0cbb88d99b5f8b2b41f584aa07f8",
+      "mode": "160000",
+      "stage": "0"
+    },
+    "miniz": {
+      "commit": "347653fb1b4dec254f71cebe3b6ca40fdaeab458",
+      "mode": "160000",
+      "stage": "0"
+    },
+    "minlz": {
+      "commit": "ede3d8ebed44161c62b50a22491274d182ced777",
+      "mode": "160000",
+      "stage": "0"
+    },
+    "misa77": {
+      "commit": "d5293cfa4fd59526d26a8702a42a1139a5d4e0df",
+      "mode": "160000",
+      "stage": "0"
+    },
+    "ms-compress": {
+      "commit": "a0fcab84a7918fa205d5f29bf03b71bd4abb19b4",
+      "mode": "160000",
+      "stage": "0"
+    },
+    "mzstd": {
+      "commit": "ae05410d0d37565055e78e0cfa3aa8bb359a2ff6",
+      "mode": "160000",
+      "stage": "0"
+    },
+    "openzl": {
+      "commit": "9b0a41f39127dd0223589af8a98b1625942dc857",
+      "mode": "160000",
+      "stage": "0"
+    },
+    "orz": {
+      "commit": "29414c69566529b1d87c2347889f36280c20b962",
+      "mode": "160000",
+      "stage": "0"
+    },
+    "pcodec": {
+      "commit": "c0b80dbb299a5add13db417cc0b05670071f953a",
+      "mode": "160000",
+      "stage": "0"
+    },
+    "pivco-huffman": {
+      "commit": "16b48fcfcbd5cd71d945eb48e2702eec398bb36b",
+      "mode": "160000",
+      "stage": "0"
+    },
+    "pulsar-best": {
+      "commit": "cda0bc7a7fae69a45b0966d2c79fa9b0550ca7ae",
+      "mode": "160000",
+      "stage": "0"
+    },
+    "quicklz": {
+      "commit": "29e9d46fe39e052220626f321814545468f1d8b5",
+      "mode": "160000",
+      "stage": "0"
+    },
+    "snappy": {
+      "commit": "946606459314e55d029c85f9a8c46f8809467f0f",
+      "mode": "160000",
+      "stage": "0"
+    },
+    "tamp": {
+      "commit": "46cee9d667309ad9f3ec9e8051cb47a610df8abf",
+      "mode": "160000",
+      "stage": "0"
+    },
+    "tinyuz": {
+      "commit": "1d74ffa4d453796df352df470733f45dfa099bb1",
+      "mode": "160000",
+      "stage": "0"
+    },
+    "wzip": {
+      "commit": "51865d5b2d70365f9b8b2b19f4b82b1072c352dc",
+      "mode": "160000",
+      "stage": "0"
+    },
+    "xz": {
+      "commit": "c308e9f27201300fd042d3e7324a21e55c25852f",
+      "mode": "160000",
+      "stage": "0"
+    },
+    "zlib": {
+      "commit": "a28e8d5acad59823917e4e556a87584a803ac15e",
+      "mode": "160000",
+      "stage": "0"
+    },
+    "zlib-ng": {
+      "commit": "9fe701c4a2664f0d29fb061cc8cba8f23d680518",
+      "mode": "160000",
+      "stage": "0"
+    },
+    "zlib-rs": {
+      "commit": "dac3c0a1577314b8f4cab99f447e9f889a851a59",
+      "mode": "160000",
+      "stage": "0"
+    },
+    "zlib-turbo": {
+      "commit": "ebfc019d935e8d5e842085b45800e154fad83cae",
+      "mode": "160000",
+      "stage": "0"
+    },
+    "zopfli": {
+      "commit": "ec2eabdaa8721aeef3028d2c7a82e05373db4eaf",
+      "mode": "160000",
+      "stage": "0"
+    },
+    "zpaq": {
+      "commit": "9ab539f644e364f0d92e2918b90ce2534c75653f",
+      "mode": "160000",
+      "stage": "0"
+    },
+    "zstd": {
+      "commit": "e50cdb0d407f5db512ed377fbee6c9ba473fea8e",
+      "mode": "160000",
+      "stage": "0"
+    },
+    "zxc": {
+      "commit": "69d1fae484b44b7ab612d8a9b1a5a023b9021c1b",
+      "mode": "160000",
+      "stage": "0"
+    }
+  },
+  "unselected_absent": [
+    "EC/rgc",
+    "EC/sserangecoding",
+    "FastLZ",
+    "GLZA",
+    "Glyd",
+    "HDiffPatch",
+    "LZSSE",
+    "Turbo-Range-Coder",
+    "Turbo-Run-Length-Encoding",
+    "aocl-compression",
+    "bcm",
+    "blaris",
+    "bz2-ng",
+    "bzip2",
+    "bzip3",
+    "c-blosc2",
+    "density",
+    "fast-lzma2",
+    "firetrail",
+    "heatshrink",
+    "iguana",
+    "isa-l",
+    "lib",
+    "libdeflate",
+    "liblzraven",
+    "libslz",
+    "lizard",
+    "lz0",
+    "lzfse",
+    "lzham_codec_devel",
+    "lzlib",
+    "lzo",
+    "lzsa",
+    "mbrotli",
+    "memlz",
+    "miniz",
+    "ms-compress",
+    "mzstd",
+    "openzl",
+    "orz",
+    "pcodec",
+    "pivco-huffman",
+    "pulsar-best",
+    "quicklz",
+    "snappy",
+    "tamp",
+    "tinyuz",
+    "wzip",
+    "xz",
+    "zlib-ng",
+    "zlib-rs",
+    "zlib-turbo",
+    "zopfli",
+    "zpaq"
+  ]
+}
