@@ -57,6 +57,27 @@ def packed(value):
     return (json.dumps(value, sort_keys=True, indent=2) + '\n').encode()
 
 
+def validate_registry(listing):
+    selected = {}
+    for line in listing.splitlines():
+        parts = line.strip().split(None, 1)
+        if parts and parts[0] in PROFILES:
+            require(len(parts) == 2 and parts[0] not in selected, 'missing/duplicate codec level specification')
+            selected[parts[0]] = parts[1]
+    require(set(selected) == set(PROFILES), 'required enabled selector absent from -l1')
+    result = {}
+    for codec, requested in PROFILES.items():
+        spec = selected[codec]
+        levels = {int(x) for x in spec.split('/', 1)[0].split(',') if re.fullmatch(r'-?\d+', x)}
+        for value in requested:
+            match = re.fullmatch(r'(-?\d+)(.*)', str(value))
+            require(match is not None and int(match[1]) in levels, 'required level absent: '+codec+','+str(value))
+            require(not match[2] or codec == 'bsc' and match[2] == 'e0' and 'e0' in spec,
+                    'unsupported codec parameter: '+codec+','+str(value))
+        result[codec] = dict(requested=requested, available_levels=sorted(levels), registry_specification=spec)
+    return result
+
+
 class Builder:
     def __init__(self, work, output):
         self.work, self.output = work.resolve(), output.resolve()
@@ -66,7 +87,7 @@ class Builder:
             path.mkdir(parents=True, exist_ok=True)
         (self.output / 'logs').mkdir()
         self.src = self.work / 'TurboBench'
-        self.env = dict(os.environ, CC='gcc-14', CXX='g++-14', CG='gcc-14', CCO='gcc-14',
+        self.env = dict(os.environ, CC='gcc-14', CXX='g++-14', CG='gcc-14', CCO='gcc-14', CXL='g++-14',
                         CFLAGS=FLAGS, CXXFLAGS=FLAGS, CGO_CFLAGS=FLAGS, CGO_CXXFLAGS=FLAGS,
                         CGO_ENABLED='1', GOAMD64='v3', GOTOOLCHAIN='local')
         self.record = dict(schema='tb-lvl-0-static-build-v1', status='BUILDING',
@@ -76,7 +97,7 @@ class Builder:
                            declared_versions=VERSIONS, requested_profiles=PROFILES,
                            aceapex_fast_mapping='TurboBench levels 1..8 pass ACEAPEX API levels 11..18',
                            fixed_architecture=FLAGS, environment={k:self.env[k] for k in
-                           ('CC','CXX','CG','CCO','CFLAGS','CXXFLAGS','CGO_CFLAGS','CGO_CXXFLAGS','CGO_ENABLED','GOAMD64','GOTOOLCHAIN')},
+                           ('CC','CXX','CG','CCO','CXL','CFLAGS','CXXFLAGS','CGO_CFLAGS','CGO_CXXFLAGS','CGO_ENABLED','GOAMD64','GOTOOLCHAIN')},
                            controller_sha256=digest(__file__),
                            repository_sources={str(p.relative_to(ROOT)):digest(p) for p in
                                [ROOT/'.github/workflows/tb-lvl-0-build.yml',Path(__file__),
@@ -217,7 +238,7 @@ class Builder:
                                  note='Actual module v1.3.1; upstream TurboBench registry literal says v1.3.0.')
 
     def build(self):
-        make = ['make','-j2','STATIC=1','OPENMP=0','CC=gcc-14','CXX=g++-14','CG=gcc-14','CCO=gcc-14',
+        make = ['make','-j2','STATIC=1','OPENMP=0','CC=gcc-14','CXX=g++-14','CG=gcc-14','CCO=gcc-14','CXL=g++-14',
                 'MARCH='+FLAGS,'--assume-old=turbobench_/minlz/libmlz.a','turbobench']
         self.record['make_argv'] = make
         self.run(make,cwd=self.src,name='make-static')
@@ -232,13 +253,13 @@ class Builder:
                 'not a statically linked x86-64 ELF')
         require(not re.search(r'\bINTERP\b',proof['readelf-programs']) and '(NEEDED)' not in proof['readelf-dynamic'],
                 'ELF has an interpreter or dynamic library dependency')
-        listing = self.run([binary,'-l2'],cwd=self.output,name='codec-registry')
-        for codec in PROFILES:
-            require(re.search(r'(?<![A-Za-z0-9_])'+re.escape(codec)+r'(?![A-Za-z0-9_])',listing),
-                    'required codec absent from enabled registry: '+codec)
+        listing = self.run([binary,'-l1'],cwd=self.output,name='codec-selectors-levels')
+        self.record['validated_profiles'] = validate_registry(listing)
+        self.run([binary,'-l2'],cwd=self.output,name='codec-versions')
         self.record['binary'] = self.artifact(binary)
         self.record['static_elf_verified'] = True
-        self.record['codec_registry_command'] = ['turbobench','-l2']
+        self.record['codec_registry_command'] = ['turbobench','-l1']
+        self.record['codec_versions_command'] = ['turbobench','-l2']
         self.record['codec_registry_only_no_benchmark'] = True
         snapshots = []
         for path in sorted((self.src/'build').rglob('*')):
