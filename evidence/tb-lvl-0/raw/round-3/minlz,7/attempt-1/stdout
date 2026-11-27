@@ -1,0 +1,3 @@
+TurboBench: 2026.11.27 22:30 - AMD EPYC 4344P 8-Core Processor
+      C Size  ratio%      C MB/s    D MB/s Rank    Name            File
+    59174101  27.92%   [1;32m    84.99[0m [1;32m  4626.77[0m [1;32m  1👑[0m   [1;32mminlz 7         [0msilesia.ref.tar
