@@ -522,6 +522,13 @@ def render(summary):
         'Consumer: Yakov / CROWN-3. Scope: the pinned silesia.ref.tar input (' + str(INPUT_BYTES) + ' B, SHA256 ' + INPUT_SHA256
         + '), ace-core AMD EPYC 4344P / CPU0; input and archives in memory during codec timers. MB/s uses 1,000,000 input bytes. '
         'These are whole-file compression/decompression speeds within the registered configuration grid, not random-access latency or a universal codec frontier.', '']
+    lines += ['Build provenance: static GitHub Actions build of TurboBench `4aa97c8`, with the explicit ACEAPEX `c53f3a04` checkout override. '
+              'Exact codec pins, compiler/Go versions, flags and native version/registry captures are retained in the '
+              '[build manifest](build/build.json) and its linked registry evidence.', '',
+              'The actual Go minlz module is **v1.3.1**; the native registry banner says **v1.3.0**. '
+              'This distinction is retained in [go.mod](build/go.mod) and checked by the independent [audit](audit.json).', '']
+    if summary['status'] != 'COMPLETE':
+        lines += ['Recorded run status: **' + summary.get('run_status', 'NOT RECORDED') + '**.', '']
     if not summary['mapping_resolved']:
         lines += ['The literal request is 60 configurations / 180 main roundtrips. A recorded TurboBench fast-level mapping resolution '
                   'is required before any method or main timing; no unsupported level is invented.', '']
@@ -542,7 +549,12 @@ def render(summary):
         lines.append('| ' + name + ' | ' + probability + ' | ' + verdict + ' |')
     lines += ['', 'P1 is existential over default ACE1–4 at 27–33% compressed size inclusive, against the eleven named zstd/brotli/lzma rows only. '
         'P2 requires a compression-axis dominator for each API fast13–18 (source-mapped TB labels3–8), allowing every configuration in the registered grid. '
-        'Missing required data means NOT TESTED; it is never a forecast miss.', '',
+        'Missing required data means NOT TESTED; it is never a forecast miss.', '']
+    ace_candidates = sorted(row['id'] for row in summary['rows'] if row['codec'] in ('aceapex', 'aceapex_fast')
+                            and not summary['global_D_dominators'][row['id']])
+    candidate_scope = '' if summary['status'] == 'COMPLETE' else ' (provisional over available complete medians)'
+    lines += ['ACE row candidates on the **GLOBAL strict D-front**' + candidate_scope + ': '
+              + (', '.join('`' + name + '`' for name in ace_candidates) if ace_candidates else 'none') + '.', '',
         '## Configuration medians', '', '| Configuration | Fast API level | Archive B | Archive % of input | C MB/s | D MB/s | Global D-front | Separate C-front | Size range B |',
         '|---|---:|---:|---:|---:|---:|---|---|---|']
     by_id = {r['id']: r for r in summary['rows']}
@@ -593,7 +605,7 @@ def render(summary):
             lines += ['| Logical unit | Round | Attempt | Excluded status | Native started |', '|---|---:|---:|---|---|']
             for item in retention['excluded_attempts']:
                 lines.append('| ' + item['config'] + ' | ' + str(item['round']) + ' | ' + str(item['attempt']) + ' | '
-                    + item['status'] + ' | ' + ('yes' if item['command_started'] else 'no') + ' |')
+                    + item['status'] + ' | ' + ('unknown' if item['command_started'] is None else 'yes' if item['command_started'] else 'no') + ' |')
             lines.append('')
     return '\n'.join(lines)
 
