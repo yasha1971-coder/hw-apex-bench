@@ -1,0 +1,41 @@
+name: TB-LVL-0 static build
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - 'codex/tb-lvl-0'
+    paths:
+      - '.github/workflows/tb-lvl-0-build.yml'
+      - 'evidence/tb-lvl-0/build_static.py'
+
+permissions:
+  contents: read
+
+jobs:
+  static-build:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-go@40f1582b2485089dde7abd97c1529aa768e1baff
+        with:
+          go-version: '1.27.4'
+          cache: false
+          check-latest: false
+      - name: Install build tools
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gcc-14 g++-14 make cmake binutils file git
+      - name: Build only; verify static ELF and codec registry
+        run: python3 evidence/tb-lvl-0/build_static.py --work .work/tb-lvl-0-ci --output out/tb-lvl-0-static
+      - name: Retain binary and complete build provenance
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: tb-lvl-0-static-${{ github.sha }}
+          path: out/tb-lvl-0-static/
+          if-no-files-found: error
+          retention-days: 30
