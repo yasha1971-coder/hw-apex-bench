@@ -244,7 +244,7 @@ class Builder:
                                  note='Actual module v1.3.1; upstream TurboBench registry literal says v1.3.0.')
 
     def build(self):
-        make = ['make','-j2','STATIC=1','OPENMP=0','RUST=0','ZLIB=0','CC=gcc-14','CXX=g++-14','CG=gcc-14','CCO=gcc-14','CXL=g++-14',
+        make = ['make','-j1','STATIC=1','OPENMP=0','RUST=0','ZLIB=0','CC=gcc-14','CXX=g++-14','CG=gcc-14','CCO=gcc-14','CXL=g++-14',
                 'MARCH='+FLAGS,'--assume-old=turbobench_/minlz/libmlz.a','turbobench']
         self.record['make_argv'] = make
         self.run(make,cwd=self.src,name='make-static')

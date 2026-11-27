@@ -1,0 +1,14 @@
+{
+  "schema": "tb-lvl-0-actions-artifact-v1",
+  "repository": "yasha1971-coder/hw-apex-bench",
+  "run_id": 46064135315,
+  "job_id": 140725243275,
+  "head_sha": "98b5401661c20964e1ef9b6c6e3149ee2a254fb0",
+  "artifact_id": 15230690780,
+  "artifact_name": "tb-lvl-0-static-98b5401661c20964e1ef9b6c6e3149ee2a254fb0",
+  "artifact_zip_sha256": "2059633f3aa2ef644fe4c25b09b1aed597b8d6931a7beff092d5088e13b52443",
+  "status": "FAIL",
+  "failure_stage": "concurrent outer make recipes raced on shared brotli archive",
+  "benchmark_calls": 0,
+  "url": "https://github.com/yasha1971-coder/hw-apex-bench/actions/runs/46064135315"
+}

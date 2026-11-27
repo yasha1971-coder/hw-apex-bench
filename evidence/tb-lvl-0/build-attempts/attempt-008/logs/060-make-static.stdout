@@ -1,0 +1,202 @@
+CC="gcc-14" CXX="g++-14"  CXL="g++-14"  CG="gcc-14" CCO="gcc-14" 
+g++-14 -O3 -std=c++17 -march=haswell -DXXH_INLINE_ALL -Izstd/lib -Iaceapex/src -c aceapex/src/aceapex_api.cpp -o build/aceapex/src/aceapex_api.o
+g++-14 -O3 -march=x86-64-v3 -mtune=generic -march=x86-64-v3 -mtune=generic  -w -Wall -fpermissive -fno-rtti  turbobench_/bcm/bcm.cpp -c -o build/turbobench_/bcm/bcm.o
+g++-14 -O3 -march=haswell -DLIBBSC_SORT_TRANSFORM_SUPPORT -ICSC/src/libcsc -c libbsc/libbsc/libbsc/libbsc.cpp -o build/libbsc/libbsc/libbsc/libbsc.o
+g++-14 -O3 -march=haswell -DLIBBSC_SORT_TRANSFORM_SUPPORT -ICSC/src/libcsc -c libbsc/libbsc/coder/coder.cpp -o build/libbsc/libbsc/coder/coder.o
+g++-14 -O3 -march=haswell -DLIBBSC_SORT_TRANSFORM_SUPPORT -ICSC/src/libcsc -c libbsc/libbsc/coder/qlfc/qlfc.cpp -o build/libbsc/libbsc/coder/qlfc/qlfc.o
+g++-14 -O3 -march=haswell -DLIBBSC_SORT_TRANSFORM_SUPPORT -ICSC/src/libcsc -c libbsc/libbsc/coder/qlfc/qlfc_model.cpp -o build/libbsc/libbsc/coder/qlfc/qlfc_model.o
+g++-14 -O3 -march=haswell -DLIBBSC_SORT_TRANSFORM_SUPPORT -ICSC/src/libcsc -c libbsc/libbsc/filters/detectors.cpp -o build/libbsc/libbsc/filters/detectors.o
+g++-14 -O3 -march=haswell -DLIBBSC_SORT_TRANSFORM_SUPPORT -ICSC/src/libcsc -c libbsc/libbsc/filters/preprocessing.cpp -o build/libbsc/libbsc/filters/preprocessing.o
+g++-14 -O3 -march=haswell -DLIBBSC_SORT_TRANSFORM_SUPPORT -ICSC/src/libcsc -c libbsc/libbsc/adler32/adler32.cpp -o build/libbsc/libbsc/adler32/adler32.o
+g++-14 -O3 -march=haswell -DLIBBSC_SORT_TRANSFORM_SUPPORT -ICSC/src/libcsc -c libbsc/libbsc/bwt/bwt.cpp -o build/libbsc/libbsc/bwt/bwt.o
+g++-14 -O3 -march=haswell -DLIBBSC_SORT_TRANSFORM_SUPPORT -ICSC/src/libcsc -c libbsc/libbsc/st/st.cpp -o build/libbsc/libbsc/st/st.o
+g++-14 -O3 -march=haswell -DLIBBSC_SORT_TRANSFORM_SUPPORT -ICSC/src/libcsc -c libbsc/libbsc/lzp/lzp.cpp -o build/libbsc/libbsc/lzp/lzp.o
+g++-14 -O3 -march=haswell -DLIBBSC_SORT_TRANSFORM_SUPPORT -ICSC/src/libcsc -c libbsc/libbsc/platform/platform.cpp -o build/libbsc/libbsc/platform/platform.o
+gcc-14 -O3 -DLZ4F_MULTITHREAD=1 -c lz4/lib/lz4hc.c -o build/lz4/lib/lz4hc.o
+gcc-14 -O3 -DLZ4F_MULTITHREAD=1 -c lz4/lib/lz4.c -o build/lz4/lib/lz4.o
+gcc-14 -O3 -DLZ4F_MULTITHREAD=1 -c lz4/lib/lz4frame.c -o build/lz4/lib/lz4frame.o
+gcc-14 -O3 -DLZ4F_MULTITHREAD=1 -c lz4/lib/xxhash.c -o build/lz4/lib/xxhash.o
+gcc-14 -O3 -march=x86-64-v3 -mtune=generic -march=x86-64-v3 -mtune=generic -w -Wall  -fpermissive  -DNMEMSIZE lzma/C/Alloc.c -c -o build/lzma/C/Alloc.o
+gcc-14 -O3 -march=x86-64-v3 -mtune=generic -march=x86-64-v3 -mtune=generic -w -Wall  -fpermissive  -DNMEMSIZE lzma/C/CpuArch.c -c -o build/lzma/C/CpuArch.o
+gcc-14 -O3 -march=x86-64-v3 -mtune=generic -march=x86-64-v3 -mtune=generic -w -Wall  -fpermissive  -DNMEMSIZE lzma/C/LzFind.c -c -o build/lzma/C/LzFind.o
+gcc-14 -O3 -march=x86-64-v3 -mtune=generic -march=x86-64-v3 -mtune=generic -w -Wall  -fpermissive  -DNMEMSIZE lzma/C/LzmaDec.c -c -o build/lzma/C/LzmaDec.o
+gcc-14 -O3 -march=x86-64-v3 -mtune=generic -march=x86-64-v3 -mtune=generic -w -Wall  -fpermissive  -DNMEMSIZE lzma/C/LzmaEnc.c -c -o build/lzma/C/LzmaEnc.o
+gcc-14 -O3 -march=x86-64-v3 -mtune=generic -march=x86-64-v3 -mtune=generic -w -Wall  -fpermissive  -DNMEMSIZE lzma/C/LzmaLib.c -c -o build/lzma/C/LzmaLib.o
+gcc-14 -O3 -march=x86-64-v3 -mtune=generic -march=x86-64-v3 -mtune=generic -w -Wall  -fpermissive  -DNMEMSIZE lzma/C/Threads.c -c -o build/lzma/C/Threads.o
+gcc-14 -O3 -march=x86-64-v3 -mtune=generic -march=x86-64-v3 -mtune=generic -w -Wall  -fpermissive  -DNMEMSIZE lzma/C/LzFindMt.c -c -o build/lzma/C/LzFindMt.o
+gcc-14 -O3 -march=x86-64-v3 -mtune=generic -march=x86-64-v3 -mtune=generic -w -Wall  -fpermissive  -DNMEMSIZE lzma/C/LzFindOpt.c -c -o build/lzma/C/LzFindOpt.o
+gcc-14 -O3 -march=x86-64-v3 -mtune=generic -march=x86-64-v3 -mtune=generic -w -Wall  -fpermissive  -DNMEMSIZE turbobench_/minlz-c/minlz.c -c -o build/turbobench_/minlz-c/minlz.o
+g++-14 -O3 -march=x86-64-v3 -mtune=generic -march=x86-64-v3 -mtune=generic  -w -Wall -fpermissive -fno-rtti  EC/fastac/arithmetic_codec.cpp -c -o build/EC/fastac/arithmetic_codec.o
+g++-14 -O3 -march=x86-64-v3 -mtune=generic -march=x86-64-v3 -mtune=generic  -w -Wall -fpermissive -fno-rtti  EC/fasthf/binary_codec.cpp -c -o build/EC/fasthf/binary_codec.o
+g++-14 -O3 -march=x86-64-v3 -mtune=generic -march=x86-64-v3 -mtune=generic  -w -Wall -fpermissive -fno-rtti  EC/fpaq0p/fpaq0p_sh.cpp -c -o build/EC/fpaq0p/fpaq0p_sh.o
+gcc-14 -O3 -march=x86-64-v3 -mtune=generic -march=x86-64-v3 -mtune=generic -w -Wall  -fpermissive  -DNMEMSIZE EC/FPC/fpc.c -c -o build/EC/FPC/fpc.o
+gcc-14 -O3 -march=x86-64-v3 -mtune=generic -march=x86-64-v3 -mtune=generic -w -Wall  -fpermissive  -DNMEMSIZE EC/subotin_/subotin.c -c -o build/EC/subotin_/subotin.o
+g++-14 -O3 -march=x86-64-v3 -mtune=generic -march=x86-64-v3 -mtune=generic  -w -Wall -fpermissive -fno-rtti  EC/vecrc/vector_rc.cpp -c -o build/EC/vecrc/vector_rc.o
+cmake -S brotli -B build/brotli -DBUILD_SHARED_LIBS=OFF -DBROTLI_BUILD_TOOLS=OFF -DBROTLI_BUNDLED_MODE=ON  
+-- Build type is 'Release'
+-- Compiler is not EMSCRIPTEN
+-- Configuring done (0.0s)
+-- Generating done (0.0s)
+-- Build files have been written to: /home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/build/brotli
+cmake --build build/brotli --parallel 4
+Change Dir: '/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/build/brotli'
+
+Run Build Command(s): /usr/local/bin/cmake -E env VERBOSE=1 /usr/bin/gmake -f Makefile -j4
+gmake[1]: Entering directory '/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/build/brotli'
+/usr/local/bin/cmake -S/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/brotli -B/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/build/brotli --check-build-system CMakeFiles/Makefile.cmake 0
+/usr/local/bin/cmake -E cmake_progress_start /home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/build/brotli/CMakeFiles /home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/build/brotli//CMakeFiles/progress.marks
+/usr/bin/gmake  -f CMakeFiles/Makefile2 all
+gmake[2]: Entering directory '/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/build/brotli'
+/usr/bin/gmake  -f CMakeFiles/brotlicommon.dir/build.make CMakeFiles/brotlicommon.dir/depend
+gmake[3]: Entering directory '/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/build/brotli'
+cd /home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/build/brotli && /usr/local/bin/cmake -E cmake_depends "Unix Makefiles" /home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/brotli /home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/brotli /home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/build/brotli /home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/build/brotli /home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/build/brotli/CMakeFiles/brotlicommon.dir/DependInfo.cmake "--color="
+cmake -S brotli -B build/brotli -DBUILD_SHARED_LIBS=OFF -DBROTLI_BUILD_TOOLS=OFF -DBROTLI_BUNDLED_MODE=ON  
+gmake[3]: Leaving directory '/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/build/brotli'
+/usr/bin/gmake  -f CMakeFiles/brotlicommon.dir/build.make CMakeFiles/brotlicommon.dir/build
+gmake[3]: Entering directory '/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/build/brotli'
+[  2%] Building C object CMakeFiles/brotlicommon.dir/c/common/constants.c.o
+[  5%] Building C object CMakeFiles/brotlicommon.dir/c/common/context.c.o
+/usr/bin/gcc-14  -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/brotli/c/include -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/brotli/c -march=x86-64-v3 -mtune=generic -O3 -DNDEBUG -fPIC -MD -MT CMakeFiles/brotlicommon.dir/c/common/constants.c.o -MF CMakeFiles/brotlicommon.dir/c/common/constants.c.o.d -o CMakeFiles/brotlicommon.dir/c/common/constants.c.o -c /home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/brotli/c/common/constants.c
+[  7%] Building C object CMakeFiles/brotlicommon.dir/c/common/dictionary.c.o
+[ 10%] Building C object CMakeFiles/brotlicommon.dir/c/common/platform.c.o
+/usr/bin/gcc-14  -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/brotli/c/include -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/brotli/c -march=x86-64-v3 -mtune=generic -O3 -DNDEBUG -fPIC -MD -MT CMakeFiles/brotlicommon.dir/c/common/context.c.o -MF CMakeFiles/brotlicommon.dir/c/common/context.c.o.d -o CMakeFiles/brotlicommon.dir/c/common/context.c.o -c /home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/brotli/c/common/context.c
+/usr/bin/gcc-14  -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/brotli/c/include -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/brotli/c -march=x86-64-v3 -mtune=generic -O3 -DNDEBUG -fPIC -MD -MT CMakeFiles/brotlicommon.dir/c/common/platform.c.o -MF CMakeFiles/brotlicommon.dir/c/common/platform.c.o.d -o CMakeFiles/brotlicommon.dir/c/common/platform.c.o -c /home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/brotli/c/common/platform.c
+/usr/bin/gcc-14  -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/brotli/c/include -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/brotli/c -march=x86-64-v3 -mtune=generic -O3 -DNDEBUG -fPIC -MD -MT CMakeFiles/brotlicommon.dir/c/common/dictionary.c.o -MF CMakeFiles/brotlicommon.dir/c/common/dictionary.c.o.d -o CMakeFiles/brotlicommon.dir/c/common/dictionary.c.o -c /home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/brotli/c/common/dictionary.c
+-- Build type is 'Release'
+-- Compiler is not EMSCRIPTEN
+-- Configuring done (0.0s)
+-- Generating done (0.0s)
+-- Build files have been written to: /home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/build/brotli
+cmake --build build/brotli --parallel 4
+[ 13%] Building C object CMakeFiles/brotlicommon.dir/c/common/shared_dictionary.c.o
+/usr/bin/gcc-14  -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/brotli/c/include -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/brotli/c -march=x86-64-v3 -mtune=generic -O3 -DNDEBUG -fPIC -MD -MT CMakeFiles/brotlicommon.dir/c/common/shared_dictionary.c.o -MF CMakeFiles/brotlicommon.dir/c/common/shared_dictionary.c.o.d -o CMakeFiles/brotlicommon.dir/c/common/shared_dictionary.c.o -c /home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/brotli/c/common/shared_dictionary.c
+Change Dir: '/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/build/brotli'
+
+Run Build Command(s): /usr/local/bin/cmake -E env VERBOSE=1 /usr/bin/gmake -f Makefile -j4
+gmake[1]: Entering directory '/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/build/brotli'
+/usr/local/bin/cmake -S/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/brotli -B/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/build/brotli --check-build-system CMakeFiles/Makefile.cmake 0
+[ 15%] Building C object CMakeFiles/brotlicommon.dir/c/common/transform.c.o
+/usr/bin/gcc-14  -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/brotli/c/include -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/brotli/c -march=x86-64-v3 -mtune=generic -O3 -DNDEBUG -fPIC -MD -MT CMakeFiles/brotlicommon.dir/c/common/transform.c.o -MF CMakeFiles/brotlicommon.dir/c/common/transform.c.o.d -o CMakeFiles/brotlicommon.dir/c/common/transform.c.o -c /home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/brotli/c/common/transform.c
+/usr/local/bin/cmake -E cmake_progress_start /home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/build/brotli/CMakeFiles /home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/build/brotli//CMakeFiles/progress.marks
+/usr/bin/gmake  -f CMakeFiles/Makefile2 all
+gmake[2]: Entering directory '/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/build/brotli'
+/usr/bin/gmake  -f CMakeFiles/brotlicommon.dir/build.make CMakeFiles/brotlicommon.dir/depend
+gmake[3]: Entering directory '/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/build/brotli'
+cd /home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/build/brotli && /usr/local/bin/cmake -E cmake_depends "Unix Makefiles" /home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/brotli /home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/brotli /home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/build/brotli /home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/build/brotli /home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/build/brotli/CMakeFiles/brotlicommon.dir/DependInfo.cmake "--color="
+Dependencies file "CMakeFiles/brotlicommon.dir/c/common/constants.c.o.d" is newer than depends file "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/build/brotli/CMakeFiles/brotlicommon.dir/compiler_depend.internal".
+Dependencies file "CMakeFiles/brotlicommon.dir/c/common/context.c.o.d" is newer than depends file "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/build/brotli/CMakeFiles/brotlicommon.dir/compiler_depend.internal".
+Dependencies file "CMakeFiles/brotlicommon.dir/c/common/platform.c.o.d" is newer than depends file "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/build/brotli/CMakeFiles/brotlicommon.dir/compiler_depend.internal".
+Consolidate compiler generated dependencies of target brotlicommon
+gmake[3]: Leaving directory '/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/build/brotli'
+/usr/bin/gmake  -f CMakeFiles/brotlicommon.dir/build.make CMakeFiles/brotlicommon.dir/build
+gmake[3]: Entering directory '/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/build/brotli'
+[  5%] Building C object CMakeFiles/brotlicommon.dir/c/common/dictionary.c.o
+[  5%] Building C object CMakeFiles/brotlicommon.dir/c/common/shared_dictionary.c.o
+/usr/bin/gcc-14  -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/brotli/c/include -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/brotli/c -march=x86-64-v3 -mtune=generic -O3 -DNDEBUG -fPIC -MD -MT CMakeFiles/brotlicommon.dir/c/common/shared_dictionary.c.o -MF CMakeFiles/brotlicommon.dir/c/common/shared_dictionary.c.o.d -o CMakeFiles/brotlicommon.dir/c/common/shared_dictionary.c.o -c /home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/brotli/c/common/shared_dictionary.c
+[  7%] Building C object CMakeFiles/brotlicommon.dir/c/common/transform.c.o
+/usr/bin/gcc-14  -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/brotli/c/include -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/brotli/c -march=x86-64-v3 -mtune=generic -O3 -DNDEBUG -fPIC -MD -MT CMakeFiles/brotlicommon.dir/c/common/transform.c.o -MF CMakeFiles/brotlicommon.dir/c/common/transform.c.o.d -o CMakeFiles/brotlicommon.dir/c/common/transform.c.o -c /home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/brotli/c/common/transform.c
+/usr/bin/gcc-14  -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/brotli/c/include -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/brotli/c -march=x86-64-v3 -mtune=generic -O3 -DNDEBUG -fPIC -MD -MT CMakeFiles/brotlicommon.dir/c/common/dictionary.c.o -MF CMakeFiles/brotlicommon.dir/c/common/dictionary.c.o.d -o CMakeFiles/brotlicommon.dir/c/common/dictionary.c.o -c /home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/brotli/c/common/dictionary.c
+[ 10%] Linking C static library libbrotlicommon.a
+/usr/local/bin/cmake -P CMakeFiles/brotlicommon.dir/cmake_clean_target.cmake
+/usr/local/bin/cmake -E cmake_link_script CMakeFiles/brotlicommon.dir/link.txt --verbose=1
+[ 10%] Linking C static library libbrotlicommon.a
+/usr/local/bin/cmake -P CMakeFiles/brotlicommon.dir/cmake_clean_target.cmake
+/usr/local/bin/cmake -E cmake_link_script CMakeFiles/brotlicommon.dir/link.txt --verbose=1
+/usr/bin/ar qc libbrotlicommon.a CMakeFiles/brotlicommon.dir/c/common/constants.c.o CMakeFiles/brotlicommon.dir/c/common/context.c.o CMakeFiles/brotlicommon.dir/c/common/dictionary.c.o CMakeFiles/brotlicommon.dir/c/common/platform.c.o CMakeFiles/brotlicommon.dir/c/common/shared_dictionary.c.o CMakeFiles/brotlicommon.dir/c/common/transform.c.o
+/usr/bin/ranlib libbrotlicommon.a
+gmake[3]: Leaving directory '/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/build/brotli'
+gmake[2]: Leaving directory '/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/build/brotli'
+gmake[1]: Leaving directory '/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/build/brotli'
+
+/usr/bin/ar qc libbrotlicommon.a CMakeFiles/brotlicommon.dir/c/common/constants.c.o CMakeFiles/brotlicommon.dir/c/common/context.c.o CMakeFiles/brotlicommon.dir/c/common/dictionary.c.o CMakeFiles/brotlicommon.dir/c/common/platform.c.o CMakeFiles/brotlicommon.dir/c/common/shared_dictionary.c.o CMakeFiles/brotlicommon.dir/c/common/transform.c.o
+/usr/bin/ranlib libbrotlicommon.a
+gmake[3]: Leaving directory '/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/build/brotli'
+[ 18%] Built target brotlicommon
+/usr/bin/gmake  -f CMakeFiles/brotlidec.dir/build.make CMakeFiles/brotlidec.dir/depend
+/usr/bin/gmake  -f CMakeFiles/brotlienc.dir/build.make CMakeFiles/brotlienc.dir/depend
+gmake[3]: Entering directory '/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/build/brotli'
+cd /home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/build/brotli && /usr/local/bin/cmake -E cmake_depends "Unix Makefiles" /home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/brotli /home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/brotli /home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/build/brotli /home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/build/brotli /home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/build/brotli/CMakeFiles/brotlidec.dir/DependInfo.cmake "--color="
+gmake[3]: Entering directory '/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/build/brotli'
+cd /home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/build/brotli && /usr/local/bin/cmake -E cmake_depends "Unix Makefiles" /home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/brotli /home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/brotli /home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/build/brotli /home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/build/brotli /home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/build/brotli/CMakeFiles/brotlienc.dir/DependInfo.cmake "--color="
+gmake[3]: Leaving directory '/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/build/brotli'
+/usr/bin/gmake  -f CMakeFiles/brotlidec.dir/build.make CMakeFiles/brotlidec.dir/build
+gmake[3]: Leaving directory '/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/build/brotli'
+/usr/bin/gmake  -f CMakeFiles/brotlienc.dir/build.make CMakeFiles/brotlienc.dir/build
+gmake[3]: Entering directory '/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/build/brotli'
+gmake[3]: Entering directory '/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/build/brotli'
+[ 21%] Building C object CMakeFiles/brotlidec.dir/c/dec/bit_reader.c.o
+[ 26%] Building C object CMakeFiles/brotlidec.dir/c/dec/decode.c.o
+[ 26%] Building C object CMakeFiles/brotlidec.dir/c/dec/dec_static_init.c.o
+/usr/bin/gcc-14  -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/brotli/c/include -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/brotli/c -march=x86-64-v3 -mtune=generic -O3 -DNDEBUG -fPIC -MD -MT CMakeFiles/brotlidec.dir/c/dec/bit_reader.c.o -MF CMakeFiles/brotlidec.dir/c/dec/bit_reader.c.o.d -o CMakeFiles/brotlidec.dir/c/dec/bit_reader.c.o -c /home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/brotli/c/dec/bit_reader.c
+/usr/bin/gcc-14  -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/brotli/c/include -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/brotli/c -march=x86-64-v3 -mtune=generic -O3 -DNDEBUG -fPIC -MD -MT CMakeFiles/brotlidec.dir/c/dec/dec_static_init.c.o -MF CMakeFiles/brotlidec.dir/c/dec/dec_static_init.c.o.d -o CMakeFiles/brotlidec.dir/c/dec/dec_static_init.c.o -c /home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/brotli/c/dec/dec_static_init.c
+[ 28%] Building C object CMakeFiles/brotlienc.dir/c/enc/backward_references.c.o
+/usr/bin/gcc-14  -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/brotli/c/include -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/brotli/c -march=x86-64-v3 -mtune=generic -O3 -DNDEBUG -fPIC -MD -MT CMakeFiles/brotlidec.dir/c/dec/decode.c.o -MF CMakeFiles/brotlidec.dir/c/dec/decode.c.o.d -o CMakeFiles/brotlidec.dir/c/dec/decode.c.o -c /home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/brotli/c/dec/decode.c
+/usr/bin/gcc-14  -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/brotli/c/include -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/brotli/c -march=x86-64-v3 -mtune=generic -O3 -DNDEBUG -fPIC -MD -MT CMakeFiles/brotlienc.dir/c/enc/backward_references.c.o -MF CMakeFiles/brotlienc.dir/c/enc/backward_references.c.o.d -o CMakeFiles/brotlienc.dir/c/enc/backward_references.c.o -c /home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/brotli/c/enc/backward_references.c
+[ 31%] Building C object CMakeFiles/brotlidec.dir/c/dec/huffman.c.o
+/usr/bin/gcc-14  -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/brotli/c/include -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/brotli/c -march=x86-64-v3 -mtune=generic -O3 -DNDEBUG -fPIC -MD -MT CMakeFiles/brotlidec.dir/c/dec/huffman.c.o -MF CMakeFiles/brotlidec.dir/c/dec/huffman.c.o.d -o CMakeFiles/brotlidec.dir/c/dec/huffman.c.o -c /home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/brotli/c/dec/huffman.c
+[ 34%] Building C object CMakeFiles/brotlidec.dir/c/dec/prefix.c.o
+/usr/bin/gcc-14  -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/brotli/c/include -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/brotli/c -march=x86-64-v3 -mtune=generic -O3 -DNDEBUG -fPIC -MD -MT CMakeFiles/brotlidec.dir/c/dec/prefix.c.o -MF CMakeFiles/brotlidec.dir/c/dec/prefix.c.o.d -o CMakeFiles/brotlidec.dir/c/dec/prefix.c.o -c /home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/brotli/c/dec/prefix.c
+[ 36%] Building C object CMakeFiles/brotlienc.dir/c/enc/backward_references_hq.c.o
+/usr/bin/gcc-14  -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/brotli/c/include -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/brotli/c -march=x86-64-v3 -mtune=generic -O3 -DNDEBUG -fPIC -MD -MT CMakeFiles/brotlienc.dir/c/enc/backward_references_hq.c.o -MF CMakeFiles/brotlienc.dir/c/enc/backward_references_hq.c.o.d -o CMakeFiles/brotlienc.dir/c/enc/backward_references_hq.c.o -c /home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/brotli/c/enc/backward_references_hq.c
+[ 39%] Building C object CMakeFiles/brotlienc.dir/c/enc/bit_cost.c.o
+/usr/bin/gcc-14  -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/brotli/c/include -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/brotli/c -march=x86-64-v3 -mtune=generic -O3 -DNDEBUG -fPIC -MD -MT CMakeFiles/brotlienc.dir/c/enc/bit_cost.c.o -MF CMakeFiles/brotlienc.dir/c/enc/bit_cost.c.o.d -o CMakeFiles/brotlienc.dir/c/enc/bit_cost.c.o -c /home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/brotli/c/enc/bit_cost.c
+[ 42%] Building C object CMakeFiles/brotlienc.dir/c/enc/block_splitter.c.o
+/usr/bin/gcc-14  -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/brotli/c/include -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/brotli/c -march=x86-64-v3 -mtune=generic -O3 -DNDEBUG -fPIC -MD -MT CMakeFiles/brotlienc.dir/c/enc/block_splitter.c.o -MF CMakeFiles/brotlienc.dir/c/enc/block_splitter.c.o.d -o CMakeFiles/brotlienc.dir/c/enc/block_splitter.c.o -c /home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/brotli/c/enc/block_splitter.c
+[ 44%] Building C object CMakeFiles/brotlidec.dir/c/dec/state.c.o
+/usr/bin/gcc-14  -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/brotli/c/include -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/brotli/c -march=x86-64-v3 -mtune=generic -O3 -DNDEBUG -fPIC -MD -MT CMakeFiles/brotlidec.dir/c/dec/state.c.o -MF CMakeFiles/brotlidec.dir/c/dec/state.c.o.d -o CMakeFiles/brotlidec.dir/c/dec/state.c.o -c /home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/brotli/c/dec/state.c
+[ 47%] Linking C static library libbrotlidec.a
+/usr/local/bin/cmake -P CMakeFiles/brotlidec.dir/cmake_clean_target.cmake
+[ 50%] Building C object CMakeFiles/brotlienc.dir/c/enc/brotli_bit_stream.c.o
+/usr/bin/gcc-14  -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/brotli/c/include -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/brotli/c -march=x86-64-v3 -mtune=generic -O3 -DNDEBUG -fPIC -MD -MT CMakeFiles/brotlienc.dir/c/enc/brotli_bit_stream.c.o -MF CMakeFiles/brotlienc.dir/c/enc/brotli_bit_stream.c.o.d -o CMakeFiles/brotlienc.dir/c/enc/brotli_bit_stream.c.o -c /home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/brotli/c/enc/brotli_bit_stream.c
+/usr/local/bin/cmake -E cmake_link_script CMakeFiles/brotlidec.dir/link.txt --verbose=1
+/usr/bin/ar qc libbrotlidec.a CMakeFiles/brotlidec.dir/c/dec/bit_reader.c.o CMakeFiles/brotlidec.dir/c/dec/dec_static_init.c.o CMakeFiles/brotlidec.dir/c/dec/decode.c.o CMakeFiles/brotlidec.dir/c/dec/huffman.c.o CMakeFiles/brotlidec.dir/c/dec/prefix.c.o CMakeFiles/brotlidec.dir/c/dec/state.c.o
+/usr/bin/ranlib libbrotlidec.a
+gmake[3]: Leaving directory '/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/build/brotli'
+[ 50%] Built target brotlidec
+[ 52%] Building C object CMakeFiles/brotlienc.dir/c/enc/cluster.c.o
+/usr/bin/gcc-14  -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/brotli/c/include -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/brotli/c -march=x86-64-v3 -mtune=generic -O3 -DNDEBUG -fPIC -MD -MT CMakeFiles/brotlienc.dir/c/enc/cluster.c.o -MF CMakeFiles/brotlienc.dir/c/enc/cluster.c.o.d -o CMakeFiles/brotlienc.dir/c/enc/cluster.c.o -c /home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/brotli/c/enc/cluster.c
+[ 55%] Building C object CMakeFiles/brotlienc.dir/c/enc/command.c.o
+/usr/bin/gcc-14  -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/brotli/c/include -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/brotli/c -march=x86-64-v3 -mtune=generic -O3 -DNDEBUG -fPIC -MD -MT CMakeFiles/brotlienc.dir/c/enc/command.c.o -MF CMakeFiles/brotlienc.dir/c/enc/command.c.o.d -o CMakeFiles/brotlienc.dir/c/enc/command.c.o -c /home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/brotli/c/enc/command.c
+[ 57%] Building C object CMakeFiles/brotlienc.dir/c/enc/compound_dictionary.c.o
+/usr/bin/gcc-14  -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/brotli/c/include -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/brotli/c -march=x86-64-v3 -mtune=generic -O3 -DNDEBUG -fPIC -MD -MT CMakeFiles/brotlienc.dir/c/enc/compound_dictionary.c.o -MF CMakeFiles/brotlienc.dir/c/enc/compound_dictionary.c.o.d -o CMakeFiles/brotlienc.dir/c/enc/compound_dictionary.c.o -c /home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/brotli/c/enc/compound_dictionary.c
+[ 60%] Building C object CMakeFiles/brotlienc.dir/c/enc/compress_fragment.c.o
+/usr/bin/gcc-14  -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/brotli/c/include -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/brotli/c -march=x86-64-v3 -mtune=generic -O3 -DNDEBUG -fPIC -MD -MT CMakeFiles/brotlienc.dir/c/enc/compress_fragment.c.o -MF CMakeFiles/brotlienc.dir/c/enc/compress_fragment.c.o.d -o CMakeFiles/brotlienc.dir/c/enc/compress_fragment.c.o -c /home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/brotli/c/enc/compress_fragment.c
+[ 63%] Building C object CMakeFiles/brotlienc.dir/c/enc/compress_fragment_two_pass.c.o
+/usr/bin/gcc-14  -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/brotli/c/include -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/brotli/c -march=x86-64-v3 -mtune=generic -O3 -DNDEBUG -fPIC -MD -MT CMakeFiles/brotlienc.dir/c/enc/compress_fragment_two_pass.c.o -MF CMakeFiles/brotlienc.dir/c/enc/compress_fragment_two_pass.c.o.d -o CMakeFiles/brotlienc.dir/c/enc/compress_fragment_two_pass.c.o -c /home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/brotli/c/enc/compress_fragment_two_pass.c
+[ 65%] Building C object CMakeFiles/brotlienc.dir/c/enc/dictionary_hash.c.o
+/usr/bin/gcc-14  -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/brotli/c/include -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/brotli/c -march=x86-64-v3 -mtune=generic -O3 -DNDEBUG -fPIC -MD -MT CMakeFiles/brotlienc.dir/c/enc/dictionary_hash.c.o -MF CMakeFiles/brotlienc.dir/c/enc/dictionary_hash.c.o.d -o CMakeFiles/brotlienc.dir/c/enc/dictionary_hash.c.o -c /home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/brotli/c/enc/dictionary_hash.c
+[ 68%] Building C object CMakeFiles/brotlienc.dir/c/enc/enc_static_init.c.o
+/usr/bin/gcc-14  -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/brotli/c/include -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/brotli/c -march=x86-64-v3 -mtune=generic -O3 -DNDEBUG -fPIC -MD -MT CMakeFiles/brotlienc.dir/c/enc/enc_static_init.c.o -MF CMakeFiles/brotlienc.dir/c/enc/enc_static_init.c.o.d -o CMakeFiles/brotlienc.dir/c/enc/enc_static_init.c.o -c /home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/brotli/c/enc/enc_static_init.c
+[ 71%] Building C object CMakeFiles/brotlienc.dir/c/enc/encode.c.o
+/usr/bin/gcc-14  -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/brotli/c/include -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/brotli/c -march=x86-64-v3 -mtune=generic -O3 -DNDEBUG -fPIC -MD -MT CMakeFiles/brotlienc.dir/c/enc/encode.c.o -MF CMakeFiles/brotlienc.dir/c/enc/encode.c.o.d -o CMakeFiles/brotlienc.dir/c/enc/encode.c.o -c /home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/brotli/c/enc/encode.c
+[ 73%] Building C object CMakeFiles/brotlienc.dir/c/enc/encoder_dict.c.o
+/usr/bin/gcc-14  -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/brotli/c/include -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/brotli/c -march=x86-64-v3 -mtune=generic -O3 -DNDEBUG -fPIC -MD -MT CMakeFiles/brotlienc.dir/c/enc/encoder_dict.c.o -MF CMakeFiles/brotlienc.dir/c/enc/encoder_dict.c.o.d -o CMakeFiles/brotlienc.dir/c/enc/encoder_dict.c.o -c /home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/brotli/c/enc/encoder_dict.c
+[ 76%] Building C object CMakeFiles/brotlienc.dir/c/enc/entropy_encode.c.o
+/usr/bin/gcc-14  -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/brotli/c/include -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/brotli/c -march=x86-64-v3 -mtune=generic -O3 -DNDEBUG -fPIC -MD -MT CMakeFiles/brotlienc.dir/c/enc/entropy_encode.c.o -MF CMakeFiles/brotlienc.dir/c/enc/entropy_encode.c.o.d -o CMakeFiles/brotlienc.dir/c/enc/entropy_encode.c.o -c /home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/brotli/c/enc/entropy_encode.c
+[ 78%] Building C object CMakeFiles/brotlienc.dir/c/enc/fast_log.c.o
+/usr/bin/gcc-14  -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/brotli/c/include -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/brotli/c -march=x86-64-v3 -mtune=generic -O3 -DNDEBUG -fPIC -MD -MT CMakeFiles/brotlienc.dir/c/enc/fast_log.c.o -MF CMakeFiles/brotlienc.dir/c/enc/fast_log.c.o.d -o CMakeFiles/brotlienc.dir/c/enc/fast_log.c.o -c /home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/brotli/c/enc/fast_log.c
+[ 81%] Building C object CMakeFiles/brotlienc.dir/c/enc/histogram.c.o
+/usr/bin/gcc-14  -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/brotli/c/include -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/brotli/c -march=x86-64-v3 -mtune=generic -O3 -DNDEBUG -fPIC -MD -MT CMakeFiles/brotlienc.dir/c/enc/histogram.c.o -MF CMakeFiles/brotlienc.dir/c/enc/histogram.c.o.d -o CMakeFiles/brotlienc.dir/c/enc/histogram.c.o -c /home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/brotli/c/enc/histogram.c
+[ 84%] Building C object CMakeFiles/brotlienc.dir/c/enc/literal_cost.c.o
+/usr/bin/gcc-14  -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/brotli/c/include -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/brotli/c -march=x86-64-v3 -mtune=generic -O3 -DNDEBUG -fPIC -MD -MT CMakeFiles/brotlienc.dir/c/enc/literal_cost.c.o -MF CMakeFiles/brotlienc.dir/c/enc/literal_cost.c.o.d -o CMakeFiles/brotlienc.dir/c/enc/literal_cost.c.o -c /home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/brotli/c/enc/literal_cost.c
+[ 86%] Building C object CMakeFiles/brotlienc.dir/c/enc/memory.c.o
+/usr/bin/gcc-14  -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/brotli/c/include -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/brotli/c -march=x86-64-v3 -mtune=generic -O3 -DNDEBUG -fPIC -MD -MT CMakeFiles/brotlienc.dir/c/enc/memory.c.o -MF CMakeFiles/brotlienc.dir/c/enc/memory.c.o.d -o CMakeFiles/brotlienc.dir/c/enc/memory.c.o -c /home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/brotli/c/enc/memory.c
+[ 89%] Building C object CMakeFiles/brotlienc.dir/c/enc/metablock.c.o
+/usr/bin/gcc-14  -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/brotli/c/include -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/brotli/c -march=x86-64-v3 -mtune=generic -O3 -DNDEBUG -fPIC -MD -MT CMakeFiles/brotlienc.dir/c/enc/metablock.c.o -MF CMakeFiles/brotlienc.dir/c/enc/metablock.c.o.d -o CMakeFiles/brotlienc.dir/c/enc/metablock.c.o -c /home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/brotli/c/enc/metablock.c
+[ 92%] Building C object CMakeFiles/brotlienc.dir/c/enc/static_dict.c.o
+/usr/bin/gcc-14  -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/brotli/c/include -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/brotli/c -march=x86-64-v3 -mtune=generic -O3 -DNDEBUG -fPIC -MD -MT CMakeFiles/brotlienc.dir/c/enc/static_dict.c.o -MF CMakeFiles/brotlienc.dir/c/enc/static_dict.c.o.d -o CMakeFiles/brotlienc.dir/c/enc/static_dict.c.o -c /home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/brotli/c/enc/static_dict.c
+[ 94%] Building C object CMakeFiles/brotlienc.dir/c/enc/static_dict_lut.c.o
+/usr/bin/gcc-14  -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/brotli/c/include -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/brotli/c -march=x86-64-v3 -mtune=generic -O3 -DNDEBUG -fPIC -MD -MT CMakeFiles/brotlienc.dir/c/enc/static_dict_lut.c.o -MF CMakeFiles/brotlienc.dir/c/enc/static_dict_lut.c.o.d -o CMakeFiles/brotlienc.dir/c/enc/static_dict_lut.c.o -c /home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/brotli/c/enc/static_dict_lut.c
+[ 97%] Building C object CMakeFiles/brotlienc.dir/c/enc/utf8_util.c.o
+/usr/bin/gcc-14  -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/brotli/c/include -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/brotli/c -march=x86-64-v3 -mtune=generic -O3 -DNDEBUG -fPIC -MD -MT CMakeFiles/brotlienc.dir/c/enc/utf8_util.c.o -MF CMakeFiles/brotlienc.dir/c/enc/utf8_util.c.o.d -o CMakeFiles/brotlienc.dir/c/enc/utf8_util.c.o -c /home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/brotli/c/enc/utf8_util.c
+[100%] Linking C static library libbrotlienc.a
+/usr/local/bin/cmake -P CMakeFiles/brotlienc.dir/cmake_clean_target.cmake
+/usr/local/bin/cmake -E cmake_link_script CMakeFiles/brotlienc.dir/link.txt --verbose=1
+/usr/bin/ar qc libbrotlienc.a CMakeFiles/brotlienc.dir/c/enc/backward_references.c.o CMakeFiles/brotlienc.dir/c/enc/backward_references_hq.c.o CMakeFiles/brotlienc.dir/c/enc/bit_cost.c.o CMakeFiles/brotlienc.dir/c/enc/block_splitter.c.o CMakeFiles/brotlienc.dir/c/enc/brotli_bit_stream.c.o CMakeFiles/brotlienc.dir/c/enc/cluster.c.o CMakeFiles/brotlienc.dir/c/enc/command.c.o CMakeFiles/brotlienc.dir/c/enc/compound_dictionary.c.o CMakeFiles/brotlienc.dir/c/enc/compress_fragment.c.o CMakeFiles/brotlienc.dir/c/enc/compress_fragment_two_pass.c.o CMakeFiles/brotlienc.dir/c/enc/dictionary_hash.c.o CMakeFiles/brotlienc.dir/c/enc/enc_static_init.c.o CMakeFiles/brotlienc.dir/c/enc/encode.c.o CMakeFiles/brotlienc.dir/c/enc/encoder_dict.c.o CMakeFiles/brotlienc.dir/c/enc/entropy_encode.c.o CMakeFiles/brotlienc.dir/c/enc/fast_log.c.o CMakeFiles/brotlienc.dir/c/enc/histogram.c.o CMakeFiles/brotlienc.dir/c/enc/literal_cost.c.o CMakeFiles/brotlienc.dir/c/enc/memory.c.o CMakeFiles/brotlienc.dir/c/enc/metablock.c.o CMakeFiles/brotlienc.dir/c/enc/static_dict.c.o CMakeFiles/brotlienc.dir/c/enc/static_dict_lut.c.o CMakeFiles/brotlienc.dir/c/enc/utf8_util.c.o
+/usr/bin/ranlib libbrotlienc.a
+gmake[3]: Leaving directory '/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/build/brotli'
+[100%] Built target brotlienc
+gmake[2]: Leaving directory '/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/build/brotli'
+/usr/local/bin/cmake -E cmake_progress_start /home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/build/brotli/CMakeFiles 0
+gmake[1]: Leaving directory '/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/build/brotli'
+
