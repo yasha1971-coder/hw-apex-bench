@@ -1,0 +1,32 @@
+CC="gcc-14" CXX="g++-14"  CXL="g++-14"  CG="gcc-14" CCO="gcc-14" 
+g++-14 -O3 -std=c++17 -march=haswell -DXXH_INLINE_ALL -Izstd/lib -Iaceapex/src -c aceapex/src/aceapex_api.cpp -o build/aceapex/src/aceapex_api.o
+g++-14 -O3 -march=x86-64-v3 -mtune=generic -march=x86-64-v3 -mtune=generic  -w -Wall -fpermissive -fno-rtti  turbobench_/bcm/bcm.cpp -c -o build/turbobench_/bcm/bcm.o
+g++-14 -O3 -march=haswell -DLIBBSC_SORT_TRANSFORM_SUPPORT -ICSC/src/libcsc -c libbsc/libbsc/libbsc/libbsc.cpp -o build/libbsc/libbsc/libbsc/libbsc.o
+g++-14 -O3 -march=haswell -DLIBBSC_SORT_TRANSFORM_SUPPORT -ICSC/src/libcsc -c libbsc/libbsc/coder/coder.cpp -o build/libbsc/libbsc/coder/coder.o
+g++-14 -O3 -march=haswell -DLIBBSC_SORT_TRANSFORM_SUPPORT -ICSC/src/libcsc -c libbsc/libbsc/coder/qlfc/qlfc.cpp -o build/libbsc/libbsc/coder/qlfc/qlfc.o
+g++-14 -O3 -march=haswell -DLIBBSC_SORT_TRANSFORM_SUPPORT -ICSC/src/libcsc -c libbsc/libbsc/coder/qlfc/qlfc_model.cpp -o build/libbsc/libbsc/coder/qlfc/qlfc_model.o
+g++-14 -O3 -march=haswell -DLIBBSC_SORT_TRANSFORM_SUPPORT -ICSC/src/libcsc -c libbsc/libbsc/filters/detectors.cpp -o build/libbsc/libbsc/filters/detectors.o
+g++-14 -O3 -march=haswell -DLIBBSC_SORT_TRANSFORM_SUPPORT -ICSC/src/libcsc -c libbsc/libbsc/filters/preprocessing.cpp -o build/libbsc/libbsc/filters/preprocessing.o
+g++-14 -O3 -march=haswell -DLIBBSC_SORT_TRANSFORM_SUPPORT -ICSC/src/libcsc -c libbsc/libbsc/adler32/adler32.cpp -o build/libbsc/libbsc/adler32/adler32.o
+g++-14 -O3 -march=haswell -DLIBBSC_SORT_TRANSFORM_SUPPORT -ICSC/src/libcsc -c libbsc/libbsc/bwt/bwt.cpp -o build/libbsc/libbsc/bwt/bwt.o
+g++-14 -O3 -march=haswell -DLIBBSC_SORT_TRANSFORM_SUPPORT -ICSC/src/libcsc -c libbsc/libbsc/st/st.cpp -o build/libbsc/libbsc/st/st.o
+g++-14 -O3 -march=haswell -DLIBBSC_SORT_TRANSFORM_SUPPORT -ICSC/src/libcsc -c libbsc/libbsc/lzp/lzp.cpp -o build/libbsc/libbsc/lzp/lzp.o
+g++-14 -O3 -march=haswell -DLIBBSC_SORT_TRANSFORM_SUPPORT -ICSC/src/libcsc -c libbsc/libbsc/platform/platform.cpp -o build/libbsc/libbsc/platform/platform.o
+gcc-14 -O3 -DLZ4F_MULTITHREAD=1 -c lz4/lib/lz4hc.c -o build/lz4/lib/lz4hc.o
+gcc-14 -O3 -DLZ4F_MULTITHREAD=1 -c lz4/lib/lz4.c -o build/lz4/lib/lz4.o
+gcc-14 -O3 -DLZ4F_MULTITHREAD=1 -c lz4/lib/lz4frame.c -o build/lz4/lib/lz4frame.o
+gcc-14 -O3 -DLZ4F_MULTITHREAD=1 -c lz4/lib/xxhash.c -o build/lz4/lib/xxhash.o
+gcc-14 -O3 -march=x86-64-v3 -mtune=generic -march=x86-64-v3 -mtune=generic -w -Wall  -fpermissive  -DNMEMSIZE lzma/C/Alloc.c -c -o build/lzma/C/Alloc.o
+gcc-14 -O3 -march=x86-64-v3 -mtune=generic -march=x86-64-v3 -mtune=generic -w -Wall  -fpermissive  -DNMEMSIZE lzma/C/CpuArch.c -c -o build/lzma/C/CpuArch.o
+gcc-14 -O3 -march=x86-64-v3 -mtune=generic -march=x86-64-v3 -mtune=generic -w -Wall  -fpermissive  -DNMEMSIZE lzma/C/LzFind.c -c -o build/lzma/C/LzFind.o
+gcc-14 -O3 -march=x86-64-v3 -mtune=generic -march=x86-64-v3 -mtune=generic -w -Wall  -fpermissive  -DNMEMSIZE lzma/C/LzmaDec.c -c -o build/lzma/C/LzmaDec.o
+gcc-14 -O3 -march=x86-64-v3 -mtune=generic -march=x86-64-v3 -mtune=generic -w -Wall  -fpermissive  -DNMEMSIZE lzma/C/LzmaEnc.c -c -o build/lzma/C/LzmaEnc.o
+gcc-14 -O3 -march=x86-64-v3 -mtune=generic -march=x86-64-v3 -mtune=generic -w -Wall  -fpermissive  -DNMEMSIZE lzma/C/LzmaLib.c -c -o build/lzma/C/LzmaLib.o
+gcc-14 -O3 -march=x86-64-v3 -mtune=generic -march=x86-64-v3 -mtune=generic -w -Wall  -fpermissive  -DNMEMSIZE lzma/C/Threads.c -c -o build/lzma/C/Threads.o
+gcc-14 -O3 -march=x86-64-v3 -mtune=generic -march=x86-64-v3 -mtune=generic -w -Wall  -fpermissive  -DNMEMSIZE lzma/C/LzFindMt.c -c -o build/lzma/C/LzFindMt.o
+gcc-14 -O3 -march=x86-64-v3 -mtune=generic -march=x86-64-v3 -mtune=generic -w -Wall  -fpermissive  -DNMEMSIZE lzma/C/LzFindOpt.c -c -o build/lzma/C/LzFindOpt.o
+gcc-14 -O3 -march=x86-64-v3 -mtune=generic -march=x86-64-v3 -mtune=generic -w -Wall  -fpermissive  -DNMEMSIZE turbobench_/minlz-c/minlz.c -c -o build/turbobench_/minlz-c/minlz.o
+g++-14 -O3 -march=x86-64-v3 -mtune=generic -march=x86-64-v3 -mtune=generic  -w -Wall -fpermissive -fno-rtti  EC/fastac/arithmetic_codec.cpp -c -o build/EC/fastac/arithmetic_codec.o
+g++-14 -O3 -march=x86-64-v3 -mtune=generic -march=x86-64-v3 -mtune=generic  -w -Wall -fpermissive -fno-rtti  EC/fasthf/binary_codec.cpp -c -o build/EC/fasthf/binary_codec.o
+g++-14 -O3 -march=x86-64-v3 -mtune=generic -march=x86-64-v3 -mtune=generic  -w -Wall -fpermissive -fno-rtti  EC/fpaq0p/fpaq0p_sh.cpp -c -o build/EC/fpaq0p/fpaq0p_sh.o
+gcc-14 -O3 -march=x86-64-v3 -mtune=generic -march=x86-64-v3 -mtune=generic -w -Wall  -fpermissive  -DNMEMSIZE EC/FPC/fpc.c -c -o build/EC/FPC/fpc.o

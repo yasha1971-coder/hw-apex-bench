@@ -1,0 +1,14 @@
+{
+  "schema": "tb-lvl-0-actions-artifact-v1",
+  "repository": "yasha1971-coder/hw-apex-bench",
+  "run_id": 46059561063,
+  "job_id": 140710234441,
+  "head_sha": "cddb8dd6156c559bb7ed851069f334038dd2fb0e",
+  "artifact_id": 15228905061,
+  "artifact_name": "tb-lvl-0-static-cddb8dd6156c559bb7ed851069f334038dd2fb0e",
+  "artifact_zip_sha256": "d626908b4dbaa461ddfcb50099367f3432940b7771e492f0657d6e497bc53360",
+  "status": "FAIL",
+  "failure_stage": "uninitialised nested entropy-coder gitlink selected by make",
+  "benchmark_calls": 0,
+  "url": "https://github.com/yasha1971-coder/hw-apex-bench/actions/runs/46059561063"
+}

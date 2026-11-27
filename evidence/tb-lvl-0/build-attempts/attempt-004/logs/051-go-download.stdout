@@ -1,0 +1,60 @@
+{
+	"Path": "github.com/klauspost/compress",
+	"Version": "v1.20.5",
+	"Info": "/home/runner/go/pkg/mod/cache/download/github.com/klauspost/compress/@v/v1.20.5.info",
+	"GoMod": "/home/runner/go/pkg/mod/cache/download/github.com/klauspost/compress/@v/v1.20.5.mod",
+	"Zip": "/home/runner/go/pkg/mod/cache/download/github.com/klauspost/compress/@v/v1.20.5.zip",
+	"Dir": "/home/runner/go/pkg/mod/github.com/klauspost/compress@v1.20.5",
+	"Sum": "h1:rJj5VjH4xQxbnLphg6eqUcDxRFCw1jpMdDY9qXlrwSs=",
+	"GoModSum": "h1:LUdAzn7YLVvxLpc7y3V1m40wESHTgc1422pwwBSKYuI="
+}
+{
+	"Path": "github.com/klauspost/cpuid/v2",
+	"Version": "v2.4.2",
+	"Info": "/home/runner/go/pkg/mod/cache/download/github.com/klauspost/cpuid/v2/@v/v2.4.2.info",
+	"GoMod": "/home/runner/go/pkg/mod/cache/download/github.com/klauspost/cpuid/v2/@v/v2.4.2.mod",
+	"Zip": "/home/runner/go/pkg/mod/cache/download/github.com/klauspost/cpuid/v2/@v/v2.4.2.zip",
+	"Dir": "/home/runner/go/pkg/mod/github.com/klauspost/cpuid/v2@v2.4.2",
+	"Sum": "h1:xRw7IZEsAgVCp6trS/DgWbTAqpixhmywgVgBjYGg1bQ=",
+	"GoModSum": "h1:19jmZ9mjzoF//ddRSUsv0zfBTJWh3QJh9FNxZTMrGxU="
+}
+{
+	"Path": "github.com/minio/minlz",
+	"Version": "v1.3.1",
+	"Info": "/home/runner/go/pkg/mod/cache/download/github.com/minio/minlz/@v/v1.3.1.info",
+	"GoMod": "/home/runner/go/pkg/mod/cache/download/github.com/minio/minlz/@v/v1.3.1.mod",
+	"Zip": "/home/runner/go/pkg/mod/cache/download/github.com/minio/minlz/@v/v1.3.1.zip",
+	"Dir": "/home/runner/go/pkg/mod/github.com/minio/minlz@v1.3.1",
+	"Sum": "h1:JLC839ysYVa8BG7GqNsqfvXFwtLbF2CVPx+qZx4q7Ig=",
+	"GoModSum": "h1:fj3eN4Nve9WAwrYH000h2DpU5cYH1H2WwBJg+jEI0og="
+}
+{
+	"Path": "github.com/zeebo/assert",
+	"Version": "v1.3.0",
+	"Info": "/home/runner/go/pkg/mod/cache/download/github.com/zeebo/assert/@v/v1.3.0.info",
+	"GoMod": "/home/runner/go/pkg/mod/cache/download/github.com/zeebo/assert/@v/v1.3.0.mod",
+	"Zip": "/home/runner/go/pkg/mod/cache/download/github.com/zeebo/assert/@v/v1.3.0.zip",
+	"Dir": "/home/runner/go/pkg/mod/github.com/zeebo/assert@v1.3.0",
+	"Sum": "h1:g7C04CbJuIDKNPFHmsk4hwZDO5O+kntRxzaUoNXj+IQ=",
+	"GoModSum": "h1:Pq9JiuJQpG8JLJdtkwrJESF0Foym2/D9XMU5ciN/wJ0="
+}
+{
+	"Path": "github.com/zeebo/xxh3",
+	"Version": "v1.1.1-0.20261118193009-e05079abbd7d",
+	"Info": "/home/runner/go/pkg/mod/cache/download/github.com/zeebo/xxh3/@v/v1.1.1-0.20261118193009-e05079abbd7d.info",
+	"GoMod": "/home/runner/go/pkg/mod/cache/download/github.com/zeebo/xxh3/@v/v1.1.1-0.20261118193009-e05079abbd7d.mod",
+	"Zip": "/home/runner/go/pkg/mod/cache/download/github.com/zeebo/xxh3/@v/v1.1.1-0.20261118193009-e05079abbd7d.zip",
+	"Dir": "/home/runner/go/pkg/mod/github.com/zeebo/xxh3@v1.1.1-0.20261118193009-e05079abbd7d",
+	"Sum": "h1:a2yajvl2URZKlmaXOk1kTh0hZ3bOJRonGBHOrlRSciQ=",
+	"GoModSum": "h1:IR4qoYVggP2yyTl79E8JnfrrokWf7PL72jnirdRGxA0="
+}
+{
+	"Path": "golang.org/x/sys",
+	"Version": "v0.50.0",
+	"Info": "/home/runner/go/pkg/mod/cache/download/golang.org/x/sys/@v/v0.50.0.info",
+	"GoMod": "/home/runner/go/pkg/mod/cache/download/golang.org/x/sys/@v/v0.50.0.mod",
+	"Zip": "/home/runner/go/pkg/mod/cache/download/golang.org/x/sys/@v/v0.50.0.zip",
+	"Dir": "/home/runner/go/pkg/mod/golang.org/x/sys@v0.50.0",
+	"Sum": "h1:dkKZEFTEKaLr1sjhs0WiKqoi8Jj5nHbS3Njmx1UoMJs=",
+	"GoModSum": "h1:hNLxWAXmnKAxqDtdwIYC4bM9oQPEecfsnNMuSxOs3og="
+}

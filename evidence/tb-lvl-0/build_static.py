@@ -132,14 +132,15 @@ class Builder:
         self.git('checkout','--detach',TB)
         require(self.git('rev-parse','HEAD').strip() == TB, 'TurboBench pin differs')
         original_links = []
-        for line in self.git('ls-tree','HEAD').splitlines():
+        for line in self.git('ls-tree','-r','HEAD').splitlines():
             left, path = line.split('\t', 1)
             mode, kind, commit = left.split()
             if mode == '160000':
                 original_links.append(dict(path=path, commit=commit))
         known = {r['path']:r['commit'] for r in original_links}
         require(all(known.get(path) == commit for path, (_,commit) in PINS.items()), 'pinned gitlinks differ')
-        self.record['upstream_top_level_gitlinks'] = original_links
+        self.record['upstream_gitlinks'] = original_links
+        self.record['gitlink_inventory_scope'] = 'recursive parent tree; every nested gitlink outside selected submodules is sparse'
         self.git('submodule','update','--init','--recursive','--depth','1','--',*PINS)
         for path, (url, commit) in PINS.items():
             require(self.git('rev-parse','HEAD',cwd=self.src/path).strip() == commit, 'submodule pin differs: '+path)
@@ -174,7 +175,7 @@ class Builder:
         self.check_clean()
 
     def check_clean(self):
-        known = {r['path']:r['commit'] for r in self.record['upstream_top_level_gitlinks']}
+        known = {r['path']:r['commit'] for r in self.record['upstream_gitlinks']}
         unused = sorted(set(known) - set(PINS))
         require(self.record['unselected_sparse_gitlinks'] == unused, 'sparse selection changed')
         for name in unused:

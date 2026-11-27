@@ -1,0 +1,5 @@
+github.com/klauspost/compress v1.20.5/go.mod h1:LUdAzn7YLVvxLpc7y3V1m40wESHTgc1422pwwBSKYuI=
+github.com/klauspost/cpuid/v2 v2.4.2/go.mod h1:19jmZ9mjzoF//ddRSUsv0zfBTJWh3QJh9FNxZTMrGxU=
+github.com/minio/minlz v1.3.1/go.mod h1:fj3eN4Nve9WAwrYH000h2DpU5cYH1H2WwBJg+jEI0og=
+github.com/zeebo/xxh3 v1.1.1-0.20261118193009-e05079abbd7d/go.mod h1:IR4qoYVggP2yyTl79E8JnfrrokWf7PL72jnirdRGxA0=
+golang.org/x/sys v0.50.0/go.mod h1:hNLxWAXmnKAxqDtdwIYC4bM9oQPEecfsnNMuSxOs3og=
