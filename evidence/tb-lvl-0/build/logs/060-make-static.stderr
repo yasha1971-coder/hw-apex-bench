@@ -1,0 +1,4 @@
+makefile:175: OpenMP not available
+makefile:149: OpenMP not available
+/usr/bin/ld: build/plugin.o: in function `codini':
+plugin.cc:(.text+0x48e4): warning: Using 'dlopen' in statically linked applications requires at runtime the shared libraries from the glibc version used for linking

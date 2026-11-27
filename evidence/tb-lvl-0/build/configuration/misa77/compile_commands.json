@@ -1,0 +1,92 @@
+[
+{
+  "directory": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/build/misa77",
+  "command": "/usr/bin/g++-14 -DMISA77_ASM_KERNELS=1 -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/misa77/include -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/misa77/src -march=x86-64-v3 -mtune=generic -O3 -DNDEBUG -std=gnu++20 -Wall -Wextra -Wpedantic -march=x86-64 -o CMakeFiles/misa77.dir/src/compress.cpp.o -c /home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/misa77/src/compress.cpp",
+  "file": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/misa77/src/compress.cpp",
+  "output": "CMakeFiles/misa77.dir/src/compress.cpp.o"
+},
+{
+  "directory": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/build/misa77",
+  "command": "/usr/bin/g++-14 -DMISA77_ASM_KERNELS=1 -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/misa77/include -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/misa77/src -march=x86-64-v3 -mtune=generic -O3 -DNDEBUG -std=gnu++20 -Wall -Wextra -Wpedantic -march=x86-64 -o CMakeFiles/misa77.dir/src/decompress.cpp.o -c /home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/misa77/src/decompress.cpp",
+  "file": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/misa77/src/decompress.cpp",
+  "output": "CMakeFiles/misa77.dir/src/decompress.cpp.o"
+},
+{
+  "directory": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/build/misa77",
+  "command": "/usr/bin/g++-14 -DMISA77_ASM_KERNELS=1 -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/misa77/include -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/misa77/src -march=x86-64-v3 -mtune=generic -O3 -DNDEBUG -std=gnu++20 -Wall -Wextra -Wpedantic -march=x86-64 -march=x86-64 -o CMakeFiles/misa77.dir/src/isa/target_portable.cpp.o -c /home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/misa77/src/isa/target_portable.cpp",
+  "file": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/misa77/src/isa/target_portable.cpp",
+  "output": "CMakeFiles/misa77.dir/src/isa/target_portable.cpp.o"
+},
+{
+  "directory": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/build/misa77",
+  "command": "/usr/bin/g++-14 -DMISA77_ASM_KERNELS=1 -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/misa77/include -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/misa77/src -march=x86-64-v3 -mtune=generic -O3 -DNDEBUG -std=gnu++20 -Wall -Wextra -Wpedantic -march=x86-64 -o CMakeFiles/misa77.dir/src/experimental/ecompress.cpp.o -c /home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/misa77/src/experimental/ecompress.cpp",
+  "file": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/misa77/src/experimental/ecompress.cpp",
+  "output": "CMakeFiles/misa77.dir/src/experimental/ecompress.cpp.o"
+},
+{
+  "directory": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/build/misa77",
+  "command": "/usr/bin/g++-14 -DMISA77_ASM_KERNELS=1 -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/misa77/include -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/misa77/src -march=x86-64-v3 -mtune=generic -O3 -DNDEBUG -std=gnu++20 -Wall -Wextra -Wpedantic -march=x86-64 -march=x86-64 -o CMakeFiles/misa77.dir/src/experimental/isa/etarget_portable.cpp.o -c /home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/misa77/src/experimental/isa/etarget_portable.cpp",
+  "file": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/misa77/src/experimental/isa/etarget_portable.cpp",
+  "output": "CMakeFiles/misa77.dir/src/experimental/isa/etarget_portable.cpp.o"
+},
+{
+  "directory": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/build/misa77",
+  "command": "/usr/bin/g++-14 -DMISA77_ASM_KERNELS=1 -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/misa77/include -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/misa77/src -march=x86-64-v3 -mtune=generic -O3 -DNDEBUG -std=gnu++20 -Wall -Wextra -Wpedantic -march=x86-64 -mavx2 -o CMakeFiles/misa77.dir/src/isa/target_avx2.cpp.o -c /home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/misa77/src/isa/target_avx2.cpp",
+  "file": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/misa77/src/isa/target_avx2.cpp",
+  "output": "CMakeFiles/misa77.dir/src/isa/target_avx2.cpp.o"
+},
+{
+  "directory": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/build/misa77",
+  "command": "/usr/bin/g++-14 -DMISA77_ASM_KERNELS=1 -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/misa77/include -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/misa77/src -march=x86-64-v3 -mtune=generic -O3 -DNDEBUG -std=gnu++20 -Wall -Wextra -Wpedantic -march=x86-64 -march=x86-64 -o CMakeFiles/misa77.dir/src/isa/target_sse2.cpp.o -c /home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/misa77/src/isa/target_sse2.cpp",
+  "file": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/misa77/src/isa/target_sse2.cpp",
+  "output": "CMakeFiles/misa77.dir/src/isa/target_sse2.cpp.o"
+},
+{
+  "directory": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/build/misa77",
+  "command": "/usr/bin/g++-14 -DMISA77_ASM_KERNELS=1 -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/misa77/include -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/misa77/src -march=x86-64-v3 -mtune=generic -O3 -DNDEBUG -std=gnu++20 -Wall -Wextra -Wpedantic -march=x86-64 -mavx2 -o CMakeFiles/misa77.dir/src/experimental/isa/etarget_avx2.cpp.o -c /home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/misa77/src/experimental/isa/etarget_avx2.cpp",
+  "file": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/misa77/src/experimental/isa/etarget_avx2.cpp",
+  "output": "CMakeFiles/misa77.dir/src/experimental/isa/etarget_avx2.cpp.o"
+},
+{
+  "directory": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/build/misa77",
+  "command": "/usr/bin/g++-14 -DMISA77_ASM_KERNELS=1 -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/misa77/include -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/misa77/src -march=x86-64-v3 -mtune=generic -O3 -DNDEBUG -std=gnu++20 -Wall -Wextra -Wpedantic -march=x86-64 -march=x86-64 -o CMakeFiles/misa77.dir/src/experimental/isa/etarget_sse2.cpp.o -c /home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/misa77/src/experimental/isa/etarget_sse2.cpp",
+  "file": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/misa77/src/experimental/isa/etarget_sse2.cpp",
+  "output": "CMakeFiles/misa77.dir/src/experimental/isa/etarget_sse2.cpp.o"
+},
+{
+  "directory": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/build/misa77",
+  "command": "/usr/bin/cc -DMISA77_ASM_KERNELS=1 -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/misa77/include -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/misa77/src -O3 -DNDEBUG -Wall -Wextra -Wpedantic -march=x86-64 -o CMakeFiles/misa77.dir/src/decompressor_zoo/light_safe_kernels/x86_64_avx2.S.o -c /home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/misa77/src/decompressor_zoo/light_safe_kernels/x86_64_avx2.S",
+  "file": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/misa77/src/decompressor_zoo/light_safe_kernels/x86_64_avx2.S",
+  "output": "CMakeFiles/misa77.dir/src/decompressor_zoo/light_safe_kernels/x86_64_avx2.S.o"
+},
+{
+  "directory": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/build/misa77",
+  "command": "/usr/bin/cc -DMISA77_ASM_KERNELS=1 -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/misa77/include -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/misa77/src -O3 -DNDEBUG -Wall -Wextra -Wpedantic -march=x86-64 -o CMakeFiles/misa77.dir/src/decompressor_zoo/light_safe_kernels/x86_64_sse2.S.o -c /home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/misa77/src/decompressor_zoo/light_safe_kernels/x86_64_sse2.S",
+  "file": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/misa77/src/decompressor_zoo/light_safe_kernels/x86_64_sse2.S",
+  "output": "CMakeFiles/misa77.dir/src/decompressor_zoo/light_safe_kernels/x86_64_sse2.S.o"
+},
+{
+  "directory": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/build/misa77",
+  "command": "/usr/bin/cc -DMISA77_ASM_KERNELS=1 -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/misa77/include -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/misa77/src -O3 -DNDEBUG -Wall -Wextra -Wpedantic -march=x86-64 -o CMakeFiles/misa77.dir/src/decompressor_zoo/heavy_safe_kernels/x86_64_avx2.S.o -c /home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/misa77/src/decompressor_zoo/heavy_safe_kernels/x86_64_avx2.S",
+  "file": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/misa77/src/decompressor_zoo/heavy_safe_kernels/x86_64_avx2.S",
+  "output": "CMakeFiles/misa77.dir/src/decompressor_zoo/heavy_safe_kernels/x86_64_avx2.S.o"
+},
+{
+  "directory": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/build/misa77",
+  "command": "/usr/bin/cc -DMISA77_ASM_KERNELS=1 -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/misa77/include -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/misa77/src -O3 -DNDEBUG -Wall -Wextra -Wpedantic -march=x86-64 -o CMakeFiles/misa77.dir/src/decompressor_zoo/heavy_safe_kernels/x86_64_sse2.S.o -c /home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/misa77/src/decompressor_zoo/heavy_safe_kernels/x86_64_sse2.S",
+  "file": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/misa77/src/decompressor_zoo/heavy_safe_kernels/x86_64_sse2.S",
+  "output": "CMakeFiles/misa77.dir/src/decompressor_zoo/heavy_safe_kernels/x86_64_sse2.S.o"
+},
+{
+  "directory": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/build/misa77",
+  "command": "/usr/bin/cc -DMISA77_ASM_KERNELS=1 -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/misa77/include -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/misa77/src -O3 -DNDEBUG -Wall -Wextra -Wpedantic -march=x86-64 -o CMakeFiles/misa77.dir/src/decompressor_zoo/entropy_safe_kernels/x86_64_avx2.S.o -c /home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/misa77/src/decompressor_zoo/entropy_safe_kernels/x86_64_avx2.S",
+  "file": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/misa77/src/decompressor_zoo/entropy_safe_kernels/x86_64_avx2.S",
+  "output": "CMakeFiles/misa77.dir/src/decompressor_zoo/entropy_safe_kernels/x86_64_avx2.S.o"
+},
+{
+  "directory": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/build/misa77",
+  "command": "/usr/bin/cc -DMISA77_ASM_KERNELS=1 -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/misa77/include -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/misa77/src -O3 -DNDEBUG -Wall -Wextra -Wpedantic -march=x86-64 -o CMakeFiles/misa77.dir/src/decompressor_zoo/entropy_safe_kernels/x86_64_sse2.S.o -c /home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/misa77/src/decompressor_zoo/entropy_safe_kernels/x86_64_sse2.S",
+  "file": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/misa77/src/decompressor_zoo/entropy_safe_kernels/x86_64_sse2.S",
+  "output": "CMakeFiles/misa77.dir/src/decompressor_zoo/entropy_safe_kernels/x86_64_sse2.S.o"
+}
+]

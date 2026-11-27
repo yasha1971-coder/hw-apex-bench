@@ -1,0 +1,29 @@
+TurboBench Codec List. Build Nov 27 2026 20:41:39
+aceapex v2.6.5 MT       
+aceapex fast v2.6.5 MT  
+bcm / bwt v1.65         
+Brotli v1.2.0           
+BwtSatan v20261127 MT   
+kanzi v1.0.0 MT         
+libbsc/bsc 3.4.1 MT     
+Lz4 v1.11.2 MT          
+lzav v7.2               
+Lzma v26.02 MT          
+minlz v1.3.0            
+minlz-c minlz-c gist    
+misa77 v0.8.1           
+zstd v1.6.0 MT          
+zxc v1.0.0 MT           
+inline memcpy           
+library memcpy          
+bcm Entropy Coder v1.65 
+Fast Prefix Coder v2023.03.08
+Bitwise vector RC       
+Fast HF                 
+Fast AC                 
+Oodle 8:Kraken 9:Mermaid 11:Selkie 12:Hydra 13:Leviathan 
+subotin RC              
+Turbo Range Coder v20261127 MT
+bwt libbsc              
+lzp libbsc              
+st  libbsc              

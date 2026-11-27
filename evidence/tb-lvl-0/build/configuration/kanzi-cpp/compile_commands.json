@@ -1,0 +1,608 @@
+[
+{
+  "directory": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/build/kanzi-cpp",
+  "command": "/usr/bin/g++-14 -D_FILE_OFFSET_BITS=64 -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src -march=x86-64-v3 -mtune=generic -Wall -Wextra -O3 -fomit-frame-pointer -fPIC -DNDEBUG -pedantic -fno-rtti -O3 -DNDEBUG -std=c++17 -o CMakeFiles/libkanzi.dir/src/Global.cpp.o -c /home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src/Global.cpp",
+  "file": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src/Global.cpp",
+  "output": "CMakeFiles/libkanzi.dir/src/Global.cpp.o"
+},
+{
+  "directory": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/build/kanzi-cpp",
+  "command": "/usr/bin/g++-14 -D_FILE_OFFSET_BITS=64 -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src -march=x86-64-v3 -mtune=generic -Wall -Wextra -O3 -fomit-frame-pointer -fPIC -DNDEBUG -pedantic -fno-rtti -O3 -DNDEBUG -std=c++17 -o CMakeFiles/libkanzi.dir/src/Event.cpp.o -c /home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src/Event.cpp",
+  "file": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src/Event.cpp",
+  "output": "CMakeFiles/libkanzi.dir/src/Event.cpp.o"
+},
+{
+  "directory": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/build/kanzi-cpp",
+  "command": "/usr/bin/g++-14 -D_FILE_OFFSET_BITS=64 -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src -march=x86-64-v3 -mtune=generic -Wall -Wextra -O3 -fomit-frame-pointer -fPIC -DNDEBUG -pedantic -fno-rtti -O3 -DNDEBUG -std=c++17 -o CMakeFiles/libkanzi.dir/src/util/WallTimer.cpp.o -c /home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src/util/WallTimer.cpp",
+  "file": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src/util/WallTimer.cpp",
+  "output": "CMakeFiles/libkanzi.dir/src/util/WallTimer.cpp.o"
+},
+{
+  "directory": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/build/kanzi-cpp",
+  "command": "/usr/bin/g++-14 -D_FILE_OFFSET_BITS=64 -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src -march=x86-64-v3 -mtune=generic -Wall -Wextra -O3 -fomit-frame-pointer -fPIC -DNDEBUG -pedantic -fno-rtti -O3 -DNDEBUG -std=c++17 -o CMakeFiles/libkanzi.dir/src/entropy/EntropyUtils.cpp.o -c /home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src/entropy/EntropyUtils.cpp",
+  "file": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src/entropy/EntropyUtils.cpp",
+  "output": "CMakeFiles/libkanzi.dir/src/entropy/EntropyUtils.cpp.o"
+},
+{
+  "directory": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/build/kanzi-cpp",
+  "command": "/usr/bin/g++-14 -D_FILE_OFFSET_BITS=64 -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src -march=x86-64-v3 -mtune=generic -Wall -Wextra -O3 -fomit-frame-pointer -fPIC -DNDEBUG -pedantic -fno-rtti -O3 -DNDEBUG -std=c++17 -o CMakeFiles/libkanzi.dir/src/entropy/HuffmanCommon.cpp.o -c /home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src/entropy/HuffmanCommon.cpp",
+  "file": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src/entropy/HuffmanCommon.cpp",
+  "output": "CMakeFiles/libkanzi.dir/src/entropy/HuffmanCommon.cpp.o"
+},
+{
+  "directory": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/build/kanzi-cpp",
+  "command": "/usr/bin/g++-14 -D_FILE_OFFSET_BITS=64 -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src -march=x86-64-v3 -mtune=generic -Wall -Wextra -O3 -fomit-frame-pointer -fPIC -DNDEBUG -pedantic -fno-rtti -O3 -DNDEBUG -std=c++17 -o CMakeFiles/libkanzi.dir/src/entropy/CMPredictor.cpp.o -c /home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src/entropy/CMPredictor.cpp",
+  "file": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src/entropy/CMPredictor.cpp",
+  "output": "CMakeFiles/libkanzi.dir/src/entropy/CMPredictor.cpp.o"
+},
+{
+  "directory": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/build/kanzi-cpp",
+  "command": "/usr/bin/g++-14 -D_FILE_OFFSET_BITS=64 -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src -march=x86-64-v3 -mtune=generic -Wall -Wextra -O3 -fomit-frame-pointer -fPIC -DNDEBUG -pedantic -fno-rtti -O3 -DNDEBUG -std=c++17 -o CMakeFiles/libkanzi.dir/src/entropy/TPAQPredictor.cpp.o -c /home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src/entropy/TPAQPredictor.cpp",
+  "file": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src/entropy/TPAQPredictor.cpp",
+  "output": "CMakeFiles/libkanzi.dir/src/entropy/TPAQPredictor.cpp.o"
+},
+{
+  "directory": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/build/kanzi-cpp",
+  "command": "/usr/bin/g++-14 -D_FILE_OFFSET_BITS=64 -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src -march=x86-64-v3 -mtune=generic -Wall -Wextra -O3 -fomit-frame-pointer -fPIC -DNDEBUG -pedantic -fno-rtti -O3 -DNDEBUG -std=c++17 -o CMakeFiles/libkanzi.dir/src/transform/AliasCodec.cpp.o -c /home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src/transform/AliasCodec.cpp",
+  "file": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src/transform/AliasCodec.cpp",
+  "output": "CMakeFiles/libkanzi.dir/src/transform/AliasCodec.cpp.o"
+},
+{
+  "directory": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/build/kanzi-cpp",
+  "command": "/usr/bin/g++-14 -D_FILE_OFFSET_BITS=64 -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src -march=x86-64-v3 -mtune=generic -Wall -Wextra -O3 -fomit-frame-pointer -fPIC -DNDEBUG -pedantic -fno-rtti -O3 -DNDEBUG -std=c++17 -o CMakeFiles/libkanzi.dir/src/transform/BWT.cpp.o -c /home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src/transform/BWT.cpp",
+  "file": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src/transform/BWT.cpp",
+  "output": "CMakeFiles/libkanzi.dir/src/transform/BWT.cpp.o"
+},
+{
+  "directory": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/build/kanzi-cpp",
+  "command": "/usr/bin/g++-14 -D_FILE_OFFSET_BITS=64 -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src -march=x86-64-v3 -mtune=generic -Wall -Wextra -O3 -fomit-frame-pointer -fPIC -DNDEBUG -pedantic -fno-rtti -O3 -DNDEBUG -std=c++17 -o CMakeFiles/libkanzi.dir/src/transform/BWTS.cpp.o -c /home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src/transform/BWTS.cpp",
+  "file": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src/transform/BWTS.cpp",
+  "output": "CMakeFiles/libkanzi.dir/src/transform/BWTS.cpp.o"
+},
+{
+  "directory": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/build/kanzi-cpp",
+  "command": "/usr/bin/g++-14 -D_FILE_OFFSET_BITS=64 -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src -march=x86-64-v3 -mtune=generic -Wall -Wextra -O3 -fomit-frame-pointer -fPIC -DNDEBUG -pedantic -fno-rtti -O3 -DNDEBUG -std=c++17 -o CMakeFiles/libkanzi.dir/src/transform/DivSufSort.cpp.o -c /home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src/transform/DivSufSort.cpp",
+  "file": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src/transform/DivSufSort.cpp",
+  "output": "CMakeFiles/libkanzi.dir/src/transform/DivSufSort.cpp.o"
+},
+{
+  "directory": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/build/kanzi-cpp",
+  "command": "/usr/bin/g++-14 -D_FILE_OFFSET_BITS=64 -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src -march=x86-64-v3 -mtune=generic -Wall -Wextra -O3 -fomit-frame-pointer -fPIC -DNDEBUG -pedantic -fno-rtti -O3 -DNDEBUG -std=c++17 -o CMakeFiles/libkanzi.dir/src/transform/SBRT.cpp.o -c /home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src/transform/SBRT.cpp",
+  "file": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src/transform/SBRT.cpp",
+  "output": "CMakeFiles/libkanzi.dir/src/transform/SBRT.cpp.o"
+},
+{
+  "directory": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/build/kanzi-cpp",
+  "command": "/usr/bin/g++-14 -D_FILE_OFFSET_BITS=64 -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src -march=x86-64-v3 -mtune=generic -Wall -Wextra -O3 -fomit-frame-pointer -fPIC -DNDEBUG -pedantic -fno-rtti -O3 -DNDEBUG -std=c++17 -o CMakeFiles/libkanzi.dir/src/transform/BWTBlockCodec.cpp.o -c /home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src/transform/BWTBlockCodec.cpp",
+  "file": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src/transform/BWTBlockCodec.cpp",
+  "output": "CMakeFiles/libkanzi.dir/src/transform/BWTBlockCodec.cpp.o"
+},
+{
+  "directory": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/build/kanzi-cpp",
+  "command": "/usr/bin/g++-14 -D_FILE_OFFSET_BITS=64 -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src -march=x86-64-v3 -mtune=generic -Wall -Wextra -O3 -fomit-frame-pointer -fPIC -DNDEBUG -pedantic -fno-rtti -O3 -DNDEBUG -std=c++17 -o CMakeFiles/libkanzi.dir/src/transform/LZCodec.cpp.o -c /home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src/transform/LZCodec.cpp",
+  "file": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src/transform/LZCodec.cpp",
+  "output": "CMakeFiles/libkanzi.dir/src/transform/LZCodec.cpp.o"
+},
+{
+  "directory": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/build/kanzi-cpp",
+  "command": "/usr/bin/g++-14 -D_FILE_OFFSET_BITS=64 -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src -march=x86-64-v3 -mtune=generic -Wall -Wextra -O3 -fomit-frame-pointer -fPIC -DNDEBUG -pedantic -fno-rtti -O3 -DNDEBUG -std=c++17 -o CMakeFiles/libkanzi.dir/src/transform/FSDCodec.cpp.o -c /home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src/transform/FSDCodec.cpp",
+  "file": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src/transform/FSDCodec.cpp",
+  "output": "CMakeFiles/libkanzi.dir/src/transform/FSDCodec.cpp.o"
+},
+{
+  "directory": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/build/kanzi-cpp",
+  "command": "/usr/bin/g++-14 -D_FILE_OFFSET_BITS=64 -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src -march=x86-64-v3 -mtune=generic -Wall -Wextra -O3 -fomit-frame-pointer -fPIC -DNDEBUG -pedantic -fno-rtti -O3 -DNDEBUG -std=c++17 -o CMakeFiles/libkanzi.dir/src/transform/ROLZCodec.cpp.o -c /home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src/transform/ROLZCodec.cpp",
+  "file": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src/transform/ROLZCodec.cpp",
+  "output": "CMakeFiles/libkanzi.dir/src/transform/ROLZCodec.cpp.o"
+},
+{
+  "directory": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/build/kanzi-cpp",
+  "command": "/usr/bin/g++-14 -D_FILE_OFFSET_BITS=64 -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src -march=x86-64-v3 -mtune=generic -Wall -Wextra -O3 -fomit-frame-pointer -fPIC -DNDEBUG -pedantic -fno-rtti -O3 -DNDEBUG -std=c++17 -o CMakeFiles/libkanzi.dir/src/transform/RLT.cpp.o -c /home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src/transform/RLT.cpp",
+  "file": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src/transform/RLT.cpp",
+  "output": "CMakeFiles/libkanzi.dir/src/transform/RLT.cpp.o"
+},
+{
+  "directory": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/build/kanzi-cpp",
+  "command": "/usr/bin/g++-14 -D_FILE_OFFSET_BITS=64 -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src -march=x86-64-v3 -mtune=generic -Wall -Wextra -O3 -fomit-frame-pointer -fPIC -DNDEBUG -pedantic -fno-rtti -O3 -DNDEBUG -std=c++17 -o CMakeFiles/libkanzi.dir/src/transform/SRT.cpp.o -c /home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src/transform/SRT.cpp",
+  "file": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src/transform/SRT.cpp",
+  "output": "CMakeFiles/libkanzi.dir/src/transform/SRT.cpp.o"
+},
+{
+  "directory": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/build/kanzi-cpp",
+  "command": "/usr/bin/g++-14 -D_FILE_OFFSET_BITS=64 -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src -march=x86-64-v3 -mtune=generic -Wall -Wextra -O3 -fomit-frame-pointer -fPIC -DNDEBUG -pedantic -fno-rtti -O3 -DNDEBUG -std=c++17 -o CMakeFiles/libkanzi.dir/src/transform/TextCodec.cpp.o -c /home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src/transform/TextCodec.cpp",
+  "file": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src/transform/TextCodec.cpp",
+  "output": "CMakeFiles/libkanzi.dir/src/transform/TextCodec.cpp.o"
+},
+{
+  "directory": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/build/kanzi-cpp",
+  "command": "/usr/bin/g++-14 -D_FILE_OFFSET_BITS=64 -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src -march=x86-64-v3 -mtune=generic -Wall -Wextra -O3 -fomit-frame-pointer -fPIC -DNDEBUG -pedantic -fno-rtti -O3 -DNDEBUG -std=c++17 -o CMakeFiles/libkanzi.dir/src/transform/UTFCodec.cpp.o -c /home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src/transform/UTFCodec.cpp",
+  "file": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src/transform/UTFCodec.cpp",
+  "output": "CMakeFiles/libkanzi.dir/src/transform/UTFCodec.cpp.o"
+},
+{
+  "directory": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/build/kanzi-cpp",
+  "command": "/usr/bin/g++-14 -D_FILE_OFFSET_BITS=64 -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src -march=x86-64-v3 -mtune=generic -Wall -Wextra -O3 -fomit-frame-pointer -fPIC -DNDEBUG -pedantic -fno-rtti -O3 -DNDEBUG -std=c++17 -o CMakeFiles/libkanzi.dir/src/transform/EXECodec.cpp.o -c /home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src/transform/EXECodec.cpp",
+  "file": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src/transform/EXECodec.cpp",
+  "output": "CMakeFiles/libkanzi.dir/src/transform/EXECodec.cpp.o"
+},
+{
+  "directory": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/build/kanzi-cpp",
+  "command": "/usr/bin/g++-14 -D_FILE_OFFSET_BITS=64 -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src -march=x86-64-v3 -mtune=generic -Wall -Wextra -O3 -fomit-frame-pointer -fPIC -DNDEBUG -pedantic -fno-rtti -O3 -DNDEBUG -std=c++17 -o CMakeFiles/libkanzi.dir/src/transform/ZRLT.cpp.o -c /home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src/transform/ZRLT.cpp",
+  "file": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src/transform/ZRLT.cpp",
+  "output": "CMakeFiles/libkanzi.dir/src/transform/ZRLT.cpp.o"
+},
+{
+  "directory": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/build/kanzi-cpp",
+  "command": "/usr/bin/g++-14 -D_FILE_OFFSET_BITS=64 -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src -march=x86-64-v3 -mtune=generic -Wall -Wextra -O3 -fomit-frame-pointer -fPIC -DNDEBUG -pedantic -fno-rtti -O3 -DNDEBUG -std=c++17 -o CMakeFiles/libkanzi.dir/src/api/Compressor.cpp.o -c /home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src/api/Compressor.cpp",
+  "file": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src/api/Compressor.cpp",
+  "output": "CMakeFiles/libkanzi.dir/src/api/Compressor.cpp.o"
+},
+{
+  "directory": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/build/kanzi-cpp",
+  "command": "/usr/bin/g++-14 -D_FILE_OFFSET_BITS=64 -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src -march=x86-64-v3 -mtune=generic -Wall -Wextra -O3 -fomit-frame-pointer -fPIC -DNDEBUG -pedantic -fno-rtti -O3 -DNDEBUG -std=c++17 -o CMakeFiles/libkanzi.dir/src/bitstream/DebugOutputBitStream.cpp.o -c /home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src/bitstream/DebugOutputBitStream.cpp",
+  "file": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src/bitstream/DebugOutputBitStream.cpp",
+  "output": "CMakeFiles/libkanzi.dir/src/bitstream/DebugOutputBitStream.cpp.o"
+},
+{
+  "directory": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/build/kanzi-cpp",
+  "command": "/usr/bin/g++-14 -D_FILE_OFFSET_BITS=64 -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src -march=x86-64-v3 -mtune=generic -Wall -Wextra -O3 -fomit-frame-pointer -fPIC -DNDEBUG -pedantic -fno-rtti -O3 -DNDEBUG -std=c++17 -o CMakeFiles/libkanzi.dir/src/bitstream/DefaultOutputBitStream.cpp.o -c /home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src/bitstream/DefaultOutputBitStream.cpp",
+  "file": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src/bitstream/DefaultOutputBitStream.cpp",
+  "output": "CMakeFiles/libkanzi.dir/src/bitstream/DefaultOutputBitStream.cpp.o"
+},
+{
+  "directory": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/build/kanzi-cpp",
+  "command": "/usr/bin/g++-14 -D_FILE_OFFSET_BITS=64 -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src -march=x86-64-v3 -mtune=generic -Wall -Wextra -O3 -fomit-frame-pointer -fPIC -DNDEBUG -pedantic -fno-rtti -O3 -DNDEBUG -std=c++17 -o CMakeFiles/libkanzi.dir/src/io/CompressedOutputStream.cpp.o -c /home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src/io/CompressedOutputStream.cpp",
+  "file": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src/io/CompressedOutputStream.cpp",
+  "output": "CMakeFiles/libkanzi.dir/src/io/CompressedOutputStream.cpp.o"
+},
+{
+  "directory": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/build/kanzi-cpp",
+  "command": "/usr/bin/g++-14 -D_FILE_OFFSET_BITS=64 -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src -march=x86-64-v3 -mtune=generic -Wall -Wextra -O3 -fomit-frame-pointer -fPIC -DNDEBUG -pedantic -fno-rtti -O3 -DNDEBUG -std=c++17 -o CMakeFiles/libkanzi.dir/src/entropy/ANSRangeEncoder.cpp.o -c /home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src/entropy/ANSRangeEncoder.cpp",
+  "file": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src/entropy/ANSRangeEncoder.cpp",
+  "output": "CMakeFiles/libkanzi.dir/src/entropy/ANSRangeEncoder.cpp.o"
+},
+{
+  "directory": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/build/kanzi-cpp",
+  "command": "/usr/bin/g++-14 -D_FILE_OFFSET_BITS=64 -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src -march=x86-64-v3 -mtune=generic -Wall -Wextra -O3 -fomit-frame-pointer -fPIC -DNDEBUG -pedantic -fno-rtti -O3 -DNDEBUG -std=c++17 -o CMakeFiles/libkanzi.dir/src/entropy/BinaryEntropyEncoder.cpp.o -c /home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src/entropy/BinaryEntropyEncoder.cpp",
+  "file": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src/entropy/BinaryEntropyEncoder.cpp",
+  "output": "CMakeFiles/libkanzi.dir/src/entropy/BinaryEntropyEncoder.cpp.o"
+},
+{
+  "directory": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/build/kanzi-cpp",
+  "command": "/usr/bin/g++-14 -D_FILE_OFFSET_BITS=64 -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src -march=x86-64-v3 -mtune=generic -Wall -Wextra -O3 -fomit-frame-pointer -fPIC -DNDEBUG -pedantic -fno-rtti -O3 -DNDEBUG -std=c++17 -o CMakeFiles/libkanzi.dir/src/entropy/ExpGolombEncoder.cpp.o -c /home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src/entropy/ExpGolombEncoder.cpp",
+  "file": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src/entropy/ExpGolombEncoder.cpp",
+  "output": "CMakeFiles/libkanzi.dir/src/entropy/ExpGolombEncoder.cpp.o"
+},
+{
+  "directory": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/build/kanzi-cpp",
+  "command": "/usr/bin/g++-14 -D_FILE_OFFSET_BITS=64 -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src -march=x86-64-v3 -mtune=generic -Wall -Wextra -O3 -fomit-frame-pointer -fPIC -DNDEBUG -pedantic -fno-rtti -O3 -DNDEBUG -std=c++17 -o CMakeFiles/libkanzi.dir/src/entropy/FPAQEncoder.cpp.o -c /home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src/entropy/FPAQEncoder.cpp",
+  "file": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src/entropy/FPAQEncoder.cpp",
+  "output": "CMakeFiles/libkanzi.dir/src/entropy/FPAQEncoder.cpp.o"
+},
+{
+  "directory": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/build/kanzi-cpp",
+  "command": "/usr/bin/g++-14 -D_FILE_OFFSET_BITS=64 -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src -march=x86-64-v3 -mtune=generic -Wall -Wextra -O3 -fomit-frame-pointer -fPIC -DNDEBUG -pedantic -fno-rtti -O3 -DNDEBUG -std=c++17 -o CMakeFiles/libkanzi.dir/src/entropy/HuffmanEncoder.cpp.o -c /home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src/entropy/HuffmanEncoder.cpp",
+  "file": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src/entropy/HuffmanEncoder.cpp",
+  "output": "CMakeFiles/libkanzi.dir/src/entropy/HuffmanEncoder.cpp.o"
+},
+{
+  "directory": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/build/kanzi-cpp",
+  "command": "/usr/bin/g++-14 -D_FILE_OFFSET_BITS=64 -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src -march=x86-64-v3 -mtune=generic -Wall -Wextra -O3 -fomit-frame-pointer -fPIC -DNDEBUG -pedantic -fno-rtti -O3 -DNDEBUG -std=c++17 -o CMakeFiles/libkanzi.dir/src/entropy/RangeEncoder.cpp.o -c /home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src/entropy/RangeEncoder.cpp",
+  "file": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src/entropy/RangeEncoder.cpp",
+  "output": "CMakeFiles/libkanzi.dir/src/entropy/RangeEncoder.cpp.o"
+},
+{
+  "directory": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/build/kanzi-cpp",
+  "command": "/usr/bin/g++-14 -D_FILE_OFFSET_BITS=64 -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src -march=x86-64-v3 -mtune=generic -Wall -Wextra -O3 -fomit-frame-pointer -fPIC -DNDEBUG -pedantic -fno-rtti -O3 -DNDEBUG -std=c++17 -o CMakeFiles/libkanzi.dir/src/api/Decompressor.cpp.o -c /home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src/api/Decompressor.cpp",
+  "file": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src/api/Decompressor.cpp",
+  "output": "CMakeFiles/libkanzi.dir/src/api/Decompressor.cpp.o"
+},
+{
+  "directory": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/build/kanzi-cpp",
+  "command": "/usr/bin/g++-14 -D_FILE_OFFSET_BITS=64 -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src -march=x86-64-v3 -mtune=generic -Wall -Wextra -O3 -fomit-frame-pointer -fPIC -DNDEBUG -pedantic -fno-rtti -O3 -DNDEBUG -std=c++17 -o CMakeFiles/libkanzi.dir/src/bitstream/DebugInputBitStream.cpp.o -c /home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src/bitstream/DebugInputBitStream.cpp",
+  "file": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src/bitstream/DebugInputBitStream.cpp",
+  "output": "CMakeFiles/libkanzi.dir/src/bitstream/DebugInputBitStream.cpp.o"
+},
+{
+  "directory": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/build/kanzi-cpp",
+  "command": "/usr/bin/g++-14 -D_FILE_OFFSET_BITS=64 -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src -march=x86-64-v3 -mtune=generic -Wall -Wextra -O3 -fomit-frame-pointer -fPIC -DNDEBUG -pedantic -fno-rtti -O3 -DNDEBUG -std=c++17 -o CMakeFiles/libkanzi.dir/src/bitstream/DefaultInputBitStream.cpp.o -c /home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src/bitstream/DefaultInputBitStream.cpp",
+  "file": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src/bitstream/DefaultInputBitStream.cpp",
+  "output": "CMakeFiles/libkanzi.dir/src/bitstream/DefaultInputBitStream.cpp.o"
+},
+{
+  "directory": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/build/kanzi-cpp",
+  "command": "/usr/bin/g++-14 -D_FILE_OFFSET_BITS=64 -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src -march=x86-64-v3 -mtune=generic -Wall -Wextra -O3 -fomit-frame-pointer -fPIC -DNDEBUG -pedantic -fno-rtti -O3 -DNDEBUG -std=c++17 -o CMakeFiles/libkanzi.dir/src/io/CompressedInputStream.cpp.o -c /home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src/io/CompressedInputStream.cpp",
+  "file": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src/io/CompressedInputStream.cpp",
+  "output": "CMakeFiles/libkanzi.dir/src/io/CompressedInputStream.cpp.o"
+},
+{
+  "directory": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/build/kanzi-cpp",
+  "command": "/usr/bin/g++-14 -D_FILE_OFFSET_BITS=64 -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src -march=x86-64-v3 -mtune=generic -Wall -Wextra -O3 -fomit-frame-pointer -fPIC -DNDEBUG -pedantic -fno-rtti -O3 -DNDEBUG -std=c++17 -o CMakeFiles/libkanzi.dir/src/entropy/ANSRangeDecoder.cpp.o -c /home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src/entropy/ANSRangeDecoder.cpp",
+  "file": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src/entropy/ANSRangeDecoder.cpp",
+  "output": "CMakeFiles/libkanzi.dir/src/entropy/ANSRangeDecoder.cpp.o"
+},
+{
+  "directory": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/build/kanzi-cpp",
+  "command": "/usr/bin/g++-14 -D_FILE_OFFSET_BITS=64 -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src -march=x86-64-v3 -mtune=generic -Wall -Wextra -O3 -fomit-frame-pointer -fPIC -DNDEBUG -pedantic -fno-rtti -O3 -DNDEBUG -std=c++17 -o CMakeFiles/libkanzi.dir/src/entropy/BinaryEntropyDecoder.cpp.o -c /home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src/entropy/BinaryEntropyDecoder.cpp",
+  "file": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src/entropy/BinaryEntropyDecoder.cpp",
+  "output": "CMakeFiles/libkanzi.dir/src/entropy/BinaryEntropyDecoder.cpp.o"
+},
+{
+  "directory": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/build/kanzi-cpp",
+  "command": "/usr/bin/g++-14 -D_FILE_OFFSET_BITS=64 -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src -march=x86-64-v3 -mtune=generic -Wall -Wextra -O3 -fomit-frame-pointer -fPIC -DNDEBUG -pedantic -fno-rtti -O3 -DNDEBUG -std=c++17 -o CMakeFiles/libkanzi.dir/src/entropy/ExpGolombDecoder.cpp.o -c /home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src/entropy/ExpGolombDecoder.cpp",
+  "file": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src/entropy/ExpGolombDecoder.cpp",
+  "output": "CMakeFiles/libkanzi.dir/src/entropy/ExpGolombDecoder.cpp.o"
+},
+{
+  "directory": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/build/kanzi-cpp",
+  "command": "/usr/bin/g++-14 -D_FILE_OFFSET_BITS=64 -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src -march=x86-64-v3 -mtune=generic -Wall -Wextra -O3 -fomit-frame-pointer -fPIC -DNDEBUG -pedantic -fno-rtti -O3 -DNDEBUG -std=c++17 -o CMakeFiles/libkanzi.dir/src/entropy/FPAQDecoder.cpp.o -c /home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src/entropy/FPAQDecoder.cpp",
+  "file": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src/entropy/FPAQDecoder.cpp",
+  "output": "CMakeFiles/libkanzi.dir/src/entropy/FPAQDecoder.cpp.o"
+},
+{
+  "directory": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/build/kanzi-cpp",
+  "command": "/usr/bin/g++-14 -D_FILE_OFFSET_BITS=64 -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src -march=x86-64-v3 -mtune=generic -Wall -Wextra -O3 -fomit-frame-pointer -fPIC -DNDEBUG -pedantic -fno-rtti -O3 -DNDEBUG -std=c++17 -o CMakeFiles/libkanzi.dir/src/entropy/HuffmanDecoder.cpp.o -c /home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src/entropy/HuffmanDecoder.cpp",
+  "file": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src/entropy/HuffmanDecoder.cpp",
+  "output": "CMakeFiles/libkanzi.dir/src/entropy/HuffmanDecoder.cpp.o"
+},
+{
+  "directory": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/build/kanzi-cpp",
+  "command": "/usr/bin/g++-14 -D_FILE_OFFSET_BITS=64 -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src -march=x86-64-v3 -mtune=generic -Wall -Wextra -O3 -fomit-frame-pointer -fPIC -DNDEBUG -pedantic -fno-rtti -O3 -DNDEBUG -std=c++17 -o CMakeFiles/libkanzi.dir/src/entropy/RangeDecoder.cpp.o -c /home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src/entropy/RangeDecoder.cpp",
+  "file": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src/entropy/RangeDecoder.cpp",
+  "output": "CMakeFiles/libkanzi.dir/src/entropy/RangeDecoder.cpp.o"
+},
+{
+  "directory": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/build/kanzi-cpp",
+  "command": "/usr/bin/g++-14 -D_FILE_OFFSET_BITS=64 -Dlibkanzi_shared_EXPORTS -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src -march=x86-64-v3 -mtune=generic -Wall -Wextra -O3 -fomit-frame-pointer -fPIC -DNDEBUG -pedantic -fno-rtti -O3 -DNDEBUG -std=c++17 -fPIC -o CMakeFiles/libkanzi_shared.dir/src/Global.cpp.o -c /home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src/Global.cpp",
+  "file": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src/Global.cpp",
+  "output": "CMakeFiles/libkanzi_shared.dir/src/Global.cpp.o"
+},
+{
+  "directory": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/build/kanzi-cpp",
+  "command": "/usr/bin/g++-14 -D_FILE_OFFSET_BITS=64 -Dlibkanzi_shared_EXPORTS -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src -march=x86-64-v3 -mtune=generic -Wall -Wextra -O3 -fomit-frame-pointer -fPIC -DNDEBUG -pedantic -fno-rtti -O3 -DNDEBUG -std=c++17 -fPIC -o CMakeFiles/libkanzi_shared.dir/src/Event.cpp.o -c /home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src/Event.cpp",
+  "file": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src/Event.cpp",
+  "output": "CMakeFiles/libkanzi_shared.dir/src/Event.cpp.o"
+},
+{
+  "directory": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/build/kanzi-cpp",
+  "command": "/usr/bin/g++-14 -D_FILE_OFFSET_BITS=64 -Dlibkanzi_shared_EXPORTS -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src -march=x86-64-v3 -mtune=generic -Wall -Wextra -O3 -fomit-frame-pointer -fPIC -DNDEBUG -pedantic -fno-rtti -O3 -DNDEBUG -std=c++17 -fPIC -o CMakeFiles/libkanzi_shared.dir/src/util/WallTimer.cpp.o -c /home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src/util/WallTimer.cpp",
+  "file": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src/util/WallTimer.cpp",
+  "output": "CMakeFiles/libkanzi_shared.dir/src/util/WallTimer.cpp.o"
+},
+{
+  "directory": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/build/kanzi-cpp",
+  "command": "/usr/bin/g++-14 -D_FILE_OFFSET_BITS=64 -Dlibkanzi_shared_EXPORTS -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src -march=x86-64-v3 -mtune=generic -Wall -Wextra -O3 -fomit-frame-pointer -fPIC -DNDEBUG -pedantic -fno-rtti -O3 -DNDEBUG -std=c++17 -fPIC -o CMakeFiles/libkanzi_shared.dir/src/entropy/EntropyUtils.cpp.o -c /home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src/entropy/EntropyUtils.cpp",
+  "file": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src/entropy/EntropyUtils.cpp",
+  "output": "CMakeFiles/libkanzi_shared.dir/src/entropy/EntropyUtils.cpp.o"
+},
+{
+  "directory": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/build/kanzi-cpp",
+  "command": "/usr/bin/g++-14 -D_FILE_OFFSET_BITS=64 -Dlibkanzi_shared_EXPORTS -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src -march=x86-64-v3 -mtune=generic -Wall -Wextra -O3 -fomit-frame-pointer -fPIC -DNDEBUG -pedantic -fno-rtti -O3 -DNDEBUG -std=c++17 -fPIC -o CMakeFiles/libkanzi_shared.dir/src/entropy/HuffmanCommon.cpp.o -c /home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src/entropy/HuffmanCommon.cpp",
+  "file": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src/entropy/HuffmanCommon.cpp",
+  "output": "CMakeFiles/libkanzi_shared.dir/src/entropy/HuffmanCommon.cpp.o"
+},
+{
+  "directory": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/build/kanzi-cpp",
+  "command": "/usr/bin/g++-14 -D_FILE_OFFSET_BITS=64 -Dlibkanzi_shared_EXPORTS -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src -march=x86-64-v3 -mtune=generic -Wall -Wextra -O3 -fomit-frame-pointer -fPIC -DNDEBUG -pedantic -fno-rtti -O3 -DNDEBUG -std=c++17 -fPIC -o CMakeFiles/libkanzi_shared.dir/src/entropy/CMPredictor.cpp.o -c /home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src/entropy/CMPredictor.cpp",
+  "file": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src/entropy/CMPredictor.cpp",
+  "output": "CMakeFiles/libkanzi_shared.dir/src/entropy/CMPredictor.cpp.o"
+},
+{
+  "directory": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/build/kanzi-cpp",
+  "command": "/usr/bin/g++-14 -D_FILE_OFFSET_BITS=64 -Dlibkanzi_shared_EXPORTS -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src -march=x86-64-v3 -mtune=generic -Wall -Wextra -O3 -fomit-frame-pointer -fPIC -DNDEBUG -pedantic -fno-rtti -O3 -DNDEBUG -std=c++17 -fPIC -o CMakeFiles/libkanzi_shared.dir/src/entropy/TPAQPredictor.cpp.o -c /home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src/entropy/TPAQPredictor.cpp",
+  "file": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src/entropy/TPAQPredictor.cpp",
+  "output": "CMakeFiles/libkanzi_shared.dir/src/entropy/TPAQPredictor.cpp.o"
+},
+{
+  "directory": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/build/kanzi-cpp",
+  "command": "/usr/bin/g++-14 -D_FILE_OFFSET_BITS=64 -Dlibkanzi_shared_EXPORTS -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src -march=x86-64-v3 -mtune=generic -Wall -Wextra -O3 -fomit-frame-pointer -fPIC -DNDEBUG -pedantic -fno-rtti -O3 -DNDEBUG -std=c++17 -fPIC -o CMakeFiles/libkanzi_shared.dir/src/transform/AliasCodec.cpp.o -c /home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src/transform/AliasCodec.cpp",
+  "file": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src/transform/AliasCodec.cpp",
+  "output": "CMakeFiles/libkanzi_shared.dir/src/transform/AliasCodec.cpp.o"
+},
+{
+  "directory": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/build/kanzi-cpp",
+  "command": "/usr/bin/g++-14 -D_FILE_OFFSET_BITS=64 -Dlibkanzi_shared_EXPORTS -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src -march=x86-64-v3 -mtune=generic -Wall -Wextra -O3 -fomit-frame-pointer -fPIC -DNDEBUG -pedantic -fno-rtti -O3 -DNDEBUG -std=c++17 -fPIC -o CMakeFiles/libkanzi_shared.dir/src/transform/BWT.cpp.o -c /home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src/transform/BWT.cpp",
+  "file": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src/transform/BWT.cpp",
+  "output": "CMakeFiles/libkanzi_shared.dir/src/transform/BWT.cpp.o"
+},
+{
+  "directory": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/build/kanzi-cpp",
+  "command": "/usr/bin/g++-14 -D_FILE_OFFSET_BITS=64 -Dlibkanzi_shared_EXPORTS -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src -march=x86-64-v3 -mtune=generic -Wall -Wextra -O3 -fomit-frame-pointer -fPIC -DNDEBUG -pedantic -fno-rtti -O3 -DNDEBUG -std=c++17 -fPIC -o CMakeFiles/libkanzi_shared.dir/src/transform/BWTS.cpp.o -c /home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src/transform/BWTS.cpp",
+  "file": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src/transform/BWTS.cpp",
+  "output": "CMakeFiles/libkanzi_shared.dir/src/transform/BWTS.cpp.o"
+},
+{
+  "directory": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/build/kanzi-cpp",
+  "command": "/usr/bin/g++-14 -D_FILE_OFFSET_BITS=64 -Dlibkanzi_shared_EXPORTS -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src -march=x86-64-v3 -mtune=generic -Wall -Wextra -O3 -fomit-frame-pointer -fPIC -DNDEBUG -pedantic -fno-rtti -O3 -DNDEBUG -std=c++17 -fPIC -o CMakeFiles/libkanzi_shared.dir/src/transform/DivSufSort.cpp.o -c /home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src/transform/DivSufSort.cpp",
+  "file": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src/transform/DivSufSort.cpp",
+  "output": "CMakeFiles/libkanzi_shared.dir/src/transform/DivSufSort.cpp.o"
+},
+{
+  "directory": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/build/kanzi-cpp",
+  "command": "/usr/bin/g++-14 -D_FILE_OFFSET_BITS=64 -Dlibkanzi_shared_EXPORTS -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src -march=x86-64-v3 -mtune=generic -Wall -Wextra -O3 -fomit-frame-pointer -fPIC -DNDEBUG -pedantic -fno-rtti -O3 -DNDEBUG -std=c++17 -fPIC -o CMakeFiles/libkanzi_shared.dir/src/transform/SBRT.cpp.o -c /home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src/transform/SBRT.cpp",
+  "file": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src/transform/SBRT.cpp",
+  "output": "CMakeFiles/libkanzi_shared.dir/src/transform/SBRT.cpp.o"
+},
+{
+  "directory": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/build/kanzi-cpp",
+  "command": "/usr/bin/g++-14 -D_FILE_OFFSET_BITS=64 -Dlibkanzi_shared_EXPORTS -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src -march=x86-64-v3 -mtune=generic -Wall -Wextra -O3 -fomit-frame-pointer -fPIC -DNDEBUG -pedantic -fno-rtti -O3 -DNDEBUG -std=c++17 -fPIC -o CMakeFiles/libkanzi_shared.dir/src/transform/BWTBlockCodec.cpp.o -c /home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src/transform/BWTBlockCodec.cpp",
+  "file": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src/transform/BWTBlockCodec.cpp",
+  "output": "CMakeFiles/libkanzi_shared.dir/src/transform/BWTBlockCodec.cpp.o"
+},
+{
+  "directory": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/build/kanzi-cpp",
+  "command": "/usr/bin/g++-14 -D_FILE_OFFSET_BITS=64 -Dlibkanzi_shared_EXPORTS -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src -march=x86-64-v3 -mtune=generic -Wall -Wextra -O3 -fomit-frame-pointer -fPIC -DNDEBUG -pedantic -fno-rtti -O3 -DNDEBUG -std=c++17 -fPIC -o CMakeFiles/libkanzi_shared.dir/src/transform/LZCodec.cpp.o -c /home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src/transform/LZCodec.cpp",
+  "file": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src/transform/LZCodec.cpp",
+  "output": "CMakeFiles/libkanzi_shared.dir/src/transform/LZCodec.cpp.o"
+},
+{
+  "directory": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/build/kanzi-cpp",
+  "command": "/usr/bin/g++-14 -D_FILE_OFFSET_BITS=64 -Dlibkanzi_shared_EXPORTS -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src -march=x86-64-v3 -mtune=generic -Wall -Wextra -O3 -fomit-frame-pointer -fPIC -DNDEBUG -pedantic -fno-rtti -O3 -DNDEBUG -std=c++17 -fPIC -o CMakeFiles/libkanzi_shared.dir/src/transform/FSDCodec.cpp.o -c /home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src/transform/FSDCodec.cpp",
+  "file": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src/transform/FSDCodec.cpp",
+  "output": "CMakeFiles/libkanzi_shared.dir/src/transform/FSDCodec.cpp.o"
+},
+{
+  "directory": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/build/kanzi-cpp",
+  "command": "/usr/bin/g++-14 -D_FILE_OFFSET_BITS=64 -Dlibkanzi_shared_EXPORTS -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src -march=x86-64-v3 -mtune=generic -Wall -Wextra -O3 -fomit-frame-pointer -fPIC -DNDEBUG -pedantic -fno-rtti -O3 -DNDEBUG -std=c++17 -fPIC -o CMakeFiles/libkanzi_shared.dir/src/transform/ROLZCodec.cpp.o -c /home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src/transform/ROLZCodec.cpp",
+  "file": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src/transform/ROLZCodec.cpp",
+  "output": "CMakeFiles/libkanzi_shared.dir/src/transform/ROLZCodec.cpp.o"
+},
+{
+  "directory": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/build/kanzi-cpp",
+  "command": "/usr/bin/g++-14 -D_FILE_OFFSET_BITS=64 -Dlibkanzi_shared_EXPORTS -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src -march=x86-64-v3 -mtune=generic -Wall -Wextra -O3 -fomit-frame-pointer -fPIC -DNDEBUG -pedantic -fno-rtti -O3 -DNDEBUG -std=c++17 -fPIC -o CMakeFiles/libkanzi_shared.dir/src/transform/RLT.cpp.o -c /home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src/transform/RLT.cpp",
+  "file": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src/transform/RLT.cpp",
+  "output": "CMakeFiles/libkanzi_shared.dir/src/transform/RLT.cpp.o"
+},
+{
+  "directory": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/build/kanzi-cpp",
+  "command": "/usr/bin/g++-14 -D_FILE_OFFSET_BITS=64 -Dlibkanzi_shared_EXPORTS -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src -march=x86-64-v3 -mtune=generic -Wall -Wextra -O3 -fomit-frame-pointer -fPIC -DNDEBUG -pedantic -fno-rtti -O3 -DNDEBUG -std=c++17 -fPIC -o CMakeFiles/libkanzi_shared.dir/src/transform/SRT.cpp.o -c /home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src/transform/SRT.cpp",
+  "file": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src/transform/SRT.cpp",
+  "output": "CMakeFiles/libkanzi_shared.dir/src/transform/SRT.cpp.o"
+},
+{
+  "directory": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/build/kanzi-cpp",
+  "command": "/usr/bin/g++-14 -D_FILE_OFFSET_BITS=64 -Dlibkanzi_shared_EXPORTS -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src -march=x86-64-v3 -mtune=generic -Wall -Wextra -O3 -fomit-frame-pointer -fPIC -DNDEBUG -pedantic -fno-rtti -O3 -DNDEBUG -std=c++17 -fPIC -o CMakeFiles/libkanzi_shared.dir/src/transform/TextCodec.cpp.o -c /home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src/transform/TextCodec.cpp",
+  "file": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src/transform/TextCodec.cpp",
+  "output": "CMakeFiles/libkanzi_shared.dir/src/transform/TextCodec.cpp.o"
+},
+{
+  "directory": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/build/kanzi-cpp",
+  "command": "/usr/bin/g++-14 -D_FILE_OFFSET_BITS=64 -Dlibkanzi_shared_EXPORTS -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src -march=x86-64-v3 -mtune=generic -Wall -Wextra -O3 -fomit-frame-pointer -fPIC -DNDEBUG -pedantic -fno-rtti -O3 -DNDEBUG -std=c++17 -fPIC -o CMakeFiles/libkanzi_shared.dir/src/transform/UTFCodec.cpp.o -c /home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src/transform/UTFCodec.cpp",
+  "file": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src/transform/UTFCodec.cpp",
+  "output": "CMakeFiles/libkanzi_shared.dir/src/transform/UTFCodec.cpp.o"
+},
+{
+  "directory": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/build/kanzi-cpp",
+  "command": "/usr/bin/g++-14 -D_FILE_OFFSET_BITS=64 -Dlibkanzi_shared_EXPORTS -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src -march=x86-64-v3 -mtune=generic -Wall -Wextra -O3 -fomit-frame-pointer -fPIC -DNDEBUG -pedantic -fno-rtti -O3 -DNDEBUG -std=c++17 -fPIC -o CMakeFiles/libkanzi_shared.dir/src/transform/EXECodec.cpp.o -c /home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src/transform/EXECodec.cpp",
+  "file": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src/transform/EXECodec.cpp",
+  "output": "CMakeFiles/libkanzi_shared.dir/src/transform/EXECodec.cpp.o"
+},
+{
+  "directory": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/build/kanzi-cpp",
+  "command": "/usr/bin/g++-14 -D_FILE_OFFSET_BITS=64 -Dlibkanzi_shared_EXPORTS -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src -march=x86-64-v3 -mtune=generic -Wall -Wextra -O3 -fomit-frame-pointer -fPIC -DNDEBUG -pedantic -fno-rtti -O3 -DNDEBUG -std=c++17 -fPIC -o CMakeFiles/libkanzi_shared.dir/src/transform/ZRLT.cpp.o -c /home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src/transform/ZRLT.cpp",
+  "file": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src/transform/ZRLT.cpp",
+  "output": "CMakeFiles/libkanzi_shared.dir/src/transform/ZRLT.cpp.o"
+},
+{
+  "directory": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/build/kanzi-cpp",
+  "command": "/usr/bin/g++-14 -D_FILE_OFFSET_BITS=64 -Dlibkanzi_shared_EXPORTS -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src -march=x86-64-v3 -mtune=generic -Wall -Wextra -O3 -fomit-frame-pointer -fPIC -DNDEBUG -pedantic -fno-rtti -O3 -DNDEBUG -std=c++17 -fPIC -o CMakeFiles/libkanzi_shared.dir/src/api/Compressor.cpp.o -c /home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src/api/Compressor.cpp",
+  "file": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src/api/Compressor.cpp",
+  "output": "CMakeFiles/libkanzi_shared.dir/src/api/Compressor.cpp.o"
+},
+{
+  "directory": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/build/kanzi-cpp",
+  "command": "/usr/bin/g++-14 -D_FILE_OFFSET_BITS=64 -Dlibkanzi_shared_EXPORTS -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src -march=x86-64-v3 -mtune=generic -Wall -Wextra -O3 -fomit-frame-pointer -fPIC -DNDEBUG -pedantic -fno-rtti -O3 -DNDEBUG -std=c++17 -fPIC -o CMakeFiles/libkanzi_shared.dir/src/bitstream/DebugOutputBitStream.cpp.o -c /home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src/bitstream/DebugOutputBitStream.cpp",
+  "file": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src/bitstream/DebugOutputBitStream.cpp",
+  "output": "CMakeFiles/libkanzi_shared.dir/src/bitstream/DebugOutputBitStream.cpp.o"
+},
+{
+  "directory": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/build/kanzi-cpp",
+  "command": "/usr/bin/g++-14 -D_FILE_OFFSET_BITS=64 -Dlibkanzi_shared_EXPORTS -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src -march=x86-64-v3 -mtune=generic -Wall -Wextra -O3 -fomit-frame-pointer -fPIC -DNDEBUG -pedantic -fno-rtti -O3 -DNDEBUG -std=c++17 -fPIC -o CMakeFiles/libkanzi_shared.dir/src/bitstream/DefaultOutputBitStream.cpp.o -c /home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src/bitstream/DefaultOutputBitStream.cpp",
+  "file": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src/bitstream/DefaultOutputBitStream.cpp",
+  "output": "CMakeFiles/libkanzi_shared.dir/src/bitstream/DefaultOutputBitStream.cpp.o"
+},
+{
+  "directory": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/build/kanzi-cpp",
+  "command": "/usr/bin/g++-14 -D_FILE_OFFSET_BITS=64 -Dlibkanzi_shared_EXPORTS -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src -march=x86-64-v3 -mtune=generic -Wall -Wextra -O3 -fomit-frame-pointer -fPIC -DNDEBUG -pedantic -fno-rtti -O3 -DNDEBUG -std=c++17 -fPIC -o CMakeFiles/libkanzi_shared.dir/src/io/CompressedOutputStream.cpp.o -c /home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src/io/CompressedOutputStream.cpp",
+  "file": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src/io/CompressedOutputStream.cpp",
+  "output": "CMakeFiles/libkanzi_shared.dir/src/io/CompressedOutputStream.cpp.o"
+},
+{
+  "directory": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/build/kanzi-cpp",
+  "command": "/usr/bin/g++-14 -D_FILE_OFFSET_BITS=64 -Dlibkanzi_shared_EXPORTS -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src -march=x86-64-v3 -mtune=generic -Wall -Wextra -O3 -fomit-frame-pointer -fPIC -DNDEBUG -pedantic -fno-rtti -O3 -DNDEBUG -std=c++17 -fPIC -o CMakeFiles/libkanzi_shared.dir/src/entropy/ANSRangeEncoder.cpp.o -c /home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src/entropy/ANSRangeEncoder.cpp",
+  "file": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src/entropy/ANSRangeEncoder.cpp",
+  "output": "CMakeFiles/libkanzi_shared.dir/src/entropy/ANSRangeEncoder.cpp.o"
+},
+{
+  "directory": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/build/kanzi-cpp",
+  "command": "/usr/bin/g++-14 -D_FILE_OFFSET_BITS=64 -Dlibkanzi_shared_EXPORTS -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src -march=x86-64-v3 -mtune=generic -Wall -Wextra -O3 -fomit-frame-pointer -fPIC -DNDEBUG -pedantic -fno-rtti -O3 -DNDEBUG -std=c++17 -fPIC -o CMakeFiles/libkanzi_shared.dir/src/entropy/BinaryEntropyEncoder.cpp.o -c /home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src/entropy/BinaryEntropyEncoder.cpp",
+  "file": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src/entropy/BinaryEntropyEncoder.cpp",
+  "output": "CMakeFiles/libkanzi_shared.dir/src/entropy/BinaryEntropyEncoder.cpp.o"
+},
+{
+  "directory": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/build/kanzi-cpp",
+  "command": "/usr/bin/g++-14 -D_FILE_OFFSET_BITS=64 -Dlibkanzi_shared_EXPORTS -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src -march=x86-64-v3 -mtune=generic -Wall -Wextra -O3 -fomit-frame-pointer -fPIC -DNDEBUG -pedantic -fno-rtti -O3 -DNDEBUG -std=c++17 -fPIC -o CMakeFiles/libkanzi_shared.dir/src/entropy/ExpGolombEncoder.cpp.o -c /home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src/entropy/ExpGolombEncoder.cpp",
+  "file": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src/entropy/ExpGolombEncoder.cpp",
+  "output": "CMakeFiles/libkanzi_shared.dir/src/entropy/ExpGolombEncoder.cpp.o"
+},
+{
+  "directory": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/build/kanzi-cpp",
+  "command": "/usr/bin/g++-14 -D_FILE_OFFSET_BITS=64 -Dlibkanzi_shared_EXPORTS -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src -march=x86-64-v3 -mtune=generic -Wall -Wextra -O3 -fomit-frame-pointer -fPIC -DNDEBUG -pedantic -fno-rtti -O3 -DNDEBUG -std=c++17 -fPIC -o CMakeFiles/libkanzi_shared.dir/src/entropy/FPAQEncoder.cpp.o -c /home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src/entropy/FPAQEncoder.cpp",
+  "file": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src/entropy/FPAQEncoder.cpp",
+  "output": "CMakeFiles/libkanzi_shared.dir/src/entropy/FPAQEncoder.cpp.o"
+},
+{
+  "directory": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/build/kanzi-cpp",
+  "command": "/usr/bin/g++-14 -D_FILE_OFFSET_BITS=64 -Dlibkanzi_shared_EXPORTS -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src -march=x86-64-v3 -mtune=generic -Wall -Wextra -O3 -fomit-frame-pointer -fPIC -DNDEBUG -pedantic -fno-rtti -O3 -DNDEBUG -std=c++17 -fPIC -o CMakeFiles/libkanzi_shared.dir/src/entropy/HuffmanEncoder.cpp.o -c /home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src/entropy/HuffmanEncoder.cpp",
+  "file": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src/entropy/HuffmanEncoder.cpp",
+  "output": "CMakeFiles/libkanzi_shared.dir/src/entropy/HuffmanEncoder.cpp.o"
+},
+{
+  "directory": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/build/kanzi-cpp",
+  "command": "/usr/bin/g++-14 -D_FILE_OFFSET_BITS=64 -Dlibkanzi_shared_EXPORTS -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src -march=x86-64-v3 -mtune=generic -Wall -Wextra -O3 -fomit-frame-pointer -fPIC -DNDEBUG -pedantic -fno-rtti -O3 -DNDEBUG -std=c++17 -fPIC -o CMakeFiles/libkanzi_shared.dir/src/entropy/RangeEncoder.cpp.o -c /home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src/entropy/RangeEncoder.cpp",
+  "file": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src/entropy/RangeEncoder.cpp",
+  "output": "CMakeFiles/libkanzi_shared.dir/src/entropy/RangeEncoder.cpp.o"
+},
+{
+  "directory": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/build/kanzi-cpp",
+  "command": "/usr/bin/g++-14 -D_FILE_OFFSET_BITS=64 -Dlibkanzi_shared_EXPORTS -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src -march=x86-64-v3 -mtune=generic -Wall -Wextra -O3 -fomit-frame-pointer -fPIC -DNDEBUG -pedantic -fno-rtti -O3 -DNDEBUG -std=c++17 -fPIC -o CMakeFiles/libkanzi_shared.dir/src/api/Decompressor.cpp.o -c /home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src/api/Decompressor.cpp",
+  "file": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src/api/Decompressor.cpp",
+  "output": "CMakeFiles/libkanzi_shared.dir/src/api/Decompressor.cpp.o"
+},
+{
+  "directory": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/build/kanzi-cpp",
+  "command": "/usr/bin/g++-14 -D_FILE_OFFSET_BITS=64 -Dlibkanzi_shared_EXPORTS -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src -march=x86-64-v3 -mtune=generic -Wall -Wextra -O3 -fomit-frame-pointer -fPIC -DNDEBUG -pedantic -fno-rtti -O3 -DNDEBUG -std=c++17 -fPIC -o CMakeFiles/libkanzi_shared.dir/src/bitstream/DebugInputBitStream.cpp.o -c /home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src/bitstream/DebugInputBitStream.cpp",
+  "file": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src/bitstream/DebugInputBitStream.cpp",
+  "output": "CMakeFiles/libkanzi_shared.dir/src/bitstream/DebugInputBitStream.cpp.o"
+},
+{
+  "directory": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/build/kanzi-cpp",
+  "command": "/usr/bin/g++-14 -D_FILE_OFFSET_BITS=64 -Dlibkanzi_shared_EXPORTS -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src -march=x86-64-v3 -mtune=generic -Wall -Wextra -O3 -fomit-frame-pointer -fPIC -DNDEBUG -pedantic -fno-rtti -O3 -DNDEBUG -std=c++17 -fPIC -o CMakeFiles/libkanzi_shared.dir/src/bitstream/DefaultInputBitStream.cpp.o -c /home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src/bitstream/DefaultInputBitStream.cpp",
+  "file": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src/bitstream/DefaultInputBitStream.cpp",
+  "output": "CMakeFiles/libkanzi_shared.dir/src/bitstream/DefaultInputBitStream.cpp.o"
+},
+{
+  "directory": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/build/kanzi-cpp",
+  "command": "/usr/bin/g++-14 -D_FILE_OFFSET_BITS=64 -Dlibkanzi_shared_EXPORTS -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src -march=x86-64-v3 -mtune=generic -Wall -Wextra -O3 -fomit-frame-pointer -fPIC -DNDEBUG -pedantic -fno-rtti -O3 -DNDEBUG -std=c++17 -fPIC -o CMakeFiles/libkanzi_shared.dir/src/io/CompressedInputStream.cpp.o -c /home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src/io/CompressedInputStream.cpp",
+  "file": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src/io/CompressedInputStream.cpp",
+  "output": "CMakeFiles/libkanzi_shared.dir/src/io/CompressedInputStream.cpp.o"
+},
+{
+  "directory": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/build/kanzi-cpp",
+  "command": "/usr/bin/g++-14 -D_FILE_OFFSET_BITS=64 -Dlibkanzi_shared_EXPORTS -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src -march=x86-64-v3 -mtune=generic -Wall -Wextra -O3 -fomit-frame-pointer -fPIC -DNDEBUG -pedantic -fno-rtti -O3 -DNDEBUG -std=c++17 -fPIC -o CMakeFiles/libkanzi_shared.dir/src/entropy/ANSRangeDecoder.cpp.o -c /home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src/entropy/ANSRangeDecoder.cpp",
+  "file": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src/entropy/ANSRangeDecoder.cpp",
+  "output": "CMakeFiles/libkanzi_shared.dir/src/entropy/ANSRangeDecoder.cpp.o"
+},
+{
+  "directory": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/build/kanzi-cpp",
+  "command": "/usr/bin/g++-14 -D_FILE_OFFSET_BITS=64 -Dlibkanzi_shared_EXPORTS -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src -march=x86-64-v3 -mtune=generic -Wall -Wextra -O3 -fomit-frame-pointer -fPIC -DNDEBUG -pedantic -fno-rtti -O3 -DNDEBUG -std=c++17 -fPIC -o CMakeFiles/libkanzi_shared.dir/src/entropy/BinaryEntropyDecoder.cpp.o -c /home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src/entropy/BinaryEntropyDecoder.cpp",
+  "file": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src/entropy/BinaryEntropyDecoder.cpp",
+  "output": "CMakeFiles/libkanzi_shared.dir/src/entropy/BinaryEntropyDecoder.cpp.o"
+},
+{
+  "directory": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/build/kanzi-cpp",
+  "command": "/usr/bin/g++-14 -D_FILE_OFFSET_BITS=64 -Dlibkanzi_shared_EXPORTS -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src -march=x86-64-v3 -mtune=generic -Wall -Wextra -O3 -fomit-frame-pointer -fPIC -DNDEBUG -pedantic -fno-rtti -O3 -DNDEBUG -std=c++17 -fPIC -o CMakeFiles/libkanzi_shared.dir/src/entropy/ExpGolombDecoder.cpp.o -c /home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src/entropy/ExpGolombDecoder.cpp",
+  "file": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src/entropy/ExpGolombDecoder.cpp",
+  "output": "CMakeFiles/libkanzi_shared.dir/src/entropy/ExpGolombDecoder.cpp.o"
+},
+{
+  "directory": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/build/kanzi-cpp",
+  "command": "/usr/bin/g++-14 -D_FILE_OFFSET_BITS=64 -Dlibkanzi_shared_EXPORTS -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src -march=x86-64-v3 -mtune=generic -Wall -Wextra -O3 -fomit-frame-pointer -fPIC -DNDEBUG -pedantic -fno-rtti -O3 -DNDEBUG -std=c++17 -fPIC -o CMakeFiles/libkanzi_shared.dir/src/entropy/FPAQDecoder.cpp.o -c /home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src/entropy/FPAQDecoder.cpp",
+  "file": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src/entropy/FPAQDecoder.cpp",
+  "output": "CMakeFiles/libkanzi_shared.dir/src/entropy/FPAQDecoder.cpp.o"
+},
+{
+  "directory": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/build/kanzi-cpp",
+  "command": "/usr/bin/g++-14 -D_FILE_OFFSET_BITS=64 -Dlibkanzi_shared_EXPORTS -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src -march=x86-64-v3 -mtune=generic -Wall -Wextra -O3 -fomit-frame-pointer -fPIC -DNDEBUG -pedantic -fno-rtti -O3 -DNDEBUG -std=c++17 -fPIC -o CMakeFiles/libkanzi_shared.dir/src/entropy/HuffmanDecoder.cpp.o -c /home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src/entropy/HuffmanDecoder.cpp",
+  "file": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src/entropy/HuffmanDecoder.cpp",
+  "output": "CMakeFiles/libkanzi_shared.dir/src/entropy/HuffmanDecoder.cpp.o"
+},
+{
+  "directory": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/build/kanzi-cpp",
+  "command": "/usr/bin/g++-14 -D_FILE_OFFSET_BITS=64 -Dlibkanzi_shared_EXPORTS -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src -march=x86-64-v3 -mtune=generic -Wall -Wextra -O3 -fomit-frame-pointer -fPIC -DNDEBUG -pedantic -fno-rtti -O3 -DNDEBUG -std=c++17 -fPIC -o CMakeFiles/libkanzi_shared.dir/src/entropy/RangeDecoder.cpp.o -c /home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src/entropy/RangeDecoder.cpp",
+  "file": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src/entropy/RangeDecoder.cpp",
+  "output": "CMakeFiles/libkanzi_shared.dir/src/entropy/RangeDecoder.cpp.o"
+},
+{
+  "directory": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/build/kanzi-cpp",
+  "command": "/usr/bin/g++-14 -D_FILE_OFFSET_BITS=64 -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src -march=x86-64-v3 -mtune=generic -Wall -Wextra -O3 -fomit-frame-pointer -fPIC -DNDEBUG -pedantic -fno-rtti -O3 -DNDEBUG -std=c++17 -o CMakeFiles/testBWT.dir/src/test/TestBWT.cpp.o -c /home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src/test/TestBWT.cpp",
+  "file": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src/test/TestBWT.cpp",
+  "output": "CMakeFiles/testBWT.dir/src/test/TestBWT.cpp.o"
+},
+{
+  "directory": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/build/kanzi-cpp",
+  "command": "/usr/bin/g++-14 -D_FILE_OFFSET_BITS=64 -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src -march=x86-64-v3 -mtune=generic -Wall -Wextra -O3 -fomit-frame-pointer -fPIC -DNDEBUG -pedantic -fno-rtti -O3 -DNDEBUG -std=c++17 -o CMakeFiles/testTransforms.dir/src/test/TestTransforms.cpp.o -c /home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src/test/TestTransforms.cpp",
+  "file": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src/test/TestTransforms.cpp",
+  "output": "CMakeFiles/testTransforms.dir/src/test/TestTransforms.cpp.o"
+},
+{
+  "directory": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/build/kanzi-cpp",
+  "command": "/usr/bin/g++-14 -D_FILE_OFFSET_BITS=64 -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src -march=x86-64-v3 -mtune=generic -Wall -Wextra -O3 -fomit-frame-pointer -fPIC -DNDEBUG -pedantic -fno-rtti -O3 -DNDEBUG -std=c++17 -o CMakeFiles/testEntropyCodec.dir/src/test/TestEntropyCodec.cpp.o -c /home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src/test/TestEntropyCodec.cpp",
+  "file": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src/test/TestEntropyCodec.cpp",
+  "output": "CMakeFiles/testEntropyCodec.dir/src/test/TestEntropyCodec.cpp.o"
+},
+{
+  "directory": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/build/kanzi-cpp",
+  "command": "/usr/bin/g++-14 -D_FILE_OFFSET_BITS=64 -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src -march=x86-64-v3 -mtune=generic -Wall -Wextra -O3 -fomit-frame-pointer -fPIC -DNDEBUG -pedantic -fno-rtti -O3 -DNDEBUG -std=c++17 -o CMakeFiles/testDefaultBitStream.dir/src/test/TestDefaultBitStream.cpp.o -c /home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src/test/TestDefaultBitStream.cpp",
+  "file": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src/test/TestDefaultBitStream.cpp",
+  "output": "CMakeFiles/testDefaultBitStream.dir/src/test/TestDefaultBitStream.cpp.o"
+},
+{
+  "directory": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/build/kanzi-cpp",
+  "command": "/usr/bin/g++-14 -D_FILE_OFFSET_BITS=64 -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src -march=x86-64-v3 -mtune=generic -Wall -Wextra -O3 -fomit-frame-pointer -fPIC -DNDEBUG -pedantic -fno-rtti -O3 -DNDEBUG -std=c++17 -o CMakeFiles/testFactories.dir/src/test/TestFactories.cpp.o -c /home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src/test/TestFactories.cpp",
+  "file": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src/test/TestFactories.cpp",
+  "output": "CMakeFiles/testFactories.dir/src/test/TestFactories.cpp.o"
+},
+{
+  "directory": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/build/kanzi-cpp",
+  "command": "/usr/bin/g++-14 -D_FILE_OFFSET_BITS=64 -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src -march=x86-64-v3 -mtune=generic -Wall -Wextra -O3 -fomit-frame-pointer -fPIC -DNDEBUG -pedantic -fno-rtti -O3 -DNDEBUG -std=c++17 -o CMakeFiles/testLZF.dir/src/test/TestLZF.cpp.o -c /home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src/test/TestLZF.cpp",
+  "file": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src/test/TestLZF.cpp",
+  "output": "CMakeFiles/testLZF.dir/src/test/TestLZF.cpp.o"
+},
+{
+  "directory": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/build/kanzi-cpp",
+  "command": "/usr/bin/g++-14 -D_FILE_OFFSET_BITS=64 -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src -march=x86-64-v3 -mtune=generic -Wall -Wextra -O3 -fomit-frame-pointer -fPIC -DNDEBUG -pedantic -fno-rtti -O3 -DNDEBUG -std=c++17 -o CMakeFiles/testMalformedStream.dir/src/test/TestMalformedStream.cpp.o -c /home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src/test/TestMalformedStream.cpp",
+  "file": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src/test/TestMalformedStream.cpp",
+  "output": "CMakeFiles/testMalformedStream.dir/src/test/TestMalformedStream.cpp.o"
+},
+{
+  "directory": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/build/kanzi-cpp",
+  "command": "/usr/bin/g++-14 -D_FILE_OFFSET_BITS=64 -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src -march=x86-64-v3 -mtune=generic -Wall -Wextra -O3 -fomit-frame-pointer -fPIC -DNDEBUG -pedantic -fno-rtti -O3 -DNDEBUG -std=c++17 -o CMakeFiles/testCompressedStream.dir/src/test/TestCompressedStream.cpp.o -c /home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src/test/TestCompressedStream.cpp",
+  "file": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src/test/TestCompressedStream.cpp",
+  "output": "CMakeFiles/testCompressedStream.dir/src/test/TestCompressedStream.cpp.o"
+},
+{
+  "directory": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/build/kanzi-cpp",
+  "command": "/usr/bin/gcc-14 -D_FILE_OFFSET_BITS=64 -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src -march=x86-64-v3 -mtune=generic -Wall -Wextra -O3 -fomit-frame-pointer -fPIC -DNDEBUG -pedantic -O3 -DNDEBUG -std=gnu11 -o CMakeFiles/testAPI.dir/src/test/TestAPI.c.o -c /home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src/test/TestAPI.c",
+  "file": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src/test/TestAPI.c",
+  "output": "CMakeFiles/testAPI.dir/src/test/TestAPI.c.o"
+},
+{
+  "directory": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/build/kanzi-cpp",
+  "command": "/usr/bin/g++-14 -D_FILE_OFFSET_BITS=64 -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src -march=x86-64-v3 -mtune=generic -Wall -Wextra -O3 -fomit-frame-pointer -fPIC -DNDEBUG -pedantic -fno-rtti -O3 -DNDEBUG -std=c++17 -o CMakeFiles/kanzi.dir/src/app/Kanzi.cpp.o -c /home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src/app/Kanzi.cpp",
+  "file": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src/app/Kanzi.cpp",
+  "output": "CMakeFiles/kanzi.dir/src/app/Kanzi.cpp.o"
+},
+{
+  "directory": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/build/kanzi-cpp",
+  "command": "/usr/bin/g++-14 -D_FILE_OFFSET_BITS=64 -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src -march=x86-64-v3 -mtune=generic -Wall -Wextra -O3 -fomit-frame-pointer -fPIC -DNDEBUG -pedantic -fno-rtti -O3 -DNDEBUG -std=c++17 -o CMakeFiles/kanzi.dir/src/app/InfoPrinter.cpp.o -c /home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src/app/InfoPrinter.cpp",
+  "file": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src/app/InfoPrinter.cpp",
+  "output": "CMakeFiles/kanzi.dir/src/app/InfoPrinter.cpp.o"
+},
+{
+  "directory": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/build/kanzi-cpp",
+  "command": "/usr/bin/g++-14 -D_FILE_OFFSET_BITS=64 -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src -march=x86-64-v3 -mtune=generic -Wall -Wextra -O3 -fomit-frame-pointer -fPIC -DNDEBUG -pedantic -fno-rtti -O3 -DNDEBUG -std=c++17 -o CMakeFiles/kanzi.dir/src/app/BlockCompressor.cpp.o -c /home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src/app/BlockCompressor.cpp",
+  "file": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src/app/BlockCompressor.cpp",
+  "output": "CMakeFiles/kanzi.dir/src/app/BlockCompressor.cpp.o"
+},
+{
+  "directory": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/build/kanzi-cpp",
+  "command": "/usr/bin/g++-14 -D_FILE_OFFSET_BITS=64 -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src -march=x86-64-v3 -mtune=generic -Wall -Wextra -O3 -fomit-frame-pointer -fPIC -DNDEBUG -pedantic -fno-rtti -O3 -DNDEBUG -std=c++17 -o CMakeFiles/kanzi.dir/src/app/BlockDecompressor.cpp.o -c /home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src/app/BlockDecompressor.cpp",
+  "file": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src/app/BlockDecompressor.cpp",
+  "output": "CMakeFiles/kanzi.dir/src/app/BlockDecompressor.cpp.o"
+},
+{
+  "directory": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/build/kanzi-cpp",
+  "command": "/usr/bin/g++-14 -D_FILE_OFFSET_BITS=64 -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src -march=x86-64-v3 -mtune=generic -Wall -Wextra -O3 -fomit-frame-pointer -fPIC -DNDEBUG -pedantic -fno-rtti -O3 -DNDEBUG -std=c++17 -o CMakeFiles/kanzi_static.dir/src/app/Kanzi.cpp.o -c /home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src/app/Kanzi.cpp",
+  "file": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src/app/Kanzi.cpp",
+  "output": "CMakeFiles/kanzi_static.dir/src/app/Kanzi.cpp.o"
+},
+{
+  "directory": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/build/kanzi-cpp",
+  "command": "/usr/bin/g++-14 -D_FILE_OFFSET_BITS=64 -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src -march=x86-64-v3 -mtune=generic -Wall -Wextra -O3 -fomit-frame-pointer -fPIC -DNDEBUG -pedantic -fno-rtti -O3 -DNDEBUG -std=c++17 -o CMakeFiles/kanzi_static.dir/src/app/InfoPrinter.cpp.o -c /home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src/app/InfoPrinter.cpp",
+  "file": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src/app/InfoPrinter.cpp",
+  "output": "CMakeFiles/kanzi_static.dir/src/app/InfoPrinter.cpp.o"
+},
+{
+  "directory": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/build/kanzi-cpp",
+  "command": "/usr/bin/g++-14 -D_FILE_OFFSET_BITS=64 -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src -march=x86-64-v3 -mtune=generic -Wall -Wextra -O3 -fomit-frame-pointer -fPIC -DNDEBUG -pedantic -fno-rtti -O3 -DNDEBUG -std=c++17 -o CMakeFiles/kanzi_static.dir/src/app/BlockCompressor.cpp.o -c /home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src/app/BlockCompressor.cpp",
+  "file": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src/app/BlockCompressor.cpp",
+  "output": "CMakeFiles/kanzi_static.dir/src/app/BlockCompressor.cpp.o"
+},
+{
+  "directory": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/build/kanzi-cpp",
+  "command": "/usr/bin/g++-14 -D_FILE_OFFSET_BITS=64 -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src -march=x86-64-v3 -mtune=generic -Wall -Wextra -O3 -fomit-frame-pointer -fPIC -DNDEBUG -pedantic -fno-rtti -O3 -DNDEBUG -std=c++17 -o CMakeFiles/kanzi_static.dir/src/app/BlockDecompressor.cpp.o -c /home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src/app/BlockDecompressor.cpp",
+  "file": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp/src/app/BlockDecompressor.cpp",
+  "output": "CMakeFiles/kanzi_static.dir/src/app/BlockDecompressor.cpp.o"
+}
+]

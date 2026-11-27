@@ -1,0 +1,98 @@
+[
+{
+  "directory": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/build/zxc",
+  "command": "/usr/bin/gcc-14 -DZXC_FUNCTION_SUFFIX=_default -DZXC_STATIC_DEFINE -D_FILE_OFFSET_BITS=64 -D_LARGEFILE_SOURCE -D_POSIX_C_SOURCE=200809L -D_XOPEN_SOURCE=700 -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/zxc/src/lib -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/zxc/src/lib/vendors -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/zxc/include -march=x86-64-v3 -mtune=generic -O3 -DNDEBUG -std=c17 -Wall -Wextra -Wshadow -Wformat=2 -Wundef -Wpointer-arith -Wvla -Wcast-qual -Wdouble-promotion -Wimplicit-fallthrough -Wmissing-prototypes -Wstrict-prototypes -Wconversion -Wsign-conversion -o CMakeFiles/zxc_compress_default.dir/src/lib/zxc_compress.c.o -c /home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/zxc/src/lib/zxc_compress.c",
+  "file": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/zxc/src/lib/zxc_compress.c",
+  "output": "CMakeFiles/zxc_compress_default.dir/src/lib/zxc_compress.c.o"
+},
+{
+  "directory": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/build/zxc",
+  "command": "/usr/bin/gcc-14 -DZXC_FUNCTION_SUFFIX=_default -DZXC_STATIC_DEFINE -D_FILE_OFFSET_BITS=64 -D_LARGEFILE_SOURCE -D_POSIX_C_SOURCE=200809L -D_XOPEN_SOURCE=700 -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/zxc/src/lib -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/zxc/src/lib/vendors -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/zxc/include -march=x86-64-v3 -mtune=generic -O3 -DNDEBUG -std=c17 -Wall -Wextra -Wshadow -Wformat=2 -Wundef -Wpointer-arith -Wvla -Wcast-qual -Wdouble-promotion -Wimplicit-fallthrough -Wmissing-prototypes -Wstrict-prototypes -Wconversion -Wsign-conversion -o CMakeFiles/zxc_decompress_default.dir/src/lib/zxc_decompress.c.o -c /home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/zxc/src/lib/zxc_decompress.c",
+  "file": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/zxc/src/lib/zxc_decompress.c",
+  "output": "CMakeFiles/zxc_decompress_default.dir/src/lib/zxc_decompress.c.o"
+},
+{
+  "directory": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/build/zxc",
+  "command": "/usr/bin/gcc-14 -DZXC_FUNCTION_SUFFIX=_default -DZXC_STATIC_DEFINE -D_FILE_OFFSET_BITS=64 -D_LARGEFILE_SOURCE -D_POSIX_C_SOURCE=200809L -D_XOPEN_SOURCE=700 -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/zxc/src/lib -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/zxc/src/lib/vendors -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/zxc/include -march=x86-64-v3 -mtune=generic -O3 -DNDEBUG -std=c17 -Wall -Wextra -Wshadow -Wformat=2 -Wundef -Wpointer-arith -Wvla -Wcast-qual -Wdouble-promotion -Wimplicit-fallthrough -Wmissing-prototypes -Wstrict-prototypes -Wconversion -Wsign-conversion -o CMakeFiles/zxc_huffman_default.dir/src/lib/zxc_huffman.c.o -c /home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/zxc/src/lib/zxc_huffman.c",
+  "file": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/zxc/src/lib/zxc_huffman.c",
+  "output": "CMakeFiles/zxc_huffman_default.dir/src/lib/zxc_huffman.c.o"
+},
+{
+  "directory": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/build/zxc",
+  "command": "/usr/bin/gcc-14 -DZXC_FUNCTION_SUFFIX=_avx2 -DZXC_STATIC_DEFINE -D_FILE_OFFSET_BITS=64 -D_LARGEFILE_SOURCE -D_POSIX_C_SOURCE=200809L -D_XOPEN_SOURCE=700 -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/zxc/src/lib -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/zxc/src/lib/vendors -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/zxc/include -march=x86-64-v3 -mtune=generic -O3 -DNDEBUG -std=c17 -Wall -Wextra -Wshadow -Wformat=2 -Wundef -Wpointer-arith -Wvla -Wcast-qual -Wdouble-promotion -Wimplicit-fallthrough -Wmissing-prototypes -Wstrict-prototypes -Wconversion -Wsign-conversion -mavx2 -mbmi -mbmi2 -mlzcnt -o CMakeFiles/zxc_compress_avx2.dir/src/lib/zxc_compress.c.o -c /home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/zxc/src/lib/zxc_compress.c",
+  "file": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/zxc/src/lib/zxc_compress.c",
+  "output": "CMakeFiles/zxc_compress_avx2.dir/src/lib/zxc_compress.c.o"
+},
+{
+  "directory": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/build/zxc",
+  "command": "/usr/bin/gcc-14 -DZXC_FUNCTION_SUFFIX=_avx2 -DZXC_STATIC_DEFINE -D_FILE_OFFSET_BITS=64 -D_LARGEFILE_SOURCE -D_POSIX_C_SOURCE=200809L -D_XOPEN_SOURCE=700 -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/zxc/src/lib -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/zxc/src/lib/vendors -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/zxc/include -march=x86-64-v3 -mtune=generic -O3 -DNDEBUG -std=c17 -Wall -Wextra -Wshadow -Wformat=2 -Wundef -Wpointer-arith -Wvla -Wcast-qual -Wdouble-promotion -Wimplicit-fallthrough -Wmissing-prototypes -Wstrict-prototypes -Wconversion -Wsign-conversion -mavx2 -mbmi -mbmi2 -mlzcnt -o CMakeFiles/zxc_decompress_avx2.dir/src/lib/zxc_decompress.c.o -c /home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/zxc/src/lib/zxc_decompress.c",
+  "file": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/zxc/src/lib/zxc_decompress.c",
+  "output": "CMakeFiles/zxc_decompress_avx2.dir/src/lib/zxc_decompress.c.o"
+},
+{
+  "directory": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/build/zxc",
+  "command": "/usr/bin/gcc-14 -DZXC_FUNCTION_SUFFIX=_avx2 -DZXC_STATIC_DEFINE -D_FILE_OFFSET_BITS=64 -D_LARGEFILE_SOURCE -D_POSIX_C_SOURCE=200809L -D_XOPEN_SOURCE=700 -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/zxc/src/lib -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/zxc/src/lib/vendors -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/zxc/include -march=x86-64-v3 -mtune=generic -O3 -DNDEBUG -std=c17 -Wall -Wextra -Wshadow -Wformat=2 -Wundef -Wpointer-arith -Wvla -Wcast-qual -Wdouble-promotion -Wimplicit-fallthrough -Wmissing-prototypes -Wstrict-prototypes -Wconversion -Wsign-conversion -mavx2 -mbmi -mbmi2 -mlzcnt -o CMakeFiles/zxc_huffman_avx2.dir/src/lib/zxc_huffman.c.o -c /home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/zxc/src/lib/zxc_huffman.c",
+  "file": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/zxc/src/lib/zxc_huffman.c",
+  "output": "CMakeFiles/zxc_huffman_avx2.dir/src/lib/zxc_huffman.c.o"
+},
+{
+  "directory": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/build/zxc",
+  "command": "/usr/bin/gcc-14 -DZXC_FUNCTION_SUFFIX=_avx512 -DZXC_STATIC_DEFINE -D_FILE_OFFSET_BITS=64 -D_LARGEFILE_SOURCE -D_POSIX_C_SOURCE=200809L -D_XOPEN_SOURCE=700 -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/zxc/src/lib -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/zxc/src/lib/vendors -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/zxc/include -march=x86-64-v3 -mtune=generic -O3 -DNDEBUG -std=c17 -Wall -Wextra -Wshadow -Wformat=2 -Wundef -Wpointer-arith -Wvla -Wcast-qual -Wdouble-promotion -Wimplicit-fallthrough -Wmissing-prototypes -Wstrict-prototypes -Wconversion -Wsign-conversion -mavx512f -mavx512bw -mavx512vl -mavx512vbmi -mavx512vbmi2 -mbmi -mbmi2 -mlzcnt -o CMakeFiles/zxc_compress_avx512.dir/src/lib/zxc_compress.c.o -c /home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/zxc/src/lib/zxc_compress.c",
+  "file": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/zxc/src/lib/zxc_compress.c",
+  "output": "CMakeFiles/zxc_compress_avx512.dir/src/lib/zxc_compress.c.o"
+},
+{
+  "directory": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/build/zxc",
+  "command": "/usr/bin/gcc-14 -DZXC_FUNCTION_SUFFIX=_avx512 -DZXC_STATIC_DEFINE -D_FILE_OFFSET_BITS=64 -D_LARGEFILE_SOURCE -D_POSIX_C_SOURCE=200809L -D_XOPEN_SOURCE=700 -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/zxc/src/lib -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/zxc/src/lib/vendors -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/zxc/include -march=x86-64-v3 -mtune=generic -O3 -DNDEBUG -std=c17 -Wall -Wextra -Wshadow -Wformat=2 -Wundef -Wpointer-arith -Wvla -Wcast-qual -Wdouble-promotion -Wimplicit-fallthrough -Wmissing-prototypes -Wstrict-prototypes -Wconversion -Wsign-conversion -mavx512f -mavx512bw -mavx512vl -mavx512vbmi -mavx512vbmi2 -mbmi -mbmi2 -mlzcnt -o CMakeFiles/zxc_decompress_avx512.dir/src/lib/zxc_decompress.c.o -c /home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/zxc/src/lib/zxc_decompress.c",
+  "file": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/zxc/src/lib/zxc_decompress.c",
+  "output": "CMakeFiles/zxc_decompress_avx512.dir/src/lib/zxc_decompress.c.o"
+},
+{
+  "directory": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/build/zxc",
+  "command": "/usr/bin/gcc-14 -DZXC_FUNCTION_SUFFIX=_avx512 -DZXC_STATIC_DEFINE -D_FILE_OFFSET_BITS=64 -D_LARGEFILE_SOURCE -D_POSIX_C_SOURCE=200809L -D_XOPEN_SOURCE=700 -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/zxc/src/lib -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/zxc/src/lib/vendors -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/zxc/include -march=x86-64-v3 -mtune=generic -O3 -DNDEBUG -std=c17 -Wall -Wextra -Wshadow -Wformat=2 -Wundef -Wpointer-arith -Wvla -Wcast-qual -Wdouble-promotion -Wimplicit-fallthrough -Wmissing-prototypes -Wstrict-prototypes -Wconversion -Wsign-conversion -mavx512f -mavx512bw -mavx512vl -mavx512vbmi -mavx512vbmi2 -mbmi -mbmi2 -mlzcnt -o CMakeFiles/zxc_huffman_avx512.dir/src/lib/zxc_huffman.c.o -c /home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/zxc/src/lib/zxc_huffman.c",
+  "file": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/zxc/src/lib/zxc_huffman.c",
+  "output": "CMakeFiles/zxc_huffman_avx512.dir/src/lib/zxc_huffman.c.o"
+},
+{
+  "directory": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/build/zxc",
+  "command": "/usr/bin/gcc-14 -DZXC_STATIC_DEFINE -D_FILE_OFFSET_BITS=64 -D_LARGEFILE_SOURCE -D_POSIX_C_SOURCE=200809L -D_XOPEN_SOURCE=700 -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/zxc/include -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/zxc/src/lib -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/zxc/src/lib/vendors -march=x86-64-v3 -mtune=generic -O3 -DNDEBUG -std=c17 -Wall -Wextra -Wshadow -Wformat=2 -Wundef -Wpointer-arith -Wvla -Wcast-qual -Wdouble-promotion -Wimplicit-fallthrough -Wmissing-prototypes -Wstrict-prototypes -Wconversion -Wsign-conversion -fomit-frame-pointer -fstrict-aliasing -ffunction-sections -fdata-sections -o CMakeFiles/zxc_lib.dir/src/lib/zxc_common.c.o -c /home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/zxc/src/lib/zxc_common.c",
+  "file": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/zxc/src/lib/zxc_common.c",
+  "output": "CMakeFiles/zxc_lib.dir/src/lib/zxc_common.c.o"
+},
+{
+  "directory": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/build/zxc",
+  "command": "/usr/bin/gcc-14 -DZXC_STATIC_DEFINE -D_FILE_OFFSET_BITS=64 -D_LARGEFILE_SOURCE -D_POSIX_C_SOURCE=200809L -D_XOPEN_SOURCE=700 -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/zxc/include -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/zxc/src/lib -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/zxc/src/lib/vendors -march=x86-64-v3 -mtune=generic -O3 -DNDEBUG -std=c17 -Wall -Wextra -Wshadow -Wformat=2 -Wundef -Wpointer-arith -Wvla -Wcast-qual -Wdouble-promotion -Wimplicit-fallthrough -Wmissing-prototypes -Wstrict-prototypes -Wconversion -Wsign-conversion -fomit-frame-pointer -fstrict-aliasing -ffunction-sections -fdata-sections -o CMakeFiles/zxc_lib.dir/src/lib/zxc_pivco_tables.c.o -c /home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/zxc/src/lib/zxc_pivco_tables.c",
+  "file": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/zxc/src/lib/zxc_pivco_tables.c",
+  "output": "CMakeFiles/zxc_lib.dir/src/lib/zxc_pivco_tables.c.o"
+},
+{
+  "directory": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/build/zxc",
+  "command": "/usr/bin/gcc-14 -DZXC_STATIC_DEFINE -D_FILE_OFFSET_BITS=64 -D_LARGEFILE_SOURCE -D_POSIX_C_SOURCE=200809L -D_XOPEN_SOURCE=700 -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/zxc/include -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/zxc/src/lib -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/zxc/src/lib/vendors -march=x86-64-v3 -mtune=generic -O3 -DNDEBUG -std=c17 -Wall -Wextra -Wshadow -Wformat=2 -Wundef -Wpointer-arith -Wvla -Wcast-qual -Wdouble-promotion -Wimplicit-fallthrough -Wmissing-prototypes -Wstrict-prototypes -Wconversion -Wsign-conversion -fomit-frame-pointer -fstrict-aliasing -ffunction-sections -fdata-sections -o CMakeFiles/zxc_lib.dir/src/lib/zxc_dict.c.o -c /home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/zxc/src/lib/zxc_dict.c",
+  "file": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/zxc/src/lib/zxc_dict.c",
+  "output": "CMakeFiles/zxc_lib.dir/src/lib/zxc_dict.c.o"
+},
+{
+  "directory": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/build/zxc",
+  "command": "/usr/bin/gcc-14 -DZXC_STATIC_DEFINE -D_FILE_OFFSET_BITS=64 -D_LARGEFILE_SOURCE -D_POSIX_C_SOURCE=200809L -D_XOPEN_SOURCE=700 -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/zxc/include -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/zxc/src/lib -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/zxc/src/lib/vendors -march=x86-64-v3 -mtune=generic -O3 -DNDEBUG -std=c17 -Wall -Wextra -Wshadow -Wformat=2 -Wundef -Wpointer-arith -Wvla -Wcast-qual -Wdouble-promotion -Wimplicit-fallthrough -Wmissing-prototypes -Wstrict-prototypes -Wconversion -Wsign-conversion -fomit-frame-pointer -fstrict-aliasing -ffunction-sections -fdata-sections -o CMakeFiles/zxc_lib.dir/src/lib/zxc_driver.c.o -c /home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/zxc/src/lib/zxc_driver.c",
+  "file": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/zxc/src/lib/zxc_driver.c",
+  "output": "CMakeFiles/zxc_lib.dir/src/lib/zxc_driver.c.o"
+},
+{
+  "directory": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/build/zxc",
+  "command": "/usr/bin/gcc-14 -DZXC_STATIC_DEFINE -D_FILE_OFFSET_BITS=64 -D_LARGEFILE_SOURCE -D_POSIX_C_SOURCE=200809L -D_XOPEN_SOURCE=700 -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/zxc/include -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/zxc/src/lib -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/zxc/src/lib/vendors -march=x86-64-v3 -mtune=generic -O3 -DNDEBUG -std=c17 -Wall -Wextra -Wshadow -Wformat=2 -Wundef -Wpointer-arith -Wvla -Wcast-qual -Wdouble-promotion -Wimplicit-fallthrough -Wmissing-prototypes -Wstrict-prototypes -Wconversion -Wsign-conversion -fomit-frame-pointer -fstrict-aliasing -ffunction-sections -fdata-sections -o CMakeFiles/zxc_lib.dir/src/lib/zxc_dispatch.c.o -c /home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/zxc/src/lib/zxc_dispatch.c",
+  "file": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/zxc/src/lib/zxc_dispatch.c",
+  "output": "CMakeFiles/zxc_lib.dir/src/lib/zxc_dispatch.c.o"
+},
+{
+  "directory": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/build/zxc",
+  "command": "/usr/bin/gcc-14 -DZXC_STATIC_DEFINE -D_FILE_OFFSET_BITS=64 -D_LARGEFILE_SOURCE -D_POSIX_C_SOURCE=200809L -D_XOPEN_SOURCE=700 -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/zxc/include -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/zxc/src/lib -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/zxc/src/lib/vendors -march=x86-64-v3 -mtune=generic -O3 -DNDEBUG -std=c17 -Wall -Wextra -Wshadow -Wformat=2 -Wundef -Wpointer-arith -Wvla -Wcast-qual -Wdouble-promotion -Wimplicit-fallthrough -Wmissing-prototypes -Wstrict-prototypes -Wconversion -Wsign-conversion -fomit-frame-pointer -fstrict-aliasing -ffunction-sections -fdata-sections -o CMakeFiles/zxc_lib.dir/src/lib/zxc_pstream.c.o -c /home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/zxc/src/lib/zxc_pstream.c",
+  "file": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/zxc/src/lib/zxc_pstream.c",
+  "output": "CMakeFiles/zxc_lib.dir/src/lib/zxc_pstream.c.o"
+},
+{
+  "directory": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/build/zxc",
+  "command": "/usr/bin/gcc-14 -DZXC_STATIC_DEFINE -D_FILE_OFFSET_BITS=64 -D_LARGEFILE_SOURCE -D_POSIX_C_SOURCE=200809L -D_XOPEN_SOURCE=700 -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/zxc/include -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/zxc/src/lib -I/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/zxc/src/lib/vendors -march=x86-64-v3 -mtune=generic -O3 -DNDEBUG -std=c17 -Wall -Wextra -Wshadow -Wformat=2 -Wundef -Wpointer-arith -Wvla -Wcast-qual -Wdouble-promotion -Wimplicit-fallthrough -Wmissing-prototypes -Wstrict-prototypes -Wconversion -Wsign-conversion -fomit-frame-pointer -fstrict-aliasing -ffunction-sections -fdata-sections -o CMakeFiles/zxc_lib.dir/src/lib/zxc_seekable.c.o -c /home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/zxc/src/lib/zxc_seekable.c",
+  "file": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/zxc/src/lib/zxc_seekable.c",
+  "output": "CMakeFiles/zxc_lib.dir/src/lib/zxc_seekable.c.o"
+}
+]
