@@ -1,0 +1,2 @@
+dataset	size	csize	dtime	ctime	codec	level	param	cmem	dmem	cstack	dstack	time	err
+silesia.ref.tar	211947520	86544351	0.029599	1.522178	zxc	5	?	0	0	6960	1024	2026-11-27.22:39:12	
