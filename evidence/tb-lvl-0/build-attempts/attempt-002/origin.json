@@ -1,0 +1,14 @@
+{
+  "schema": "tb-lvl-0-actions-artifact-v1",
+  "repository": "yasha1971-coder/hw-apex-bench",
+  "run_id": 46059083302,
+  "job_id": 140708668449,
+  "head_sha": "5ec881c2cc45e7036e4db874b0c139fa5dcb8d92",
+  "artifact_id": 15228285905,
+  "artifact_name": "tb-lvl-0-static-5ec881c2cc45e7036e4db874b0c139fa5dcb8d92",
+  "artifact_zip_sha256": "2a4ab403c9235470e1fabd408eeaddd6d21a684ce096438f129658d37cce7543",
+  "status": "FAIL",
+  "failure_stage": "readonly Go archive build missing module checksum",
+  "benchmark_calls": 0,
+  "url": "https://github.com/yasha1971-coder/hw-apex-bench/actions/runs/46059083302"
+}

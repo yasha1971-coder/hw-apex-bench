@@ -1,0 +1,2 @@
+main.go:16:2: missing go.sum entry for module providing package github.com/minio/minlz (imported by minlz-cbind); to add:
+	go get minlz-cbind

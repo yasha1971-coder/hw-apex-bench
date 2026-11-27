@@ -223,16 +223,17 @@ class Builder:
         wrapper = self.src/'turbobench_/minlz'
         before = digest(wrapper/'go.mod')
         require(self.run(['go','env','GOVERSION']).strip() == GO, 'exact Go toolchain required')
-        self.run(['go','mod','download','-json'],cwd=wrapper,name='go-download')
+        self.run(['go','mod','download','-json','all'],cwd=wrapper,name='go-download')
         require(digest(wrapper/'go.mod') == before, 'Go dependency resolution changed the pinned manifest')
+        self.run(['go','mod','verify'],cwd=wrapper,name='go-verify')
         mods = self.run(['go','list','-m','-json','all'],cwd=wrapper,name='go-modules')
         require('"Path": "github.com/minio/minlz"' in mods and '"Version": "v1.3.1"' in mods,
                 'unexpected minlz module version')
+        self.run(['go','build','-mod=readonly','-buildmode=c-archive','-o','libmlz.a','.'],cwd=wrapper,name='go-static-archive')
+        require(digest(wrapper/'go.mod') == before, 'Go build changed pinned manifest')
         for name in ('go.mod','go.sum'):
             require((wrapper/name).is_file(), 'Go dependency hash list missing')
             shutil.copyfile(wrapper/name,self.output/name)
-        self.run(['go','build','-mod=readonly','-buildmode=c-archive','-o','libmlz.a','.'],cwd=wrapper,name='go-static-archive')
-        require(digest(wrapper/'go.mod') == before, 'Go build changed pinned manifest')
         self.record['go'] = dict(version=GO,go_mod=self.artifact(self.output/'go.mod'),go_sum=self.artifact(self.output/'go.sum'),
                                  static_archive_sha256=digest(wrapper/'libmlz.a'),
                                  note='Actual module v1.3.1; upstream TurboBench registry literal says v1.3.0.')
