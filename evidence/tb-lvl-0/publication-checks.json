@@ -1,0 +1,110 @@
+{
+  "base_main": "705f686c88b93570f2b5cdd9393bf02c12dc54b3",
+  "canonical_git_bytes": true,
+  "changed_paths_scope": "TB-LVL-0 evidence, build workflow, continuity history only",
+  "checked_commit": "25acce50408de8f0ebef0a897af228af3235f409",
+  "commands": [
+    {
+      "argv": [
+        "C:\\Users\\\u041a\u043e\u043d\u0442\u0443\u0440\\AppData\\Local\\Programs\\Python\\Python311\\python.exe",
+        "-X",
+        "utf8",
+        "-B",
+        "web/validate_publication.py"
+      ],
+      "label": "publication-integrity",
+      "returncode": 0,
+      "stderr": {
+        "bytes": 20,
+        "compression": "gzip",
+        "path": "evidence/tb-lvl-0/publication-check-logs/attempt-002/publication-integrity/stderr.gz",
+        "sha256": "46b50c321b39e89a491b6727a01628c34245605a30beb3e7414c5e01cff90e6e",
+        "uncompressed_bytes": 0,
+        "uncompressed_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stdout": {
+        "bytes": 85,
+        "compression": "gzip",
+        "path": "evidence/tb-lvl-0/publication-check-logs/attempt-002/publication-integrity/stdout.gz",
+        "sha256": "91a8465da959bb7354f632bf10e9de649cf54321ab4cefa3016f164de7bfdc52",
+        "uncompressed_bytes": 68,
+        "uncompressed_sha256": "2b435feac21daad9d059bd29d7879bfcda9695bda3e2332dcc2c2662503373ba"
+      }
+    },
+    {
+      "argv": [
+        "C:\\Users\\\u041a\u043e\u043d\u0442\u0443\u0440\\AppData\\Local\\Programs\\Python\\Python311\\python.exe",
+        "-X",
+        "utf8",
+        "-B",
+        "web/build.py",
+        "C:\\Users\\\u041a\u043e\u043d\u0442\u0443\u0440\\hw-apex-bench\\.work\\tb-lvl-0\\publication-snapshots\\25acce50\\site\\index.html"
+      ],
+      "label": "static-pages",
+      "returncode": 0,
+      "stderr": {
+        "bytes": 20,
+        "compression": "gzip",
+        "path": "evidence/tb-lvl-0/publication-check-logs/attempt-002/static-pages/stderr.gz",
+        "sha256": "46b50c321b39e89a491b6727a01628c34245605a30beb3e7414c5e01cff90e6e",
+        "uncompressed_bytes": 0,
+        "uncompressed_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stdout": {
+        "bytes": 162,
+        "compression": "gzip",
+        "path": "evidence/tb-lvl-0/publication-check-logs/attempt-002/static-pages/stdout.gz",
+        "sha256": "0719c6bc0b0036a683768a3ae55abec51ce49f4fad357d2131e9a8073432121e",
+        "uncompressed_bytes": 154,
+        "uncompressed_sha256": "7e86e6501e416486a94c933869d7de848d361cd13ecf276935a0bad8c7079587"
+      }
+    },
+    {
+      "argv": [
+        "C:\\Users\\\u041a\u043e\u043d\u0442\u0443\u0440\\AppData\\Local\\Programs\\Python\\Python311\\python.exe",
+        "-X",
+        "utf8",
+        "-B",
+        "web/check_links.py"
+      ],
+      "label": "current-links",
+      "returncode": 0,
+      "stderr": {
+        "bytes": 20,
+        "compression": "gzip",
+        "path": "evidence/tb-lvl-0/publication-check-logs/attempt-002/current-links/stderr.gz",
+        "sha256": "46b50c321b39e89a491b6727a01628c34245605a30beb3e7414c5e01cff90e6e",
+        "uncompressed_bytes": 0,
+        "uncompressed_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stdout": {
+        "bytes": 62,
+        "compression": "gzip",
+        "path": "evidence/tb-lvl-0/publication-check-logs/attempt-002/current-links/stdout.gz",
+        "sha256": "e74c43a86123ffa374d32b2b845f39fec3048e0387c8951266eb73c65e84e81a",
+        "uncompressed_bytes": 42,
+        "uncompressed_sha256": "9fa0c6a8128177c185f5eba6af32e0ffd81caac6708a93f447fb4f28f70368d7"
+      }
+    }
+  ],
+  "historical_measurement_rows_unchanged": 435,
+  "historical_results_sha256": "cb52b8cb9fac484a6474d976681ea85ae2c052d80d820422b7f57c25ec938100",
+  "native_benchmark_calls": 0,
+  "new_report_local_links": [
+    "build/build.json",
+    "build/go.mod",
+    "audit.json",
+    "analysis.json",
+    "audit.json",
+    "CALIBRATION.md",
+    "GRID_AMENDMENT.md"
+  ],
+  "raw_output_retention": "gzip preserves the exact captured stdout/stderr bytes; each reference records both compressed and uncompressed SHA256 and length.",
+  "report": {
+    "bytes": 9929,
+    "path": "evidence/tb-lvl-0/RESULTS.md",
+    "sha256": "e25d72e3e484d3606e4d47f4d5935b994f7492f878d06043ffb9fad8e4af6495"
+  },
+  "schema": "tb-lvl-0-publication-checks-v1",
+  "status": "PASS"
+}
