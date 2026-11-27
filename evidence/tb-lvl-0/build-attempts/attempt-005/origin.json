@@ -1,0 +1,14 @@
+{
+  "schema": "tb-lvl-0-actions-artifact-v1",
+  "repository": "yasha1971-coder/hw-apex-bench",
+  "run_id": 46060054057,
+  "job_id": 140711847058,
+  "head_sha": "e12eba058324dee0a6ed3986cde5514a38c8a5c8",
+  "artifact_id": 15228910713,
+  "artifact_name": "tb-lvl-0-static-e12eba058324dee0a6ed3986cde5514a38c8a5c8",
+  "artifact_zip_sha256": "736acabf0b10a28f11a10755e3770053600a15314b1cf8b2b0c0ccbbd6799af4",
+  "status": "FAIL",
+  "failure_stage": "unrequested Rust aggregate manifest prerequisite",
+  "benchmark_calls": 0,
+  "url": "https://github.com/yasha1971-coder/hw-apex-bench/actions/runs/46060054057"
+}

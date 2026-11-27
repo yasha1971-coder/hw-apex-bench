@@ -1,0 +1,13 @@
+-- The C compiler identification is GNU 14.2.0
+-- Detecting C compiler ABI info
+-- Detecting C compiler ABI info - done
+-- Check for working C compiler: /usr/bin/gcc-14 - skipped
+-- Detecting C compile features
+-- Detecting C compile features - done
+-- Build type is 'Release'
+-- Compiler is not EMSCRIPTEN
+-- Looking for log2 in m
+-- Looking for log2 in m - found
+-- Configuring done (2.9s)
+-- Generating done (0.0s)
+-- Build files have been written to: /home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/build/brotli

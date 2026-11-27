@@ -1,0 +1,14 @@
+{
+  "calibration_blob_sha": "41ad4a6b34d4c92371728d16c6a45c63ae7f58df",
+  "calibration_sha256": "9098ed95bb7ddedc2a38fcbd9e435174dba706e2d93a3027cf64e7a3a846d30e",
+  "changed_files": [
+    "evidence/tb-lvl-0/CALIBRATION.md"
+  ],
+  "first_commit": "fa8a9cf801b2dcf62356b5d9c00c23c680836d21",
+  "first_commit_utc": "2026-11-27T19:40:09Z",
+  "github_receipt": {
+    "path": "registration/first-commit.json",
+    "sha256": "555962e10b6644ac5163b9dc70643a095136f1bae1489b5a8de4604c9d4e8376"
+  },
+  "schema": "tb-lvl-0-preregistration-v1"
+}

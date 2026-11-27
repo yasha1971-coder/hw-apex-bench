@@ -1,0 +1,17 @@
+{
+  "schema": "tb-lvl-0-grid-amendment-v1",
+  "status": "RESOLVED_BY_SOURCE",
+  "mapping_resolved": true,
+  "owner_confirmed": false,
+  "resolved_by": "source inspection / ChatGPT",
+  "requested_fast_levels": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18],
+  "registered_fast_levels": [1, 2, 3, 4, 5, 6, 7, 8],
+  "api_fast_levels": [11, 12, 13, 14, 15, 16, 17, 18],
+  "p2_api_levels": [13, 14, 15, 16, 17, 18],
+  "p2_tb_levels": [3, 4, 5, 6, 7, 8],
+  "registered_configurations": 50,
+  "registered_main_roundtrips": 150,
+  "turbobench_commit": "4aa97c8c37311e399ea3e7782c18c652c5bdb69f",
+  "aceapex_commit": "c53f3a04f3dbac8590e46a1f86c5fded1e69e065",
+  "performance_observed_before_resolution": false
+}
