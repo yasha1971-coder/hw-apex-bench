@@ -1,0 +1,14 @@
+{
+  "schema": "tb-lvl-0-actions-artifact-v1",
+  "repository": "yasha1971-coder/hw-apex-bench",
+  "run_id": 46058704350,
+  "job_id": 140707431784,
+  "head_sha": "55f1ae973b9e432e30dbdd9ab5137f84063cc4eb",
+  "artifact_id": 15227448755,
+  "artifact_name": "tb-lvl-0-static-55f1ae973b9e432e30dbdd9ab5137f84063cc4eb",
+  "artifact_zip_sha256": "108a9e0aeedab17ef966c8eee28540433f2706b31d632a1ae2f63527f6de75b0",
+  "status": "FAIL",
+  "failure_stage": "source selection before compilation",
+  "benchmark_calls": 0,
+  "url": "https://github.com/yasha1971-coder/hw-apex-bench/actions/runs/46058704350"
+}

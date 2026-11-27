@@ -126,7 +126,16 @@ class Builder:
         self.git('checkout','--detach',ACE,cwd=self.src/'aceapex')
         require(self.git('rev-parse','HEAD',cwd=self.src/'aceapex').strip() == ACE, 'ACE override differs')
         # An uninitialised empty submodule directory would activate wildcard
-        # codec detection. Remove only empty, unused placeholders in this clone.
+        # codec detection. Keep their exact upstream index entries, explicitly
+        # mark only unused gitlinks sparse, then remove empty placeholders.
+        unused = sorted(set(known) - set(PINS))
+        for name in unused:
+            path = self.src / name
+            require(path.resolve().is_relative_to(self.src.resolve()) and not path.is_symlink()
+                    and (not path.exists() or path.is_dir() and not any(path.iterdir())),
+                    'unselected gitlink was populated: '+name)
+        self.git('update-index','--skip-worktree','--',*unused)
+        self.record['unselected_sparse_gitlinks'] = unused
         removed = []
         for item in original_links:
             path = self.src / item['path']
@@ -144,6 +153,28 @@ class Builder:
         self.check_clean()
 
     def check_clean(self):
+        known = {r['path']:r['commit'] for r in self.record['upstream_top_level_gitlinks']}
+        unused = sorted(set(known) - set(PINS))
+        require(self.record['unselected_sparse_gitlinks'] == unused, 'sparse selection changed')
+        for name in unused:
+            path = self.src / name
+            require(not path.exists() and not path.is_symlink(), 'unselected gitlink acquired source: '+name)
+        # Skip-worktree is never allowed to hide a selected source or an index
+        # change. Every unused entry remains mode160000/stage0 at its HEAD pin.
+        self.git('diff','--cached','--exit-code','HEAD','--')
+        entries = {}
+        for line in self.git('ls-files','--stage','--',*known).splitlines():
+            metadata,path = line.split('\t',1)
+            mode,commit,stage = metadata.split()
+            entries[path] = dict(mode=mode,commit=commit,stage=stage)
+        require(entries == {name:dict(mode='160000',commit=pin,stage='0') for name,pin in known.items()},
+                'gitlink index no longer equals upstream HEAD')
+        flags = {line[2:]:line[0] for line in self.git('ls-files','-v').splitlines()}
+        require({name for name,flag in flags.items() if flag.upper() == 'S'} == set(unused)
+                and all(flag.isupper() for flag in flags.values()), 'unexpected hidden source/index flags')
+        selection = self.output/'source-selection.json'
+        selection.write_bytes(packed(dict(unselected_absent=unused,index_gitlinks=entries,index_flags=flags)))
+        self.record['source_selection'] = self.artifact(selection)
         changed = self.git('diff','--name-only','--ignore-submodules=none').splitlines()
         require(changed == ['aceapex'], 'only explicit ACE gitlink override permitted: '+repr(changed))
         diff = self.git('diff','--submodule=short')
