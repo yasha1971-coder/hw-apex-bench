@@ -1,0 +1,33 @@
+-- The C compiler identification is GNU 14.2.0
+-- Detecting C compiler ABI info
+-- Detecting C compiler ABI info - done
+-- Check for working C compiler: /usr/bin/gcc-14 - skipped
+-- Detecting C compile features
+-- Detecting C compile features - done
+-- Performing Test ZXC_COMPILER_X86_64
+-- Performing Test ZXC_COMPILER_X86_64 - Success
+-- Using vendored rapidhash from /home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/zxc/src/lib/vendors
+-- Building x86_64 AVX2 and AVX512 variants...
+-- Performing Test CMAKE_HAVE_LIBC_PTHREAD
+-- Performing Test CMAKE_HAVE_LIBC_PTHREAD - Success
+-- Found Threads: TRUE
+-- 
+-- ZXC Configuration Summary:
+--   Version:        1.0.0
+--   Build Mode:     Standalone
+--   Library Type:   Static
+--   Native Arch:    OFF
+--   SIMD Variants:  all
+--   Dictionary:     ON
+--   LTO Enabled:    OFF
+--   PGO Mode:       OFF
+--   Build CLI:      OFF
+--   Build Tests:    OFF
+--   Install Rules:  OFF
+--   Rapidhash:      vendored
+-- 
+-- Could NOT find Doxygen (missing: DOXYGEN_EXECUTABLE) (Required is at least version "1.9.7")
+-- Doxygen >= 1.9.7 not found - the 'doc' target is unavailable
+-- Configuring done (1.0s)
+-- Generating done (0.0s)
+-- Build files have been written to: /home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/build/zxc

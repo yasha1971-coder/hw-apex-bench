@@ -1,0 +1,14 @@
+{
+  "schema": "tb-lvl-0-actions-artifact-v1",
+  "repository": "yasha1971-coder/hw-apex-bench",
+  "run_id": 46062245669,
+  "job_id": 140719043219,
+  "head_sha": "9b058e285f47d64e6b5753ff729343c2be07b5e6",
+  "artifact_id": 15229154095,
+  "artifact_name": "tb-lvl-0-static-9b058e285f47d64e6b5753ff729343c2be07b5e6",
+  "artifact_zip_sha256": "117d45478f155b9a8d2413127417667cc2952bf68c35d3946dfbdeebf077b7fd",
+  "status": "FAIL",
+  "failure_stage": "unconditional TurboBench wrapper include requires pinned zlib headers",
+  "benchmark_calls": 0,
+  "url": "https://github.com/yasha1971-coder/hw-apex-bench/actions/runs/46062245669"
+}

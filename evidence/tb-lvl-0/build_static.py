@@ -28,6 +28,7 @@ PINS = {
     'misa77': ('https://github.com/welcome-to-the-sunny-side/misa77.git', 'd5293cfa4fd59526d26a8702a42a1139a5d4e0df'),
     'zstd': ('https://github.com/facebook/zstd.git', 'e50cdb0d407f5db512ed377fbee6c9ba473fea8e'),
     'zxc': ('https://github.com/hellobertrand/zxc.git', '69d1fae484b44b7ab612d8a9b1a5a023b9021c1b'),
+    'zlib': ('https://github.com/madler/zlib.git', 'a28e8d5acad59823917e4e556a87584a803ac15e'),
 }
 PROFILES = {
     'aceapex_fast': list(range(1, 9)), 'aceapex': [1, 2, 3, 4],
@@ -172,6 +173,7 @@ class Builder:
         self.record['submodules'] = self.artifact(self.output/'submodules.txt')
         self.record['selected_sources'] = {path:dict(url=url,upstream_gitlink=pin,commit=ACE if path=='aceapex' else pin)
                                            for path,(url,pin) in PINS.items()}
+        self.record['header_only_dependencies'] = ['zlib']
         self.check_clean()
 
     def check_clean(self):
@@ -240,7 +242,7 @@ class Builder:
                                  note='Actual module v1.3.1; upstream TurboBench registry literal says v1.3.0.')
 
     def build(self):
-        make = ['make','-j2','STATIC=1','OPENMP=0','RUST=0','CC=gcc-14','CXX=g++-14','CG=gcc-14','CCO=gcc-14','CXL=g++-14',
+        make = ['make','-j2','STATIC=1','OPENMP=0','RUST=0','ZLIB=0','CC=gcc-14','CXX=g++-14','CG=gcc-14','CCO=gcc-14','CXL=g++-14',
                 'MARCH='+FLAGS,'--assume-old=turbobench_/minlz/libmlz.a','turbobench']
         self.record['make_argv'] = make
         self.run(make,cwd=self.src,name='make-static')
