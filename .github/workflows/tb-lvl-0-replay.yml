@@ -1,0 +1,24 @@
+name: TB-LVL-0 saved-data replay
+
+on:
+  pull_request:
+    paths:
+      - 'evidence/tb-lvl-0/**'
+      - '.github/workflows/tb-lvl-0-replay.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  saved-data-replay:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+      - name: Test archive and accepted-view rejection
+        run: python3 -X utf8 -m unittest discover -s evidence/tb-lvl-0 -p test_replay.py -v
+      - name: Replay unchanged audit and analysis from saved evidence
+        run: python3 -X utf8 evidence/tb-lvl-0/replay.py --check

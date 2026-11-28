@@ -1,0 +1,2976 @@
+{
+  "aceapex_fast_mapping": "TurboBench levels 1..8 pass ACEAPEX API levels 11..18",
+  "aceapex_override": "c53f3a04f3dbac8590e46a1f86c5fded1e69e065",
+  "auxiliary_dependencies": {
+    "Turbo-Range-Coder": "upstream makefile supplies libsais and libsais16 for BSC/BCM"
+  },
+  "benchmark_calls": 0,
+  "binary": {
+    "bytes": 13770976,
+    "path": "turbobench",
+    "sha256": "351ea9edf86f3cdaf222bcc54146260e8eea42efaee00ae81a589f0838f4204b"
+  },
+  "build_only": true,
+  "cmake_configuration": [
+    {
+      "bytes": 16363,
+      "path": "configuration/brotli/CMakeCache.txt",
+      "sha256": "a549fae4b76d501d569eecd5bbfdecbf6d10d46e4fca50a28ef5dd4d32d6f120"
+    },
+    {
+      "bytes": 24904,
+      "path": "configuration/brotli/compile_commands.json",
+      "sha256": "11a8af2dde94d7350b4415ff5cb26d26e3283bfa520d04cd768e1c5663026782"
+    },
+    {
+      "bytes": 18550,
+      "path": "configuration/kanzi-cpp/CMakeCache.txt",
+      "sha256": "97b00578199c5242f3eabb41c01ca7418e98acd91712e7eaabf945d7cae39de1"
+    },
+    {
+      "bytes": 78647,
+      "path": "configuration/kanzi-cpp/compile_commands.json",
+      "sha256": "4988f4dc3e43bcf03f5897a788140c7ad81b01f36931252d412c89f2510677ea"
+    },
+    {
+      "bytes": 18253,
+      "path": "configuration/misa77/CMakeCache.txt",
+      "sha256": "4b8577aaa96ab2bdb18c550aca0bed0a53d2f5ef0a07ec6213b592479f9bf39b"
+    },
+    {
+      "bytes": 8129,
+      "path": "configuration/misa77/CMakeFiles/CheckASM/CMakeCache.txt",
+      "sha256": "06b95db53618bd83d2d5769a7d4994bd97880dad4d45585880844d42d9acf59c"
+    },
+    {
+      "bytes": 12454,
+      "path": "configuration/misa77/compile_commands.json",
+      "sha256": "b0655bf9d4daa01bc3268ccda5dcc63203371a4d629895fe944d586f25ae6a83"
+    },
+    {
+      "bytes": 18040,
+      "path": "configuration/zxc/CMakeCache.txt",
+      "sha256": "6a11c4bcde6747b5935e2b668a7a4457fa77a7ccbbf54a66876f8d69c936fb59"
+    },
+    {
+      "bytes": 18942,
+      "path": "configuration/zxc/compile_commands.json",
+      "sha256": "9024ad20f056cd81bf0b7f2cbd43953073cbd0d9de95ba6b63286d5836c21f02"
+    }
+  ],
+  "codec_registry_command": [
+    "turbobench",
+    "-l1"
+  ],
+  "codec_registry_only_no_benchmark": true,
+  "codec_versions_command": [
+    "turbobench",
+    "-l2"
+  ],
+  "commands": [
+    {
+      "argv": [
+        "gcc-14",
+        "--version"
+      ],
+      "cwd": "/home/runner/work/hw-apex-bench/hw-apex-bench",
+      "returncode": 0,
+      "stderr": {
+        "bytes": 0,
+        "path": "logs/001-gcc-14.stderr",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stdout": {
+        "bytes": 249,
+        "path": "logs/001-gcc-14.stdout",
+        "sha256": "4e26705702c3c00d307474389eb2fd8c889bf7ed6ffffa42752451273708c1f9"
+      }
+    },
+    {
+      "argv": [
+        "g++-14",
+        "--version"
+      ],
+      "cwd": "/home/runner/work/hw-apex-bench/hw-apex-bench",
+      "returncode": 0,
+      "stderr": {
+        "bytes": 0,
+        "path": "logs/002-g++-14.stderr",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stdout": {
+        "bytes": 249,
+        "path": "logs/002-g++-14.stdout",
+        "sha256": "7588fd551e53fea9fa7cd40881cba582e2a26da1da6d4f8324c45153793cef9e"
+      }
+    },
+    {
+      "argv": [
+        "make",
+        "--version"
+      ],
+      "cwd": "/home/runner/work/hw-apex-bench/hw-apex-bench",
+      "returncode": 0,
+      "stderr": {
+        "bytes": 0,
+        "path": "logs/003-make.stderr",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stdout": {
+        "bytes": 297,
+        "path": "logs/003-make.stdout",
+        "sha256": "8ee498ee2fc27e8dcdf99191b454077df95e3840d841ec94321748b6d7f36819"
+      }
+    },
+    {
+      "argv": [
+        "cmake",
+        "--version"
+      ],
+      "cwd": "/home/runner/work/hw-apex-bench/hw-apex-bench",
+      "returncode": 0,
+      "stderr": {
+        "bytes": 0,
+        "path": "logs/004-cmake.stderr",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stdout": {
+        "bytes": 91,
+        "path": "logs/004-cmake.stdout",
+        "sha256": "f6e81c2559f3ce00c5fdad01d7b226c301f5d6b07ee04f65db6dbfdc1cc5970b"
+      }
+    },
+    {
+      "argv": [
+        "go",
+        "version"
+      ],
+      "cwd": "/home/runner/work/hw-apex-bench/hw-apex-bench",
+      "returncode": 0,
+      "stderr": {
+        "bytes": 0,
+        "path": "logs/005-go.stderr",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stdout": {
+        "bytes": 32,
+        "path": "logs/005-go.stdout",
+        "sha256": "a29205bd83967c2f70e6768fae009600038d6056499fa289de9d5f9b79beaef4"
+      }
+    },
+    {
+      "argv": [
+        "git",
+        "--version"
+      ],
+      "cwd": "/home/runner/work/hw-apex-bench/hw-apex-bench",
+      "returncode": 0,
+      "stderr": {
+        "bytes": 0,
+        "path": "logs/006-git.stderr",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stdout": {
+        "bytes": 19,
+        "path": "logs/006-git.stdout",
+        "sha256": "0eff67955296e123526d7f9b9146fff8d8dc8d6dbf4f49ba5f838923d2b4af71"
+      }
+    },
+    {
+      "argv": [
+        "git",
+        "rev-parse",
+        "HEAD"
+      ],
+      "cwd": "/home/runner/work/hw-apex-bench/hw-apex-bench",
+      "returncode": 0,
+      "stderr": {
+        "bytes": 0,
+        "path": "logs/007-git.stderr",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stdout": {
+        "bytes": 41,
+        "path": "logs/007-git.stdout",
+        "sha256": "e029be39504319ad279659ec7e1b973a17cae546185095e4e4154ad5afdcb370"
+      }
+    },
+    {
+      "argv": [
+        "git",
+        "clone",
+        "--filter=blob:none",
+        "--no-checkout",
+        "https://github.com/powturbo/TurboBench.git",
+        "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench"
+      ],
+      "cwd": "/home/runner/work/hw-apex-bench/hw-apex-bench",
+      "returncode": 0,
+      "stderr": {
+        "bytes": 93,
+        "path": "logs/008-git.stderr",
+        "sha256": "3f9b74c9764f8cdb3d41a4137dbb1b84c421e0b928bda87d0cbd511ba3c352fd"
+      },
+      "stdout": {
+        "bytes": 0,
+        "path": "logs/008-git.stdout",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "argv": [
+        "git",
+        "checkout",
+        "--detach",
+        "4aa97c8c37311e399ea3e7782c18c652c5bdb69f"
+      ],
+      "cwd": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench",
+      "returncode": 0,
+      "stderr": {
+        "bytes": 85,
+        "path": "logs/009-git.stderr",
+        "sha256": "37d2dc72b0e31b19495ca151112e9edc3efbca8cb35ab274b7dc13e258153da2"
+      },
+      "stdout": {
+        "bytes": 0,
+        "path": "logs/009-git.stdout",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "argv": [
+        "git",
+        "rev-parse",
+        "HEAD"
+      ],
+      "cwd": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench",
+      "returncode": 0,
+      "stderr": {
+        "bytes": 0,
+        "path": "logs/010-git.stderr",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stdout": {
+        "bytes": 41,
+        "path": "logs/010-git.stdout",
+        "sha256": "3723abbbb0e1ae50d2936e4b4b7d68d5c50893b11a7887a552663c407f5479b0"
+      }
+    },
+    {
+      "argv": [
+        "git",
+        "ls-tree",
+        "-r",
+        "HEAD"
+      ],
+      "cwd": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench",
+      "returncode": 0,
+      "stderr": {
+        "bytes": 0,
+        "path": "logs/011-git.stderr",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stdout": {
+        "bytes": 15849,
+        "path": "logs/011-git.stdout",
+        "sha256": "ce4e64c91de1a944be19ae2c572820cdbd623f48eb7da83d7b10aeaac773b04b"
+      }
+    },
+    {
+      "argv": [
+        "git",
+        "submodule",
+        "update",
+        "--init",
+        "--recursive",
+        "--depth",
+        "1",
+        "--",
+        "aceapex",
+        "brotli",
+        "kanzi-cpp",
+        "libbsc",
+        "lz4",
+        "lzav",
+        "lzma",
+        "minlz",
+        "misa77",
+        "zstd",
+        "zxc",
+        "zlib",
+        "Turbo-Range-Coder"
+      ],
+      "cwd": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench",
+      "returncode": 0,
+      "stderr": {
+        "bytes": 2936,
+        "path": "logs/012-git.stderr",
+        "sha256": "0c5f6971294a29957461608b9d8a1e55dec9d342bbb6295e54c158e21cde5869"
+      },
+      "stdout": {
+        "bytes": 1139,
+        "path": "logs/012-git.stdout",
+        "sha256": "c5dc18c900174dd0fd070caa5134dc285b37e8ae70677379de10f7bcb2e73655"
+      }
+    },
+    {
+      "argv": [
+        "git",
+        "rev-parse",
+        "HEAD"
+      ],
+      "cwd": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/aceapex",
+      "returncode": 0,
+      "stderr": {
+        "bytes": 0,
+        "path": "logs/013-git.stderr",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stdout": {
+        "bytes": 41,
+        "path": "logs/013-git.stdout",
+        "sha256": "f204c798208feb92dd2097cddd1753ad961dc1db39021129e8103f3d688a607e"
+      }
+    },
+    {
+      "argv": [
+        "git",
+        "rev-parse",
+        "HEAD"
+      ],
+      "cwd": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/brotli",
+      "returncode": 0,
+      "stderr": {
+        "bytes": 0,
+        "path": "logs/014-git.stderr",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stdout": {
+        "bytes": 41,
+        "path": "logs/014-git.stdout",
+        "sha256": "535830e0c36f845ec449fffa029af75b4d32a5b36e49a8c1d51650e1e0306aa2"
+      }
+    },
+    {
+      "argv": [
+        "git",
+        "rev-parse",
+        "HEAD"
+      ],
+      "cwd": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp",
+      "returncode": 0,
+      "stderr": {
+        "bytes": 0,
+        "path": "logs/015-git.stderr",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stdout": {
+        "bytes": 41,
+        "path": "logs/015-git.stdout",
+        "sha256": "3382ee57ef6432222cfa6ec9d56ad0ec9b7df819976bf489758d46e5094ab798"
+      }
+    },
+    {
+      "argv": [
+        "git",
+        "rev-parse",
+        "HEAD"
+      ],
+      "cwd": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/libbsc",
+      "returncode": 0,
+      "stderr": {
+        "bytes": 0,
+        "path": "logs/016-git.stderr",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stdout": {
+        "bytes": 41,
+        "path": "logs/016-git.stdout",
+        "sha256": "8d4f2ca9e1c94cecc5d357414924d06dfa74f6ebe1de4e567502b5d8b83c490c"
+      }
+    },
+    {
+      "argv": [
+        "git",
+        "rev-parse",
+        "HEAD"
+      ],
+      "cwd": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/lz4",
+      "returncode": 0,
+      "stderr": {
+        "bytes": 0,
+        "path": "logs/017-git.stderr",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stdout": {
+        "bytes": 41,
+        "path": "logs/017-git.stdout",
+        "sha256": "d1e4d99796e61c2991e7b67f0d4f41c9cd650b753339787de9fcdb978b012663"
+      }
+    },
+    {
+      "argv": [
+        "git",
+        "rev-parse",
+        "HEAD"
+      ],
+      "cwd": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/lzav",
+      "returncode": 0,
+      "stderr": {
+        "bytes": 0,
+        "path": "logs/018-git.stderr",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stdout": {
+        "bytes": 41,
+        "path": "logs/018-git.stdout",
+        "sha256": "3f4a2af396a22422903ab656767c660ae139d49d46ee28118b12e3672c4aa40d"
+      }
+    },
+    {
+      "argv": [
+        "git",
+        "rev-parse",
+        "HEAD"
+      ],
+      "cwd": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/lzma",
+      "returncode": 0,
+      "stderr": {
+        "bytes": 0,
+        "path": "logs/019-git.stderr",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stdout": {
+        "bytes": 41,
+        "path": "logs/019-git.stdout",
+        "sha256": "2979ba5f64561722e855b017134500dda78557654e66581937d920746ba41408"
+      }
+    },
+    {
+      "argv": [
+        "git",
+        "rev-parse",
+        "HEAD"
+      ],
+      "cwd": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/minlz",
+      "returncode": 0,
+      "stderr": {
+        "bytes": 0,
+        "path": "logs/020-git.stderr",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stdout": {
+        "bytes": 41,
+        "path": "logs/020-git.stdout",
+        "sha256": "96bc36c28f4ab6eb3ae4ef6dc664df878b59ea061fda0b579d26c2ba94b95e01"
+      }
+    },
+    {
+      "argv": [
+        "git",
+        "rev-parse",
+        "HEAD"
+      ],
+      "cwd": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/misa77",
+      "returncode": 0,
+      "stderr": {
+        "bytes": 0,
+        "path": "logs/021-git.stderr",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stdout": {
+        "bytes": 41,
+        "path": "logs/021-git.stdout",
+        "sha256": "5b41e5e1af1ae4e1e74ac128d81efcc106bdff570a335a68eee7dbdc26df3eab"
+      }
+    },
+    {
+      "argv": [
+        "git",
+        "rev-parse",
+        "HEAD"
+      ],
+      "cwd": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/zstd",
+      "returncode": 0,
+      "stderr": {
+        "bytes": 0,
+        "path": "logs/022-git.stderr",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stdout": {
+        "bytes": 41,
+        "path": "logs/022-git.stdout",
+        "sha256": "17166f73bbafcf1958b585dcc317b80186496012afe23d035d69fc7c11c29b25"
+      }
+    },
+    {
+      "argv": [
+        "git",
+        "rev-parse",
+        "HEAD"
+      ],
+      "cwd": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/zxc",
+      "returncode": 0,
+      "stderr": {
+        "bytes": 0,
+        "path": "logs/023-git.stderr",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stdout": {
+        "bytes": 41,
+        "path": "logs/023-git.stdout",
+        "sha256": "3bdaf2e4c78e636db7f7380cab21599af7feb58e9ae09ad6de00a334c6c4df97"
+      }
+    },
+    {
+      "argv": [
+        "git",
+        "rev-parse",
+        "HEAD"
+      ],
+      "cwd": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/zlib",
+      "returncode": 0,
+      "stderr": {
+        "bytes": 0,
+        "path": "logs/024-git.stderr",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stdout": {
+        "bytes": 41,
+        "path": "logs/024-git.stdout",
+        "sha256": "3a0f7ddda63a957e9b79020a434de056b0e3d51c41464736cebd6d8de15e2633"
+      }
+    },
+    {
+      "argv": [
+        "git",
+        "rev-parse",
+        "HEAD"
+      ],
+      "cwd": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/Turbo-Range-Coder",
+      "returncode": 0,
+      "stderr": {
+        "bytes": 0,
+        "path": "logs/025-git.stderr",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stdout": {
+        "bytes": 41,
+        "path": "logs/025-git.stdout",
+        "sha256": "c5757daed62a429d20da69132fd15a6732cc2e21dbade87065223362037da1c7"
+      }
+    },
+    {
+      "argv": [
+        "git",
+        "fetch",
+        "--depth",
+        "1",
+        "origin",
+        "c53f3a04f3dbac8590e46a1f86c5fded1e69e065"
+      ],
+      "cwd": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/aceapex",
+      "returncode": 0,
+      "stderr": {
+        "bytes": 124,
+        "path": "logs/026-git.stderr",
+        "sha256": "8ac6887f7c2b78b3aa5f2e7991d84158176aa6bddecde49a843c55601b0a9927"
+      },
+      "stdout": {
+        "bytes": 0,
+        "path": "logs/026-git.stdout",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "argv": [
+        "git",
+        "checkout",
+        "--detach",
+        "c53f3a04f3dbac8590e46a1f86c5fded1e69e065"
+      ],
+      "cwd": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/aceapex",
+      "returncode": 0,
+      "stderr": {
+        "bytes": 190,
+        "path": "logs/027-git.stderr",
+        "sha256": "e6c3118c298d2e5c4b7e087455c35fe440e02122a50ef9ff67dbda1e0f70bd13"
+      },
+      "stdout": {
+        "bytes": 0,
+        "path": "logs/027-git.stdout",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "argv": [
+        "git",
+        "rev-parse",
+        "HEAD"
+      ],
+      "cwd": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/aceapex",
+      "returncode": 0,
+      "stderr": {
+        "bytes": 0,
+        "path": "logs/028-git.stderr",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stdout": {
+        "bytes": 41,
+        "path": "logs/028-git.stdout",
+        "sha256": "c1385341b744ea5a18f3e038079de5c427c37ca41feededb2a2f5331afa966f9"
+      }
+    },
+    {
+      "argv": [
+        "git",
+        "update-index",
+        "--skip-worktree",
+        "--",
+        "EC/rgc",
+        "EC/sserangecoding",
+        "FastLZ",
+        "GLZA",
+        "Glyd",
+        "HDiffPatch",
+        "LZSSE",
+        "Turbo-Run-Length-Encoding",
+        "aocl-compression",
+        "bcm",
+        "blaris",
+        "bz2-ng",
+        "bzip2",
+        "bzip3",
+        "c-blosc2",
+        "density",
+        "fast-lzma2",
+        "firetrail",
+        "heatshrink",
+        "iguana",
+        "isa-l",
+        "lib",
+        "libdeflate",
+        "liblzraven",
+        "libslz",
+        "lizard",
+        "lz0",
+        "lzfse",
+        "lzham_codec_devel",
+        "lzlib",
+        "lzo",
+        "lzsa",
+        "mbrotli",
+        "memlz",
+        "miniz",
+        "ms-compress",
+        "mzstd",
+        "openzl",
+        "orz",
+        "pcodec",
+        "pivco-huffman",
+        "pulsar-best",
+        "quicklz",
+        "snappy",
+        "tamp",
+        "tinyuz",
+        "wzip",
+        "xz",
+        "zlib-ng",
+        "zlib-rs",
+        "zlib-turbo",
+        "zopfli",
+        "zpaq"
+      ],
+      "cwd": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench",
+      "returncode": 0,
+      "stderr": {
+        "bytes": 0,
+        "path": "logs/029-git.stderr",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stdout": {
+        "bytes": 0,
+        "path": "logs/029-git.stdout",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "argv": [
+        "git",
+        "submodule",
+        "status",
+        "--recursive"
+      ],
+      "cwd": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench",
+      "returncode": 0,
+      "stderr": {
+        "bytes": 0,
+        "path": "logs/030-git.stderr",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stdout": {
+        "bytes": 3539,
+        "path": "logs/030-git.stdout",
+        "sha256": "68dbc0c2212f3e0bb7fef987fadd66a9c9f5deecc1da07ee7c81f2728a60f24b"
+      }
+    },
+    {
+      "argv": [
+        "git",
+        "diff",
+        "--cached",
+        "--exit-code",
+        "HEAD",
+        "--"
+      ],
+      "cwd": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench",
+      "returncode": 0,
+      "stderr": {
+        "bytes": 0,
+        "path": "logs/031-git.stderr",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stdout": {
+        "bytes": 0,
+        "path": "logs/031-git.stdout",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "argv": [
+        "git",
+        "ls-files",
+        "--stage",
+        "--",
+        "EC/rgc",
+        "EC/sserangecoding",
+        "FastLZ",
+        "GLZA",
+        "Glyd",
+        "HDiffPatch",
+        "LZSSE",
+        "Turbo-Range-Coder",
+        "Turbo-Run-Length-Encoding",
+        "aceapex",
+        "aocl-compression",
+        "bcm",
+        "blaris",
+        "brotli",
+        "bz2-ng",
+        "bzip2",
+        "bzip3",
+        "c-blosc2",
+        "density",
+        "fast-lzma2",
+        "firetrail",
+        "heatshrink",
+        "iguana",
+        "isa-l",
+        "kanzi-cpp",
+        "lib",
+        "libbsc",
+        "libdeflate",
+        "liblzraven",
+        "libslz",
+        "lizard",
+        "lz0",
+        "lz4",
+        "lzav",
+        "lzfse",
+        "lzham_codec_devel",
+        "lzlib",
+        "lzma",
+        "lzo",
+        "lzsa",
+        "mbrotli",
+        "memlz",
+        "miniz",
+        "minlz",
+        "misa77",
+        "ms-compress",
+        "mzstd",
+        "openzl",
+        "orz",
+        "pcodec",
+        "pivco-huffman",
+        "pulsar-best",
+        "quicklz",
+        "snappy",
+        "tamp",
+        "tinyuz",
+        "wzip",
+        "xz",
+        "zlib",
+        "zlib-ng",
+        "zlib-rs",
+        "zlib-turbo",
+        "zopfli",
+        "zpaq",
+        "zstd",
+        "zxc"
+      ],
+      "cwd": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench",
+      "returncode": 0,
+      "stderr": {
+        "bytes": 0,
+        "path": "logs/032-git.stderr",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stdout": {
+        "bytes": 3824,
+        "path": "logs/032-git.stdout",
+        "sha256": "16f4bb12ba91367c309192f19488c623f3cdf2fe0a4933e210ae82eb014ffbdd"
+      }
+    },
+    {
+      "argv": [
+        "git",
+        "ls-files",
+        "-v"
+      ],
+      "cwd": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench",
+      "returncode": 0,
+      "stderr": {
+        "bytes": 0,
+        "path": "logs/033-git.stderr",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stdout": {
+        "bytes": 4752,
+        "path": "logs/033-git.stdout",
+        "sha256": "f023a748706253ac992f2ac3d16841b36593009a9bf74cfae9ced749be11ddf1"
+      }
+    },
+    {
+      "argv": [
+        "git",
+        "diff",
+        "--name-only",
+        "--ignore-submodules=none"
+      ],
+      "cwd": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench",
+      "returncode": 0,
+      "stderr": {
+        "bytes": 0,
+        "path": "logs/034-git.stderr",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stdout": {
+        "bytes": 8,
+        "path": "logs/034-git.stdout",
+        "sha256": "dc77908b65f30b6189896d36fec06d9e1e3be54846c754358327f400841807aa"
+      }
+    },
+    {
+      "argv": [
+        "git",
+        "diff",
+        "--submodule=short"
+      ],
+      "cwd": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench",
+      "returncode": 0,
+      "stderr": {
+        "bytes": 0,
+        "path": "logs/035-git.stderr",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stdout": {
+        "bytes": 221,
+        "path": "logs/035-git.stdout",
+        "sha256": "daff7ff284140eed1199cc03b9dad55612354e954dd7f5d880d5722ba70fbc1a"
+      }
+    },
+    {
+      "argv": [
+        "git",
+        "submodule",
+        "status",
+        "--recursive"
+      ],
+      "cwd": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench",
+      "returncode": 0,
+      "stderr": {
+        "bytes": 0,
+        "path": "logs/036-git.stderr",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stdout": {
+        "bytes": 3539,
+        "path": "logs/036-git.stdout",
+        "sha256": "68dbc0c2212f3e0bb7fef987fadd66a9c9f5deecc1da07ee7c81f2728a60f24b"
+      }
+    },
+    {
+      "argv": [
+        "git",
+        "diff",
+        "--exit-code",
+        "HEAD",
+        "--"
+      ],
+      "cwd": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/Turbo-Range-Coder",
+      "returncode": 0,
+      "stderr": {
+        "bytes": 0,
+        "path": "logs/037-git.stderr",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stdout": {
+        "bytes": 0,
+        "path": "logs/037-git.stdout",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "argv": [
+        "git",
+        "diff",
+        "--exit-code",
+        "HEAD",
+        "--"
+      ],
+      "cwd": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/Turbo-Range-Coder/libsais",
+      "returncode": 0,
+      "stderr": {
+        "bytes": 0,
+        "path": "logs/038-git.stderr",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stdout": {
+        "bytes": 0,
+        "path": "logs/038-git.stdout",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "argv": [
+        "git",
+        "diff",
+        "--exit-code",
+        "HEAD",
+        "--"
+      ],
+      "cwd": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/aceapex",
+      "returncode": 0,
+      "stderr": {
+        "bytes": 0,
+        "path": "logs/039-git.stderr",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stdout": {
+        "bytes": 0,
+        "path": "logs/039-git.stdout",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "argv": [
+        "git",
+        "diff",
+        "--exit-code",
+        "HEAD",
+        "--"
+      ],
+      "cwd": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/brotli",
+      "returncode": 0,
+      "stderr": {
+        "bytes": 0,
+        "path": "logs/040-git.stderr",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stdout": {
+        "bytes": 0,
+        "path": "logs/040-git.stdout",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "argv": [
+        "git",
+        "diff",
+        "--exit-code",
+        "HEAD",
+        "--"
+      ],
+      "cwd": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp",
+      "returncode": 0,
+      "stderr": {
+        "bytes": 0,
+        "path": "logs/041-git.stderr",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stdout": {
+        "bytes": 0,
+        "path": "logs/041-git.stdout",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "argv": [
+        "git",
+        "diff",
+        "--exit-code",
+        "HEAD",
+        "--"
+      ],
+      "cwd": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/libbsc",
+      "returncode": 0,
+      "stderr": {
+        "bytes": 0,
+        "path": "logs/042-git.stderr",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stdout": {
+        "bytes": 0,
+        "path": "logs/042-git.stdout",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "argv": [
+        "git",
+        "diff",
+        "--exit-code",
+        "HEAD",
+        "--"
+      ],
+      "cwd": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/lz4",
+      "returncode": 0,
+      "stderr": {
+        "bytes": 0,
+        "path": "logs/043-git.stderr",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stdout": {
+        "bytes": 0,
+        "path": "logs/043-git.stdout",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "argv": [
+        "git",
+        "diff",
+        "--exit-code",
+        "HEAD",
+        "--"
+      ],
+      "cwd": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/lzav",
+      "returncode": 0,
+      "stderr": {
+        "bytes": 0,
+        "path": "logs/044-git.stderr",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stdout": {
+        "bytes": 0,
+        "path": "logs/044-git.stdout",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "argv": [
+        "git",
+        "diff",
+        "--exit-code",
+        "HEAD",
+        "--"
+      ],
+      "cwd": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/lzma",
+      "returncode": 0,
+      "stderr": {
+        "bytes": 0,
+        "path": "logs/045-git.stderr",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stdout": {
+        "bytes": 0,
+        "path": "logs/045-git.stdout",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "argv": [
+        "git",
+        "diff",
+        "--exit-code",
+        "HEAD",
+        "--"
+      ],
+      "cwd": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/minlz",
+      "returncode": 0,
+      "stderr": {
+        "bytes": 0,
+        "path": "logs/046-git.stderr",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stdout": {
+        "bytes": 0,
+        "path": "logs/046-git.stdout",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "argv": [
+        "git",
+        "diff",
+        "--exit-code",
+        "HEAD",
+        "--"
+      ],
+      "cwd": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/misa77",
+      "returncode": 0,
+      "stderr": {
+        "bytes": 0,
+        "path": "logs/047-git.stderr",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stdout": {
+        "bytes": 0,
+        "path": "logs/047-git.stdout",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "argv": [
+        "git",
+        "diff",
+        "--exit-code",
+        "HEAD",
+        "--"
+      ],
+      "cwd": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/zlib",
+      "returncode": 0,
+      "stderr": {
+        "bytes": 0,
+        "path": "logs/048-git.stderr",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stdout": {
+        "bytes": 0,
+        "path": "logs/048-git.stdout",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "argv": [
+        "git",
+        "diff",
+        "--exit-code",
+        "HEAD",
+        "--"
+      ],
+      "cwd": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/zstd",
+      "returncode": 0,
+      "stderr": {
+        "bytes": 0,
+        "path": "logs/049-git.stderr",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stdout": {
+        "bytes": 0,
+        "path": "logs/049-git.stdout",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "argv": [
+        "git",
+        "diff",
+        "--exit-code",
+        "HEAD",
+        "--"
+      ],
+      "cwd": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/zxc",
+      "returncode": 0,
+      "stderr": {
+        "bytes": 0,
+        "path": "logs/050-git.stderr",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stdout": {
+        "bytes": 0,
+        "path": "logs/050-git.stdout",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "argv": [
+        "cmake",
+        "-DCMAKE_C_COMPILER=gcc-14",
+        "-DCMAKE_CXX_COMPILER=g++-14",
+        "-DCMAKE_BUILD_TYPE=Release",
+        "-DCMAKE_VERBOSE_MAKEFILE=ON",
+        "-DCMAKE_EXPORT_COMPILE_COMMANDS=ON",
+        "-S",
+        "brotli",
+        "-B",
+        "build/brotli",
+        "-DBUILD_SHARED_LIBS=OFF",
+        "-DBROTLI_BUILD_TOOLS=OFF",
+        "-DBROTLI_BUNDLED_MODE=ON"
+      ],
+      "cwd": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench",
+      "returncode": 0,
+      "stderr": {
+        "bytes": 102,
+        "path": "logs/051-configure-brotli.stderr",
+        "sha256": "dca66a1fa2bef568b42ced7345109854f60e50a10a066b49a2ca01cd5f3e8c65"
+      },
+      "stdout": {
+        "bytes": 543,
+        "path": "logs/051-configure-brotli.stdout",
+        "sha256": "c38209fd7122f8be04ea184a0c02134b597e4450643f6c62639b42029850a176"
+      }
+    },
+    {
+      "argv": [
+        "cmake",
+        "-DCMAKE_C_COMPILER=gcc-14",
+        "-DCMAKE_CXX_COMPILER=g++-14",
+        "-DCMAKE_BUILD_TYPE=Release",
+        "-DCMAKE_VERBOSE_MAKEFILE=ON",
+        "-DCMAKE_EXPORT_COMPILE_COMMANDS=ON",
+        "-S",
+        "kanzi-cpp",
+        "-B",
+        "build/kanzi-cpp",
+        "-DKANZI_ENABLE_NATIVE_OPTIMIZATIONS=OFF"
+      ],
+      "cwd": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench",
+      "returncode": 0,
+      "stderr": {
+        "bytes": 0,
+        "path": "logs/052-configure-kanzi-cpp.stderr",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stdout": {
+        "bytes": 812,
+        "path": "logs/052-configure-kanzi-cpp.stdout",
+        "sha256": "5916cbc50ff6b14318305038525befea3148dc3e62776717dcde63160a672c48"
+      }
+    },
+    {
+      "argv": [
+        "cmake",
+        "-DCMAKE_C_COMPILER=gcc-14",
+        "-DCMAKE_CXX_COMPILER=g++-14",
+        "-DCMAKE_BUILD_TYPE=Release",
+        "-DCMAKE_VERBOSE_MAKEFILE=ON",
+        "-DCMAKE_EXPORT_COMPILE_COMMANDS=ON",
+        "-S",
+        "misa77",
+        "-B",
+        "build/misa77",
+        "-DMISA77_BUILD_TESTS=OFF",
+        "-DMISA77_BUILD_CLI=OFF"
+      ],
+      "cwd": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench",
+      "returncode": 0,
+      "stderr": {
+        "bytes": 100,
+        "path": "logs/053-configure-misa77.stderr",
+        "sha256": "62cc6d56ba65533ce3f4437c4c7ba2604bca036e56473e28f25961b3fda155ae"
+      },
+      "stdout": {
+        "bytes": 627,
+        "path": "logs/053-configure-misa77.stdout",
+        "sha256": "d113b97873a5ec81903b06c819c842059ac8cb09df83187b6e941e9055bb973c"
+      }
+    },
+    {
+      "argv": [
+        "cmake",
+        "-DCMAKE_C_COMPILER=gcc-14",
+        "-DCMAKE_CXX_COMPILER=g++-14",
+        "-DCMAKE_BUILD_TYPE=Release",
+        "-DCMAKE_VERBOSE_MAKEFILE=ON",
+        "-DCMAKE_EXPORT_COMPILE_COMMANDS=ON",
+        "-S",
+        "zxc",
+        "-B",
+        "build/zxc",
+        "-DZXC_NATIVE_ARCH=OFF",
+        "-DBUILD_SHARED_LIBS=OFF",
+        "-DZXC_BUILD_TESTS=OFF",
+        "-DZXC_BUILD_CLI=OFF",
+        "-DZXC_INSTALL=OFF"
+      ],
+      "cwd": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench",
+      "returncode": 0,
+      "stderr": {
+        "bytes": 102,
+        "path": "logs/054-configure-zxc.stderr",
+        "sha256": "dca66a1fa2bef568b42ced7345109854f60e50a10a066b49a2ca01cd5f3e8c65"
+      },
+      "stdout": {
+        "bytes": 1320,
+        "path": "logs/054-configure-zxc.stdout",
+        "sha256": "f2dda0729a634b26dde71569d3a685f04fba8cc81a329b34ddd8ed0cb7c22339"
+      }
+    },
+    {
+      "argv": [
+        "go",
+        "env",
+        "GOVERSION"
+      ],
+      "cwd": "/home/runner/work/hw-apex-bench/hw-apex-bench",
+      "returncode": 0,
+      "stderr": {
+        "bytes": 0,
+        "path": "logs/055-go.stderr",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stdout": {
+        "bytes": 9,
+        "path": "logs/055-go.stdout",
+        "sha256": "1770312734028d9a59ce46ead9d05e7e4f12efa371185d558e7aaf0132fd3ef9"
+      }
+    },
+    {
+      "argv": [
+        "go",
+        "mod",
+        "download",
+        "-json",
+        "all"
+      ],
+      "cwd": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/turbobench_/minlz",
+      "returncode": 0,
+      "stderr": {
+        "bytes": 0,
+        "path": "logs/056-go-download.stderr",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stdout": {
+        "bytes": 3278,
+        "path": "logs/056-go-download.stdout",
+        "sha256": "1b30efc823630aa3c6e1748ac2b076e88813380f8c1774d79159090176cd0428"
+      }
+    },
+    {
+      "argv": [
+        "go",
+        "mod",
+        "verify"
+      ],
+      "cwd": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/turbobench_/minlz",
+      "returncode": 0,
+      "stderr": {
+        "bytes": 0,
+        "path": "logs/057-go-verify.stderr",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stdout": {
+        "bytes": 21,
+        "path": "logs/057-go-verify.stdout",
+        "sha256": "b4537ed75f533f993f371954de47e42a793b8e5b0587577de7e27fb3e50696bd"
+      }
+    },
+    {
+      "argv": [
+        "go",
+        "list",
+        "-m",
+        "-json",
+        "all"
+      ],
+      "cwd": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/turbobench_/minlz",
+      "returncode": 0,
+      "stderr": {
+        "bytes": 0,
+        "path": "logs/058-go-modules.stderr",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stdout": {
+        "bytes": 2856,
+        "path": "logs/058-go-modules.stdout",
+        "sha256": "b1dcbf480339c52384296b2329e882796155b453a0c287b2dd266705e5e57d60"
+      }
+    },
+    {
+      "argv": [
+        "go",
+        "build",
+        "-mod=readonly",
+        "-buildmode=c-archive",
+        "-o",
+        "libmlz.a",
+        "."
+      ],
+      "cwd": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/turbobench_/minlz",
+      "returncode": 0,
+      "stderr": {
+        "bytes": 0,
+        "path": "logs/059-go-static-archive.stderr",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stdout": {
+        "bytes": 0,
+        "path": "logs/059-go-static-archive.stdout",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "argv": [
+        "make",
+        "-j1",
+        "STATIC=1",
+        "OPENMP=0",
+        "RUST=0",
+        "ZLIB=0",
+        "CC=gcc-14",
+        "CXX=g++-14",
+        "CG=gcc-14",
+        "CCO=gcc-14",
+        "CXL=g++-14",
+        "MARCH=-march=x86-64-v3 -mtune=generic",
+        "--assume-old=turbobench_/minlz/libmlz.a",
+        "turbobench"
+      ],
+      "cwd": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench",
+      "returncode": 0,
+      "stderr": {
+        "bytes": 286,
+        "path": "logs/060-make-static.stderr",
+        "sha256": "161cde625ceda61cd7463512119a74221dcf5615f1c929dbb497dd4832a40336"
+      },
+      "stdout": {
+        "bytes": 195021,
+        "path": "logs/060-make-static.stdout",
+        "sha256": "e46758c43191feb37cd8e7061cc2c070d2210bebee00897d5e39f1e85b7705a6"
+      }
+    },
+    {
+      "argv": [
+        "git",
+        "diff",
+        "--cached",
+        "--exit-code",
+        "HEAD",
+        "--"
+      ],
+      "cwd": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench",
+      "returncode": 0,
+      "stderr": {
+        "bytes": 0,
+        "path": "logs/061-git.stderr",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stdout": {
+        "bytes": 0,
+        "path": "logs/061-git.stdout",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "argv": [
+        "git",
+        "ls-files",
+        "--stage",
+        "--",
+        "EC/rgc",
+        "EC/sserangecoding",
+        "FastLZ",
+        "GLZA",
+        "Glyd",
+        "HDiffPatch",
+        "LZSSE",
+        "Turbo-Range-Coder",
+        "Turbo-Run-Length-Encoding",
+        "aceapex",
+        "aocl-compression",
+        "bcm",
+        "blaris",
+        "brotli",
+        "bz2-ng",
+        "bzip2",
+        "bzip3",
+        "c-blosc2",
+        "density",
+        "fast-lzma2",
+        "firetrail",
+        "heatshrink",
+        "iguana",
+        "isa-l",
+        "kanzi-cpp",
+        "lib",
+        "libbsc",
+        "libdeflate",
+        "liblzraven",
+        "libslz",
+        "lizard",
+        "lz0",
+        "lz4",
+        "lzav",
+        "lzfse",
+        "lzham_codec_devel",
+        "lzlib",
+        "lzma",
+        "lzo",
+        "lzsa",
+        "mbrotli",
+        "memlz",
+        "miniz",
+        "minlz",
+        "misa77",
+        "ms-compress",
+        "mzstd",
+        "openzl",
+        "orz",
+        "pcodec",
+        "pivco-huffman",
+        "pulsar-best",
+        "quicklz",
+        "snappy",
+        "tamp",
+        "tinyuz",
+        "wzip",
+        "xz",
+        "zlib",
+        "zlib-ng",
+        "zlib-rs",
+        "zlib-turbo",
+        "zopfli",
+        "zpaq",
+        "zstd",
+        "zxc"
+      ],
+      "cwd": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench",
+      "returncode": 0,
+      "stderr": {
+        "bytes": 0,
+        "path": "logs/062-git.stderr",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stdout": {
+        "bytes": 3824,
+        "path": "logs/062-git.stdout",
+        "sha256": "16f4bb12ba91367c309192f19488c623f3cdf2fe0a4933e210ae82eb014ffbdd"
+      }
+    },
+    {
+      "argv": [
+        "git",
+        "ls-files",
+        "-v"
+      ],
+      "cwd": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench",
+      "returncode": 0,
+      "stderr": {
+        "bytes": 0,
+        "path": "logs/063-git.stderr",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stdout": {
+        "bytes": 4752,
+        "path": "logs/063-git.stdout",
+        "sha256": "f023a748706253ac992f2ac3d16841b36593009a9bf74cfae9ced749be11ddf1"
+      }
+    },
+    {
+      "argv": [
+        "git",
+        "diff",
+        "--name-only",
+        "--ignore-submodules=none"
+      ],
+      "cwd": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench",
+      "returncode": 0,
+      "stderr": {
+        "bytes": 0,
+        "path": "logs/064-git.stderr",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stdout": {
+        "bytes": 8,
+        "path": "logs/064-git.stdout",
+        "sha256": "dc77908b65f30b6189896d36fec06d9e1e3be54846c754358327f400841807aa"
+      }
+    },
+    {
+      "argv": [
+        "git",
+        "diff",
+        "--submodule=short"
+      ],
+      "cwd": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench",
+      "returncode": 0,
+      "stderr": {
+        "bytes": 0,
+        "path": "logs/065-git.stderr",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stdout": {
+        "bytes": 221,
+        "path": "logs/065-git.stdout",
+        "sha256": "daff7ff284140eed1199cc03b9dad55612354e954dd7f5d880d5722ba70fbc1a"
+      }
+    },
+    {
+      "argv": [
+        "git",
+        "submodule",
+        "status",
+        "--recursive"
+      ],
+      "cwd": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench",
+      "returncode": 0,
+      "stderr": {
+        "bytes": 0,
+        "path": "logs/066-git.stderr",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stdout": {
+        "bytes": 3539,
+        "path": "logs/066-git.stdout",
+        "sha256": "68dbc0c2212f3e0bb7fef987fadd66a9c9f5deecc1da07ee7c81f2728a60f24b"
+      }
+    },
+    {
+      "argv": [
+        "git",
+        "diff",
+        "--exit-code",
+        "HEAD",
+        "--"
+      ],
+      "cwd": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/Turbo-Range-Coder",
+      "returncode": 0,
+      "stderr": {
+        "bytes": 0,
+        "path": "logs/067-git.stderr",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stdout": {
+        "bytes": 0,
+        "path": "logs/067-git.stdout",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "argv": [
+        "git",
+        "diff",
+        "--exit-code",
+        "HEAD",
+        "--"
+      ],
+      "cwd": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/Turbo-Range-Coder/libsais",
+      "returncode": 0,
+      "stderr": {
+        "bytes": 0,
+        "path": "logs/068-git.stderr",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stdout": {
+        "bytes": 0,
+        "path": "logs/068-git.stdout",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "argv": [
+        "git",
+        "diff",
+        "--exit-code",
+        "HEAD",
+        "--"
+      ],
+      "cwd": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/aceapex",
+      "returncode": 0,
+      "stderr": {
+        "bytes": 0,
+        "path": "logs/069-git.stderr",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stdout": {
+        "bytes": 0,
+        "path": "logs/069-git.stdout",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "argv": [
+        "git",
+        "diff",
+        "--exit-code",
+        "HEAD",
+        "--"
+      ],
+      "cwd": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/brotli",
+      "returncode": 0,
+      "stderr": {
+        "bytes": 0,
+        "path": "logs/070-git.stderr",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stdout": {
+        "bytes": 0,
+        "path": "logs/070-git.stdout",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "argv": [
+        "git",
+        "diff",
+        "--exit-code",
+        "HEAD",
+        "--"
+      ],
+      "cwd": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/kanzi-cpp",
+      "returncode": 0,
+      "stderr": {
+        "bytes": 0,
+        "path": "logs/071-git.stderr",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stdout": {
+        "bytes": 0,
+        "path": "logs/071-git.stdout",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "argv": [
+        "git",
+        "diff",
+        "--exit-code",
+        "HEAD",
+        "--"
+      ],
+      "cwd": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/libbsc",
+      "returncode": 0,
+      "stderr": {
+        "bytes": 0,
+        "path": "logs/072-git.stderr",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stdout": {
+        "bytes": 0,
+        "path": "logs/072-git.stdout",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "argv": [
+        "git",
+        "diff",
+        "--exit-code",
+        "HEAD",
+        "--"
+      ],
+      "cwd": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/lz4",
+      "returncode": 0,
+      "stderr": {
+        "bytes": 0,
+        "path": "logs/073-git.stderr",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stdout": {
+        "bytes": 0,
+        "path": "logs/073-git.stdout",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "argv": [
+        "git",
+        "diff",
+        "--exit-code",
+        "HEAD",
+        "--"
+      ],
+      "cwd": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/lzav",
+      "returncode": 0,
+      "stderr": {
+        "bytes": 0,
+        "path": "logs/074-git.stderr",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stdout": {
+        "bytes": 0,
+        "path": "logs/074-git.stdout",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "argv": [
+        "git",
+        "diff",
+        "--exit-code",
+        "HEAD",
+        "--"
+      ],
+      "cwd": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/lzma",
+      "returncode": 0,
+      "stderr": {
+        "bytes": 0,
+        "path": "logs/075-git.stderr",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stdout": {
+        "bytes": 0,
+        "path": "logs/075-git.stdout",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "argv": [
+        "git",
+        "diff",
+        "--exit-code",
+        "HEAD",
+        "--"
+      ],
+      "cwd": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/minlz",
+      "returncode": 0,
+      "stderr": {
+        "bytes": 0,
+        "path": "logs/076-git.stderr",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stdout": {
+        "bytes": 0,
+        "path": "logs/076-git.stdout",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "argv": [
+        "git",
+        "diff",
+        "--exit-code",
+        "HEAD",
+        "--"
+      ],
+      "cwd": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/misa77",
+      "returncode": 0,
+      "stderr": {
+        "bytes": 0,
+        "path": "logs/077-git.stderr",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stdout": {
+        "bytes": 0,
+        "path": "logs/077-git.stdout",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "argv": [
+        "git",
+        "diff",
+        "--exit-code",
+        "HEAD",
+        "--"
+      ],
+      "cwd": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/zlib",
+      "returncode": 0,
+      "stderr": {
+        "bytes": 0,
+        "path": "logs/078-git.stderr",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stdout": {
+        "bytes": 0,
+        "path": "logs/078-git.stdout",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "argv": [
+        "git",
+        "diff",
+        "--exit-code",
+        "HEAD",
+        "--"
+      ],
+      "cwd": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/zstd",
+      "returncode": 0,
+      "stderr": {
+        "bytes": 0,
+        "path": "logs/079-git.stderr",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stdout": {
+        "bytes": 0,
+        "path": "logs/079-git.stdout",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "argv": [
+        "git",
+        "diff",
+        "--exit-code",
+        "HEAD",
+        "--"
+      ],
+      "cwd": "/home/runner/work/hw-apex-bench/hw-apex-bench/.work/tb-lvl-0-ci/TurboBench/zxc",
+      "returncode": 0,
+      "stderr": {
+        "bytes": 0,
+        "path": "logs/080-git.stderr",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stdout": {
+        "bytes": 0,
+        "path": "logs/080-git.stdout",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "argv": [
+        "file",
+        "/home/runner/work/hw-apex-bench/hw-apex-bench/out/tb-lvl-0-static/turbobench"
+      ],
+      "cwd": "/home/runner/work/hw-apex-bench/hw-apex-bench",
+      "returncode": 0,
+      "stderr": {
+        "bytes": 0,
+        "path": "logs/081-file.stderr",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stdout": {
+        "bytes": 262,
+        "path": "logs/081-file.stdout",
+        "sha256": "3102c7161de63ca7130d5be01e92a90c2c931995a1fb425ac48813ecc56e011a"
+      }
+    },
+    {
+      "argv": [
+        "readelf",
+        "-h",
+        "/home/runner/work/hw-apex-bench/hw-apex-bench/out/tb-lvl-0-static/turbobench"
+      ],
+      "cwd": "/home/runner/work/hw-apex-bench/hw-apex-bench",
+      "returncode": 0,
+      "stderr": {
+        "bytes": 0,
+        "path": "logs/082-readelf-header.stderr",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stdout": {
+        "bytes": 959,
+        "path": "logs/082-readelf-header.stdout",
+        "sha256": "248123f20684b09eef94590b9d11f27ed9295f4bf60f5bb09275e5a6d699a314"
+      }
+    },
+    {
+      "argv": [
+        "readelf",
+        "-lW",
+        "/home/runner/work/hw-apex-bench/hw-apex-bench/out/tb-lvl-0-static/turbobench"
+      ],
+      "cwd": "/home/runner/work/hw-apex-bench/hw-apex-bench",
+      "returncode": 0,
+      "stderr": {
+        "bytes": 0,
+        "path": "logs/083-readelf-programs.stderr",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stdout": {
+        "bytes": 1754,
+        "path": "logs/083-readelf-programs.stdout",
+        "sha256": "94a4338918049e99d6b3127f7c9dcc5352f984fbaf4f1d8efcf69b737e26f634"
+      }
+    },
+    {
+      "argv": [
+        "readelf",
+        "-dW",
+        "/home/runner/work/hw-apex-bench/hw-apex-bench/out/tb-lvl-0-static/turbobench"
+      ],
+      "cwd": "/home/runner/work/hw-apex-bench/hw-apex-bench",
+      "returncode": 0,
+      "stderr": {
+        "bytes": 0,
+        "path": "logs/084-readelf-dynamic.stderr",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stdout": {
+        "bytes": 43,
+        "path": "logs/084-readelf-dynamic.stdout",
+        "sha256": "8f440b11aa34c5145152189d4391ece1272b24d2739a2a33ebcdb30fa0d8d29d"
+      }
+    },
+    {
+      "argv": [
+        "/home/runner/work/hw-apex-bench/hw-apex-bench/out/tb-lvl-0-static/turbobench",
+        "-l1"
+      ],
+      "cwd": "/home/runner/work/hw-apex-bench/hw-apex-bench/out/tb-lvl-0-static",
+      "returncode": 0,
+      "stderr": {
+        "bytes": 0,
+        "path": "logs/085-codec-selectors-levels.stderr",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stdout": {
+        "bytes": 1404,
+        "path": "logs/085-codec-selectors-levels.stdout",
+        "sha256": "d27f9ca0b83506c8f1b691bf4255caf9e577c07d88daa283ed68e1818ddb6f48"
+      }
+    },
+    {
+      "argv": [
+        "/home/runner/work/hw-apex-bench/hw-apex-bench/out/tb-lvl-0-static/turbobench",
+        "-l2"
+      ],
+      "cwd": "/home/runner/work/hw-apex-bench/hw-apex-bench/out/tb-lvl-0-static",
+      "returncode": 0,
+      "stderr": {
+        "bytes": 0,
+        "path": "logs/086-codec-versions.stderr",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stdout": {
+        "bytes": 794,
+        "path": "logs/086-codec-versions.stdout",
+        "sha256": "889f85d528f24c4f858aecdf340be6a71b3b4270c88e11c9d01b0f38778420d3"
+      }
+    }
+  ],
+  "completed_utc": "2026-11-27T20:41:41.638541+00:00",
+  "controller_sha256": "10f204a2961c599175a0045844dc0d04b591c3178937b211726cbbcbfa10196d",
+  "declared_versions": {
+    "aceapex": "2.6.5",
+    "brotli": "1.2.0",
+    "bsc": "3.4.1",
+    "kanzi": "1.0.0",
+    "lz4": "1.11.2",
+    "lzav": "7.2",
+    "lzma": "26.02",
+    "minlz_go_module": "1.3.1",
+    "minlz_registry_literal": "1.3.0",
+    "misa77": "0.8.1",
+    "zstd": "1.6.0",
+    "zxc": "1.0.0"
+  },
+  "environment": {
+    "CC": "gcc-14",
+    "CCO": "gcc-14",
+    "CFLAGS": "-march=x86-64-v3 -mtune=generic",
+    "CG": "gcc-14",
+    "CGO_CFLAGS": "-march=x86-64-v3 -mtune=generic",
+    "CGO_CXXFLAGS": "-march=x86-64-v3 -mtune=generic",
+    "CGO_ENABLED": "1",
+    "CXL": "g++-14",
+    "CXX": "g++-14",
+    "CXXFLAGS": "-march=x86-64-v3 -mtune=generic",
+    "GOAMD64": "v3",
+    "GOTOOLCHAIN": "local"
+  },
+  "fixed_architecture": "-march=x86-64-v3 -mtune=generic",
+  "gitlink_inventory_scope": "recursive parent tree; every nested gitlink outside selected submodules is sparse",
+  "go": {
+    "go_mod": {
+      "bytes": 293,
+      "path": "go.mod",
+      "sha256": "2edab7f9a54880bace000692801921d5c7f03ce529c1c864d6e811be2bbdd41b"
+    },
+    "go_sum": {
+      "bytes": 1058,
+      "path": "go.sum",
+      "sha256": "0f048b56ec535594b6f4b6b2765f828ae0da1c179f4865c35b5dfbb44569e351"
+    },
+    "note": "Actual module v1.3.1; upstream TurboBench registry literal says v1.3.0.",
+    "static_archive_sha256": "e76ce190603c53b7c3c8067af053bbe09e7024615c665f34aaa76d5e6de5444a",
+    "version": "go1.27.4"
+  },
+  "header_only_dependencies": [
+    "zlib"
+  ],
+  "make_argv": [
+    "make",
+    "-j1",
+    "STATIC=1",
+    "OPENMP=0",
+    "RUST=0",
+    "ZLIB=0",
+    "CC=gcc-14",
+    "CXX=g++-14",
+    "CG=gcc-14",
+    "CCO=gcc-14",
+    "CXL=g++-14",
+    "MARCH=-march=x86-64-v3 -mtune=generic",
+    "--assume-old=turbobench_/minlz/libmlz.a",
+    "turbobench"
+  ],
+  "repository_commit": "62a7bd7d1e977231778761bcd0efbe8dbaea3695",
+  "repository_sources": {
+    ".github/workflows/tb-lvl-0-build.yml": "137e7c8adf2291b722e0c648e290c66b073f8e06698055d0ddd8012bb66792ce",
+    "evidence/tb-lvl-0/CALIBRATION.md": "9098ed95bb7ddedc2a38fcbd9e435174dba706e2d93a3027cf64e7a3a846d30e",
+    "evidence/tb-lvl-0/build_static.py": "10f204a2961c599175a0045844dc0d04b591c3178937b211726cbbcbfa10196d"
+  },
+  "requested_profiles": {
+    "aceapex": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "aceapex_fast": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8
+    ],
+    "brotli": [
+      4,
+      6,
+      9,
+      11
+    ],
+    "bsc": [
+      "0e0"
+    ],
+    "kanzi": [
+      5,
+      6,
+      7,
+      8
+    ],
+    "lz4": [
+      1,
+      3,
+      9,
+      12
+    ],
+    "lzav": [
+      1,
+      2
+    ],
+    "lzma": [
+      9
+    ],
+    "minlz": [
+      1,
+      3,
+      7
+    ],
+    "misa77": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "zstd": [
+      1,
+      3,
+      9,
+      15,
+      19,
+      22
+    ],
+    "zxc": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ]
+  },
+  "schema": "tb-lvl-0-static-build-v1",
+  "selected_sources": {
+    "Turbo-Range-Coder": {
+      "commit": "092b08c425394b118dd068e7c7778f51fad99fcf",
+      "upstream_gitlink": "092b08c425394b118dd068e7c7778f51fad99fcf",
+      "url": "https://github.com/powturbo/Turbo-Range-Coder.git"
+    },
+    "aceapex": {
+      "commit": "c53f3a04f3dbac8590e46a1f86c5fded1e69e065",
+      "upstream_gitlink": "022af6126de42e63450a45557676ba30bfd6caa9",
+      "url": "https://github.com/yasha1971-coder/aceapex.git"
+    },
+    "brotli": {
+      "commit": "717514a67b3f8abf53365d4471a102a60fff8ef5",
+      "upstream_gitlink": "717514a67b3f8abf53365d4471a102a60fff8ef5",
+      "url": "https://github.com/google/brotli.git"
+    },
+    "kanzi-cpp": {
+      "commit": "388ca03cf3a13e5456629a6781616c4c96f8fd4a",
+      "upstream_gitlink": "388ca03cf3a13e5456629a6781616c4c96f8fd4a",
+      "url": "https://github.com/flanglet/kanzi-cpp.git"
+    },
+    "libbsc": {
+      "commit": "6542faafd0c235975e77e219c77f8227f770fe91",
+      "upstream_gitlink": "6542faafd0c235975e77e219c77f8227f770fe91",
+      "url": "https://github.com/IlyaGrebnov/libbsc.git"
+    },
+    "lz4": {
+      "commit": "00bf3522fdb94a9d0e69c1d4db7eed77343f7a60",
+      "upstream_gitlink": "00bf3522fdb94a9d0e69c1d4db7eed77343f7a60",
+      "url": "https://github.com/lz4/lz4.git"
+    },
+    "lzav": {
+      "commit": "5a60cfd78e6f6dd8347a905d520b8d03ff5ea2f4",
+      "upstream_gitlink": "5a60cfd78e6f6dd8347a905d520b8d03ff5ea2f4",
+      "url": "https://github.com/avaneev/lzav.git"
+    },
+    "lzma": {
+      "commit": "44809544b95bbf2dccec75d954657ff76fc349ff",
+      "upstream_gitlink": "44809544b95bbf2dccec75d954657ff76fc349ff",
+      "url": "https://github.com/sisong/lzma.git"
+    },
+    "minlz": {
+      "commit": "ede3d8ebed44161c62b50a22491274d182ced777",
+      "upstream_gitlink": "ede3d8ebed44161c62b50a22491274d182ced777",
+      "url": "https://github.com/minio/minlz.git"
+    },
+    "misa77": {
+      "commit": "d5293cfa4fd59526d26a8702a42a1139a5d4e0df",
+      "upstream_gitlink": "d5293cfa4fd59526d26a8702a42a1139a5d4e0df",
+      "url": "https://github.com/welcome-to-the-sunny-side/misa77.git"
+    },
+    "zlib": {
+      "commit": "a28e8d5acad59823917e4e556a87584a803ac15e",
+      "upstream_gitlink": "a28e8d5acad59823917e4e556a87584a803ac15e",
+      "url": "https://github.com/madler/zlib.git"
+    },
+    "zstd": {
+      "commit": "e50cdb0d407f5db512ed377fbee6c9ba473fea8e",
+      "upstream_gitlink": "e50cdb0d407f5db512ed377fbee6c9ba473fea8e",
+      "url": "https://github.com/facebook/zstd.git"
+    },
+    "zxc": {
+      "commit": "69d1fae484b44b7ab612d8a9b1a5a023b9021c1b",
+      "upstream_gitlink": "69d1fae484b44b7ab612d8a9b1a5a023b9021c1b",
+      "url": "https://github.com/hellobertrand/zxc.git"
+    }
+  },
+  "source_git_diff": {
+    "bytes": 221,
+    "path": "aceapex-gitlink.patch",
+    "sha256": "daff7ff284140eed1199cc03b9dad55612354e954dd7f5d880d5722ba70fbc1a"
+  },
+  "source_selection": {
+    "bytes": 16165,
+    "path": "source-selection.json",
+    "sha256": "e2336affc11e20effdf6020be866c7b6b938822ddf8922beec6ec3a86dcb7e03"
+  },
+  "started_utc": "2026-11-27T20:37:01.915163+00:00",
+  "static_elf_verified": true,
+  "status": "PASS",
+  "submodules": {
+    "bytes": 3539,
+    "path": "submodules.txt",
+    "sha256": "68dbc0c2212f3e0bb7fef987fadd66a9c9f5deecc1da07ee7c81f2728a60f24b"
+  },
+  "tool_binaries": {
+    "ar": {
+      "bytes": 55792,
+      "path": "/usr/bin/x86_64-linux-gnu-ar",
+      "sha256": "b915d4505160f07a77be56ae2a8d50b9df4a4a8b2875c81fc00ec79470054eac"
+    },
+    "cmake": {
+      "bytes": 17241856,
+      "path": "/usr/local/bin/cmake",
+      "sha256": "c4b3b237dc7a013590db9e90f70fca2dfdedde09521e920d3339569ea364230a"
+    },
+    "file": {
+      "bytes": 31336,
+      "path": "/usr/bin/file",
+      "sha256": "6741f44dde8e51309325c8bcf88ee16bc1e022985d584415680484c11ee89e0d"
+    },
+    "g++-14": {
+      "bytes": 1186944,
+      "path": "/usr/bin/x86_64-linux-gnu-g++-14",
+      "sha256": "916ef3c03c2d024857af2e084d3648204033b9c79e0e62575974f567f99adc84"
+    },
+    "gcc-14": {
+      "bytes": 1186944,
+      "path": "/usr/bin/x86_64-linux-gnu-gcc-14",
+      "sha256": "ce298ce0c8fbdaa4b43f6e0596e37d25a35a07b5c743cb26f11815b76fccf90d"
+    },
+    "git": {
+      "bytes": 4640384,
+      "path": "/usr/bin/git",
+      "sha256": "08ca4d2ee4d8915e86f1faaa52603752507c57af1d16d451dec9992bc9b6d801"
+    },
+    "go": {
+      "bytes": 17256487,
+      "path": "/opt/hostedtoolcache/go/1.27.4/x64/bin/go",
+      "sha256": "de0ae3e082ce7599eae4fb69fa2ef1e43b8f31ffd3fce62cdf81930aa9005050"
+    },
+    "make": {
+      "bytes": 259808,
+      "path": "/usr/bin/make",
+      "sha256": "d78b8f1d099fbcfb6f2f49ab87223b9b68fb3956642f92d6ec6de812e8afa965"
+    },
+    "readelf": {
+      "bytes": 789280,
+      "path": "/usr/bin/x86_64-linux-gnu-readelf",
+      "sha256": "b48f244581a13e9dc20f2a4760a3e4236e9752e251553b6b33e566809fd469c9"
+    }
+  },
+  "turbobench_commit": "4aa97c8c37311e399ea3e7782c18c652c5bdb69f",
+  "unselected_empty_placeholders_removed": [
+    "EC/rgc",
+    "EC/sserangecoding",
+    "FastLZ",
+    "GLZA",
+    "Glyd",
+    "HDiffPatch",
+    "LZSSE",
+    "Turbo-Run-Length-Encoding",
+    "aocl-compression",
+    "bcm",
+    "blaris",
+    "bz2-ng",
+    "bzip2",
+    "bzip3",
+    "c-blosc2",
+    "density",
+    "fast-lzma2",
+    "firetrail",
+    "heatshrink",
+    "iguana",
+    "isa-l",
+    "lib",
+    "libdeflate",
+    "liblzraven",
+    "libslz",
+    "lizard",
+    "lz0",
+    "lzfse",
+    "lzham_codec_devel",
+    "lzlib",
+    "lzo",
+    "lzsa",
+    "mbrotli",
+    "memlz",
+    "miniz",
+    "ms-compress",
+    "mzstd",
+    "openzl",
+    "orz",
+    "pcodec",
+    "pivco-huffman",
+    "pulsar-best",
+    "quicklz",
+    "snappy",
+    "tamp",
+    "tinyuz",
+    "wzip",
+    "xz",
+    "zlib-ng",
+    "zlib-rs",
+    "zlib-turbo",
+    "zopfli",
+    "zpaq"
+  ],
+  "unselected_sparse_gitlinks": [
+    "EC/rgc",
+    "EC/sserangecoding",
+    "FastLZ",
+    "GLZA",
+    "Glyd",
+    "HDiffPatch",
+    "LZSSE",
+    "Turbo-Run-Length-Encoding",
+    "aocl-compression",
+    "bcm",
+    "blaris",
+    "bz2-ng",
+    "bzip2",
+    "bzip3",
+    "c-blosc2",
+    "density",
+    "fast-lzma2",
+    "firetrail",
+    "heatshrink",
+    "iguana",
+    "isa-l",
+    "lib",
+    "libdeflate",
+    "liblzraven",
+    "libslz",
+    "lizard",
+    "lz0",
+    "lzfse",
+    "lzham_codec_devel",
+    "lzlib",
+    "lzo",
+    "lzsa",
+    "mbrotli",
+    "memlz",
+    "miniz",
+    "ms-compress",
+    "mzstd",
+    "openzl",
+    "orz",
+    "pcodec",
+    "pivco-huffman",
+    "pulsar-best",
+    "quicklz",
+    "snappy",
+    "tamp",
+    "tinyuz",
+    "wzip",
+    "xz",
+    "zlib-ng",
+    "zlib-rs",
+    "zlib-turbo",
+    "zopfli",
+    "zpaq"
+  ],
+  "upstream_gitlinks": [
+    {
+      "commit": "d535fda0ea6d9bd2b8c8178e3cd51cf33d0b7421",
+      "path": "EC/rgc"
+    },
+    {
+      "commit": "4405dfcd02250ce48050ab4f57302fd71f9466c5",
+      "path": "EC/sserangecoding"
+    },
+    {
+      "commit": "b1342dabcf5257ab303743c9332fe75e9147a011",
+      "path": "FastLZ"
+    },
+    {
+      "commit": "71bfdfe2a770eed615bcf6be47691118f6718ab6",
+      "path": "GLZA"
+    },
+    {
+      "commit": "7478f35f510bfd311224ab862dabe37a13c38fb9",
+      "path": "Glyd"
+    },
+    {
+      "commit": "06961361340085ddb2a551775dc402172b8ca67c",
+      "path": "HDiffPatch"
+    },
+    {
+      "commit": "1847c3e82794400deb56edd30d8aa3f445fd000b",
+      "path": "LZSSE"
+    },
+    {
+      "commit": "092b08c425394b118dd068e7c7778f51fad99fcf",
+      "path": "Turbo-Range-Coder"
+    },
+    {
+      "commit": "d2f6e15203babac58e6b4ddedfb76e4b86e9efa7",
+      "path": "Turbo-Run-Length-Encoding"
+    },
+    {
+      "commit": "022af6126de42e63450a45557676ba30bfd6caa9",
+      "path": "aceapex"
+    },
+    {
+      "commit": "2629f887dc01950c006fb6faaca834ff36e6e0b5",
+      "path": "aocl-compression"
+    },
+    {
+      "commit": "b6a0a094fa973793d754de8b3a1e54b7e59de261",
+      "path": "bcm"
+    },
+    {
+      "commit": "fdf237fd58069e4f91b91fff6f94586721921f8b",
+      "path": "blaris"
+    },
+    {
+      "commit": "717514a67b3f8abf53365d4471a102a60fff8ef5",
+      "path": "brotli"
+    },
+    {
+      "commit": "517948ed836d4c52d68d8e633887aaa21c17ba27",
+      "path": "bz2-ng"
+    },
+    {
+      "commit": "ffa63c85d78bcf907c85516e8f4bc7f223244132",
+      "path": "bzip2"
+    },
+    {
+      "commit": "ab0801987441ec7f7d801c1b1020b482e95b5879",
+      "path": "bzip3"
+    },
+    {
+      "commit": "31b4f94c058c7d02bd4f20eaebee7091112ac0db",
+      "path": "c-blosc2"
+    },
+    {
+      "commit": "58938943bb0dfd85b186551a3d1d36cc286f9c1d",
+      "path": "density"
+    },
+    {
+      "commit": "967306d39daacf9a14ad923c86fa7f9c4552b59b",
+      "path": "fast-lzma2"
+    },
+    {
+      "commit": "fc49a00a2de088a1bf0c8a62d2735529d263280d",
+      "path": "firetrail"
+    },
+    {
+      "commit": "7d419e1fa4830d0b919b9b6a91fe2fb786cf3280",
+      "path": "heatshrink"
+    },
+    {
+      "commit": "fda9ce907b48217117514ef370f45e7c08ac2c92",
+      "path": "iguana"
+    },
+    {
+      "commit": "ef205fba51be041505d708fa982b7ba578c6e850",
+      "path": "isa-l"
+    },
+    {
+      "commit": "388ca03cf3a13e5456629a6781616c4c96f8fd4a",
+      "path": "kanzi-cpp"
+    },
+    {
+      "commit": "5a3f3aba052e63ffae8eb0214c6bb8ffffedea3c",
+      "path": "lib"
+    },
+    {
+      "commit": "6542faafd0c235975e77e219c77f8227f770fe91",
+      "path": "libbsc"
+    },
+    {
+      "commit": "aa5181e82536b9508f2319816b5780e86415d3b5",
+      "path": "libdeflate"
+    },
+    {
+      "commit": "700b88c4b2e1b1d96e499d172dfa0b8e5d9134ab",
+      "path": "liblzraven"
+    },
+    {
+      "commit": "47de65e7669ec5017c893a8cc22455ae8156d4ee",
+      "path": "libslz"
+    },
+    {
+      "commit": "d3becc7e80d3eb01147c2f63bed2e23fac533f19",
+      "path": "lizard"
+    },
+    {
+      "commit": "b025b9ebb108ee9c9cf5fd454184ed55d6b55e48",
+      "path": "lz0"
+    },
+    {
+      "commit": "00bf3522fdb94a9d0e69c1d4db7eed77343f7a60",
+      "path": "lz4"
+    },
+    {
+      "commit": "5a60cfd78e6f6dd8347a905d520b8d03ff5ea2f4",
+      "path": "lzav"
+    },
+    {
+      "commit": "e634ca58b4821d9f3d560cdc6df5dec02ffc93fd",
+      "path": "lzfse"
+    },
+    {
+      "commit": "d09fc6676a0313c3814457fbc76351a68f653092",
+      "path": "lzham_codec_devel"
+    },
+    {
+      "commit": "811308c48fc4709981c1412b70997c3a0b93fe86",
+      "path": "lzlib"
+    },
+    {
+      "commit": "44809544b95bbf2dccec75d954657ff76fc349ff",
+      "path": "lzma"
+    },
+    {
+      "commit": "0083878c235a89ef96a009d1ff0b500f3a364e4b",
+      "path": "lzo"
+    },
+    {
+      "commit": "15ee2dfe118eeb8f7683ca44f64821c3a61ca1e5",
+      "path": "lzsa"
+    },
+    {
+      "commit": "2c3b44d8bed979a03c8aba6e9f1963f7bc289468",
+      "path": "mbrotli"
+    },
+    {
+      "commit": "f416ac29b45e0cbb88d99b5f8b2b41f584aa07f8",
+      "path": "memlz"
+    },
+    {
+      "commit": "347653fb1b4dec254f71cebe3b6ca40fdaeab458",
+      "path": "miniz"
+    },
+    {
+      "commit": "ede3d8ebed44161c62b50a22491274d182ced777",
+      "path": "minlz"
+    },
+    {
+      "commit": "d5293cfa4fd59526d26a8702a42a1139a5d4e0df",
+      "path": "misa77"
+    },
+    {
+      "commit": "a0fcab84a7918fa205d5f29bf03b71bd4abb19b4",
+      "path": "ms-compress"
+    },
+    {
+      "commit": "ae05410d0d37565055e78e0cfa3aa8bb359a2ff6",
+      "path": "mzstd"
+    },
+    {
+      "commit": "9b0a41f39127dd0223589af8a98b1625942dc857",
+      "path": "openzl"
+    },
+    {
+      "commit": "29414c69566529b1d87c2347889f36280c20b962",
+      "path": "orz"
+    },
+    {
+      "commit": "c0b80dbb299a5add13db417cc0b05670071f953a",
+      "path": "pcodec"
+    },
+    {
+      "commit": "16b48fcfcbd5cd71d945eb48e2702eec398bb36b",
+      "path": "pivco-huffman"
+    },
+    {
+      "commit": "cda0bc7a7fae69a45b0966d2c79fa9b0550ca7ae",
+      "path": "pulsar-best"
+    },
+    {
+      "commit": "29e9d46fe39e052220626f321814545468f1d8b5",
+      "path": "quicklz"
+    },
+    {
+      "commit": "946606459314e55d029c85f9a8c46f8809467f0f",
+      "path": "snappy"
+    },
+    {
+      "commit": "46cee9d667309ad9f3ec9e8051cb47a610df8abf",
+      "path": "tamp"
+    },
+    {
+      "commit": "1d74ffa4d453796df352df470733f45dfa099bb1",
+      "path": "tinyuz"
+    },
+    {
+      "commit": "51865d5b2d70365f9b8b2b19f4b82b1072c352dc",
+      "path": "wzip"
+    },
+    {
+      "commit": "c308e9f27201300fd042d3e7324a21e55c25852f",
+      "path": "xz"
+    },
+    {
+      "commit": "a28e8d5acad59823917e4e556a87584a803ac15e",
+      "path": "zlib"
+    },
+    {
+      "commit": "9fe701c4a2664f0d29fb061cc8cba8f23d680518",
+      "path": "zlib-ng"
+    },
+    {
+      "commit": "dac3c0a1577314b8f4cab99f447e9f889a851a59",
+      "path": "zlib-rs"
+    },
+    {
+      "commit": "ebfc019d935e8d5e842085b45800e154fad83cae",
+      "path": "zlib-turbo"
+    },
+    {
+      "commit": "ec2eabdaa8721aeef3028d2c7a82e05373db4eaf",
+      "path": "zopfli"
+    },
+    {
+      "commit": "9ab539f644e364f0d92e2918b90ce2534c75653f",
+      "path": "zpaq"
+    },
+    {
+      "commit": "e50cdb0d407f5db512ed377fbee6c9ba473fea8e",
+      "path": "zstd"
+    },
+    {
+      "commit": "69d1fae484b44b7ab612d8a9b1a5a023b9021c1b",
+      "path": "zxc"
+    }
+  ],
+  "validated_profiles": {
+    "aceapex": {
+      "available_levels": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "registry_specification": "1,2,3,4/t#",
+      "requested": [
+        1,
+        2,
+        3,
+        4
+      ]
+    },
+    "aceapex_fast": {
+      "available_levels": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8
+      ],
+      "registry_specification": "1,2,3,4,5,6,7,8/t#",
+      "requested": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8
+      ]
+    },
+    "brotli": {
+      "available_levels": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11
+      ],
+      "registry_specification": "0,1,2,3,4,5,6,7,8,9,10,11/d#:V",
+      "requested": [
+        4,
+        6,
+        9,
+        11
+      ]
+    },
+    "bsc": {
+      "available_levels": [
+        0,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8
+      ],
+      "registry_specification": "0,3,4,5,6,7,8/H:Hashsize M:Minlen P:Disable preprocessing t:Multithreading e# encoder (e0,e1,e2)",
+      "requested": [
+        "0e0"
+      ]
+    },
+    "kanzi": {
+      "available_levels": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "registry_specification": "0,1,2,3,4,5,6,7,8,9/T#",
+      "requested": [
+        5,
+        6,
+        7,
+        8
+      ]
+    },
+    "lz4": {
+      "available_levels": [
+        -99,
+        -90,
+        -80,
+        -70,
+        -40,
+        -30,
+        -20,
+        -10,
+        -8,
+        -7,
+        -6,
+        -5,
+        -4,
+        -3,
+        -2,
+        -1,
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12
+      ],
+      "registry_specification": "0,1,2,3,4,5,6,7,8,9,10,11,12,-1,-2,-3,-4,-5,-6,-7,-8,-10,-20,-30,-40,-50.-60,-70,-80,-90,-99/t#MfsB#",
+      "requested": [
+        1,
+        3,
+        9,
+        12
+      ]
+    },
+    "lzav": {
+      "available_levels": [
+        1,
+        2
+      ],
+      "registry_specification": "1,2",
+      "requested": [
+        1,
+        2
+      ]
+    },
+    "lzma": {
+      "available_levels": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "registry_specification": "0,1,2,3,4,5,6,7,8,9/d#:fb#:lp#:lc#:pb#:a#:mt#",
+      "requested": [
+        9
+      ]
+    },
+    "minlz": {
+      "available_levels": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "registry_specification": "0,1,2,3,4,5,6,7,8,9",
+      "requested": [
+        1,
+        3,
+        7
+      ]
+    },
+    "misa77": {
+      "available_levels": [
+        -1,
+        0,
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "registry_specification": "0,1,2,3,4,5,-1",
+      "requested": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5
+      ]
+    },
+    "zstd": {
+      "available_levels": [
+        -99,
+        -90,
+        -80,
+        -70,
+        -40,
+        -30,
+        -20,
+        -10,
+        -9,
+        -8,
+        -7,
+        -6,
+        -5,
+        -4,
+        -3,
+        -2,
+        -1,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20,
+        21,
+        22
+      ],
+      "registry_specification": "1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,-1,-2,-3,-4,-5,-6,-7,-8,-9,-10,-20,-30,-40,-50.-60,-70,-80,-90,-99/d#",
+      "requested": [
+        1,
+        3,
+        9,
+        15,
+        19,
+        22
+      ]
+    },
+    "zxc": {
+      "available_levels": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "registry_specification": "1,2,3,4,5,6,7",
+      "requested": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ]
+    }
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "mirrors": [
+    {
+      "path": "evidence/tb-lvl-0/adapters/telemetry_audit.py",
+      "source_path": "evidence/hw-region-2/casefix/audit.py"
+    },
+    {
+      "path": "evidence/tb-lvl-0/adapters/ovh_bench.py",
+      "source_path": "evidence/hw-region-2/casefix/ovh_bench.py"
+    }
+  ],
+  "schema": "tb-lvl-0-adapter-sources-v1",
+  "source_commit": "25f9459c87485a1d47950ebea031e39ec441942a",
+  "upstream": [
+    {
+      "bytes": 221439,
+      "commit": "4aa97c8c37311e399ea3e7782c18c652c5bdb69f",
+      "git_oid": "b9c30832f73e4997f24d8e2c55ab086a6ddc1a18",
+      "path": "evidence/tb-lvl-0/adapters/turbobench-plugin.cc",
+      "path_in_repo": "plugin.cc",
+      "repository": "powturbo/TurboBench",
+      "sha256": "f4e89305920013c61de3fdbe1ce220b2b0851b0ea86c5c8d6b40e8bb813e4ba2"
+    }
+  ]
+}
